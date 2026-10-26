@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "language": "go",
+  "source": "../../01-http-performance/go/kernel",
+  "role": "implementation",
+  "$schema": "../../implementation.schema.json"
+}

@@ -1,0 +1,18 @@
+{
+  "runtime": "v20.19.2",
+  "engine": "11.3.244.8-node.38",
+  "pool_size": 8,
+  "warmup_calls": 100000,
+  "measured_calls": 1000000,
+  "batch_calls": 10000,
+  "host_callback_per_call": true,
+  "checksum": 1000000,
+  "ns_per_call": {
+    "min": 77.6773999999989,
+    "p50": 88.27739999999835,
+    "p95": 133.13890000000015,
+    "p99": 148.10810000000174,
+    "max": 169.63579999999752
+  },
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

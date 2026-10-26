@@ -1,0 +1,55 @@
+{
+  "task": "Implement the frozen PocketBase record-rule subset in the matched Rust and Go packages against the same black-box vectors.",
+  "baseline_utc": "2026-10-24T23:07:10Z",
+  "paired_first_green_utc_estimate": "2026-10-24T23:08:49Z",
+  "paired_elapsed_seconds_estimate": 99,
+  "timing_method": "Approximate elapsed interval from recorded vector/test-baseline and implementation source timestamps. Both implementations were authored in one paired task; no reliable separate per-language timer exists, so both receive the same elapsed-time subscore.",
+  "rust": {
+    "implementation_source": "port-effort/rust/src/lib.rs",
+    "edit_test_iterations_to_first_green": 1,
+    "unexpected_failing_test_runs": 0
+  },
+  "go": {
+    "implementation_source": "port-effort/go/rules.go",
+    "edit_test_iterations_to_first_green": 2,
+    "unexpected_failing_test_runs": 1
+  },
+  "safety_properties": {
+    "explicit_missing_value_representation": {
+      "rust": true,
+      "go": true
+    },
+    "compiler_forces_missing_value_handling": {
+      "rust": false,
+      "go": false
+    },
+    "explicit_parser_failure_value": {
+      "rust": true,
+      "go": true
+    },
+    "compiler_forces_parser_failure_handling": {
+      "rust": false,
+      "go": false
+    },
+    "malformed_or_unknown_rules_fail_closed": {
+      "rust": true,
+      "go": true
+    }
+  },
+  "safety_evidence": {
+    "rust": [
+      "port-effort/rust/src/lib.rs",
+      "port-effort/rust/tests/conformance.rs"
+    ],
+    "go": [
+      "port-effort/go/rules.go",
+      "port-effort/go/rules_test.go"
+    ]
+  },
+  "notes": [
+    "Implementation LOC is computed from the source files listed above; tests and generated code are excluded.",
+    "The initial red test-baseline run is intentional and is excluded from unexpected failure counts.",
+    "The recorded Go repair fixed two assertions in one failing test run."
+  ],
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

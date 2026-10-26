@@ -1,0 +1,403 @@
+{
+  "started_utc": "2026-10-24T23:27:07.089036+00:00",
+  "host": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "purpose": "Compile equivalent authorization kernels for server, desktop, mobile, web/WASI and no_std/TinyGo target classes.",
+  "tool_versions": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "go": "go version go1.27.1 linux/amd64",
+    "tinygo": "tinygo version 0.42.0 linux/amd64 (using go version go1.27.1 and LLVM version 22.1.4)"
+  },
+  "rust": [
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "x86_64-unknown-linux-gnu"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "x86_64-unknown-linux-gnu"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-unknown-linux-gnu"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "aarch64-unknown-linux-gnu"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "x86_64-pc-windows-gnu"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "x86_64-pc-windows-gnu"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-apple-darwin"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "aarch64-apple-darwin"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "x86_64-apple-darwin"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "x86_64-apple-darwin"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-apple-ios"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "aarch64-apple-ios"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-apple-ios-sim"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s\n",
+      "target": "aarch64-apple-ios-sim"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-linux-android"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "aarch64-linux-android"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "wasm32-unknown-unknown"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "wasm32-unknown-unknown"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "wasm32-wasip1"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s\n",
+      "target": "wasm32-wasip1"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "aarch64-unknown-none"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "aarch64-unknown-none"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "<M0_ROOT>/rust/kernel/Cargo.toml",
+        "--target",
+        "thumbv7em-none-eabi"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n",
+      "target": "thumbv7em-none-eabi"
+    }
+  ],
+  "go": [
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-linux-amd64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "linux/amd64",
+      "artifact_bytes": 4657096
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-linux-arm64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "linux/arm64",
+      "artifact_bytes": 4448823
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-windows-amd64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "windows/amd64",
+      "artifact_bytes": 4704256
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-darwin-amd64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "darwin/amd64",
+      "artifact_bytes": 4618896
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-darwin-arm64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "darwin/arm64",
+      "artifact_bytes": 4386578
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-android-arm64.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "android/arm64",
+      "artifact_bytes": 4835169
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-js-wasm.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "js/wasm",
+      "artifact_bytes": 5335247
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-wasip1-wasm.test",
+        "./kernel"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "wasip1/wasm",
+      "artifact_bytes": 5318998
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-c",
+        "-o",
+        "<M0_TEMP>/go-ios-arm64.test",
+        "./kernel"
+      ],
+      "exit_code": 1,
+      "ok": false,
+      "stdout": "FAIL\tfeluka-m0-go/kernel [setup failed]\nFAIL\n",
+      "stderr": "# feluka-m0-go/kernel\nios/arm64 requires external (cgo) linking, but cgo is not enabled\n",
+      "target": "ios/arm64"
+    }
+  ],
+  "tinygo": [
+    {
+      "command": [
+        "<TINYGO_EXECUTABLE>",
+        "build",
+        "-target",
+        "wasi",
+        "-o",
+        "<M0_TEMP>/tinygo-wasi.wasm",
+        "./tinygo-smoke"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "wasi",
+      "artifact_bytes": 116858
+    },
+    {
+      "command": [
+        "<TINYGO_EXECUTABLE>",
+        "build",
+        "-target",
+        "wasm",
+        "-o",
+        "<M0_TEMP>/tinygo-wasm.wasm",
+        "./tinygo-smoke"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "wasm",
+      "artifact_bytes": 117379
+    },
+    {
+      "command": [
+        "<TINYGO_EXECUTABLE>",
+        "build",
+        "-target",
+        "feather-m4",
+        "-o",
+        "<M0_TEMP>/tinygo-feather-m4.elf",
+        "./tinygo-smoke"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "",
+      "stderr": "",
+      "target": "feather-m4",
+      "artifact_bytes": 395964
+    }
+  ],
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

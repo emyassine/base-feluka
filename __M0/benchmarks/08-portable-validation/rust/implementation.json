@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "language": "rust",
+  "source": "../../01-http-performance/rust",
+  "role": "implementation",
+  "$schema": "../../implementation.schema.json"
+}

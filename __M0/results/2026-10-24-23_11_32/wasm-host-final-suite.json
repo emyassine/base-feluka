@@ -1,0 +1,215 @@
+{
+  "started_utc": "2026-10-24T23:11:32.745197+00:00",
+  "host": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "cpu_affinity": "2",
+  "order": [
+    "go",
+    "rust",
+    "rust",
+    "go",
+    "go",
+    "rust"
+  ],
+  "runs": [
+    {
+      "index": 1,
+      "runtime": "go",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/bin/feluka-m0-wasm-go-host"
+      ],
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 3713.0,
+          "p50": 3902.4,
+          "p95": 5208.9,
+          "p99": 7253.5,
+          "max": 8361.8
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "index": 2,
+      "runtime": "rust",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/wasm/rust-host/target/release/feluka-m0-wasm-rust-host"
+      ],
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 57.4,
+          "p50": 69.0,
+          "p95": 129.5,
+          "p99": 130.8,
+          "max": 131.9
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "index": 3,
+      "runtime": "rust",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/wasm/rust-host/target/release/feluka-m0-wasm-rust-host"
+      ],
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 57.7,
+          "p50": 61.5,
+          "p95": 70.5,
+          "p99": 107.1,
+          "max": 116.7
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "index": 4,
+      "runtime": "go",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/bin/feluka-m0-wasm-go-host"
+      ],
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 3601.2,
+          "p50": 3889.8,
+          "p95": 4624.0,
+          "p99": 5613.5,
+          "max": 6064.2
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "index": 5,
+      "runtime": "go",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/bin/feluka-m0-wasm-go-host"
+      ],
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 3641.4,
+          "p50": 3999.7,
+          "p95": 4854.3,
+          "p99": 5763.5,
+          "max": 6339.4
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "index": 6,
+      "runtime": "rust",
+      "command": [
+        "taskset",
+        "-c",
+        "2",
+        "<M0_ROOT>/wasm/rust-host/target/release/feluka-m0-wasm-rust-host"
+      ],
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 57.7,
+          "p50": 69.4,
+          "p95": 115.8,
+          "p99": 120.3,
+          "max": 121.2
+        }
+      },
+      "stderr": ""
+    }
+  ],
+  "sha256": {
+    "wasm/guest.c": "0b4d7b4c229a8a8529053dff9c3385559541e2577d46c87002d0031bd64c4aa8",
+    "wasm/guest.wasm": "f713fe5cc8878d0b7d27280b11b27857dd4a6994d846600fa5e501dfba784810",
+    "wasm/go-host/main.go": "51731cab3b87aa3b913b97eb66161279f9e57f84b138759447a8a473152f3d9a",
+    "wasm/go-host/go.mod": "14add9503d360bc76c5fe2e5b1e1eb4ccd4d88a47105850caa5a38a203b00b81",
+    "wasm/rust-host/src/main.rs": "b4da0af1af4b0e681634925127ee6029c25e4d634a0d59fd6e07da0062c7ddef",
+    "wasm/rust-host/Cargo.toml": "179cb351a179b4f2b12686cb0200de1bb2726aee12a24db6166d4c9a9e8006f5",
+    "wasm/rust-host/Cargo.lock": "641827ee671139fcd3c24cdcb81d816015fd1679ed385a4a71a5f6410000f470"
+  },
+  "builds": {
+    "go": {
+      "command": [
+        "go",
+        "build",
+        "-trimpath",
+        "-o",
+        "<M0_ROOT>/bin/feluka-m0-wasm-go-host",
+        "."
+      ],
+      "stdout": "",
+      "stderr": "",
+      "binary_sha256": "b0903bbea50eda99dcb202a97b79a8dd12e6ebdf5470db9c4f5303ca485e05e1"
+    },
+    "rust": {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--manifest-path",
+        "<M0_ROOT>/wasm/rust-host/Cargo.toml"
+      ],
+      "stdout": "",
+      "stderr": "    Finished `release` profile [optimized] target(s) in 0.20s\n",
+      "binary_sha256": "5e919b064bc1895a1ac4e1eaab76842275b5d7798b46fa391fc984147daf098c"
+    }
+  },
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "02-memory-footprint",
+  "title": "Memory footprint",
+  "description": "Compare sampled resident memory while each HTTP server handles the same request workload.",
+  "runner": "tools/memory_suite.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "median_rss_kib",
+      "label": "Median Rss Kib"
+    },
+    {
+      "id": "peak_rss_kib",
+      "label": "Peak Rss Kib"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

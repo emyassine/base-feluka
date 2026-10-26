@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feluka.dev/schemas/benchmark-descriptor-v1.json",
+  "title": "Feluka benchmark descriptor",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "description", "languages", "metrics", "result_file"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[0-9]{2}-[a-z0-9-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "runner": {"type": ["string", "null"]},
+    "languages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "metrics": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "label"], "properties": {"id": {"type": "string"}, "label": {"type": "string"}, "unit": {"type": "string"}, "better": {"enum": ["lower", "higher", "neutral"]}}}},
+    "report_format": {"type": "string"},
+    "result_file": {"type": "string"}
+  },
+  "additionalProperties": true
+}

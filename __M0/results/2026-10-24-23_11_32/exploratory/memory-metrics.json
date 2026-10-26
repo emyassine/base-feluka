@@ -1,0 +1,18 @@
+{
+  "method": "Read Linux /proc/PID/status VmRSS every 5ms from startup through warm-up and 10,000 requests at concurrency 8; server pinned CPU2, generator pinned CPUs0,1,3-7. Not a hard peak sampler; transient allocations under 5ms may be missed.",
+  "runtimes": {
+    "go": {
+      "max_rss_kib": 15392,
+      "median_rss_kib": 15392,
+      "samples": 880,
+      "benchmark": "requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]\napp_ms: min=0.1790 avg=0.2600 p50=0.2220 p95=0.3820 p99=0.6500 p99.9=1.5740 max=3.1790\nclient_ms: min=0.5179 avg=2.8990 p50=2.3797 p95=6.4914 p99=10.6378 p99.9=25.4416 max=64.5169\nclient_rps=2730.6 wall_seconds=3.662"
+    },
+    "rust": {
+      "max_rss_kib": 6076,
+      "median_rss_kib": 6072,
+      "samples": 957,
+      "benchmark": "requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]\napp_ms: min=0.2320 avg=1.7100 p50=1.6580 p95=3.2100 p99=3.5930 p99.9=5.6830 max=7.8860\nclient_ms: min=0.6270 avg=3.1877 p50=2.8941 p95=5.0991 p99=9.3282 p99.9=23.5709 max=46.0574\nclient_rps=2482.3 wall_seconds=4.028"
+    }
+  },
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

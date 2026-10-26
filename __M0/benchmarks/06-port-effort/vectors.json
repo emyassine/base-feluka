@@ -1,0 +1,19 @@
+{
+  "records": [
+    {"owner_id": "alice", "status": "active"},
+    {"owner_id": "alice", "status": "draft"},
+    {"owner_id": "bob", "status": "active"}
+  ],
+  "cases": [
+    {"name":"list_owner_filtered","rule":"filter","filter":"@request.auth.id != \"\" && owner_id = @request.auth.id","action":"list","auth_id":"alice","record":null,"allowed":null,"status":200,"list_count":2},
+    {"name":"list_guest_empty","rule":"filter","filter":"@request.auth.id != \"\" && owner_id = @request.auth.id","action":"list","auth_id":null,"record":null,"allowed":null,"status":200,"list_count":0},
+    {"name":"view_owner_active","rule":"filter","filter":"@request.auth.id != \"\" && owner_id = @request.auth.id && status = \"active\"","action":"view","auth_id":"alice","record":{"owner_id":"alice","status":"active"},"allowed":true,"status":200,"list_count":null},
+    {"name":"view_owner_draft_hidden","rule":"filter","filter":"@request.auth.id != \"\" && owner_id = @request.auth.id && status = \"active\"","action":"view","auth_id":"alice","record":{"owner_id":"alice","status":"draft"},"allowed":false,"status":404,"list_count":null},
+    {"name":"view_other_owner_hidden","rule":"filter","filter":"@request.auth.id != \"\" && owner_id = @request.auth.id && status = \"active\"","action":"view","auth_id":"alice","record":{"owner_id":"bob","status":"active"},"allowed":false,"status":404,"list_count":null},
+    {"name":"create_matching_owner","rule":"filter","filter":"@request.auth.id != \"\" && @request.body.owner_id = @request.auth.id","action":"create","auth_id":"alice","body_owner_id":"alice","record":null,"allowed":true,"status":200,"list_count":null},
+    {"name":"create_mismatched_owner","rule":"filter","filter":"@request.auth.id != \"\" && @request.body.owner_id = @request.auth.id","action":"create","auth_id":"alice","body_owner_id":"bob","record":null,"allowed":false,"status":400,"list_count":null},
+    {"name":"delete_locked","rule":"locked","filter":null,"action":"delete","auth_id":"alice","record":{"owner_id":"alice","status":"active"},"allowed":false,"status":403,"list_count":null},
+    {"name":"superuser_list_bypasses_rule","rule":"locked","filter":null,"action":"list","auth_id":null,"superuser":true,"record":null,"allowed":true,"status":200,"list_count":4},
+    {"name":"superuser_delete_bypasses_lock","rule":"locked","filter":null,"action":"delete","auth_id":null,"superuser":true,"record":{"owner_id":"alice","status":"active"},"allowed":true,"status":204,"list_count":null}
+  ]
+}

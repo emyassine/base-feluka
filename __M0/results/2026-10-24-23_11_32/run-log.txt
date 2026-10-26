@@ -1,0 +1,71 @@
+[01] go concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1840 avg=0.2428 p50=0.2240 p95=0.3540 p99=0.4440 p99.9=0.9320 max=4.5530
+client_ms: min=0.4115 avg=0.6298 p50=0.5825 p95=0.8971 p99=1.2394 p99.9=6.3708 max=16.1692
+client_rps=1532.0 wall_seconds=6.527
+
+[02] rust concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1980 avg=0.2960 p50=0.2730 p95=0.4010 p99=0.5040 p99.9=1.4220 max=4.9380
+client_ms: min=0.4238 avg=0.6897 p50=0.6274 p95=0.9566 p99=1.3894 p99.9=7.1959 max=16.2397
+client_rps=1403.3 wall_seconds=7.126
+
+[03] rust concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.2030 avg=0.3090 p50=0.2790 p95=0.4310 p99=0.5450 p99.9=2.2990 max=5.1530
+client_ms: min=0.4207 avg=0.7314 p50=0.6842 p95=0.9966 p99=1.6630 p99.9=7.6514 max=12.2051
+client_rps=1323.3 wall_seconds=7.557
+
+[04] go concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1720 avg=0.2362 p50=0.2110 p95=0.3560 p99=0.4700 p99.9=1.4770 max=6.0420
+client_ms: min=0.4006 avg=0.6207 p50=0.5679 p95=0.8745 p99=1.4445 p99.9=7.7811 max=11.8926
+client_rps=1552.7 wall_seconds=6.440
+
+[05] go concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1800 avg=0.2276 p50=0.2100 p95=0.3210 p99=0.4420 p99.9=0.8390 max=4.3850
+client_ms: min=0.4013 avg=0.5995 p50=0.5608 p95=0.8431 p99=1.2704 p99.9=7.4119 max=17.6176
+client_rps=1607.2 wall_seconds=6.222
+
+[06] rust concurrency=1
+requests=10000 concurrency=1 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.2000 avg=0.2995 p50=0.2780 p95=0.4080 p99=0.5190 p99.9=3.0440 max=6.2050
+client_ms: min=0.4257 avg=0.7021 p50=0.6332 p95=0.9651 p99=1.5903 p99.9=9.1587 max=15.9589
+client_rps=1377.5 wall_seconds=7.260
+
+[07] rust concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.2150 avg=1.6521 p50=1.7080 p95=2.4710 p99=3.1690 p99.9=3.4510 max=3.6390
+client_ms: min=0.5718 avg=2.7918 p50=2.5552 p95=4.0999 p99=8.0771 p99.9=25.5912 max=35.8615
+client_rps=2833.0 wall_seconds=3.530
+
+[08] go concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1750 avg=0.2335 p50=0.2050 p95=0.3520 p99=0.5380 p99.9=1.5390 max=4.5360
+client_ms: min=0.4765 avg=2.5449 p50=2.0872 p95=5.6328 p99=9.9971 p99.9=24.8152 max=41.0959
+client_rps=3109.0 wall_seconds=3.216
+
+[09] go concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1720 avg=0.2489 p50=0.2120 p95=0.3660 p99=0.7230 p99.9=2.3640 max=4.4100
+client_ms: min=0.4703 avg=2.6674 p50=2.1680 p95=6.0806 p99=11.2875 p99.9=21.1640 max=37.4108
+client_rps=2969.6 wall_seconds=3.367
+
+[10] rust concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.2290 avg=1.6372 p50=1.6420 p95=2.4660 p99=3.1690 p99.9=8.4080 max=13.2550
+client_ms: min=0.5842 avg=2.8209 p50=2.5324 p95=4.2819 p99=9.6163 p99.9=25.1407 max=40.9173
+client_rps=2805.0 wall_seconds=3.565
+
+[11] rust concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.2320 avg=1.6842 p50=1.7430 p95=2.3870 p99=2.8950 p99.9=3.6060 max=4.9050
+client_ms: min=0.5866 avg=2.7401 p50=2.5414 p95=3.7840 p99=6.9801 p99.9=21.5707 max=38.9930
+client_rps=2888.5 wall_seconds=3.462
+
+[12] go concurrency=8
+requests=10000 concurrency=8 status_counts={200: 10000} body_bytes=[1459]
+app_ms: min=0.1760 avg=0.2346 p50=0.2040 p95=0.3540 p99=0.5980 p99.9=1.4240 max=2.6080
+client_ms: min=0.4268 avg=2.5228 p50=2.0620 p95=5.5348 p99=9.9804 p99.9=23.9481 max=45.9219
+client_rps=3141.2 wall_seconds=3.183

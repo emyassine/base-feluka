@@ -1,0 +1,349 @@
+{
+  "started_utc": "2026-10-24T23:14:03.425126+00:00",
+  "host": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "repetitions": 3,
+  "method": "Each clean build uses an isolated empty compiler/project cache; source-package caches remain available. Edit builds append and remove a unique comment in the actual main source file, preserving exact original bytes afterward. Build order alternates by repetition and binaries are stripped release artifacts.",
+  "go": [
+    {
+      "repetition": 1,
+      "clean": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-1",
+          "."
+        ],
+        "elapsed_ms": 23456.570279959124,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "binary_sha256": "77b16cc5122dd295d02d079840d1f51b23a19de705e86d643516f510d9675877"
+      },
+      "noop": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-1",
+          "."
+        ],
+        "elapsed_ms": 306.83440499706194,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "edit_rebuild": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-edit",
+          "."
+        ],
+        "elapsed_ms": 1359.9696719902568,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "cache_warmup_ms": 22266.964160022326
+      }
+    },
+    {
+      "repetition": 2,
+      "clean": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-2",
+          "."
+        ],
+        "elapsed_ms": 26665.93802999705,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "binary_sha256": "77b16cc5122dd295d02d079840d1f51b23a19de705e86d643516f510d9675877"
+      },
+      "noop": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-2",
+          "."
+        ],
+        "elapsed_ms": 300.0652579939924,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "edit_rebuild": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-edit",
+          "."
+        ],
+        "elapsed_ms": 1273.3792759827338,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "cache_warmup_ms": 22266.964160022326
+      }
+    },
+    {
+      "repetition": 3,
+      "clean": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-3",
+          "."
+        ],
+        "elapsed_ms": 25903.66453200113,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "binary_sha256": "77b16cc5122dd295d02d079840d1f51b23a19de705e86d643516f510d9675877"
+      },
+      "noop": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-clean-3",
+          "."
+        ],
+        "elapsed_ms": 317.1046269708313,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "edit_rebuild": {
+        "command": [
+          "go",
+          "build",
+          "-tags",
+          "libsqlite3",
+          "-trimpath",
+          "-ldflags",
+          "-s -w",
+          "-o",
+          "<M0_TEMP>/feluka-go-edit",
+          "."
+        ],
+        "elapsed_ms": 1182.2509960038587,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "binary_bytes": 6307360,
+        "cache_warmup_ms": 22266.964160022326
+      }
+    }
+  ],
+  "rust": [
+    {
+      "repetition": 1,
+      "clean": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 55150.30045097228,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "0.3.34\n   Compiling log v0.4.34\n   Compiling percent-encoding v2.3.2\n   Compiling parking_lot_core v0.9.12\n   Compiling futures-util v0.3.34\n   Compiling form_urlencoded v1.2.2\n   Compiling http v1.5.0\n   Compiling shlex v2.0.1\n   Compiling autocfg v1.5.1\n   Compiling find-msvc-tools v0.1.15\n   Compiling crossbeam-utils v0.8.23\n   Compiling equivalent v1.0.3\n   Compiling cc v1.10.0\n   Compiling num-traits v0.2.19\n   Compiling block-buffer v0.10.4\n   Compiling crypto-common v0.1.7\n   Compiling allocator-api2 v0.2.21\n   Compiling pkg-config v0.3.34\n   Compiling http-body v1.1.0\n   Compiling foldhash v0.1.5\n   Compiling vcpkg v0.2.15\n   Compiling httparse v1.10.1\n   Compiling thiserror v2.0.21\n   Compiling hashbrown v0.15.5\n   Compiling digest v0.10.7\n   Compiling parking_lot v0.12.5\n   Compiling synstructure v0.14.0\n   Compiling libsqlite3-sys v0.30.1\n   Compiling cpufeatures v0.2.17\n   Compiling tower-service v0.3.3\n   Compiling zmij v1.0.23\n   Compiling ryu v1.0.23\n   Compiling parking v2.2.1\n   Compiling hashbrown v0.17.1\n   Compiling crc-catalog v2.5.0\n   Compiling event-listener v5.4.2\n   Compiling crc v3.4.0\n   Compiling sha2 v0.10.9\n   Compiling crossbeam-queue v0.3.14\n   Compiling futures-intrusive v0.5.0\n   Compiling hashlink v0.10.0\n   Compiling spin v0.9.9\n   Compiling indexmap v2.14.2\n   Compiling tracing-attributes v0.1.31\n   Compiling serde_json v1.0.154\n   Compiling sync_wrapper v1.0.2\n   Compiling base64 v0.22.1\n   Compiling tower-layer v0.3.3\n   Compiling httpdate v1.0.3\n   Compiling atomic-waker v1.1.2\n   Compiling atoi v2.0.0\n   Compiling flume v0.11.1\n   Compiling zerofrom-derive v0.1.8\n   Compiling yoke-derive v0.8.4\n   Compiling zerovec-derive v0.11.7\n   Compiling displaydoc v0.2.7\n   Compiling tokio-macros v2.7.2\n   Compiling serde_derive v1.0.229\n   Compiling tracing v0.1.44\n   Compiling thiserror-impl v2.0.21\n   Compiling tokio v1.54.1\n   Compiling futures-executor v0.3.34\n   Compiling http-body-util v0.1.5\n   Compiling futures-channel v0.3.34\n   Compiling mime v0.3.17\n   Compiling zerofrom v0.1.8\n   Compiling yoke v0.8.4\n   Compiling axum-core v0.5.6\n   Compiling zerovec v0.11.9\n   Compiling zerotrie v0.2.5\n   Compiling serde_path_to_error v0.1.20\n   Compiling matchit v0.8.4\n   Compiling tinystr v0.8.5\n   Compiling potential_utf v0.1.6\n   Compiling icu_collections v2.4.0\n   Compiling icu_locale_core v2.4.0\n   Compiling icu_provider v2.4.0\n   Compiling serde_urlencoded v0.7.1\n   Compiling either v1.19.0\n   Compiling icu_normalizer v2.4.0\n   Compiling icu_properties v2.4.0\n   Compiling idna_adapter v1.2.2\n   Compiling idna v1.1.0\n   Compiling url v2.5.8\n   Compiling tokio-stream v0.1.19\n   Compiling hyper v1.12.0\n   Compiling tower v0.5.3\n   Compiling sqlx-core v0.8.6\n   Compiling hyper-util v0.1.21\n   Compiling axum v0.8.9\n   Compiling sqlx-sqlite v0.8.6\n   Compiling sqlx v0.8.6\n   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 55.10s\n",
+        "binary_bytes": 2161944,
+        "binary_sha256": "d89afcfb0282a741c38c35fb8a2f771e5917f3a8751b79a3357535f4e2ff9df4"
+      },
+      "noop": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 181.24803301179782,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "    Finished `release` profile [optimized] target(s) in 0.15s\n"
+      },
+      "edit_rebuild": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 8163.680656987708,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 8.12s\n",
+        "binary_bytes": 2161944,
+        "cache_warmup_ms": 58813.77733696718
+      }
+    },
+    {
+      "repetition": 2,
+      "clean": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 59564.66582999565,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "ng futures-io v0.3.34\n   Compiling slab v0.4.12\n   Compiling futures-task v0.3.34\n   Compiling log v0.4.34\n   Compiling futures-util v0.3.34\n   Compiling form_urlencoded v1.2.2\n   Compiling http v1.5.0\n   Compiling shlex v2.0.1\n   Compiling autocfg v1.5.1\n   Compiling find-msvc-tools v0.1.15\n   Compiling crossbeam-utils v0.8.23\n   Compiling equivalent v1.0.3\n   Compiling cc v1.10.0\n   Compiling num-traits v0.2.19\n   Compiling block-buffer v0.10.4\n   Compiling crypto-common v0.1.7\n   Compiling thiserror v2.0.21\n   Compiling allocator-api2 v0.2.21\n   Compiling pkg-config v0.3.34\n   Compiling http-body v1.1.0\n   Compiling foldhash v0.1.5\n   Compiling vcpkg v0.2.15\n   Compiling httparse v1.10.1\n   Compiling hashbrown v0.15.5\n   Compiling digest v0.10.7\n   Compiling parking_lot v0.12.5\n   Compiling cpufeatures v0.2.17\n   Compiling tower-service v0.3.3\n   Compiling zmij v1.0.23\n   Compiling synstructure v0.14.0\n   Compiling libsqlite3-sys v0.30.1\n   Compiling ryu v1.0.23\n   Compiling parking v2.2.1\n   Compiling hashbrown v0.17.1\n   Compiling crc-catalog v2.5.0\n   Compiling event-listener v5.4.2\n   Compiling crc v3.4.0\n   Compiling crossbeam-queue v0.3.14\n   Compiling sha2 v0.10.9\n   Compiling hashlink v0.10.0\n   Compiling futures-intrusive v0.5.0\n   Compiling spin v0.9.9\n   Compiling httpdate v1.0.3\n   Compiling indexmap v2.14.2\n   Compiling atomic-waker v1.1.2\n   Compiling sync_wrapper v1.0.2\n   Compiling base64 v0.22.1\n   Compiling serde_json v1.0.154\n   Compiling tower-layer v0.3.3\n   Compiling atoi v2.0.0\n   Compiling flume v0.11.1\n   Compiling tracing-attributes v0.1.31\n   Compiling futures-executor v0.3.34\n   Compiling http-body-util v0.1.5\n   Compiling futures-channel v0.3.34\n   Compiling zerofrom-derive v0.1.8\n   Compiling yoke-derive v0.8.4\n   Compiling zerovec-derive v0.11.7\n   Compiling displaydoc v0.2.7\n   Compiling tokio-macros v2.7.2\n   Compiling serde_derive v1.0.229\n   Compiling tokio v1.54.1\n   Compiling thiserror-impl v2.0.21\n   Compiling mime v0.3.17\n   Compiling tracing v0.1.44\n   Compiling axum-core v0.5.6\n   Compiling zerofrom v0.1.8\n   Compiling serde_path_to_error v0.1.20\n   Compiling matchit v0.8.4\n   Compiling yoke v0.8.4\n   Compiling zerovec v0.11.9\n   Compiling zerotrie v0.2.5\n   Compiling tinystr v0.8.5\n   Compiling potential_utf v0.1.6\n   Compiling icu_locale_core v2.4.0\n   Compiling icu_collections v2.4.0\n   Compiling serde_urlencoded v0.7.1\n   Compiling icu_provider v2.4.0\n   Compiling either v1.19.0\n   Compiling icu_normalizer v2.4.0\n   Compiling icu_properties v2.4.0\n   Compiling idna_adapter v1.2.2\n   Compiling idna v1.1.0\n   Compiling url v2.5.8\n   Compiling tokio-stream v0.1.19\n   Compiling hyper v1.12.0\n   Compiling tower v0.5.3\n   Compiling sqlx-core v0.8.6\n   Compiling hyper-util v0.1.21\n   Compiling axum v0.8.9\n   Compiling sqlx-sqlite v0.8.6\n   Compiling sqlx v0.8.6\n   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 59.52s\n",
+        "binary_bytes": 2161944,
+        "binary_sha256": "d89afcfb0282a741c38c35fb8a2f771e5917f3a8751b79a3357535f4e2ff9df4"
+      },
+      "noop": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 170.3836410306394,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "    Finished `release` profile [optimized] target(s) in 0.13s\n"
+      },
+      "edit_rebuild": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 6885.784131009132,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 6.84s\n",
+        "binary_bytes": 2161944,
+        "cache_warmup_ms": 58813.77733696718
+      }
+    },
+    {
+      "repetition": 3,
+      "clean": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 65294.47108699242,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "ab v0.4.12\n   Compiling futures-task v0.3.34\n   Compiling log v0.4.34\n   Compiling percent-encoding v2.3.2\n   Compiling futures-util v0.3.34\n   Compiling form_urlencoded v1.2.2\n   Compiling http v1.5.0\n   Compiling shlex v2.0.1\n   Compiling autocfg v1.5.1\n   Compiling find-msvc-tools v0.1.15\n   Compiling crossbeam-utils v0.8.23\n   Compiling equivalent v1.0.3\n   Compiling cc v1.10.0\n   Compiling num-traits v0.2.19\n   Compiling block-buffer v0.10.4\n   Compiling crypto-common v0.1.7\n   Compiling thiserror v2.0.21\n   Compiling allocator-api2 v0.2.21\n   Compiling pkg-config v0.3.34\n   Compiling http-body v1.1.0\n   Compiling foldhash v0.1.5\n   Compiling vcpkg v0.2.15\n   Compiling httparse v1.10.1\n   Compiling hashbrown v0.15.5\n   Compiling digest v0.10.7\n   Compiling parking_lot v0.12.5\n   Compiling cpufeatures v0.2.17\n   Compiling tower-service v0.3.3\n   Compiling zmij v1.0.23\n   Compiling libsqlite3-sys v0.30.1\n   Compiling synstructure v0.14.0\n   Compiling ryu v1.0.23\n   Compiling parking v2.2.1\n   Compiling hashbrown v0.17.1\n   Compiling crc-catalog v2.5.0\n   Compiling crc v3.4.0\n   Compiling event-listener v5.4.2\n   Compiling crossbeam-queue v0.3.14\n   Compiling sha2 v0.10.9\n   Compiling hashlink v0.10.0\n   Compiling futures-intrusive v0.5.0\n   Compiling indexmap v2.14.2\n   Compiling spin v0.9.9\n   Compiling tracing-attributes v0.1.31\n   Compiling httpdate v1.0.3\n   Compiling atomic-waker v1.1.2\n   Compiling sync_wrapper v1.0.2\n   Compiling base64 v0.22.1\n   Compiling serde_json v1.0.154\n   Compiling tower-layer v0.3.3\n   Compiling atoi v2.0.0\n   Compiling flume v0.11.1\n   Compiling futures-executor v0.3.34\n   Compiling http-body-util v0.1.5\n   Compiling futures-channel v0.3.34\n   Compiling zerofrom-derive v0.1.8\n   Compiling yoke-derive v0.8.4\n   Compiling zerovec-derive v0.11.7\n   Compiling displaydoc v0.2.7\n   Compiling tokio-macros v2.7.2\n   Compiling serde_derive v1.0.229\n   Compiling tracing v0.1.44\n   Compiling tokio v1.54.1\n   Compiling thiserror-impl v2.0.21\n   Compiling mime v0.3.17\n   Compiling axum-core v0.5.6\n   Compiling serde_path_to_error v0.1.20\n   Compiling zerofrom v0.1.8\n   Compiling yoke v0.8.4\n   Compiling zerovec v0.11.9\n   Compiling zerotrie v0.2.5\n   Compiling matchit v0.8.4\n   Compiling tinystr v0.8.5\n   Compiling potential_utf v0.1.6\n   Compiling icu_collections v2.4.0\n   Compiling icu_locale_core v2.4.0\n   Compiling icu_provider v2.4.0\n   Compiling icu_normalizer v2.4.0\n   Compiling icu_properties v2.4.0\n   Compiling serde_urlencoded v0.7.1\n   Compiling either v1.19.0\n   Compiling idna_adapter v1.2.2\n   Compiling idna v1.1.0\n   Compiling url v2.5.8\n   Compiling tokio-stream v0.1.19\n   Compiling hyper v1.12.0\n   Compiling tower v0.5.3\n   Compiling sqlx-core v0.8.6\n   Compiling hyper-util v0.1.21\n   Compiling axum v0.8.9\n   Compiling sqlx-sqlite v0.8.6\n   Compiling sqlx v0.8.6\n   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 1m 05s\n",
+        "binary_bytes": 2161944,
+        "binary_sha256": "d89afcfb0282a741c38c35fb8a2f771e5917f3a8751b79a3357535f4e2ff9df4"
+      },
+      "noop": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 223.5986100276932,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "    Finished `release` profile [optimized] target(s) in 0.18s\n"
+      },
+      "edit_rebuild": {
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "<M0_ROOT>/rust/Cargo.toml"
+        ],
+        "elapsed_ms": 9244.922156969551,
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "   Compiling feluka-m0-rust v0.1.0 (<M0_ROOT>/rust)\n    Finished `release` profile [optimized] target(s) in 9.20s\n",
+        "binary_bytes": 2161944,
+        "cache_warmup_ms": 58813.77733696718
+      }
+    }
+  ],
+  "source_sha256_after": {
+    "go/main.go": "9698ef0be1dcca69c75f87eda1763804a4cfbe77e3109a98b1ea2afc487f2dd4",
+    "rust/src/main.rs": "6ca38f2f90f10cfd52a219781f4e64a68b556296b42517c12f1db40046ec55d8"
+  },
+  "expected_source_sha256": {
+    "go/main.go": "9698ef0be1dcca69c75f87eda1763804a4cfbe77e3109a98b1ea2afc487f2dd4",
+    "rust/src/main.rs": "6ca38f2f90f10cfd52a219781f4e64a68b556296b42517c12f1db40046ec55d8"
+  },
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

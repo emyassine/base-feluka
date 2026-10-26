@@ -1,0 +1,56 @@
+{
+  "started_utc": "2026-10-24T23:26:23.106295+00:00",
+  "pocketbase_binary": "<M0_TEMP>/pocketbase",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "<M0_ROOT>/pocketbase/capture_reference.py",
+        "<M0_TEMP>/pocketbase"
+      ],
+      "cwd": "<M0_ROOT>",
+      "exit_code": 0,
+      "stdout": "<M0_ROOT>/results/pocketbase-reference.json\n[\n  {\n    \"name\": \"list_owner_filtered\",\n    \"status\": 200,\n    \"items\": 2,\n    \"body_error\": null\n  },\n  {\n    \"name\": \"list_guest_empty\",\n    \"status\": 200,\n    \"items\": 0,\n    \"body_error\": null\n  },\n  {\n    \"name\": \"view_owner_active\",\n    \"status\": 200,\n    \"items\": null,\n    \"body_error\": null\n  },\n  {\n    \"name\": \"view_owner_draft_hidden\",\n    \"status\": 404,\n    \"items\": null,\n    \"body_error\": \"The requested resource wasn't found.\"\n  },\n  {\n    \"name\": \"view_other_owner_hidden\",\n    \"status\": 404,\n    \"items\": null,\n    \"body_error\": \"The requested resource wasn't found.\"\n  },\n  {\n    \"name\": \"create_matching_owner\",\n    \"status\": 200,\n    \"items\": null,\n    \"body_error\": null\n  },\n  {\n    \"name\": \"create_mismatched_owner\",\n    \"status\": 400,\n    \"items\": null,\n    \"body_error\": \"Failed to create record.\"\n  },\n  {\n    \"name\": \"delete_locked\",\n    \"status\": 403,\n    \"items\": null,\n    \"body_error\": \"Only superusers can perform this action.\"\n  },\n  {\n    \"name\": \"superuser_list_bypasses_rule\",\n    \"status\": 200,\n    \"items\": 4,\n    \"body_error\": null\n  },\n  {\n    \"name\": \"superuser_delete_bypasses_lock\",\n    \"status\": 204,\n    \"items\": null,\n    \"body_error\": null\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "rust/pocketbase-port/Cargo.toml"
+      ],
+      "cwd": "<M0_ROOT>",
+      "exit_code": 0,
+      "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 7 tests\ntest parser_handles_precedence_and_parentheses ... ok\ntest sql_lowering_preserves_missing_request_value_comparisons ... ok\ntest pocketbase_v0406_black_box_vectors ... ok\ntest sql_lowering_rejects_unknown_identifiers_and_trailing_tokens ... ok\ntest supported_filters_lower_to_parameterized_sql ... ok\ntest differential_against_captured_pocketbase_rest_responses ... ok\ntest lowered_list_rules_match_the_in_memory_evaluator_on_sqlite ... ok\n\ntest result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "   Compiling feluka-pocketbase-rules-spike v0.1.0 (<M0_ROOT>/rust/pocketbase-port)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.63s\n     Running unittests src/lib.rs (rust/pocketbase-port/target/debug/deps/feluka_pocketbase_rules_spike-193b247cdbd77d1b)\n     Running tests/reference_vectors.rs (rust/pocketbase-port/target/debug/deps/reference_vectors-746fd9de04e4aced)\n   Doc-tests feluka_pocketbase_rules_spike\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "port-effort/rust/Cargo.toml"
+      ],
+      "cwd": "<M0_ROOT>",
+      "exit_code": 0,
+      "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\ntest pocketbase_rest_cases ... ok\ntest precedence_parentheses_and_malformed_filters_fail_closed ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "   Compiling feluka-m0-rules-effort-rust v0.1.0 (<M0_ROOT>/port-effort/rust)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.36s\n     Running unittests src/lib.rs (port-effort/rust/target/debug/deps/feluka_m0_rules_effort_rust-0abbb61c2b8e3968)\n     Running tests/conformance.rs (port-effort/rust/target/debug/deps/conformance-2528f0d56fce80e4)\n   Doc-tests feluka_m0_rules_effort_rust\n"
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "./..."
+      ],
+      "cwd": "<M0_ROOT>/port-effort/go",
+      "exit_code": 0,
+      "stdout": "ok  \tfeluka-m0-rules-effort-go\t(cached)\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

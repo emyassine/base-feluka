@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feluka.dev/schemas/benchmark-implementation-v1.json",
+  "title": "Feluka benchmark implementation manifest",
+  "type": "object",
+  "required": ["schema_version", "language", "source", "role"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "language": {"type": "string"},
+    "source": {"type": "string", "description": "Path relative to this implementation.json file; may identify a file or directory."},
+    "role": {"enum": ["implementation", "oracle", "additional-target"]},
+    "build": {"type": "array", "items": {"type": "string"}},
+    "run": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

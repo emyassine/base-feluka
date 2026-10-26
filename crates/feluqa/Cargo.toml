@@ -1,0 +1,11 @@
+[package]
+name = "feluqa"
+version = "0.1.0"
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-console = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console" }
+feluqa-view = { version = "0.1.0", registry = "feluqa", path = "../feluqa-view" }

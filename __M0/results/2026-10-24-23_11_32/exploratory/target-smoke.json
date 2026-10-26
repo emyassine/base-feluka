@@ -1,0 +1,86 @@
+{
+  "rust": {
+    "wasm32-unknown-unknown": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "wasm32-wasip1": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "aarch64-unknown-none": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "thumbv7em-none-eabi": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "x86_64-pc-windows-gnu": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "aarch64-linux-android": {
+      "ok": true,
+      "exit_code": 0,
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\n"
+    },
+    "aarch64-apple-darwin": {
+      "ok": true,
+      "exit_code": 0,
+      "mode": "type-check only; Apple SDK/linker unavailable",
+      "output": "    Checking feluka-kernel-smoke v0.1.0 (<M0_ROOT>/rust/kernel)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s\n"
+    },
+    "x86_64-apple-darwin": {
+      "ok": true,
+      "exit_code": 0,
+      "mode": "type-check only; Apple SDK/linker unavailable",
+      "output": "    Checking feluka-kernel-smoke v0.1.0 (<M0_ROOT>/rust/kernel)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s\n"
+    },
+    "aarch64-apple-ios": {
+      "ok": true,
+      "exit_code": 0,
+      "mode": "type-check only; Apple SDK/linker unavailable",
+      "output": "    Checking feluka-kernel-smoke v0.1.0 (<M0_ROOT>/rust/kernel)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s\n"
+    },
+    "aarch64-apple-ios-sim": {
+      "ok": true,
+      "exit_code": 0,
+      "mode": "type-check only; Apple SDK/linker unavailable",
+      "output": "    Checking feluka-kernel-smoke v0.1.0 (<M0_ROOT>/rust/kernel)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s\n"
+    }
+  },
+  "go": {
+    "linux/arm64": {
+      "ok": true,
+      "exit_code": 0,
+      "binary_bytes": 4448823,
+      "output": ""
+    },
+    "windows/amd64": {
+      "ok": true,
+      "exit_code": 0,
+      "binary_bytes": 4704256,
+      "output": ""
+    },
+    "android/arm64": {
+      "ok": true,
+      "exit_code": 0,
+      "binary_bytes": 4835169,
+      "output": ""
+    },
+    "js/wasm": {
+      "ok": true,
+      "exit_code": 0,
+      "binary_bytes": 5335247,
+      "output": ""
+    }
+  },
+  "host_toolchain_note": "No Apple SDK/Xcode installed. Apple results are Rust core cross-checks only, not final binaries or execution. Game framework/runtime integration not tested.",
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

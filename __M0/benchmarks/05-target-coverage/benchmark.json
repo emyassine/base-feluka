@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "05-target-coverage",
+  "title": "Target coverage",
+  "description": "Compile the shared kernel for the declared server, desktop, mobile, web, and embedded target matrix.",
+  "runner": "tools/target_suite.py",
+  "languages": [
+    "go",
+    "rust",
+    "tinygo"
+  ],
+  "metrics": [
+    {
+      "id": "targets_passed",
+      "label": "Targets Passed"
+    },
+    {
+      "id": "targets_total",
+      "label": "Targets Total"
+    },
+    {
+      "id": "target_success_percent",
+      "label": "Target Success Percent"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

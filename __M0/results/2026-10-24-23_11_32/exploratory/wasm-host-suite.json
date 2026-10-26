@@ -1,0 +1,141 @@
+{
+  "date": "2026-10-24",
+  "order": [
+    "go",
+    "rust",
+    "rust",
+    "go",
+    "go",
+    "rust"
+  ],
+  "runs": [
+    {
+      "runtime": "go",
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 3942.2,
+          "p50": 4753.2,
+          "p95": 7123.0,
+          "p99": 7501.7,
+          "max": 7576.6
+        }
+      }
+    },
+    {
+      "runtime": "rust",
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 60.3,
+          "p50": 102.1,
+          "p95": 119.6,
+          "p99": 121.4,
+          "max": 135.6
+        }
+      }
+    },
+    {
+      "runtime": "rust",
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 57.1,
+          "p50": 89.0,
+          "p95": 119.2,
+          "p99": 121.3,
+          "max": 126.8
+        }
+      }
+    },
+    {
+      "runtime": "go",
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 3860.6,
+          "p50": 4611.8,
+          "p95": 7272.3,
+          "p99": 7515.2,
+          "max": 7549.5
+        }
+      }
+    },
+    {
+      "runtime": "go",
+      "result": {
+        "runtime": "go1.27.1",
+        "wazero": "v1.9.0",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 4053.4,
+          "p50": 4465.5,
+          "p95": 7197.9,
+          "p99": 7381.6,
+          "max": 7415.2
+        }
+      }
+    },
+    {
+      "runtime": "rust",
+      "result": {
+        "runtime": "rustc 1.99.0",
+        "wasmtime": "38.0.4",
+        "pool_size": 8,
+        "warmup_calls": 100000,
+        "measured_calls": 1000000,
+        "host_callback_per_call": true,
+        "checksum": 1000000,
+        "ns_per_call": {
+          "min": 59.2,
+          "p50": 67.0,
+          "p95": 133.5,
+          "p99": 139.6,
+          "max": 139.6
+        }
+      }
+    }
+  ],
+  "sha256": {
+    "wasm/guest.c": "0b4d7b4c229a8a8529053dff9c3385559541e2577d46c87002d0031bd64c4aa8",
+    "wasm/guest.wasm": "f713fe5cc8878d0b7d27280b11b27857dd4a6994d846600fa5e501dfba784810",
+    "wasm/host-bench.mjs": "8009cb0007d660e56340213d4810376ae6a8429abffeee2b966d9adb3e035e69",
+    "wasm/go-host/main.go": "51731cab3b87aa3b913b97eb66161279f9e57f84b138759447a8a473152f3d9a",
+    "wasm/go-host/go.mod": "14add9503d360bc76c5fe2e5b1e1eb4ccd4d88a47105850caa5a38a203b00b81",
+    "wasm/go-host/go.sum": "c6919cec77cbf13916932f91cdc9b9d32d9290282c5d87244af7adc1a30d441a",
+    "wasm/rust-host/src/main.rs": "b4da0af1af4b0e681634925127ee6029c25e4d634a0d59fd6e07da0062c7ddef",
+    "wasm/rust-host/Cargo.toml": "179cb351a179b4f2b12686cb0200de1bb2726aee12a24db6166d4c9a9e8006f5",
+    "wasm/rust-host/Cargo.lock": "641827ee671139fcd3c24cdcb81d816015fd1679ed385a4a71a5f6410000f470",
+    "bin/feluka-m0-wasm-go-host": "b0903bbea50eda99dcb202a97b79a8dd12e6ebdf5470db9c4f5303ca485e05e1",
+    "wasm/rust-host/target/release/feluka-m0-wasm-rust-host": "5e919b064bc1895a1ac4e1eaab76842275b5d7798b46fa391fc984147daf098c"
+  },
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

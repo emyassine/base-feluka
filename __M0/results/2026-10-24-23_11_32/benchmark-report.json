@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "benchmark_id": "09-language-decision",
+  "title": "M0 language decision",
+  "status": "passed",
+  "summary": "This report applies the decision rule registered before benchmarking. Hard gates determine eligibility; weighted scores rank eligible candidates.",
+  "decision": {
+    "title": "Decision: Rust",
+    "tone": "success",
+    "detail": "Rust is selected by the locked M0 rule: it passes the required target and black-box parity gates and scores 84.09/100 versus Go at 67.21/100, a 16.88-point lead. Go is faster in this HTTP workload and in clean builds. The result applies to the tested Feluka scope and does not certify a complete production application."
+  },
+  "summary_cards": [
+    {
+      "label": "Selected language",
+      "value": "Rust",
+      "note": "locked M0 decision rule"
+    },
+    {
+      "label": "Rust score",
+      "value": "84.09 / 100",
+      "note": "weighted total"
+    },
+    {
+      "label": "Go score",
+      "value": "67.21 / 100",
+      "note": "weighted total"
+    },
+    {
+      "label": "Hard gates",
+      "value": "6 / 6",
+      "note": "all required gates must pass"
+    }
+  ],
+  "sections": [
+    {
+      "title": "Weighted score",
+      "type": "comparison",
+      "description": "Each category score is multiplied by its registered weight, then added to produce the final score out of 100.",
+      "metrics": [
+        {
+          "label": "Overall",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 84.09082045715911,
+            "Go": 67.21264432071314
+          },
+          "explanation": "Weighted total = sum(category score × category weight). The weights were fixed before the final measurement runs; see the score-by-criterion section for each measured input and calculation."
+        }
+      ]
+    },
+    {
+      "title": "Score by criterion",
+      "type": "comparison",
+      "description": "Each row shows a category score out of 100 and its separate weight in the final score. Hover or focus a category name for the measured inputs and exact scoring rule. These scores do not override a failed hard gate.",
+      "metrics": [
+        {
+          "label": "Target coverage",
+          "weight": 20,
+          "weight_explanation": "Why 20%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 20 of the total 100 points. Its contribution is category score × 20 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 100.0,
+            "Go": 100.0
+          },
+          "explanation": "Score = required target classes passed ÷ 5 × 100. Each class counts equally; this is coverage, not a speed score.\nRust: 5/5 classes passed (server linux x86 64, browser wasm, desktop, mobile android, no std bare metal).\nGo: 5/5 classes passed (server linux x86 64, browser wasm, desktop, mobile android, tinygo mcu).\nWeight in final score: 20%."
+        },
+        {
+          "label": "Porting effort and copyability",
+          "weight": 20,
+          "weight_explanation": "Why 20%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 20 of the total 100 points. Its contribution is category score × 20 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 100.0,
+            "Go": 58.14814814814815
+          },
+          "explanation": "Score is the unweighted mean of four subscores: paired elapsed-time estimate, source lines, edit/test iterations to first green, and unexpected failing test runs. For the last three, fewer is better and the score is 100 × best observed value ÷ candidate value. Both languages receive 100 for elapsed time because they were implemented in one paired task and cannot be timed separately.\nRust: 223 source lines (subscore 100.00), 1 iteration(s) (subscore 100.00), 0 unexpected failing run(s) (subscore 100.00); mean = 100.00/100.\nGo: 270 source lines (subscore 82.59), 2 iteration(s) (subscore 50.00), 1 unexpected failing run(s) (subscore 0.00); mean = 58.15/100.\nWeight in final score: 20%."
+        },
+        {
+          "label": "Missing-value and error safety",
+          "weight": 15,
+          "weight_explanation": "Why 15%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 15 of the total 100 points. Its contribution is category score × 15 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 60.0,
+            "Go": 60.0
+          },
+          "explanation": "Score = properties passed ÷ 5 × 100. The five checks cover explicit missing-value handling, whether the compiler forces that handling, explicit parser errors, whether the compiler forces error handling, and fail-closed behavior for invalid rules.\nBoth languages pass 3/5: they represent missing values and parser errors explicitly and reject malformed/unknown rules, but neither compiler forces callers to handle missing values or parser errors. That is 3 ÷ 5 × 100 = 60/100 for each.\nWeight in final score: 15%."
+        },
+        {
+          "label": "HTTP latency",
+          "weight": 15,
+          "weight_explanation": "Why 15%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 15 of the total 100 points. Its contribution is category score × 15 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 80.91,
+            "Go": 85.01
+          },
+          "explanation": "Score (0–100; higher is better). This uses median server processing time from three runs at concurrency 1, not browser/client request time.\nFormula: 50 × max(0, 1 − p50 / 1 ms) + 50 × max(0, 1 − p99 / 5 ms).\nRust: p50 0.278 ms and p99 0.519 ms → 50 × 0.7220 + 50 × 0.8962 = 36.10 + 44.81 = 80.91/100.\nGo: p50 0.211 ms and p99 0.444 ms → 50 × 0.7890 + 50 × 0.9112 = 39.45 + 45.56 = 85.01/100.\nGo scores higher on this criterion. Weighted contribution: Rust 12.14 points; Go 12.75 points. Weight in final score: 15%."
+        },
+        {
+          "label": "Build loop",
+          "weight": 10,
+          "weight_explanation": "Why 10%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 10 of the total 100 points. Its contribution is category score × 10 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 29.54320457159117,
+            "Go": 100.0
+          },
+          "explanation": "Score is the mean of two inverse-ratio scores: clean build and source-edit rebuild. For each, score = 100 × fastest measured time ÷ this language’s time; lower build time is better. No-op build time was measured but is not included in this score.\nRust: clean 59.56 s (subscore 43.49); edit rebuild 8.16 s (subscore 15.60); mean = 29.54/100.\nGo: clean 25.90 s (subscore 100.00); edit rebuild 1.27 s (subscore 100.00); mean = 100.00/100.\nWeight in final score: 10%."
+        },
+        {
+          "label": "WASM callback",
+          "weight": 10,
+          "weight_explanation": "Why 10%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 10 of the total 100 points. Its contribution is category score × 10 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 100.0,
+            "Go": 1.7681426814268142
+          },
+          "explanation": "Score = 100 × fastest p50 callback time ÷ this language’s p50 callback time. Lower time is better; the values below are nanoseconds per call. Both implementations also passed the correctness check.\nRust: 69.0 ns/call → 100.00/100.\nGo: 3,902.4 ns/call → 1.77/100.\nWeight in final score: 10%."
+        },
+        {
+          "label": "Runtime footprint",
+          "weight": 10,
+          "weight_explanation": "Why 10%? The M0 preregistration assigned this share before the final measurements, so this criterion can add at most 10 of the total 100 points. Its contribution is category score × 10 ÷ 100. The preregistration records the chosen weight but does not give a separate rationale for its relative size compared with the other criteria; this report preserves the fixed choice rather than inventing a post-hoc reason. See docs/PREREGISTRATION.md.",
+          "unit": "/100",
+          "better": "higher",
+          "values": {
+            "Rust": 100.0,
+            "Go": 36.547004229408344
+          },
+          "explanation": "Score is the mean of two inverse-ratio scores: release binary size and median sampled resident memory (RSS). For each, score = 100 × smallest measured value ÷ this language’s value; smaller is better. RSS is process memory, not total host memory.\nRust: binary 2,161,944 bytes (subscore 100.00); median RSS 6,040 KiB (subscore 100.00); mean = 100.00/100.\nGo: binary 6,307,360 bytes (subscore 34.28); median RSS 15,560 KiB (subscore 38.82); mean = 36.55/100.\nWeight in final score: 10%."
+        }
+      ]
+    },
+    {
+      "title": "Prerequisite gates",
+      "type": "checks",
+      "description": "These are pass/fail requirements set before the measurements. Every required gate must pass before the score can select a language.",
+      "columns": [
+        "Gate",
+        "Result"
+      ],
+      "rows": [
+        [
+          "At Least One Http P50 Under 1Ms And P99 Under 5Ms",
+          "Passed"
+        ],
+        [
+          "Client Request P50 Under 1Ms And P99 Under 5Ms",
+          "Passed"
+        ],
+        [
+          "Correct Wasm Call Under 100Us",
+          "Passed"
+        ],
+        [
+          "Shared Kernel Builds All Required Classes",
+          "Passed"
+        ],
+        [
+          "Black Box Port Suite Passes",
+          "Passed"
+        ],
+        [
+          "Build And Iteration Metrics Recorded",
+          "Passed"
+        ]
+      ]
+    },
+    {
+      "title": "Scope and limits",
+      "type": "text",
+      "text": "The result covers the measured M0 scenario and frozen record-rule subset. It does not claim full PocketBase filter compatibility or certify production performance for a complete application."
+    }
+  ],
+  "limitations": [
+    "The result applies to the preregistered M0 scope and its measured workloads."
+  ]
+}

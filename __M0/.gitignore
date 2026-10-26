@@ -1,0 +1,5 @@
+**/target/
+**/__pycache__/
+*.py[cod]
+*.test
+.DS_Store

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "04-wasm-host-calls",
+  "title": "WASM host calls",
+  "description": "Compare host callback latency for equivalent WebAssembly guest workloads.",
+  "runner": "tools/wasm_suite.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "call_p50_ns",
+      "label": "Call P50 Ns"
+    },
+    {
+      "id": "call_p95_ns",
+      "label": "Call P95 Ns"
+    },
+    {
+      "id": "call_p99_ns",
+      "label": "Call P99 Ns"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

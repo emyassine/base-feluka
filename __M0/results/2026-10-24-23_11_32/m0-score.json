@@ -1,0 +1,201 @@
+{
+  "preregistration": "docs/PREREGISTRATION.md (locked 2026-10-24 23:05 UTC)",
+  "weights_percent": {
+    "target_coverage": 20,
+    "port_effort_copyability": 20,
+    "null_error_safety": 15,
+    "http_latency": 15,
+    "build_loop": 10,
+    "wasm": 10,
+    "operational_footprint": 10
+  },
+  "category_scores_0_to_100": {
+    "target_coverage": {
+      "rust": 100.0,
+      "go": 100.0
+    },
+    "port_effort_copyability": {
+      "rust": 100.0,
+      "go": 58.14814814814815
+    },
+    "null_error_safety": {
+      "rust": 60.0,
+      "go": 60.0
+    },
+    "http_latency": {
+      "rust": 80.91,
+      "go": 85.01
+    },
+    "build_loop": {
+      "rust": 29.54320457159117,
+      "go": 100.0
+    },
+    "wasm": {
+      "rust": 100.0,
+      "go": 1.7681426814268142
+    },
+    "operational_footprint": {
+      "rust": 100.0,
+      "go": 36.547004229408344
+    }
+  },
+  "weighted_total_0_to_100": {
+    "rust": 84.09082045715911,
+    "go": 67.21264432071314
+  },
+  "inputs": {
+    "http_concurrency_1_median_server_ms": {
+      "rust": {
+        "p50": 0.278,
+        "p99": 0.519
+      },
+      "go": {
+        "p50": 0.211,
+        "p99": 0.444
+      }
+    },
+    "http_concurrency_1_median_client_request_ms": {
+      "rust": {
+        "p50": 0.633178,
+        "p99": 1.590291,
+        "p99_9": 7.651408
+      },
+      "go": {
+        "p50": 0.567858,
+        "p99": 1.270388,
+        "p99_9": 7.411931
+      }
+    },
+    "http_score_formula": "50*max(0,1-p50/1ms)+50*max(0,1-p99/5ms)",
+    "build_median_ms": {
+      "rust": {
+        "clean": 59564.66582999565,
+        "noop": 181.24803301179782,
+        "edit_rebuild": 8163.680656987708
+      },
+      "go": {
+        "clean": 25903.66453200113,
+        "noop": 306.83440499706194,
+        "edit_rebuild": 1273.3792759827338
+      }
+    },
+    "wasm_call_p50_ns": {
+      "rust": 69.0,
+      "go": 3902.4
+    },
+    "binary_bytes_from_clean_build_artifacts": {
+      "rust": 2161944,
+      "go": 6307360
+    },
+    "rss": {
+      "rust": {
+        "median_kib": 6040,
+        "median_sampled_max_kib": 6048
+      },
+      "go": {
+        "median_kib": 15560,
+        "median_sampled_max_kib": 15624
+      }
+    },
+    "port_effort_and_derived_source_lines": {
+      "paired_elapsed_seconds_estimate": 99,
+      "timing_method": "Approximate elapsed interval from recorded vector/test-baseline and implementation source timestamps. Both implementations were authored in one paired task; no reliable separate per-language timer exists, so both receive the same elapsed-time subscore.",
+      "rust": {
+        "implementation_source": "06-port-effort/rust/src/lib.rs",
+        "edit_test_iterations_to_first_green": 1,
+        "unexpected_failing_test_runs": 0,
+        "implementation_source_lines": 223,
+        "implementation_source_sha256": "ededda9926356d16a9c0ecc7b62478e5902fe3909ee59656a3e303308acb0f6c"
+      },
+      "go": {
+        "implementation_source": "06-port-effort/go/rules.go",
+        "edit_test_iterations_to_first_green": 2,
+        "unexpected_failing_test_runs": 1,
+        "implementation_source_lines": 270,
+        "implementation_source_sha256": "d0f86278edac3ebb6e3794480806ad492bf0ffdc70a7fc97768dd38a40dfe46f"
+      }
+    },
+    "port_effort_subscores": {
+      "paired_elapsed_seconds_estimate": {
+        "rust": 100.0,
+        "go": 100.0
+      },
+      "implementation_source_lines": {
+        "rust": 100.0,
+        "go": 82.5925925925926
+      },
+      "edit_test_iterations_to_first_green": {
+        "rust": 100.0,
+        "go": 50.0
+      },
+      "unexpected_failing_test_runs": {
+        "rust": 100.0,
+        "go": 0.0
+      }
+    },
+    "safety_properties": {
+      "explicit_missing_value_representation": {
+        "rust": true,
+        "go": true
+      },
+      "compiler_forces_missing_value_handling": {
+        "rust": false,
+        "go": false
+      },
+      "explicit_parser_failure_value": {
+        "rust": true,
+        "go": true
+      },
+      "compiler_forces_parser_failure_handling": {
+        "rust": false,
+        "go": false
+      },
+      "malformed_or_unknown_rules_fail_closed": {
+        "rust": true,
+        "go": true
+      }
+    },
+    "required_target_classes": {
+      "rust": {
+        "server_linux_x86_64": true,
+        "browser_wasm": true,
+        "desktop": true,
+        "mobile_android": true,
+        "no_std_bare_metal": true
+      },
+      "go": {
+        "server_linux_x86_64": true,
+        "browser_wasm": true,
+        "desktop": true,
+        "mobile_android": true,
+        "tinygo_mcu": true
+      }
+    },
+    "target_exceptions": [
+      {
+        "target": "ios/arm64",
+        "exit_code": 1,
+        "stderr": "# feluka-m0-go/kernel\nios/arm64 requires external (cgo) linking, but cgo is not enabled\n"
+      }
+    ]
+  },
+  "evidence_sha256": {
+    "suite.json": "086ef7bf798e1ee2c127391c8f75f33ab5f1c590e61fd7102c4bd204a2da31f1",
+    "memory-repeat-suite.json": "938d6c8b4981583e34a0243c0f6bb1ac7e8ad710308ae7f4fc932b0f6056c4c8",
+    "wasm-host-final-suite.json": "60bf98c00bff1490d8ebe5c619bf8b86bfc84a3d1b9252be34c42ca5eb8abd8a",
+    "final-build-metrics.json": "b2c919b06170dc77e1bb4c9bfd019dae9448dd6a9e3c7d1d60b2be0cacbbc3ba",
+    "target-build-suite.json": "4693bcabe43265206e7139e1989351c336f499d5252f1c1029c6a885f062548d",
+    "port-effort.json": "c87f536b5c5dabf201150c95d1524afb808557cc29a13d5b3c2fa7b8c213b98b",
+    "pocketbase-reference.json": "0ff509535477cad25a1e421341ff14f46a5a161a03c38cde3e627bcbe58505a2",
+    "pocketbase-suite-run.json": "028b66cc3a9541fbc02ca24f96e4499b2fc530892cb2ac874675c5c71ef07509"
+  },
+  "hard_gates": {
+    "at_least_one_http_p50_under_1ms_and_p99_under_5ms": true,
+    "client_request_p50_under_1ms_and_p99_under_5ms": true,
+    "correct_wasm_call_under_100us": true,
+    "shared_kernel_builds_all_required_classes": true,
+    "black_box_port_suite_passes": true,
+    "build_and_iteration_metrics_recorded": true
+  },
+  "interpretation": "Weighted score is a decision aid. The locked rule retains Rust when it passes the required targets and black-box parity; Go is eligible only if product scope is narrowed to profiles it satisfies. Full PocketBase filter grammar and game SDK execution are outside M0 exit scope."
+}

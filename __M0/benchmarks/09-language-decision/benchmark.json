@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "09-language-decision",
+  "title": "Language decision",
+  "description": "Apply the pre-registered M0 gates and weighted score to the retained campaign evidence.",
+  "runner": "tools/score_m0.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "weighted_score",
+      "label": "Weighted Score"
+    },
+    {
+      "id": "hard_gates_passed",
+      "label": "Hard Gates Passed"
+    },
+    {
+      "id": "score_margin",
+      "label": "Score Margin"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

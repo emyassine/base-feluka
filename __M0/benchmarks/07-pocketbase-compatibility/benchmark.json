@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "07-pocketbase-compatibility",
+  "title": "PocketBase compatibility",
+  "description": "Run the differential compatibility suite against a captured PocketBase oracle.",
+  "runner": "07-pocketbase-compatibility/run_suite.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "checks_passed",
+      "label": "Checks Passed"
+    },
+    {
+      "id": "checks_total",
+      "label": "Checks Total"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

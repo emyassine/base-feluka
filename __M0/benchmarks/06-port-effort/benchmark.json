@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "06-port-effort",
+  "title": "Matched port effort",
+  "description": "Compare implementation effort and conformance for the same frozen rule subset.",
+  "runner": "tools/port_suite.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "implementation_loc",
+      "label": "Implementation Loc"
+    },
+    {
+      "id": "test_iterations",
+      "label": "Test Iterations"
+    },
+    {
+      "id": "elapsed_seconds",
+      "label": "Elapsed Seconds"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

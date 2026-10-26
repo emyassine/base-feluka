@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "language": "tinygo",
+  "source": "../../01-http-performance/go/tinygo-smoke",
+  "role": "additional-target",
+  "$schema": "../../implementation.schema.json"
+}

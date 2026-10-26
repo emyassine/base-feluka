@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "03-build-performance",
+  "title": "Build performance",
+  "description": "Measure isolated clean builds, no-op builds, and rebuilds after source edits.",
+  "runner": "tools/measure_builds.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "clean_build_ms",
+      "label": "Clean Build Ms"
+    },
+    {
+      "id": "no_op_build_ms",
+      "label": "No Op Build Ms"
+    },
+    {
+      "id": "edit_rebuild_ms",
+      "label": "Edit Rebuild Ms"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

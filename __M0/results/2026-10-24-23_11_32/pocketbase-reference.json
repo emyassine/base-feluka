@@ -1,0 +1,78 @@
+{
+  "reference": "PocketBase REST API; fresh temporary SQLite database; default auth; test-created base collection",
+  "version": "pocketbase version 0.40.6",
+  "release_commit": "9d281cc",
+  "binary_sha256": "8e9805c9d92c50a4ff2bce97579d13e2ddfa138cab10cf6f9e8f6db8016ffa30",
+  "collection": "notes; owner_id and status text fields; Alice/active, Alice/draft, Bob/active records; an allowed Alice/active record is added before superuser list",
+  "rules": {
+    "list": "@request.auth.id != \"\" && owner_id = @request.auth.id",
+    "view": "@request.auth.id != \"\" && owner_id = @request.auth.id && status = \"active\"",
+    "create": "@request.auth.id != \"\" && @request.body.owner_id = @request.auth.id",
+    "update": "@request.auth.id != \"\" && owner_id = @request.auth.id",
+    "delete": null
+  },
+  "credentials": "Disposable local-only credentials; not saved.",
+  "cases": [
+    {
+      "name": "list_owner_filtered",
+      "status": 200,
+      "items": 2,
+      "body_error": null
+    },
+    {
+      "name": "list_guest_empty",
+      "status": 200,
+      "items": 0,
+      "body_error": null
+    },
+    {
+      "name": "view_owner_active",
+      "status": 200,
+      "items": null,
+      "body_error": null
+    },
+    {
+      "name": "view_owner_draft_hidden",
+      "status": 404,
+      "items": null,
+      "body_error": "The requested resource wasn't found."
+    },
+    {
+      "name": "view_other_owner_hidden",
+      "status": 404,
+      "items": null,
+      "body_error": "The requested resource wasn't found."
+    },
+    {
+      "name": "create_matching_owner",
+      "status": 200,
+      "items": null,
+      "body_error": null
+    },
+    {
+      "name": "create_mismatched_owner",
+      "status": 400,
+      "items": null,
+      "body_error": "Failed to create record."
+    },
+    {
+      "name": "delete_locked",
+      "status": 403,
+      "items": null,
+      "body_error": "Only superusers can perform this action."
+    },
+    {
+      "name": "superuser_list_bypasses_rule",
+      "status": 200,
+      "items": 4,
+      "body_error": null
+    },
+    {
+      "name": "superuser_delete_bypasses_lock",
+      "status": 204,
+      "items": null,
+      "body_error": null
+    }
+  ],
+  "publication_path_policy": "Workspace and temporary paths are replaced with placeholders; measured values, hashes, commands, and outputs are otherwise retained."
+}

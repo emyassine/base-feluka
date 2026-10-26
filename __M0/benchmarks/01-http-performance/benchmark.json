@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "01-http-performance",
+  "title": "HTTP performance",
+  "description": "Compare application and client latency under the pinned HTTP workload.",
+  "runner": "tools/run_suite.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "app_p50_ms",
+      "label": "App P50 Ms"
+    },
+    {
+      "id": "app_p99_ms",
+      "label": "App P99 Ms"
+    },
+    {
+      "id": "client_p50_ms",
+      "label": "Client P50 Ms"
+    },
+    {
+      "id": "requests_per_second",
+      "label": "Requests Per Second"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "08-portable-validation",
+  "title": "Portable validation",
+  "description": "Run unit, conformance, source-integrity, and retained-evidence checks.",
+  "runner": "08-portable-validation/run.py",
+  "languages": [
+    "go",
+    "rust"
+  ],
+  "metrics": [
+    {
+      "id": "checks_passed",
+      "label": "Checks Passed"
+    },
+    {
+      "id": "checks_total",
+      "label": "Checks Total"
+    },
+    {
+      "id": "duration_seconds",
+      "label": "Duration Seconds"
+    }
+  ],
+  "report_format": "../report-format.schema.json",
+  "result_file": "benchmark-report.json",
+  "$schema": "../benchmark-descriptor.schema.json"
+}
