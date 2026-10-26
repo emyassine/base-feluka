@@ -5,11 +5,11 @@ Statut : proposition de réalisation, estimations à recalibrer après le premie
 
 ## État de réalisation (26 octobre 2026)
 
-Le vertical initial est commencé : workspace Cargo (toolchain actuellement épinglé 1.85.0), façade publique `feluqa::view` et `feluqa::console`, moteur de substitution échappée, application Numerimondes sous `apps/`, serveur Axum/Tokio et config Serde/TOML. Les routes de l'application sont dans `apps/numerimondes/routes/`. Les vues actuelles sont `/` et `/about`; le build génère du Rust depuis les fichiers `.view`. Les ressources du site de référence sont servies sous `apps/numerimondes/public/assets`.
+Le vertical initial est commencé : workspace Cargo sous `_crates/` (MSRV déclaré à 1.85), façade publique `feluqa::view` et `feluqa::console`, moteur de substitution échappée, produit Numerimondes sous `products/`, serveur Axum/Tokio et config Serde/TOML. Les routes de l'application sont dans `products/numerimondes/routes/`. Les vues actuelles sont `/` et `/about`; le build génère du Rust depuis les fichiers `.view`. Les ressources du site de référence sont servies sous `products/numerimondes/public/assets`.
 
 La page affiche le temps handler « Request … ms ». Le middleware mesure à part le temps complet de traitement côté binaire, l’écrit dans `Server-Timing: feluqa_binary;dur=…` et le journal du serveur. Compilation validée le 26 octobre 2026; parité visuelle et déploiement restent à valider.
 
-Le compilateur ne couvre que le texte et `{{ value }}` échappé; layouts, directives et composants restent à faire. L'API `feluqa::console` est un contrat minimal, pas encore le CLI installable. Le watcher de `feluqa dev`, `feluqa new app`, les autres commandes CLI, la gestion de stockage, l’isolation multi-sites, le déploiement Hestia et les contrôles de production restent à faire. La première milestone n’est donc pas considérée terminée.
+Le compilateur ne couvre que le texte et `{{ value }}` échappé; layouts, directives et composants restent à faire. L'API `feluqa::console` est un contrat minimal. Le produit CLI sous `products/feluqa-cli/` fournit `help`, `list`, `dev`, `build` et `check`; le watcher de `feluqa dev`, `feluqa new app`, la sélection multi-applications, la gestion de stockage, l’isolation multi-sites, le déploiement Hestia et les contrôles de production restent à faire. La première milestone n’est donc pas considérée terminée.
 
 ## Objectif produit
 
@@ -89,9 +89,9 @@ Structure cible progressive (ne pas créer tous les crates vides à M1) :
 
 ```text
 feluqa/
-├── Cargo.toml                 # workspace, versions et profils
-├── Cargo.lock
-├── crates/
+├── _crates/                    # workspace Cargo, lockfile et crates
+│   ├── Cargo.toml
+│   ├── Cargo.lock
 │   ├── feluqa/                 # façade publique feluqa::
 │   ├── feluqa-kernel/          # types, config commune, validation, no_std possible
 │   ├── feluqa-config/          # Serde, chargement et validation de configuration
@@ -100,14 +100,14 @@ feluqa/
 │   ├── feluqa-router/          # contrats de routes
 │   ├── feluqa-server/          # runtime Tokio/Axum; profil serveur
 │   └── feluqa-storage/         # chemins et stockage utilisateur POSIX
-├── tools/
-│   └── feluqa-cli/             # CLI installable, binaire `feluqa`
-├── apps/
+├── products/
+│   ├── feluqa-cli/             # produit CLI, binaire `feluqa`
 │   └── numerimondes/           # application réelle, profil web
+├── target/                    # artefacts de build générés
 └── docs/
 ```
 
-Le monorepo est la source de référence. `crates/` contient les composants du framework, `tools/` ses exécutables de développement et `apps/` les applications produits. Chaque crate/app garde son manifeste Cargo; la racine ne porte que le workspace. Les composants Feluqa sont propriétaires et les manifests limitent toute publication au registre privé.
+Le monorepo est la source de référence. `_crates/` contient le workspace Cargo, son lockfile et les bibliothèques du framework; `products/` contient les produits exécutables et les applications. Chaque produit garde son manifeste Cargo. La racine du dépôt ne porte pas de manifeste Cargo; les builds sont écrits dans `target/`. Les composants Feluqa sont propriétaires et leurs manifests limitent la publication au registre privé.
 
 Chaque crate porte son propre `#![no_implicit_prelude]` à sa racine et importe explicitement les éléments utilisés. Le `main.rs` d’une app générée le porte aussi. Cela ne dispense pas des lints/contrôles par crate : l’attribut ne remplace ni `#![deny(...)]`, ni les règles d’unsafe, ni le formatage. Vérifier tôt l’interaction avec les macros dérivées/proc-macros et les macros d’assertion. Ne pas promettre `no_std` au framework complet : seuls les crates kernel sans dépendance OS peuvent le garantir.
 
@@ -169,6 +169,6 @@ Un profilement des fourchettes doit être fait après les phases 0–3. L’ambi
 
 - [Standard Rust](../standards/RUST_CODING_STANDARD.md) — règles Rust obligatoires.
 - [Décisions d’architecture](../architecture/DECISIONS.md) — exigences, critères FEL et gates M0–M8.
-- [Résultats M0](../research/M0_RESULTS.md) — rapport comparatif et liens vers les preuves conservées dans `__M0/`.
+- [Résultats M0](../research/M0_RESULTS.md) — rapport comparatif et liens vers les preuves conservées dans `products/__M0/`.
 - Webkernel views : `/home/yassine/Projects/Php/framework/__work/AGENTS_VIEWS.md` et les fichiers `.view.php` actifs sous `webkernel-src/y-dev-platform/`.
 - Webkernel routes : `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/filament/routes/web.php`.

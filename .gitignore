@@ -3,5 +3,5 @@
 **/.env
 **/.env.*
 !**/.env.example
-apps/*/storage/**
-!apps/*/storage/.gitkeep
+products/*/storage/**
+!products/*/storage/.gitkeep

@@ -1,6 +1,7 @@
 [package]
 name = "numerimondes"
 version = "0.1.0"
+workspace = "../../_crates"
 edition.workspace = true
 license-file.workspace = true
 rust-version.workspace = true
@@ -13,7 +14,7 @@ serde.workspace = true
 tokio.workspace = true
 toml.workspace = true
 tower-http.workspace = true
-feluqa = { version = "0.1.0", path = "../../crates/feluqa" }
+feluqa = { version = "0.1.1", path = "../../_crates/feluqa" }
 
 [build-dependencies]
-feluqa = { path = "../../crates/feluqa" }
+feluqa = { path = "../../_crates/feluqa" }

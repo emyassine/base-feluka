@@ -18,4 +18,4 @@ Start with the root [README](../README.md) to build and run the current website 
 ## Research record
 
 - [M0 language comparison results](research/M0_RESULTS.md)
-- The original benchmark protocol, scripts, raw results, and evidence remain under [`../__M0/`](../__M0/); this preserves their recorded paths and checksums.
+- The original benchmark protocol, scripts, raw results, and evidence remain under [`../products/__M0/`](../products/__M0/); this preserves their recorded paths and checksums.

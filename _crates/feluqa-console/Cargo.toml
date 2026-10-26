@@ -1,7 +1,8 @@
 [package]
 name = "feluqa-console"
-version = "0.1.0"
+version = "0.1.1"
 description = "Proprietary console command contracts for the Feluqa application framework."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
 edition.workspace = true
 license-file.workspace = true
 rust-version.workspace = true

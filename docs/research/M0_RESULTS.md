@@ -5,14 +5,14 @@
 | Status | M0 complete against the C1 criteria; Rust selected as the host language |
 | Measurement date | 24 October 2026 (UTC) |
 | Scenario | Session + SQL ACL + three SQLite reads + HTML rendering of a 20-line order |
-| Protocol | [`../../__M0/README.md`](../../__M0/README.md) |
-| 12-run log | [`../../__M0/results/2026-10-24-23_11_32/run-log.txt`](../../__M0/results/2026-10-24-23_11_32/run-log.txt) |
-| Machine-readable benchmark manifest | [`../../__M0/results/2026-10-24-23_11_32/suite.json`](../../__M0/results/2026-10-24-23_11_32/suite.json) |
-| 120,000 compressed individual measurements | [`__M0/results/2026-10-24-23_11_32/samples/`](../../__M0/results/2026-10-24-23_11_32/samples/) |
+| Protocol | [`../../products/__M0/README.md`](../../products/__M0/README.md) |
+| 12-run log | [`../../products/__M0/results/2026-10-24-23_11_32/run-log.txt`](../../products/__M0/results/2026-10-24-23_11_32/run-log.txt) |
+| Machine-readable benchmark manifest | [`../../products/__M0/results/2026-10-24-23_11_32/suite.json`](../../products/__M0/results/2026-10-24-23_11_32/suite.json) |
+| 120,000 compressed individual measurements | [`products/__M0/results/2026-10-24-23_11_32/samples/`](../../products/__M0/results/2026-10-24-23_11_32/samples/) |
 
 ## Executive result — final preregistered measurements
 
-The weights were locked in [`../../__M0/docs/PREREGISTRATION.md`](../../__M0/docs/PREREGISTRATION.md) at 23:05 UTC, before the final measurement runs. Only runs after that time are used below. The calculated results and scoring inputs are in [`m0-score.json`](../../__M0/results/2026-10-24-23_11_32/m0-score.json); [`score_m0.py`](../../__M0/benchmarks/tools/score_m0.py) recalculates them from the retained evidence without changing the weights.
+The weights were locked in [`../../products/__M0/docs/PREREGISTRATION.md`](../../products/__M0/docs/PREREGISTRATION.md) at 23:05 UTC, before the final measurement runs. Only runs after that time are used below. The calculated results and scoring inputs are in [`m0-score.json`](../../products/__M0/results/2026-10-24-23_11_32/m0-score.json); [`score_m0.py`](../../products/__M0/benchmarks/tools/score_m0.py) recalculates them from the retained evidence without changing the weights.
 
 | Criterion | Weight | Rust | Go |
 | --- | ---: | ---: | ---: |
@@ -72,9 +72,9 @@ The same C guest module and eight pre-instantiated modules per runtime were used
 | Go / wazero | 3.9024 µs | 4.8543 µs | 5.7635 µs | pass |
 | Rust / Wasmtime | 69 ns | 115.8 ns | 120.3 ns | pass |
 
-This remains a microbenchmark of two different engines' APIs and callbacks. Detailed results are in `__M0/results/2026-10-24-23_11_32/wasm-host-final-suite.json`.
+This remains a microbenchmark of two different engines' APIs and callbacks. Detailed results are in `products/__M0/results/2026-10-24-23_11_32/wasm-host-final-suite.json`.
 
-The port task used ten shared vectors tied to the PocketBase v0.40.6 REST oracle, plus tests for operator precedence, parentheses, and fail-closed handling of unknown or malformed syntax. Rust: 223 implementation lines, one edit/test iteration to green, and zero unexpected failing test runs after implementation began. Go: 270 lines, two iterations, and one failing test run with two assertions corrected. Both suites finish green. The languages were implemented as one paired task: source timestamps indicate about 99 seconds from the testable baseline to both implementations first passing, but do not support an honest per-language time split. The score therefore gives both the same elapsed-time subscore; all other submeasures are language-specific. The measured inputs and timing caveat are recorded in [`port-effort.json`](../../__M0/results/2026-10-24-23_11_32/port-effort.json).
+The port task used ten shared vectors tied to the PocketBase v0.40.6 REST oracle, plus tests for operator precedence, parentheses, and fail-closed handling of unknown or malformed syntax. Rust: 223 implementation lines, one edit/test iteration to green, and zero unexpected failing test runs after implementation began. Go: 270 lines, two iterations, and one failing test run with two assertions corrected. Both suites finish green. The languages were implemented as one paired task: source timestamps indicate about 99 seconds from the testable baseline to both implementations first passing, but do not support an honest per-language time split. The score therefore gives both the same elapsed-time subscore; all other submeasures are language-specific. The measured inputs and timing caveat are recorded in [`port-effort.json`](../../products/__M0/results/2026-10-24-23_11_32/port-effort.json).
 
 For safety, both Rust and Go explicitly represent missing values and parser errors, and both fail closed on invalid rules. In this task the compiler does not force callers to consume these results: each language scores 3 of 5 properties, or 60/100. This experiment shows no comparative advantage on that criterion.
 
@@ -95,7 +95,7 @@ This closure follows the C1 wording: one record-rules component must pass black-
 
 ### Workload and equal work
 
-The two programs are [`__M0/benchmarks/01-http-performance/go/main.go`](../../__M0/benchmarks/01-http-performance/go/main.go) and [`__M0/benchmarks/01-http-performance/rust/src/main.rs`](../../__M0/benchmarks/01-http-performance/rust/src/main.rs). They use the same read-only SQLite file, the same three prepared/cached queries, at most one SQLite connection, and build the same **1,459-byte** complete HTML response for `/orders/42`.
+The two programs are [`products/__M0/benchmarks/01-http-performance/go/main.go`](../../products/__M0/benchmarks/01-http-performance/go/main.go) and [`products/__M0/benchmarks/01-http-performance/rust/src/main.rs`](../../products/__M0/benchmarks/01-http-performance/rust/src/main.rs). They use the same read-only SQLite file, the same three prepared/cached queries, at most one SQLite connection, and build the same **1,459-byte** complete HTML response for `/orders/42`.
 
 1. Read and verify the demo session header `X-Feluqa-Session: reader:20000`.
 2. Read the order ID.
@@ -119,7 +119,7 @@ Servers run sequentially and are pinned to logical CPU 2. The load generator is 
 - Concurrency 1: Go, Rust, Rust, Go, Go, Rust.
 - Concurrency 8: Rust, Go, Go, Rust, Rust, Go.
 
-The complete order, executed commands, and raw output are in `__M0/results/2026-10-24-23_11_32/suite.json` and `__M0/results/2026-10-24-23_11_32/run-log.txt`.
+The complete order, executed commands, and raw output are in `products/__M0/results/2026-10-24-23_11_32/suite.json` and `products/__M0/results/2026-10-24-23_11_32/run-log.txt`.
 
 ### Results by repetition
 
@@ -189,11 +189,11 @@ The evidence manifest hashes the published source, lockfiles, runners, and retai
 | `results/suite.json` | `086ef7bf798e1ee2c127391c8f75f33ab5f1c590e61fd7102c4bd204a2da31f1` |
 | `results/run-log.txt` | `7962eab79006286bad3b2990180f671de3bb1a302b1f349881db27f2a701c097` |
 
-These hashes detect changes and support recalculation. The exact HTTP harness and seed sources are retained as snapshots under `__M0/results/2026-10-24-23_11_32/source-snapshots/`; their hashes match the recorded suite. `make -C __M0 evidence-check` checks those snapshots against the run, verifies measured server and binary hashes, recalculates the twelve sample hashes, checks the published-file manifest, and rejects workstation-specific paths. This is a traceable local record, not a signed artifact or an independent laboratory audit. Generated binaries and the SQLite database are intentionally excluded from the publishable tree; the measurements retain their hashes and sizes.
+These hashes detect changes and support recalculation. The exact HTTP harness and seed sources are retained as snapshots under `products/__M0/results/2026-10-24-23_11_32/source-snapshots/`; their hashes match the recorded suite. `make -C products/__M0 evidence-check` checks those snapshots against the run, verifies measured server and binary hashes, recalculates the twelve sample hashes, checks the published-file manifest, and rejects workstation-specific paths. This is a traceable local record, not a signed artifact or an independent laboratory audit. Generated binaries and the SQLite database are intentionally excluded from the publishable tree; the measurements retain their hashes and sizes.
 
 ## Reproduction
 
-From the `__M0/` directory, with Rust/Cargo, Go, Python 3, `pkg-config`, GCC, and SQLite headers installed:
+From the `products/__M0/` directory, with Rust/Cargo, Go, Python 3, `pkg-config`, GCC, and SQLite headers installed:
 
 ```sh
 make build seed
@@ -217,7 +217,7 @@ Final values are medians of three repetitions from 24 October 2026. Clean builds
 | Rebuild after source edit | 1.273 s | 8.164 s |
 | Binary size | 6,307,360 bytes | 2,161,944 bytes |
 
-Complete output, commands, versions, and hashes are in [`final-build-metrics.json`](../../__M0/results/2026-10-24-23_11_32/final-build-metrics.json). Earlier exploratory measurements remain in `__M0/results/2026-10-24-23_11_32/exploratory/build-metrics.json`; they are not used in the M0 score.
+Complete output, commands, versions, and hashes are in [`final-build-metrics.json`](../../products/__M0/results/2026-10-24-23_11_32/final-build-metrics.json). Earlier exploratory measurements remain in `products/__M0/results/2026-10-24-23_11_32/exploratory/build-metrics.json`; they are not used in the M0 score.
 
 ### Sampled RSS
 
@@ -228,11 +228,11 @@ Complete output, commands, versions, and hashes are in [`final-build-metrics.jso
 | Go | 15,560 KiB | 15,624 KiB | 16,996 / 15,560 / 15,224 KiB |
 | Rust | 6,040 KiB | 6,048 KiB | 6,032 / 6,092 / 6,040 KiB |
 
-Rust used 61.2% less median RSS in this test. Sampling can miss shorter peaks. Final artifact: [`memory-repeat-suite.json`](../../__M0/results/2026-10-24-23_11_32/memory-repeat-suite.json).
+Rust used 61.2% less median RSS in this test. Sampling can miss shorter peaks. Final artifact: [`memory-repeat-suite.json`](../../products/__M0/results/2026-10-24-23_11_32/memory-repeat-suite.json).
 
 ### Shared targets
 
-The post-preregistration runner result is [`target-build-suite.json`](../../__M0/results/2026-10-24-23_11_32/target-build-suite.json). Each class compiled the same authorization kernel without runtime-specific dependencies:
+The post-preregistration runner result is [`target-build-suite.json`](../../products/__M0/results/2026-10-24-23_11_32/target-build-suite.json). Each class compiled the same authorization kernel without runtime-specific dependencies:
 
 | M0 class | Rust | Go / TinyGo |
 | --- | --- | --- |
@@ -253,11 +253,11 @@ The same C guest, eight pre-instantiated modules, 100,000 warmup calls, then 1,0
 | Go / wazero | 3,902.4 ns | 4,854.3 ns | 5,763.5 ns |
 | Rust / Wasmtime | 69 ns | 115.8 ns | 120.3 ns |
 
-Both hosts return the correct owner/public/deny results and meet the 100 µs threshold. Rust/Wasmtime has a much lower p50 in this microbenchmark; this also measures the different runtimes' call APIs, marshaling, and callbacks. Full data is in [`wasm-host-final-suite.json`](../../__M0/results/2026-10-24-23_11_32/wasm-host-final-suite.json).
+Both hosts return the correct owner/public/deny results and meet the 100 µs threshold. Rust/Wasmtime has a much lower p50 in this microbenchmark; this also measures the different runtimes' call APIs, marshaling, and callbacks. Full data is in [`wasm-host-final-suite.json`](../../products/__M0/results/2026-10-24-23_11_32/wasm-host-final-suite.json).
 
 ### PocketBase port and limits of the conclusion
 
-The [`pocketbase/run_suite.py`](../../__M0/benchmarks/07-pocketbase-compatibility/run_suite.py) runner recaptures behavior from the official PocketBase v0.40.6 binary, then runs the seven Rust prototype tests and both matched ports in one command. Ten REST cases cover locked/public/filter rules, read/list/create/delete, denials, superuser behavior, comparisons, `&&`, `||`, and parentheses. Both Rust and Go ports read the same JSON vectors and captured responses; all tests pass.
+The [`pocketbase/run_suite.py`](../../products/__M0/benchmarks/07-pocketbase-compatibility/run_suite.py) runner recaptures behavior from the official PocketBase v0.40.6 binary, then runs the seven Rust prototype tests and both matched ports in one command. Ten REST cases cover locked/public/filter rules, read/list/create/delete, denials, superuser behavior, comparisons, `&&`, `||`, and parentheses. Both Rust and Go ports read the same JSON vectors and captured responses; all tests pass.
 
 The port implements a bounded subset: `owner_id` and `status` fields, request auth/body references, equality/inequality, `&&`, `||`, parentheses, superuser bypass, list filtering, and REST status codes. The Rust prototype also lowers this subset to parameterized SQL, and a SQLite test verifies that its results match the in-memory evaluator. This lowerer is not connected to the M0 HTTP server.
 
@@ -265,4 +265,4 @@ The full PocketBase filter language (relations, numeric operators, modifiers, an
 
 The preregistered score closes M0 and selects the host language: Rust, 84.09 to Go's 67.21. Go remains faster on the measured handler and build loop. Rust's advantages here come from the matched port, compilation of the kernel for the required targets, this runtime's WASM call, binary size, and RSS. This ranking is bounded to this workload, rule subset, and small compiled kernels.
 
-A SHA-256 manifest of the reports, source, and measured outputs is in [`evidence-manifest.json`](../../__M0/results/evidence-manifest.json). The complete reusable command surface and audit procedure are documented in [`__M0/README.md`](../../__M0/README.md) and its `Makefile`.
+A SHA-256 manifest of the reports, source, and measured outputs is in [`evidence-manifest.json`](../../products/__M0/results/evidence-manifest.json). The complete reusable command surface and audit procedure are documented in [`products/__M0/README.md`](../../products/__M0/README.md) and its `Makefile`.

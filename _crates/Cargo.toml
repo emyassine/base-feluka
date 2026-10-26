@@ -1,16 +1,16 @@
 [workspace]
 resolver = "3"
-exclude = ["archive/prototypes/legacy-codebase"]
 members = [
-    "crates/feluqa",
-    "crates/feluqa-console",
-    "crates/feluqa-view",
-    "apps/numerimondes",
+    "feluqa",
+    "feluqa-console",
+    "feluqa-view",
+    "../products/feluqa-cli",
+    "../products/numerimondes",
 ]
 
 [workspace.package]
 edition = "2024"
-license-file = "LICENSE"
+license-file = "../LICENSE"
 rust-version = "1.85"
 
 [workspace.dependencies]

@@ -1,41 +1,32 @@
 # Feluqa command line
 
-The CLI will be the installation and daily entry point for the framework. Keep its first release small and project-focused. `dev` and `prod` describe how an application runs; they are not project types. A new application chooses a **profile** such as `web`.
+The CLI is a first-class product under `products/feluqa-cli/`; it builds the `feluqa` executable. It currently provides `help`, `list`, `dev`, `build`, and `check` for the monorepo's first web product. Project generation, app selection, tests, and standalone installation workflows remain follow-up work.
 
-When published, users install it with `cargo install feluqa-cli` (or the platform package that Feluqa provides later).
+`dev` and `prod` describe how an application runs; they are not project types.
 
-## First release commands
+A new application chooses a profile such as `web`.
+
+## Current commands
 
 | Command | Purpose |
 |---|---|
-| `feluqa new app` | Ask for an application name and profile, then create a ready-to-run project. |
-| `feluqa list` | Show applications in the current workspace. |
-| `feluqa dev` | Run the current application in development mode. |
-| `feluqa build` | Build the current application for production. |
-| `feluqa start` | Start the production build. |
-| `feluqa check` | Check configuration, routes, and views without starting the server. |
-| `feluqa test` | Run the current application's tests. |
+| `feluqa list` | Show products in the current workspace. |
+| `feluqa dev [app]` | Run a web product in development mode; omit the name when the workspace has one app. |
+| `feluqa build [app]` | Build a product for production. |
+| `feluqa check [app]` | Check a product without starting its server. |
 | `feluqa help` | Show commands and examples. |
 
-Creation should be conversational by default:
+From the monorepo source, run a command with:
 
-```text
-$ feluqa new app
-Application name: numerimondes
-Application profile: web
-Created numerimondes.
-Next: cd numerimondes && feluqa dev
+```sh
+cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- dev
 ```
 
-`feluqa dev` runs the application in the current app directory; from the workspace root, it may take an application name, for example `feluqa dev numerimondes`. `feluqa list` shows those available names.
+## Next CLI work
 
-Do not add separate `new prod` and `new dev` commands. Do not require users to know Cargo package names, workspace member IDs, target triples, or internal crate names for routine work. Advanced options can be added when a real workflow needs them.
+1. Resolve the selected application from the user's working directory rather than hard-coding Numerimondes.
+2. Add `feluqa new app` using the Numerimondes site as the first template.
+3. Add `start`, `test`, argument parsing, and useful config and app-selection errors.
+4. Define the supported public installation and update channel.
 
-## Delivery order
-
-1. Rename the framework packages and place the Numerimondes application under `apps/numerimondes/`.
-2. Make the current application run through `feluqa dev`.
-3. Add `feluqa new app` using the working Numerimondes app as the first verified template.
-4. Add `build`, `start`, `check`, `test`, and workspace app listing.
-
-The CLI crate and commands are roadmap work; until implemented, use the Cargo commands in the root README.
+Do not add separate `new prod` and `new dev` commands. Do not require users to know Cargo package names, workspace member IDs, or target triples for routine work.

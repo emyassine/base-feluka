@@ -90,19 +90,23 @@ dependencies = [
 
 [[package]]
 name = "feluqa"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "feluqa-console",
  "feluqa-view",
 ]
 
 [[package]]
-name = "feluqa-console"
+name = "feluqa-cli"
 version = "0.1.0"
 
 [[package]]
+name = "feluqa-console"
+version = "0.1.1"
+
+[[package]]
 name = "feluqa-view"
-version = "0.1.0"
+version = "0.1.1"
 
 [[package]]
 name = "form_urlencoded"

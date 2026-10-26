@@ -5,8 +5,8 @@ Scope: workspace source, examples, build scripts and tests unless a section says
 
 ## 1. Rust edition and toolchain
 
-- Use the edition selected by the workspace `Cargo.toml`; pin the toolchain in `rust-toolchain.toml` once the project MSRV is decided.
-- `rustfmt` must be clean. CI uses the pinned toolchain and locked dependencies (`cargo --locked`).
+- Use the edition and minimum Rust version declared through `_crates/Cargo.toml`. Select the exact compiler in CI and developer environment management; do not pin a repository-wide rustup toolchain unless reproducible local toolchains become a requirement.
+- `rustfmt` must be clean. CI uses a declared compiler channel and locked dependencies (`cargo --locked`); the repository does not force a rustup toolchain on every developer.
 - Declare and test an explicit MSRV. Do not silently raise it through a dependency update.
 - Keep `Cargo.lock` for applications and workspace tools; libraries document their MSRV and dependency policy.
 - Review Rust API and lint changes against the official Rust Reference and Rust compiler documentation when adopting a new language feature.

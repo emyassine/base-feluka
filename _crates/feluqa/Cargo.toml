@@ -1,0 +1,13 @@
+[package]
+name = "feluqa"
+version = "0.1.1"
+description = "Proprietary public facade for the Feluqa application framework."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-console = { version = "0.1.1", registry = "feluqa", path = "../feluqa-console" }
+feluqa-view = { version = "0.1.1", registry = "feluqa", path = "../feluqa-view" }
