@@ -1,6 +1,7 @@
 [package]
 name = "feluqa"
 version = "0.1.0"
+description = "Proprietary public facade for the Feluqa application framework."
 edition.workspace = true
 license-file.workspace = true
 rust-version.workspace = true
