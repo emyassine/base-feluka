@@ -42,3 +42,5 @@ products/__M0/             retained language benchmark evidence and tools
 ```
 
 See [the documentation index](docs/README.md) for the roadmap, architecture decisions, and coding standard.
+
+Implementation contractsè: [delivery plan](docs/planning/ENTERPRISE_DELIVERY.md), [`.view.rs` language](docs/views/LANGUAGE.md), [panels and components](docs/architecture/PANELS_COMPONENTS.md), [Zed tooling](docs/editor/ZED.md). Contributors start with [AGENTS.md](AGENTS.md).

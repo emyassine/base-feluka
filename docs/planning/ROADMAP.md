@@ -1,7 +1,7 @@
 # Feluqa — feuille de route du framework
 
 Date de cadrage : 26 octobre 2026  
-Statut : proposition de réalisation, estimations à recalibrer après le premier site livré.
+Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](ENTERPRISE_DELIVERY.md), [le contrat des vues](../views/LANGUAGE.md) et [les panels/composants](../architecture/PANELS_COMPONENTS.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
 
 ## État de réalisation (26 octobre 2026)
 
@@ -46,8 +46,8 @@ numerimondes/
 │   └── providers.rs
 ├── resources/
 │   ├── views/
-│   │   ├── layouts/app.view
-│   │   └── pages/home.view
+│   │   ├── layouts/app.view.rs
+│   │   └── pages/home.view.rs
 │   └── assets/
 ├── public/
 ├── storage/
@@ -76,6 +76,8 @@ pub fn routes(router: Router) -> Router {
 La syntaxe ci-dessus est indicative; l’API sera arrêtée par un exemple exécuté. Les routes web servent HTTP, les routes console déclarent les commandes CLI. Garder les handlers typés et explicites, et les groupes de routes nommés, préfixes et middleware lisibles.
 
 ### Vues Webkernel
+
+Le format cible est désormais `.view.rs` avec notamment `@rs/@endrs`; voir le [contrat v1](../views/LANGUAGE.md). Les `.view` du prototype restent à migrer avec le build.
 
 Inspecter et porter le contrat utile de `webkernel-src/y-dev-platform/...` dans `/home/yassine/Projects/Php/framework/__work/`, en conservant une syntaxe de template familière : `{{ value }}` échappé, `{!! trusted_html !!}` explicite, `@if/@else/@endif`, `@foreach/@endforeach`, layouts/sections et composants `<x-...>`. Adapter les directives qui exécutent du PHP en API de vue déclarative et fonctions Rust typées : aucune exécution PHP ni `eval` dans Feluqa.
 

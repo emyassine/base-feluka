@@ -1,3 +1,5 @@
+> Update 2026-10-26: [delivery sequencing](../planning/ENTERPRISE_DELIVERY.md), [`.view.rs` language](../views/LANGUAGE.md), [panels/components](PANELS_COMPONENTS.md), and [Zed tooling](../editor/ZED.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
+
 # Feluqa — Product brief, decisions and critique
 
 | Field | Value |

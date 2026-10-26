@@ -1,0 +1,82 @@
+# Feluqa — instructions for contributors and coding agents
+
+Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read [docs/README.md](docs/README.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs and update this summary when the contract changes.
+
+## Goal and honest status
+
+Feluqa is one proprietary NUMERIMONDES ecosystem and namespace for web, SPAs, mobile, desktop, games, APIs and real-time systems. Share tooling, schemas and libraries; retain separate runtime profiles. Web delivery is the first product priority. Enterprise quality requires verified operational and security capabilities, not directory structure or a published crate.
+
+Current implementation: small `feluqa` facade, console contracts, text/escaped-substitution view engine, Numerimondes web app, and an initial CLI. Panels, typed components, SDUI, Live, the full `.view.rs` language and Zed support are planned. Never describe a specification or scaffold as implemented.
+
+## Documentation map and precedence
+
+| Read for | Canonical document |
+|---|---|
+| Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs/planning/ENTERPRISE_DELIVERY.md) |
+| `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs/views/LANGUAGE.md) |
+| Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs/architecture/PANELS_COMPONENTS.md) |
+| Zed extension, Tree-sitter and language tooling | [Zed product](docs/editor/ZED.md) |
+| Mandatory Rust rules | [Coding standard](docs/standards/RUST_CODING_STANDARD.md) |
+| Current CLI and planned commands | [CLI](docs/CLI.md) |
+| Ecosystem decisions and target profiles | [Decisions](docs/architecture/DECISIONS.md) |
+| Earlier scope and broad estimates | [Initial roadmap](docs/planning/ROADMAP.md) |
+| Deferred questions | [Later decisions](docs/architecture/DECISIONS_LATER.md) |
+| Proprietary distribution and registry | [Licensing](docs/licensing/PROPRIETARY.md) and [LICENSE](LICENSE) |
+| Measured language comparison, limits and evidence | [M0 results](docs/research/M0_RESULTS.md) |
+
+The newer delivery plan and domain contracts refine the earlier roadmap. In particular, basic views/components/SDUI precede the Core panel; historical milestone M4 is not permission to delay these prerequisites. Historical measurements are evidence, not general production guarantees.
+
+## Repository ownership
+
+- `_crates/`: Cargo workspace root, lockfile and reusable libraries; facade APIs under `feluqa::...`.
+- `products/`: runnable products/applications, CLI and future Zed/grammar products. Numerimondes-specific content stays in its product.
+- `docs/`: decisions, contracts, estimates, standards and evidence summaries.
+- `target/`: generated build/package output, ignored by Git. `.cargo/config.toml` selects this location.
+- No Cargo manifest/lockfile or rustup toolchain pin at repository root. Product manifests point explicitly to `../../_crates` when members of this workspace.
+- `products/__M0/`: retained benchmark source and evidence. Preserve raw reports, snapshots and hashes; update navigational docs without rewriting measurements.
+- Do not create empty crates to simulate progress. Add a crate with its first useful contract and integration.
+
+## Rust and dependencies
+
+Every handwritten crate root and generated application entrypoint starts with `#![no_implicit_prelude]`. Import items, macros and traits explicitly. Apply the lint policy in the coding standard; no blanket lint suppression. No `unwrap`/`expect` on production input paths; use typed errors with context. Review unsafe boundaries and keep them small; use `forbid(unsafe_code)` where appropriate.
+
+Use `feluqa::view`, `feluqa::console` and future documented facade modules. `extern crate feluqa::view;` is not valid Rust: import the root crate when required by strict mode, then use `feluqa::view` or `use feluqa::view;`.
+
+Use established libraries for concrete needs: Tokio/Axum/Tower for web runtimes, Serde for typed/versioned schemas/config, existing Rust parsing tools where justified. Keep server dependencies out of kernel/real-time crates. Review dependency license, MSRV, target support and ownership before adoption. The manifest's MSRV is a requirement to verify; successful compilation on a newer compiler does not prove it.
+
+## Views and editor contract
+
+Canonical target suffix: `.view.rs`. These are HTML/Blade-inspired templates containing Rust, not ordinary Rust modules. Generate Rust into `OUT_DIR`. Current `.view` files must migrate together with build discovery, naming and invalidation.
+
+V1 includes escaped `{{ expression }}`, typed raw HTML, `@rs/@endrs`, conditionals, loops, includes, layouts/sections and namespaced components/slots. Follow the language specification rather than inventing syntax per feature. Rust blocks are trusted developer code compiled into the app; never compile template code submitted by panel users.
+
+Production views are compiled. Development v1 recompiles/restarts after source changes; do not claim instant interpretation of arbitrary Rust. Handle nested delimiters, strings/raw strings and comments correctly. Resolve declared view roots/namespaces and detect cycles. Props, slots, source locations and errors are explicit. HTML escaping does not make URLs, JavaScript or CSS safe automatically.
+
+Compiler and Tree-sitter use a shared syntax corpus and version. Zed suffix detection, highlights and Rust injections must be checked in Zed before claiming support. Highlighting alone does not provide rust-analyzer semantics. No fabricated grammar repository URL or revision in an extension manifest.
+
+## Panels, security and operations
+
+Build Core and business panels using the same public components and SDUI schema. UI schemas describe presentation; services own business operations. Enforce authorization on every server action, independently of UI visibility. Separate platform, app-admin and end-user authority; preserve tenant and record isolation.
+
+Live actions require typed input, session/CSRF validation, authorization, bounded work and a concurrency/replay policy. Signed client state must not contain secrets. Modules require deterministic lifecycle, explicit capabilities, compatibility checks, staging and recovery; code rollback is not data rollback.
+
+`public/` is the document root. Mutable state lives in configured user-owned POSIX storage; confine paths and symlinks. Config is Serde-backed and validated. Keep secrets out of source, generated HTML, client snapshots and logs. Document backups/restores, migrations, graceful shutdown, limits and observability before declaring an enterprise release.
+
+Keep handler elapsed time, whole server request duration and client-observed latency separate. Measure claims under a documented scenario; M0 microbenchmarks do not demonstrate production HA or hard real-time guarantees.
+
+## Workflow and acceptance
+
+Use the delivery plan's task IDs and acceptance criteria. Inspect the current code and documentation before choosing the next change. Implement complete vertical behavior with a representative product consumer, and keep implemented/planned status explicit. Update CLI templates and docs when changing the public DX.
+
+From repository root:
+
+```sh
+cargo fmt --manifest-path _crates/Cargo.toml --all --check
+cargo check --manifest-path _crates/Cargo.toml --workspace --all-targets --locked
+cargo clippy --manifest-path _crates/Cargo.toml --workspace --all-targets --locked -- -D warnings
+cargo test --manifest-path _crates/Cargo.toml --workspace --locked
+```
+
+Run checks appropriate to the change; documentation-only work needs link/consistency review rather than a full runtime suite. Compiler work requires rendering/error/compile-fail coverage; auth and filesystem work require denial and boundary cases. Report existing failures honestly; never hide them by relaxing policy. No server launch or production load test is required for a documentation change.
+
+Feluqa remains proprietary. Existing private registry restrictions remain in place. Public distribution, including extension/grammar sources, needs an explicit user decision; earlier discussion of crates.io is not a completed migration. Credentials stay in approved local credential storage. Do not infer ongoing authorization to publish from a prior release. Preserve required third-party notices.
