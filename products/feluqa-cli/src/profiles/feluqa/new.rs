@@ -2,6 +2,7 @@
 
 use crate::feluqa;
 use crate::std::convert::From;
+use crate::std::ffi::OsString;
 use crate::std::format;
 use crate::std::fs;
 use crate::std::option::Option;
@@ -12,7 +13,6 @@ use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
-use crate::std::ffi::OsString;
 
 #[feluqa::command(
     name = "new",
@@ -27,23 +27,15 @@ pub(crate) fn run(
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let result = match &host.context {
         crate::__feluqa_profile_feluqa::context::Context::Global => {
-            create_app(
-                &arguments,
-                &host.current,
-                ::core::option::Option::None,
-            )
+            create_app(&arguments, &host.current, None)
         }
         crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => {
-            create_app(
-                &arguments,
-                workspace,
-                ::core::option::Option::Some(workspace),
-            )
+            create_app(&arguments, workspace, Some(workspace))
         }
         crate::__feluqa_profile_feluqa::context::Context::App(_) => {
-            crate::std::result::Result::Err(
-            String::from("`feluqa new` is global; run it outside an application directory"),
-            )
+            Err(String::from(
+                "`feluqa new` is global; run it outside an application directory",
+            ))
         }
     };
     crate::__feluqa_profile_feluqa::context::finish(host, result)
@@ -93,13 +85,25 @@ fn create_app(
             ),
         ),
     };
-    let result = feluqa::console::generator::scaffold_web_project(
-        &target,
-        &slug,
-        &display_name,
-        &dependency.0,
-        &dependency.1,
-    );
+    let result = (|| {
+        feluqa::console::generator::write_templates(
+            &target,
+            WEB_TEMPLATES,
+            &[
+                ("@@SLUG@@", slug.as_str()),
+                ("@@NAME@@", display_name.as_str()),
+                ("@@FELUQA_DEPENDENCY@@", dependency.0.as_str()),
+                ("@@FELUQA_DEPENDENCY_FIELDS@@", dependency.1.as_str()),
+            ],
+        )?;
+        feluqa::console::generator::create_directories(
+            &target,
+            [
+                "src/modules/app/migrations/sqlite",
+                "src/modules/app/migrations/postgresql",
+            ],
+        )
+    })();
     if let Err(error) = result {
         let _ = fs::remove_dir_all(&target);
         return Err(error);
@@ -132,3 +136,150 @@ fn parse_arguments(arguments: &[OsString]) -> Result<(&str, &str), String> {
         _ => Err(String::from("usage: feluqa new <name> [--profile web]")),
     }
 }
+
+const WEB_TEMPLATES: &[feluqa::console::generator::Template<'_>] = &[
+    feluqa::console::generator::Template::new(
+        "Cargo.toml",
+        include_str!("templates/web/Cargo.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        ".cargo/config.toml",
+        include_str!("templates/web/cargo-config.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        ".gitignore",
+        include_str!("templates/web/gitignore.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "README.md",
+        include_str!("templates/web/README.md.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "feluqa.toml",
+        include_str!("templates/web/feluqa.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "build.rs",
+        include_str!("templates/web/build.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/main.rs",
+        include_str!("templates/web/main.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/service_provider.rs",
+        include_str!("templates/web/service-provider.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/config.rs",
+        include_str!("templates/web/config.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/modules/mod.rs",
+        include_str!("templates/web/modules-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/modules/system/mod.rs",
+        include_str!("templates/web/system-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/modules/live.rs",
+        include_str!("templates/web/live-module.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/modules/seeders/mod.rs",
+        include_str!("templates/web/modules-seeders-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/routes/mod.rs",
+        include_str!("templates/web/routes-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/routes/web.rs",
+        include_str!("templates/web/routes-web.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/mod.rs",
+        include_str!("templates/web/app-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/models/mod.rs",
+        include_str!("templates/web/models-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/services/mod.rs",
+        include_str!("templates/web/services-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/mod.rs",
+        include_str!("templates/web/controllers-mod.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/resources.rs",
+        include_str!("templates/web/resources.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/site.rs",
+        include_str!("templates/web/site.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/panels.rs",
+        include_str!("templates/web/panels.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/system.rs",
+        include_str!("templates/web/system.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/live.rs",
+        include_str!("templates/web/live.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/system/administration.rs",
+        include_str!("templates/web/system-administration.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/app/controllers/system/operations.rs",
+        include_str!("templates/web/system-operations.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "resources/views/pages/home.view.rs",
+        include_str!("templates/web/home.view.rs.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/database.development.toml",
+        include_str!("templates/web/database.development.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/database.staging.toml",
+        include_str!("templates/web/database.staging.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/database.production.toml",
+        include_str!("templates/web/database.production.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/app.development.toml",
+        include_str!("templates/web/app.development.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/app.staging.toml",
+        include_str!("templates/web/app.staging.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "config/app.production.toml",
+        include_str!("templates/web/app.production.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "src/modules/app/module.toml",
+        include_str!("templates/web/module.toml.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "public/assets/site.css",
+        include_str!("templates/web/site.css.tmpl"),
+    ),
+    feluqa::console::generator::Template::new(
+        "storage/.gitkeep",
+        include_str!("templates/web/storage.gitkeep.tmpl"),
+    ),
+];

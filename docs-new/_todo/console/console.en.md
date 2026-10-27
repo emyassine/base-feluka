@@ -7,7 +7,7 @@ product; its `feluqa`, `feluqa-dev` and `nadim` profiles are its configuration
 of this general capability, not a rule that profiles belong to that product.
 The API is available when the `console` feature is enabled.
 
-**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help, basic portable terminal prompts/output, and built-in file/template generation. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Command files own command behavior and choices; reusable file creation and embedded scaffold templates belong to `feluqa::console::generator`. Only deliberately reused command bodies belong in a shared-commands directory. The richer prompt set, shell completions and task/progress widgets remain in progress.
+**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help, basic portable terminal prompts/output, and built-in file/template operations. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Products own their template data and choose which files to generate; `feluqa::console::generator` provides the cross-platform operations for safe relative paths, directory creation, non-overwriting file writes, placeholder replacement and module registration. Only deliberately reused command bodies belong in a shared-commands directory. The richer prompt set, shell completions and task/progress widgets remain in progress.
 
 ## Command names
 
@@ -112,6 +112,7 @@ products/feluqa-cli/src/
     │   ├── build.rs                # one command per file
     │   ├── make/
     │   │   └── migration.rs
+    │   ├── templates/web/          # scaffold data owned by this product
     │   └── context.rs              # profile context provider and application detection
     ├── nadim/                      # commands_directory = "profiles/nadim"
     └── feluqa-dev/                 # commands_directory = "profiles/feluqa-dev"
@@ -133,10 +134,10 @@ handler router. `MakeConsole` owns profile selection, help, parsing, command
 discovery and dispatch. The profile's `context.rs` registers its host factory
 and resolves application/workspace context. File-writing, module-registration,
 naming and embedded web-scaffold templates are built into
-`feluqa::console::generator`; individual command files call those APIs while
-keeping command-specific decisions in the command itself. A product can use
-these facilities without adding a generator module or template-copying code to
-its CLI.
+`feluqa::console::generator`. Products keep template data beside their own
+commands and pass the selected templates and placeholder values to the
+console engine. This keeps the generic filesystem work in Console while each
+product owns its scaffold design and command-specific decisions.
 
 `feluqa::console::MakeConsole` handles argument conversion, profile selection,
 help generation, command discovery and dispatch. The product declares its
