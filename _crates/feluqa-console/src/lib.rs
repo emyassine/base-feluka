@@ -21,9 +21,11 @@ pub use feluqa_console_macros::command;
 use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 use core::any::Any;
+use core::clone::Clone;
 use core::cmp::Ord;
 use core::fmt;
 use core::iter::{IntoIterator, Iterator};
+use core::matches;
 use core::option::Option;
 use core::option::Option::{None, Some};
 use core::result::Result;
@@ -229,6 +231,56 @@ pub struct Profiles {
     entries: &'static [Profile],
 }
 
+/// Run a registered command for the selected profile, or print generated help.
+/// The product supplies its own command host as opaque state; console owns
+/// profile selection, command lookup, aliases, help and handler dispatch.
+#[cfg(feature = "std")]
+pub fn run(profiles: &'static [Profile], binary_name: &str, arguments: &[String], host: &mut dyn Any) -> Result<(), String> {
+    let profiles = Profiles::new(profiles).map_err(|error| error.to_string())?;
+    let (requested, arguments) = selected_profile(arguments)?;
+    let profile = profiles.select(requested.as_deref(), Some(binary_name)).map_err(|error| error.to_string())?;
+    let registry = CommandRegistry::discover().map_err(|error| error.to_string())?;
+    if arguments.is_empty() || matches!(arguments.first().map(String::as_str), Some("--help" | "-h")) {
+        registry.print_profile_help(profile, None, arguments.iter().any(|word| word == "--all")).map_err(|error| error.to_string())?;
+        return Ok(());
+    }
+    if arguments.first().is_some_and(|word| word == "help") {
+        let topic = arguments.get(1..).unwrap_or_default().iter().filter(|word| word.as_str() != "--all").map(String::as_str).collect::<Vec<_>>().join(" ");
+        let topic = if topic.is_empty() { None } else { Some(topic.as_str()) };
+        registry.print_profile_help(profile, topic, arguments.iter().any(|word| word == "--all")).map_err(|error| error.to_string())?;
+        return Ok(());
+    }
+    if let Some(help_at) = arguments.iter().position(|word| word == "--help" || word == "-h") {
+        let topic = arguments[..help_at].iter().map(String::as_str).collect::<Vec<_>>().join(" ");
+        let topic = if topic.is_empty() { None } else { Some(topic.as_str()) };
+        registry.print_profile_help(profile, topic, false).map_err(|error| error.to_string())?;
+        return Ok(());
+    }
+    let parsed = parse(&registry, profile.id, arguments).map_err(|error| error.to_string())?;
+    let mut context = CommandContext::new(profile.id, parsed.arguments, host);
+    (parsed.descriptor.handler)(&mut context).map_err(|error| error.to_string())
+}
+
+#[cfg(feature = "std")]
+fn selected_profile(arguments: &[String]) -> Result<(Option<String>, &[String]), String> {
+    let mut index = 0;
+    let mut selected = None;
+    while let Some(argument) = arguments.get(index) {
+        if let Some(value) = argument.strip_prefix("--profile=") {
+            if value.is_empty() { return Err(String::from("`--profile=` needs a profile name")); }
+            selected = Some(value.to_string());
+            index += 1;
+        } else if argument == "--profile" {
+            let value = arguments.get(index + 1).ok_or_else(|| String::from("`--profile` needs a profile name"))?;
+            selected = Some(value.clone());
+            index += 2;
+        } else {
+            break;
+        }
+    }
+    Ok((selected, &arguments[index..]))
+}
+
 impl Profiles {
     /// Create a profile set and verify unique IDs and aliases.
     pub fn new(entries: &'static [Profile]) -> Result<Self, RegistryError> {
@@ -318,5 +370,67 @@ pub mod terminal {
         println!("{}", headers.join("  |  "));
         println!("{}", "─".repeat(headers.join("  |  ").len()));
         for row in rows { println!("{}", row.join("  |  ")); }
+    }
+}
+
+/// Build-script integration for source-discovered command files.
+#[cfg(feature = "std")]
+pub mod build {
+    #![no_implicit_prelude]
+
+    use std::convert::From;
+    use std::env;
+    use std::ffi::OsStr;
+    use std::fmt::Write;
+    use std::fs;
+    use std::option::Option::Some;
+    use std::path::{Path, PathBuf};
+    use std::println;
+    use std::result::Result;
+    use std::result::Result::{Err, Ok};
+    use std::string::{String, ToString};
+    use std::vec::Vec;
+
+    /// Scan each direct profile directory, compile its Rust command files, and
+    /// write generated module declarations to `OUT_DIR/profile_commands.rs`.
+    /// Call once from a product `build.rs` with its profile directory, such as
+    /// `feluqa::console::build::compile_profiles("src/profiles")`.
+    pub fn compile_profiles(profile_directory: &str) -> Result<(), String> {
+        let manifest = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").ok_or("CARGO_MANIFEST_DIR is missing")?);
+        let root = manifest.join(profile_directory);
+        let output = PathBuf::from(env::var_os("OUT_DIR").ok_or("OUT_DIR is missing")?).join("profile_commands.rs");
+        println!("cargo:rerun-if-changed={}", root.display());
+        let mut files = Vec::new();
+        collect(&root, &mut files)?;
+        files.sort();
+        let mut source = String::new();
+        for file in files {
+            let relative = file.strip_prefix(&root).map_err(|error| error.to_string())?;
+            let module = module_name(relative);
+            println!("cargo:rerun-if-changed={}", file.display());
+            std::writeln!(&mut source, "#[path = {:?}] mod {module};", file).map_err(|error| error.to_string())?;
+        }
+        fs::write(output, source).map_err(|error| error.to_string())
+    }
+
+    fn collect(directory: &Path, files: &mut Vec<PathBuf>) -> Result<(), String> {
+        if !directory.exists() { return Ok(()); }
+        for entry in fs::read_dir(directory).map_err(|error| error.to_string())? {
+            let path = entry.map_err(|error| error.to_string())?.path();
+            if path.is_dir() { collect(&path, files)?; }
+            else if path.extension() == Some(OsStr::new("rs")) { files.push(path); }
+        }
+        Ok(())
+    }
+
+    fn module_name(path: &Path) -> String {
+        let mut name = String::from("__feluqa_command");
+        for component in path.components() {
+            name.push('_');
+            for character in component.as_os_str().to_string_lossy().chars() {
+                name.push(if character.is_ascii_alphanumeric() { character.to_ascii_lowercase() } else { '_' });
+            }
+        }
+        name
     }
 }

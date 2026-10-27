@@ -1,1 +1,1 @@
-crate::runtime::commands::version(context)
+crate::handlers::version(context)

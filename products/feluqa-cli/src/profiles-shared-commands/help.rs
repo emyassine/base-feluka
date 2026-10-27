@@ -1,1 +1,1 @@
-crate::runtime::commands::help(context)
+crate::handlers::help(context)

@@ -4,7 +4,7 @@
 extern crate feluqa;
 extern crate std;
 
-use crate::commands::{app, global, make};
+use crate::operations::{app, global, make};
 use crate::context::{self, Application, Context};
 use crate::context::CliHost;
 use feluqa::console::{CommandContext, CommandResult};

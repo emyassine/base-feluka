@@ -1,1 +1,1 @@
-crate::runtime::commands::make_module(context)
+crate::handlers::make_module(context)

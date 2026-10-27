@@ -1,1 +1,1 @@
-crate::runtime::commands::make_seeder(context)
+crate::handlers::make_seeder(context)

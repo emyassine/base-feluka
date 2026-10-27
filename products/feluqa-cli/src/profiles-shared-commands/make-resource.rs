@@ -1,1 +1,1 @@
-crate::runtime::commands::make_resource(context)
+crate::handlers::make_resource(context)

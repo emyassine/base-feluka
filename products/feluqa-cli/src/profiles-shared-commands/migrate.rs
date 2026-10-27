@@ -1,1 +1,1 @@
-crate::runtime::commands::migrate(context)
+crate::handlers::migrate(context)

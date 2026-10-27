@@ -1,1 +1,1 @@
-crate::runtime::commands::make_panel(context)
+crate::handlers::make_panel(context)
