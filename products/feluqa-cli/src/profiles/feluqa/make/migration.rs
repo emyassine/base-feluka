@@ -1,32 +1,17 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(name = "make migration", description = "Generate dialect-specific ordered SQL migrations", usage = "feluqa make migration <arguments>", profiles = ["feluqa", "feluqa-dev"], context = "app")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = generate(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
-extern crate serde;
-extern crate toml;
-
-use crate::std::convert::From;
-use crate::std::format;
-use crate::std::println;
-use serde::Deserialize;
-
 use crate::__feluqa_profile_feluqa::context::Application;
+use crate::std::convert::From;
 use crate::std::ffi::OsString;
+use crate::std::format;
 use crate::std::fs::{self, OpenOptions};
 use crate::std::io::Write;
 use crate::std::iter::Iterator;
 use crate::std::option::Option;
 use crate::std::option::Option::{None, Some};
 use crate::std::path::{Path, PathBuf};
+use crate::std::println;
 use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
@@ -34,6 +19,27 @@ use crate::std::string::String;
 use crate::std::time::{SystemTime, UNIX_EPOCH};
 use crate::std::vec;
 use crate::std::vec::Vec;
+use serde::Deserialize;
+
+extern crate serde;
+extern crate toml;
+
+#[feluqa::command(
+    name = "make migration",
+    description = "Generate dialect-specific ordered SQL migrations",
+    usage = "feluqa make migration <arguments>",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = generate(&arguments, application);
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -57,7 +63,7 @@ fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCod
     let raw_name = arguments[0]
         .to_str()
         .ok_or_else(|| String::from("migration name must be valid UTF-8"))?;
-    let migration_name = crate::__feluqa_profile_feluqa::generator::slugify(raw_name)?;
+    let migration_name = feluqa::console::generator::slugify(raw_name)?;
     let mut module = String::from("app");
     let mut index = 1;
     while index < arguments.len() {
@@ -69,7 +75,7 @@ fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCod
                 "usage: feluqa make migration <name> [--module <name>]",
             ));
         }
-        module = crate::__feluqa_profile_feluqa::generator::slugify(
+        module = feluqa::console::generator::slugify(
             arguments[index + 1]
                 .to_str()
                 .ok_or_else(|| String::from("module name must be valid UTF-8"))?,
@@ -212,7 +218,7 @@ fn ensure_module_manifest(application: &Application, module: &str) -> Result<Vec
             "id = \"{}.{}\"\nsupported_databases = [\"sqlite\", \"postgresql\"]\ndatabase_connections = [\"default\"]\n",
             application.package_name, module
         );
-        crate::__feluqa_profile_feluqa::generator::write_file(application, relative, &source)?;
+        feluqa::console::generator::write_file(&application.directory, relative, &source)?;
         ModuleManifest {
             id: format!("{}.{}", application.package_name, module),
             supported_databases: vec![String::from("sqlite"), String::from("postgresql")],

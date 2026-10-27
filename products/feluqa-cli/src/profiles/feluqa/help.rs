@@ -3,8 +3,15 @@
 use crate::feluqa;
 use crate::std::string::ToString;
 
-#[feluqa::command(name = "help", description = "Show commands available in the selected profile", profiles = ["feluqa", "nadim", "feluqa-dev"], context = "any")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
+#[feluqa::command(
+    name = "help",
+    description = "Show commands available in the selected profile",
+    profiles = ["feluqa", "nadim", "feluqa-dev"],
+    context = "any",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
     let registry = feluqa::console::CommandRegistry::discover()
         .map_err(|error| error.to_string())?;
     let topic = context.arguments().join(" ");

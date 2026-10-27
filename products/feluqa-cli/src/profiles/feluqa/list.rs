@@ -14,8 +14,15 @@ use crate::std::result::Result::Ok;
 use crate::std::string::String;
 use crate::std::vec::Vec;
 
-#[feluqa::command(name = "list", description = "List applications in the current Feluqa workspace", profiles = ["feluqa"], context = "workspace")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
+#[feluqa::command(
+    name = "list",
+    description = "List applications in the current Feluqa workspace",
+    profiles = ["feluqa"],
+    context = "workspace",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let workspace = match &host.context {
         crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => workspace.clone(),

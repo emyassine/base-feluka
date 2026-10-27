@@ -3,9 +3,22 @@
 use crate::feluqa;
 use crate::std::convert::From;
 use crate::std::string::String;
+use crate::std::ffi::OsString;
+use crate::std::process::{Command, ExitCode};
+use crate::std::format;
+use crate::std::result::Result;
+use crate::std::result::Result::{Err, Ok};
+use crate::__feluqa_profile_feluqa::context::Application;
 
-#[feluqa::command(name = "migrate", description = "Apply application migrations", profiles = ["feluqa", "feluqa-dev"], context = "app-or-workspace")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
+#[feluqa::command(
+    name = "migrate",
+    description = "Apply application migrations",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app-or-workspace",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
     let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let result = match &host.context {
@@ -35,13 +48,6 @@ pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::
     };
     crate::__feluqa_profile_feluqa::context::finish(host, result)
 }
-
-use crate::std::ffi::OsString;
-use crate::std::process::{Command, ExitCode};
-use crate::std::format;
-use crate::std::result::Result;
-use crate::std::result::Result::{Err, Ok};
-use crate::__feluqa_profile_feluqa::context::Application;
 
 fn execute(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
     if !arguments.is_empty() {

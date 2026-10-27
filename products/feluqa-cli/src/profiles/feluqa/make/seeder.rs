@@ -1,16 +1,6 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(name = "make seeder", description = "Generate a seeder separately from migrations", usage = "feluqa make seeder <arguments>", profiles = ["feluqa", "feluqa-dev"], context = "app")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = generate(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
 use crate::std::convert::From;
 use crate::std::format;
 use crate::std::fs;
@@ -18,7 +8,6 @@ use crate::std::iter::Iterator;
 use crate::std::println;
 use crate::std::result::Result::Err;
 use crate::std::result::Result::Ok;
-
 use crate::__feluqa_profile_feluqa::context::Application;
 use crate::std::ffi::OsString;
 use crate::std::path::PathBuf;
@@ -26,14 +15,31 @@ use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::string::String;
 
+#[feluqa::command(
+    name = "make seeder",
+    description = "Generate a seeder separately from migrations",
+    usage = "feluqa make seeder <arguments>",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = generate(&arguments, application);
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
+
 fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
-    let slug = crate::__feluqa_profile_feluqa::generator::name(arguments, "usage: feluqa make seeder <name>")?;
+    let slug = feluqa::console::generator::name(arguments, "usage: feluqa make seeder <name>")?;
     let id = format!("{}.{}", application.package_name, slug);
     let source = format!(
         "#![no_implicit_prelude]\n\nuse crate::feluqa;\n\nuse feluqa::database::orm::{{DatabaseConnection, DbErr}};\nuse feluqa::prelude::{{Ok, Result}};\n\n/// Stable identifier used by `feluqa seed {id}`.\npub const ID: &str = \"{id}\";\n\n/// Add idempotent seed data for this module.\npub async fn run(_database: &DatabaseConnection) -> Result<(), DbErr> {{\n    Ok(())\n}}\n"
     );
-    crate::__feluqa_profile_feluqa::generator::write_file(
-        application,
+    feluqa::console::generator::write_file(
+        &application.directory,
         PathBuf::from("src/modules/seeders").join(format!("{slug}.rs")),
         &source,
     )?;

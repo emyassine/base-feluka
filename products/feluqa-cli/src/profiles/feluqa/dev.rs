@@ -1,31 +1,6 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(
-    name = "dev",
-    description = "Build and run the current application with file watching",
-    profiles = ["feluqa", "feluqa-dev"],
-    context = "app"
-)]
-pub(crate) fn run(
-    context: &mut feluqa::console::CommandContext<'_>,
-) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = if arguments.is_empty() {
-        watch(application)
-    } else {
-        Err(crate::std::string::String::from("usage: feluqa dev"))
-    };
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
-extern crate serde;
-extern crate serde_json;
-extern crate std;
-
 use crate::__feluqa_profile_feluqa::context::Application;
 use crate::std::collections::BTreeMap;
 use crate::std::convert::From;
@@ -47,6 +22,30 @@ use crate::std::thread;
 use crate::std::time::{Duration, SystemTime};
 use crate::std::vec::Vec;
 use serde::Deserialize;
+
+extern crate serde;
+extern crate serde_json;
+extern crate std;
+
+#[feluqa::command(
+    name = "dev",
+    description = "Build and run the current application with file watching",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = if arguments.is_empty() {
+        watch(application)
+    } else {
+        Err(crate::std::string::String::from("usage: feluqa dev"))
+    };
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
 
 const POLL_INTERVAL: Duration = Duration::from_millis(400);
 const SHUTDOWN_TIMEOUT: Duration = Duration::from_secs(5);

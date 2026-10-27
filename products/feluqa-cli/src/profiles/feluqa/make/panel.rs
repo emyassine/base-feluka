@@ -1,16 +1,6 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(name = "make panel", description = "Generate a panel provider", usage = "feluqa make panel <arguments>", profiles = ["feluqa", "feluqa-dev"], context = "app")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = generate(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
 use crate::std::convert::From;
 use crate::std::format;
 use crate::std::fs;
@@ -18,7 +8,6 @@ use crate::std::iter::Iterator;
 use crate::std::println;
 use crate::std::result::Result::Err;
 use crate::std::result::Result::Ok;
-
 use crate::__feluqa_profile_feluqa::context::Application;
 use crate::std::ffi::OsString;
 use crate::std::path::PathBuf;
@@ -26,16 +15,33 @@ use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::string::String;
 
+#[feluqa::command(
+    name = "make panel",
+    description = "Generate a panel provider",
+    usage = "feluqa make panel <arguments>",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = generate(&arguments, application);
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
+
 fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
-    let slug = crate::__feluqa_profile_feluqa::generator::name(arguments, "usage: feluqa make panel <name>")?;
-    let title = crate::__feluqa_profile_feluqa::generator::pascal_case(&slug).replace('_', " ");
+    let slug = feluqa::console::generator::name(arguments, "usage: feluqa make panel <name>")?;
+    let title = feluqa::console::generator::pascal_case(&slug).replace('_', " ");
     let module = format!("#![no_implicit_prelude]\n\npub mod panel;\n");
     let source = format!(
         "#![no_implicit_prelude]\n\nuse crate::feluqa;\nuse feluqa::panel::{{Panel, PanelCatalog, PanelCatalogError, PanelKind, PanelProvider}};\nuse feluqa::prelude::Result;\n\npub struct {title}PanelProvider;\nimpl PanelProvider for {title}PanelProvider {{\n    fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {{\n        catalog.register_panel(Panel::single_page(\n            \"{slug}\", \"{title}\", \"/admin/{slug}\", PanelKind::Business,\n            \"business.{slug}.manage\", \"{title}\",\n        )?)\n    }}\n}}\n"
     );
     let module_dir = PathBuf::from("src/modules").join(&slug);
-    crate::__feluqa_profile_feluqa::generator::write_file(application, module_dir.join("mod.rs"), &module)?;
-    crate::__feluqa_profile_feluqa::generator::write_file(application, module_dir.join("panel.rs"), &source)?;
+    feluqa::console::generator::write_file(&application.directory, module_dir.join("mod.rs"), &module)?;
+    feluqa::console::generator::write_file(&application.directory, module_dir.join("panel.rs"), &source)?;
     register_in_catalog(application, &slug, &title)?;
     println!("Created src/modules/{slug} and registered its panel provider.");
     Ok(ExitCode::SUCCESS)

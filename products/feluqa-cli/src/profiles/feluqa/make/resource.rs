@@ -1,16 +1,6 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(name = "make resource", description = "Generate a permission-aware CRUD resource", usage = "feluqa make resource <arguments>", profiles = ["feluqa", "feluqa-dev"], context = "app")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = generate(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
 use crate::__feluqa_profile_feluqa::context::Application;
 use crate::std::convert::From;
 use crate::std::ffi::OsString;
@@ -25,6 +15,23 @@ use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
 
+#[feluqa::command(
+    name = "make resource",
+    description = "Generate a permission-aware CRUD resource",
+    usage = "feluqa make resource <arguments>",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = generate(&arguments, application);
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
+
 fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
     let Some(name_argument) = arguments.first() else {
         return Err(String::from(
@@ -34,8 +41,8 @@ fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCod
     let raw_name = name_argument
         .to_str()
         .ok_or_else(|| String::from("model name must be valid UTF-8"))?;
-    let slug = crate::__feluqa_profile_feluqa::generator::slugify(raw_name)?;
-    let model_name = crate::__feluqa_profile_feluqa::generator::pascal_case(&slug);
+    let slug = feluqa::console::generator::slugify(raw_name)?;
+    let model_name = feluqa::console::generator::pascal_case(&slug);
     let mut connection_name = String::from("default");
     if arguments.len() > 1 {
         if arguments.len() != 3 || arguments[1].to_str() != Some("--connection") {
@@ -94,13 +101,13 @@ fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCod
         &connection_name,
         &resource_path,
     );
-    crate::__feluqa_profile_feluqa::generator::write_file(
-        application,
+    feluqa::console::generator::write_file(
+        &application.directory,
         PathBuf::from("src/app/controllers").join(format!("{file_slug}.rs")),
         &source,
     )?;
-    crate::__feluqa_profile_feluqa::generator::register_module(
-        application,
+    feluqa::console::generator::register_module(
+        &application.directory,
         PathBuf::from("src/app/controllers"),
         &file_slug,
     )?;

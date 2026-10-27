@@ -1,16 +1,6 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-
-#[feluqa::command(name = "build", description = "Build the current application for release", profiles = ["feluqa", "feluqa-dev"], context = "app")]
-pub(crate) fn run(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
-    let result = execute(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
-}
-
 use crate::std::convert::From;
 use crate::std::ffi::OsString;
 use crate::std::format;
@@ -19,6 +9,22 @@ use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
 use crate::__feluqa_profile_feluqa::context::Application;
+
+#[feluqa::command(
+    name = "build",
+    description = "Build the current application for release",
+    profiles = ["feluqa", "feluqa-dev"],
+    context = "app",
+)]
+pub(crate) fn run(
+    context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let result = execute(&arguments, application);
+    crate::__feluqa_profile_feluqa::context::finish(host, result)
+}
 
 fn execute(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
     if !arguments.is_empty() {
