@@ -1,8 +1,11 @@
 # Console commands and terminal interaction
 
-The `feluqa-console` crate is the shared contract for Feluqa command-line
-products and application commands. It is available to CLI commands through
-`feluqa::console` when the `console` feature is enabled.
+The `feluqa-console` crate provides the console engine/API exposed as
+`feluqa::console`. Any product or Rust application using this API can define
+console profiles and contribute commands. `products/feluqa-cli` is one such
+product; its `feluqa`, `feluqa-dev` and `nadim` profiles are its configuration
+of this general capability, not a rule that profiles belong to that product.
+The API is available when the `console` feature is enabled.
 
 **Implementation status:** the crate currently contains a small command
 contract only. Distributed command registration, metadata-driven help,
@@ -207,22 +210,26 @@ checks still belong in the command implementation.
 
 ## Console profiles and development commands
 
-A console profile is a named CLI assembled from registered commands. It
-defines a profile ID, display name, default help behavior and the command
-descriptors enabled for that profile. The same console registry and runtime
-can serve several products:
+A console profile is a named command set provided through
+`feluqa::console`. Any consuming product can define one or more profiles. Each
+profile defines its ID, display name, default help behavior and enabled command
+descriptors. For example, `feluqa-cli` can define these profiles:
 
 | Profile | Intended command surface |
 |---|---|
-| `feluqa` | Installed platform and application commands. |
+| `feluqa` | Platform and application commands for regular use. |
 | `feluqa-dev` | Feluqa developer tools plus explicitly registered development-only commands. |
-| `nadim` | A separate personal CLI profile using the same console, prompts, output and command registry. |
+| `nadim` | Personal commands, packaged as a profile in the same CLI product. |
 
-An installed launcher name such as `feluqa`, `feluqa-dev` or `nadim` selects
-its matching profile. A single launcher may instead accept an explicit
-`--profile=<id>`. The selected profile filters command registration and help;
-profile selection is not an authorization mechanism. Commands still apply
-their own context, permission and environment checks.
+Within `feluqa-cli`, the normal invocation selects the `feluqa` profile. Users
+can select another profile with `feluqa --profile=feluqa-dev` or
+`feluqa --profile=nadim`; convenience launchers named `feluqa-dev` and `nadim`
+may select those same profiles. Those launchers are entry points to
+`feluqa-cli`, not separate CLI products. Other consuming products define and
+select their own profiles through the same console API. The selected profile
+filters command help and dispatch; profile selection is not an authorization
+mechanism. Commands still apply their own context, permission and environment
+checks.
 
 Product development commands may live in a configured folder such as
 `development/commands/` and use
@@ -237,9 +244,10 @@ and profiles.
 There is no safe way for a running Rust binary to execute a new `.rs` file just
 because it appeared in a folder. Runtime source loading would need a separate
 compiler/plugin ABI and explicit trust model; that is not the default. The
-developer workflow compiles commands before execution. This permits one console
-core to power multiple CLIs without confusing CLI profiles with Feluqa platform
-modules or Rust modules.
+developer workflow compiles commands before execution. This lets any product
+using the console API expose compiled development commands in a dedicated
+profile without confusing console profiles with Feluqa platform modules or
+Rust modules.
 
 ## Rust toolchain commands
 
@@ -371,7 +379,8 @@ Initial implementation sequence:
 5. Add command attributes and console-owned distributed registration; generate
    help, dispatch, completions, aliases, hidden status and context policy from
    the same descriptors.
-6. Add `feluqa`, `feluqa-dev` and opt-in `nadim` profiles; compile product-local
+6. Add generic console profile support, then configure `feluqa`, `feluqa-dev`
+   and opt-in `nadim` profiles in `feluqa-cli`; compile product-local
    `development/commands/` into developer builds only.
 7. Add safe rustup-backed toolchain commands and verify TTY/piped behavior on
    supported operating systems and terminals.
