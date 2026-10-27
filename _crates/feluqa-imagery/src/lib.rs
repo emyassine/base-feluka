@@ -139,11 +139,17 @@ pub fn panel_heroicon(name: &str) -> Option<&'static str> {
         "o-home" => Some(include_str!("../assets/icons/heroicons/o-home.svg")),
         "o-users" => Some(include_str!("../assets/icons/heroicons/o-users.svg")),
         "o-shield-check" => Some(include_str!("../assets/icons/heroicons/o-shield-check.svg")),
-        "o-building-office-2" => Some(include_str!("../assets/icons/heroicons/o-building-office-2.svg")),
+        "o-building-office-2" => Some(include_str!(
+            "../assets/icons/heroicons/o-building-office-2.svg"
+        )),
         "o-cube" => Some(include_str!("../assets/icons/heroicons/o-cube.svg")),
         "o-circle-stack" => Some(include_str!("../assets/icons/heroicons/o-circle-stack.svg")),
-        "o-clipboard-document-list" => Some(include_str!("../assets/icons/heroicons/o-clipboard-document-list.svg")),
-        "o-clipboard-document-check" => Some(include_str!("../assets/icons/heroicons/o-clipboard-document-check.svg")),
+        "o-clipboard-document-list" => Some(include_str!(
+            "../assets/icons/heroicons/o-clipboard-document-list.svg"
+        )),
+        "o-clipboard-document-check" => Some(include_str!(
+            "../assets/icons/heroicons/o-clipboard-document-check.svg"
+        )),
         "o-squares-2x2" => Some(include_str!("../assets/icons/heroicons/o-squares-2x2.svg")),
         "o-bars-3" => Some(include_str!("../assets/icons/heroicons/o-bars-3.svg")),
         "o-x-mark" => Some(include_str!("../assets/icons/heroicons/o-x-mark.svg")),

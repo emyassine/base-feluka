@@ -43,16 +43,35 @@ impl PanelProvider for SystemPanelProvider {
             .brand_name("Feluqa Core")
             .max_content_width(ContentWidth::SevenExtraLarge)
             .sidebar_collapsible(true)
-            .sidebar_fully_collapsible(true)
             .login()
             .navigation_group(NavigationGroup {
                 label: Some(String::from("Platform")),
                 items: vec![
                     navigation_item("Overview", "/system", "o-home", None)?,
-                    navigation_item("Users", "/system/users", "o-users", Some("system.users.read"))?,
-                    navigation_item("Roles", "/system/roles", "o-shield-check", Some("system.roles.read"))?,
-                    navigation_item("Tenants", "/system/tenants", "o-building-office-2", Some("system.tenants.read"))?,
-                    navigation_item("Modules", "/system/modules", "o-cube", Some("system.modules.read"))?,
+                    navigation_item(
+                        "Users",
+                        "/system/users",
+                        "o-users",
+                        Some("system.users.read"),
+                    )?,
+                    navigation_item(
+                        "Roles",
+                        "/system/roles",
+                        "o-shield-check",
+                        Some("system.roles.read"),
+                    )?,
+                    navigation_item(
+                        "Tenants",
+                        "/system/tenants",
+                        "o-building-office-2",
+                        Some("system.tenants.read"),
+                    )?,
+                    navigation_item(
+                        "Modules",
+                        "/system/modules",
+                        "o-cube",
+                        Some("system.modules.read"),
+                    )?,
                     navigation_item(
                         "Connections",
                         "/system/connections",
@@ -65,7 +84,12 @@ impl PanelProvider for SystemPanelProvider {
                         "o-clipboard-document-list",
                         Some("system.migrations.read"),
                     )?,
-                    navigation_item("Audit log", "/system/audit", "o-clipboard-document-check", Some("system.audit.read"))?,
+                    navigation_item(
+                        "Audit log",
+                        "/system/audit",
+                        "o-clipboard-document-check",
+                        Some("system.audit.read"),
+                    )?,
                 ],
             })
             .page(page(

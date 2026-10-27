@@ -238,17 +238,27 @@ impl PanelOptions {
         let mut html = String::from(
             "<nav class=\"fi-sidebar-nav\" aria-label=\"Panel navigation\"><ul class=\"fi-sidebar-nav-groups\">",
         );
-        for group in self.visible_navigation(principal, authorizer) {
-            html.push_str("<li class=\"fi-sidebar-group\">");
+        for (index, group) in self
+            .visible_navigation(principal, authorizer)
+            .into_iter()
+            .enumerate()
+        {
+            let group_id = format!("fi-sidebar-group-items-{index}");
+            html.push_str("<li class=\"fi-sidebar-group fi-collapsible\">");
             if let Some(label) = &group.label {
                 write!(
                     html,
-                    "<div class=\"fi-sidebar-group-label\">{}</div>",
-                    escape_html(label)
+                    "<button class=\"fi-sidebar-group-btn\" type=\"button\" data-feluqa-group-toggle aria-expanded=\"true\" aria-controls=\"{group_id}\" data-group-label=\"{}\"><span class=\"fi-sidebar-group-label\">{}</span><span class=\"fi-sidebar-group-collapse-btn\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M14.78 12.53a.75.75 0 0 1-1.06 0L10 8.81l-3.72 3.72a.75.75 0 1 1-1.06-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06Z\" clip-rule=\"evenodd\"/></svg></span></button>",
+                    escape_html(label),
+                    escape_html(label),
                 )
                 .map_err(|_| PanelError::InvalidNavigation)?;
             }
-            html.push_str("<ul class=\"fi-sidebar-group-items\">");
+            write!(
+                html,
+                "<ul id=\"{group_id}\" class=\"fi-sidebar-group-items\" data-feluqa-group-items>"
+            )
+            .map_err(|_| PanelError::InvalidNavigation)?;
             for item in group.items {
                 let active = item.path == active_path;
                 let active_class = if active { " fi-active" } else { "" };
@@ -1469,6 +1479,18 @@ impl PanelCatalog {
     /// Iterate registered panels in stable identifier order.
     pub fn panels(&self) -> impl Iterator<Item = &Panel> {
         self.panels.panels()
+    }
+
+    /// Resolve the shell brand from the registered panel provider.
+    pub fn brand_name(&self, panel_id: &str) -> Option<&str> {
+        self.panels.panels.get(panel_id).map(|panel| {
+            panel
+                .options
+                .appearance
+                .brand_name
+                .as_deref()
+                .unwrap_or(panel.title.as_str())
+        })
     }
 
     /// Render the permission-filtered navigation declared by one registered panel.
