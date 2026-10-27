@@ -8,5 +8,5 @@ use std::iter::Iterator;
 use std::process::ExitCode;
 
 fn main() -> ExitCode {
-    feluqa_cli::run_cli("nadim", std::env::args_os().skip(1).collect())
+    feluqa_cli::run_cli("nadim", std::env::args_os().skip(1))
 }

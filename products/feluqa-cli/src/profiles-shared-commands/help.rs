@@ -1,1 +1,0 @@
-crate::handlers::help(context)

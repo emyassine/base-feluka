@@ -7,7 +7,7 @@ product; its `feluqa`, `feluqa-dev` and `nadim` profiles are its configuration
 of this general capability, not a rule that profiles belong to that product.
 The API is available when the `console` feature is enabled.
 
-**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help and basic portable terminal prompts/output. The `feluqa-cli` product is being reorganized around profile command directories and one source file per command. The full prompt set, shell completions, rich task/progress widgets and build-time profile-directory scanner remain in progress.
+**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help and basic portable terminal prompts/output. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. The profile owns its implementation and scaffold templates; only deliberately reused command bodies belong in a shared-commands directory. The richer prompt set, shell completions and task/progress widgets remain in progress.
 
 ## Command names
 
@@ -100,46 +100,48 @@ binary never interprets or executes arbitrary Rust source from disk.
 
 ### Profile-first product layout
 
-The product entry point declares each profile's ID, binary name, command
-source directory and multiline header. A command is one `.rs` file. A command
-may include a shared Rust expression from `profiles-shared-commands/`:
+Each profile declares the directory that owns its commands. The console build
+helper recursively visits that directory and compiles only files marked with
+`#[feluqa::command(...)]`; ordinary Rust helper files are not command modules.
+The attribute supplies the public command path, so filenames and nesting are
+for source organization only.
 
 ```text
 products/feluqa-cli/src/
-├── main.rs                         # profile declarations and entry point
-├── profiles/
-│   ├── feluqa/commands/             # command files for the `feluqa` binary
-│   │   ├── help.rs
-│   │   ├── new.rs
-│   │   └── make/migration.rs
-│   ├── nadim/commands/              # command files for the `nadim` binary
-│   └── feluqa-dev/commands/         # command files for the `feluqa-dev` binary
-└── profiles-shared-commands/        # optional shared command bodies
-    └── create-project.rs
+├── lib.rs                         # console runner and generated include hidden by the facade macro
+├── profiles.rs                    # one profile table used by runtime and build script
+└── profiles/
+    ├── feluqa/                     # commands_directory = "profiles/feluqa"
+    │   ├── build.rs                # one command per file
+    │   ├── make/migration.rs
+    │   ├── support.rs              # profile-local implementation wiring
+    │   ├── support/                # context, handlers, generators and operations for this profile
+    │   └── templates/              # scaffold templates owned by Feluqa's `new` command
+    ├── nadim/                      # commands_directory = "profiles/nadim"
+    └── feluqa-dev/                 # commands_directory = "profiles/feluqa-dev"
 ```
 
-For example, `profiles/feluqa/commands/new.rs` owns the command metadata and
-handler. If another profile reuses its body, it can include
-`../../../profiles-shared-commands/create-project.rs` from that handler. The
-shared file contains a Rust block expression returning the handler result.
-This is normal compile-time Rust inclusion, with type checking and no runtime
-source loading.
+A profile directory can be placed anywhere under the configured source root;
+its path is the `commands_directory` value. A product build script passes the
+same profile declarations to the console build helper, which recursively
+compiles annotated command files and honors each declared directory. Rust
+modules still need to be compiled, so this one small build integration handles
+the generated module declarations. The running binary never scans source
+folders or executes Rust source from disk.
 
-A product build script may scan only command directories declared by its
-profiles and generate the Rust module declarations. This handles Rust's rule
-that folders are not automatically compiled as modules. The binary does not
-scan directories, interpret source files or execute arbitrary Rust at runtime.
-The generated registration is linked and ready when the process starts.
+Shared commands are opt-in. A command file can include a shared handler body
+when another profile genuinely uses the same implementation. Merely placing a
+file in a shared directory does not register or expose it. Each command's
+`profiles` metadata determines which profiles can invoke it. Feluqa-specific
+operations such as `make`, app context detection and project templates stay in
+the `feluqa` profile; they are not placed in shared commands just because
+another profile might exist.
 
-Command metadata—not filenames—sets the public path, so a command may be
-stored in a descriptive nested folder without changing its CLI spelling. The
-layout is a convention that products can adopt, not a restriction on commands
-registered by other compiled crates.
-
-Application/workspace context remains a policy on command metadata and is
-checked before an operation can run. Product-specific runtime services stay
-outside the entry point and are supplied to command handlers through the
-console context.
+`feluqa::console::MakeConsole` handles argument conversion, profile selection,
+help generation, command discovery and dispatch. The product supplies only its
+profile list and a host factory for product-specific context. The generated
+`OUT_DIR` include is available through `feluqa::console::include_profile_commands!()`;
+advanced products may use the raw generated include if they need custom wiring.
 
 ## Aliases and hidden commands
 
