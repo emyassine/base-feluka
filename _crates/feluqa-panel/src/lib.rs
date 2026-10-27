@@ -2,6 +2,9 @@
 #![no_std]
 #![forbid(unsafe_code)]
 #![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+//! Startup-validated registries for system and business panels.
 
 extern crate alloc;
 extern crate core;
@@ -26,15 +29,20 @@ use feluqa_ui::{RenderError, RenderedHtml, SchemaError, UiDocument, UiNode};
 /// Distinguishes application control surfaces from business-facing administration.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PanelKind {
+    /// Application-level controls such as roles, settings and maintenance.
     System,
+    /// Tenant or site business administration.
     Business,
 }
 
 /// A permission-checked, server-renderable view in a panel.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PanelPage {
+    /// Relative route below the owning panel prefix.
     pub path: String,
+    /// Exact permission needed to view this page.
     pub permission: Permission,
+    /// Versioned UI schema rendered by the shared component catalogue.
     pub document: UiDocument,
 }
 
@@ -48,10 +56,15 @@ impl PanelPage {
 /// Declarative panel registration; validation occurs before routes are served.
 #[derive(Clone, Debug)]
 pub struct Panel {
+    /// Stable lowercase panel identifier.
     pub id: String,
+    /// Human-readable title.
     pub title: String,
+    /// Absolute route prefix reserved for this panel.
     pub prefix: String,
+    /// System or business authority boundary.
     pub kind: PanelKind,
+    /// Registered pages owned by this panel.
     pub pages: Vec<PanelPage>,
 }
 
@@ -233,17 +246,39 @@ fn join_path(prefix: &str, route: &str) -> String {
 /// Panel registry and access failure. Safe to map `Forbidden` to 403 and `NotFound` to 404.
 #[derive(Debug, PartialEq, Eq)]
 pub enum PanelError {
+    /// The ID or title is invalid.
     InvalidPanel,
+    /// The panel prefix is invalid or reserves the site root.
     InvalidPrefix,
+    /// A route contains invalid path syntax.
     InvalidPath(String),
+    /// A panel has no pages.
     EmptyPanel,
+    /// The panel ID is already registered.
     DuplicatePanel(String),
+    /// A route conflicts with a registered route.
     DuplicateRoute(String),
-    WrongPermissionNamespace { panel: String, expected: String },
-    WrongActionNamespace { panel: String, expected: String },
+    /// A page permission uses a namespace outside its panel boundary.
+    WrongPermissionNamespace {
+        /// Panel whose permission failed validation.
+        panel: String,
+        /// Required permission namespace.
+        expected: String,
+    },
+    /// An action in the schema uses a permission outside the panel boundary.
+    WrongActionNamespace {
+        /// Panel whose action failed validation.
+        panel: String,
+        /// Required permission namespace.
+        expected: String,
+    },
+    /// The page UI schema failed validation.
     InvalidSchema(SchemaError),
+    /// No page is registered for the requested route.
     NotFound(String),
+    /// The principal lacks the page's exact permission.
     Forbidden,
+    /// An internal route-to-page index invariant failed.
     RegistryCorrupt,
 }
 impl fmt::Display for PanelError {

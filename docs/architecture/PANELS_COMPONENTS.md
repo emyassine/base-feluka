@@ -1,6 +1,6 @@
 # Panels, composants, SDUI et lifecycle
 
-Date : 2026-10-26. Statut : premières fondations en code. `feluqa::ui` valide un schéma SDUI versionné et rend un catalogue HTML sûr de base; `feluqa::panel` enregistre des routes/pages et sépare les permissions system/business; `feluqa::auth` fournit les identifiants de permission; `feluqa::live` signe les snapshots et vérifie l’accès/rejeu des actions; `feluqa::module` gère l’ordre et l’arrêt des modules statiquement enregistrés. Le moteur Views compile les layouts/composants de Numerimondes. Il manque encore le rendu HTML des schémas, l’intégration aux routes de production, les sessions/roles/audit, le transport navigateur, le stockage de replay partagé et le chargement dynamique. Ce document précise A4/D-0006 de DECISIONS.md et l'ordre de réalisation.
+Date : 2026-10-26. Statut : premières fondations en code. `feluqa::ui` valide un schéma SDUI versionné et rend un catalogue HTML sûr de base; `feluqa::panel` enregistre des routes/pages et sépare les permissions system/business; `feluqa::auth` fournit les identifiants de permission; `feluqa::live` signe les snapshots et vérifie l’accès/rejeu des actions; `feluqa::module` gère l’ordre et l’arrêt des modules statiquement enregistrés. Le moteur Views compile les layouts/composants de Numerimondes. Il manque encore l’extension du catalogue de rendu, l’intégration aux routes de production, les sessions/roles/audit, le transport navigateur, le stockage de replay partagé et le chargement dynamique. Ce document précise A4/D-0006 de DECISIONS.md et l'ordre de réalisation.
 
 ## Responsabilités et dépendances
 
@@ -30,7 +30,7 @@ Routes cibles proposées : `/system` pour le Core local, `/admin` pour le panel 
 
 ### UI schema v1 livré
 
-`feluqa::ui::UiDocument` utilise `schema_version = 1` et un arbre Serde fermé composé de texte, composants `{key, name, props, children}` et actions `{key, label, action, permission}`. La validation refuse les versions inconnues, les clés de nœud dupliquées, les noms invalides, les propriétés événementielles/HTML dangereuses, les documents au-dessus de 1 MiB, une profondeur excessive et les arbres de plus de 10 000 nœuds. Le JSON transporte des noms/données, jamais du Rust ni des pointeurs de fonction. Les composants déclarés n’ont pas encore de renderer partagé ni de catalogue de props validées par composant.
+`feluqa::ui::UiDocument` utilise `schema_version = 1` et un arbre Serde fermé composé de texte, composants `{key, name, props, children}` et actions `{key, label, action, permission}`. La validation refuse les versions inconnues, les clés de nœud dupliquées, les noms invalides, les propriétés événementielles/HTML dangereuses, les documents au-dessus de 1 MiB, une profondeur excessive et les arbres de plus de 10 000 nœuds. Le JSON transporte des noms/données, jamais du Rust ni des pointeurs de fonction. Le renderer partagé initial couvre neuf composants fixes; les props ne sont pas encore définies par un catalogue extensible et typé par composant.
 
 ```json
 {

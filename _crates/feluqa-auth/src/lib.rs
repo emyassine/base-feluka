@@ -2,6 +2,9 @@
 #![no_std]
 #![forbid(unsafe_code)]
 #![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+//! Authentication and exact-permission authorization contracts for Feluqa.
 
 extern crate alloc;
 extern crate core;
@@ -125,6 +128,7 @@ impl Authorizer for PermissionSetAuthorizer {
 
 /// Error for malformed permission identifiers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+/// Invalid permission identifier.
 pub struct PermissionError;
 impl fmt::Display for PermissionError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -136,7 +140,9 @@ impl core::error::Error for PermissionError {}
 /// Error for incomplete authenticated identity.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PrincipalError {
+    /// The authenticated subject identifier was empty.
     EmptySubject,
+    /// A supplied tenant identifier was empty.
     EmptyTenant,
 }
 impl fmt::Display for PrincipalError {

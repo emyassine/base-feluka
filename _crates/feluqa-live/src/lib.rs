@@ -1,6 +1,9 @@
 #![no_implicit_prelude]
 #![forbid(unsafe_code)]
 #![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+//! Signed, typed, authorization-checked server actions with replay protection.
 
 extern crate alloc;
 extern crate core;
@@ -44,20 +47,31 @@ type HmacSha256 = hmac::Hmac<Sha256>;
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SnapshotClaims {
+    /// Claims schema version.
     pub version: u8,
+    /// Authenticated principal subject.
     pub subject: String,
+    /// Tenant binding, if the principal belongs to a tenant.
     pub tenant: Option<String>,
+    /// Validated server-side session identifier.
     pub session: String,
+    /// One registered action ID this snapshot can invoke.
     pub action: String,
+    /// Exact permission required for the action.
     pub permission: String,
+    /// Unpredictable CSRF value checked against the request.
     pub csrf: String,
+    /// Unpredictable, one-use replay nonce.
     pub nonce: String,
+    /// Expected UI state revision.
     pub revision: u64,
+    /// Unix timestamp after which the snapshot is invalid.
     pub expires_at: u64,
 }
 
 impl SnapshotClaims {
     /// Construct claims for one action. Session, CSRF token, nonce and expiry come from trusted code.
+    // Each argument is one independently checked security binding in the signed snapshot.
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         subject: String,
@@ -235,25 +249,35 @@ impl ReplayGuard for InMemoryReplayGuard {
 
 /// Request envelope submitted by the browser. Cookie/session validation remains in the host app.
 pub struct ActionRequest {
+    /// HMAC-signed snapshot token created by trusted server code.
     pub snapshot: String,
+    /// Session identifier already validated by the host application.
     pub session: String,
+    /// CSRF token supplied by the browser.
     pub csrf: String,
+    /// Registered action ID requested by the browser.
     pub action: String,
+    /// UI revision observed by the browser.
     pub revision: u64,
+    /// JSON payload deserialized into the action's Rust input type.
     pub payload: Value,
 }
 
 /// Successful action output and its monotonically advanced UI revision.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ActionResponse {
+    /// Serialized typed handler output.
     pub value: Value,
+    /// Next UI revision after successful execution.
     pub revision: u64,
 }
 
 /// Validated identity metadata passed to business handlers.
 #[derive(Clone, Debug)]
 pub struct ActionContext {
+    /// Authenticated principal subject.
     pub subject: String,
+    /// Tenant binding from the authenticated principal.
     pub tenant: Option<String>,
 }
 
@@ -397,24 +421,43 @@ fn valid_action_id(id: &str) -> bool {
 /// Explicit Live authorization, signing, replay, and payload failure.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LiveError {
+    /// The HMAC key contains fewer than 32 bytes.
     WeakSigningKey,
+    /// The snapshot structure, claims, or expiry is invalid.
     InvalidSnapshot,
+    /// The HMAC signature did not match the snapshot bytes.
     InvalidSignature,
+    /// The signed token exceeded its size limit.
     TokenTooLarge,
+    /// The in-memory replay guard was given a zero capacity.
     InvalidReplayCapacity,
+    /// The replay guard could not be accessed.
     ReplayStoreUnavailable,
+    /// The bounded replay guard has no free entries.
     ReplayStoreFull,
+    /// An action ID is not valid namespaced syntax.
     InvalidActionId,
+    /// An action ID is already registered.
     DuplicateAction,
+    /// No action is registered under the requested ID.
     UnknownAction,
+    /// Request fields do not match the signed session/action snapshot.
     RequestBindingMismatch,
+    /// The principal lacks the exact permission required by the action.
     Forbidden,
+    /// The snapshot nonce was already consumed.
     Replay,
+    /// The serialized action input exceeds its size limit.
     PayloadTooLarge,
+    /// The serialized action output exceeds its size limit.
     ActionOutputTooLarge,
+    /// The input JSON does not deserialize to the action's declared type.
     InvalidActionInput,
+    /// The action output cannot be serialized.
     InvalidActionOutput,
+    /// The typed handler returned an error.
     ActionFailed,
+    /// The UI revision cannot be incremented without overflow.
     RevisionOverflow,
 }
 impl fmt::Display for LiveError {

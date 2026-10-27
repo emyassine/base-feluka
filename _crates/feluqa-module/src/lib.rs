@@ -2,6 +2,9 @@
 #![no_std]
 #![forbid(unsafe_code)]
 #![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+//! Deterministic lifecycle for statically linked application modules.
 
 extern crate alloc;
 
@@ -192,22 +195,37 @@ fn valid_id(id: &str) -> bool {
 /// A dependency or lifecycle error. Cleanup failures accompany the initiating startup failure.
 #[derive(Debug, PartialEq, Eq)]
 pub enum LifecycleError {
+    /// A module ID is empty or has invalid namespace syntax.
     InvalidId(String),
+    /// A module ID is already registered.
     DuplicateModule(String),
+    /// A declared dependency has not been registered.
     MissingDependency {
+        /// Module declaring the dependency.
         module: String,
+        /// Missing dependency ID.
         dependency: String,
     },
+    /// A module disappeared from the validated registry.
     MissingModule(String),
+    /// The dependency graph contains a cycle through this module.
     DependencyCycle(String),
+    /// Startup has already been attempted for this runtime.
     AlreadyStarted,
+    /// The module registry cannot change after startup begins.
     RegistrySealed,
+    /// Internal registry state no longer satisfies its invariants.
     RegistryCorrupt,
+    /// Startup failed; cleanup errors contain `(module ID, error message)` pairs.
     StartFailed {
+        /// Module whose start hook failed.
         module: String,
+        /// Error returned by the start hook.
         message: String,
+        /// Errors from the failed module and earlier modules during cleanup.
         cleanup_errors: Vec<(String, String)>,
     },
+    /// One or more stop hooks failed; errors contain `(module ID, error message)` pairs.
     ShutdownFailed(Vec<(String, String)>),
 }
 impl fmt::Display for LifecycleError {

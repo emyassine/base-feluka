@@ -2,6 +2,9 @@
 #![no_std]
 #![forbid(unsafe_code)]
 #![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+//! Versioned SDUI validation, safe JSON serialization, and fixed-tag HTML rendering.
 
 extern crate alloc;
 extern crate core;
@@ -36,7 +39,9 @@ const MAX_DOCUMENT_BYTES: usize = 1_048_576;
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct UiDocument {
+    /// Version of the serialized node contract.
     pub schema_version: u16,
+    /// Ordered nodes rendered at the document root.
     pub root: Vec<UiNode>,
 }
 
@@ -44,19 +49,31 @@ pub struct UiDocument {
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum UiNode {
+    /// Plain text, always escaped by the server renderer.
     Text {
+        /// Text content.
         value: String,
     },
+    /// A named, fixed-catalogue component with JSON properties and child nodes.
     Component {
+        /// Stable key unique within this document.
         key: String,
+        /// Namespaced component identifier.
         name: String,
+        /// Data-only component properties.
         props: serde_json::Map<String, Value>,
+        /// Ordered child nodes.
         children: Vec<UiNode>,
     },
+    /// A named server action reference; rendering requires a signed Live snapshot.
     Action {
+        /// Stable key unique within this document.
         key: String,
+        /// Human-readable label rendered as text.
         label: String,
+        /// Namespaced action ID registered by trusted server code.
         action: String,
+        /// Exact permission required by the server action.
         permission: String,
     },
 }
@@ -239,18 +256,31 @@ fn validate_json_value(value: &Value, depth: usize) -> Result<(), SchemaError> {
 /// Schema validation failure suitable for startup diagnostics and safe HTTP errors.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SchemaError {
+    /// The schema version is not supported by this runtime.
     UnsupportedVersion(u16),
+    /// JSON could not be parsed as a closed UI schema.
     MalformedJson,
+    /// A validated schema could not be serialized.
     Serialization,
+    /// The JSON document exceeds the 1 MiB limit.
     DocumentTooLarge,
+    /// The node tree exceeds the maximum nesting depth.
     DepthLimit,
+    /// The node tree exceeds the maximum node count.
     NodeLimit,
+    /// A component contains too many properties.
     PropertyLimit,
+    /// A property value exceeds size or nesting limits.
     ValueLimit,
+    /// A node key is malformed or duplicated.
     InvalidOrDuplicateKey,
+    /// A component or action identifier is malformed.
     InvalidIdentifier,
+    /// An action permission identifier is malformed.
     InvalidPermission,
+    /// An action label is empty or too long.
     InvalidLabel,
+    /// A property name is malformed or executable.
     UnsafeProperty,
 }
 impl fmt::Display for SchemaError {
@@ -584,13 +614,21 @@ fn push_escaped(output: &mut String, value: &str) {
 /// Failure to render the built-in, non-interactive SDUI component set.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum RenderError {
+    /// The input document failed schema validation.
     InvalidSchema(SchemaError),
+    /// No safe HTML renderer is registered for the component name.
     UnknownComponent,
+    /// The component received a property outside its fixed contract.
     UnknownProperty,
+    /// A property did not have the required JSON type; carries the property name.
     InvalidPropertyType(&'static str),
+    /// A property value was outside the component's allowed values.
     InvalidPropertyValue(&'static str),
+    /// A link did not use an allowed local or HTTPS URL.
     UnsafeUrl,
+    /// A leaf component received child nodes.
     UnexpectedChildren,
+    /// An interactive action lacks its session-bound signed snapshot.
     ActionNeedsLiveSnapshot,
 }
 impl fmt::Display for RenderError {
