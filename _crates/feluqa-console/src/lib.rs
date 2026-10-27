@@ -71,11 +71,21 @@ macro_rules! register_host {
                 }
             }
 
+            fn command_context(host: &dyn ::core::any::Any) -> &'static str {
+                match host.downcast_ref::<$host>() {
+                    ::core::option::Option::Some(host) => {
+                        <$host as $crate::ConsoleHost>::command_context(host)
+                    }
+                    ::core::option::Option::None => "any",
+                }
+            }
+
             $crate::inventory::submit! {
                 $crate::ConsoleHostDescriptor {
                     profiles: $profiles,
                     create,
                     exit_code,
+                    command_context,
                 }
             }
         }
@@ -103,6 +113,7 @@ pub type CommandResult = Result<(), String>;
 /// Arguments passed to a compiled console command.
 pub struct CommandContext<'a> {
     profile: &'a str,
+    command_context: &'a str,
     arguments: &'a [String],
     host: &'a mut dyn Any,
 }
@@ -110,8 +121,19 @@ pub struct CommandContext<'a> {
 impl<'a> CommandContext<'a> {
     /// Create a context for a product-specific command host.
     pub fn new(profile: &'a str, arguments: &'a [String], host: &'a mut dyn Any) -> Self {
+        Self::new_in_context(profile, "any", arguments, host)
+    }
+
+    /// Create a command context with the product's detected execution context.
+    pub fn new_in_context(
+        profile: &'a str,
+        command_context: &'a str,
+        arguments: &'a [String],
+        host: &'a mut dyn Any,
+    ) -> Self {
         Self {
             profile,
+            command_context,
             arguments,
             host,
         }
@@ -122,9 +144,33 @@ impl<'a> CommandContext<'a> {
         self.profile
     }
 
+    /// Product-defined context label, such as `global`, `workspace` or `app`.
+    pub fn command_context(&self) -> &str {
+        self.command_context
+    }
+
     /// Positional arguments and options after the command path.
     pub fn arguments(&self) -> &[String] {
         self.arguments
+    }
+
+    /// Read a required positional argument or prompt for it in an interactive terminal.
+    #[cfg(feature = "std")]
+    pub fn argument_or_prompt(
+        &self,
+        index: usize,
+        label: &str,
+        placeholder: Option<&str>,
+        usage: &str,
+    ) -> Result<String, String> {
+        if let Some(value) = self.arguments.get(index) {
+            return Ok(value.clone());
+        }
+        if terminal::interactive() {
+            terminal::text(label, placeholder, None, true)
+        } else {
+            Err(String::from(usage))
+        }
     }
 
     /// Access product-specific state installed by the host application.
@@ -179,6 +225,15 @@ pub enum RegistryError {
     DuplicatePath(String),
     /// No command matched the requested path.
     UnknownCommand(String),
+    /// A command belongs to this profile but is unavailable in the current context.
+    UnavailableInContext {
+        /// Requested command path.
+        path: String,
+        /// Required command context.
+        required: String,
+        /// Detected product context.
+        active: String,
+    },
     /// A supplied profile is not configured by the product.
     UnknownProfile(String),
 }
@@ -190,6 +245,28 @@ impl fmt::Display for RegistryError {
                 write!(formatter, "duplicate console command path `{path}`")
             }
             Self::UnknownCommand(path) => write!(formatter, "unknown command `{path}`"),
+            Self::UnavailableInContext {
+                path,
+                required,
+                active,
+            } => {
+                let required = match required.as_str() {
+                    "app" => "an application directory",
+                    "workspace" => "a Feluqa workspace root",
+                    "app-or-workspace" => "an application directory or workspace root",
+                    other => other,
+                };
+                let active = match active.as_str() {
+                    "app" => "an application directory",
+                    "workspace" => "a Feluqa workspace root",
+                    "global" => "a directory outside a Feluqa app and workspace",
+                    other => other,
+                };
+                write!(
+                    formatter,
+                    "command `{path}` requires {required}; current location is {active}"
+                )
+            }
             Self::UnknownProfile(profile) => {
                 write!(formatter, "unknown console profile `{profile}`")
             }
@@ -232,6 +309,19 @@ impl CommandRegistry {
             .collect()
     }
 
+    /// List commands available to a profile in a product-defined context.
+    pub fn commands_in_context(
+        &self,
+        profile: &str,
+        include_hidden: bool,
+        context: &str,
+    ) -> Vec<&'static CommandDescriptor> {
+        self.commands(profile, include_hidden)
+            .into_iter()
+            .filter(|command| context_matches(command.context, context))
+            .collect()
+    }
+
     /// Resolve a canonical path or alias for the selected profile.
     pub fn resolve(
         &self,
@@ -248,6 +338,24 @@ impl CommandRegistry {
             .ok_or_else(|| RegistryError::UnknownCommand(path.to_string()))
     }
 
+    /// Resolve a command only when it is available in the detected context.
+    pub fn resolve_in_context(
+        &self,
+        profile: &str,
+        path: &str,
+        context: &str,
+    ) -> Result<&'static CommandDescriptor, RegistryError> {
+        match self.resolve(profile, path) {
+            Ok(command) if context_matches(command.context, context) => Ok(command),
+            Ok(command) => Err(RegistryError::UnavailableInContext {
+                path: command.name.to_string(),
+                required: command.context.to_string(),
+                active: context.to_string(),
+            }),
+            Err(error) => Err(error),
+        }
+    }
+
     /// Print generated root or command help to stdout.
     #[cfg(feature = "std")]
     pub fn print_help(
@@ -257,26 +365,56 @@ impl CommandRegistry {
         topic: Option<&str>,
         include_hidden: bool,
     ) -> Result<(), RegistryError> {
+        self.print_help_in_context(profile, product, topic, include_hidden, "any")
+    }
+
+    /// Print help filtered to the product's detected execution context.
+    #[cfg(feature = "std")]
+    pub fn print_help_in_context(
+        &self,
+        profile: &str,
+        product: &str,
+        topic: Option<&str>,
+        include_hidden: bool,
+        context: &str,
+    ) -> Result<(), RegistryError> {
         use std::io::{self, Write};
         let mut output = io::stdout().lock();
         if let Some(topic) = topic {
-            if let Ok(command) = self.resolve(profile, topic) {
-                writeln!(output, "{}", command.usage.unwrap_or(command.name)).map_err(io_error)?;
-                writeln!(output, "\n{}", command.description).map_err(io_error)?;
-                if !command.aliases.is_empty() {
-                    writeln!(output, "Aliases: {}", command.aliases.join(", "))
+            match self.resolve_in_context(profile, topic, context) {
+                Ok(command) => {
+                    writeln!(
+                        output,
+                        "{}",
+                        terminal::paint(
+                            command.usage.unwrap_or(command.name),
+                            terminal::Color::Cyan
+                        )
+                    )
+                    .map_err(io_error)?;
+                    writeln!(output, "\n{}", command.description).map_err(io_error)?;
+                    if !command.aliases.is_empty() {
+                        writeln!(
+                            output,
+                            "{} {}",
+                            terminal::paint("Aliases:", terminal::Color::Muted),
+                            command.aliases.join(", ")
+                        )
                         .map_err(io_error)?;
+                    }
+                    writeln!(
+                        output,
+                        "Profile: {} · Context: {}",
+                        profile, command.context
+                    )
+                    .map_err(io_error)?;
+                    return Ok(());
                 }
-                writeln!(
-                    output,
-                    "Profile: {} · Context: {}",
-                    profile, command.context
-                )
-                .map_err(io_error)?;
-                return Ok(());
+                Err(error @ RegistryError::UnavailableInContext { .. }) => return Err(error),
+                Err(_) => {}
             }
             let children: Vec<&'static CommandDescriptor> = self
-                .commands(profile, include_hidden)
+                .commands_in_context(profile, include_hidden, context)
                 .into_iter()
                 .filter(|command| {
                     command.name.starts_with(topic)
@@ -284,35 +422,66 @@ impl CommandRegistry {
                 })
                 .collect();
             if !children.is_empty() {
-                writeln!(output, "{product} {topic}\n").map_err(io_error)?;
+                writeln!(
+                    output,
+                    "{} {}\n",
+                    terminal::paint(product, terminal::Color::Accent),
+                    topic
+                )
+                .map_err(io_error)?;
                 for command in children {
-                    writeln!(output, "  {:<32} {}", command.name, command.description)
-                        .map_err(io_error)?;
+                    writeln!(
+                        output,
+                        "{}",
+                        terminal::command_entry(command.name, command.description)
+                    )
+                    .map_err(io_error)?;
                 }
                 return Ok(());
             }
             return Err(RegistryError::UnknownCommand(topic.to_string()));
         }
-        writeln!(output, "{product} · profile {profile}\n").map_err(io_error)?;
         writeln!(
             output,
-            "Usage: {product} [--profile=<name>] <command> [arguments]\n"
+            "{}\n",
+            terminal::paint(
+                &alloc::format!("{product} · profile {profile}"),
+                terminal::Color::Accent
+            )
         )
         .map_err(io_error)?;
-        for command in self.commands(profile, include_hidden) {
+        if let Some(notice) = profile_notice(profile) {
+            writeln!(output, "{}\n", terminal::info_line(notice)).map_err(io_error)?;
+        }
+        if let Some(notice) = context_notice(context) {
+            writeln!(output, "{}\n", terminal::info_line(notice)).map_err(io_error)?;
+        }
+        writeln!(
+            output,
+            "{}\n",
+            terminal::paint(
+                &alloc::format!("Usage: {product} <command> [arguments]"),
+                terminal::Color::Muted
+            )
+        )
+        .map_err(io_error)?;
+        for command in self.commands_in_context(profile, include_hidden, context) {
             let aliases = if command.aliases.is_empty() {
                 String::new()
             } else {
-                alloc::format!(" (aliases: {})", command.aliases.join(", "))
+                alloc::format!("  aliases: {}", command.aliases.join(", "))
             };
             writeln!(
                 output,
-                "  {:<32} {}{}",
-                command.name, command.description, aliases
+                "{}",
+                terminal::command_entry(
+                    command.name,
+                    &alloc::format!("{}{aliases}", command.description)
+                )
             )
             .map_err(io_error)?;
         }
-        writeln!(output, "\nRun `{product} help <command>` for details.").map_err(io_error)?;
+        writeln!(output, "\nRun `{} help <command>` for details.", product).map_err(io_error)?;
         Ok(())
     }
 
@@ -324,12 +493,71 @@ impl CommandRegistry {
         topic: Option<&str>,
         include_hidden: bool,
     ) -> Result<(), RegistryError> {
+        self.print_profile_help_in_context(profile, topic, include_hidden, "any")
+    }
+
+    /// Print a profile header and help filtered to the detected product context.
+    #[cfg(feature = "std")]
+    pub fn print_profile_help_in_context(
+        &self,
+        profile: &Profile,
+        topic: Option<&str>,
+        include_hidden: bool,
+        context: &str,
+    ) -> Result<(), RegistryError> {
         use std::io::{self, Write};
         if !profile.header.is_empty() {
             let mut output = io::stdout().lock();
-            writeln!(output, "{}\n", profile.header).map_err(io_error)?;
+            writeln!(
+                output,
+                "{}\n",
+                terminal::paint(profile.header, terminal::Color::Accent)
+            )
+            .map_err(io_error)?;
         }
-        self.print_help(profile.id, profile.binary_name, topic, include_hidden)
+        self.print_help_in_context(
+            profile.id,
+            profile.binary_name,
+            topic,
+            include_hidden,
+            context,
+        )
+    }
+}
+
+fn context_matches(required: &str, active: &str) -> bool {
+    required == "any"
+        || active == "any"
+        || required == active
+        || (required == "app-or-workspace" && matches!(active, "app" | "workspace"))
+}
+
+#[cfg(feature = "std")]
+fn context_notice(context: &str) -> Option<&'static str> {
+    match context {
+        "global" => Some(
+            "No application or workspace detected. Enter one to see its context-specific commands.",
+        ),
+        "workspace" => Some(
+            "Feluqa workspace detected. Application commands appear when you run Feluqa inside an application.",
+        ),
+        "app" => Some(
+            "Application detected. This help lists application and global commands; workspace commands appear at the workspace root.",
+        ),
+        _ => None,
+    }
+}
+
+#[cfg(feature = "std")]
+fn profile_notice(profile: &str) -> Option<&'static str> {
+    match profile {
+        "feluqa" => Some(
+            "Feluqa provides platform and application commands. Use `nadim` for your personal command line.",
+        ),
+        "nadim" => Some(
+            "Nadim is your personal command line. Use `feluqa` for platform and application commands.",
+        ),
+        _ => None,
     }
 }
 
@@ -339,8 +567,35 @@ pub fn parse<'a>(
     profile: &str,
     words: &'a [String],
 ) -> Result<ParsedCommand<'a>, RegistryError> {
+    parse_descriptors(registry.commands(profile, true), words)
+}
+
+/// Parse only commands available in the selected product context.
+pub fn parse_in_context<'a>(
+    registry: &CommandRegistry,
+    profile: &str,
+    words: &'a [String],
+    context: &str,
+) -> Result<ParsedCommand<'a>, RegistryError> {
+    match parse_descriptors(registry.commands_in_context(profile, true, context), words) {
+        Ok(parsed) => Ok(parsed),
+        Err(error) => match parse_descriptors(registry.commands(profile, true), words) {
+            Ok(parsed) => Err(RegistryError::UnavailableInContext {
+                path: parsed.descriptor.name.to_string(),
+                required: parsed.descriptor.context.to_string(),
+                active: context.to_string(),
+            }),
+            Err(_) => Err(error),
+        },
+    }
+}
+
+fn parse_descriptors<'a>(
+    commands: Vec<&'static CommandDescriptor>,
+    words: &'a [String],
+) -> Result<ParsedCommand<'a>, RegistryError> {
     let mut best: Option<(&'static CommandDescriptor, usize)> = None;
-    for descriptor in registry.commands(profile, true) {
+    for descriptor in commands {
         for path in core::iter::once(descriptor.name).chain(descriptor.aliases.iter().copied()) {
             let parts: Vec<&str> = path.split(' ').collect();
             if parts.len() <= words.len()
@@ -398,6 +653,11 @@ pub trait ConsoleHost: Any {
 
     /// Process status selected by the dispatched command.
     fn exit_code(&self) -> std::process::ExitCode;
+
+    /// Context used to filter commands and contextual help.
+    fn command_context(&self) -> &'static str {
+        "any"
+    }
 }
 
 /// Erased host factory submitted by a product for selected profiles.
@@ -409,6 +669,8 @@ pub struct ConsoleHostDescriptor {
     pub create: fn(&std::path::Path) -> Result<std::boxed::Box<dyn Any>, String>,
     /// Read the process status selected by a command.
     pub exit_code: fn(&dyn Any) -> std::process::ExitCode,
+    /// Read the product-defined command context from a host instance.
+    pub command_context: fn(&dyn Any) -> &'static str,
 }
 
 #[cfg(feature = "std")]
@@ -503,7 +765,16 @@ impl MakeConsole {
             }
             None => std::boxed::Box::new(()),
         };
-        match run(self.profiles, binary_name, &arguments, &mut *host) {
+        let active_context = host_factory
+            .map(|provider| (provider.command_context)(&*host))
+            .unwrap_or("any");
+        match run_in_context(
+            self.profiles,
+            binary_name,
+            &arguments,
+            &mut *host,
+            active_context,
+        ) {
             Ok(()) => host_factory
                 .map(|provider| (provider.exit_code)(&*host))
                 .unwrap_or(ExitCode::SUCCESS),
@@ -591,21 +862,50 @@ pub fn run(
     arguments: &[String],
     host: &mut dyn Any,
 ) -> Result<(), String> {
+    run_in_context(profiles, binary_name, arguments, host, "any")
+}
+
+/// Dispatch a command after filtering help, discovery and resolution by context.
+#[cfg(feature = "std")]
+pub fn run_in_context(
+    profiles: &'static [Profile],
+    binary_name: &str,
+    arguments: &[String],
+    host: &mut dyn Any,
+    command_context: &str,
+) -> Result<(), String> {
     let profiles = Profiles::new(profiles).map_err(|error| error.to_string())?;
     let (requested, arguments) = selected_profile(arguments)?;
     let profile = profiles
         .select(requested.as_deref(), Some(binary_name))
         .map_err(|error| error.to_string())?;
     let registry = CommandRegistry::discover().map_err(|error| error.to_string())?;
-    if arguments.is_empty()
+    let parsed = if arguments.is_empty() && terminal::interactive() {
+        if let Some(notice) = profile_notice(profile.id) {
+            terminal::info(notice);
+        }
+        if let Some(notice) = context_notice(command_context) {
+            terminal::info(notice);
+        }
+        let commands = registry.commands_in_context(profile.id, false, command_context);
+        let selected = choose_command(&commands, "What would you like to do?")?;
+        ParsedCommand {
+            descriptor: commands[selected],
+            arguments,
+        }
+    } else if arguments.is_empty()
         || matches!(arguments.first().map(String::as_str), Some("--help" | "-h"))
     {
         registry
-            .print_profile_help(profile, None, arguments.iter().any(|word| word == "--all"))
+            .print_profile_help_in_context(
+                profile,
+                None,
+                arguments.iter().any(|word| word == "--all"),
+                command_context,
+            )
             .map_err(|error| error.to_string())?;
         return Ok(());
-    }
-    if arguments.first().is_some_and(|word| word == "help") {
+    } else if arguments.first().is_some_and(|word| word == "help") {
         let topic = arguments
             .get(1..)
             .unwrap_or_default()
@@ -620,11 +920,15 @@ pub fn run(
             Some(topic.as_str())
         };
         registry
-            .print_profile_help(profile, topic, arguments.iter().any(|word| word == "--all"))
+            .print_profile_help_in_context(
+                profile,
+                topic,
+                arguments.iter().any(|word| word == "--all"),
+                command_context,
+            )
             .map_err(|error| error.to_string())?;
         return Ok(());
-    }
-    if let Some(help_at) = arguments
+    } else if let Some(help_at) = arguments
         .iter()
         .position(|word| word == "--help" || word == "-h")
     {
@@ -639,13 +943,55 @@ pub fn run(
             Some(topic.as_str())
         };
         registry
-            .print_profile_help(profile, topic, false)
+            .print_profile_help_in_context(profile, topic, false, command_context)
             .map_err(|error| error.to_string())?;
         return Ok(());
-    }
-    let parsed = parse(&registry, profile.id, arguments).map_err(|error| error.to_string())?;
-    let mut context = CommandContext::new(profile.id, parsed.arguments, host);
+    } else {
+        match parse_in_context(&registry, profile.id, arguments, command_context) {
+            Ok(parsed) => parsed,
+            Err(RegistryError::UnknownCommand(_)) if terminal::interactive() => {
+                let prefix = alloc::format!("{} ", arguments.join(" "));
+                let commands = registry
+                    .commands_in_context(profile.id, false, command_context)
+                    .into_iter()
+                    .filter(|command| command.name.starts_with(&prefix))
+                    .collect::<Vec<_>>();
+                if commands.is_empty() {
+                    return Err(parse_in_context(
+                        &registry,
+                        profile.id,
+                        arguments,
+                        command_context,
+                    )
+                    .err()
+                    .map(|error| error.to_string())
+                    .unwrap_or_else(|| String::from("no command is available here")));
+                }
+                let selected = choose_command(&commands, "Choose a command:")?;
+                ParsedCommand {
+                    descriptor: commands[selected],
+                    arguments: &arguments[arguments.len()..],
+                }
+            }
+            Err(error) => return Err(error.to_string()),
+        }
+    };
+    let mut context =
+        CommandContext::new_in_context(profile.id, command_context, parsed.arguments, host);
     (parsed.descriptor.handler)(&mut context).map_err(|error| error.to_string())
+}
+
+#[cfg(feature = "std")]
+fn choose_command(commands: &[&'static CommandDescriptor], prompt: &str) -> Result<usize, String> {
+    if commands.is_empty() {
+        return Err(String::from("no commands are available in this context"));
+    }
+    let labels = commands
+        .iter()
+        .map(|command| alloc::format!("{} — {}", command.name, command.description))
+        .collect::<Vec<String>>();
+    let options = labels.iter().map(String::as_str).collect::<Vec<_>>();
+    terminal::select(prompt, &options, 0)
 }
 
 #[cfg(feature = "std")]

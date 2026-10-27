@@ -27,7 +27,3 @@ name = "nadim"
 path = "src/main.rs"
 test = false
 
-[[bin]]
-name = "feluqa-dev"
-path = "src/main.rs"
-test = false

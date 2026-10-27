@@ -99,12 +99,20 @@ impl crate::feluqa::console::ConsoleHost for CliHost {
     fn exit_code(&self) -> ExitCode {
         self.exit_code
     }
+
+    fn command_context(&self) -> &'static str {
+        match &self.context {
+            Context::App(_) => "app",
+            Context::Workspace(_) => "workspace",
+            Context::Global => "global",
+        }
+    }
 }
 
 crate::feluqa::console::register_host!(
     feluqa_cli_context,
     super::CliHost,
-    &["feluqa", "nadim", "feluqa-dev"]
+    &["feluqa", "nadim"]
 );
 
 #[derive(Deserialize)]

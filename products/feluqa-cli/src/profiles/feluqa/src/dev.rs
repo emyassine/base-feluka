@@ -383,7 +383,7 @@ mod tests {
     fn fingerprint_observes_new_changed_and_removed_template_files() -> Result<(), String> {
         static NEXT: AtomicU64 = AtomicU64::new(0);
         let directory = env::temp_dir().join(format!(
-            "feluqa-dev-watch-{}-{}",
+            "feluqa-watch-{}-{}",
             crate::std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
         ));

@@ -34,7 +34,16 @@ extern crate toml;
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    if arguments.is_empty() {
+        let value = context.argument_or_prompt(
+            0,
+            "Migration name",
+            Some("e.g. add_customer_status"),
+            "usage: feluqa make migration <name> [--module <name>]",
+        )?;
+        arguments.push(OsString::from(value));
+    }
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let application = crate::__feluqa_profile_feluqa::context::application(host)?;
     let result = generate(&arguments, application);

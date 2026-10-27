@@ -40,7 +40,6 @@ archive="$dist_directory/feluqa-cli-$target.tar.gz"
 mkdir -p "$dist_directory"
 tar -C "$build_directory" -czf "$archive" -- \
     "feluqa$extension" \
-    "feluqa-dev$extension" \
     "nadim$extension"
 
 printf 'Built release binaries for %s: %s\n' "$target" "$archive"

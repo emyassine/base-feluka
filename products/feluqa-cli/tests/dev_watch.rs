@@ -29,7 +29,7 @@ impl Fixture {
     fn new() -> Result<Self, String> {
         static NEXT: AtomicU64 = AtomicU64::new(0);
         let directory = env::temp_dir().join(std::format!(
-            "feluqa-dev-e2e-{}-{}",
+            "feluqa-watch-e2e-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
         ));

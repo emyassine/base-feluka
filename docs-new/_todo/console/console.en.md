@@ -3,7 +3,7 @@
 The `feluqa-console` crate provides the console engine/API exposed as
 `feluqa::console`. Any product or Rust application using this API can define
 console profiles and contribute commands. `products/feluqa-cli` is one such
-product; its `feluqa`, `feluqa-dev` and `nadim` profiles are its configuration
+product; its `feluqa` and `nadim` profiles are its configuration
 of this general capability, not a rule that profiles belong to that product.
 The API is available when the `console` feature is enabled.
 
@@ -48,7 +48,7 @@ that code.
     description = "Check Feluqa View highlighting in an editor",
     usage = "feluqa support:ide view-highlight --ide=<name>",
     aliases = ["support:ide highlight"],
-    profiles = ["feluqa-dev"],
+    profiles = ["feluqa"],
     context = "global",
 )]
 pub fn view_highlight(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
@@ -115,7 +115,6 @@ products/feluqa-cli/src/
     │   │   └── make/migration.rs
     │   └── templates/web/          # scaffold data owned by this product
     ├── nadim/                      # commands_directory = "profiles/nadim"
-    └── feluqa-dev/                 # currently has no command source files
 ```
 
 A profile directory can be placed anywhere under the configured source root;
@@ -135,8 +134,8 @@ contains its command declaration and implementation; there is no profile-wide
 handler router. Commands live in their owning profile's command directory.
 The command attribute's `profiles = [...]` list is the explicit sharing/import
 list: only list another profile when its users should receive that command.
-The Feluqa developer profile currently has no command source files. `MakeConsole`
-owns profile selection, help, parsing, command discovery and dispatch. The
+`MakeConsole` owns profile selection, context-filtered help, interactive choices,
+argument prompts, parsing, command discovery and dispatch. The
 profile's `context.rs` registers its host factory
 and resolves application/workspace context. File-writing, module-registration,
 naming and embedded web-scaffold templates are built into
@@ -161,7 +160,7 @@ internal diagnostics, compatibility shims or advanced recovery operations;
 it is not an access-control boundary. Authorization and destructive-operation
 checks still belong in the command implementation.
 
-## Console profiles and development commands
+## Console profiles
 
 A console profile is a named command set provided through
 `feluqa::console`. Any product using the console can declare profiles. Each
@@ -172,7 +171,6 @@ example, `feluqa-cli` uses:
 |---|---|---|
 | `feluqa` | `feluqa` | Platform and application commands. |
 | `nadim` | `nadim` | Personal commands. |
-| `feluqa-dev` | `feluqa-dev` | Reserved profile; no commands are assigned yet. |
 
 The selected profile filters command help and dispatch; it does not grant
 permissions. Executable aliases select profiles from the same product. The
@@ -309,9 +307,8 @@ Initial implementation sequence:
 5. Add command attributes and console-owned distributed registration; generate
    help, dispatch, completions, aliases, hidden status and context policy from
    the same descriptors.
-6. Add generic console profile support, then configure `feluqa`, `feluqa-dev`
-   and opt-in `nadim` profiles in `feluqa-cli`; compile product-local
-   `development/commands/` into developer builds only.
+6. Keep the `feluqa` and `nadim` profiles isolated; share a command only when
+   its command metadata explicitly lists both profiles.
 7. Add safe rustup-backed toolchain commands and verify TTY/piped behavior on
    supported operating systems and terminals.
 

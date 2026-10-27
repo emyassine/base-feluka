@@ -27,14 +27,6 @@ pub const PROFILES: &[Profile] = &[
         header: "NADIM\nPersonal command profile",
         launch_aliases: &[],
     },
-    Profile {
-        id: "feluqa-dev",
-        name: "Feluqa developer tools",
-        binary_name: "feluqa-dev",
-        commands_directory: "profiles/feluqa-dev",
-        header: "FELUQA DEV\nDeveloper command profile",
-        launch_aliases: &[],
-    },
 ];
 
 fn main() -> ExitCode {

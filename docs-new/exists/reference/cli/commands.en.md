@@ -5,17 +5,18 @@ executable. This page is the canonical command reference. Module source layout,
 resource APIs and data conventions are covered by the corresponding
 [developer guides](../../for-developers/index.en.md).
 
-The product also builds `feluqa-dev` and `nadim` executables from the same
-profile registry. Each command is visible only to the profiles listed in its
-`#[feluqa::command(profiles = [...])]` declaration. There is no implicit
-sharing between profiles; adding a profile to that list is the explicit
-import. Currently, `feluqa-dev` has no imported commands and displays its own
-empty help page.
+The product builds two executables: `feluqa` for platform and application
+work, and `nadim` for personal commands. Each command is visible only to the
+profiles listed in its `#[feluqa::command(profiles = [...])]` declaration.
+There is no implicit sharing; listing another profile is the explicit import.
+Feluqa filters commands by detected location and explains the active command
+scope in its help. In interactive terminals, it offers command choices and
+prompts for required generator names; piped and scripted runs receive usage
+errors instead of blocking prompts.
 
-The broader command grammar, command metadata/discovery, hidden commands,
-aliases and planned interactive console API are specified in the
-[console design](../../../_todo/console/console.en.md). Those planned parts are
-not yet implemented by the CLI.
+The command grammar, metadata, discovery, context filtering, aliases, styled
+help and prompt behavior are described in the
+[console design](../../../_todo/console/console.en.md).
 
 ## Context detection
 
@@ -72,14 +73,14 @@ project selects a runtime profile such as `web`.
 | `make panel <name>` | Generates a strict Rust `PanelProvider`, registers it in the app catalogue and exposes pages behind session/permission checks. |
 | `make module <name>` | Generates a module manifest and dialect migration directories. |
 
-Each built-in command and each generator has its own Rust source file. The
-dispatcher only checks context and forwards arguments; it does not discover
-commands through runtime reflection. Use `feluqa make --help` or
-`feluqa make <thing> --help` for generator options.
+Each built-in command and each generator has its own Rust source file. Console
+filters help and dispatch by both profile and detected location. In an
+interactive terminal, `feluqa make` offers a choice and generators prompt for
+a missing required name; in scripts, missing names return usage guidance.
 
 ## Run from a source checkout
 
-Run `products/feluqa-cli/build-release.sh [target-triple]` to build the three
+Run `products/feluqa-cli/build-release.sh [target-triple]` to build the two
 profile binaries and package them for one Rust target. With no argument, it
 uses the current host target. It has no CI-provider dependency; any CI system
 or release machine can invoke it. Rust target support is determined by the
@@ -89,8 +90,7 @@ The initial release matrix is Linux x86-64 and ARM64, macOS Intel and ARM64,
 and Windows x86-64. Build each target on a compatible native runner, or
 configure a cross-linker and SDK where supported. One host cannot produce
 every operating system's executable without the appropriate toolchains.
-Archives are written to `products/feluqa-cli/dist/` and contain `feluqa`,
-`feluqa-dev` and `nadim` binaries for the selected target.
+Archives are written to `products/feluqa-cli/dist/` and contain `feluqa` and `nadim` binaries for the selected target.
 
 From a valid app root, run the CLI product through the workspace manifest:
 

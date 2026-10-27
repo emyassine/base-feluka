@@ -11,6 +11,7 @@ use crate::std::result::Result::Ok;
 use crate::__feluqa_profile_feluqa::context::Application;
 use crate::std::ffi::OsString;
 use crate::std::path::PathBuf;
+use crate::std::option::Option::Some;
 use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::string::String;
@@ -25,7 +26,16 @@ use crate::std::string::String;
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    if arguments.is_empty() {
+        let value = context.argument_or_prompt(
+            0,
+            "Panel name",
+            Some("e.g. operations"),
+            "usage: feluqa make panel <name>",
+        )?;
+        arguments.push(OsString::from(value));
+    }
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let application = crate::__feluqa_profile_feluqa::context::application(host)?;
     let result = generate(&arguments, application);

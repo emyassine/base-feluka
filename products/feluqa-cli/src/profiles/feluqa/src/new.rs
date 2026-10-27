@@ -23,7 +23,16 @@ use crate::std::string::String;
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    if arguments.is_empty() {
+        let value = context.argument_or_prompt(
+            0,
+            "Application name",
+            Some("e.g. inventory"),
+            "usage: feluqa new <name> [--profile web]",
+        )?;
+        arguments.push(OsString::from(value));
+    }
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let result = match &host.context {
         crate::__feluqa_profile_feluqa::context::Context::Global => {
