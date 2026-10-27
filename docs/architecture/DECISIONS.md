@@ -58,7 +58,7 @@ It deploys in two situations: behind an existing panel (Hestia first; other pane
 
 **Performance goal:** a representative complex request (session, authorization, several queries, HTML render) takes under 1 ms at the median, server-side.
 
-**Non-goals for release 1:** billing, multi-tenant hosting administration, DNS management, a public module marketplace, phpMyAdmin/pgAdmin replacements, Windows production support.
+**Non-goals for release 1:** billing, centralized hosting/fleet administration across unrelated servers, DNS management, a public module marketplace, phpMyAdmin/pgAdmin replacements, Windows production support. Feluqa System must still manage modules and licensed capabilities for domains hosted by that Feluqa installation; that is platform module management, not a public marketplace or cross-server hosting product.
 
 **Critique.** "Complete platform" and "1 ms" pull against each other: every built-in feature on the hot path costs microseconds. The discipline is that each feature declares its hot-path cost and is benchmarked in CI against the reference scenario (A2). The current `__rust/first-demo` is only an HTTP deployment probe and implements none of this.
 
@@ -78,6 +78,26 @@ Exhibit 1b | Target profiles and their binding constraints
 | Real-time and embedded | Ground stations, flight-adjacent software, devices | Hard deadlines, bounded memory, no heap allocation in control loops | `no_std` libraries on an RTOS or bare metal | No garbage collector, no mandatory runtime |
 
 **Critique: one namespace, not one runtime.** Putting a web server and a flight controller in one process would break both. The promise is shared contracts, tooling and naming, with a separate runtime per profile. Anything stronger is marketing.
+
+### A1c. Feluqa platform and installable modules
+
+Feluqa is installed on a server as the host platform. Its System panel is
+built-in and manages the installation's domains and the Feluqa modules enabled
+for them. A developer authors an installable module against Feluqa; examples
+include HRM and the Numerimondes platform module. The operator installs and
+configures that module for a domain through System, subject to package
+compatibility, license and granted permissions. A module declares its panels,
+resources, pages, routes, migrations and capabilities through Feluqa APIs;
+Feluqa owns the panel system, shared components, runtime and security checks.
+
+An installable module may be a focused unit or a composed product that groups
+business modules under `business/`. Rust's `mod`/`pub mod` namespace is a
+separate concern and is always called a **module Rust** in project docs. The
+System install/configure/license lifecycle is a platform requirement, not a
+claim of current support: current application module registration is static
+and compiled. Compatibility resolution, domain-scoped activation, licensing,
+upgrade/recovery, and safe disable/uninstall remain implementation work. See
+[module and product layout](PROJECT_LAYOUT.md).
 
 **Critique: mobile and downloadable modules.** App stores restrict code downloaded and executed at run time, so runtime modules (D-0005) may be limited on iOS. Verify the current store rules before promising it; the fallback is compile-time modules delivered through store updates.
 
