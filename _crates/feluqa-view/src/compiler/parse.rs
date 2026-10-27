@@ -25,6 +25,7 @@ pub(super) enum Kind {
     Echo {
         expression: String,
         raw: bool,
+        url: bool,
     },
     Rust(String),
     If {
@@ -165,7 +166,7 @@ impl Parser<'_> {
             }
             if tail.starts_with("{{") || tail.starts_with("{!!") {
                 let raw = tail.starts_with("{!!");
-                self.check_html_context(raw)?;
+                let url = self.check_html_context(raw)?;
                 self.cursor += if raw { 3 } else { 2 };
                 let terminator = if raw { "!!}" } else { "}}" };
                 let end = scan::end(self.source, self.cursor, terminator)
@@ -173,7 +174,11 @@ impl Parser<'_> {
                 let expression = self.source[self.cursor..end].trim().to_string();
                 self.expression(&expression)?;
                 self.cursor = end + terminator.len();
-                special = Some(Kind::Echo { expression, raw });
+                special = Some(Kind::Echo {
+                    expression,
+                    raw,
+                    url,
+                });
             } else if tail.starts_with("<x-") {
                 if !self.html.is_empty() {
                     return Err(
@@ -371,9 +376,9 @@ impl Parser<'_> {
             self.html.clear();
         }
     }
-    fn check_html_context(&self, raw: bool) -> Result<(), ParseError> {
+    fn check_html_context(&self, raw: bool) -> Result<bool, ParseError> {
         if self.html.is_empty() {
-            return Ok(());
+            return Ok(false);
         }
         if raw || self.quote.is_none() || self.html.starts_with("<!--") {
             return Err(self.error("HTML attribute interpolation must be quoted and escaped; tag names and comments cannot be interpolated"));
@@ -386,6 +391,9 @@ impl Parser<'_> {
             .last()
             .unwrap_or("")
             .to_ascii_lowercase();
+        if ["href", "src", "action", "formaction", "cite", "poster"].contains(&attribute.as_str()) {
+            return Ok(true);
+        }
         if ![
             "id",
             "class",
@@ -402,7 +410,7 @@ impl Parser<'_> {
         {
             return Err(self.error("this attribute needs a dedicated URL/script/style policy; generic interpolation is forbidden"));
         }
-        Ok(())
+        Ok(false)
     }
     fn component(&mut self) -> Result<Kind, ParseError> {
         self.cursor += 3;

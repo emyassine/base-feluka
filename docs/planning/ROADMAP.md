@@ -9,7 +9,7 @@ Le vertical initial est commencé : workspace Cargo sous `_crates/` (MSRV décla
 
 La page affiche le temps handler « Request … ms ». Le middleware mesure à part le temps complet de traitement côté binaire, l’écrit dans `Server-Timing: feluqa_binary;dur=…` et le journal du serveur. Compilation validée le 26 octobre 2026; parité visuelle et déploiement restent à valider.
 
-Le compilateur ne couvre que le texte et `{{ value }}` échappé; layouts, directives et composants restent à faire. L'API `feluqa::console` est un contrat minimal. Le produit CLI sous `products/feluqa-cli/` fournit `help`, `list`, `dev`, `build` et `check`; le watcher de `feluqa dev`, `feluqa new app`, la sélection multi-applications, la gestion de stockage, l’isolation multi-sites, le déploiement Hestia et les contrôles de production restent à faire. La première milestone n’est donc pas considérée terminée.
+État historique au 26 octobre 2026 : le prototype initial n'avait que des vues interpolées simples et aucun watcher. Depuis, le compilateur `.view.rs`, le CLI `feluqa new`, et un premier polling watcher `feluqa dev` ont été ajoutés. Le watcher compile puis redémarre le binaire, garde l'ancien serveur si le build échoue, et n'a pas encore un test de processus complet. Sélection multi-applications, stockage opérationnel, isolation multi-sites, publication autonome, déploiement Hestia et contrôles de production restent à faire. La première milestone n’est donc pas considérée terminée.
 
 ## Objectif produit
 

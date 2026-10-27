@@ -12,30 +12,42 @@ use crate::std::string::String;
 use crate::std::vec;
 use crate::std::vec::Vec;
 use feluqa::auth::Permission;
-use feluqa::panel::{Panel, PanelCatalog, PanelCatalogError, PanelError, PanelKind, PanelPage};
+use feluqa::panel::{
+    Panel, PanelCatalog, PanelCatalogError, PanelError, PanelKind, PanelPage, PanelProvider,
+};
 use feluqa::ui::{SCHEMA_VERSION, UiDocument, UiNode};
 
+pub mod business;
 pub mod crm;
 pub mod live;
 pub mod system;
+
+/// Provider for Numerimondes ERP panels and CRM resources.
+pub struct AppPanelProvider;
+impl PanelProvider for AppPanelProvider {
+    fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {
+        catalog.register_panel(dashboard_panel(
+            "business",
+            "Business ERP",
+            "/admin",
+            PanelKind::Business,
+            "business.erp.manage",
+        )?)?;
+        Ok(())
+    }
+}
 
 /// Create the deterministic lifecycle registry for compiled application modules.
 pub fn lifecycle_runtime(
     enabled_modules: &[String],
 ) -> Result<feluqa::module::ModuleRuntime, feluqa::module::LifecycleError> {
     let mut runtime = feluqa::module::ModuleRuntime::default();
-    runtime.register(CompiledModule::new(
-        "feluqa.core",
-        vec![],
-        &feluqa::core::MIGRATIONS,
-    ))?;
+    feluqa::module::ServiceProvider::register(&system::CoreServiceProvider, &mut runtime)?;
     for module in enabled_modules {
         match module.as_str() {
-            "numerimondes.crm" => runtime.register(CompiledModule::new(
-                "numerimondes.crm",
-                vec![String::from("feluqa.core")],
-                &crate::generated_migrations::crm::MIGRATIONS,
-            ))?,
+            "numerimondes.crm" => {
+                feluqa::module::ServiceProvider::register(&crm::CrmServiceProvider, &mut runtime)?
+            }
             _ => {
                 return Err(feluqa::module::LifecycleError::UnknownModule(
                     module.clone(),
@@ -60,7 +72,7 @@ pub fn enabled_migrations<'a>(
         })
 }
 
-struct CompiledModule {
+pub(crate) struct CompiledModule {
     id: String,
     dependencies: Vec<String>,
     migrations: &'static feluqa::database::ModuleMigrations,
@@ -68,7 +80,7 @@ struct CompiledModule {
 }
 
 impl CompiledModule {
-    fn new(
+    pub(crate) fn new(
         id: &str,
         dependencies: Vec<String>,
         migrations: &'static feluqa::database::ModuleMigrations,
@@ -108,26 +120,13 @@ impl feluqa::module::Module for CompiledModule {
 /// Register module resources in the shared panel/page route catalogue before serving routes.
 pub fn panel_catalog() -> Result<PanelCatalog, PanelCatalogError> {
     let mut catalog = PanelCatalog::default();
-    catalog.register_panel(system_panel()?)?;
-    catalog.register_panel(dashboard_panel(
-        "business",
-        "Business ERP",
-        "/admin",
-        PanelKind::Business,
-        "business.erp.manage",
-    )?)?;
-    catalog.register_resource(crm::resource::CUSTOMERS)?;
-    catalog.register_resource(system::resource::USERS)?;
-    catalog.register_resource(system::resource::ROLES)?;
-    catalog.register_resource(system::resource::MODULES)?;
-    catalog.register_resource(system::resource::CONNECTIONS)?;
-    catalog.register_resource(system::resource::MIGRATIONS)?;
-    catalog.register_resource(system::resource::AUDIT)?;
-    catalog.register_resource(system::resource::TENANTS)?;
+    catalog.register_provider(&system::CorePanelProvider)?;
+    catalog.register_provider(&AppPanelProvider)?;
+    catalog.register_provider(&crm::CrmPanelProvider)?;
     Ok(catalog)
 }
 
-fn system_panel() -> Result<Panel, PanelError> {
+pub(crate) fn system_panel() -> Result<Panel, PanelError> {
     dashboard_panel(
         "system",
         "Feluqa Core",

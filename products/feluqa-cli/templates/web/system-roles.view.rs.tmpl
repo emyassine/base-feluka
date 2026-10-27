@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Roles · Feluqa Core</title><link rel="stylesheet" href="/assets/site.css"></head>
+<body><main class="layout"><header><p class="eyebrow">Feluqa Core · Roles</p><h1>Roles and permissions</h1><p>Signed in as {{ display_name }} · {{ email }}</p><form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn" type="submit">Sign out</button></form></header>
+<section class="card"><h2>Current roles</h2>{!! role_table !!}{!! edit_forms !!}</section>
+<section class="card"><h2>Create role</h2><p>Enter exact permission names separated by commas. Feluqa checks each permission on the server.</p>{!! create_form !!}</section>
+<p><a href="/system">System dashboard</a> · <a href="/system/users">Users</a></p></main></body></html>

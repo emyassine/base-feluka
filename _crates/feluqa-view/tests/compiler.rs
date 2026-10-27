@@ -165,6 +165,33 @@ let prefix = r#"@endrs }}"#;
 }
 
 #[test]
+fn webkernel_ported_navigation_patterns_compile_as_rust_views() -> TestResult {
+    assert!(feluqa_view::SafeUrl::new("/welcome").is_ok());
+    assert!(feluqa_view::SafeUrl::new("https://numerimondes.com/about").is_ok());
+    assert!(feluqa_view::SafeUrl::new("javascript:alert(1)").is_err());
+    assert!(feluqa_view::SafeUrl::new("//untrusted.example").is_err());
+
+    let mut compiler = compiler()?;
+    add(
+        &mut compiler,
+        "app::navigation_item",
+        r#"<a class="nav @if (current == "home")active@elseif (current == "docs")docs@endif" href="{{ href }}">{{ label }}</a>"#,
+        "current: &str, href: &feluqa_view::SafeUrl, label: &str",
+    )?;
+    compiler.entry("render", "app::navigation_item")?;
+
+    assert_eq!(
+        render(
+            &compiler,
+            "std::print!(\"{}|{}\", render(\"home\", &feluqa_view::SafeUrl::new(\"/\").expect(\"safe URL\"), \"Home <&\").expect(\"home\"), render(\"docs\", &feluqa_view::SafeUrl::new(\"/docs\").expect(\"safe URL\"), \"Docs\").expect(\"docs\"));",
+            false,
+        )?,
+        "<a class=\"nav active\" href=\"/\">Home &lt;&amp;</a>|<a class=\"nav docs\" href=\"/docs\">Docs</a>",
+    );
+    Ok(())
+}
+
+#[test]
 fn missing_props_and_slots_are_source_errors() -> TestResult {
     let mut compiler = compiler()?;
     add(
@@ -256,6 +283,27 @@ fn trusted_html_and_escaped_display_have_distinct_types() -> TestResult {
 }
 
 #[test]
+fn url_attributes_require_validated_safe_url_values() -> TestResult {
+    let mut compiler = compiler()?;
+    add(
+        &mut compiler,
+        "app::home",
+        r#"<a href="{{ url }}">visit</a>"#,
+        "url: &str",
+    )?;
+    compiler.entry("render", "app::home")?;
+    let output = compile(
+        &Directory::new()?,
+        &compiler.generate()?.rust,
+        "let _ = render(\"javascript:alert(1)\");",
+        false,
+    )?;
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("SafeUrl"));
+    Ok(())
+}
+
+#[test]
 fn delimiter_scanner_handles_unicode_lifetimes_chars_and_nested_groups() -> TestResult {
     let mut compiler = compiler()?;
     add(
@@ -289,7 +337,6 @@ fn malformed_blocks_and_unsafe_contexts_fail_early() -> TestResult {
         "{{ (1] }}",
         "<script>{{ user }}</script>",
         "<STYLE>{{ color }}</STYLE>",
-        "<a href=\"{{ url }}\">x</a>",
         "<div onclick=\"{{ code }}\">",
         "<div {!! html !!}>",
         "<x-ui::card></x-other>",
@@ -375,13 +422,7 @@ fn declared_roots_reject_symlinks() -> TestResult {
 
 #[test]
 fn attribute_context_tracks_quotes_instead_of_angle_bracket_searches() -> TestResult {
-    for source in [
-        r#"<a title=">" href="{{ url }}">"#,
-        r#"<a data-note="<" href="{{ url }}">"#,
-        r#"<img poster="{{ url }}">"#,
-        r#"<div title="{!! html !!}">"#,
-        "<!-- {{ comment }} -->",
-    ] {
+    for source in [r#"<div title="{!! html !!}">"#, "<!-- {{ comment }} -->"] {
         assert!(
             compiler()?
                 .register("app::bad", Path::new("bad.view.rs"), source, "")
@@ -392,15 +433,30 @@ fn attribute_context_tracks_quotes_instead_of_angle_bracket_searches() -> TestRe
     add(
         &mut compiler,
         "app::home",
-        r#"<div title="{{ text }}">mail@if.example</div>"#,
-        "text: &str",
+        r#"<a data-note="<" title=">" href="{{ url }}">{{ label }}</a>"#,
+        "url: &feluqa_view::SafeUrl, label: &str",
     )?;
     compiler.entry("render", "app::home")?;
     assert_eq!(
         render(
             &compiler,
-            "std::print!(\"{}\", render(\"\\\" ><&\").expect(\"render\"));",
+            "std::print!(\"{}\", render(&feluqa_view::SafeUrl::new(\"/welcome\").expect(\"URL\"), \"<&\").expect(\"render\"));",
             false
+        )?,
+        "<a data-note=\"<\" title=\">\" href=\"/welcome\">&lt;&amp;</a>"
+    );
+    add(
+        &mut compiler,
+        "app::ordinary_attribute",
+        r#"<div title="{{ text }}">mail@if.example</div>"#,
+        "text: &str",
+    )?;
+    compiler.entry("render_text", "app::ordinary_attribute")?;
+    assert_eq!(
+        render(
+            &compiler,
+            "std::print!(\"{}\", render_text(\"\\\" ><&\").expect(\"render\"));",
+            false,
         )?,
         "<div title=\"&quot; &gt;&lt;&amp;\">mail@if.example</div>"
     );

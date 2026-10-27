@@ -38,6 +38,19 @@ pub trait Module: Send {
     fn stop(&mut self) -> Result<(), String>;
 }
 
+/// Registers application-wide services, routes, commands or panel providers during startup.
+///
+/// The context is owned by the host application, keeping Feluqa's runtime policy separate
+/// from any particular web server or dependency-injection container.
+pub trait ServiceProvider<C> {
+    /// Error type reported by registration and lifecycle hooks.
+    type Error: fmt::Display;
+    /// Stable provider identifier used in startup diagnostics.
+    fn id(&self) -> &str;
+    /// Register this provider's declarations into the application context.
+    fn register(&self, context: &mut C) -> Result<(), Self::Error>;
+}
+
 /// Owns registered modules, validates dependency graphs and manages deterministic lifecycle.
 #[derive(Default)]
 pub struct ModuleRuntime {
@@ -181,13 +194,16 @@ fn visit(
 
 fn valid_id(id: &str) -> bool {
     !id.is_empty()
-        && id.split("::").all(|part| {
-            !part.is_empty()
-                && part.bytes().all(|byte| {
-                    byte.is_ascii_lowercase()
-                        || byte.is_ascii_digit()
-                        || byte == b'_'
-                        || byte == b'-'
+        && id.split('.').all(|namespace| {
+            !namespace.is_empty()
+                && namespace.split("::").all(|part| {
+                    !part.is_empty()
+                        && part.bytes().all(|byte| {
+                            byte.is_ascii_lowercase()
+                                || byte.is_ascii_digit()
+                                || byte == b'_'
+                                || byte == b'-'
+                        })
                 })
         })
 }
@@ -199,6 +215,8 @@ pub enum LifecycleError {
     InvalidId(String),
     /// A module ID is already registered.
     DuplicateModule(String),
+    /// An enabled application module has no compiled implementation.
+    UnknownModule(String),
     /// A declared dependency has not been registered.
     MissingDependency {
         /// Module declaring the dependency.
@@ -233,6 +251,12 @@ impl fmt::Display for LifecycleError {
         match self {
             Self::InvalidId(id) => write!(formatter, "invalid module ID `{id}`"),
             Self::DuplicateModule(id) => write!(formatter, "module `{id}` is already registered"),
+            Self::UnknownModule(id) => {
+                write!(
+                    formatter,
+                    "enabled module `{id}` is not compiled into this application"
+                )
+            }
             Self::MissingModule(id) => write!(formatter, "module `{id}` was not found"),
             Self::MissingDependency { module, dependency } => write!(
                 formatter,

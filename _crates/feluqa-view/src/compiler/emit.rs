@@ -344,10 +344,18 @@ impl<'a> Emitter<'a> {
                         _ => self.push(&format!("({output}).push_str({text:?});\n")),
                     }
                 }
-                Kind::Echo { expression, raw } => {
+                Kind::Echo {
+                    expression,
+                    raw,
+                    url,
+                } => {
                     if *raw {
                         self.push(&format!(
                             "{runtime}::write_trusted({output}, &({expression}));\n"
+                        ));
+                    } else if *url {
+                        self.push(&format!(
+                            "{runtime}::write_url({output}, &({expression}))?;\n"
                         ));
                     } else {
                         self.push(&format!(

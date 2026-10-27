@@ -264,12 +264,45 @@ pub struct ActionRequest {
 }
 
 /// Successful action output and its monotonically advanced UI revision.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ActionResponse {
     /// Serialized typed handler output.
     pub value: Value,
     /// Next UI revision after successful execution.
     pub revision: u64,
+}
+
+/// Browser-submitted action fields. The host supplies trusted session and CSRF values.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ClientActionRequest {
+    /// HMAC-signed snapshot emitted by trusted server code.
+    pub snapshot: String,
+    /// Registered action ID requested by the browser.
+    pub action: String,
+    /// UI revision observed by the browser.
+    pub revision: u64,
+    /// JSON value deserialized into the action's Rust input type.
+    pub payload: Value,
+}
+
+/// Trusted server values used when issuing one action snapshot.
+pub struct SnapshotIssue {
+    /// Validated Core session identifier, never the raw browser cookie.
+    pub session: String,
+    /// CSRF value bound to the validated session.
+    pub csrf: String,
+    /// ID of a registered action.
+    pub action: String,
+    /// Cryptographically random one-use nonce.
+    pub nonce: String,
+    /// Current UI revision.
+    pub revision: u64,
+    /// Current Unix time in seconds.
+    pub now: u64,
+    /// Snapshot lifetime, bounded to one day.
+    pub lifetime_seconds: u64,
 }
 
 /// Validated identity metadata passed to business handlers.
@@ -351,6 +384,11 @@ impl ActionRegistry {
         Ok(())
     }
 
+    /// Return the exact permission bound to one registered action ID.
+    pub fn permission_for(&self, id: &str) -> Option<&Permission> {
+        self.actions.get(id).map(|action| action.permission())
+    }
+
     /// Verify all request bindings, authorization and replay policy before calling the handler.
     pub fn dispatch(
         &self,
@@ -388,6 +426,10 @@ impl ActionRegistry {
         authorizer
             .authorize(principal, action.permission())
             .map_err(|_| LiveError::Forbidden)?;
+        let revision = request
+            .revision
+            .checked_add(1)
+            .ok_or(LiveError::RevisionOverflow)?;
         if !replay_guard.consume(&claims.nonce, claims.expires_at, now)? {
             return Err(LiveError::Replay);
         }
@@ -396,11 +438,99 @@ impl ActionRegistry {
             tenant: principal.tenant().map(String::from),
         };
         let value = action.execute(&context, request.payload)?;
-        let revision = request
-            .revision
-            .checked_add(1)
-            .ok_or(LiveError::RevisionOverflow)?;
         Ok(ActionResponse { value, revision })
+    }
+}
+
+/// Per-application Live signing, action dispatch and single-process replay runtime.
+///
+/// The in-memory guard is suitable only for one-process development. Production
+/// deployments must use a shared atomic replay store before exposing Live actions.
+pub struct LiveRuntime {
+    signer: SnapshotSigner,
+    replay_guard: InMemoryReplayGuard,
+    actions: ActionRegistry,
+}
+
+impl LiveRuntime {
+    /// Build a Live runtime from secret signing material and a prevalidated action registry.
+    pub fn new(
+        signing_key: Vec<u8>,
+        replay_capacity: usize,
+        actions: ActionRegistry,
+    ) -> Result<Self, LiveError> {
+        Ok(Self {
+            signer: SnapshotSigner::new(signing_key)?,
+            replay_guard: InMemoryReplayGuard::new(replay_capacity)?,
+            actions,
+        })
+    }
+
+    /// Issue an authorized, short-lived snapshot for a registered action.
+    ///
+    /// `nonce` must be generated with a cryptographically secure random source by
+    /// the host application. Session and CSRF bindings must come from validated
+    /// server-side state, never from request parameters.
+    pub fn issue_snapshot(
+        &self,
+        principal: &Principal,
+        issue: SnapshotIssue,
+        authorizer: &impl Authorizer,
+    ) -> Result<String, LiveError> {
+        if issue.lifetime_seconds == 0 || issue.lifetime_seconds > MAX_SNAPSHOT_TTL_SECONDS {
+            return Err(LiveError::InvalidSnapshot);
+        }
+        let permission = self
+            .actions
+            .permission_for(&issue.action)
+            .ok_or(LiveError::UnknownAction)?;
+        authorizer
+            .authorize(principal, permission)
+            .map_err(|_| LiveError::Forbidden)?;
+        let expires_at = issue
+            .now
+            .checked_add(issue.lifetime_seconds)
+            .ok_or(LiveError::InvalidSnapshot)?;
+        let claims = SnapshotClaims::new(
+            String::from(principal.subject()),
+            principal.tenant().map(String::from),
+            issue.session,
+            issue.action,
+            Permission::new(String::from(permission.as_str()))
+                .map_err(|_| LiveError::InvalidSnapshot)?,
+            issue.csrf,
+            issue.nonce,
+            issue.revision,
+            expires_at,
+        )?;
+        self.signer.sign(&claims)
+    }
+
+    /// Dispatch a browser action after the host validates its session and CSRF header.
+    pub fn dispatch(
+        &self,
+        principal: &Principal,
+        session: String,
+        csrf: String,
+        request: ClientActionRequest,
+        now: u64,
+        authorizer: &impl Authorizer,
+    ) -> Result<ActionResponse, LiveError> {
+        self.actions.dispatch(
+            &self.signer,
+            &self.replay_guard,
+            authorizer,
+            principal,
+            ActionRequest {
+                snapshot: request.snapshot,
+                session,
+                csrf,
+                action: request.action,
+                revision: request.revision,
+                payload: request.payload,
+            },
+            now,
+        )
     }
 }
 
@@ -437,6 +567,8 @@ pub enum LiveError {
     ReplayStoreFull,
     /// An action ID is not valid namespaced syntax.
     InvalidActionId,
+    /// An action registration contains an invalid permission name.
+    InvalidPermission,
     /// An action ID is already registered.
     DuplicateAction,
     /// No action is registered under the requested ID.
@@ -471,6 +603,7 @@ impl fmt::Display for LiveError {
             Self::ReplayStoreUnavailable => "Live replay store is unavailable",
             Self::ReplayStoreFull => "Live replay store is full",
             Self::InvalidActionId => "Live action ID is invalid",
+            Self::InvalidPermission => "Live action permission is invalid",
             Self::DuplicateAction => "Live action ID is already registered",
             Self::UnknownAction => "Live action is not registered",
             Self::RequestBindingMismatch => "Live request does not match its signed snapshot",
@@ -490,8 +623,8 @@ impl core::error::Error for LiveError {}
 #[cfg(test)]
 mod tests {
     use super::{
-        ActionRegistry, ActionRequest, InMemoryReplayGuard, LiveError, ReplayGuard, SnapshotClaims,
-        SnapshotSigner,
+        ActionRegistry, ActionRequest, ClientActionRequest, InMemoryReplayGuard, LiveError,
+        LiveRuntime, ReplayGuard, SnapshotClaims, SnapshotIssue, SnapshotSigner,
     };
     use crate::core::clone::Clone;
     use crate::core::convert::{From, Into};
@@ -505,6 +638,8 @@ mod tests {
     use crate::std::assert;
     use crate::std::assert_eq;
     use crate::std::string::String;
+    use crate::std::sync::Arc;
+    use crate::std::sync::atomic::{AtomicUsize, Ordering};
     use crate::std::vec;
 
     #[derive(Deserialize)]
@@ -583,6 +718,70 @@ mod tests {
                 &principal,
                 request(),
                 9
+            ),
+            Err(LiveError::Replay)
+        );
+    }
+
+    #[test]
+    fn live_runtime_issues_authorized_client_requests_and_dispatches_once() {
+        let mut actions = ActionRegistry::default();
+        actions
+            .register::<Increment, Counter, _>(
+                "counter::increment",
+                Permission::new("business.counter.write").expect("permission"),
+                |_, input| {
+                    Ok(Counter {
+                        value: input.amount + 1,
+                    })
+                },
+            )
+            .expect("register action");
+        let runtime = LiveRuntime::new(vec![9; 32], 10, actions).expect("Live runtime");
+        let mut principal =
+            Principal::new("user-1", Some(String::from("tenant-1"))).expect("principal");
+        principal.grant(Permission::new("business.counter.write").expect("permission"));
+        let token = runtime
+            .issue_snapshot(
+                &principal,
+                SnapshotIssue {
+                    session: String::from("session-1"),
+                    csrf: String::from("csrf-token-value-0001"),
+                    action: String::from("counter::increment"),
+                    nonce: String::from("new-random-nonce-000001"),
+                    revision: 4,
+                    now: 9,
+                    lifetime_seconds: 60,
+                },
+                &PermissionSetAuthorizer,
+            )
+            .expect("authorized snapshot");
+        let request = || ClientActionRequest {
+            snapshot: token.clone(),
+            action: String::from("counter::increment"),
+            revision: 4,
+            payload: json!({"amount": 2}),
+        };
+        let response = runtime
+            .dispatch(
+                &principal,
+                String::from("session-1"),
+                String::from("csrf-token-value-0001"),
+                request(),
+                10,
+                &PermissionSetAuthorizer,
+            )
+            .expect("dispatch authorized action");
+        assert_eq!(response.value, json!({"value": 3}));
+        assert_eq!(response.revision, 5);
+        assert_eq!(
+            runtime.dispatch(
+                &principal,
+                String::from("session-1"),
+                String::from("csrf-token-value-0001"),
+                request(),
+                10,
+                &PermissionSetAuthorizer,
             ),
             Err(LiveError::Replay)
         );
@@ -693,6 +892,57 @@ mod tests {
             replay
                 .consume("nonce-value-00000001", 100, 1)
                 .expect("store nonce")
+        );
+    }
+
+    #[test]
+    fn revision_overflow_is_rejected_before_replay_claim_or_handler_side_effects() {
+        let signer = signer();
+        let mut overflow_claims = claims();
+        overflow_claims.revision = u64::MAX;
+        let token = signer.sign(&overflow_claims).expect("sign snapshot");
+        let calls = Arc::new(AtomicUsize::new(0));
+        let handler_calls = Arc::clone(&calls);
+        let mut registry = ActionRegistry::default();
+        registry
+            .register::<Increment, Counter, _>(
+                "counter::increment",
+                Permission::new("business.counter.write").expect("permission"),
+                move |_, input| {
+                    handler_calls.fetch_add(1, Ordering::SeqCst);
+                    Ok(Counter {
+                        value: input.amount,
+                    })
+                },
+            )
+            .expect("register action");
+        let mut principal =
+            Principal::new("user-1", Some(String::from("tenant-1"))).expect("principal");
+        principal.grant(Permission::new("business.counter.write").expect("permission"));
+        let replay = InMemoryReplayGuard::new(10).expect("replay cache");
+        assert_eq!(
+            registry.dispatch(
+                &signer,
+                &replay,
+                &PermissionSetAuthorizer,
+                &principal,
+                ActionRequest {
+                    snapshot: token,
+                    session: String::from("session-1"),
+                    csrf: String::from("csrf-token-value-0001"),
+                    action: String::from("counter::increment"),
+                    revision: u64::MAX,
+                    payload: json!({"amount": 1}),
+                },
+                9,
+            ),
+            Err(LiveError::RevisionOverflow)
+        );
+        assert_eq!(calls.load(Ordering::SeqCst), 0);
+        assert!(
+            replay
+                .consume("nonce-value-00000001", 10_000, 9)
+                .expect("overflow must not consume replay nonce")
         );
     }
 }

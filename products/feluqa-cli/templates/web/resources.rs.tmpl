@@ -1,0 +1,14 @@
+#![no_implicit_prelude]
+
+use crate::feluqa;
+
+use crate::axum::Router;
+use crate::std::clone::Clone;
+use feluqa::core::service::CoreStore;
+use feluqa::database::DatabasePools;
+
+pub(crate) fn routes(core_store: CoreStore) -> Router<DatabasePools> {
+    let mut routes = Router::<DatabasePools>::new();
+    // FELUQA_GENERATED_RESOURCE_ROUTES
+    routes
+}

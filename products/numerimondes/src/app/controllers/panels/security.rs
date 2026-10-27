@@ -2,7 +2,7 @@
 
 use super::*;
 
-pub(super) async fn session_csrf_valid(
+pub(crate) async fn session_csrf_valid(
     state: &PanelState,
     headers: &HeaderMap,
     submitted: &str,

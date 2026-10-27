@@ -9,6 +9,7 @@ Start with the root [README](../README.md) to build and run the current website 
 
 - [Enterprise delivery plan and acceptance gates](planning/ENTERPRISE_DELIVERY.md)
 - [Feluqa Views: `.view.rs`, `@rs`, includes, layouts, components](views/LANGUAGE.md)
+- [Webkernel view compatibility inventory and porting sequence](views/WEBKERNEL_COMPATIBILITY.md)
 - [Panels, SDUI, Live and module lifecycle contracts and status](architecture/PANELS_COMPONENTS.md)
 - [Zed extension and Tree-sitter product](editor/ZED.md)
 - [Contributor and agent instructions](../AGENTS.md)
@@ -23,6 +24,8 @@ The view compiler and first authz/UI-schema/panel/Live/module contracts now exis
 ## Product and architecture
 
 - [Web profile: modular MVC, Core panel, ERP modules, migrations, and databases](architecture/WEB_PROFILE.md)
+- [Project layout and provider ownership](architecture/PROJECT_LAYOUT.md)
+- [Database crate: named connections and module dialect migrations](../_crates/feluqa-database/src/lib.rs)
 - [Product decisions and requirements](architecture/DECISIONS.md)
 - [Open and deferred decisions](architecture/DECISIONS_LATER.md)
 

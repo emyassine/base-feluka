@@ -2,12 +2,15 @@
 resolver = "3"
 members = [
     "feluqa",
+    "feluqa-model-derive",
     "feluqa-console",
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-panel",
     "feluqa-live",
     "feluqa-module",
+    "feluqa-database",
+    "feluqa-core",
     "feluqa-view",
     "../products/feluqa-cli",
     "../products/numerimondes",
@@ -21,10 +24,18 @@ rust-version = "1.85"
 [workspace.dependencies]
 axum = "0.8"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["full"] }
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
 hmac = "0.12"
 sha2 = "0.10"
 zeroize = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
+sea-orm = { version = "=1.1.20", default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlx-sqlite", "sqlx-postgres", "with-json"] }
+argon2 = "=0.5.3"
+rand_core = "0.6"
+subtle = "2"
+thiserror = "2"
 toml = "0.8"
 tower-http = { version = "0.6", features = ["fs"] }

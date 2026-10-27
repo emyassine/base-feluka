@@ -31,8 +31,6 @@ mod authentication;
 pub use self::authentication::*;
 mod dashboard;
 pub use self::dashboard::*;
-mod customers;
-pub use self::customers::*;
 mod live;
 pub use self::live::*;
 mod users;
@@ -47,11 +45,11 @@ use self::live_support::*;
 mod rendering;
 use self::rendering::*;
 mod access;
+pub(crate) use self::access::protected_customer_page;
 use self::access::*;
 mod security;
+pub(crate) use self::security::session_csrf_valid;
 use self::security::*;
-mod customer_validation;
-use self::customer_validation::*;
 
 const LOGIN_CSRF_COOKIE: &str = "feluqa_login_csrf";
 const SESSION_COOKIE: &str = "feluqa_session";
@@ -154,48 +152,6 @@ pub(crate) struct UpdateRoleForm {
     csrf_token: String,
     id: i64,
     permissions: String,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct CustomerForm {
-    csrf_token: String,
-    name: String,
-    email: String,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct CustomerPageQuery {
-    page: Option<u64>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct UpdateCustomerForm {
-    csrf_token: String,
-    id: i64,
-    name: Option<String>,
-    email: Option<String>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct DeleteCustomerForm {
-    csrf_token: String,
-    id: i64,
-}
-
-struct CustomerPageAccess<'a> {
-    identity: SessionIdentity,
-    csrf: &'a str,
-    scope: crate::modules::crm::policies::CustomerScope,
-    fields: crate::modules::crm::policies::CustomerFields,
-    can_create: bool,
-    can_delete: bool,
-    resource: feluqa::panel::ResourceAccess,
-    create_resource: Option<feluqa::panel::ResourceAccess>,
-    update_resource: Option<feluqa::panel::ResourceAccess>,
 }
 
 #[cfg(test)]

@@ -11,3 +11,4 @@ publish = ["feluqa"]
 [dependencies]
 feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
 feluqa-ui = { version = "0.1.0", registry = "feluqa", path = "../feluqa-ui" }
+serde_json.workspace = true

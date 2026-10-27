@@ -1,0 +1,81 @@
+#![no_implicit_prelude]
+#![forbid(unsafe_code)]
+#![deny(unused_must_use)]
+
+extern crate feluqa;
+extern crate std;
+
+use feluqa::view::compiler::Compiler;
+use std::boxed::Box;
+use std::convert::From;
+use std::env;
+use std::error::Error;
+use std::path::PathBuf;
+use std::println;
+use std::result::Result;
+use std::result::Result::Ok;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
+    let output = PathBuf::from(env::var("OUT_DIR")?);
+    let mut compiler = Compiler::new();
+    compiler.add_root("app", &root.join("resources/views"))?;
+    compiler.add_root("system", &root.join("src/modules/system/views"))?;
+    compiler.parameters("app::pages.home", "title: &str")?;
+    compiler.entry("home", "app::pages.home")?;
+    compiler.parameters("system::pages.system_setup", "csrf_token: &str, notice: &str")?;
+    compiler.entry("system_setup", "system::pages.system_setup")?;
+    compiler.parameters("system::pages.system_login", "csrf_token: &str, notice: &str")?;
+    compiler.entry("system_login", "system::pages.system_login")?;
+    compiler.parameters(
+        "system::pages.system_users",
+        "display_name: &str, email: &str, csrf_token: &str, user_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml",
+    )?;
+    compiler.entry("system_users", "system::pages.system_users")?;
+    compiler.parameters(
+        "system::pages.system_roles",
+        "display_name: &str, email: &str, csrf_token: &str, role_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml",
+    )?;
+    compiler.entry("system_roles", "system::pages.system_roles")?;
+    compiler.parameters(
+        "system::pages.system_modules",
+        "display_name: &str, email: &str, rows: &str, connections: &str",
+    )?;
+    compiler.entry("system_modules", "system::pages.system_modules")?;
+    compiler.parameters(
+        "system::pages.system_connections",
+        "display_name: &str, email: &str, rows: &str",
+    )?;
+    compiler.entry("system_connections", "system::pages.system_connections")?;
+    compiler.parameters(
+        "system::pages.system_migrations",
+        "display_name: &str, email: &str, rows: &str, run_actions: crate::feluqa::view::TrustedHtml",
+    )?;
+    compiler.entry("system_migrations", "system::pages.system_migrations")?;
+    compiler.parameters(
+        "system::pages.system_audit",
+        "display_name: &str, email: &str, rows: &str",
+    )?;
+    compiler.parameters(
+        "system::pages.system_tenants",
+        "display_name: &str, email: &str, csrf_token: &str, rows: &str, tenant_actions: crate::feluqa::view::TrustedHtml",
+    )?;
+    compiler.entry("system_audit", "system::pages.system_audit")?;
+    compiler.entry("system_tenants", "system::pages.system_tenants")?;
+    compiler.parameters(
+        "system::pages.system_dashboard",
+        "display_name: &str, email: &str, csrf_token: &str",
+    )?;
+    compiler.entry("system_dashboard", "system::pages.system_dashboard")?;
+    let generated = compiler.generate()?;
+    for dependency in &generated.dependencies {
+        println!("cargo:rerun-if-changed={}", dependency.display());
+    }
+    generated.write_to(&output.join("views.rs"))?;
+    feluqa::database::build_support::generate_migration_registry(
+        &root,
+        &output.join("migrations.rs"),
+    )?;
+    println!("cargo:rerun-if-changed=build.rs");
+    Ok(())
+}

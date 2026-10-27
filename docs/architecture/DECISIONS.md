@@ -171,7 +171,7 @@ DX is a stated differentiator, so it gets requirements, not adjectives.
 | Capability | Requirement | Target |
 | --- | --- | --- |
 | Start | `feluqa new` scaffolds a project with the Core panel and one example collection | running in under 10 s |
-| Dev loop | `feluqa dev` watches files; views, schemas, policies and config reload without restart | under 1 s |
+| Dev loop | `feluqa dev` polls app/framework sources, compiles a new binary while the current one serves, and restarts only after a successful build | under 5 s incremental (target; current polling/rebuild latency not measured) |
 | Code changes | In-place restart that keeps the database and sessions | under 5 s incremental |
 | Errors | Dev error page with source location, failing query and request; structured logs in production | always |
 | Request inspector | Dev panel showing queries, timings, cache hits, policy decisions per request (Laravel Debugbar/Telescope idea) | built in |
@@ -605,6 +605,7 @@ Exhibit 4 | Go/no-go gates; a gate passes only if every listed ID passes
 * **D-0028 — Planning without durations.** Accepted. No calendar estimates anywhere in the brief; gates pass on measured criteria.
 * **D-0029 — Real-time and defense boundaries.** Proposed. Ground-side software only in release 1; kernel crates stay `no_std`-capable; legal review before any defense positioning (decision 2).
 * **D-0030 — Port protocol.** Proposed. Library ports follow the black-box test protocol in Part B.
+* **D-0031 — Web database layer and migrations.** Accepted for the Web profile: SeaORM 1.1.20 with Tokio and SQLite/PostgreSQL drivers, preserving workspace MSRV Rust 1.85. Feluqa modules embed SQL files from `migrations/{sqlite,postgresql}`; each declares supported dialects and supplies exactly one migration variant per declared backend. Named connections are explicit; SQLite is the default. SeaORM 2.x / SQLx 0.9 are deferred while they require Rust 1.94.
 
 ### C3. Sources
 

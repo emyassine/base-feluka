@@ -176,11 +176,11 @@ pub(super) async fn registered_page_access<'a>(
     }
 }
 
-pub(super) async fn protected_customer_page<'a>(
+pub(crate) async fn protected_customer_page<'a>(
     state: &PanelState,
     headers: &'a HeaderMap,
     action: crate::modules::crm::policies::CustomerAction,
-) -> Result<Option<CustomerPageAccess<'a>>, StatusCode> {
+) -> Result<Option<crate::modules::crm::controllers::CustomerPageAccess<'a>>, StatusCode> {
     let identity = match authenticated_identity(state, headers).await {
         Ok(Some(identity)) => identity,
         Ok(None) => return Ok(None),
@@ -256,7 +256,7 @@ pub(super) async fn protected_customer_page<'a>(
         )
         .is_ok();
     let csrf = cookie(headers, CSRF_COOKIE).ok_or(StatusCode::FORBIDDEN)?;
-    Ok(Some(CustomerPageAccess {
+    Ok(Some(crate::modules::crm::controllers::CustomerPageAccess {
         identity,
         csrf,
         scope,

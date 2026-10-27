@@ -17,6 +17,8 @@ use core::write;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Command {
     Dev,
+    Migrate,
+    Seed,
     Help,
 }
 
@@ -43,6 +45,8 @@ impl Command {
     pub fn parse(command: Option<&str>) -> Result<Self, UnknownCommand> {
         match command {
             None | Some("dev") => Ok(Self::Dev),
+            Some("migrate") => Ok(Self::Migrate),
+            Some("seed") => Ok(Self::Seed),
             Some("help" | "--help" | "-h") => Ok(Self::Help),
             Some(name) => Err(UnknownCommand {
                 name: name.to_string(),

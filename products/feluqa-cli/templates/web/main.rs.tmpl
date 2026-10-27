@@ -1,0 +1,113 @@
+#![no_implicit_prelude]
+#![deny(unsafe_code)]
+#![deny(unused_must_use)]
+
+extern crate axum;
+extern crate feluqa;
+extern crate serde;
+extern crate serde_json;
+extern crate std;
+extern crate subtle;
+extern crate tokio;
+extern crate toml;
+#[cfg(test)]
+extern crate tower;
+extern crate tower_http;
+
+mod app;
+mod config;
+mod modules;
+mod routes;
+mod generated_migrations {
+    include!(concat!(env!("OUT_DIR"), "/migrations.rs"));
+}
+mod views {
+    include!(concat!(env!("OUT_DIR"), "/views.rs"));
+}
+
+use std::boxed::Box;
+use std::clone::Clone;
+use std::convert::{From, Into};
+use std::error::Error;
+use std::format;
+use std::iter::Iterator;
+use std::println;
+use std::net::SocketAddr;
+use std::option::Option::{None, Some};
+use std::result::Result;
+use std::result::Result::{Err, Ok};
+use std::str::FromStr;
+use std::string::String;
+use tokio::net::TcpListener;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let mut arguments = std::env::args().skip(1);
+    let command = arguments.next().unwrap_or_else(|| String::from("dev"));
+    let seeder_id = if command == "seed" {
+        Some(arguments.next().ok_or_else(|| {
+            std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "usage: feluqa seed <seeder-id>",
+            )
+        })?)
+    } else {
+        None
+    };
+    if arguments.next().is_some() || !["dev", "migrate", "seed"].contains(&command.as_str()) {
+        return Err("usage: feluqa dev | feluqa migrate | feluqa seed <seeder-id>".into());
+    }
+
+    let environment = std::env::var("FELUQA_ENV")
+        .unwrap_or_else(|_| String::from("development"));
+    if command == "dev" && environment != "development" {
+        return Err("feluqa dev only runs with FELUQA_ENV=development".into());
+    }
+    let settings = config::AppConfig::load(&environment)?;
+    let database_source = std::fs::read_to_string(format!("config/database.{environment}.toml"))?;
+    let mut database_settings = feluqa::database::DatabaseSettings::from_toml(&database_source)?;
+    database_settings.resolve_relative_paths(&std::env::current_dir()?);
+    let databases = feluqa::database::DatabasePools::connect(&database_settings).await?;
+    if command == "dev" || command == "migrate" {
+        let applied = feluqa::database::MigrationRunner::run_module(
+            &databases,
+            "default",
+            &feluqa::core::MIGRATIONS,
+        )
+        .await?;
+        println!("Applied {} Feluqa Core migration(s)", applied.len());
+        for module in generated_migrations::ALL {
+            feluqa::database::MigrationRunner::run_declared(&databases, module).await?;
+        }
+    }
+    let panel_catalog = modules::panel_catalog()?;
+    if command == "migrate" {
+        return Ok(());
+    }
+    if let Some(seeder_id) = seeder_id {
+        modules::seeders::run(&seeder_id, databases.default_connection()?).await?;
+        println!("Completed seeder `{seeder_id}`");
+        return Ok(());
+    }
+
+    let live_runtime = if settings.security.live_enabled {
+        Some(modules::live::runtime(
+            settings.security.live_signing_key(&environment)?,
+        )?)
+    } else {
+        None
+    };
+    let address = SocketAddr::from_str(&format!("{}:{}", settings.host, settings.port))?;
+    let listener = TcpListener::bind(address).await?;
+    println!("{} listening on http://{}", settings.name, address);
+    let core = feluqa::core::service::CoreStore::new(databases.default_connection()?.clone())?;
+    let router = routes::web::routes(
+        core.clone(),
+        panel_catalog,
+        settings.security.secure_cookies,
+        live_runtime,
+    )?
+    .with_state(databases);
+    axum::serve(listener, router).await?;
+    Ok(())
+}

@@ -1,0 +1,23 @@
+[package]
+name = "@@SLUG@@"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+build = "build.rs"
+
+[dependencies]
+axum = "0.8"
+feluqa = @@FELUQA_DEPENDENCY@@
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+subtle = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
+toml = "0.8"
+tower-http = { version = "0.6", features = ["fs"] }
+
+[build-dependencies]
+feluqa = { @@FELUQA_DEPENDENCY_FIELDS@@, features = ["view-compiler"] }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }

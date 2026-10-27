@@ -14,10 +14,11 @@ extern crate serde_json;
 extern crate std;
 
 use alloc::collections::BTreeSet;
+use alloc::format;
 use alloc::string::String;
 use alloc::vec::Vec;
 use core::convert::From;
-use core::fmt;
+use core::fmt::{self, Write};
 use core::iter::Iterator;
 use core::matches;
 use core::option::Option;
@@ -492,6 +493,15 @@ fn render_node(node: &UiNode, output: &mut String) -> Result<(), RenderError> {
                 push_escaped(output, required_string(props, "label")?);
                 output.push_str("</button>");
             }
+            "feluqa::form" => render_form(props, children, output)?,
+            "feluqa::input" => {
+                require_no_children(children)?;
+                render_input(props, output)?;
+            }
+            "feluqa::select" => {
+                require_no_children(children)?;
+                render_select(props, output)?;
+            }
             "feluqa::link" => {
                 require_props(props, &["href", "label"])?;
                 require_no_children(children)?;
@@ -505,9 +515,352 @@ fn render_node(node: &UiNode, output: &mut String) -> Result<(), RenderError> {
                 push_escaped(output, required_string(props, "label")?);
                 output.push_str("</a>");
             }
+            "feluqa::table" => render_table(props, children, output)?,
             _ => return Err(RenderError::UnknownComponent),
         },
     }
+    Ok(())
+}
+
+fn render_form(
+    props: &serde_json::Map<String, Value>,
+    children: &[UiNode],
+    output: &mut String,
+) -> Result<(), RenderError> {
+    require_props(props, &["action", "csrf_token", "submit", "record_id"])?;
+    let action = required_string(props, "action")?;
+    if !action.starts_with('/') || !safe_href(action) {
+        return Err(RenderError::UnsafeUrl);
+    }
+    let csrf = required_string(props, "csrf_token")?;
+    if csrf.len() != 64 || !csrf.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err(RenderError::InvalidPropertyValue("csrf_token"));
+    }
+    let submit = required_string(props, "submit")?;
+    if submit.trim().is_empty() || submit.len() > 128 {
+        return Err(RenderError::InvalidPropertyValue("submit"));
+    }
+    let record_id = match props.get("record_id") {
+        None => None,
+        Some(value) => Some(
+            value
+                .as_i64()
+                .filter(|id| *id > 0)
+                .ok_or(RenderError::InvalidPropertyValue("record_id"))?,
+        ),
+    };
+
+    output.push_str("<form method=\"post\" action=\"");
+    push_escaped(output, action);
+    output.push_str("\"><input type=\"hidden\" name=\"csrf_token\" value=\"");
+    push_escaped(output, csrf);
+    output.push_str("\">");
+    if let Some(record_id) = record_id {
+        output.push_str("<input type=\"hidden\" name=\"id\" value=\"");
+        core::write!(output, "{record_id}")
+            .map_err(|_| RenderError::InvalidPropertyValue("record_id"))?;
+        output.push_str("\">");
+    }
+
+    let mut names = BTreeSet::new();
+    for child in children {
+        let UiNode::Component { name, props, .. } = child else {
+            return Err(RenderError::UnexpectedChildren);
+        };
+        if name != "feluqa::input" && name != "feluqa::select" {
+            return Err(RenderError::UnknownComponent);
+        }
+        let field_name = required_string(props, "name")?;
+        if !valid_field_name(field_name) || !names.insert(String::from(field_name)) {
+            return Err(RenderError::InvalidPropertyValue("name"));
+        }
+        if name == "feluqa::select" {
+            render_select(props, output)?;
+        } else {
+            render_input(props, output)?;
+        }
+    }
+    output.push_str("<button type=\"submit\">");
+    push_escaped(output, submit);
+    output.push_str("</button></form>");
+    Ok(())
+}
+
+fn render_input(
+    props: &serde_json::Map<String, Value>,
+    output: &mut String,
+) -> Result<(), RenderError> {
+    require_props(
+        props,
+        &[
+            "id",
+            "name",
+            "label",
+            "type",
+            "value",
+            "required",
+            "maxlength",
+        ],
+    )?;
+    let name = required_string(props, "name")?;
+    if !valid_field_name(name) {
+        return Err(RenderError::InvalidPropertyValue("name"));
+    }
+    let label = required_string(props, "label")?;
+    if label.trim().is_empty() || label.len() > 512 {
+        return Err(RenderError::InvalidPropertyValue("label"));
+    }
+    let input_type = enum_prop(
+        props,
+        "type",
+        &["text", "email", "number", "password", "textarea"],
+    )?;
+    let value = optional_string(props, "value")?.unwrap_or("");
+    let required = optional_bool(props, "required")? == Some(true);
+    let maxlength = match props.get("maxlength") {
+        None => None,
+        Some(value) => Some(
+            value
+                .as_u64()
+                .filter(|length| (1..=16_384).contains(length))
+                .ok_or(RenderError::InvalidPropertyValue("maxlength"))?,
+        ),
+    };
+    let id = optional_string(props, "id")?
+        .map(String::from)
+        .unwrap_or_else(|| format!("feluqa-field-{name}"));
+    if !valid_html_id(&id) {
+        return Err(RenderError::InvalidPropertyValue("id"));
+    }
+    output.push_str("<label for=\"");
+    push_escaped(output, &id);
+    output.push_str("\">");
+    push_escaped(output, label);
+    output.push_str("</label>");
+    if input_type == "textarea" {
+        output.push_str("<textarea id=\"");
+        push_escaped(output, &id);
+        output.push_str("\" name=\"");
+        push_escaped(output, name);
+        output.push('"');
+        if required {
+            output.push_str(" required");
+        }
+        if let Some(maxlength) = maxlength {
+            output.push_str(" maxlength=\"");
+            core::write!(output, "{maxlength}")
+                .map_err(|_| RenderError::InvalidPropertyValue("maxlength"))?;
+            output.push('"');
+        }
+        output.push('>');
+        push_escaped(output, value);
+        output.push_str("</textarea>");
+    } else {
+        output.push_str("<input id=\"");
+        push_escaped(output, &id);
+        output.push_str("\" name=\"");
+        push_escaped(output, name);
+        output.push_str("\" type=\"");
+        output.push_str(input_type);
+        output.push_str("\" value=\"");
+        push_escaped(output, value);
+        output.push('"');
+        if required {
+            output.push_str(" required");
+        }
+        if let Some(maxlength) = maxlength {
+            output.push_str(" maxlength=\"");
+            core::write!(output, "{maxlength}")
+                .map_err(|_| RenderError::InvalidPropertyValue("maxlength"))?;
+            output.push('"');
+        }
+        output.push('>');
+    }
+    Ok(())
+}
+
+fn render_select(
+    props: &serde_json::Map<String, Value>,
+    output: &mut String,
+) -> Result<(), RenderError> {
+    require_props(
+        props,
+        &[
+            "id",
+            "name",
+            "label",
+            "value",
+            "required",
+            "options",
+            "placeholder",
+        ],
+    )?;
+    let id = required_string(props, "id")?;
+    let name = required_string(props, "name")?;
+    let label = required_string(props, "label")?;
+    if !valid_html_id(id) || !valid_field_name(name) || label.trim().is_empty() || label.len() > 512
+    {
+        return Err(RenderError::InvalidPropertyValue("select"));
+    }
+    let selected = optional_string(props, "value")?;
+    let placeholder = optional_string(props, "placeholder")?;
+    let required = optional_bool(props, "required")? == Some(true);
+    let options = props
+        .get("options")
+        .and_then(Value::as_array)
+        .filter(|options| !options.is_empty() && options.len() <= 256)
+        .ok_or(RenderError::InvalidPropertyValue("options"))?;
+    let mut option_values = BTreeSet::new();
+    if let Some(selected) = selected {
+        if !options
+            .iter()
+            .any(|option| option.get("value").and_then(Value::as_str) == Some(selected))
+        {
+            return Err(RenderError::InvalidPropertyValue("value"));
+        }
+    }
+
+    output.push_str("<label for=\"");
+    push_escaped(output, id);
+    output.push_str("\">");
+    push_escaped(output, label);
+    output.push_str("</label><select id=\"");
+    push_escaped(output, id);
+    output.push_str("\" name=\"");
+    push_escaped(output, name);
+    output.push('"');
+    if required {
+        output.push_str(" required");
+    }
+    output.push('>');
+    if selected.is_none()
+        && let Some(placeholder) = placeholder
+    {
+        if placeholder.trim().is_empty() || placeholder.len() > 128 {
+            return Err(RenderError::InvalidPropertyValue("placeholder"));
+        }
+        output.push_str("<option value=\"\" selected disabled>");
+        push_escaped(output, placeholder);
+        output.push_str("</option>");
+    }
+    for option in options {
+        let option = option
+            .as_object()
+            .filter(|option| option.len() == 2)
+            .ok_or(RenderError::InvalidPropertyValue("options"))?;
+        let value = option
+            .get("value")
+            .and_then(Value::as_str)
+            .filter(|value| !value.is_empty() && value.len() <= 256)
+            .ok_or(RenderError::InvalidPropertyValue("options"))?;
+        let label = option
+            .get("label")
+            .and_then(Value::as_str)
+            .filter(|label| !label.trim().is_empty() && label.len() <= 512)
+            .ok_or(RenderError::InvalidPropertyValue("options"))?;
+        if !option_values.insert(String::from(value)) {
+            return Err(RenderError::InvalidPropertyValue("options"));
+        }
+        output.push_str("<option value=\"");
+        push_escaped(output, value);
+        output.push('"');
+        if selected == Some(value) {
+            output.push_str(" selected");
+        }
+        output.push('>');
+        push_escaped(output, label);
+        output.push_str("</option>");
+    }
+    output.push_str("</select>");
+    Ok(())
+}
+
+fn valid_field_name(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 64
+        && value.as_bytes()[0].is_ascii_lowercase()
+        && value
+            .bytes()
+            .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'_')
+}
+
+fn valid_html_id(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 128
+        && value.as_bytes()[0].is_ascii_alphabetic()
+        && value
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || byte == b'_' || byte == b'-')
+}
+
+fn render_table(
+    props: &serde_json::Map<String, Value>,
+    rows: &[UiNode],
+    output: &mut String,
+) -> Result<(), RenderError> {
+    require_props(props, &["caption", "headers"])?;
+    let caption = required_string(props, "caption")?;
+    if caption.trim().is_empty() || caption.len() > 512 {
+        return Err(RenderError::InvalidPropertyValue("caption"));
+    }
+    let headers = props
+        .get("headers")
+        .and_then(Value::as_array)
+        .filter(|headers| !headers.is_empty() && headers.len() <= 32)
+        .ok_or(RenderError::InvalidPropertyType("headers"))?;
+    output.push_str("<table class=\"feluqa-table\"><caption>");
+    push_escaped(output, caption);
+    output.push_str("</caption><thead><tr>");
+    for header in headers {
+        let header = header
+            .as_str()
+            .filter(|header| !header.trim().is_empty() && header.len() <= 512)
+            .ok_or(RenderError::InvalidPropertyValue("headers"))?;
+        output.push_str("<th scope=\"col\">");
+        push_escaped(output, header);
+        output.push_str("</th>");
+    }
+    output.push_str("</tr></thead><tbody>");
+    for row in rows {
+        let UiNode::Component {
+            name,
+            props,
+            children: cells,
+            ..
+        } = row
+        else {
+            return Err(RenderError::UnexpectedChildren);
+        };
+        if name != "feluqa::row" {
+            return Err(RenderError::UnknownComponent);
+        }
+        require_props(props, &[])?;
+        if cells.len() != headers.len() {
+            return Err(RenderError::InvalidPropertyValue("headers"));
+        }
+        output.push_str("<tr>");
+        for cell in cells {
+            let UiNode::Component {
+                name,
+                props,
+                children,
+                ..
+            } = cell
+            else {
+                return Err(RenderError::UnexpectedChildren);
+            };
+            if name != "feluqa::cell" {
+                return Err(RenderError::UnknownComponent);
+            }
+            require_props(props, &["value"])?;
+            require_no_children(children)?;
+            output.push_str("<td>");
+            push_escaped(output, required_string(props, "value")?);
+            output.push_str("</td>");
+        }
+        output.push_str("</tr>");
+    }
+    output.push_str("</tbody></table>");
     Ok(())
 }
 
@@ -611,7 +964,7 @@ fn push_escaped(output: &mut String, value: &str) {
     }
 }
 
-/// Failure to render the built-in, non-interactive SDUI component set.
+/// Failure to render Feluqa's fixed SDUI component set.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum RenderError {
     /// The input document failed schema validation.
@@ -664,6 +1017,8 @@ mod render_tests {
     use super::{RenderError, SCHEMA_VERSION, SchemaError, UiDocument, UiNode, render};
     use crate::core::clone::Clone;
     use crate::core::convert::From;
+    use crate::core::convert::Into;
+    use crate::core::iter::FromIterator;
     use crate::core::result::Result::Err;
     use crate::serde_json::{Map, Value};
     use crate::std::assert_eq;
@@ -672,16 +1027,257 @@ mod render_tests {
     use crate::std::vec::Vec;
 
     fn component(name: &str, props: &[(&str, Value)], children: Vec<UiNode>) -> UiNode {
+        component_with_key("root", name, props, children)
+    }
+
+    fn component_with_key(
+        key: &str,
+        name: &str,
+        props: &[(&str, Value)],
+        children: Vec<UiNode>,
+    ) -> UiNode {
         let mut map = Map::new();
         for (key, value) in props {
             map.insert(String::from(*key), value.clone());
         }
         UiNode::Component {
-            key: String::from("root"),
+            key: String::from(key),
             name: String::from(name),
             props: map,
             children,
         }
+    }
+
+    #[test]
+    fn table_component_renders_accessible_cells_and_escapes_record_values() {
+        let document = UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::table",
+                &[
+                    ("caption", Value::String(String::from("Customers"))),
+                    (
+                        "headers",
+                        Value::Array(vec![Value::String(String::from("Name"))]),
+                    ),
+                ],
+                vec![component_with_key(
+                    "row-1",
+                    "feluqa::row",
+                    &[],
+                    vec![component_with_key(
+                        "cell-1-1",
+                        "feluqa::cell",
+                        &[("value", Value::String(String::from("<Acme>")))],
+                        vec![],
+                    )],
+                )],
+            )],
+        };
+        assert_eq!(
+            render(&document).expect("render safe table").as_str(),
+            "<table class=\"feluqa-table\"><caption>Customers</caption><thead><tr><th scope=\"col\">Name</th></tr></thead><tbody><tr><td>&lt;Acme&gt;</td></tr></tbody></table>"
+        );
+    }
+
+    #[test]
+    fn table_component_rejects_rows_with_a_different_cell_count() {
+        let document = UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::table",
+                &[
+                    ("caption", Value::String(String::from("Customers"))),
+                    (
+                        "headers",
+                        Value::Array(vec![Value::String(String::from("Name"))]),
+                    ),
+                ],
+                vec![component_with_key("row-1", "feluqa::row", &[], vec![])],
+            )],
+        };
+        assert_eq!(
+            render(&document),
+            Err(RenderError::InvalidPropertyValue("headers"))
+        );
+    }
+
+    #[test]
+    fn select_component_escapes_options_and_requires_a_known_selection() {
+        let document = UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::select",
+                &[
+                    ("id", Value::String(String::from("role-id"))),
+                    ("name", Value::String(String::from("role_id"))),
+                    ("label", Value::String(String::from("Role"))),
+                    ("required", Value::Bool(true)),
+                    (
+                        "options",
+                        Value::Array(vec![Value::Object(Map::from_iter([
+                            (String::from("value"), Value::String(String::from("1"))),
+                            (
+                                String::from("label"),
+                                Value::String(String::from("Editor <restricted>")),
+                            ),
+                        ]))]),
+                    ),
+                ],
+                vec![],
+            )],
+        };
+        let output = render(&document).expect("render valid select");
+        assert_eq!(
+            output.as_str(),
+            "<label for=\"role-id\">Role</label><select id=\"role-id\" name=\"role_id\" required><option value=\"1\">Editor &lt;restricted&gt;</option></select>"
+        );
+
+        let mut invalid = document.clone();
+        if let UiNode::Component { props, .. } = &mut invalid.root[0] {
+            props.insert(
+                String::from("value"),
+                Value::String(String::from("missing")),
+            );
+        }
+        assert_eq!(
+            render(&invalid),
+            Err(RenderError::InvalidPropertyValue("value"))
+        );
+    }
+
+    #[test]
+    fn form_component_uses_post_and_escapes_csrf_fields_and_values() {
+        let document = UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::form",
+                &[
+                    ("action", Value::String(String::from("/admin/customers"))),
+                    ("csrf_token", Value::String("a".repeat(64))),
+                    ("submit", Value::String(String::from("Create customer"))),
+                ],
+                vec![component_with_key(
+                    "customer-name",
+                    "feluqa::input",
+                    &[
+                        ("name", Value::String(String::from("name"))),
+                        ("label", Value::String(String::from("Customer <name>"))),
+                        ("type", Value::String(String::from("text"))),
+                        (
+                            "value",
+                            Value::String(String::from("<script>alert(1)</script>")),
+                        ),
+                        ("required", Value::Bool(true)),
+                        ("maxlength", Value::Number(160_u64.into())),
+                    ],
+                    vec![],
+                )],
+            )],
+        };
+        assert_eq!(
+            render(&document).expect("render safe form").as_str(),
+            "<form method=\"post\" action=\"/admin/customers\"><input type=\"hidden\" name=\"csrf_token\" value=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"><label for=\"feluqa-field-name\">Customer &lt;name&gt;</label><input id=\"feluqa-field-name\" name=\"name\" type=\"text\" value=\"&lt;script&gt;alert(1)&lt;/script&gt;\" required maxlength=\"160\"><button type=\"submit\">Create customer</button></form>"
+        );
+    }
+
+    #[test]
+    fn textarea_component_escapes_body_and_preserves_a_unique_field_id() {
+        let document = UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::form",
+                &[
+                    (
+                        "action",
+                        Value::String(String::from("/system/roles/update")),
+                    ),
+                    ("csrf_token", Value::String("a".repeat(64))),
+                    ("record_id", Value::Number(27_i64.into())),
+                    ("submit", Value::String(String::from("Update grants"))),
+                ],
+                vec![component_with_key(
+                    "role-permissions",
+                    "feluqa::input",
+                    &[
+                        (
+                            "id",
+                            Value::String(String::from("feluqa-field-27-permissions")),
+                        ),
+                        ("name", Value::String(String::from("permissions"))),
+                        ("label", Value::String(String::from("Permissions"))),
+                        ("type", Value::String(String::from("textarea"))),
+                        ("value", Value::String(String::from("<script>bad</script>"))),
+                        ("required", Value::Bool(true)),
+                        ("maxlength", Value::Number(8_192_u64.into())),
+                    ],
+                    vec![],
+                )],
+            )],
+        };
+        let html = render(&document).expect("render safe textarea form");
+        assert_eq!(
+            html.as_str(),
+            "<form method=\"post\" action=\"/system/roles/update\"><input type=\"hidden\" name=\"csrf_token\" value=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"><input type=\"hidden\" name=\"id\" value=\"27\"><label for=\"feluqa-field-27-permissions\">Permissions</label><textarea id=\"feluqa-field-27-permissions\" name=\"permissions\" required maxlength=\"8192\">&lt;script&gt;bad&lt;/script&gt;</textarea><button type=\"submit\">Update grants</button></form>"
+        );
+    }
+
+    #[test]
+    fn form_component_rejects_external_actions_invalid_csrf_and_duplicate_names() {
+        let input = component_with_key(
+            "first-input",
+            "feluqa::input",
+            &[
+                ("name", Value::String(String::from("name"))),
+                ("label", Value::String(String::from("Name"))),
+                ("type", Value::String(String::from("text"))),
+            ],
+            vec![],
+        );
+        let make_form = |action: &str, token: &str, children: Vec<UiNode>| UiDocument {
+            schema_version: SCHEMA_VERSION,
+            root: vec![component(
+                "feluqa::form",
+                &[
+                    ("action", Value::String(String::from(action))),
+                    ("csrf_token", Value::String(String::from(token))),
+                    ("submit", Value::String(String::from("Save"))),
+                ],
+                children,
+            )],
+        };
+        assert_eq!(
+            render(&make_form(
+                "https://evil.example/post",
+                &"a".repeat(64),
+                vec![]
+            )),
+            Err(RenderError::UnsafeUrl)
+        );
+        assert_eq!(
+            render(&make_form("/save", "short", vec![])),
+            Err(RenderError::InvalidPropertyValue("csrf_token"))
+        );
+        assert_eq!(
+            render(&make_form(
+                "/save",
+                &"a".repeat(64),
+                vec![
+                    input,
+                    component_with_key(
+                        "second-input",
+                        "feluqa::input",
+                        &[
+                            ("name", Value::String(String::from("name"))),
+                            ("label", Value::String(String::from("Name again"))),
+                            ("type", Value::String(String::from("text"))),
+                        ],
+                        vec![],
+                    ),
+                ],
+            )),
+            Err(RenderError::InvalidPropertyValue("name"))
+        );
     }
 
     #[test]
