@@ -21,8 +21,13 @@
 (component_name) @type
 (tag_name) @tag
 (attribute_name) @attribute
-(quoted_value) @string
+(attribute_value) @string
+(quoted_attribute_value) @string
 (string_literal) @string
+(entity) @constant.character.entity
+(doctype_keyword) @keyword
+(html_comment) @comment
+(erroneous_end_tag_name) @tag.error
 (bound_value) @embedded
 (rust_expression) @embedded
 (rust_condition) @embedded
