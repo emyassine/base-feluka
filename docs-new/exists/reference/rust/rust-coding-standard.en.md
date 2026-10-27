@@ -1,0 +1,113 @@
+# Feluqa Rust Coding Standard
+
+Status: mandatory for Feluqa first-party Rust crates and generated application code.
+Scope: workspace source, examples, build scripts and tests unless a section says otherwise.
+
+## 1. Rust edition and toolchain
+
+- Use the edition and minimum Rust version declared through `_crates/Cargo.toml`. Select the exact compiler in CI and developer environment management; do not pin a repository-wide rustup toolchain unless reproducible local toolchains become a requirement.
+- `rustfmt` must be clean. CI uses a declared compiler channel and locked dependencies (`cargo --locked`); the repository does not force a rustup toolchain on every developer.
+- Declare and test an explicit MSRV. Do not silently raise it through a dependency update.
+- Keep `Cargo.lock` for applications and workspace tools; libraries document their MSRV and dependency policy.
+- Review Rust API and lint changes against the official Rust Reference and Rust compiler documentation when adopting a new language feature.
+
+## 2. Explicit prelude and imports
+
+Every crate root (`lib.rs` or `main.rs`) and every generated application binary starts with:
+
+```rust
+#![no_implicit_prelude]
+```
+
+Import every used item explicitly, including standard macros and common traits. Prefer direct imports over glob imports. The only allowed glob is an explicitly documented Feluqa prelude in application entrypoints/examples when it materially improves the supported DX; framework internals must spell out their imports. If an exported macro requires caller imports, document those imports and test the macro from an external integration-test crate.
+
+`no_implicit_prelude` is a strictness choice, not a safety proof. It does not ban `unsafe`, panics, unchecked conversion, or hidden allocations. Keep the `#![no_std]` claim limited to crates that actually compile without `std` and OS facilities.
+
+## 3. Lints and unsafe code
+
+Start every crate with explicit crate-level lint policy; workspace policy can strengthen it:
+
+```rust
+#![deny(unsafe_code)]
+#![deny(unused_must_use)]
+#![deny(unused_imports)]
+#![deny(unused_variables)]
+#![deny(unreachable_pub)]
+#![deny(clippy::unwrap_used)]
+#![deny(clippy::expect_used)]
+```
+
+Use `#![forbid(unsafe_code)]` where the crate has no legitimate need for unsafe. Any crate that must contain unsafe requires a small reviewed boundary, a `SAFETY:` comment for every unsafe block, documented invariants, and focused tests. No `allow` may be added just to make CI green: scope it to the smallest item, explain why, and track removal.
+
+Run `cargo fmt --check`, `cargo check --workspace --all-targets`, `cargo clippy --workspace --all-targets -- -D warnings`, and relevant tests in CI. Enable rustdoc warnings as errors for public API docs. Lint availability varies by compiler; pin compiler and record justified exceptions rather than copying a moving list of every Clippy lint.
+
+## 4. Types, errors and control flow
+
+- Represent absence with `Option<T>` and recoverable failures with `Result<T, E>`; do not encode either as sentinel values.
+- Return typed errors from library boundaries. Add context at boundaries where it helps identify config file, route, view and source location.
+- No `unwrap()` or `expect()` in production paths. Tests may use them when failure is a test failure and the assertion context is clear.
+- Do not panic on user input, malformed config, missing view, failed I/O or database errors. Validate at startup/build time where possible.
+- Prefer exhaustive enums and explicit matches for security-sensitive decisions. Avoid boolean parameter pairs and stringly typed identifiers when a domain type is simple.
+- Avoid `clone()` to silence borrow-checker problems until ownership and lifetimes are understood. Avoid unnecessary allocation on request paths.
+
+## 5. API and module design
+
+- Keep public API small and intentional. Make items private by default; expose them through documented `feluqa::...` modules/facades.
+- One module/crate owns one coherent responsibility. Shared types belong in kernel crates; runtime-specific code stays in its profile crate.
+- Do not expose Tokio, Axum, a database driver, or a template implementation through stable public types unless that coupling is an explicit API decision.
+- Use generics and traits for real substitution or compile-time contracts, not speculative extension points. Prefer composition and explicit parameters over hidden global state.
+- Public functions and types have rustdoc with behavior, failure cases and examples when useful. Breaking changes are recorded and versioned deliberately.
+- Configuration is Serde-backed, version-aware and validated. Reject unknown keys where typos could cause unsafe or surprising behavior; defaults are documented.
+
+## 6. Async and server profile
+
+- Tokio/Axum/Tower are permitted in server-profile crates. Kernel, game-loop and real-time crates must not acquire a Tokio dependency transitively.
+- Do not block an async executor thread with filesystem, CPU-heavy or blocking database work. Use bounded blocking pools or async APIs and document capacity.
+- Bound request body sizes, queues, timeouts and concurrency. Cancellation and shutdown paths must release resources.
+- Keep handlers thin: parse/validate, call an explicit service, map a typed result to a response. Never treat UI visibility as authorization.
+- Never hold a synchronous mutex guard across `.await`. Avoid locks on hot paths when immutable or message-passing ownership works.
+
+## 7. Views, escaping and generated code
+
+Follow [the `.view.rs` language contract](../../../knowledge/archive/view-language.fr.md) and keep compiler/editor fixtures aligned. `@rs/@endrs` encloses trusted developer Rust compiled into the application, never user-submitted code.
+
+- Feluqa templates use a defined, documented grammar inspired by Webkernel `.view.php` files; they are not PHP and must not evaluate untrusted source code.
+- Dynamic text is escaped by default. Raw HTML requires an explicit trusted type/API and must never be inferred from a string.
+- Production views are validated and compiled into the release artifact. Development may recompile from disk, but uses the same parser/semantics and reports source locations.
+- Generated Rust should be deterministic, formatted where practical, and diagnosable. Build failures name the template and line/column.
+- Template conditions and loops cannot bypass server-side validation or authorization. Never cache user-specific output as a static compiled template.
+
+## 8. Filesystem, configuration and secrets
+
+- Resolve site paths from explicit configuration/project root; canonicalize and enforce containment before serving or mutating files.
+- `public/` is the only document root. Store mutable application data under configured user-owned `storage/` paths with least-privilege POSIX permissions.
+- Do not require root for development or user-site deployment. Never follow untrusted symlinks outside an allowed root for writes or static serving.
+- Use Serde for typed config and interchange models. Keep credentials out of source control and logs; redact secrets from `Debug` and tracing fields.
+- Writes that replace configuration, manifests or artifacts should be atomic where the platform permits (temporary file then rename), and preserve recoverability on error.
+
+## 9. Dependencies and supply chain
+
+- Prefer established crates with compatible permissive licenses, active maintenance, clear security practices and target support. Tokio, Axum, Tower, Serde and tracing are candidates, not blanket approvals.
+- Every direct dependency has a concrete owner/use. Avoid duplicate crates that solve the same problem.
+- Pin and audit updates; commit lockfiles for deployable applications. Record licenses and mirror/vendor dependencies according to Feluqa's dependency-independence decision.
+- Do not use build scripts to execute network access or fetch mutable remote code. Builds must work from the declared, locked dependency set.
+- Review unsafe usage and transitive dependencies for code shipped in the server or embedded profiles.
+
+## 10. Tests and documentation
+
+- Unit tests cover pure logic and boundary cases; integration tests exercise public APIs as an application would use them.
+- Add regression tests for every fixed defect and contract test for route, config, view and serialization behavior.
+- Test dev and release template paths against the same escaping and rendering vectors.
+- Keep examples compiling. Document how to run, configure, build and deploy without relying on workstation-specific paths.
+- Benchmarks report hardware, compiler/profile, workload, warmup and sample method. A performance target is not a result until measured.
+
+## 11. Minimum review checklist
+
+- [ ] `#![no_implicit_prelude]` is present at the crate root and imports are explicit.
+- [ ] No unjustified `unsafe`, panic, unchecked conversion or ignored `Result` was added.
+- [ ] Errors identify the failing boundary and never leak secrets.
+- [ ] Runtime/profile dependencies remain on the correct side of the workspace boundary.
+- [ ] Filesystem access is contained under the configured user-owned root.
+- [ ] User-provided template values are escaped; raw output is explicit.
+- [ ] Formatting, lint, compile and relevant tests pass on the pinned toolchain.
+- [ ] Public behavior and any MSRV/dependency changes are documented.

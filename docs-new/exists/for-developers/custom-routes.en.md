@@ -1,0 +1,27 @@
+# Add custom routes
+
+## Prefer resource routes for standard CRUD
+
+Register a resource with a Feluqa panel and let the framework generate its
+standard pages. Add custom routes for workflows that need a dedicated
+controller/service, a public endpoint, an API response, or a specialized
+view.
+
+Routes belong to the module or panel that owns the behavior. The central web
+composition layer assembles registered routes and global middleware; it
+should not become a second list of product routes.
+
+## Protect each route
+
+Declare whether the route is public or protected. Protected handlers must
+check session, CSRF where required, permissions, domain/tenant scope and input
+validation on the server. Link visibility is not access control. Keep business
+rules in services so the same operation can serve web, API, CLI and Live
+actions.
+
+## Current API status
+
+The current router uses explicit typed builders and handlers. The static
+Laravel-style `Route::get()` facade shown in design examples is not the
+implemented API. See [CLI/runtime and route conventions](../reference/cli/commands.en.md)
+and the [web profile](../../knowledge/architecture/web-profile.en.md).

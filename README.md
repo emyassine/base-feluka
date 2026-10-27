@@ -36,7 +36,7 @@ The build-time view compiler now handles `.view.rs` templates with typed paramet
 
 The `feluqa` facade defaults to the `web` feature set, and offers `spa`, `mobile`, `desktop`, `game` and `realtime` profiles. Set `default-features = false` to avoid linking web-profile crates. `auth`, `ui`, `panel`, and `module` are `no_std` + `alloc`; `live` currently requires `std`. The contracts provide versioned UI JSON and a safe initial renderer, exact permissions, panel registration, signed typed actions, and deterministic static-module lifecycle. Feluqa Core also has persistent users, roles, sessions and audit. Browser Live transport, distributed replay, dynamic module installation and a reusable generic administration panel remain unfinished.
 
-Numerimondes now exercises a first product-specific MVC path: Core setup/login/logout and user/role administration under `/system`, plus an audited CRM customer CRUD under `/admin`. This is an initial vertical slice, not yet a reusable enterprise ERP panel. The CLI generates a web MVC starter with routes, controllers, compiled views and dialect migration folders. Inside this monorepo, generated apps use local Feluqa crates; outside it, the private registry must first receive the current `0.2.0` crate set (it currently exposes `feluqa` through `0.1.1`). See [the Web profile architecture and current delivery gap](docs-new/knowledge/architecture/WEB_PROFILE.md).
+Numerimondes now exercises a first product-specific MVC path: Core setup/login/logout and user/role administration under `/system`, plus an audited CRM customer CRUD under `/admin`. This is an initial vertical slice, not yet a reusable enterprise ERP panel. The CLI generates a web MVC starter with routes, controllers, compiled views and dialect migration folders. Inside this monorepo, generated apps use local Feluqa crates; outside it, the private registry must first receive the current `0.2.0` crate set (it currently exposes `feluqa` through `0.1.1`). See [the Web profile architecture and current delivery gap](docs-new/knowledge/architecture/web-profile.en.md).
 
 The Web data foundation uses SeaORM 1.1.20 with named SQLite/PostgreSQL pools, typed TOML configuration, and checksummed SQL migrations compiled by module and dialect. Numerimondes supplies both CRM migration variants; the initial `/system` and `/admin` routes enforce sessions, CSRF, grants and CRM record scope. PostgreSQL migration application is verified, while the full panel HTTP suite still needs PostgreSQL coverage.
 
@@ -62,6 +62,6 @@ target/                    generated Rust build output
 products/__M0/             retained language benchmark evidence and tools
 ```
 
-See [the documentation index](docs-new/README.md) for the roadmap, architecture decisions, and coding standard.
+See [the documentation index](docs-new/index.en.md) for the roadmap, architecture decisions, and coding standard.
 
-Implementation contracts: [delivery plan](docs-new/_todo/ENTERPRISE_DELIVERY.md), [`.view.rs` language](docs-new/exists/views/LANGUAGE.md), [panels and components](docs-new/exists/architecture/PANELS_COMPONENTS.md), [Zed tooling](docs-new/exists/editor/ZED.md). Contributors start with [AGENTS.md](AGENTS.md).
+Implementation contracts: [delivery plan](docs-new/_todo/enterprise-delivery.en.md), [`.view.rs` language](docs-new/exists/reference/views/view-language.en.md), [panels and components](docs-new/exists/for-developers/panels-resources-and-pages.en.md), [Zed tooling](docs-new/exists/reference/editor/zed-editor.en.md). Contributors start with [AGENTS.md](AGENTS.md).
