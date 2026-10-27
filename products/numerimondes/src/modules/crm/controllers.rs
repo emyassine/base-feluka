@@ -125,7 +125,7 @@ pub async fn crm_customers(
         page: customer_page.page,
         page_count: customer_page.page_count,
     };
-    let navigation =
+    let (navigation, brand_name) =
         match registered_panel_navigation(&state, &access.identity, "business", "/admin/customers")
             .await
         {
@@ -138,6 +138,7 @@ pub async fn crm_customers(
         access.csrf,
         &panel,
         navigation,
+        &brand_name,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

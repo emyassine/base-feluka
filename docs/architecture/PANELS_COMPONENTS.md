@@ -2,7 +2,30 @@
 
 Date : 2026-10-27. Statut : première tranche verticale intégrée, pas encore production grade. `feluqa::ui` valide un schéma SDUI versionné, rend des tables accessibles, formulaires, champs et listes de choix à tags fixes, et échappe les valeurs/options. `feluqa::panel` enregistre les permissions system/business et les contrats de ressources, puis rend tables et formulaires selon les grants. Numerimondes branche ces rendus aux vues `.view.rs` compilées de `/admin/customers` et des pages Core users, rôles, modules, connexions, migrations, audit et tenants via `TrustedHtml`, réservé au HTML produit par Feluqa. `feluqa::live` signe snapshots et vérifie les actions; `feluqa::module` gère les modules statiques. Numerimondes relie Axum, cookies/CSRF, comptes/rôles, modules statiques, connexions nommées, migrations, audit et CRUD CRM. Les tests HTTP SQLite vérifient les formulaires CRM et Core visibles, les choix de rôle délégables, le préremplissage courant, les colonnes Core, la séparation des permissions et les accès refusés. Le test HTTP/PostgreSQL 16 couvre également la création et l'affectation de rôles après cette intégration. Restent les adaptateurs CRUD génériques SeaORM, les actions resource-driven pour les autres mutations Core, la modification/désactivation/suppression des tenants, l'audit métier complet, l'activation dynamique, le transport navigateur Live et le replay partagé.
 
-Le panneau système est désormais fourni par le crate framework `feluqa-system-panel`; l'application consomme ses ressources et peut ajouter ses propres providers/modules. `feluqa.toml` pointe vers un `service_provider.rs` de composition, compilé statiquement. Les assets Filament dérivés du projet Webkernel (thème et runtimes JS) sont embarqués et servis par Feluqa avec le client `feluqa-live.js`; les pages Numerimondes et le scaffold chargent ces assets. Il s'agit d'un port progressif : l'API Rust ne reproduit pas encore les providers, pages, actions, ressources, plugins, thèmes et composants Filament. Le site public utilise encore ses routes et vues MVC; il n'est pas encore un panel public enregistré dans le catalogue.
+Le panneau système est fourni par le crate framework `feluqa-system-panel`; l'application consomme ses ressources et enregistre ses providers. `feluqa.toml` pointe vers un `service_provider.rs` de composition, compilé statiquement. Feluqa embarque et sert certains bundles CSS/JS issus de l'adaptation Webkernel/Filament, mais **le système de thèmes Filament et son catalogue de composants ne sont pas importés entièrement**. Un bundle compilé n'apporte ni les providers de thèmes, ni l'intégralité des Blade views/components, comportements Livewire ni leur API Rust. L'API actuelle est un port partiel. Le site public Numerimondes garde encore ses routes et vues MVC; il n'est pas encore un panel public enregistré dans le catalogue.
+
+## Modèle cible des panels et des unités métier
+
+Un **panel** est une surface Feluqa cohérente : le site public est un panel; Feluqa Core `/system` est un panel; l'ERP `/admin` en est un autre. Un panel possède un provider, un chemin, une navigation, des règles d'authentification/ACL, des clusters et des déclarations de resources/pages/widgets. Une unité métier Feluqa s'attache au panel concerné; elle ne crée pas son propre silo d'application ou de base par défaut.
+
+Une **resource** déclare ses champs, colonnes, policies et opérations. Feluqa lui fournit les pages CRUD standard; une resource peut également fournir des pages personnalisées ou des widgets. Les resources peuvent appartenir à un cluster de navigation ou être explicitement non groupées. Le développeur doit pouvoir rattacher une resource à un cluster par une déclaration légère (attribut/derive ou builder), sans écrire toute la navigation à la main.
+
+Une **page** est déclarée par un type Rust dédié. Elle peut sélectionner une vue `.view.rs`, composer des fragments de schéma/formulaire ou fournir une page métier complète. Elle peut placer des widgets dans son contenu. Les vues utilisateur ne déclarent pas `html/head/body` : le shell et le layout viennent du panel Feluqa.
+
+Les routes spécialisées restent possibles : une unité métier peut déclarer une route vers une vue ou un handler/controller, avec middleware explicite. L'accès public est explicite; une route protégée doit exiger l'authentification puis appliquer une policy. L'ACL d'un resource ou d'une page ne remplace jamais le contrôle d'accès dans un handler personnalisé.
+
+**Expérience développeur cible :** déclarer provider, resources, pages, clusters et routes spécifiques; laisser Feluqa connecter navigation, layout, ACL, CRUD, formulaires, tables, widgets, thèmes et assets. Garder dans l'application les règles métier qui sont propres à son organisation. Les API `.pages()` et `.resources()` sont déjà des points d'entrée du builder; clusters, pages typées complètes, widgets et le catalogue Filament complet restent à implémenter.
+
+### Vocabulaire sans ambiguïté
+
+| Terme | Sens Feluqa |
+|---|---|
+| module Feluqa | Unité métier enregistrée (CRM, finance, inventory, procurement, etc.) avec provider, migrations, resources/pages et éventuellement lifecycle. Elle peut contenir des sous-domaines ou features. |
+| feature | Capacité fonctionnelle d'un module, par exemple contacts ou opportunités dans le CRM. Une feature n'est pas automatiquement un module déployable. |
+| module Rust | Unité du langage déclarée par `mod`/`pub mod`, compilée dans un crate. Toujours dire « module Rust » pour ce sens. Un module Feluqa est souvent réalisé avec plusieurs modules Rust. |
+| panel | Surface utilisateur enregistrant navigation, resources, pages, widgets, auth, ACL et routes. Le site public compte aussi comme panel. |
+
+Éviter les répertoires génériques `src/app/` et `src/modules/` dans le layout cible Numerimondes : ils forcent une séparation artificielle entre site et unités métier. Ranger le code par ownership/surface (`website/`, `system/`, `business/crm/`, `business/finance/`), puis utiliser les modules Rust pour organiser les fichiers. Le projet actuel reste transitoire; voir [Project layout](PROJECT_LAYOUT.md).
 
 ## Responsabilités et dépendances
 

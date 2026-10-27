@@ -126,6 +126,24 @@ mod panel_http_tests {
         );
         let panel_js = send(&app, Method::GET, "/assets/feluqa/panel.js", None, "").await?;
         assert_eq!(panel_js.status(), StatusCode::OK);
+        let shell_js = send(&app, Method::GET, "/assets/feluqa/shell.js", None, "").await?;
+        assert_eq!(shell_js.status(), StatusCode::OK);
+        let shell_source = body_text(shell_js).await?;
+        assert!(shell_source.contains("classList.toggle('fi-sidebar-open'"));
+        assert!(shell_source.contains("querySelectorAll('[data-feluqa-sidebar-close]'"));
+        assert!(shell_source.contains("[data-feluqa-table-search]"));
+        let language_flag = send(&app, Method::GET, "/assets/feluqa/flags/fr", None, "").await?;
+        assert_eq!(language_flag.status(), StatusCode::OK);
+        assert_eq!(
+            language_flag
+                .headers()
+                .get(CONTENT_TYPE)
+                .and_then(|value| value.to_str().ok()),
+            Some("image/svg+xml; charset=utf-8")
+        );
+        let missing_language_flag =
+            send(&app, Method::GET, "/assets/feluqa/flags/xx", None, "").await?;
+        assert_eq!(missing_language_flag.status(), StatusCode::NOT_FOUND);
         assert_eq!(
             panel_js
                 .headers()
@@ -246,11 +264,50 @@ mod panel_http_tests {
         let system = send(&app, Method::GET, "/system", Some(&browser_cookies), "").await?;
         assert_eq!(system.status(), StatusCode::OK);
         let system_html = body_text(system).await?;
-        assert!(system_html.contains("class=\"fi-sidebar fi-main-sidebar fi-sidebar-open\""));
-        assert!(system_html.contains("class=\"fi-topbar\""));
+        assert!(system_html.contains("class=\"fi-sidebar fi-main-sidebar\""));
+        assert!(system_html.contains("class=\"fi-logo\">Feluqa Core</span>"));
+        assert!(system_html.contains("fi-sidebar-close-overlay"));
+        assert!(system_html.contains("fi-sidebar-group-label\">Platform</span>"));
+        assert!(system_html.contains("data-feluqa-group-toggle"));
+        assert!(system_html.contains("data-feluqa-nav-search"));
+        assert!(system_html.contains("class=\"fi-input-wrp\""));
+        assert!(system_html.contains("data-feluqa-language-selector"));
+        assert!(system_html.contains("fi-sidebar-item-icon"));
+        assert!(system_html.contains("<svg"));
+        assert!(system_html.contains("data-user-name=\"Yassine\""));
+        assert!(system_html.contains("action=\"/system/logout\""));
+        assert!(system_html.contains("name=\"csrf_token\""));
+        assert!(!system_html.contains("class=\"fi-topbar\""));
         assert!(system_html.contains("href=\"/system/users\""));
         assert!(system_html.contains("data-feluqa-live"));
         assert!(system_html.contains("/live/snapshots/system::health::ping"));
+        let language_response = send(
+            &app,
+            Method::POST,
+            "/system/language",
+            Some(&browser_cookies),
+            &format!("csrf_token={csrf_value}&locale=fr&return_to=%2Fsystem"),
+        )
+        .await?;
+        assert_eq!(language_response.status(), StatusCode::SEE_OTHER);
+        assert!(
+            language_response
+                .headers()
+                .get_all(SET_COOKIE)
+                .iter()
+                .any(|value| value
+                    .to_str()
+                    .is_ok_and(|cookie| cookie.contains("feluqa_locale=fr")))
+        );
+        let invalid_language = send(
+            &app,
+            Method::POST,
+            "/system/language",
+            Some(&browser_cookies),
+            &format!("csrf_token={csrf_value}&locale=xx&return_to=%2Fsystem"),
+        )
+        .await?;
+        assert_eq!(invalid_language.status(), StatusCode::BAD_REQUEST);
         assert!(system_html.contains("/assets/feluqa-live.js"));
         assert!(system_html.contains("aria-live=\"polite\""));
         let live_client = send(&app, Method::GET, "/assets/feluqa-live.js", None, "").await?;
@@ -262,8 +319,10 @@ mod panel_http_tests {
         let business = send(&app, Method::GET, "/admin", Some(&browser_cookies), "").await?;
         assert_eq!(business.status(), StatusCode::OK);
         let business_html = body_text(business).await?;
-        assert!(business_html.contains("class=\"fi-sidebar fi-main-sidebar fi-sidebar-open\""));
-        assert!(business_html.contains("href=\"/admin/customers\""));
+        assert!(business_html.contains("class=\"fi-sidebar fi-main-sidebar\""));
+        assert!(business_html.contains("class=\"fi-logo\">Numerimondes</span>"));
+        assert!(business_html.contains("href=\"/admin\""));
+        assert!(!business_html.contains("href=\"/admin/customers\""));
         let registered_page = send(
             &app,
             Method::GET,
@@ -287,26 +346,34 @@ mod panel_http_tests {
             let page = send(&app, Method::GET, path, Some(&browser_cookies), "").await?;
             assert_eq!(page.status(), StatusCode::OK, "{path}");
             let html = body_text(page).await?;
-            assert!(html.contains("<table class=\"feluqa-table\">"), "{path}");
+            if path == "/system/connections" {
+                if let Some(capture_path) = crate::std::env::var_os("FELUQA_UI_CAPTURE") {
+                    crate::std::fs::write(capture_path, &html)?;
+                }
+            }
+            assert!(html.contains("<table class=\"fi-ta-table\">"), "{path}");
+            assert!(html.contains("data-feluqa-table-search"), "{path}");
             assert!(!html.contains("<pre>"), "{path}");
             match path {
                 "/system/modules" => {
-                    assert!(html.contains("<th scope=\"col\">Module</th>"));
+                    assert!(html.contains(">Module</span>"));
                     assert!(html.contains("feluqa.core"));
                     assert!(html.contains("numerimondes.crm"));
                     assert!(html.contains("statically linked in this binary"));
                 }
                 "/system/connections" => {
-                    assert!(html.contains("<th scope=\"col\">Database</th>"));
+                    assert!(html.contains(">Database</span>"));
+                    assert!(html.contains("default"));
+                    assert!(html.contains("SQLite"));
                     assert!(!html.contains("sqlite:"));
                 }
                 "/system/migrations" => {
-                    assert!(html.contains("<th scope=\"col\">Migration</th>"));
+                    assert!(html.contains(">Migration</span>"));
                     assert!(html.contains("name=\"csrf_token\""));
                     assert!(html.contains("name=\"module_id\""));
                     assert!(html.contains("name=\"connection\""));
                 }
-                "/system/audit" => assert!(html.contains("<th scope=\"col\">Outcome</th>")),
+                "/system/audit" => assert!(html.contains(">Outcome</span>")),
                 _ => {}
             }
         }
@@ -468,9 +535,9 @@ mod panel_http_tests {
         .await?;
         assert_eq!(users.status(), StatusCode::OK);
         let users_html = body_text(users).await?;
-        assert!(users_html.contains("<table class=\"feluqa-table\">"));
-        assert!(users_html.contains("<th scope=\"col\">Name</th>"));
-        assert!(users_html.contains("<th scope=\"col\">Email</th>"));
+        assert!(users_html.contains("<table class=\"fi-ta-table\">"));
+        assert!(users_html.contains(">Name</span>"));
+        assert!(users_html.contains(">Email</span>"));
         assert!(users_html.contains("Yassine"));
         assert!(users_html.contains("action=\"/system/users\""));
         assert!(users_html.contains("name=\"display_name\" type=\"text\""));
@@ -492,8 +559,8 @@ mod panel_http_tests {
         .await?;
         assert_eq!(roles.status(), StatusCode::OK);
         let roles_html = body_text(roles).await?;
-        assert!(roles_html.contains("<table class=\"feluqa-table\">"));
-        assert!(roles_html.contains("<th scope=\"col\">Permissions</th>"));
+        assert!(roles_html.contains("<table class=\"fi-ta-table\">"));
+        assert!(roles_html.contains(">Permissions</span>"));
         assert!(roles_html.contains("system.users.read"));
         assert!(roles_html.contains("name=\"slug\" type=\"text\""));
         assert!(roles_html.contains("name=\"display_name\" type=\"text\""));
@@ -1070,9 +1137,9 @@ mod panel_http_tests {
         .await?;
         assert_eq!(field_limited_page.status(), StatusCode::OK);
         let field_limited_html = body_text(field_limited_page).await?;
-        assert!(field_limited_html.contains("<table class=\"feluqa-table\">"));
-        assert!(field_limited_html.contains("<th scope=\"col\">Name</th>"));
-        assert!(!field_limited_html.contains("<th scope=\"col\">Email</th>"));
+        assert!(field_limited_html.contains("<table class=\"fi-ta-table\">"));
+        assert!(field_limited_html.contains(">Name</span>"));
+        assert!(!field_limited_html.contains(">Email</span>"));
         assert!(field_limited_html.contains("Owned Customer Updated"));
         assert!(!field_limited_html.contains("owned@example.test"));
         assert!(!field_limited_html.contains("name=\"email\""));

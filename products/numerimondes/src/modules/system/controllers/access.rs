@@ -114,7 +114,7 @@ pub(crate) async fn registered_panel_navigation(
     identity: &SessionIdentity,
     panel_id: &str,
     active_path: &str,
-) -> Result<feluqa::view::TrustedHtml, StatusCode> {
+) -> Result<(feluqa::view::TrustedHtml, String), StatusCode> {
     let grants = state
         .core
         .permissions_for(identity.user_id)
@@ -126,7 +126,12 @@ pub(crate) async fn registered_panel_navigation(
         .catalog
         .render_navigation(panel_id, &principal, &PermissionSetAuthorizer, active_path)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(feluqa::web::trusted_navigation_html(navigation))
+    let brand_name = state
+        .catalog
+        .brand_name(panel_id)
+        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?
+        .to_string();
+    Ok((feluqa::web::trusted_navigation_html(navigation), brand_name))
 }
 
 pub(super) async fn protected_resource_page<'a>(

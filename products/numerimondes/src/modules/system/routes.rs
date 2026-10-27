@@ -17,6 +17,7 @@ pub fn routes() -> Router<PanelState> {
             on_get(panels::login_form).post(panels::login),
         )
         .post("/system/logout", panels::logout)
+        .post("/system/language", panels::set_language)
         .get("/system", panels::system_dashboard)
         .on(
             "/system/users",

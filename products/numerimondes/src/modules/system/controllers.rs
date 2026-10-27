@@ -33,6 +33,8 @@ mod dashboard;
 pub use self::dashboard::*;
 mod live;
 pub use self::live::*;
+mod localization;
+pub use self::localization::*;
 mod users;
 pub use self::users::*;
 mod roles;
@@ -79,6 +81,14 @@ pub(crate) struct SetupForm {
 #[serde(deny_unknown_fields)]
 pub(crate) struct CsrfForm {
     csrf_token: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct LanguageForm {
+    csrf_token: String,
+    locale: String,
+    return_to: String,
 }
 
 #[derive(Deserialize)]

@@ -149,7 +149,7 @@ fn dashboard_panel(
         .brand_name("Numerimondes")
         .max_content_width(ContentWidth::SevenExtraLarge)
         .sidebar_collapsible(true)
-        .sidebar_fully_collapsible(true)
+        .dark_mode()
         .login()
         .page(page);
     if id == "business" {
@@ -159,7 +159,7 @@ fn dashboard_panel(
                 NavigationItem {
                     label: String::from("Overview"),
                     path: String::from("/admin"),
-                    icon: Some(String::from("home")),
+                    icon: Some(String::from("o-home")),
                     permission: Some(
                         Permission::new(String::from("business.erp.manage")).map_err(|_| {
                             PanelError::InvalidPermission {
@@ -172,7 +172,7 @@ fn dashboard_panel(
                 NavigationItem {
                     label: String::from("Customers"),
                     path: String::from("/admin/customers"),
-                    icon: Some(String::from("users")),
+                    icon: Some(String::from("o-users")),
                     permission: Some(
                         Permission::new(String::from("business.crm.customers.read")).map_err(
                             |_| PanelError::InvalidPermission {

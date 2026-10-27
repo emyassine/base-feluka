@@ -23,10 +23,14 @@ impl Drop for GeneratedApp {
 fn generated_resource_is_registered_and_requires_a_core_session() -> Result<(), String> {
     let workspace = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
     let name = format!("resource-route-test-{}", std::process::id());
-    let app = GeneratedApp(workspace.join("products").join(&name));
-    if app.0.exists() {
-        return Err(format!("test app path already exists: {}", app.0.display()));
+    let app_path = workspace.join("products").join(&name);
+    if app_path.exists() {
+        return Err(format!(
+            "test app path already exists: {}",
+            app_path.display()
+        ));
     }
+    let app = GeneratedApp(app_path);
 
     run_cli(&workspace, &["new", &name, "--profile", "web"])?;
     run_cli(&app.0, &["make", "model", "Invoice"])?;

@@ -42,35 +42,35 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.parameters("system::pages.core_setup", "csrf_token: &str, notice: &str")?;
     compiler.parameters(
         "system::pages.core_dashboard",
-        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "business::pages.business_dashboard",
-        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "system::pages.core_users",
-        "display_name: &str, email: &str, csrf_token: &str, user_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, csrf_token: &str, user_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "system::pages.core_roles",
-        "display_name: &str, email: &str, csrf_token: &str, role_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, csrf_token: &str, role_table: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, edit_forms: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "crm::pages.crm_customers",
-        "display_name: &str, email: &str, csrf_token: &str, panel: &crate::modules::crm::view::CustomerPanel, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, csrf_token: &str, panel: &crate::modules::crm::view::CustomerPanel, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "system::pages.core_resource",
-        "display_name: &str, email: &str, title: &str, table: crate::feluqa::view::TrustedHtml, active: &str, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, title: &str, table: crate::feluqa::view::TrustedHtml, active: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str, csrf_token: &str",
     )?;
     compiler.parameters(
         "system::pages.core_tenants",
-        "display_name: &str, email: &str, table: crate::feluqa::view::TrustedHtml, tenant_actions: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, table: crate::feluqa::view::TrustedHtml, tenant_actions: crate::feluqa::view::TrustedHtml, create_form: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str, csrf_token: &str",
     )?;
     compiler.parameters(
         "system::pages.core_migrations",
-        "display_name: &str, email: &str, migration_table: crate::feluqa::view::TrustedHtml, run_actions: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml",
+        "display_name: &str, email: &str, migration_table: crate::feluqa::view::TrustedHtml, run_actions: crate::feluqa::view::TrustedHtml, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str, csrf_token: &str",
     )?;
     compiler.parameters(
         "app::components.section",
@@ -78,7 +78,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     compiler.parameters(
         "feluqa-panel::components.document",
-        "panel: &str, active: &str, title: &str, navigation: crate::feluqa::view::TrustedHtml",
+        "panel: &str, active: &str, title: &str, navigation: crate::feluqa::view::TrustedHtml, display_name: &str, email: &str, brand_name: &str, csrf_token: &str",
     )?;
     compiler.parameters("feluqa-panel::components.simple-document", "title: &str")?;
     compiler.component(
@@ -93,7 +93,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     compiler.parameters(
         "feluqa-panel::components.shell",
-        "panel: &str, active: &str, navigation: crate::feluqa::view::TrustedHtml",
+        "panel: &str, active: &str, navigation: crate::feluqa::view::TrustedHtml, display_name: &str, email: &str, brand_name: &str, csrf_token: &str",
     )?;
     compiler.component(
         "feluqa-panel::shell",
@@ -103,6 +103,38 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.component(
         "feluqa-panel::assets",
         "feluqa-panel::components.assets",
+        &[],
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.input.wrapper",
+        "prefix: &str, prefix_icon: &str, suffix: &str",
+    )?;
+    compiler.component(
+        "feluqa-panel::theme-switcher",
+        "feluqa-panel::components.theme.switcher",
+        &[],
+    )?;
+    compiler.component(
+        "feluqa-panel::input-wrapper",
+        "feluqa-panel::components.input.wrapper",
+        &["default"],
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.section",
+        "heading: &str, description: &str",
+    )?;
+    compiler.component(
+        "feluqa-panel::section",
+        "feluqa-panel::components.section",
+        &["default"],
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.language-selector",
+        "csrf_token: &str, active: &str",
+    )?;
+    compiler.component(
+        "feluqa-panel::language-selector",
+        "feluqa-panel::components.language-selector",
         &[],
     )?;
     compiler.component(

@@ -2,6 +2,14 @@
 
 Feluqa is a Rust workspace for a multi-platform application framework. The server profile and reusable website delivery are the current focus; other profiles will share schemas and tools while keeping their own runtimes.
 
+Cross Platform
+- Embedded Applications
+- Desktop Applications
+- Industrial Applications
+- Consumer Applications
+- Automotive Applications
+- Medical Applications
+
 ## Run the Numerimondes site
 
 From the repository root, run the Feluqa CLI product:

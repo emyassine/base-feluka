@@ -1,57 +1,114 @@
 # Feluqa project layout
 
-The monorepo has one source of truth for each concern. A generated web application follows this shape:
+This document distinguishes the current application tree from the intended
+domain-owned layout. The target is a convention for future scaffolds and
+refactors; it does not claim Numerimondes has already been moved.
+
+## Target layout
 
 ```text
-my-app/
-├── Cargo.toml                 # This application crate and its dependencies
-├── feluqa.toml                # App identity, runtime profile and enabled modules
-├── config/                    # Deployable environment/database settings
-├── build.rs                   # Compiles views and embeds module migrations
-├── resources/views/           # Shared app/site layouts, pages, components, partials
-├── public/                    # Public document root and static assets
+numerimondes/
+├── Cargo.toml
+├── feluqa.toml                 # selects runtime profile and service provider
+├── build.rs                    # compiles views and embeds declared migrations
+├── config/                     # environment-specific operational settings
+├── resources/views/             # application-owned shared views/components
+├── public/                      # public document root and product assets
+├── database/seeders/            # optional application-wide seeders
 ├── src/
-│   ├── main.rs                # Composition root and process entry point
-│   ├── config.rs              # Typed Serde config, validation and defaults
-│   ├── routes/{mod,web,console}.rs
-│   ├── app/                   # Application-wide MVC: controllers, models, services
-│   └── modules/
-│       ├── mod.rs             # Static module/provider composition
-│       ├── system/            # Feluqa Core panel integration and owned views
-│       └── crm/               # Domain code, provider, routes, migrations and owned views
-│           ├── module.toml
-│           ├── migrations/{sqlite,postgresql}/
-│           ├── views/
-│           ├── controllers.rs
-│           ├── model.rs
-│           ├── policies.rs
-│           ├── resource.rs
-│           ├── services.rs
-│           └── seeders/
-└── storage/                   # Mutable POSIX-owned runtime state; never source assets
+│   ├── main.rs
+│   ├── service_provider.rs      # composition root; no product route definitions
+│   ├── routes/web.rs            # composes owner-provided routes + global middleware
+│   ├── website/                 # public website panel, pages, and exceptional routes
+│   ├── system/                  # Numerimondes-specific extensions to Feluqa Core
+│   └── business/
+│       ├── crm/                 # a Feluqa business module
+│       │   ├── module.toml
+│       │   ├── panel.rs         # panel/resource/page registration
+│       │   ├── resources/
+│       │   ├── pages/
+│       │   ├── features/        # optional finer business capabilities
+│       │   ├── routes.rs        # exceptional custom routes only
+│       │   ├── services.rs
+│       │   ├── policies.rs
+│       │   ├── migrations/{sqlite,postgresql}/
+│       │   └── seeders/
+│       └── finance/             # another unit, same default database
+├── tests/                       # cross-struct and application integration tests
+└── storage/                     # mutable POSIX-owned runtime state
 ```
 
-## Ownership rules
+The target deliberately has no generic `src/app/` and `src/modules/` buckets.
+Code lives with the surface or business capability that owns it. A business
+unit may contain subdomains or features. These directory names organize the
+application; each `.rs` file still participates in Rust's ordinary module
+namespace.
 
-- `src/modules/<id>/` is the single home for a business module. Its manifest, migrations, views, policies, resource declarations, services, controllers and seeders live together. Rust requires `src/` as its conventional crate source directory; `module.toml` and SQL files are still discovered by `build.rs` and embedded at compile time.
-- `src/routes/` is the only route tree. `routes/web.rs` and `routes/console.rs` are compiled Rust files, so they belong below `src/`.
-- Route declarations are owned by their feature: the public site exposes `app::routes`, while each panel/module exposes its own `routes` module (for example `modules/system/routes.rs` and `modules/crm/routes.rs`). `routes/web.rs` only assembles those routers and applies process-wide middleware, limits and static-file mounting. Adding a panel route must not require editing this composition file.
-- `src/app/` contains application-specific MVC that is not owned by one domain module, such as the public website and cross-module composition. A CRM endpoint belongs to `src/modules/crm/controllers.rs`; a website page handler belongs to `src/app/controllers/site.rs`.
-- Public website and business-module views belong to the application (`resources/views/` and `src/modules/<id>/views/`). Feluqa-owned panel views and components belong to their framework crates: shared shell/assets in `feluqa-panel`, Core pages in `feluqa-system-panel`. The app build script compiles those crate roots alongside its own views; it must not copy framework panel CSS, JS or views into Numerimondes. `.view.rs` sources are compiled into Rust in Cargo's `OUT_DIR`.
-- Unit tests that need private implementation details can stay beside Rust code. Cross-struct/application tests belong under the app's `tests/`; when a binary crate's internals are needed, keep the fixture under `tests/support/` and include it from `main.rs` as a test-only module. Cargo treats each top-level `tests/*.rs` file as a separate integration crate.
-- `feluqa.toml` is the stable Feluqa application manifest. `config/` contains environment-specific operational values and secrets references. `src/config.rs` deserializes those files into validated Rust types. They are different layers, not competing config locations.
-- `feluqa.toml` selects the Rust composition root with `app.service_provider = "src/service_provider.rs"`. `build.rs` validates that the path stays inside the app and sets a compile-time path; the app's `main.rs` includes that file under the crate's strict lint. The provider source then explicitly composes statically linked modules and panels. The manifest selects the entry file; Rust source remains the checked provider registry.
-- `storage/` is mutable service data (SQLite, uploads, cache or local state), resolved from the app root/configuration and excluded from Git. Production should set a service-owned absolute path with restrictive POSIX permissions. It is not part of the Cargo package or public document root.
-- The monorepo root owns workspace and toolchain configuration; each product/app owns its own Cargo manifest. `target/` is generated build output, never source.
+## Vocabulary
 
-## Providers and panel ownership
+- A **Feluqa module** is a business/platform unit such as CRM, finance, HR,
+  inventory, procurement, manufacturing, or project management. It can register
+  migrations, resources, pages, widgets, routes, policies, and services.
+- A **feature** is a smaller capability inside a Feluqa module, such as CRM
+  contacts or opportunities. It is not automatically independently installed.
+- A **module Rust** is a Rust language namespace declared with `mod` or
+  `pub mod`. Use the full term “module Rust” when discussing Rust namespaces;
+  do not confuse one with a Feluqa module.
+- A **panel** is a user-facing surface with its own provider, path, navigation,
+  authentication/ACL rules, resources, pages, and widgets. The public website,
+  Feluqa Core `/system`, and business ERP `/admin` are all panels.
 
-`feluqa::panel::PanelProvider` is the explicit contract for registering panel pages and module resources. `PanelCatalog::register_provider` adds a provider's declarations to the shared startup catalogue, where route collisions and invalid permissions fail before serving requests. Feluqa Core supplies the system panel provider; an application or module supplies business panel providers. A panel is therefore framework capability plus opt-in product configuration, not a hard-coded ERP feature.
+## Ownership and composition
 
-`feluqa::module::ServiceProvider<C>` registers services into the host application's typed context. Module startup and shutdown remain explicit responsibilities of the separate `Module` lifecycle contract. This keeps app-owned wiring explicit and statically linked; it does not claim dynamic plugin loading. Numerimondes uses providers for Core/CRM module registration and Core/CRM/business panel catalog composition.
+- `feluqa.toml` selects a statically compiled Rust service provider. The
+  provider composes panels and business units; it is not a place for every
+  route, controller, or resource implementation.
+- Routes belong to the website, panel, or Feluqa module that owns their
+  behavior. `src/routes/web.rs` only composes those route providers and applies
+  global middleware. A normal resource route should come from the panel/resource
+  registration, not a handwritten product route list.
+- A Feluqa module usually registers its resources with a panel. Feluqa should
+  provide standard CRUD pages, navigation/cluster integration, and ACL checks
+  from the resource declaration. Custom pages and widgets extend that default.
+  Resources may be assigned to a navigation cluster or declared unclustered.
+- A custom route may return a view or controller response, and may be public or
+  protected. Protected handlers must enforce middleware and server-side policy;
+  hiding a navigation item is not authorization.
+- ERP modules use one shared application database through the `default`
+  connection unless a concrete integration requires another named connection.
+  Per-dialect migration directories (`sqlite`, `postgresql`, etc.) describe SQL
+  compatibility; they do not imply one database per module.
+- Seeders are separate from migrations. A module may own its seeders; application
+  wide seeders belong under `database/seeders/`.
+- Application website and business views/assets are product-owned. Shared panel
+  theme, components and browser assets belong to the Feluqa framework crates.
+  The current Filament theme and component catalog are **not fully imported**;
+  see [Filament port status](FILAMENT_PORT_STATUS.md).
+- Cross-struct tests belong in `tests/`; private unit tests may stay alongside
+  implementation. For binary applications, test support can be included as a
+  test-only module; each top-level `tests/*.rs` is a separate Cargo integration
+  crate.
+- `storage/` contains mutable service data and is resolved from configuration,
+  not from the process working directory. Keep it out of source control and
+  public assets.
 
-The `feluqa-panel` crate owns the shared panel registry, shell/assets `.view.rs` components, CSS and browser assets used by all panel types. The `/system` provider and its framework page views live in `feluqa-system-panel`; Numerimondes imports that provider and owns only product-specific views and modules. `feluqa::web` owns the asset HTTP handlers and serves the shared Live client and Filament-derived panel theme/runtime from the compiled binary, so apps do not maintain copied panel asset files. The original Webkernel Filament adaptation's built bundles and its upstream notice are retained in `feluqa-panel`; the Rust panel API remains a staged port and does not yet provide the full Filament resource/action/plugin/auth/tenancy feature set.
+## Current Numerimondes tree
 
-## Current migration note
+Numerimondes still has `src/app/` and `src/modules/`. Treat this as a
+transitional implementation, not the target architecture above. In particular,
+the public site, framework Core integration, business code, route composition,
+and module manifests have not all been refactored to the domain-owned layout.
+Do not describe the move as complete until the source tree and scaffold have
+actually changed.
 
-The Numerimondes app has been moved to this layout. Its shared website views stay in `resources/views`; system/business/CRM views and the CRM manifest/SQL/controllers are in `src/modules/`. The Core session and CSRF helpers remain application infrastructure and are called by the CRM HTTP adapter.
+Framework-owned panel views and assets already remain in their framework
+crates, including `feluqa-panel` and `feluqa-system-panel`; generated apps must
+consume them rather than copy them. This ownership fact does not mean the
+Filament theme, Blade component catalogue, or behaviors have achieved parity.
+
+## Related contracts
+
+- [Web profile and shared database design](WEB_PROFILE.md)
+- [Panels, resources, SDUI and Live status](PANELS_COMPONENTS.md)
+- [Filament/Webkernel port inventory](FILAMENT_PORT_STATUS.md)
+- [Proprietary licensing](../licensing/PROPRIETARY.md)

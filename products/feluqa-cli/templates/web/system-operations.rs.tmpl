@@ -30,7 +30,7 @@ pub(crate) async fn dashboard(
         return StatusCode::UNAUTHORIZED.into_response();
     };
     let navigation = match crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system") { Ok(value) => value, Err(status) => return status.into_response() };
-    match crate::views::system_dashboard(&identity.display_name, &identity.email, csrf, navigation) {
+    match crate::views::system_dashboard(&identity.display_name, &identity.email, csrf, navigation, "Feluqa Core") {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
@@ -41,10 +41,12 @@ pub(crate) async fn modules(
     Extension(catalog): Extension<PanelCatalog>,
     Extension(identity): Extension<SessionIdentity>,
     State(pools): State<DatabasePools>,
+    headers: HeaderMap,
 ) -> Response {
     if !authorized(&principal, "system.modules.read") {
         return StatusCode::FORBIDDEN.into_response();
     }
+    let Some(csrf) = crate::app::controllers::system::cookie(&headers, "feluqa_csrf") else { return StatusCode::UNAUTHORIZED.into_response(); };
     let rows = all_modules()
         .iter()
         .map(|module| {
@@ -69,6 +71,8 @@ pub(crate) async fn modules(
         &rows,
         &connections,
         crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system/modules").unwrap_or_else(|_| feluqa::view::TrustedHtml::from_trusted(String::new())),
+        "Feluqa Core",
+        csrf,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -80,15 +84,19 @@ pub(crate) async fn connections(
     Extension(catalog): Extension<PanelCatalog>,
     Extension(identity): Extension<SessionIdentity>,
     State(pools): State<DatabasePools>,
+    headers: HeaderMap,
 ) -> Response {
     if !authorized(&principal, "system.connections.read") {
         return StatusCode::FORBIDDEN.into_response();
     }
+    let Some(csrf) = crate::app::controllers::system::cookie(&headers, "feluqa_csrf") else { return StatusCode::UNAUTHORIZED.into_response(); };
     match crate::views::system_connections(
         &identity.display_name,
         &identity.email,
         &connection_rows(&pools),
         crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system/connections").unwrap_or_else(|_| feluqa::view::TrustedHtml::from_trusted(String::new())),
+        "Feluqa Core",
+        csrf,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -136,6 +144,8 @@ pub(crate) async fn migrations(
         &rows,
         run_actions,
         crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system/migrations").unwrap_or_else(|_| feluqa::view::TrustedHtml::from_trusted(String::new())),
+        "Feluqa Core",
+        csrf,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -204,10 +214,12 @@ pub(crate) async fn audit(
     Extension(catalog): Extension<PanelCatalog>,
     Extension(identity): Extension<SessionIdentity>,
     Extension(pools): Extension<DatabasePools>,
+    headers: HeaderMap,
 ) -> Response {
     if !authorized(&principal, "system.audit.read") {
         return StatusCode::FORBIDDEN.into_response();
     }
+    let Some(csrf) = crate::app::controllers::system::cookie(&headers, "feluqa_csrf") else { return StatusCode::UNAUTHORIZED.into_response(); };
     let database = match pools.default_connection() {
         Ok(database) => database,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -238,7 +250,7 @@ pub(crate) async fn audit(
         })
         .collect::<Vec<_>>()
         .join("\n");
-    match crate::views::system_audit(&identity.display_name, &identity.email, &rows, crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system/audit").unwrap_or_else(|_| feluqa::view::TrustedHtml::from_trusted(String::new()))) {
+    match crate::views::system_audit(&identity.display_name, &identity.email, &rows, crate::app::controllers::system::administration::panel_navigation(&catalog, &principal, "/system/audit").unwrap_or_else(|_| feluqa::view::TrustedHtml::from_trusted(String::new())), "Feluqa Core", csrf) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
@@ -312,6 +324,7 @@ pub(crate) async fn tenants(
         &rows,
         tenant_actions,
         navigation,
+        "Feluqa Core",
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

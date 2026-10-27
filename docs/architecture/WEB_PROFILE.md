@@ -6,14 +6,14 @@ Statut au 2026-10-27 : première tranche MVC et panels intégrée dans Numerimon
 
 Le profil Web cible est un framework **MVC modulaire**, avec un panneau d'administration intégré à la plateforme et une application ERP construite avec les mêmes conventions. La compilation Rust change le cycle de développement, pas le modèle mental : routes, contrôleurs, modèles, services métier, migrations et vues restent des concepts adaptés.
 
-**Feluqa n'est pas encore le framework entreprise visé.** Numerimondes possède un chemin MVC utilisable : routes Feluqa/Axum, contrôleurs et services, vues `.view.rs` compilées, Core `/system` (setup/login/logout, utilisateurs, rôles, tenants, modules statiques, connexions, migrations, audit) et un CRUD CRM initial paginé sous `/admin`. Le panel migrations affiche le statut par module/connexion et applique uniquement la paire choisie; le runner sélectionne la variante compatible avec le dialecte configuré. Le starter `feluqa new` expose ces pages Core et les opérations de comptes/rôles ainsi que le provisioning et le lifecycle initial des tenants; la suspension/réactivation est protégée par permission et CSRF, révoque les sessions et avance la génération d'authentification pour invalider même les sessions créées lors d'une course avec la suspension. Les adaptateurs CRUD génériques restent à livrer. Les tests Core et HTTP Numerimondes valident provisioning, suspension/réactivation, CSRF, permissions, sessions et opérations de migration ciblées sous SQLite; les tests PostgreSQL sont conditionnés par `FELUQA_TEST_POSTGRES_URL`, absent de l'environnement de développement actuel. SeaORM fournit les pools nommés; un build script compile les migrations déclarées dans chaque `modules/*/module.toml`. À l'extérieur du monorepo, le registre privé ne contient pas encore les versions actuelles requises. Restent notamment la publication privée, suppression des tenants, activation des modules, Live navigateur, les workflows ERP plus larges et le déploiement/restauration.
+**Feluqa n'est pas encore le framework entreprise visé.** Numerimondes possède un chemin MVC utilisable : routes Feluqa/Axum, contrôleurs et services, vues `.view.rs` compilées, Core `/system` (setup/login/logout, utilisateurs, rôles, tenants, modules statiques, connexions, migrations, audit) et un CRUD CRM initial sous `/admin`. Le projet actuel conserve `src/app/` et `src/modules/`; c'est une organisation transitoire, pas la structure produit retenue. L'architecture cible range le code par surface et capacité métier, sans boîtes génériques `app/` et `modules/`; voir [Project layout](PROJECT_LAYOUT.md). Le panel migrations affiche le statut par module/connexion et applique uniquement la paire choisie; le runner sélectionne la variante compatible avec le dialecte configuré. Les tests Core et HTTP Numerimondes valident les parcours actuellement intégrés sous SQLite; les tests PostgreSQL sont conditionnés par `FELUQA_TEST_POSTGRES_URL`. SeaORM fournit les pools nommés; un build script compile les migrations déclarées par les unités métier Feluqa. Restent notamment les CRUD resource-driven génériques, l'activation dynamique, Live navigateur, les workflows ERP complets et le déploiement/restauration.
 
 ## Ce que l'utilisateur doit obtenir
 
 - `feluqa new prod` crée une application complète avec le profil choisi, sa configuration, ses routes, contrôleurs, modèles, services, vues, modules et tests d'exemple.
 - `feluqa dev` surveille les sources, recompile les vues et le binaire, puis redémarre proprement l'application. Rust ne devient pas interprété; la boucle de développement automatise les compilations.
 - Une application peut démarrer avec SQLite et déclarer ensuite PostgreSQL ou plusieurs connexions nommées sans changer les contrats métier de ses modules.
-- Les modules de plateforme fournissent le Core système. Les modules métier composent un ERP et un site web partageant auth, politiques, composants, vues, stockage et services.
+- Feluqa Core fournit le panel système. Les modules métier composent les surfaces ERP et peuvent enregistrer des panels; le site public est lui aussi un panel. Ces surfaces partagent identité, ACL, composants, vues, stockage et services.
 - Le même modèle/service métier peut être appelé par une route HTML, une API, une commande CLI ou une action Live, toujours avec autorisation et validation côté serveur.
 
 ## MVC Feluqa
@@ -70,75 +70,78 @@ Il y a deux surfaces qui doivent rester distinctes, mais qui utilisent les même
 
 Le site public et les panneaux vivent dans la même application et peuvent partager le même binaire, mais routes, layouts, navigation et permissions restent explicitement séparés. Un projet de site vitrine peut désactiver le panel métier. Le Core système reste une capacité du profil Web, activable et configurée selon le mode de déploiement.
 
-## Modules ERP et bases de données
+## Modules ERP et base partagée
+
+Dans Feluqa, **module** sans qualificatif désigne une unité métier enregistrée par la plateforme (CRM, finance, inventory, procurement, etc.). Une telle unité peut contenir des sous-modules ou features métier. Une **feature** est une capacité plus ciblée (par exemple les contacts ou le pipeline commercial d'un CRM) et ne devient pas automatiquement une unité de déploiement. Un **module Rust** désigne uniquement une unité du langage et du compilateur, déclarée avec `mod` ou `pub mod`; il peut implémenter une partie d'un module Feluqa, mais les deux notions ne sont pas synonymes. Les dossiers et noms Rust sont des choix d'implémentation; ils ne définissent pas le cycle de vie Feluqa.
+
+Un ERP Numerimondes utilise par défaut une base applicative partagée par ses modules. Les modules propriétaires de tables gardent leurs migrations dans leur dossier et leurs politiques/services, mais lisent et écrivent via la même connexion `default`; ne pas créer une base isolée par module. Les connexions nommées restent disponibles pour intégrer une base héritée, un entrepôt analytique ou un système externe lorsque le besoin le justifie. Les migrations contiennent une variante par dialecte supporté (`migrations/sqlite`, `migrations/postgresql`); ce découpage assure la compatibilité de SQL, il ne signifie pas que chaque module possède une base distincte.
+
+Une unité métier Feluqa se déclare dans un provider, s'enregistre dans le panel choisi et expose ses ressources/pages sous les ACL. Une déclaration doit rester courte : Feluqa fournit les pages CRUD standard, le rendu de schéma, la navigation, les policies par opération et les points d'extension. Le développeur ajoute des contrôleurs/services/routes spécifiques uniquement quand le workflow métier sort du CRUD standard.
 
 L'identité Core inclut `tenant_id`; les migrations additives ajoutent l'état et une génération d'authentification par tenant. Le bootstrap place le premier administrateur dans `default`; les comptes et rôles créés héritent du tenant de l'acteur. La session validée transmet ce tenant au `Principal`. Les listes Core filtrent par tenant, et CRM applique toujours la portée tenant côté SQL. `/system/tenants` permet de créer un tenant avec son premier administrateur, puis de le suspendre ou le réactiver. La suspension bloque login, authentification et résolution de permissions et révoque les sessions en transaction. La génération avancée invalide aussi tout jeton qui aurait été inséré pendant une course avec la suspension; une réactivation ne restaure donc aucune session précédente. `default` et le tenant de l'acteur ne peuvent pas être suspendus. La suppression et la vérification PostgreSQL restent à faire.
 
-Chaque module porte ses migrations dans son propre dossier. La même identité de migration doit exister pour chaque backend supporté :
+Chaque module Feluqa porte ses migrations dans son propre dossier. La même identité de migration doit exister pour chaque backend supporté. L'architecture cible exprime la propriété par domaine, sans dossiers génériques `src/app/` et `src/modules/` :
 
 ```text
 products/numerimondes/
-├── routes/
-│   ├── web.rs
-│   ├── api.rs
-│   └── console.rs
-├── app/
-│   ├── controllers/
-│   ├── models/
-│   ├── services/
-│   └── policies/
-├── modules/
-│   ├── crm/
-│   │   ├── module.toml      # supported_databases + database_connections
-│   │   ├── routes/web.rs
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── services/
-│   │   ├── policies/
-│   │   ├── views/
-│   │   └── migrations/
-│   │       ├── sqlite/0001_create_customers.sql
-│   │       └── postgresql/0001_create_customers.sql
-│   └── invoicing/
-│       └── ...
-├── resources/views/
+├── src/
+│   ├── main.rs
+│   ├── service_provider.rs       # composition root only
+│   ├── routes/web.rs             # assembly + global middleware only
+│   ├── website/                  # public site panel, pages and routes
+│   ├── system/                   # app-specific Core integration
+│   └── business/
+│       ├── crm/                  # one Feluqa business module
+│       │   ├── module.toml       # dialects; default connection is shared
+│       │   ├── panel.rs          # CRM resources/pages registration
+│       │   ├── routes.rs         # exceptional custom routes only
+│       │   ├── resources/        # contacts, companies, opportunities
+│       │   ├── features/         # finer business capabilities, if useful
+│       │   ├── services.rs       # reusable use cases
+│       │   ├── policies.rs
+│       │   └── migrations/{sqlite,postgresql}/
+│       └── finance/              # another module; same default DB
+├── resources/views/              # shared site layouts and components
 ├── config/database.toml
-└── public/
+├── public/
+├── database/seeders/             # app-wide seeders; module seeders stay in modules
+├── tests/
+└── storage/
 ```
 
-Le contrat d'une migration est commun, son SQL peut être propre au dialecte. `module.toml` déclare l'identifiant, les dialectes SQL (`supported_databases`) et les pools nommés consommés (`database_connections`, par défaut `default`); `feluqa::database::build_support::generate_migration_registry` compare les identifiants des variantes, embarque les fichiers SQL et produit le registre des migrations. Le runner vérifie tous les pools déclarés et leur dialecte avant la première écriture, puis applique la variante adaptée à chaque pool. `feluqa make migration` crée les variantes déclarées et initialise le manifeste si nécessaire. Le build échoue si un backend déclaré manque son dossier ou si les identifiants divergent. Les migrations Rust ne sont pas encore prises en charge par ce registre.
+The tree is a target convention, not a claim that Numerimondes has already been refactored. Its current `src/app/` and `src/modules/` are transitional. Directory names such as `business/crm/` express Feluqa ownership; every `.rs` source remains an ordinary Rust module in Rust's namespace.
 
-Configuration cible : une connexion `default` et des connexions nommées (`analytics`, `legacy`, etc.). Les modules déclarent quelles connexions ils consomment et quels dialectes ils supportent. Le gestionnaire possède un pool par connexion; transactions, migrations et requêtes sont explicitement liées à une connexion. Une requête métier ne bascule jamais silencieusement de base.
+Le contrat d'une migration est commun, son SQL peut être propre au dialecte. `module.toml` déclare l'identifiant Feluqa, les dialectes SQL (`supported_databases`) et les connexions utilisées; la connexion `default` est celle de la base applicative partagée par l'ERP. `feluqa::database::build_support::generate_migration_registry` compare les identifiants des variantes, embarque les fichiers SQL et produit le registre des migrations. Le runner applique la variante de dialecte au pool explicitement choisi. Une unité métier ne reçoit pas implicitement sa propre base. Le build échoue si un dialecte déclaré manque son dossier ou si les identifiants divergent. Les migrations Rust ne sont pas encore prises en charge par ce registre.
+
+Configuration cible : une connexion `default` partagée par les modules ERP, plus des connexions nommées (`analytics`, `legacy`, etc.) uniquement lorsque l'intégration l'exige. Le gestionnaire possède un pool par connexion; transactions, migrations et requêtes sont explicitement liées à une connexion. Une requête métier ne bascule jamais silencieusement de base.
 
 Le runner de migrations maintient l'historique par base et par module avec identifiant, checksum, horodatage et état. Il fournit `status` et `run`; `run` sérialise les démarrages concurrents par module (mise à jour d'une ligne verrouillée dans SQLite, `FOR UPDATE` sous PostgreSQL) et refuse un historique qui contient une migration absente ou modifiée dans le binaire. Une stratégie de retour arrière vérifiée reste à construire. Les changements destructifs utilisent des migrations expand/contract; un downgrade ne restaure pas magiquement des données supprimées. Le support multi-base signifie compatibilité vérifiée, pas une promesse que toutes les fonctions SQL sont identiques.
 
-## Scaffold visé
+## Layout cible et expérience « less is more »
 
 ```text
-routes/web.rs             # routes HTML du produit
-routes/api.rs             # API, si activée
-routes/console.rs         # commandes de l'application
-app/controllers/          # adaptateurs minces
-app/models/               # modèles et accès aux données
-app/services/             # cas d'usage/transactions
-app/policies/             # autorisations
-modules/                  # modules verticaux (ERP ou plateforme)
-resources/views/          # .view.rs compilés
-database/migrations/      # migrations propres à l'application
+src/main.rs
+src/service_provider.rs   # panels, modules et providers sélectionnés
+src/routes/web.rs         # compose les routes déclarées par leurs owners
+src/website/              # site public enregistré comme panel
+src/business/crm/         # module Feluqa métier; ressources/pages/features co-localisées
+src/business/finance/
+resources/views/          # layouts/composants partagés de l'application
+database/seeders/         # seeders applicatifs; chaque module peut aussi en posséder
 config/app.toml
 config/database.toml
 public/
 storage/
 ```
 
-Convention d'écriture : le développeur compose des modules avec des noms Rust explicites. Le build compile vues, routes et migrations embarquées dans le binaire lorsque nécessaire. En développement, `feluqa dev` surveille, recompile et redémarre. Pas de code PHP, pas d'évaluation de Rust arbitraire au runtime.
+Ce layout évite la séparation redondante `app/` contre `modules/`: les dossiers nomment le domaine ou la surface possédée. Les types et fichiers restent des modules Rust; un module Feluqa peut contenir plusieurs modules Rust, sous-modules et features. Convention d'écriture : le développeur déclare l'essentiel; Feluqa découvre/enregistre les ressources et pages déclarées, génère les opérations CRUD standard et fournit l'ACL, les formulaires, tables et shell. Le build compile vues, routes et migrations embarquées dans le binaire lorsque nécessaire. En développement, `feluqa dev` surveille, recompile et redémarre. Pas de code PHP, pas d'évaluation de Rust arbitraire au runtime.
 
 ## Ordre de réalisation et critère de vérité
 
 1. **Socle data** : pools nommés, migrations compilées par module/dialecte, historique/checksum, verrouillage concurrent SQLite/PostgreSQL et refus des migrations retirées/modifiées. L'auto-registre partagé est intégré au build Numerimondes; `feluqa new` doit encore appeler ce même build support dans son scaffold.
 2. **Boucle MVC** : routes → contrôleurs → services → modèles → vues compilées sont présentes dans Numerimondes; générateurs et conventions doivent encore fonctionner dans une application neuve et la validation/gestion d'erreurs doit être unifiée.
 3. **Auth et Core** : setup/login/logout, sessions, rôles/grants, provisioning et suspension/réactivation des tenants sont intégrés. Reste la suppression tenant, les protections multi-instance et le durcissement production.
-4. **Ressources du panel** : le CRUD CRM initial est transactionnel et audité; le catalogue générique list/form/table/actions et l'assemblage des ressources par module restent à construire.
+4. **Ressources du panel** : le CRUD CRM initial existe; le catalogue CRUD complet, les clusters, les pages typées extensibles, les widgets et l'assemblage complet par providers restent à construire.
 5. **ERP Numerimondes** : CRM est le premier module métier; commandes, factures, stock, tests de migration de données en production, déploiement et restauration restent à réaliser.
 
 Une crate qui compile ou un registre qui accepte une déclaration ne suffit pas à marquer un panneau livré. La preuve est une application neuve qui démarre, migre sa base, authentifie un utilisateur, affiche le Core, refuse un accès interdit, puis réalise un workflow ERP à travers le panel et la route web avec le même service métier.

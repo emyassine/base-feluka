@@ -144,6 +144,7 @@ pub(crate) async fn users(
         create_form,
         edit_forms,
         navigation,
+        "Feluqa Core",
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -467,6 +468,7 @@ pub(crate) async fn roles(
         create_form,
         edit_forms,
         navigation,
+        "Feluqa Core",
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

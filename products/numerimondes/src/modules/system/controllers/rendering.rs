@@ -175,17 +175,18 @@ pub(crate) async fn render_dashboard(
     };
     let panel_id = if system { "system" } else { "business" };
     let active_path = if system { "/system" } else { "/admin" };
-    let navigation = match registered_panel_navigation(state, identity, panel_id, active_path).await
-    {
-        Ok(navigation) => navigation,
-        Err(status) => return status.into_response(),
-    };
+    let (navigation, brand_name) =
+        match registered_panel_navigation(state, identity, panel_id, active_path).await {
+            Ok(navigation) => navigation,
+            Err(status) => return status.into_response(),
+        };
     let html = if system {
         views::generated_views::core_dashboard(
             &identity.display_name,
             &identity.email,
             csrf_token,
             navigation,
+            &brand_name,
         )
     } else {
         views::generated_views::business_dashboard(
@@ -193,6 +194,7 @@ pub(crate) async fn render_dashboard(
             &identity.email,
             csrf_token,
             navigation,
+            &brand_name,
         )
     };
     match html {
@@ -211,15 +213,16 @@ pub(crate) async fn render_dashboard(
 pub(super) async fn render_core_resource(
     state: &PanelState,
     identity: &SessionIdentity,
+    csrf_token: &str,
     title: &str,
     active_path: &str,
     table: feluqa::view::TrustedHtml,
 ) -> Response {
-    let navigation = match registered_panel_navigation(state, identity, "system", active_path).await
-    {
-        Ok(navigation) => navigation,
-        Err(status) => return status.into_response(),
-    };
+    let (navigation, brand_name) =
+        match registered_panel_navigation(state, identity, "system", active_path).await {
+            Ok(navigation) => navigation,
+            Err(status) => return status.into_response(),
+        };
     match views::generated_views::core_resource(
         &identity.display_name,
         &identity.email,
@@ -227,6 +230,8 @@ pub(super) async fn render_core_resource(
         table,
         active_path,
         navigation,
+        &brand_name,
+        csrf_token,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

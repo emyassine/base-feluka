@@ -16,6 +16,10 @@ pub fn routes() -> Router<PanelState> {
             "/assets/feluqa/{asset}",
             crate::feluqa::web::serve_panel_asset,
         )
+        .get(
+            "/assets/feluqa/flags/{locale}",
+            crate::feluqa::web::serve_panel_language_flag,
+        )
         .get("/", site::home)
         .get("/about", site::about)
         .finish()

@@ -1,4 +1,4 @@
-<x-feluqa-panel::document panel="business" active="/admin/customers" title="CRM · Numerimondes" :navigation="navigation"><div class="fi-panel-page-content"><header><p class="eyebrow">Numerimondes · CRM</p><h1>Customers</h1><p>Signed in as {{ display_name }} · {{ email }}</p><form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn" type="submit">Sign out</button></form></header>
+<x-feluqa-panel::document panel="business" active="/admin/customers" title="CRM · Numerimondes" :navigation="navigation" :brand_name="brand_name" :csrf_token="csrf_token" :display_name="display_name" :email="email"><div class="fi-panel-page-content"><header><p class="eyebrow">Numerimondes · CRM</p><h1>Customers</h1></header>
 <section class="card"><h2>Customer records</h2>
 {!! panel.table !!}
 @foreach (customer in &panel.customers)
