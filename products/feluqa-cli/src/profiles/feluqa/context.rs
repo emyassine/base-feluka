@@ -5,14 +5,14 @@ extern crate std;
 extern crate toml;
 
 use serde::Deserialize;
-use std::cmp::Ord;
+use std::convert::From;
+use std::ffi::OsString;
 use std::format;
 use std::fs;
 use std::iter::Iterator;
 use std::option::Option;
 use std::option::Option::Some;
 use std::path::{Path, PathBuf};
-use std::println;
 use std::process::ExitCode;
 use std::result::Result;
 use std::result::Result::{Err, Ok};
@@ -36,11 +36,53 @@ pub(crate) enum Context {
     Global,
 }
 
-/// Product state supplied to registered console handlers.
+/// Product state initialized by the console for profile commands.
 pub(crate) struct CliHost {
     pub(crate) current: PathBuf,
     pub(crate) context: Context,
     pub(crate) exit_code: ExitCode,
+}
+
+/// Read the command's arguments in the native form expected by process APIs.
+pub(crate) fn arguments(
+    command: &crate::feluqa::console::CommandContext<'_>,
+) -> Vec<OsString> {
+    command
+        .arguments()
+        .iter()
+        .map(|argument| OsString::from(argument.as_str()))
+        .collect()
+}
+
+/// Access the profile's execution context installed by `MakeConsole`.
+pub(crate) fn host<'a, 'b>(
+    command: &'a mut crate::feluqa::console::CommandContext<'b>,
+) -> Result<&'a mut CliHost, String> {
+    command
+        .host::<CliHost>()
+        .ok_or_else(|| String::from("Feluqa CLI context is unavailable"))
+}
+
+/// Require an app context for commands that operate on one application.
+pub(crate) fn application(host: &CliHost) -> Result<&Application, String> {
+    match &host.context {
+        Context::App(application) => Ok(application),
+        Context::Workspace(_) => Err(String::from(
+            "this command requires an application directory",
+        )),
+        Context::Global => Err(String::from(
+            "this command requires a Feluqa application",
+        )),
+    }
+}
+
+/// Store an operation's exit status in the console host.
+pub(crate) fn finish(
+    host: &mut CliHost,
+    result: Result<ExitCode, String>,
+) -> crate::feluqa::console::CommandResult {
+    host.exit_code = result?;
+    Ok(())
 }
 
 impl CliHost {
@@ -48,6 +90,22 @@ impl CliHost {
         Ok(Self { current: current.to_path_buf(), context: detect(current)?, exit_code: ExitCode::SUCCESS })
     }
 }
+
+impl crate::feluqa::console::ConsoleHost for CliHost {
+    fn create(current_directory: &Path) -> Result<Self, String> {
+        Self::new(current_directory)
+    }
+
+    fn exit_code(&self) -> ExitCode {
+        self.exit_code
+    }
+}
+
+crate::feluqa::console::register_host!(
+    feluqa_cli_context,
+    super::CliHost,
+    &["feluqa", "nadim", "feluqa-dev"]
+);
 
 #[derive(Deserialize)]
 struct CargoDocument {
@@ -121,26 +179,6 @@ pub(crate) fn read_application(directory: &Path) -> Result<Application, String> 
         manifest,
         directory: directory.to_path_buf(),
     })
-}
-
-pub(crate) fn list_applications(workspace: &Path) -> Result<ExitCode, String> {
-    let products = workspace.join("products");
-    let entries = fs::read_dir(&products)
-        .map_err(|error| format!("could not read `{}`: {error}", products.display()))?;
-    let mut apps = Vec::new();
-    for entry in entries {
-        let path = entry
-            .map_err(|error| format!("could not read product entry: {error}"))?
-            .path();
-        if path.is_dir() && path.join("feluqa.toml").is_file() {
-            apps.push(read_application(&path)?);
-        }
-    }
-    apps.sort_by(|left, right| left.display_name.cmp(&right.display_name));
-    for app in apps {
-        println!("{}  ({})", app.display_name, app.profile);
-    }
-    Ok(ExitCode::SUCCESS)
 }
 
 pub(crate) fn workspace_application(

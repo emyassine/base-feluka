@@ -14,7 +14,6 @@ use std::clone::Clone;
 use std::convert::{From, Into};
 use std::iter::Iterator;
 use std::option::Option::{None, Some};
-use std::path::PathBuf;
 use std::result::Result::{Err, Ok};
 use std::string::String;
 use std::string::ToString;
@@ -31,10 +30,9 @@ pub fn command(arguments: TokenStream, item: TokenStream) -> TokenStream {
     }
 }
 
-/// Attach generated profile command modules and conventional test support to
-/// a product's `PROFILES` declaration. If Cargo has not supplied `OUT_DIR`
-/// (as in standalone IDE macro expansion), the declaration remains visible
-/// without emitting an `env!("OUT_DIR")` error.
+/// Attach the build-generated command modules to a product's `PROFILES`
+/// declaration. This macro performs no environment or filesystem access so
+/// rust-analyzer can expand it safely.
 #[proc_macro_attribute]
 pub fn profile_registry(_arguments: TokenStream, item: TokenStream) -> TokenStream {
     match expand_profile_registry(item.into()) {
@@ -52,32 +50,13 @@ fn expand_profile_registry(item: TokenStream2) -> syn::Result<TokenStream2> {
         ));
     }
 
-    let command_modules = std::env::var_os("OUT_DIR")
-        .map(PathBuf::from)
-        .map(|directory| directory.join("profile_commands.rs"))
-        .filter(|path| path.is_file())
-        .map(|path| {
-            let path = syn::LitStr::new(&path.to_string_lossy(), proc_macro2::Span::call_site());
-            quote!(include!(#path);)
-        });
-
-    let test_module = std::env::var_os("CARGO_MANIFEST_DIR")
-        .map(PathBuf::from)
-        .map(|directory| directory.join("tests/support/console.rs"))
-        .filter(|path| path.is_file())
-        .map(|path| {
-            let path = syn::LitStr::new(&path.to_string_lossy(), proc_macro2::Span::call_site());
-            quote! {
-                #[cfg(test)]
-                #[path = #path]
-                mod console_tests;
-            }
-        });
-
     Ok(quote! {
         #declaration
-        #command_modules
-        #test_module
+        // Cargo's build script creates this file before rustc compiles the
+        // product. rust-analyzer intentionally skips it because it does not
+        // evaluate Cargo's OUT_DIR environment variable during macro expansion.
+        #[cfg(not(rust_analyzer))]
+        include!(concat!(env!("OUT_DIR"), "/profile_commands.rs"));
     })
 }
 

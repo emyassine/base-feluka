@@ -84,11 +84,10 @@ through module declarations or generated equivalents. Cargo does not add every
 encourages the `name.rs` plus `name/child.rs` form and still permits
 `name/mod.rs`.
 
-Thus the CLI now uses `commands.rs`, `commands/app.rs` and
-`commands/app/dev.rs` rather than `mod.rs` filenames. Rust module declarations
-are still necessary to compile ordinary source. Feluqa should minimize manual
-module-registration boilerplate with the command attribute and generated
-dev-command modules, not claim that Rust modules can be removed.
+The Feluqa CLI keeps one annotated source file per command, including nested
+families such as `profiles/feluqa/make/migration.rs`. Console generates the
+Rust declarations needed to compile those files. Rust modules still exist in
+the compiled crate, but contributors do not maintain a second command index.
 
 The command registry is permissive about *where linked command code lives*:
 commands can be declared in different files, modules and dependency crates.
@@ -102,20 +101,18 @@ binary never interprets or executes arbitrary Rust source from disk.
 
 Each profile declares the directory that owns its commands. The console build
 helper recursively visits that directory and compiles only files marked with
-`#[feluqa::command(...)]`; ordinary Rust helper files are not command modules.
-The attribute supplies the public command path, so filenames and nesting are
-for source organization only.
+`#[feluqa::command(...)]`. The attribute supplies the public command path, so
+filenames and nesting organize source without deciding the command name.
 
 ```text
 products/feluqa-cli/src/
-├── lib.rs                         # console runner and generated include hidden by the facade macro
-├── profiles.rs                    # one profile table used by runtime and build script
+├── main.rs                        # profile table and MakeConsole entry point
 └── profiles/
     ├── feluqa/                     # commands_directory = "profiles/feluqa"
-    │   ├── build.rs                # one command per file
+    │   ├── build.rs                # one command declaration per command file
     │   ├── make/migration.rs
-    │   ├── support.rs              # profile-local implementation wiring
-    │   ├── support/                # context, handlers, generators and operations for this profile
+    │   ├── context.rs              # profile context provider and application detection
+    │   ├── generator.rs            # small helpers shared by make commands
     │   └── templates/              # scaffold templates owned by Feluqa's `new` command
     ├── nadim/                      # commands_directory = "profiles/nadim"
     └── feluqa-dev/                 # commands_directory = "profiles/feluqa-dev"
@@ -125,23 +122,22 @@ A profile directory can be placed anywhere under the configured source root;
 its path is the `commands_directory` value. A product build script passes the
 same profile declarations to the console build helper, which recursively
 compiles annotated command files and honors each declared directory. Rust
-modules still need to be compiled, so this one small build integration handles
-the generated module declarations. The running binary never scans source
-folders or executes Rust source from disk.
+modules still need to be compiled, so the build integration emits declarations
+under `OUT_DIR`. The `profile_registry` attribute attaches the generated file
+without reading environment variables or files in the procedural macro. Rust
+Analyzer skips the generated include while expanding the attribute. The
+running binary never scans source folders or executes Rust source from disk.
 
-Shared commands are opt-in. A command file can include a shared handler body
-when another profile genuinely uses the same implementation. Merely placing a
-file in a shared directory does not register or expose it. Each command's
-`profiles` metadata determines which profiles can invoke it. Feluqa-specific
-operations such as `make`, app context detection and project templates stay in
-the `feluqa` profile; they are not placed in shared commands just because
-another profile might exist.
+Commands are compiled Rust functions, not runtime scripts. Every command file
+contains its command declaration and implementation; there is no profile-wide
+handler router. `MakeConsole` owns profile selection, help, parsing, command
+discovery and dispatch. The profile's `context.rs` registers its host factory
+and resolves application/workspace context. `generator.rs` contains only the
+small source-writing and naming helpers shared by `make` commands.
 
 `feluqa::console::MakeConsole` handles argument conversion, profile selection,
-help generation, command discovery and dispatch. The product supplies only its
-profile list and a host factory for product-specific context. The generated
-`OUT_DIR` include is available through `feluqa::console::include_profile_commands!()`;
-advanced products may use the raw generated include if they need custom wiring.
+help generation, command discovery and dispatch. The product declares its
+profile list and provides the context needed by its commands.
 
 ## Aliases and hidden commands
 
