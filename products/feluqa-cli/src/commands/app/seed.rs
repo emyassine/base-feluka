@@ -17,7 +17,7 @@ pub(crate) fn run(arguments: &[OsString], application: &Application) -> Result<E
     let seeder_id = arguments[0]
         .to_str()
         .ok_or_else(|| crate::std::string::String::from("seeder ID must be valid UTF-8"))?;
-    let mut cargo = super::app::cargo(application, "run");
+    let mut cargo = super::cargo(application, "run");
     cargo.arg("--").arg("seed").arg(seeder_id);
-    super::app::run(&mut cargo)
+    super::run(&mut cargo)
 }

@@ -10,8 +10,9 @@ use crate::std::string::String;
 
 pub(crate) fn run(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {
     if !arguments.is_empty() {
-        return Err(crate::std::string::String::from("usage: feluqa test"));
+        return Err(crate::std::string::String::from("usage: feluqa migrate"));
     }
-    let mut cargo = super::app::cargo(application, "test");
-    super::app::run(&mut cargo)
+    let mut cargo = super::cargo(application, "run");
+    cargo.arg("--").arg("migrate");
+    super::run(&mut cargo)
 }

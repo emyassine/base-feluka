@@ -1,6 +1,6 @@
 #![no_implicit_prelude]
 
-use super::{make, new, run};
+use super::{global, make, run};
 use crate::context::{self, Application};
 use crate::std::assert;
 use crate::std::assert_eq;
@@ -71,7 +71,7 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
         OsString::from("--profile"),
         OsString::from("web"),
     ];
-    assert!(new::run(&arguments, &directory, Some(&directory)).is_ok());
+    assert!(global::new::run(&arguments, &directory, Some(&directory)).is_ok());
 
     let application = directory.join("products/customer-portal");
     assert!(context::read_application(&application).is_ok());
@@ -177,10 +177,10 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     let manifest =
         fs::read_to_string(application.join("Cargo.toml")).expect("generated Cargo manifest");
     assert!(manifest.contains("path = \"../../_crates/feluqa\""));
-    assert!(new::run(&arguments, &directory, Some(&directory)).is_err());
+    assert!(global::new::run(&arguments, &directory, Some(&directory)).is_err());
 
     let external_arguments = [OsString::from("Remote Site")];
-    assert!(new::run(&external_arguments, &directory, None).is_ok());
+    assert!(global::new::run(&external_arguments, &directory, None).is_ok());
     let external = directory.join("remote-site");
     let external_manifest =
         fs::read_to_string(external.join("Cargo.toml")).expect("registry-based manifest");

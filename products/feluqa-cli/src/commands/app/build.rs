@@ -12,7 +12,7 @@ pub(crate) fn run(arguments: &[OsString], application: &Application) -> Result<E
     if !arguments.is_empty() {
         return Err(crate::std::string::String::from("usage: feluqa build"));
     }
-    let mut cargo = super::app::cargo(application, "build");
+    let mut cargo = super::cargo(application, "build");
     cargo.arg("--release");
-    super::app::run(&mut cargo)
+    super::run(&mut cargo)
 }

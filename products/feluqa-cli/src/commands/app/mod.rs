@@ -1,5 +1,12 @@
 #![no_implicit_prelude]
 
+pub(crate) mod build;
+pub(crate) mod check;
+pub(crate) mod dev;
+pub(crate) mod migrate;
+pub(crate) mod seed;
+pub(crate) mod test;
+
 use crate::context::Application;
 use crate::std::convert::From;
 use crate::std::process::{Command, ExitCode};

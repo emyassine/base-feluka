@@ -5,18 +5,9 @@ use crate::std::option::Option::None;
 use crate::std::option::Option::Some;
 
 pub(crate) mod app;
-mod build;
-mod check;
-mod dev;
+mod global;
 mod help;
-mod list;
 pub(crate) mod make;
-mod migrate;
-mod new;
-mod seed;
-mod test;
-mod update;
-mod version;
 
 use crate::context::{self, Application, Context};
 use crate::std::clone::Clone;
@@ -65,30 +56,30 @@ pub(crate) fn run(arguments: Vec<OsString>, current: &Path) -> Result<ExitCode, 
     let context = context::detect(current)?;
     match (command, context) {
         ("help" | "--help" | "-h", _) => Ok(help::run(None)),
-        ("--version" | "-V", _) => Ok(version::run()),
-        ("list", Context::Workspace(workspace)) => list::run(&workspace),
+        ("--version" | "-V", _) => Ok(global::version::run()),
+        ("list", Context::Workspace(workspace)) => global::list::run(&workspace),
         ("list", Context::App(application)) => {
             match context::find_workspace(&application.directory) {
-                Some(workspace) => list::run(&workspace),
+                Some(workspace) => global::list::run(&workspace),
                 None => Err(String::from("this app is not inside a Feluqa workspace")),
             }
         }
-        ("new", Context::Global) => new::run(command_arguments, current, None),
+        ("new", Context::Global) => global::new::run(command_arguments, current, None),
         ("new", Context::Workspace(workspace)) => {
-            new::run(command_arguments, &workspace, Some(&workspace))
+            global::new::run(command_arguments, &workspace, Some(&workspace))
         }
         ("new", Context::App(_)) => Err(String::from(
             "`feluqa new` is global; run it outside an application directory",
         )),
-        ("dev", Context::App(application)) => dev::run(command_arguments, &application),
-        ("build", Context::App(application)) => build::run(command_arguments, &application),
-        ("check", Context::App(application)) => check::run(command_arguments, &application),
-        ("test", Context::App(application)) => test::run(command_arguments, &application),
-        ("migrate", Context::App(application)) => migrate::run(command_arguments, &application),
-        ("seed", Context::App(application)) => seed::run(command_arguments, &application),
+        ("dev", Context::App(application)) => app::dev::run(command_arguments, &application),
+        ("build", Context::App(application)) => app::build::run(command_arguments, &application),
+        ("check", Context::App(application)) => app::check::run(command_arguments, &application),
+        ("test", Context::App(application)) => app::test::run(command_arguments, &application),
+        ("migrate", Context::App(application)) => app::migrate::run(command_arguments, &application),
+        ("seed", Context::App(application)) => app::seed::run(command_arguments, &application),
         ("migrate", Context::Workspace(workspace)) => {
             let application = migration_target(&workspace, command_arguments)?;
-            migrate::run(&[], &application)
+            app::migrate::run(&[], &application)
         }
         ("seed", Context::Workspace(workspace)) => {
             if command_arguments.len() != 2 {
@@ -98,7 +89,7 @@ pub(crate) fn run(arguments: Vec<OsString>, current: &Path) -> Result<ExitCode, 
                 &workspace,
                 as_utf8(&command_arguments[0], "application name")?,
             )?;
-            seed::run(&[command_arguments[1].clone()], &application)
+            app::seed::run(&[command_arguments[1].clone()], &application)
         }
         ("dev" | "build" | "check" | "test", Context::Workspace(_)) => Err(crate::std::format!(
             "`feluqa {command}` requires an application context; change into an app directory"
@@ -113,7 +104,7 @@ pub(crate) fn run(arguments: Vec<OsString>, current: &Path) -> Result<ExitCode, 
         ("make", _) => Err(crate::std::string::String::from(
             "`feluqa make` is app-scoped; change into a valid application directory",
         )),
-        ("update", _) => update::run(command_arguments),
+        ("update", _) => global::update::run(command_arguments),
         (other, _) => Err(crate::std::format!(
             "unknown command `{other}`; run `feluqa help`"
         )),

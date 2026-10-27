@@ -12,6 +12,6 @@ pub(crate) fn run(arguments: &[OsString], application: &Application) -> Result<E
     if !arguments.is_empty() {
         return Err(crate::std::string::String::from("usage: feluqa check"));
     }
-    let mut cargo = super::app::cargo(application, "check");
-    super::app::run(&mut cargo)
+    let mut cargo = super::cargo(application, "check");
+    super::run(&mut cargo)
 }

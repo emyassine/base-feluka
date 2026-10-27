@@ -5,6 +5,11 @@ executable. This page is the canonical command reference. Module source layout,
 resource APIs and data conventions are covered by the corresponding
 [developer guides](../../for-developers/index.en.md).
 
+The broader command grammar, command metadata/discovery, hidden commands,
+aliases and planned interactive console API are specified in the
+[console design](../../../_todo/console/console.en.md). Those planned parts are
+not yet implemented by the CLI.
+
 ## Context detection
 
 The CLI searches the current directory and its ancestors for a valid app
