@@ -183,7 +183,7 @@ fn run_cargo_command(command: &str, application: &Application) -> Result<ExitCod
             cargo.arg("--release");
         }
         "check" => {}
-        _ => unreachable!(),
+        _ => return Err(format!("unsupported Cargo command `{command}`")),
     }
     let status = cargo
         .status()

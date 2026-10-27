@@ -64,7 +64,7 @@ It deploys in two situations: behind an existing panel (Hestia first; other pane
 
 ### A1b. One ecosystem, several target profiles
 
-Feluqa is one ecosystem: one workspace, one namespace, one CLI, one schema and policy model, one module system. It is not one runtime. Each target gets a profile with its own runtime model. Shared crates (schemas, policies, protocols, validation, serialization) compile into every profile, and one facade (`feluqa::...`) exposes them under a single name.
+Feluqa is one ecosystem: one workspace, one namespace, one CLI, one schema and policy model, one module system. It is not one runtime. Each target gets a profile with its own runtime model. Shared crates (schemas, policies, protocols, validation, serialization) compile into the compatible profiles, and one facade (`feluqa::...`) exposes them under a single name. The current facade feature sets are `web` (default), `spa`, `mobile`, `desktop`, `game` and `realtime`; `cargo check -p feluqa --no-default-features --features realtime` validates only the no_std host build, not an embedded target or hard-deadline guarantee.
 
 Exhibit 1b | Target profiles and their binding constraints
 

@@ -1,0 +1,11 @@
+[package]
+name = "feluqa-auth"
+version = "0.1.0"
+description = "Proprietary authentication and authorization contracts for Feluqa."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]

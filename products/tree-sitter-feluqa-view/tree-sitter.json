@@ -1,0 +1,26 @@
+{
+  "grammars": [
+    {
+      "name": "feluqa_view",
+      "camelcase": "FeluqaView",
+      "scope": "source.feluqa-view",
+      "file-types": ["view.rs"],
+      "injection-regex": "feluqa[_-]view"
+    }
+  ],
+  "metadata": {
+    "version": "0.2.0",
+    "license": "UNLICENSED",
+    "description": "Feluqa compiled view templates",
+    "authors": [{ "name": "El Moumen Yassine" }
+    ]
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}

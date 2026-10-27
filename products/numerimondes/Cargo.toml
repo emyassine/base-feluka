@@ -14,7 +14,7 @@ serde.workspace = true
 tokio.workspace = true
 toml.workspace = true
 tower-http.workspace = true
-feluqa = { version = "0.1.1", path = "../../_crates/feluqa" }
+feluqa = { version = "0.2.0", path = "../../_crates/feluqa" }
 
 [build-dependencies]
-feluqa = { path = "../../_crates/feluqa" }
+feluqa = { path = "../../_crates/feluqa", features = ["view-compiler"] }

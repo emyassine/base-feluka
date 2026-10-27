@@ -1,153 +1,72 @@
 #![no_implicit_prelude]
-#![deny(unsafe_code)]
+#![forbid(unsafe_code)]
 #![deny(unused_must_use)]
 
+//! Rendering primitives for compiled Feluqa Views.
+//! Enable `compiler` only in build dependencies to parse `.view.rs` sources.
 extern crate alloc;
 extern crate core;
+#[cfg(feature = "compiler")]
+extern crate quote;
+#[cfg(any(feature = "compiler", test))]
+extern crate std;
+#[cfg(feature = "compiler")]
+extern crate syn;
 
-use alloc::borrow::ToOwned;
-use alloc::format;
 use alloc::string::String;
-use alloc::vec::Vec;
-use core::clone::Clone;
-use core::fmt;
-use core::ops::FnMut;
-use core::option::Option;
-use core::option::Option::Some;
-use core::result::Result::{self, Err, Ok};
-use core::write;
+use core::fmt::{self, Display, Write};
+use core::result::Result;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum ViewError {
-    UnclosedExpression { offset: usize },
-    EmptyExpression { offset: usize },
-    MissingValue { name: String },
-}
+#[cfg(feature = "compiler")]
+pub mod compiler;
 
-impl fmt::Display for ViewError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::UnclosedExpression { offset } => {
-                write!(formatter, "unclosed view expression at byte {offset}")
-            }
-            Self::EmptyExpression { offset } => {
-                write!(formatter, "empty view expression at byte {offset}")
-            }
-            Self::MissingValue { name } => write!(formatter, "missing view value `{name}`"),
-        }
+/// Owned rendering output, exposed so generated code needs no implicit prelude.
+pub type Output = String;
+/// A rendering failure reported by a user-provided `Display` implementation.
+pub type RenderResult<T = Output> = Result<T, fmt::Error>;
+/// A caller-owned slot. Each yield evaluates the slot once at that location.
+pub type Slot<'a> = dyn core::ops::FnMut(&mut Output) -> RenderResult<()> + 'a;
+
+/// HTML explicitly vouched for by trusted application code.
+///
+/// This is not a sanitizer. Never construct this from untrusted input without
+/// applying an application-approved HTML sanitizer first.
+pub struct TrustedHtml(String);
+
+impl TrustedHtml {
+    /// Mark already-reviewed or sanitized HTML as trusted.
+    pub fn from_trusted(value: String) -> Self {
+        Self(value)
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-enum Node {
-    Text(String),
-    EscapedValue(String),
-}
+struct EscapedWriter<'a>(&'a mut String);
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Template {
-    nodes: Vec<Node>,
-}
-
-impl Template {
-    pub fn compile(source: &str) -> Result<Self, ViewError> {
-        let mut nodes = Vec::new();
-        let mut cursor = 0;
-
-        while let Some(relative_start) = source[cursor..].find("{{") {
-            let start = cursor + relative_start;
-            if start > cursor {
-                nodes.push(Node::Text(source[cursor..start].to_owned()));
-            }
-
-            let expression_start = start + 2;
-            let relative_end = source[expression_start..]
-                .find("}}")
-                .ok_or(ViewError::UnclosedExpression { offset: start })?;
-            let end = expression_start + relative_end;
-            let name = source[expression_start..end].trim();
-            if name.is_empty() {
-                return Err(ViewError::EmptyExpression { offset: start });
-            }
-            nodes.push(Node::EscapedValue(name.to_owned()));
-            cursor = end + 2;
-        }
-
-        if cursor < source.len() {
-            nodes.push(Node::Text(source[cursor..].to_owned()));
-        }
-
-        Ok(Self { nodes })
-    }
-
-    pub fn render<F>(&self, mut value: F) -> Result<String, ViewError>
-    where
-        F: FnMut(&str) -> Option<String>,
-    {
-        let mut output = String::new();
-        for node in &self.nodes {
-            match node {
-                Node::Text(text) => output.push_str(text),
-                Node::EscapedValue(name) => {
-                    let raw = value(name)
-                        .ok_or_else(|| ViewError::MissingValue { name: name.clone() })?;
-                    output.push_str(&escape_html(&raw));
-                }
+impl Write for EscapedWriter<'_> {
+    fn write_str(&mut self, value: &str) -> fmt::Result {
+        for character in value.chars() {
+            match character {
+                '&' => self.0.push_str("&amp;"),
+                '<' => self.0.push_str("&lt;"),
+                '>' => self.0.push_str("&gt;"),
+                '"' => self.0.push_str("&quot;"),
+                '\'' => self.0.push_str("&#39;"),
+                other => self.0.push(other),
             }
         }
-        Ok(output)
+        Result::Ok(())
     }
 }
 
-pub fn generate_rust(source: &str, function_name: &str) -> Result<String, ViewError> {
-    let template = Template::compile(source)?;
-    let mut generated = format!(
-        "pub fn {function_name}<F>(mut value: F) -> crate::std::result::Result<crate::std::string::String, crate::feluqa::view::ViewError> where F: crate::std::ops::FnMut(&str) -> crate::std::option::Option<crate::std::string::String> {{\nlet mut output = crate::std::string::String::new();\n"
-    );
-
-    for node in &template.nodes {
-        match node {
-            Node::Text(text) => {
-                generated.push_str(&format!("output.push_str({text:?});\n"));
-            }
-            Node::EscapedValue(name) => {
-                generated.push_str(&format!(
-                    "let rendered_value = value({name:?}).ok_or_else(|| crate::feluqa::view::ViewError::MissingValue {{ name: {{ let mut name = crate::std::string::String::new(); name.push_str({name:?}); name }} }})?;\ncrate::feluqa::view::append_escaped(&mut output, &rendered_value);\n"
-                ));
-            }
-        }
-    }
-
-    generated.push_str("crate::std::result::Result::Ok(output)\n}\n");
-    Ok(generated)
+/// Stream a displayable value into HTML text or a quoted, non-executable attribute.
+pub fn write_escaped(
+    output: &mut Output,
+    value: &(impl Display + ?core::marker::Sized),
+) -> RenderResult<()> {
+    core::write!(EscapedWriter(output), "{value}")
 }
 
-pub fn append_escaped(output: &mut String, value: &str) {
-    output.push_str(&escape_html(value));
-}
-
-fn escape_html(value: &str) -> String {
-    let mut escaped = String::with_capacity(value.len());
-    for character in value.chars() {
-        match character {
-            '&' => escaped.push_str("&amp;"),
-            '<' => escaped.push_str("&lt;"),
-            '>' => escaped.push_str("&gt;"),
-            '"' => escaped.push_str("&quot;"),
-            '\'' => escaped.push_str("&#39;"),
-            other => escaped.push(other),
-        }
-    }
-    escaped
-}
-
-pub fn render<F>(source: &str, value: F) -> Result<String, ViewError>
-where
-    F: FnMut(&str) -> Option<String>,
-{
-    Template::compile(source)?.render(value)
-}
-
-pub fn error_message(error: &ViewError) -> String {
-    format!("{error}")
+/// Append HTML without escaping; ordinary strings do not satisfy this API.
+pub fn write_trusted(output: &mut Output, value: &TrustedHtml) {
+    output.push_str(&value.0);
 }

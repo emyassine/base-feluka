@@ -1,0 +1,10 @@
+id = "feluqa-views"
+name = "Feluqa Views"
+version = "0.2.0"
+schema_version = 1
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+description = "Syntax highlighting and Rust injections for Feluqa .view.rs templates."
+
+[grammars.feluqa_view]
+repository = "__LOCAL_GRAMMAR_REPOSITORY__"
+rev = "__LOCAL_GRAMMAR_REVISION__"

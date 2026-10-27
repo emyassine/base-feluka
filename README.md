@@ -14,6 +14,8 @@ Open [http://127.0.0.1:38127/](http://127.0.0.1:38127/). The Numerimondes produc
 
 The page navigation shows handler elapsed time as **Request … ms**. The full server middleware duration is separate: inspect `Server-Timing: feluqa_binary;dur=…` in browser DevTools → Network → Response Headers, or watch the CLI terminal.
 
+Check the no-default-dependency realtime facade profile with `cargo check --manifest-path _crates/Cargo.toml -p feluqa --no-default-features --features realtime`. This proves host compilation only, not a specific embedded target or hard-deadline behavior.
+
 Build the standalone application binary with:
 
 ```sh
@@ -22,7 +24,9 @@ cargo build --manifest-path _crates/Cargo.toml -p numerimondes --release --locke
 
 The CLI is a first-class product at `products/feluqa-cli/`, with the executable name `feluqa`. From source, run it with `cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- help`.
 
-The current view compiler supports text and escaped `{{ name }}` substitutions. Layouts, view control directives, hot reload, storage management, auth, and deployment adapters remain roadmap work.
+The build-time view compiler now handles `.view.rs` templates with typed parameters, escaped and trusted output, `@rs`, conditions/loops, includes, layouts/sections, registered components and slots. Development watch/restart is still pending.
+
+The `feluqa` facade defaults to the `web` feature set, and offers `spa`, `mobile`, `desktop`, `game` and `realtime` profiles. Set `default-features = false` to avoid linking web-profile crates. `auth`, `ui`, `panel`, and `module` are `no_std` + `alloc`; `live` currently requires `std`. Current contracts provide versioned, validated UI JSON and a small safe server renderer; exact permission checks; a system/business panel registry; HMAC-signed typed actions with replay protection; and deterministic static-module startup/shutdown. Sessions, persisted roles/audit, UI rendering/browser transport, a distributed replay store, plugin loading and production panel routes are not implemented yet.
 
 ## Repository layout
 
@@ -33,6 +37,11 @@ _crates/Cargo.toml         workspace and shared dependency versions
 _crates/Cargo.lock         workspace dependency lockfile
 _crates/feluqa/            public framework facade
 _crates/feluqa-console/    public console command contract
+_crates/feluqa-auth/       no_std identity and permission contracts
+_crates/feluqa-ui/         no_std versioned SDUI schema
+_crates/feluqa-panel/      system/business panel registry
+_crates/feluqa-live/       signed typed action dispatch
+_crates/feluqa-module/     deterministic static module lifecycle
 _crates/feluqa-view/       compiled view engine
 products/feluqa-cli/       Feluqa CLI product (binary: feluqa)
 products/numerimondes/     Numerimondes web application product

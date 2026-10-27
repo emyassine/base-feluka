@@ -1,6 +1,6 @@
 [package]
 name = "feluqa-view"
-version = "0.1.1"
+version = "0.2.0"
 description = "Proprietary compiled view engine for the Feluqa application framework."
 authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
 edition.workspace = true
@@ -8,4 +8,10 @@ license-file.workspace = true
 rust-version.workspace = true
 publish = ["feluqa"]
 
+[features]
+default = []
+compiler = ["dep:syn", "dep:quote"]
+
 [dependencies]
+syn = { version = "2.0", features = ["full", "parsing", "printing"], optional = true }
+quote = { version = "1.0", optional = true }

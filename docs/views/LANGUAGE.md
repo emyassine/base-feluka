@@ -1,6 +1,6 @@
 # Feluqa Views — contrat v1
 
-Date : 2026-10-26. Statut : cible acceptée pour l'implémentation, pas une description des capacités actuelles. Le moteur livré ne reconnaît encore que texte et substitutions nommées dans des fichiers `.view`.
+Date : 2026-10-26. Statut : le premier compilateur `.view.rs` et son intégration Numerimondes sont implémentés. Le tableau plus bas précise les constructions couvertes et les limites; les contrats de sécurité et les lots futurs restent normatifs.
 
 ## Format et compilation
 
@@ -8,11 +8,11 @@ Le format canonique est **`.view.rs`**, inspiré des vues Webkernel/Blade : HTML
 
 Les vues appartiennent explicitement à une application, une bibliothèque ou un module. Chaque propriétaire enregistre une racine et un namespace, par exemple `app::pages.home` ou `feluqa::layouts.panel`. Le registre résout ces noms à la construction; pas de scan des modules à chaque requête. Les surcharges sont explicites, les doublons ambigus sont des erreurs.
 
-Le futur pipeline est : découverte déclarée → lexer avec positions → AST → résolution des includes/layouts/composants → validation des expressions Rust → génération Rust → rustc. Les fonctions de rendu reçoivent un contexte typé, des props et un writer. Serde sert aux schémas/configurations et aux frontières réseau; il ne remplace pas le typage du rendu par une map de chaînes.
+Le pipeline livré est : racines déclarées → parseur avec diagnostics source → résolution statique des includes/layouts/composants → validation syntaxique Rust → génération Rust et source map → rustc. Les fonctions de rendu reçoivent un contexte typé, des props et un writer. Serde sert aux schémas/configurations et aux frontières réseau; il ne remplace pas le typage du rendu par une map de chaînes.
 
 ## Syntaxe cible
 
-Les exemples suivants sont des spécifications, pas des fichiers actuellement exécutables.
+Les fichiers utilisés par Numerimondes compilent déjà les directives de la première version. Les exemples décrivent le contrat global visé; certains détails ci-dessous restent à implémenter.
 
 ```text
 @extends("app::layouts.main")
@@ -21,7 +21,7 @@ Les exemples suivants sont des spécifications, pas des fichiers actuellement ex
         let heading = page.title.trim();
     @endrs
 
-    <x-feluqa::section :title="heading">
+    <x-app::section :title="heading">
         <x-slot name="actions">
             <x-feluqa::button href="/contact">Contact</x-feluqa::button>
         </x-slot>
@@ -33,7 +33,7 @@ Les exemples suivants sont des spécifications, pas des fichiers actuellement ex
         @else
             <p>Aucun élément.</p>
         @endif
-    </x-feluqa::section>
+    </x-app::section>
 @endsection
 ```
 
@@ -85,6 +85,6 @@ Référence inspectée : `AGENTS_VIEWS.md`, `system-panel/resources/views/home.v
 
 Le lot initial doit inventorier les directives réellement utilisées dans les sources Webkernel, exclure ses caches générés, puis classer chaque occurrence : v1, v1.1, conversion manuelle, rejet explicite. Remplacer `@php/@endphp` par `@rs/@endrs` implique de porter le code PHP, pas de renommer les délimiteurs seulement.
 
-Migration actuelle à réaliser ensemble : renommer `home.view` et `about.view` → `.view.rs`; traiter le suffixe complet plutôt que `Path::file_stem`; découverte récursive déterministe sous racines déclarées; IDs stables pour sous-dossiers; invalidation des includes/slots/layouts; source maps; mise à jour du générateur CLI et des exemples. Aucun fichier ne doit être renommé seul si le build ne sait pas encore le charger.
+État implémenté : Numerimondes utilise `.view.rs` dans `resources/views/{pages,layouts,partials,components}`. Le compilateur découvre les racines récursivement et de façon déterministe, compile des paramètres typés, layouts/sections, includes explicites, composants enregistrés et slots; il expose les chemins dépendants, émet une source map et écrit le Rust de façon atomique. Le `build.rs` relie les dépendances à Cargo. Les templates sont compilés via une dépendance de build, sans inclure `syn`/`quote` dans le graphe normal du serveur. `@comment`, directives d’auth, push/stack, Markdown, balises de composants non enregistrés et watcher `feluqa dev` ne font pas partie de ce premier lot. Les politiques d’attributs sûrs restent conservatrices; JS/CSS dynamiques sont refusés.
 
-Acceptation : corpus couvrant imbrication, includes cycliques, props manquantes, Unicode, délimiteurs dans chaînes/commentaires, XSS, défauts de slots et parité HTML debug/release. Un exemple contenant `@rs`, layout, include et composant doit réellement compiler avant de déclarer cette syntaxe livrée.
+Vérifications réalisées : tests du compilateur généré couvrant imbrication, includes cycliques, props manquantes, Unicode, délimiteurs dans chaînes/commentaires, XSS, slots, parité debug/release et erreurs de type; les pages Numerimondes servent de consommateur. Le corpus Tree-sitter couvre maintenant expressions, `@rs`, conditions, composants et attributs Rust. Travaux restants : corpus de conformance partagé, injectivité/délimiteurs pendant saisie incomplète, tests d’acceptation réels dans Zed et watcher/rebuild dev.

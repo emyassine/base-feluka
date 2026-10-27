@@ -1,0 +1,5 @@
+name = "Feluqa Views"
+grammar = "feluqa_view"
+path_suffixes = ["view.rs"]
+
+# The view language combines HTML, Feluqa directives, and Rust expressions.

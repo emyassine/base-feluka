@@ -1,28 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ title }} · Webkernel</title>
-  <link rel="preload" href="/assets/fonts/geist-sans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/site.css">
-</head>
-<body>
-  <header class="head" id="head">
-    <div class="topbar"><div class="wrap">
-      <a class="brand" href="/" aria-label="Webkernel home"><picture data-theme-picture><source srcset="/assets/branding/webkernel-logo-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img class="brand-logo" src="/assets/branding/webkernel-logo-light.webp" alt="Webkernel" width="181" height="40" fetchpriority="high" decoding="async"></picture></a>
-      <span class="grow"></span>
-      <div class="search"><label><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg><input type="search" placeholder="Search docs and packages" aria-label="Search docs and packages" autocomplete="off"><kbd>/</kbd></label></div>
-      <a class="ext" href="/">Get started <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg></a>
-    </div></div>
-    <div class="subbar"><div class="wrap">
-      <nav class="subnav grow" aria-label="Main navigation"><a href="/">Get started</a><a href="/#environment">Environment</a><a href="/#concepts">Concepts</a><a href="/#build">Build</a><a href="/#packages">Packages</a><a href="/#components">Components</a><a href="/#docs">Documentation</a><a class="active" href="/about" aria-current="page">About</a></nav>
-      <div class="subbar-controls"><div class="meta"><span><span class="dot"></span> Request {{ request_time }} ms</span></div>
-        <details class="language-switcher"><summary>EN <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg></summary><nav aria-label="Language"><a href="/about">English</a><a href="/about">Français</a></nav></details>
-        <button class="theme-toggle" data-theme-toggle role="switch" aria-checked="false" aria-label="Toggle dark mode"><span></span></button>
-      </div>
-    </div></div>
-  </header>
+@extends("app::layouts.main")
+@section("content")
   <main class="layout"><div class="multipage-content"><div data-multipage-active="about">
     <section id="about" data-s="About" data-g="Numerimondes">
       <p class="eyebrow">Numerimondes</p>
@@ -58,17 +35,5 @@
       <div class="note">Presentation document, non-contractual.</div>
     </section>
   </div></div></main>
-  <footer><div class="wrap"><picture data-theme-picture><source srcset="/assets/branding/numerimondes-logo-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/branding/numerimondes-logo-light.webp" alt="Numerimondes" width="152" height="24" loading="lazy" decoding="async"></picture><span>Webkernel by Numerimondes SARL AU · Casablanca</span></div></footer>
-  <script>
-    const toggle = document.querySelector('[data-theme-toggle]');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) document.documentElement.dataset.theme = savedTheme;
-    toggle?.addEventListener('click', () => {
-      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = nextTheme;
-      toggle.setAttribute('aria-checked', String(nextTheme === 'dark'));
-      localStorage.setItem('theme', nextTheme);
-    });
-  </script>
-</body>
-</html>
+
+@endsection

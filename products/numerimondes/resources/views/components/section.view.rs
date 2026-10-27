@@ -1,0 +1,1 @@
+<section id="{{ id }}"><p class="eyebrow">{{ eyebrow }}</p><h2>{{ title }}</h2>@yield("default")@yield("actions")</section>

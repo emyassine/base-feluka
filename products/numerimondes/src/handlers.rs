@@ -2,61 +2,74 @@
 
 extern crate std;
 
-use std::collections::BTreeMap;
-use std::convert::From;
+use crate::axum::http::StatusCode;
+use crate::axum::response::Html;
 use std::format;
-use std::option::Option::Some;
+use std::result::Result;
 use std::string::String;
 use std::time::Instant;
-
-use crate::axum::response::Html;
 
 mod generated_views {
     include!(concat!(env!("OUT_DIR"), "/views.rs"));
 }
 
-pub async fn home() -> Html<String> {
-    let started_at = Instant::now();
-    let values = page_values("Get started");
-    let html = generated_views::home(|name| match name {
-        "request_time" => Some(format!(
-            "{:.3}",
-            started_at.elapsed().as_secs_f64() * 1_000.0
-        )),
-        _ => values.get(name).map(|value| String::from(*value)),
-    })
-    .unwrap_or_else(|error| format!("View error: {error}"));
-    Html(html)
+pub(crate) struct Page {
+    pub(crate) title: &'static str,
+    pub(crate) is_home: bool,
+    started_at: Instant,
+}
+impl Page {
+    fn new(title: &'static str, is_home: bool) -> Self {
+        Self {
+            title,
+            is_home,
+            started_at: Instant::now(),
+        }
+    }
+    pub(crate) fn request_time(&self) -> String {
+        format!("{:.3}", self.started_at.elapsed().as_secs_f64() * 1_000.0)
+    }
 }
 
-pub async fn about() -> Html<String> {
-    let started_at = Instant::now();
-    let values = page_values("About");
-    let html = generated_views::about(|name| match name {
-        "request_time" => Some(format!(
-            "{:.3}",
-            started_at.elapsed().as_secs_f64() * 1_000.0
-        )),
-        _ => values.get(name).map(|value| String::from(*value)),
-    })
-    .unwrap_or_else(|error| format!("View error: {error}"));
-    Html(html)
+pub async fn home() -> Result<Html<String>, StatusCode> {
+    generated_views::home(&Page::new("Get started", true))
+        .map(Html)
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
 }
 
-fn page_values(title: &'static str) -> BTreeMap<&'static str, &'static str> {
-    BTreeMap::from([
-        ("title", title),
-        ("company", "NUMERIMONDES"),
-        ("legal_form", "SARL à associé unique"),
-        ("capital", "100,000 MAD"),
-        (
-            "address",
-            "10 Rue de la Liberté, 3rd floor, apartment 5, Belvédère, Casablanca",
-        ),
-        (
-            "registration",
-            "RC 152844 · ICE 003396233000077 · IF 60132844",
-        ),
-        ("manager", "Yassine EL MOUMEN, Founder and Manager"),
-    ])
+pub async fn about() -> Result<Html<String>, StatusCode> {
+    generated_views::about(&Page::new("About", false))
+        .map(Html)
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Page, generated_views};
+    use crate::std::assert;
+    use crate::std::assert_eq;
+    use crate::std::iter::Iterator;
+
+    #[test]
+    fn both_pages_render_with_shared_layout_and_components() {
+        for html in [
+            generated_views::home(&Page::new("Get started", true)).expect("home"),
+            generated_views::about(&Page::new("About", false)).expect("about"),
+        ] {
+            assert_eq!(html.matches("<header ").count(), 1);
+            assert_eq!(html.matches("<footer>").count(), 1);
+            assert!(html.contains("Request "));
+            assert!(html.contains("/assets/site.css"));
+            assert!(!html.contains("@include"));
+            assert!(!html.contains("@yield"));
+            assert!(!html.contains("<x-"));
+        }
+    }
+
+    #[test]
+    fn page_title_is_typed_and_escaped() {
+        let html = generated_views::home(&Page::new("<script>\"&", true)).expect("home");
+        assert!(html.contains("<title>&lt;script&gt;&quot;&amp; · Webkernel</title>"));
+        assert!(html.contains("<section id=\"environment\">"));
+    }
 }

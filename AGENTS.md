@@ -6,7 +6,7 @@ Scope: this monorepo, excluding preserved historical evidence when a rule would 
 
 Feluqa is one proprietary NUMERIMONDES ecosystem and namespace for web, SPAs, mobile, desktop, games, APIs and real-time systems. Share tooling, schemas and libraries; retain separate runtime profiles. Web delivery is the first product priority. Enterprise quality requires verified operational and security capabilities, not directory structure or a published crate.
 
-Current implementation: small `feluqa` facade, console contracts, text/escaped-substitution view engine, Numerimondes web app, and an initial CLI. Panels, typed components, SDUI, Live, the full `.view.rs` language and Zed support are planned. Never describe a specification or scaffold as implemented.
+Current implementation: `feluqa` facade with opt-in target features; no_std authz/UI-schema/panel-registry/module-lifecycle contracts; HMAC-signed, typed, replay-guarded Live action dispatch; and the build-time `.view.rs` compiler/runtime consumed by Numerimondes. Tree-sitter grammar, Zed queries and local extension packaging also exist; Zed still needs editor validation. These new crates are foundational contracts, not a complete session/auth system, integrated system/business panel routes, distributed Live transport/replay store, module loader, or enterprise release. Never describe those missing capabilities as implemented.
 
 ## Documentation map and precedence
 
@@ -50,11 +50,13 @@ Canonical target suffix: `.view.rs`. These are HTML/Blade-inspired templates con
 
 V1 includes escaped `{{ expression }}`, typed raw HTML, `@rs/@endrs`, conditionals, loops, includes, layouts/sections and namespaced components/slots. Follow the language specification rather than inventing syntax per feature. Rust blocks are trusted developer code compiled into the app; never compile template code submitted by panel users.
 
-Production views are compiled. Development v1 recompiles/restarts after source changes; do not claim instant interpretation of arbitrary Rust. Handle nested delimiters, strings/raw strings and comments correctly. Resolve declared view roots/namespaces and detect cycles. Props, slots, source locations and errors are explicit. HTML escaping does not make URLs, JavaScript or CSS safe automatically.
+Production views are compiled. The build-time compiler and Numerimondes consumer implement the initial language; there is no dev watcher/restart workflow yet. Rust `@rs` is trusted source compiled into the application, not a sandbox. The scanner handles nested delimiters, strings/raw strings, chars/lifetimes and comments. Resolve declared view roots/namespaces and detect cycles. Props, slots, source locations and errors are explicit. HTML escaping does not make URLs, JavaScript or CSS safe automatically.
 
-Compiler and Tree-sitter use a shared syntax corpus and version. Zed suffix detection, highlights and Rust injections must be checked in Zed before claiming support. Highlighting alone does not provide rust-analyzer semantics. No fabricated grammar repository URL or revision in an extension manifest.
+Compiler and Tree-sitter currently have separate tests; a shared conformance corpus remains to be connected. The grammar/parser and Zed language queries are in `products/tree-sitter-feluqa-view` and `products/feluqa-zed`. Run the dev-extension generator, install it in Zed, and check suffix detection, highlights and Rust injections before claiming editor validation. Highlighting alone does not provide rust-analyzer semantics. Do not commit fabricated grammar repository URLs or revisions; the development script generates a local pinned grammar snapshot.
 
 ## Panels, security and operations
+
+The `feluqa::panel` registry currently validates panel paths, schemas and system/business permission namespaces. `feluqa::ui` validates/serializes a closed versioned schema and renders a small fixed HTML component catalogue. Panel routes are not yet integrated with an HTTP router. `feluqa::auth` currently provides permission identifiers/principals and an authorization boundary, not login, sessions, roles, tenant policy storage or audit persistence. `feluqa::live` currently verifies signed action snapshots and dispatches typed handlers; its in-memory replay guard is development-only. `feluqa::module` currently orders and starts statically registered modules with rollback; it does not load plugins or artifacts.
 
 Build Core and business panels using the same public components and SDUI schema. UI schemas describe presentation; services own business operations. Enforce authorization on every server action, independently of UI visibility. Separate platform, app-admin and end-user authority; preserve tenant and record isolation.
 

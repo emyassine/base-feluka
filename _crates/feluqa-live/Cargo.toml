@@ -1,0 +1,17 @@
+[package]
+name = "feluqa-live"
+version = "0.1.0"
+description = "Signed, authorized, replay-protected HTTP actions for Feluqa Live."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
+hmac.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+zeroize.workspace = true

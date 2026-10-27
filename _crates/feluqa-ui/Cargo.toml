@@ -1,0 +1,13 @@
+[package]
+name = "feluqa-ui"
+version = "0.1.0"
+description = "Versioned, validated Feluqa UI schemas for server-driven interfaces."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true

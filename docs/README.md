@@ -9,11 +9,11 @@ Start with the root [README](../README.md) to build and run the current website 
 
 - [Enterprise delivery plan and acceptance gates](planning/ENTERPRISE_DELIVERY.md)
 - [Feluqa Views: `.view.rs`, `@rs`, includes, layouts, components](views/LANGUAGE.md)
-- [Panels, SDUI, Live and module lifecycle](architecture/PANELS_COMPONENTS.md)
+- [Panels, SDUI, Live and module lifecycle contracts and status](architecture/PANELS_COMPONENTS.md)
 - [Zed extension and Tree-sitter product](editor/ZED.md)
 - [Contributor and agent instructions](../AGENTS.md)
 
-These documents specify the next implementation. They do not claim those features are already available. The delivery plan supersedes the earlier milestone ordering where components were scheduled after the Core panel.
+The view compiler and first authz/UI-schema/panel/Live/module contracts now exist; their actual limits and remaining production work are listed in the delivery plan and architecture contract. The delivery plan supersedes the earlier milestone ordering where components were scheduled after the Core panel.
 
 ## Current project
 

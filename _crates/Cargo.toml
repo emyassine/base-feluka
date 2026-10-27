@@ -3,6 +3,11 @@ resolver = "3"
 members = [
     "feluqa",
     "feluqa-console",
+    "feluqa-auth",
+    "feluqa-ui",
+    "feluqa-panel",
+    "feluqa-live",
+    "feluqa-module",
     "feluqa-view",
     "../products/feluqa-cli",
     "../products/numerimondes",
@@ -15,7 +20,11 @@ rust-version = "1.85"
 
 [workspace.dependencies]
 axum = "0.8"
-serde = { version = "1", features = ["derive"] }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
+hmac = "0.12"
+sha2 = "0.10"
+zeroize = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
 toml = "0.8"
 tower-http = { version = "0.6", features = ["fs"] }

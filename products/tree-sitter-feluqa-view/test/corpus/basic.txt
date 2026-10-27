@@ -1,0 +1,90 @@
+==================
+Escaped and raw expressions
+==================
+<p>{{ page.title }}</p>
+<div>{!! page.trusted !!}</div>
+
+---
+
+(source_file
+  (html_tag
+    (tag_name))
+  (escaped_output
+    (rust_expression))
+  (html_tag
+    (tag_name))
+  (html_tag
+    (tag_name))
+  (raw_output
+    (rust_expression))
+  (html_tag
+    (tag_name))
+  (text))
+
+==================
+Rust block and directives
+==================
+@rs
+let title = r#"@endrs"#;
+@endrs
+@if (page.active && ready())
+<p>{{ title }}</p>
+@else
+<p>Inactive</p>
+@endif
+
+---
+
+(source_file
+  (rust_block
+    (rust_block_body))
+  (if_block
+    (rust_condition)
+    (html_tag
+      (tag_name))
+    (escaped_output
+      (rust_expression))
+    (html_tag
+      (tag_name))
+    (html_tag
+      (tag_name))
+    (text)
+    (html_tag
+      (tag_name)))
+  (text))
+
+==================
+Layout and component
+==================
+@extends("app::layouts.main")
+@section("content")
+<x-feluqa::section title="Services" :description="page.name">
+  <p>@include("app::partials.intro")</p>
+</x-feluqa::section>
+@endsection
+
+---
+
+(source_file
+  (extends_directive
+    (string_literal))
+  (section_block
+    (string_literal)
+    (component
+      (component_name)
+      (attribute
+        (attribute_name)
+        (quoted_value))
+      (attribute
+        (attribute_name)
+        (bound_value)
+        (rust_expression)
+        (bound_value))
+      (html_tag
+        (tag_name))
+      (include_directive
+        (rust_arguments))
+      (html_tag
+        (tag_name))
+      (component_name)))
+  (text))

@@ -1,0 +1,15 @@
+{
+  "name": "tree-sitter-feluqa-view",
+  "version": "0.2.0",
+  "description": "Tree-sitter grammar for proprietary Feluqa .view.rs templates",
+  "main": "bindings/node",
+  "scripts": {
+    "test": "tree-sitter test",
+    "generate": "tree-sitter generate"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "0.27.1"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

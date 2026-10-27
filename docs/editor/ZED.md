@@ -1,6 +1,6 @@
 # Produit Zed — Feluqa Views
 
-Date : 2026-10-26. Statut : spécification et backlog. L'extension et la grammaire ne sont pas encore implémentées. Leur version de langage suit [le contrat Views](../views/LANGUAGE.md).
+Date : 2026-10-26. Statut : grammaire Tree-sitter, parser généré, corpus initial, requêtes Zed et script de génération d’une extension locale implémentés. L’installation et la vérification dans l’éditeur restent à faire. Leur version de langage suit [le contrat Views](../views/LANGUAGE.md).
 
 ## Emplacement prévu
 
@@ -23,7 +23,7 @@ products/tree-sitter-feluqa-view/
 └── test/corpus/
 ```
 
-La grammaire est un outil réutilisable par d'autres éditeurs. Elle ne devient pas une dépendance obligatoire du serveur web. Les requêtes communes ont une source unique; l'extension les embarque via une étape de packaging contrôlée. Ne pas créer de faux manifests publiables avec une URL ou un SHA inventé.
+La grammaire est un outil réutilisable par d'autres éditeurs. Elle n’est pas une dépendance du serveur web. Les sources sont sous `products/tree-sitter-feluqa-view`; les requêtes embarquées sous `products/feluqa-zed/languages/feluqa_view`. Leur duplication contrôlée dans l’extension est actuellement manuelle. Ne pas créer de faux manifests publiables avec une URL ou un SHA inventé.
 
 ## Intégration Zed
 
@@ -39,7 +39,7 @@ path_suffixes = ["view.rs"]
 
 `extension.toml` déclare ID `feluqa-views`, nom, version, `schema_version`, auteur El Moumen Yassine et `[grammars.feluqa_view]` avec dépôt et révision Git immuable. Le dépôt réel reste à choisir; en développement Zed permet une URL locale `file://`. Prévoir l'export du sous-dossier de grammaire vers une racine Git consommable par Zed; ne pas supposer que la racine de ce monorepo est une grammaire. Valider la distribution privée et ses accès avant de promettre une installation distante. Pas de publication publique implicite pour ce logiciel propriétaire. [Enregistrement d'une grammaire](https://zed.dev/docs/extensions/languages).
 
-Une extension ne fournissant que grammaire et requêtes n'a pas besoin de crate Rust d'extension. Installer localement via **Install Dev Extension** et inspecter Zed.log; figer la version de Zed utilisée pour la validation. Les grammaires sont compilées avec wasi-sdk, dont Zed peut gérer le téléchargement. Les besoins réseau de ce flux éditeur sont distincts des builds de production Feluqa. [Développement d'extensions](https://zed.dev/docs/extensions/developing-extensions).
+Une extension ne fournissant que grammaire et requêtes n'a pas besoin de crate Rust d'extension. `products/feluqa-zed/install-dev.sh` génère le parser, crée un dépôt local de grammaire avec son vrai commit, assemble l’extension sous `target/`, puis ouvre ce dossier dans Zed. Dans l’éditeur, utiliser **Install Dev Extension** et sélectionner ce dossier. L’installation et l’inspection de Zed.log restent à effectuer; figer la version de Zed lors de cette validation. Les grammaires sont compilées avec wasi-sdk, dont Zed peut gérer le téléchargement. Les besoins réseau de ce flux éditeur sont distincts des builds de production Feluqa. [Développement d'extensions](https://zed.dev/docs/extensions/developing-extensions).
 
 ## Arbre, coloration et injections
 
@@ -56,11 +56,10 @@ Le compilateur Feluqa reste l'autorité sémantique. Tree-sitter fournit un arbr
 
 ## Livraison et acceptation
 
-1. Grammaire de texte/HTML, échos, commentaires et `@rs`; corpus valide/incomplet/erroné.
-2. Blocs conditionnels, boucles, includes, layouts, composants et slots selon les lots du compilateur.
-3. Requêtes chargées sans erreur; génération du parser reproductible, dépendances d'outillage verrouillées.
-4. Installation locale réelle dans Zed; vérification de `.view.rs` versus `.rs`, saisie incrémentale, Rust injecté, Unicode, HTML/CSS contenant `@`, et délimiteurs dans chaînes/commentaires.
-5. Parité sur le corpus de langage; aucun nœud inconnu dans les queries, aucune capture traversant les limites d'un bloc Rust.
-6. Paquet d'extension privé documenté; une publication externe demande une décision explicite de distribution et de licence.
+1. **Fait :** grammaire HTML/template, échos, commentaires, blocs Rust, directives, layouts, composants et slots; parser généré et tests Tree-sitter initiaux.
+2. **Fait :** requêtes Zed pour coloration et injections Rust; paquet local reproductible avec commit de grammaire calculé.
+3. **À vérifier dans Zed :** installation dev, sélection `.view.rs` sans intercepter `.rs`, saisie incrémentale, Rust injecté, Unicode, CSS contenant `@` et délimiteurs dans chaînes/commentaires.
+4. **À compléter :** corpus partagé compilateur/Tree-sitter, fichiers d’indentation/navigateur, davantage de cas incomplets et affichage des diagnostics.
+5. Paquet d’extension privé documenté; une publication externe demande une décision explicite de distribution et de licence.
 
 L'extension ne doit être annoncée fonctionnelle qu'après installation et contrôle dans Zed. Un `config.toml` et un `highlights.scm` seuls ne suffisent pas.
