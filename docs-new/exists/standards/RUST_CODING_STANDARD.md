@@ -1,6 +1,6 @@
 # Feluqa Rust Coding Standard
 
-Status: mandatory for Feluqa first-party Rust crates and generated application code.  
+Status: mandatory for Feluqa first-party Rust crates and generated application code.
 Scope: workspace source, examples, build scripts and tests unless a section says otherwise.
 
 ## 1. Rust edition and toolchain

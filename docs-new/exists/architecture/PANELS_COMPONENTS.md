@@ -20,12 +20,13 @@ Les routes spécialisées restent possibles : une unité métier peut déclarer 
 
 | Terme | Sens Feluqa |
 |---|---|
-| module Feluqa | Unité métier de la plateforme (CRM, finance, inventory, procurement, etc.) avec provider, migrations, resources/pages et éventuellement lifecycle. Un produit peut être un seul module ou en composer plusieurs. |
-| feature | Capacité fonctionnelle d'un module, par exemple contacts ou opportunités dans le CRM. Une feature n'est pas automatiquement un module déployable. |
+| module Feluqa | Paquet installable sur la plateforme (par exemple HRM ou Numerimondes) avec manifest/provider, permissions et panel contributions. |
+| module métier | Domaine au sein d'un module Feluqa composé (par exemple CRM ou finance sous `business/`); son installation séparée dépend du packaging. |
+| feature | Capacité fonctionnelle d'un module métier, par exemple contacts ou opportunités dans le CRM. Une feature n'est pas automatiquement installable. |
 | module Rust | Unité du langage déclarée par `mod`/`pub mod`, compilée dans un crate. Toujours dire « module Rust » pour ce sens. Un module Feluqa est souvent réalisé avec plusieurs modules Rust. |
 | panel | Surface utilisateur enregistrant navigation, resources, pages, widgets, auth, ACL et routes. Le site public compte aussi comme panel. |
 
-Éviter les répertoires génériques `src/app/` et `src/modules/` dans le layout cible Numerimondes : ils forcent une séparation artificielle entre site et unités métier. Ranger le code par ownership/surface (`website/`, `system/`, `business/crm/`, `business/finance/`), puis utiliser les modules Rust pour organiser les fichiers. Le projet actuel reste transitoire; voir [Project layout](PROJECT_LAYOUT.md).
+Le layout recommandé pour Numerimondes range le code par domaine/surface (`website/`, `business/crm/`, `business/finance/`) ou tout autre découpage qui exprime la propriété, au lieu de boîtes génériques `src/app/` et `src/modules/`. Ces dernières restent possibles si le développeur les juge utiles, mais ne sont pas recommandées par défaut. Le projet actuel reste transitoire; voir [Project layout](../../knowledge/architecture/PLATFORM_MODULE_LAYOUT.md).
 
 ## Responsabilités et dépendances
 

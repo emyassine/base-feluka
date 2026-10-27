@@ -6,7 +6,7 @@ Statut au 2026-10-27 : première tranche MVC et panels intégrée dans Numerimon
 
 Feluqa est la plateforme installée sur les serveurs. Les développeurs créent des modules Feluqa installables sur cette plateforme; HRM et Numerimondes sont des exemples de tels modules/produits. Un module peut être simple ou composer plusieurs domaines métier sous `business/`, comme Numerimondes. L'administrateur installe et configure les modules pour un domaine depuis le panel System, selon sa licence et ses permissions. La compilation Rust change le cycle de développement, pas le modèle mental : routes, contrôleurs, services métier, migrations et vues restent des concepts adaptés.
 
-**Feluqa n'est pas encore le framework entreprise visé.** Numerimondes possède un chemin MVC utilisable : routes Feluqa/Axum, contrôleurs et services, vues `.view.rs` compilées, Core `/system` (setup/login/logout, utilisateurs, rôles, tenants, modules statiques, connexions, migrations, audit) et un CRUD CRM initial sous `/admin`. Le projet actuel conserve `src/app/` et `src/modules/`; c'est une organisation transitoire, pas la structure produit retenue. L'architecture cible range le code par surface et capacité métier, sans boîtes génériques `app/` et `modules/`; voir [Project layout](PROJECT_LAYOUT.md). Le panel migrations affiche le statut par module/connexion et applique uniquement la paire choisie; le runner sélectionne la variante compatible avec le dialecte configuré. Les tests Core et HTTP Numerimondes valident les parcours actuellement intégrés sous SQLite; les tests PostgreSQL sont conditionnés par `FELUQA_TEST_POSTGRES_URL`. SeaORM fournit les pools nommés; un build script compile les migrations déclarées par les unités métier Feluqa. Restent notamment les CRUD resource-driven génériques, l'activation dynamique, Live navigateur, les workflows ERP complets et le déploiement/restauration.
+**Feluqa n'est pas encore le framework entreprise visé.** Numerimondes possède un chemin MVC utilisable : routes Feluqa/Axum, contrôleurs et services, vues `.view.rs` compilées, Core `/system` (setup/login/logout, utilisateurs, rôles, tenants, modules statiques, connexions, migrations, audit) et un CRUD CRM initial sous `/admin`. Le projet actuel conserve `src/app/` et `src/modules/`; ces dossiers sont transitoires dans l'arbre actuel. Le layout recommandé range le code par surface et capacité métier, mais les dossiers génériques restent un choix valide quand ils servent le projet; voir [Project layout](PLATFORM_MODULE_LAYOUT.md). Le panel migrations affiche le statut par module/connexion et applique uniquement la paire choisie; le runner sélectionne la variante compatible avec le dialecte configuré. Les tests Core et HTTP Numerimondes valident les parcours actuellement intégrés sous SQLite; les tests PostgreSQL sont conditionnés par `FELUQA_TEST_POSTGRES_URL`. SeaORM fournit les pools nommés; un build script compile les migrations déclarées par les unités métier Feluqa. Restent notamment les CRUD resource-driven génériques, l'activation dynamique, Live navigateur, les workflows ERP complets et le déploiement/restauration.
 
 ## Ce que l'utilisateur doit obtenir
 
@@ -82,46 +82,17 @@ routes, layouts, navigation et permissions séparés. Les routes publiques sont
 explicitement publiques; les opérations protégées revérifient l'ACL côté
 serveur.
 
-## Modules ERP et base partagée
+## Modules Feluqa et base partagée
 
-Dans Feluqa, **module Feluqa** désigne une unité métier enregistrée (CRM, finance, inventory, procurement, etc.). Un produit peut consister en un seul de ces modules ou en composer plusieurs; le cas multimodule les groupe sous `business/`. Une unité peut contenir des sous-domaines ou features. Une **feature** est une capacité plus ciblée (par exemple les contacts ou le pipeline commercial d'un CRM) et ne devient pas automatiquement une unité de déploiement. Un **module Rust** désigne uniquement une unité du langage et du compilateur, déclarée avec `mod` ou `pub mod`; il peut implémenter une partie d'un module Feluqa, mais les deux notions ne sont pas synonymes. Les dossiers et noms Rust sont des choix d'implémentation; ils ne définissent pas le cycle de vie Feluqa.
+Un **module Feluqa** est un paquet installé sur la plateforme (CRM, finance, HRM, Numerimondes, etc.). Un module peut être simple ou composer plusieurs domaines métier sous `business/`. Une **feature** est une capacité plus ciblée (par exemple les contacts ou le pipeline d'un CRM) et ne devient pas automatiquement un module installable. Un **module Rust** désigne uniquement une unité du langage déclarée avec `mod` ou `pub mod`; il peut implémenter une partie d'un module Feluqa, mais les notions sont distinctes. Les dossiers et noms Rust ne définissent pas le cycle de vie d'installation Feluqa.
 
-Le produit ERP Numerimondes utilise par défaut une base applicative partagée par ses modules Feluqa. Les modules propriétaires de tables gardent leurs migrations dans leur dossier et leurs politiques/services, mais lisent et écrivent via la même connexion `default`; ne pas créer une base isolée par module. Les connexions nommées restent disponibles pour intégrer une base héritée, un entrepôt analytique ou un système externe lorsque le besoin le justifie. Les migrations contiennent une variante par dialecte supporté (`migrations/sqlite`, `migrations/postgresql`); ce découpage assure la compatibilité de SQL, il ne signifie pas que chaque module possède une base distincte.
+Les modules d'un même produit Numerimondes activé sur un domaine partagent par défaut la base applicative via la connexion `default`. Les modules propriétaires de tables gardent leurs migrations dans leur dossier, mais ne reçoivent pas chacun une base isolée. Les connexions nommées restent possibles pour une base héritée, un entrepôt analytique ou un système externe. Les migrations ont une variante par dialecte supporté (`migrations/sqlite`, `migrations/postgresql`); ce découpage ne signifie pas une base par module.
 
-Un module Feluqa se déclare par son provider/manifest, puis s'enregistre auprès de la plateforme et de ses instances de panel. Ses resources/pages sont exposées selon licence, configuration de domaine et ACL. Une déclaration doit rester courte : Feluqa fournit les pages CRUD standard, le rendu de schéma, la navigation, les policies par opération et les points d'extension. Le développeur ajoute des contrôleurs/services/routes spécifiques uniquement quand le workflow métier sort du CRUD standard.
+Un module Feluqa se déclare par son manifest/provider, puis s'enregistre auprès du runtime et du système de panels déjà fournis par Feluqa. Ses resources/pages sont exposées selon licence, configuration de domaine et ACL. Une déclaration doit rester courte : Feluqa fournit les pages CRUD standard, le rendu de schéma, la navigation, les policies par opération et les points d'extension. Le développeur ajoute des contrôleurs/services/routes spécifiques uniquement quand le workflow métier sort du CRUD standard.
 
 L'identité Core inclut `tenant_id`; les migrations additives ajoutent l'état et une génération d'authentification par tenant. Le bootstrap place le premier administrateur dans `default`; les comptes et rôles créés héritent du tenant de l'acteur. La session validée transmet ce tenant au `Principal`. Les listes Core filtrent par tenant, et CRM applique toujours la portée tenant côté SQL. `/system/tenants` permet de créer un tenant avec son premier administrateur, puis de le suspendre ou le réactiver. La suspension bloque login, authentification et résolution de permissions et révoque les sessions en transaction. La génération avancée invalide aussi tout jeton qui aurait été inséré pendant une course avec la suspension; une réactivation ne restaure donc aucune session précédente. `default` et le tenant de l'acteur ne peuvent pas être suspendus. La suppression et la vérification PostgreSQL restent à faire.
 
-Chaque module Feluqa porte ses migrations dans son propre dossier. La même identité de migration doit exister pour chaque backend supporté. L'architecture cible exprime la propriété par domaine, sans dossiers génériques `src/app/` et `src/modules/` :
-
-```text
-products/numerimondes/
-├── src/
-│   ├── main.rs
-│   ├── service_provider.rs        # Composition root unique
-│   ├── routes/web.rs              # Assemblage global et middlewares globaux
-│   ├── website/                   # Panel site public (pages & routes publiques)
-│   ├── system/                    # Intégration Core spécifique à l'application
-│   └── business/                  # Modules Métier Feluqa (ERP)
-│       ├── crm/                   # Module Feluqa : CRM
-│       │   ├── module.toml        # Déclaration du module & dialectes SQL
-│       │   ├── panel.rs           # Enregistrement du Panel CRM (Resources, Pages, Clusters)
-│       │   ├── routes.rs          # Routes personnalisées d'exception (si nécessaire)
-│       │   ├── resources/         # Contacts, Companies, Opportunities...
-│       │   ├── features/          # Sous-capacités métier fines
-│       │   ├── services.rs        # Cas d'usage réutilisables
-│       │   ├── policies.rs        # Règles d'accès (ACL)
-│       │   └── migrations/{sqlite,postgresql}/
-│       └── finance/               # Module Feluqa : Finance (Même DB par défaut)
-├── resources/views/               # Layouts et composants de vues partagés
-├── config/database.toml
-├── public/
-├── database/seeders/              # Seeders globaux (les seeders de modules restent dans leurs modules)
-├── tests/
-└── storage/
-```
-
-The tree is a target convention, not a claim that Numerimondes has already been refactored. Its current `src/app/` and `src/modules/` are transitional. Directory names such as `business/crm/` express Feluqa ownership; every `.rs` source remains an ordinary Rust module in Rust's namespace.
+Chaque module Feluqa porte ses migrations dans son propre dossier. La même identité de migration doit exister pour chaque backend supporté. La crate d'un module installable est une bibliothèque, pas un second serveur Feluqa. Les deux formes de source — un module unique et un produit composé comme Numerimondes avec plusieurs domaines sous `business/` ou un autre dossier choisi — sont décrites dans [Project layout](PLATFORM_MODULE_LAYOUT.md). Les layouts recommandés évitent les dossiers génériques `src/app/` et `src/modules/`, mais un développeur peut les garder s'ils conviennent à son projet; chaque `.rs` reste du code Rust ordinaire.
 
 Le contrat d'une migration est commun, son SQL peut être propre au dialecte. `module.toml` déclare l'identifiant Feluqa, les dialectes SQL (`supported_databases`) et les connexions utilisées; la connexion `default` est celle de la base applicative partagée par l'ERP. `feluqa::database::build_support::generate_migration_registry` compare les identifiants des variantes, embarque les fichiers SQL et produit le registre des migrations. Le runner applique la variante de dialecte au pool explicitement choisi. Une unité métier ne reçoit pas implicitement sa propre base. Le build échoue si un dialecte déclaré manque son dossier ou si les identifiants divergent. Les migrations Rust ne sont pas encore prises en charge par ce registre.
 
@@ -134,7 +105,7 @@ Le runner de migrations maintient l'historique par base et par module avec ident
 Un module installable est une crate bibliothèque avec manifest et provider; ce
 n'est pas le serveur Feluqa. La source peut décrire un module unique ou un
 produit composé, comme Numerimondes avec plusieurs domaines sous `business/`.
-Les formes canoniques sont documentées dans [Project layout](PROJECT_LAYOUT.md).
+Les formes canoniques sont documentées dans [Project layout](PLATFORM_MODULE_LAYOUT.md).
 Le développeur déclare les resources, pages, policies et routes spécifiques;
 Feluqa génère les opérations CRUD usuelles et connecte ACL, navigation,
 schémas, formulaires, tables et panel. Pas de code PHP, pas d'évaluation de

@@ -1,4 +1,4 @@
-> Update 2026-10-26: [delivery sequencing](../planning/ENTERPRISE_DELIVERY.md), [`.view.rs` language](../views/LANGUAGE.md), [panels/components](PANELS_COMPONENTS.md), and [Zed tooling](../editor/ZED.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
+> Update 2026-10-26: [delivery sequencing](../../_todo/ENTERPRISE_DELIVERY.md), [`.view.rs` language](../../exists/views/LANGUAGE.md), [panels/components](../../exists/architecture/PANELS_COMPONENTS.md), and [Zed tooling](../../exists/editor/ZED.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
 
 # Feluqa — Product brief, decisions and critique
 
@@ -97,7 +97,7 @@ System install/configure/license lifecycle is a platform requirement, not a
 claim of current support: current application module registration is static
 and compiled. Compatibility resolution, domain-scoped activation, licensing,
 upgrade/recovery, and safe disable/uninstall remain implementation work. See
-[module and product layout](PROJECT_LAYOUT.md).
+[module and product layout](PLATFORM_MODULE_LAYOUT.md).
 
 **Critique: mobile and downloadable modules.** App stores restrict code downloaded and executed at run time, so runtime modules (D-0005) may be limited on iOS. Verify the current store rules before promising it; the fallback is compile-time modules delivered through store updates.
 
@@ -570,7 +570,7 @@ Decide with weights fixed **before** measuring (proposed): target coverage 20%, 
 
 ### B6. Recommendation (Accepted after M0)
 
-**Rust is the Feluqa host language.** The pre-registered M0 score is 84.09/100 for Rust and 67.21/100 for Go. Both passed the five measured target classes, the bounded PocketBase record-rule black-box suite, the WASM call threshold, and the concurrency-1 HTTP p50/p99 gate. Go measured faster on this HTTP handler and on clean/edit builds. Required target-class coverage tied; Rust also compiled a broader set of additional targets and led on the paired port task, the tested Wasmtime call, binary size and RSS. Its combined score therefore wins under the weights fixed before the final runs. The evidence and limits are recorded in [the M0 results report](../research/M0_RESULTS.md) and `products/__M0/results/2026-10-24-23_11_32/m0-score.json`.
+**Rust is the Feluqa host language.** The pre-registered M0 score is 84.09/100 for Rust and 67.21/100 for Go. Both passed the five measured target classes, the bounded PocketBase record-rule black-box suite, the WASM call threshold, and the concurrency-1 HTTP p50/p99 gate. Go measured faster on this HTTP handler and on clean/edit builds. Required target-class coverage tied; Rust also compiled a broader set of additional targets and led on the paired port task, the tested Wasmtime call, binary size and RSS. Its combined score therefore wins under the weights fixed before the final runs. The evidence and limits are recorded in [the M0 results report](../../exists/research/M0_RESULTS.md) and `products/__M0/results/2026-10-24-23_11_32/m0-score.json`.
 
 This decision closes M0 for the stated scope. It does not claim full PocketBase filter-language parity, native Apple app linking, game-engine integration, or production performance certification. Reopen D-0004 only if later M1/M6/M7 evidence fails the acceptance criteria or the product scope changes materially.
 
@@ -597,7 +597,7 @@ Exhibit 4 | Go/no-go gates; a gate passes only if every listed ID passes
 - **D-0001 — Product goal.** Accepted. Compiled platform with built-in Core panel; static, cached, dynamic and live sites; behind panels or on managed servers.
 - **D-0002 — Panels and managed servers.** Proposed. Adapters over a shared contract; never silently edit panel-owned configuration; Caddy evaluated for the managed edge.
 - **D-0003 — Layout and web root.** Proposed. Familiar root; `public/` is the only document root.
-- **D-0004 — Language.** Accepted: Rust, based on the pre-registered M0 weighted result (84.09 vs 67.21). Go was faster on the measured HTTP handler and build loop; details and limits are in [the M0 results report](../research/M0_RESULTS.md).
+- **D-0004 — Language.** Accepted: Rust, based on the pre-registered M0 weighted result (84.09 vs 67.21). Go was faster on the measured HTTP handler and build loop; details and limits are in [the M0 results report](../../exists/research/M0_RESULTS.md).
 - **D-0005 — Downloadable runtime modules.** Accepted. No host rebuild; verification, permissions, limits, activation, rollback.
 - **D-0006 — First milestone.** Superseded by C1.
 - **D-0007 — Artifact distribution.** Proposed. Manifest, digest, signature; staged atomic activation; TUF/Sigstore-style trust.

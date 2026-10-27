@@ -1,7 +1,7 @@
 # Feluqa — feuille de route du framework
 
-Date de cadrage : 26 octobre 2026  
-Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](ENTERPRISE_DELIVERY.md), [le contrat des vues](../views/LANGUAGE.md) et [les panels/composants](../architecture/PANELS_COMPONENTS.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
+Date de cadrage : 26 octobre 2026
+Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](ENTERPRISE_DELIVERY.md), [le contrat des vues](../exists/views/LANGUAGE.md) et [les panels/composants](../exists/architecture/PANELS_COMPONENTS.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
 
 ## État de réalisation (26 octobre 2026)
 
@@ -77,7 +77,7 @@ La syntaxe ci-dessus est indicative; l’API sera arrêtée par un exemple exéc
 
 ### Vues Webkernel
 
-Le format cible est désormais `.view.rs` avec notamment `@rs/@endrs`; voir le [contrat v1](../views/LANGUAGE.md). Les `.view` du prototype restent à migrer avec le build.
+Le format cible est désormais `.view.rs` avec notamment `@rs/@endrs`; voir le [contrat v1](../exists/views/LANGUAGE.md). Les `.view` du prototype restent à migrer avec le build.
 
 Inspecter et porter le contrat utile de `webkernel-src/y-dev-platform/...` dans `/home/yassine/Projects/Php/framework/__work/`, en conservant une syntaxe de template familière : `{{ value }}` échappé, `{!! trusted_html !!}` explicite, `@if/@else/@endif`, `@foreach/@endforeach`, layouts/sections et composants `<x-...>`. Adapter les directives qui exécutent du PHP en API de vue déclarative et fonctions Rust typées : aucune exécution PHP ni `eval` dans Feluqa.
 
@@ -106,7 +106,7 @@ feluqa/
 │   ├── feluqa-cli/             # produit CLI, binaire `feluqa`
 │   └── numerimondes/           # application réelle, profil web
 ├── target/                    # artefacts de build générés
-└── docs/
+└── docs-new/
 ```
 
 Le monorepo est la source de référence. `_crates/` contient le workspace Cargo, son lockfile et les bibliothèques du framework; `products/` contient les produits exécutables et les applications. Chaque produit garde son manifeste Cargo. La racine du dépôt ne porte pas de manifeste Cargo; les builds sont écrits dans `target/`. Les composants Feluqa sont propriétaires et leurs manifests limitent la publication au registre privé.
@@ -169,8 +169,8 @@ Un profilement des fourchettes doit être fait après les phases 0–3. L’ambi
 
 ## Documents liés
 
-- [Standard Rust](../standards/RUST_CODING_STANDARD.md) — règles Rust obligatoires.
-- [Décisions d’architecture](../architecture/DECISIONS.md) — exigences, critères FEL et gates M0–M8.
-- [Résultats M0](../research/M0_RESULTS.md) — rapport comparatif et liens vers les preuves conservées dans `products/__M0/`.
+- [Standard Rust](../exists/standards/RUST_CODING_STANDARD.md) — règles Rust obligatoires.
+- [Décisions d’architecture](../knowledge/architecture/PLATFORM_VISION_DECISIONS.md) — exigences, critères FEL et gates M0–M8.
+- [Résultats M0](../exists/research/M0_RESULTS.md) — rapport comparatif et liens vers les preuves conservées dans `products/__M0/`.
 - Webkernel views : `/home/yassine/Projects/Php/framework/__work/AGENTS_VIEWS.md` et les fichiers `.view.php` actifs sous `webkernel-src/y-dev-platform/`.
 - Webkernel routes : `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/filament/routes/web.php`.

@@ -18,8 +18,11 @@ panel shell, shared components, Core operations and enforcement points.
 
 The long-term product-source layout has two shapes: one installable module, or
 a larger module/product source that groups multiple business modules under
-`business/` or any other folder. Numerimondes is the latter kind of platform module.
-Neither shape uses generic `src/app/` or `src/modules/` buckets (unless if it makes sense to the developper, but not recommanded). Numerimondes' current tree still has those transitional directories; the target below does not claim that refactor is complete.
+`business/` or another folder chosen by the developer. Numerimondes is the
+latter kind of platform module. Generic `src/app/` and `src/modules/` buckets
+are allowed when they fit the developer's design, but are not recommended by
+default. Numerimondes' current tree still has those transitional directories;
+the examples below do not claim that refactor is complete.
 
 ## Vocabulary
 
@@ -113,9 +116,8 @@ products/numerimondes/
 
 The platform's System panel and Feluqa Core are not copied into this source.
 `provider.rs` declares module capabilities and their registration into
-Feluqa-provided panel instances. Keep `system/` reserved for Feluqa platform
-code; module-specific settings and operations are declared by the module and
-exposed through its registered resources/pages.
+Feluqa-provided panel instances. Module-specific settings and operations are
+declared by the module and exposed through its registered resources/pages.
 
 ## Install, configure, authorize, use
 
@@ -137,7 +139,7 @@ This is the target contract, **not a claim that runtime module installation is
 already implemented**. Current module registration is static in the compiled
 product. Installable artifacts, compatibility resolution, license enforcement,
 domain-scoped activation, upgrade/rollback and uninstall/data-retention flows
-remain to be built. See [delivery plan](../planning/ENTERPRISE_DELIVERY.md).
+remain to be built. See [delivery plan](../../_todo/ENTERPRISE_DELIVERY.md).
 
 ## Shared data, routes, views and tests
 
@@ -164,7 +166,7 @@ The route composition layer only combines registered route providers and
 global middleware. Product/module views and assets are module-owned; shared
 panel theme/components/browser assets belong to Feluqa crates. The Filament
 theme and component catalog are **not fully imported**; see
-[Filament port status](FILAMENT_PORT_STATUS.md).
+[Filament port status](../../exists/architecture/FILAMENT_PORT_STATUS.md).
 
 Cross-struct tests belong in `tests/`; private unit tests may remain beside
 implementation. For binary products, test support can be included as a
@@ -181,6 +183,6 @@ ownership layout and System-panel installation lifecycle are not yet fully
 implemented.
 
 - [Web profile and ERP database design](WEB_PROFILE.md)
-- [Panels, resources, SDUI and Live status](PANELS_COMPONENTS.md)
-- [Filament/Webkernel port inventory](FILAMENT_PORT_STATUS.md)
-- [Proprietary licensing](../licensing/PROPRIETARY.md)
+- [Panels, resources, SDUI and Live status](../../exists/architecture/PANELS_COMPONENTS.md)
+- [Filament/Webkernel port inventory](../../exists/architecture/FILAMENT_PORT_STATUS.md)
+- [Proprietary licensing](../policy/PROPRIETARY.md)

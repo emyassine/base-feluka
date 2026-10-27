@@ -1,44 +1,44 @@
 # Feluqa — instructions for contributors and coding agents
 
-Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read [docs/README.md](docs/README.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs and update this summary when the contract changes.
+Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read [docs-new/README.md](docs-new/README.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs-new and update this summary when the contract changes.
 
 ## Goal and honest status
 
 Feluqa is NUMERIMONDES's proprietary server platform and unified namespace for web, SPAs, mobile, desktop, games, APIs and real-time systems. Operators install Feluqa on servers; developers build installable Feluqa modules such as HRM or the Numerimondes platform module. The built-in System panel manages modules per domain, subject to licensing and permissions. Runtime module installation, license enforcement and domain-scoped activation are still unimplemented; current registration is static in compiled products. Share tooling, schemas and libraries; retain separate runtime profiles. Web delivery is the first product priority. Enterprise quality requires verified operational and security capabilities, not directory structure or a published crate.
 
-Current implementation: `feluqa` facade with opt-in target features; no_std authz/UI-schema/panel/resource-registry/module-lifecycle contracts; framework-owned `feluqa-system-panel`; HMAC-signed, typed, replay-guarded Live action dispatch; build-time `.view.rs` compiler/runtime; selected Filament-derived panel browser assets; and `feluqa-imagery` with 7,681 Lucide, Simple Icons and Heroicons SVGs plus preserved notices. **The Filament theme system and component catalog are not fully imported.** Selected CSS/JS bundles and a few adapted components do not provide Filament theme providers/configuration or complete Blade components/behavior. App composition roots can be selected with `app.service_provider` in `feluqa.toml` and are statically compiled Rust. Cross-struct binary-app tests live under `tests/support/` and are included as test-only modules; direct `tests/*.rs` remain independent Cargo integration crates. `feluqa-database` uses SeaORM 1.1.20, SQLite/PostgreSQL, named pools and embedded dialect SQL migrations/checksums. `feluqa-core` provides identity/session/audit/tenant migrations and tested bootstrap, Argon2id login, server-side sessions, CSRF, logout, tenant-bound principals, role grants/delegation and audit. Numerimondes currently retains transitional `src/app/` and `src/modules/` directories. The target layout is domain-owned (`website/`, `system/`, `business/crm/`, etc.) without those generic buckets; see [Project layout](docs/architecture/PROJECT_LAYOUT.md). A **Feluqa module** means a business/platform unit; a **module Rust** means the language namespace declared by `mod`/`pub mod`. Always say “module Rust” for the latter. ERP units share the `default` application database unless a named connection is explicitly needed. Numerimondes wires MVC, `/system` account/role operations and tenant listing/provisioning, system migration/audit pages, and CRM CRUD at `/admin` with tenant/record ownership and field-level checks. Still missing: full Filament-compatible Rust panel/provider/resource/action/page/component APIs (including treating a public website as a first-class panel), tenant updates/deactivation/deletion in `/system`, generic CRUD adapters, installable module lifecycle, browser Live reconciliation/shared replay, full ERP workflows, PostgreSQL HTTP coverage for tenant scoping, standalone generated-app build outside the checkout, deployment/restore and enterprise release. Vendored browser theme/runtime assets do not imply feature parity with Filament. Never describe those missing capabilities as implemented.
+Current implementation: `feluqa` facade with opt-in target features; no_std authz/UI-schema/panel/resource-registry/module-lifecycle contracts; framework-owned `feluqa-system-panel`; HMAC-signed, typed, replay-guarded Live action dispatch; build-time `.view.rs` compiler/runtime; selected Filament-derived panel browser assets; and `feluqa-imagery` with 7,681 Lucide, Simple Icons and Heroicons SVGs plus preserved notices. **The Filament theme system and component catalog are not fully imported.** Selected CSS/JS bundles and a few adapted components do not provide Filament theme providers/configuration or complete Blade components/behavior. App composition roots can be selected with `app.service_provider` in `feluqa.toml` and are statically compiled Rust. Cross-struct binary-app tests live under `tests/support/` and are included as test-only modules; direct `tests/*.rs` remain independent Cargo integration crates. `feluqa-database` uses SeaORM 1.1.20, SQLite/PostgreSQL, named pools and embedded dialect SQL migrations/checksums. `feluqa-core` provides identity/session/audit/tenant migrations and tested bootstrap, Argon2id login, server-side sessions, CSRF, logout, tenant-bound principals, role grants/delegation and audit. Numerimondes is a Feluqa platform module/source and currently retains transitional `src/app/` and `src/modules/` directories. Domain-owned folders are recommended but not mandatory; see [Project layout](docs-new/knowledge/architecture/PLATFORM_MODULE_LAYOUT.md). A **Feluqa module** is an installable platform package; a **business module** may be grouped within a composed product; a **module Rust** is only the language namespace declared by `mod`/`pub mod`. Always say “module Rust” for the latter. ERP business modules share the installation's `default` database unless a named connection is needed. Numerimondes currently wires MVC, `/system` account/role operations and tenant listing/provisioning, system migration/audit pages, and CRM CRUD at `/admin` with tenant/record ownership and field-level checks. Still missing: full Filament-compatible Rust panel/provider/resource/action/page/component APIs (including treating a public website as a first-class panel), tenant updates/deactivation/deletion in `/system`, generic CRUD adapters, installable module lifecycle, browser Live reconciliation/shared replay, full ERP workflows, PostgreSQL HTTP coverage for tenant scoping, standalone generated-module build outside the checkout, deployment/restore and enterprise release. Vendored browser theme/runtime assets do not imply feature parity with Filament. Never describe those missing capabilities as implemented.
 
 ## Documentation map and precedence
 
 | Read for | Canonical document |
 |---|---|
-| Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs/planning/ENTERPRISE_DELIVERY.md) |
-| `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs/views/LANGUAGE.md) |
-| Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs/architecture/PANELS_COMPONENTS.md) |
-| Filament/Webkernel behavior port inventory and parity status | [Filament port status](docs/architecture/FILAMENT_PORT_STATUS.md) |
-| Web MVC, ERP modules, named databases, dialect migrations | [Web profile architecture](docs/architecture/WEB_PROFILE.md) |
-| Product/workspace directory ownership and provider composition | [Project layout](docs/architecture/PROJECT_LAYOUT.md) |
-| Zed extension, Tree-sitter and language tooling | [Zed product](docs/editor/ZED.md) |
-| Mandatory Rust rules | [Coding standard](docs/standards/RUST_CODING_STANDARD.md) |
-| Current CLI and planned commands | [CLI](docs/CLI.md) |
-| Ecosystem decisions and target profiles | [Decisions](docs/architecture/DECISIONS.md) |
-| Earlier scope and broad estimates | [Initial roadmap](docs/planning/ROADMAP.md) |
-| Deferred questions | [Later decisions](docs/architecture/DECISIONS_LATER.md) |
-| Proprietary distribution and registry | [Licensing](docs/licensing/PROPRIETARY.md) and [LICENSE](LICENSE) |
-| Measured language comparison, limits and evidence | [M0 results](docs/research/M0_RESULTS.md) |
+| Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs-new/_todo/ENTERPRISE_DELIVERY.md) |
+| `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs-new/exists/views/LANGUAGE.md) |
+| Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs-new/exists/architecture/PANELS_COMPONENTS.md) |
+| Filament/Webkernel behavior port inventory and parity status | [Filament port status](docs-new/exists/architecture/FILAMENT_PORT_STATUS.md) |
+| Web MVC, ERP modules, named databases, dialect migrations | [Web profile architecture](docs-new/knowledge/architecture/WEB_PROFILE.md) |
+| Product/workspace directory ownership and provider composition | [Project layout](docs-new/knowledge/architecture/PLATFORM_MODULE_LAYOUT.md) |
+| Zed extension, Tree-sitter and language tooling | [Zed product](docs-new/exists/editor/ZED.md) |
+| Mandatory Rust rules | [Coding standard](docs-new/exists/standards/RUST_CODING_STANDARD.md) |
+| Current CLI and planned commands | [CLI](docs-new/exists/CLI.md) |
+| Ecosystem decisions and target profiles | [Decisions](docs-new/knowledge/architecture/PLATFORM_VISION_DECISIONS.md) |
+| Earlier scope and broad estimates | [Initial roadmap](docs-new/_todo/ROADMAP.md) |
+| Deferred questions | [Later decisions](docs-new/_todo/OPEN_DECISIONS.md) |
+| Proprietary distribution and registry | [Licensing](docs-new/knowledge/policy/PROPRIETARY.md) and [LICENSE](LICENSE) |
+| Measured language comparison, limits and evidence | [M0 results](docs-new/exists/research/M0_RESULTS.md) |
 
 The newer delivery plan and domain contracts refine the earlier roadmap. In particular, basic views/components/SDUI precede the Core panel; historical milestone M4 is not permission to delay these prerequisites. Historical measurements are evidence, not general production guarantees.
 
 ## Repository ownership
 
 - `_crates/`: Cargo workspace root, lockfile and reusable libraries; facade APIs under `feluqa::...`.
-- `products/`: runnable products/applications, CLI and future Zed/grammar products. Numerimondes-specific content stays in its product.
+- `products/`: CLI/editor products and Feluqa module sources, including Numerimondes (currently statically composed for development).
 - Routes are declared by the owning site, panel or module; `src/routes/web.rs` only composes route providers and applies global middleware. Don't add product paths to the composition root.
-- `docs/`: decisions, contracts, estimates, standards and evidence summaries.
+- `docs-new/`: canonical documentation, organized into `_todo/`, `exists/`, and `knowledge/`.
 - `target/`: generated build/package output, ignored by Git. `.cargo/config.toml` selects this location.
 - No Cargo manifest/lockfile or rustup toolchain pin at repository root. Product manifests point explicitly to `../../_crates` when members of this workspace.
 - `products/__M0/`: retained benchmark source and evidence. Preserve raw reports, snapshots and hashes; update navigational docs without rewriting measurements.
-- Target application layouts are organized by surface/business ownership (`website/`, `system/`, `business/<domain>/`), not generic `src/app/` and `src/modules/` buckets. Numerimondes has not yet completed that refactor; see [Project layout](docs/architecture/PROJECT_LAYOUT.md).
+- Recommended module layouts follow domain ownership; generic `src/app/` and `src/modules/` buckets are allowed when they suit the developer, but are not the default recommendation. Numerimondes still has those transitional directories; see [Project layout](docs-new/knowledge/architecture/PLATFORM_MODULE_LAYOUT.md).
 - Do not create empty crates to simulate progress. Add a crate with its first useful contract and integration.
 
 ## Rust and dependencies

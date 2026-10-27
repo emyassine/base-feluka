@@ -81,7 +81,7 @@ Un moteur de développement interprété peut être étudié pour un sous-ensemb
 
 ## Migration Webkernel et état courant
 
-Inventaire réel et matrice de conversion : [compatibilité Webkernel](WEBKERNEL_COMPATIBILITY.md). Il couvre les 140 vues sources `.view.php` des arbres d'application et de packages, avec les sources de cache et `internal/` exclues. La similarité de syntaxe ne constitue pas une compatibilité automatique PHP/Rust.
+Inventaire réel et matrice de conversion : [compatibilité Webkernel](../../_todo/views/WEBKERNEL_COMPATIBILITY.md). Il couvre les 140 vues sources `.view.php` des arbres d'application et de packages, avec les sources de cache et `internal/` exclues. La similarité de syntaxe ne constitue pas une compatibilité automatique PHP/Rust.
 
 Le lot initial a inventorié les directives réellement utilisées dans les sources Webkernel et les a classées en support, conversion manuelle ou travail futur. Remplacer `@php/@endphp` par `@rs/@endrs` implique de porter le code PHP, pas de renommer les délimiteurs seulement. Une fixture vérifie maintenant les conditions inline dans les attributs et les liens dynamiques validés par `SafeUrl`.
 
