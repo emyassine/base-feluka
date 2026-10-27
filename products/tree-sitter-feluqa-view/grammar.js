@@ -43,7 +43,7 @@ module.exports = grammar({
       seq(':', $.attribute_name, '=', alias(seq('"', alias($._rust_attribute_expression, $.rust_expression), '"'), $.bound_value)),
       seq($.attribute_name, optional(seq('=', choice($.attribute_value, $.quoted_attribute_value)))),
     ),
-    attribute_name: _ => token(/[A-Za-z_:][A-Za-z0-9_:.-]*/),
+    attribute_name: _ => token(/[A-Za-z_][A-Za-z0-9_:.-]*/),
     attribute_value: _ => token(/[^<>"'=\s`]+/),
     quoted_attribute_value: $ => choice(
       seq('"', repeat(choice(alias(/[^"<&@{}]+/, $.attribute_value), $.entity, $.escaped_output, $.raw_output)), '"'),
