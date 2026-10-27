@@ -7,6 +7,7 @@
 
 .fi-body .fi-main-ctn {
     display: flex !important;
+    min-height: 100dvh;
     opacity: 1 !important;
 }
 
@@ -26,6 +27,33 @@
     width: 1.25rem;
     height: 1.25rem;
     flex: 0 0 1.25rem;
+}
+
+.fi-sidebar-group-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+}
+
+.fi-sidebar-group-collapse-btn {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    transition: transform .15s ease;
+}
+
+.fi-sidebar-group-collapse-btn svg,
+.fi-input-wrp-prefix svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.fi-sidebar-header-controls .fi-input-wrp {
+    min-height: 2.5rem;
 }
 
 .fi-topbar-open-sidebar-btn svg,
@@ -64,6 +92,7 @@
 .fi-user-menu-trigger {
     display: flex;
     align-items: center;
+    width: 100%;
     gap: .625rem;
     padding: .375rem .5rem;
     border: 0;
@@ -112,8 +141,8 @@
 
 .fi-user-menu[open] .fi-dropdown-panel {
     position: absolute;
-    top: calc(100% + .5rem);
-    right: 0;
+    bottom: calc(100% + .5rem);
+    left: 0;
     z-index: 60;
     min-width: 14rem;
     padding: .75rem 1rem;
@@ -121,6 +150,26 @@
     border-radius: .75rem;
     background: var(--color-white, #fff);
     box-shadow: 0 12px 24px rgb(0 0 0 / .1);
+}
+
+.fi-user-menu[open] .fi-dropdown-panel form {
+    margin-top: .75rem;
+}
+
+.fi-user-menu-logout {
+    width: 100%;
+    padding: .5rem .75rem;
+    border: 0;
+    border-radius: .5rem;
+    background: transparent;
+    color: var(--gray-700, #374151);
+    text-align: start;
+    cursor: pointer;
+}
+
+.fi-user-menu-logout:hover,
+.fi-user-menu-logout:focus-visible {
+    background: var(--gray-100, #f3f4f6);
 }
 
 .fi-app-shell .fi-panel-page-content {

@@ -4,7 +4,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
   </button>
 </div>
-<div class="fi-app-shell">
+<div class="fi-app-shell" data-panel-id="{{ panel }}">
   <div class="fi-layout">
     <aside id="fi-main-sidebar" class="fi-sidebar fi-main-sidebar" data-active-path="{{ active }}" aria-label="Primary navigation">
       <div class="fi-sidebar-header-ctn">
