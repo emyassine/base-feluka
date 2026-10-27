@@ -30,7 +30,7 @@ extern crate std;
 #[feluqa::command(
     name = "dev",
     description = "Build and run the current application with file watching",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

@@ -13,7 +13,7 @@ use crate::__feluqa_profile_feluqa::context::Application;
 #[feluqa::command(
     name = "build",
     description = "Build the current application for release",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

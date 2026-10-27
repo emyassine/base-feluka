@@ -6,7 +6,7 @@ use crate::std::string::ToString;
 #[feluqa::command(
     name = "help",
     description = "Show commands available in the selected profile",
-    profiles = ["feluqa", "nadim", "feluqa-dev"],
+    profiles = ["feluqa", "nadim"],
     context = "any",
 )]
 pub(crate) fn run(

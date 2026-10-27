@@ -15,7 +15,7 @@ use crate::std::string::String;
     name = "make service",
     description = "Generate a business service",
     usage = "feluqa make service <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

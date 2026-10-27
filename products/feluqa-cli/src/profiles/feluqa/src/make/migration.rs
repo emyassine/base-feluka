@@ -28,7 +28,7 @@ extern crate toml;
     name = "make migration",
     description = "Generate dialect-specific ordered SQL migrations",
     usage = "feluqa make migration <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

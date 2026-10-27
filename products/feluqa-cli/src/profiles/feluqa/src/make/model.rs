@@ -15,7 +15,7 @@ use crate::std::string::String;
     name = "make model",
     description = "Generate a model",
     usage = "feluqa make model <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

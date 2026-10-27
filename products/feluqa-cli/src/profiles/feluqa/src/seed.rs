@@ -13,7 +13,7 @@ use crate::__feluqa_profile_feluqa::context::Application;
 #[feluqa::command(
     name = "seed",
     description = "Run one registered application seeder",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app-or-workspace",
 )]
 pub(crate) fn run(

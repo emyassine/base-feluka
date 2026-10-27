@@ -6,3 +6,4 @@
 !**/.env.example
 products/*/storage/**
 !products/*/storage/.gitkeep
+products/feluqa-cli/dist/

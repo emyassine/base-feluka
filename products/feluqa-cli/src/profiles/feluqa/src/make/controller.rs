@@ -18,7 +18,7 @@ use crate::std::string::String;
     name = "make controller",
     description = "Generate a controller",
     usage = "feluqa make controller <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

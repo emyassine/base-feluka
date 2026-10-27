@@ -19,7 +19,7 @@ use crate::std::string::String;
     name = "make resource",
     description = "Generate a permission-aware CRUD resource",
     usage = "feluqa make resource <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

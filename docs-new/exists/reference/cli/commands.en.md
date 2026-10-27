@@ -5,6 +5,13 @@ executable. This page is the canonical command reference. Module source layout,
 resource APIs and data conventions are covered by the corresponding
 [developer guides](../../for-developers/index.en.md).
 
+The product also builds `feluqa-dev` and `nadim` executables from the same
+profile registry. Each command is visible only to the profiles listed in its
+`#[feluqa::command(profiles = [...])]` declaration. There is no implicit
+sharing between profiles; adding a profile to that list is the explicit
+import. Currently, `feluqa-dev` has no imported commands and displays its own
+empty help page.
+
 The broader command grammar, command metadata/discovery, hidden commands,
 aliases and planned interactive console API are specified in the
 [console design](../../../_todo/console/console.en.md). Those planned parts are
@@ -71,6 +78,19 @@ commands through runtime reflection. Use `feluqa make --help` or
 `feluqa make <thing> --help` for generator options.
 
 ## Run from a source checkout
+
+Run `products/feluqa-cli/build-release.sh [target-triple]` to build the three
+profile binaries and package them for one Rust target. With no argument, it
+uses the current host target. It has no CI-provider dependency; any CI system
+or release machine can invoke it. Rust target support is determined by the
+installed Rust target and the platform linker/SDK available on that machine.
+
+The initial release matrix is Linux x86-64 and ARM64, macOS Intel and ARM64,
+and Windows x86-64. Build each target on a compatible native runner, or
+configure a cross-linker and SDK where supported. One host cannot produce
+every operating system's executable without the appropriate toolchains.
+Archives are written to `products/feluqa-cli/dist/` and contain `feluqa`,
+`feluqa-dev` and `nadim` binaries for the selected target.
 
 From a valid app root, run the CLI product through the workspace manifest:
 

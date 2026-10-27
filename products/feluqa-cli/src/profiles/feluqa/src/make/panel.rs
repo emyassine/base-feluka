@@ -19,7 +19,7 @@ use crate::std::string::String;
     name = "make panel",
     description = "Generate a panel provider",
     usage = "feluqa make panel <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

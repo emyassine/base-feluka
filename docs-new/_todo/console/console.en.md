@@ -85,7 +85,7 @@ encourages the `name.rs` plus `name/child.rs` form and still permits
 `name/mod.rs`.
 
 The Feluqa CLI keeps one annotated source file per command, including nested
-families such as `profiles/feluqa/make/migration.rs`. Console generates the
+families such as `profiles/feluqa/src/make/migration.rs`. Console generates the
 Rust declarations needed to compile those files. Rust modules still exist in
 the compiled crate, but contributors do not maintain a second command index.
 
@@ -115,7 +115,7 @@ products/feluqa-cli/src/
     │   │   └── make/migration.rs
     │   └── templates/web/          # scaffold data owned by this product
     ├── nadim/                      # commands_directory = "profiles/nadim"
-    └── feluqa-dev/                 # commands_directory = "profiles/feluqa-dev"
+    └── feluqa-dev/                 # currently has no command source files
 ```
 
 A profile directory can be placed anywhere under the configured source root;
@@ -132,8 +132,12 @@ from disk.
 
 Commands are compiled Rust functions, not runtime scripts. Every command file
 contains its command declaration and implementation; there is no profile-wide
-handler router. `MakeConsole` owns profile selection, help, parsing, command
-discovery and dispatch. The profile's `context.rs` registers its host factory
+handler router. Commands live in their owning profile's command directory.
+The command attribute's `profiles = [...]` list is the explicit sharing/import
+list: only list another profile when its users should receive that command.
+The Feluqa developer profile currently has no command source files. `MakeConsole`
+owns profile selection, help, parsing, command discovery and dispatch. The
+profile's `context.rs` registers its host factory
 and resolves application/workspace context. File-writing, module-registration,
 naming and embedded web-scaffold templates are built into
 `feluqa::console::generator`. Products keep template data beside their own
@@ -168,7 +172,7 @@ example, `feluqa-cli` uses:
 |---|---|---|
 | `feluqa` | `feluqa` | Platform and application commands. |
 | `nadim` | `nadim` | Personal commands. |
-| `feluqa-dev` | `feluqa-dev` | Developer tools and development-only commands. |
+| `feluqa-dev` | `feluqa-dev` | Reserved profile; no commands are assigned yet. |
 
 The selected profile filters command help and dispatch; it does not grant
 permissions. Executable aliases select profiles from the same product. The

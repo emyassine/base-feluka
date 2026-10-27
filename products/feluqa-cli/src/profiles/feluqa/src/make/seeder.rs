@@ -19,7 +19,7 @@ use crate::std::string::String;
     name = "make seeder",
     description = "Generate a seeder separately from migrations",
     usage = "feluqa make seeder <arguments>",
-    profiles = ["feluqa", "feluqa-dev"],
+    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(
