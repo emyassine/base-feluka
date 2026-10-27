@@ -8,7 +8,8 @@ extern crate std;
 use feluqa::console::{MakeConsole, Profile};
 use std::process::ExitCode;
 
-/// Every executable and the build-time command scanner use this single profile table.
+/// Every executable, build-time scanner and command help use this profile table.
+#[feluqa::console::profile_registry]
 pub const PROFILES: &[Profile] = &[
     Profile {
         id: "feluqa",
@@ -36,20 +37,6 @@ pub const PROFILES: &[Profile] = &[
     },
 ];
 
-feluqa::console::include_profile_commands!();
-
 fn main() -> ExitCode {
-    MakeConsole::new(PROFILES).run_as::<__feluqa_profile_feluqa::context::CliHost, _>(
-        env!("CARGO_BIN_NAME"),
-        std::env::args_os().skip(1),
-    )
+    MakeConsole::new(PROFILES).run()
 }
-
-// These tests cover private
-// CLI context and generator helpers
-// across multiple command modules.
-// Cargo integration tests remain
-// standalone in `tests/*.rs`.
-#[cfg(test)]
-#[path = "../tests/support/console.rs"]
-mod console_tests;

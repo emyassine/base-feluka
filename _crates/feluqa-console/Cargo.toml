@@ -11,8 +11,9 @@ publish = ["feluqa"]
 [features]
 default = ["std"]
 std = []
+build = ["std", "dep:syn"]
 
 [dependencies]
 inventory.workspace = true
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros" }
-syn.workspace = true
+syn = { workspace = true, optional = true }

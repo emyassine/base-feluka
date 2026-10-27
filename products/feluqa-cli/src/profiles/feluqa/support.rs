@@ -20,3 +20,9 @@ impl crate::feluqa::console::ConsoleHost for context::CliHost {
         self.exit_code
     }
 }
+
+crate::feluqa::console::register_host!(
+    feluqa_cli,
+    super::context::CliHost,
+    &["feluqa", "nadim", "feluqa-dev"]
+);

@@ -14,13 +14,14 @@ use std::clone::Clone;
 use std::convert::{From, Into};
 use std::iter::Iterator;
 use std::option::Option::{None, Some};
+use std::path::PathBuf;
 use std::result::Result::{Err, Ok};
 use std::string::String;
 use std::string::ToString;
 use std::vec::Vec;
 use syn::parse::Parser;
 use syn::punctuated::Punctuated;
-use syn::{Expr, ExprArray, ExprLit, ItemFn, Lit, Meta, Token};
+use syn::{Expr, ExprArray, ExprLit, ItemConst, ItemFn, Lit, Meta, Token};
 
 #[proc_macro_attribute]
 pub fn command(arguments: TokenStream, item: TokenStream) -> TokenStream {
@@ -28,6 +29,56 @@ pub fn command(arguments: TokenStream, item: TokenStream) -> TokenStream {
         Ok(expanded) => expanded.into(),
         Err(error) => error.into_compile_error().into(),
     }
+}
+
+/// Attach generated profile command modules and conventional test support to
+/// a product's `PROFILES` declaration. If Cargo has not supplied `OUT_DIR`
+/// (as in standalone IDE macro expansion), the declaration remains visible
+/// without emitting an `env!("OUT_DIR")` error.
+#[proc_macro_attribute]
+pub fn profile_registry(_arguments: TokenStream, item: TokenStream) -> TokenStream {
+    match expand_profile_registry(item.into()) {
+        Ok(expanded) => expanded.into(),
+        Err(error) => error.into_compile_error().into(),
+    }
+}
+
+fn expand_profile_registry(item: TokenStream2) -> syn::Result<TokenStream2> {
+    let declaration: ItemConst = syn::parse2(item)?;
+    if declaration.ident != "PROFILES" {
+        return Err(syn::Error::new_spanned(
+            declaration.ident,
+            "`#[feluqa::console::profile_registry]` belongs on the `PROFILES` constant",
+        ));
+    }
+
+    let command_modules = std::env::var_os("OUT_DIR")
+        .map(PathBuf::from)
+        .map(|directory| directory.join("profile_commands.rs"))
+        .filter(|path| path.is_file())
+        .map(|path| {
+            let path = syn::LitStr::new(&path.to_string_lossy(), proc_macro2::Span::call_site());
+            quote!(include!(#path);)
+        });
+
+    let test_module = std::env::var_os("CARGO_MANIFEST_DIR")
+        .map(PathBuf::from)
+        .map(|directory| directory.join("tests/support/console.rs"))
+        .filter(|path| path.is_file())
+        .map(|path| {
+            let path = syn::LitStr::new(&path.to_string_lossy(), proc_macro2::Span::call_site());
+            quote! {
+                #[cfg(test)]
+                #[path = #path]
+                mod console_tests;
+            }
+        });
+
+    Ok(quote! {
+        #declaration
+        #command_modules
+        #test_module
+    })
 }
 
 fn expand_command(arguments: TokenStream2, item: TokenStream2) -> syn::Result<TokenStream2> {

@@ -32,6 +32,12 @@ pub extern crate feluqa_console as console;
 /// Register a compiled command in `feluqa::console`'s distributed inventory.
 #[cfg(feature = "console")]
 pub use crate::console::command;
+/// Attach compiled command modules and test support to a profile declaration.
+#[cfg(feature = "console")]
+pub use crate::console::profile_registry;
+/// Register a product-specific console host for selected profiles.
+#[cfg(feature = "console")]
+pub use crate::console::register_host;
 /// Feluqa Core identity, roles, persistent session and audit contracts.
 #[cfg(feature = "core")]
 pub extern crate feluqa_core as core;
