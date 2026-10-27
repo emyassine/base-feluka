@@ -7,3 +7,5 @@ but i'm curious about how to do things
 like axum_wire i can internalize it i guess
 
 what can we internalize then and what should we depend on !?
+
+SEE BASIC_LIBS.md.
