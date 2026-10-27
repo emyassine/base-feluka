@@ -335,11 +335,58 @@ pub struct MakeConsole {
     profiles: &'static [Profile],
 }
 
+/// Product-provided state initialized once before dispatching a console command.
+#[cfg(feature = "std")]
+pub trait ConsoleHost: Any {
+    /// Create host state for the current working directory.
+    fn create(current_directory: &std::path::Path) -> Result<Self, String>
+    where
+        Self: core::marker::Sized;
+
+    /// Process status selected by the dispatched command.
+    fn exit_code(&self) -> std::process::ExitCode;
+}
+
 #[cfg(feature = "std")]
 impl MakeConsole {
     /// Configure the console from the product's profile declarations.
     pub const fn new(profiles: &'static [Profile]) -> Self {
         Self { profiles }
+    }
+
+    /// Run this console from the current process arguments and executable name.
+    pub fn run<H: ConsoleHost>(&self) -> std::process::ExitCode {
+        use std::ffi::OsString;
+        use std::iter::Iterator;
+        let mut arguments = std::env::args_os();
+        let binary_name = arguments
+            .next()
+            .and_then(|path| {
+                std::path::PathBuf::from(path)
+                    .file_name()
+                    .map(OsString::from)
+            })
+            .and_then(|name| name.into_string().ok())
+            .unwrap_or_else(|| String::from("feluqa"));
+        self.run_as::<H, _>(&binary_name, arguments)
+    }
+
+    /// Run a named executable profile with operating-system arguments.
+    pub fn run_as<H, I>(&self, binary_name: &str, arguments: I) -> std::process::ExitCode
+    where
+        H: ConsoleHost,
+        I: IntoIterator<Item = std::ffi::OsString>,
+    {
+        self.run_process(
+            binary_name,
+            arguments,
+            || {
+                let current = std::env::current_dir()
+                    .map_err(|error| std::format!("could not read current directory: {error}"))?;
+                H::create(&current)
+            },
+            ConsoleHost::exit_code,
+        )
     }
 
     /// Run the selected executable profile with operating-system arguments.

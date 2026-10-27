@@ -10,8 +10,6 @@ mod profiles;
 pub use profiles::PROFILES;
 
 use feluqa::console::MakeConsole;
-use std::format;
-use std::iter::IntoIterator;
 use std::process::ExitCode;
 
 feluqa::console::include_profile_commands!();
@@ -19,16 +17,12 @@ feluqa::console::include_profile_commands!();
 /// Run this product's console for the executable/profile selected by `binary_name`.
 pub fn run_cli(
     binary_name: &str,
-    arguments: impl IntoIterator<Item = std::ffi::OsString>,
+    arguments: impl std::iter::IntoIterator<Item = std::ffi::OsString>,
 ) -> ExitCode {
-    MakeConsole::new(PROFILES).run_process(
-        binary_name,
-        arguments,
-        || {
-            let current = std::env::current_dir()
-                .map_err(|error| format!("could not read current directory: {error}"))?;
-            __feluqa_profile_feluqa::context::CliHost::new(&current)
-        },
-        |host| host.exit_code,
-    )
+    MakeConsole::new(PROFILES)
+        .run_as::<__feluqa_profile_feluqa::context::CliHost, _>(binary_name, arguments)
 }
+
+#[cfg(test)]
+#[path = "../tests/support/console.rs"]
+mod console_tests;
