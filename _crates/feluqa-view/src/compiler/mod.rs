@@ -149,7 +149,7 @@ fn name_valid(name: &str) -> bool {
     !namespace.is_empty()
         && namespace
             .chars()
-            .all(|ch| ch.is_ascii_alphanumeric() || ch == '_')
+            .all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '-')
         && local.split('.').all(|part| {
             !part.is_empty()
                 && part
@@ -246,7 +246,7 @@ impl Compiler {
         if namespace.is_empty()
             || !namespace
                 .chars()
-                .all(|ch| ch.is_ascii_alphanumeric() || ch == '_')
+                .all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '-')
         {
             return Err(io_error(root, "invalid namespace"));
         }

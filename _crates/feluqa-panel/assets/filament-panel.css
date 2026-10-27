@@ -1,0 +1,210 @@
+:root {
+    --sidebar-width: 16rem;
+    --topbar-height: 3.75rem;
+}
+
+html.fi,
+body.fi-body {
+    min-height: 100%;
+}
+
+body.fi-body {
+    margin: 0;
+    background: var(--gray-50, #f9fafb);
+}
+
+.fi-app-shell {
+    min-height: 100dvh;
+}
+
+.fi-app-shell .fi-sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    flex: 0 0 var(--sidebar-width);
+}
+
+.fi-app-shell .fi-sidebar-header-logo-ctn {
+    width: 100%;
+    padding-inline: 1.5rem;
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -.025em;
+}
+
+.fi-app-shell .fi-sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem .75rem;
+}
+
+.fi-app-shell .fi-sidebar-nav-groups,
+.fi-app-shell .fi-sidebar-group-items {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fi-app-shell .fi-sidebar-item-btn {
+    min-height: 2.5rem;
+    text-decoration: none;
+}
+
+.fi-app-shell .fi-main-ctn {
+    min-width: 0;
+    flex: 1;
+}
+
+.fi-app-shell .fi-main {
+    max-width: 96rem;
+    padding-block: 2rem 4rem;
+}
+
+.fi-app-shell .fi-page-content {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.fi-app-shell .fi-panel-page-content {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.fi-app-shell .fi-panel-page-content > header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 .5rem;
+}
+
+.fi-app-shell .fi-panel-page-content > header h1 {
+    margin: 0;
+    font-size: 1.65rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.fi-app-shell .fi-panel-page-content > header .eyebrow {
+    width: 100%;
+    margin: 0 0 .4rem;
+}
+
+.fi-app-shell .fi-panel-page-content > header p:not(.eyebrow) {
+    margin: .35rem 0 0;
+    color: var(--gray-500, #6b7280);
+    font-size: .875rem;
+}
+
+.fi-app-shell .fi-page-content .card {
+    display: block;
+    min-width: 0;
+    padding: 1.25rem;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: .75rem;
+    background: var(--color-white, #fff);
+    box-shadow: 0 1px 2px #00000008;
+}
+
+.fi-app-shell .fi-page-content .card h2 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fi-app-shell .fi-page-content .webkernel-welcome-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: 1rem;
+}
+
+.fi-app-shell .fi-page-content .webkernel-welcome-grid > .card {
+    min-height: 7rem;
+}
+
+.fi-app-shell .fi-page-content .webkernel-welcome-grid > .card h2 {
+    margin-bottom: .5rem;
+}
+
+.fi-app-shell .fi-page-content .webkernel-welcome-grid > .card p {
+    color: var(--gray-500, #6b7280);
+    line-height: 1.5;
+}
+
+.fi-app-shell .fi-page-content .btn {
+    min-height: 2.5rem;
+    padding: .55rem .9rem;
+    border-radius: .5rem;
+    font-size: .875rem;
+}
+
+.fi-app-shell .fi-page-content nav.card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem 1rem;
+}
+
+.fi-app-shell .fi-page-content nav.card a {
+    color: var(--primary-600, #2563eb);
+    text-decoration: none;
+}
+
+.fi-app-shell .fi-page-content nav.card a:hover {
+    text-decoration: underline;
+}
+
+.fi-app-shell .fi-page-content table {
+    min-width: 40rem;
+}
+
+.fi-app-shell .fi-topbar {
+    justify-content: space-between;
+}
+
+.fi-app-shell .fi-topbar-start {
+    color: var(--gray-500, #6b7280);
+    font-size: .875rem;
+}
+
+.fi-simple-layout .card {
+    display: block;
+    width: min(100%, 28rem);
+    padding: 2rem;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: .75rem;
+    background: var(--color-white, #fff);
+    box-shadow: 0 4px 16px #0000000a;
+}
+
+.fi-simple-layout .card h1 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.fi-simple-layout .card form {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (max-width: 64rem) {
+    .fi-app-shell .fi-layout {
+        display: block;
+    }
+
+    .fi-app-shell .fi-sidebar {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        border-inline-end: 0;
+        border-bottom: 1px solid var(--gray-200, #e5e7eb);
+        transform: none;
+    }
+
+    .fi-app-shell .fi-sidebar-header { height: 3.5rem; justify-content: flex-start; }
+    .fi-app-shell .fi-sidebar-nav { padding: .5rem .75rem; }
+    .fi-app-shell .fi-sidebar-group-items { display: flex; flex-wrap: wrap; gap: .25rem; }
+    .fi-app-shell .fi-main { padding-top: 1rem; }
+}

@@ -17,18 +17,3 @@ pub(crate) async fn home() -> Response {
 pub(crate) async fn health() -> &'static str {
     "ok"
 }
-
-pub(crate) async fn live_client() -> Response {
-    crate::feluqa::web::live_client()
-}
-
-pub(crate) async fn panel_asset(
-    crate::axum::extract::Path(asset): crate::axum::extract::Path<String>,
-) -> Result<Response, StatusCode> {
-    match asset.as_str() {
-        "theme.css" => Ok(crate::feluqa::web::panel_stylesheet()),
-        "panel.js" => Ok(crate::feluqa::web::panel_client()),
-        "echo.js" => Ok(crate::feluqa::web::panel_echo_client()),
-        _ => Err(StatusCode::NOT_FOUND),
-    }
-}

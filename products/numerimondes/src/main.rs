@@ -37,6 +37,7 @@ use std::convert::Into;
 use std::default::Default;
 use std::error::Error;
 use std::format;
+use std::io::{Error as IoError, ErrorKind};
 use std::iter::Iterator;
 use std::matches;
 use std::net::SocketAddr;
@@ -121,7 +122,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     )
     .with_active_modules(active_modules);
     let address = SocketAddr::from_str(&format!("{}:{}", config.app.host, config.app.port))?;
-    let listener = TcpListener::bind(address).await?;
+    let listener = TcpListener::bind(address)
+        .await
+        .map_err(|error| listener_bind_error(address, error))?;
     let router = routes::web::routes(panel_state);
 
     println!(
@@ -135,6 +138,39 @@ async fn main() -> Result<(), Box<dyn Error>> {
     serve_result?;
     shutdown_result?;
     Ok(())
+}
+
+fn listener_bind_error(address: SocketAddr, error: IoError) -> IoError {
+    let message = if error.kind() == ErrorKind::AddrInUse {
+        format!(
+            "Feluqa cannot start at http://{address}: port {} is already in use. Stop the process using that port or change `app.port` in config/app.toml.",
+            address.port()
+        )
+    } else {
+        format!("Feluqa cannot bind to http://{address}: {error}")
+    };
+    IoError::new(error.kind(), message)
+}
+
+#[cfg(test)]
+mod listener_tests {
+    use super::listener_bind_error;
+    use crate::std::assert;
+    use crate::std::io::{Error as IoError, ErrorKind};
+    use crate::std::net::SocketAddr;
+    use crate::std::str::FromStr;
+    use crate::std::string::ToString;
+
+    #[test]
+    fn port_conflict_reports_the_full_address_and_config_key() {
+        let address = SocketAddr::from_str("127.0.0.1:38127").expect("valid socket address");
+        let error = IoError::new(ErrorKind::AddrInUse, "address in use");
+        let message = listener_bind_error(address, error).to_string();
+
+        assert!(message.contains("http://127.0.0.1:38127"));
+        assert!(message.contains("port 38127 is already in use"));
+        assert!(message.contains("app.port"));
+    }
 }
 
 #[cfg(unix)]

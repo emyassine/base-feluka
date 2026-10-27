@@ -22,7 +22,7 @@ use alloc::collections::BTreeMap;
 use alloc::format;
 use alloc::string::{String, ToString};
 use axum::Router;
-use axum::extract::{Request, State};
+use axum::extract::{Path, Request, State};
 use axum::handler::Handler;
 use axum::http::header::COOKIE;
 use axum::http::{HeaderMap, StatusCode};
@@ -73,6 +73,14 @@ pub fn panel_stylesheet() -> Response {
     asset_response(crate::panel::FILAMENT_THEME_CSS, "text/css; charset=utf-8")
 }
 
+/// Serve Feluqa's small layout rules for the shared Filament panel structure.
+pub fn panel_adapter_stylesheet() -> Response {
+    asset_response(
+        crate::panel::FILAMENT_ADAPTER_CSS,
+        "text/css; charset=utf-8",
+    )
+}
+
 /// Serve the shared Filament-derived panel browser runtime.
 pub fn panel_client() -> Response {
     asset_response(
@@ -87,6 +95,22 @@ pub fn panel_echo_client() -> Response {
         crate::panel::FILAMENT_ECHO_JS,
         "text/javascript; charset=utf-8",
     )
+}
+
+/// Serve one framework-owned Filament panel asset by its stable public filename.
+pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, StatusCode> {
+    match asset.as_str() {
+        "theme.css" => Ok(panel_stylesheet()),
+        "panel.css" => Ok(panel_adapter_stylesheet()),
+        "panel.js" => Ok(panel_client()),
+        "echo.js" => Ok(panel_echo_client()),
+        _ => Err(StatusCode::NOT_FOUND),
+    }
+}
+
+/// HTTP handler for the framework-owned Feluqa Live browser client.
+pub async fn serve_live_client() -> Response {
+    live_client()
 }
 
 fn asset_response(asset: &'static str, content_type: &'static str) -> Response {

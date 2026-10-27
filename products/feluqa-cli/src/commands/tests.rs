@@ -106,26 +106,29 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     let system_provider = fs::read_to_string(application.join("src/modules/system/mod.rs"))
         .expect("built-in Feluqa Core panel provider");
     assert!(system_provider.contains("feluqa::system_panel::SystemPanelProvider"));
-    let roles_view =
-        fs::read_to_string(application.join("src/modules/system/views/pages/system_roles.view.rs"))
-            .expect("resource driven Core role view");
+    let system_views = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../_crates/feluqa-system-panel/resources/views/pages");
+    let roles_view = fs::read_to_string(system_views.join("system_roles.view.rs"))
+        .expect("framework-owned resource driven Core role view");
     assert!(roles_view.contains("{!! role_table !!}"));
     assert!(roles_view.contains("{!! create_form !!}"));
     assert!(roles_view.contains("{!! edit_forms !!}"));
     assert!(!roles_view.contains("<pre>"));
-    let users_view =
-        fs::read_to_string(application.join("src/modules/system/views/pages/system_users.view.rs"))
-            .expect("resource driven Core user view");
+    let users_view = fs::read_to_string(system_views.join("system_users.view.rs"))
+        .expect("framework-owned resource driven Core user view");
     assert!(users_view.contains("{!! user_table !!}"));
     assert!(users_view.contains("{!! create_form !!}"));
     assert!(users_view.contains("{!! edit_forms !!}"));
     assert!(!users_view.contains("<pre>"));
-    let dashboard_view = fs::read_to_string(
-        application.join("src/modules/system/views/pages/system_dashboard.view.rs"),
-    )
-    .expect("Live-enabled Core dashboard");
+    let dashboard_view = fs::read_to_string(system_views.join("system_dashboard.view.rs"))
+        .expect("framework-owned Live-enabled Core dashboard");
     assert!(dashboard_view.contains("data-feluqa-live"));
-    assert!(dashboard_view.contains("/assets/feluqa-live.js"));
+    assert!(dashboard_view.contains("<x-feluqa-panel::assets />"));
+    assert!(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../_crates/feluqa-panel/resources/views/components/shell.view.rs")
+            .is_file()
+    );
     let routes = fs::read_to_string(application.join("src/routes/web.rs"))
         .expect("authenticated panel routes");
     assert!(routes.contains(".authenticated(core_store.clone())"));
@@ -141,40 +144,12 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     assert!(routes.contains("system::operations::dashboard"));
     assert!(routes.contains("/live/snapshots/{action}"));
     assert!(routes.contains("/live/actions"));
+    assert!(!application.join("src/modules/system/views").exists());
     assert!(
-        application
-            .join("src/modules/system/views/pages/system_setup.view.rs")
-            .is_file()
+        !application
+            .join("resources/views/components/panel_shell.view.rs")
+            .exists()
     );
-    assert!(
-        application
-            .join("src/modules/system/views/pages/system_login.view.rs")
-            .is_file()
-    );
-    assert!(
-        application
-            .join("src/modules/system/views/pages/system_users.view.rs")
-            .is_file()
-    );
-    assert!(
-        application
-            .join("src/modules/system/views/pages/system_roles.view.rs")
-            .is_file()
-    );
-    for view in [
-        "system_modules.view.rs",
-        "system_connections.view.rs",
-        "system_migrations.view.rs",
-        "system_audit.view.rs",
-        "system_dashboard.view.rs",
-    ] {
-        assert!(
-            application
-                .join("src/modules/system/views/pages")
-                .join(view)
-                .is_file()
-        );
-    }
     let system = fs::read_to_string(application.join("src/app/controllers/system.rs"))
         .expect("setup, login, logout and CSRF handlers");
     assert!(system.contains("anonymous_csrf_valid"));

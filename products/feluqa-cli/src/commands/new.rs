@@ -128,46 +128,6 @@ const WEB_FILES: &[(&str, &str)] = &[
         include_str!("../../templates/web/home.view.rs.tmpl"),
     ),
     (
-        "src/modules/system/views/pages/system_setup.view.rs",
-        include_str!("../../templates/web/system-setup.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_login.view.rs",
-        include_str!("../../templates/web/system-login.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_users.view.rs",
-        include_str!("../../templates/web/system-users.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_roles.view.rs",
-        include_str!("../../templates/web/system-roles.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_modules.view.rs",
-        include_str!("../../templates/web/system-modules.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_connections.view.rs",
-        include_str!("../../templates/web/system-connections.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_migrations.view.rs",
-        include_str!("../../templates/web/system-migrations.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_audit.view.rs",
-        include_str!("../../templates/web/system-audit.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_tenants.view.rs",
-        include_str!("../../templates/web/system-tenants.view.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/views/pages/system_dashboard.view.rs",
-        include_str!("../../templates/web/system-dashboard.view.rs.tmpl"),
-    ),
-    (
         "config/database.development.toml",
         include_str!("../../templates/web/database.development.toml.tmpl"),
     ),

@@ -27,7 +27,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let output = PathBuf::from(env::var("OUT_DIR")?);
     let mut compiler = Compiler::new();
     compiler.add_root("app", &root.join("resources/views"))?;
-    compiler.add_root("system", &root.join("src/modules/system/views"))?;
+    compiler.add_root("system", Path::new(feluqa::system_panel::VIEW_ROOT))?;
+    compiler.add_root("feluqa-panel", Path::new(feluqa::panel::VIEW_ROOT))?;
+    compiler.parameters("feluqa-panel::components.shell", "panel: &str, active: &str")?;
+    compiler.component("feluqa-panel::shell", "feluqa-panel::components.shell", &["default"])?;
+    compiler.component("feluqa-panel::assets", "feluqa-panel::components.assets", &[])?;
     compiler.parameters("app::pages.home", "title: &str")?;
     compiler.entry("home", "app::pages.home")?;
     compiler.parameters("system::pages.system_setup", "csrf_token: &str, notice: &str")?;

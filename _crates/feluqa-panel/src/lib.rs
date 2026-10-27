@@ -6,6 +6,9 @@
 
 //! Startup-validated registries for system and business panels.
 
+/// Root directory for Feluqa-owned panel view components.
+pub const VIEW_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/resources/views");
+
 /// Stable browser path used by all Feluqa web panels for Live interactions.
 pub const LIVE_CLIENT_PATH: &str = "/assets/feluqa-live.js";
 /// First-party Feluqa Live browser client served by the web adapter.
@@ -16,6 +19,8 @@ pub const FILAMENT_THEME_CSS: &str = include_str!("../assets/filament-theme.css"
 pub const FILAMENT_CLIENT_JS: &str = include_str!("../assets/filament.js");
 /// Filament Echo integration bundle from the Webkernel Filament adaptation.
 pub const FILAMENT_ECHO_JS: &str = include_str!("../assets/filament-echo.js");
+/// Small Feluqa adaptation rules for the shared Filament panel DOM shell.
+pub const FILAMENT_ADAPTER_CSS: &str = include_str!("../assets/filament-panel.css");
 
 extern crate alloc;
 extern crate core;

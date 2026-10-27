@@ -22,6 +22,9 @@ use feluqa_auth::Permission;
 use feluqa_ui::{SCHEMA_VERSION, UiDocument, UiNode};
 use panel::{Panel, PanelCatalog, PanelCatalogError, PanelKind, PanelPage, PanelProvider};
 
+/// Root directory containing the compiled Feluqa Core panel pages.
+pub const VIEW_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/resources/views");
+
 /// Built-in Feluqa Core resource declarations for users, roles and operations.
 pub mod resource;
 

@@ -119,3 +119,8 @@ Modules téléchargeables : téléchargement → vérification signature/digest/
 - Performance mesurée sur scénario publié, budgets explicitement acceptés; aucune revendication de haute disponibilité ou de certification à partir des seuls microbenchmarks M0.
 
 Ces critères définissent des sorties de lots. Ils ne décrivent pas l'état actuel du prototype.
+
+
+## Propriété du shell et des assets
+
+Le shell partagé et le composant d'assets sont des vues compilées depuis `feluqa-panel/resources/views/components/` (`<x-feluqa-panel::shell>` et `<x-feluqa-panel::assets>`). Le Core `/system` compile ses pages depuis `feluqa-system-panel/resources/views/`. Les applications composent ces composants et fournissent uniquement leurs pages métier. Les CSS/JS sont intégrés au binaire depuis `feluqa-panel/assets/`; `feluqa::web` expose leurs handlers HTTP. Le scaffold CLI utilise ces mêmes sources framework, il ne génère pas de copie du shell ni des pages Core dans l'application. Les bundles Filament adaptés sont intégrés, mais le port Rust des composants, notifications, tables, formulaires, actions et providers Filament reste en cours; l'intégration des assets ne vaut pas parité fonctionnelle.

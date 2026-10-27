@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en"><head><link rel="stylesheet" href="/assets/feluqa/theme.css"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CRM · Numerimondes</title><link rel="stylesheet" href="/assets/site.css"></head>
-<body><main class="layout"><header><p class="eyebrow">Numerimondes · CRM</p><h1>Customers</h1><p>Signed in as {{ display_name }} · {{ email }}</p><form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn" type="submit">Sign out</button></form></header>
+<html lang="en" class="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CRM · Numerimondes</title></head>
+<body class="fi fi-body fi-body-has-navigation fi-body-has-topbar"><x-feluqa-panel::assets /><x-feluqa-panel::shell panel="business" active="/admin/customers"><div class="fi-panel-page-content"><header><p class="eyebrow">Numerimondes · CRM</p><h1>Customers</h1><p>Signed in as {{ display_name }} · {{ email }}</p><form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn" type="submit">Sign out</button></form></header>
 <section class="card"><h2>Customer records</h2>
 {!! panel.table !!}
 @foreach (customer in &panel.customers)
@@ -23,4 +23,4 @@
 @if (panel.can_create)
 <section class="card"><h2>Add customer</h2>{!! panel.create_form !!}</section>
 @endif
-<p><a href="/admin">Business panel</a> · <a href="/system">Feluqa Core</a></p></main><script defer src="/assets/feluqa/panel.js"></script><script defer src="/assets/feluqa-live.js"></script></body></html>
+<p><a href="/admin">Business panel</a> · <a href="/system">Feluqa Core</a></p></div></x-feluqa-panel::shell></body></html>

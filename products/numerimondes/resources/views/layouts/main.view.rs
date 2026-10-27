@@ -3,7 +3,7 @@ let page_title = page.title;
 @endrs
 <!doctype html>
 <html lang="en">
-<head><link rel="stylesheet" href="/assets/feluqa/theme.css">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Webkernel and Numerimondes: software, platforms and digital infrastructure.">
@@ -27,5 +27,5 @@ let page_title = page.title;
       localStorage.setItem('theme', nextTheme);
     });
   </script>
-<script defer src="/assets/feluqa/panel.js"></script><script defer src="/assets/feluqa-live.js"></script></body>
+</body>
 </html>

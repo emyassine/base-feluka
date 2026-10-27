@@ -34,6 +34,7 @@ use std::convert::{From, Into};
 use std::error::Error;
 use std::format;
 use std::iter::Iterator;
+use std::io::{Error as IoError, ErrorKind};
 use std::println;
 use std::net::SocketAddr;
 use std::option::Option::{None, Some};
@@ -101,7 +102,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
         None
     };
     let address = SocketAddr::from_str(&format!("{}:{}", settings.host, settings.port))?;
-    let listener = TcpListener::bind(address).await?;
+    let listener = TcpListener::bind(address).await.map_err(|error| {
+        let message = if error.kind() == ErrorKind::AddrInUse {
+            format!(
+                "Feluqa cannot start at http://{address}: port {} is already in use. Stop the process using that port or change `app.port` in config/app.{environment}.toml.",
+                address.port()
+            )
+        } else {
+            format!("Feluqa cannot bind to http://{address}: {error}")
+        };
+        IoError::new(error.kind(), message)
+    })?;
     println!("{} listening on http://{}", settings.name, address);
     let core = feluqa::core::service::CoreStore::new(databases.default_connection()?.clone())?;
     let router = routes::web::routes(

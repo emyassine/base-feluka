@@ -1,5 +1,0 @@
-<!doctype html>
-<html lang="en">
-<head><link rel="stylesheet" href="/assets/feluqa/theme.css"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sign in · Feluqa Core</title><link rel="stylesheet" href="/assets/site.css"></head>
-<body><main class="layout"><section class="card"><p class="eyebrow">Feluqa Core</p><h1>Sign in</h1><p>{{ notice }}</p><form method="post" action="/system/login"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Email <input name="email" type="email" autocomplete="username" required maxlength="254"></label><label>Password <input name="password" type="password" autocomplete="current-password" required maxlength="1024"></label><button class="btn" type="submit">Sign in</button></form><p><a href="/system/setup">First-time setup</a></p></section></main><script defer src="/assets/feluqa/panel.js"></script><script defer src="/assets/feluqa-live.js"></script></body>
-</html>

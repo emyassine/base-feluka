@@ -115,6 +115,15 @@ mod panel_http_tests {
                 .and_then(|value| value.to_str().ok()),
             Some("text/css; charset=utf-8")
         );
+        let adapter_css = send(&app, Method::GET, "/assets/feluqa/panel.css", None, "").await?;
+        assert_eq!(adapter_css.status(), StatusCode::OK);
+        assert_eq!(
+            adapter_css
+                .headers()
+                .get(CONTENT_TYPE)
+                .and_then(|value| value.to_str().ok()),
+            Some("text/css; charset=utf-8")
+        );
         let panel_js = send(&app, Method::GET, "/assets/feluqa/panel.js", None, "").await?;
         assert_eq!(panel_js.status(), StatusCode::OK);
         assert_eq!(
@@ -237,6 +246,9 @@ mod panel_http_tests {
         let system = send(&app, Method::GET, "/system", Some(&browser_cookies), "").await?;
         assert_eq!(system.status(), StatusCode::OK);
         let system_html = body_text(system).await?;
+        assert!(system_html.contains("class=\"fi-sidebar fi-main-sidebar fi-sidebar-open\""));
+        assert!(system_html.contains("class=\"fi-topbar\""));
+        assert!(system_html.contains("href=\"/system/users\""));
         assert!(system_html.contains("data-feluqa-live"));
         assert!(system_html.contains("/live/snapshots/system::health::ping"));
         assert!(system_html.contains("/assets/feluqa-live.js"));
@@ -249,6 +261,9 @@ mod panel_http_tests {
         assert!(!live_client_source.contains("innerHTML"));
         let business = send(&app, Method::GET, "/admin", Some(&browser_cookies), "").await?;
         assert_eq!(business.status(), StatusCode::OK);
+        let business_html = body_text(business).await?;
+        assert!(business_html.contains("class=\"fi-sidebar fi-main-sidebar fi-sidebar-open\""));
+        assert!(business_html.contains("href=\"/admin/customers\""));
         let registered_page = send(
             &app,
             Method::GET,

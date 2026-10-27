@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="en" class="fi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Initial setup · Feluqa Core</title></head>
+<body class="fi fi-body fi-panel-system"><x-feluqa-panel::assets /><div class="fi-simple-layout"><div class="fi-simple-main-ctn"><main id="fi-main-content" class="fi-simple-main fi-width-md" tabindex="-1"><div class="fi-simple-page"><div class="fi-simple-page-content"><section class="card"><p class="eyebrow">Feluqa Core</p><h1>Initial administrator</h1><p>{{ notice }}</p><form method="post" action="/system/setup"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Name <input name="display_name" autocomplete="name" required maxlength="160"></label><label>Email <input name="email" type="email" autocomplete="username" required maxlength="254"></label><label>Password <input name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></label><button class="btn" type="submit">Create administrator</button></form><p><a href="/system/login">Sign in</a></p></section></div></div></main></div></div></body>
+</html>

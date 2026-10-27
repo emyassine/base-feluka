@@ -26,7 +26,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let output = PathBuf::from(env::var("OUT_DIR")?);
     let mut compiler = Compiler::new();
     compiler.add_root("app", &project.join("resources/views"))?;
-    compiler.add_root("system", &project.join("src/modules/system/views"))?;
+    compiler.add_root("system", Path::new(feluqa::system_panel::VIEW_ROOT))?;
+    compiler.add_root("feluqa-panel", Path::new(feluqa::panel::VIEW_ROOT))?;
     compiler.add_root("business", &project.join("src/modules/business/views"))?;
     compiler.add_root("crm", &project.join("src/modules/crm/views"))?;
     for view in [
@@ -74,6 +75,20 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.parameters(
         "app::components.section",
         "id: &str, eyebrow: &str, title: &str",
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.shell",
+        "panel: &str, active: &str",
+    )?;
+    compiler.component(
+        "feluqa-panel::shell",
+        "feluqa-panel::components.shell",
+        &["default"],
+    )?;
+    compiler.component(
+        "feluqa-panel::assets",
+        "feluqa-panel::components.assets",
+        &[],
     )?;
     compiler.component(
         "site::section",
