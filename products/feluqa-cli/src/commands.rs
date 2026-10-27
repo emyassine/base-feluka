@@ -75,7 +75,9 @@ pub(crate) fn run(arguments: Vec<OsString>, current: &Path) -> Result<ExitCode, 
         ("build", Context::App(application)) => app::build::run(command_arguments, &application),
         ("check", Context::App(application)) => app::check::run(command_arguments, &application),
         ("test", Context::App(application)) => app::test::run(command_arguments, &application),
-        ("migrate", Context::App(application)) => app::migrate::run(command_arguments, &application),
+        ("migrate", Context::App(application)) => {
+            app::migrate::run(command_arguments, &application)
+        }
         ("seed", Context::App(application)) => app::seed::run(command_arguments, &application),
         ("migrate", Context::Workspace(workspace)) => {
             let application = migration_target(&workspace, command_arguments)?;
