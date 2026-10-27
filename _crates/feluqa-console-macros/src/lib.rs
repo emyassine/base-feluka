@@ -52,10 +52,7 @@ fn expand_profile_registry(item: TokenStream2) -> syn::Result<TokenStream2> {
 
     Ok(quote! {
         #declaration
-        // Cargo's build script creates this file before rustc compiles the
-        // product. rust-analyzer intentionally skips it because it does not
-        // evaluate Cargo's OUT_DIR environment variable during macro expansion.
-        #[cfg(not(rust_analyzer))]
+        // Cargo's build script creates this file before the product is compiled.
         include!(concat!(env!("OUT_DIR"), "/profile_commands.rs"));
     })
 }

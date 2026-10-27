@@ -15,7 +15,7 @@ pub const PROFILES: &[Profile] = &[
         id: "feluqa",
         name: "Feluqa platform",
         binary_name: "feluqa",
-        commands_directory: "profiles/feluqa",
+        commands_directory: "profiles/feluqa/src",
         header: "FELUQA\nSovereign application platform",
         launch_aliases: &[],
     },

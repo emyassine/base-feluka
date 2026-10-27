@@ -108,12 +108,12 @@ filenames and nesting organize source without deciding the command name.
 products/feluqa-cli/src/
 ├── main.rs                        # profile table and MakeConsole entry point
 └── profiles/
-    ├── feluqa/                     # commands_directory = "profiles/feluqa"
-    │   ├── build.rs                # one command per file
-    │   ├── make/
-    │   │   └── migration.rs
-    │   ├── templates/web/          # scaffold data owned by this product
-    │   └── context.rs              # profile context provider and application detection
+    ├── feluqa/
+    │   ├── src/                    # commands_directory = "profiles/feluqa/src"
+    │   │   ├── context.rs          # profile context provider and application detection
+    │   │   ├── build.rs            # one command per file
+    │   │   └── make/migration.rs
+    │   └── templates/web/          # scaffold data owned by this product
     ├── nadim/                      # commands_directory = "profiles/nadim"
     └── feluqa-dev/                 # commands_directory = "profiles/feluqa-dev"
 ```
@@ -124,9 +124,11 @@ same profile declarations to the console build helper, which recursively
 compiles annotated command files and honors each declared directory. Rust
 modules still need to be compiled, so the build integration emits declarations
 under `OUT_DIR`. The `profile_registry` attribute attaches the generated file
-without reading environment variables or files in the procedural macro. Rust
-Analyzer skips the generated include while expanding the attribute. The
-running binary never scans source folders or executes Rust source from disk.
+without reading environment variables or files in the procedural macro. Cargo
+builds the profile command file before compiling the entry point; editors must
+load the Cargo project and its build-script output to resolve generated command
+modules. The running binary never scans source folders or executes Rust source
+from disk.
 
 Commands are compiled Rust functions, not runtime scripts. Every command file
 contains its command declaration and implementation; there is no profile-wide
