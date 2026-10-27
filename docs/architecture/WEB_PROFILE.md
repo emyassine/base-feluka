@@ -86,25 +86,25 @@ Chaque module Feluqa porte ses migrations dans son propre dossier. La même iden
 products/numerimondes/
 ├── src/
 │   ├── main.rs
-│   ├── service_provider.rs       # composition root only
-│   ├── routes/web.rs             # assembly + global middleware only
-│   ├── website/                  # public site panel, pages and routes
-│   ├── system/                   # app-specific Core integration
-│   └── business/
-│       ├── crm/                  # one Feluqa business module
-│       │   ├── module.toml       # dialects; default connection is shared
-│       │   ├── panel.rs          # CRM resources/pages registration
-│       │   ├── routes.rs         # exceptional custom routes only
-│       │   ├── resources/        # contacts, companies, opportunities
-│       │   ├── features/         # finer business capabilities, if useful
-│       │   ├── services.rs       # reusable use cases
-│       │   ├── policies.rs
+│   ├── service_provider.rs        # Composition root unique
+│   ├── routes/web.rs              # Assemblage global et middlewares globaux
+│   ├── website/                   # Panel site public (pages & routes publiques)
+│   ├── system/                    # Intégration Core spécifique à l'application
+│   └── business/                  # Modules Métier Feluqa (ERP)
+│       ├── crm/                   # Module Feluqa : CRM
+│       │   ├── module.toml        # Déclaration du module & dialectes SQL
+│       │   ├── panel.rs           # Enregistrement du Panel CRM (Resources, Pages, Clusters)
+│       │   ├── routes.rs          # Routes personnalisées d'exception (si nécessaire)
+│       │   ├── resources/         # Contacts, Companies, Opportunities...
+│       │   ├── features/          # Sous-capacités métier fines
+│       │   ├── services.rs        # Cas d'usage réutilisables
+│       │   ├── policies.rs        # Règles d'accès (ACL)
 │       │   └── migrations/{sqlite,postgresql}/
-│       └── finance/              # another module; same default DB
-├── resources/views/              # shared site layouts and components
+│       └── finance/               # Module Feluqa : Finance (Même DB par défaut)
+├── resources/views/               # Layouts et composants de vues partagés
 ├── config/database.toml
 ├── public/
-├── database/seeders/             # app-wide seeders; module seeders stay in modules
+├── database/seeders/              # Seeders globaux (les seeders de modules restent dans leurs modules)
 ├── tests/
 └── storage/
 ```
