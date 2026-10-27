@@ -24,8 +24,10 @@ path = "src/main.rs"
 
 [[bin]]
 name = "nadim"
-path = "src/bin/nadim.rs"
+path = "src/main.rs"
+test = false
 
 [[bin]]
 name = "feluqa-dev"
-path = "src/bin/feluqa-dev.rs"
+path = "src/main.rs"
+test = false

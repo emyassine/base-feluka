@@ -727,7 +727,7 @@ pub mod build {
     use std::fmt::Write;
     use std::fs;
     use std::iter::Iterator;
-    use std::option::Option::Some;
+    use std::option::Option::{None, Some};
     use std::path::{Path, PathBuf};
     use std::println;
     use std::result::Result;
@@ -739,11 +739,107 @@ pub mod build {
     /// `#[feluqa::command]` declaration, and include an optional profile-local
     /// `support.rs` composition module. Write declarations to
     /// `OUT_DIR/profile_commands.rs`.
-    /// Call once from a product `build.rs` with its profile directory, such as
-    /// `feluqa::console::build::compile_profiles("src", PROFILES)`.
+    /// Call from `build.rs` with the runtime profile slice.
     /// Command directory paths are relative to `source_root`, matching each
     /// profile's `commands_directory` field.
     pub fn compile_profiles(source_root: &str, profiles: &[Profile]) -> Result<(), String> {
+        let profiles: Vec<(String, String)> = profiles
+            .iter()
+            .map(|profile| {
+                (
+                    profile.id.to_string(),
+                    profile.commands_directory.to_string(),
+                )
+            })
+            .collect();
+        compile_profile_sources(source_root, &profiles)
+    }
+
+    /// Read `PROFILES` from a product's Rust entrypoint and compile those
+    /// declared command directories. This lets a single `main.rs` be the
+    /// source of truth for both Cargo's build script and the running product.
+    pub fn compile_profiles_from_source(
+        source_root: &str,
+        profile_source: &str,
+    ) -> Result<(), String> {
+        let manifest = PathBuf::from(
+            env::var_os("CARGO_MANIFEST_DIR").ok_or("CARGO_MANIFEST_DIR is missing")?,
+        );
+        let profile_source = manifest.join(profile_source);
+        println!("cargo:rerun-if-changed={}", profile_source.display());
+        let contents = fs::read_to_string(&profile_source).map_err(|error| {
+            std::format!(
+                "could not read profile declarations `{}`: {error}",
+                profile_source.display()
+            )
+        })?;
+        let profiles = profile_specs(&contents)?;
+        compile_profile_sources(source_root, &profiles)
+    }
+
+    fn profile_specs(contents: &str) -> Result<Vec<(String, String)>, String> {
+        use syn::{Expr, ExprLit, ExprStruct, Item, Lit, Member};
+
+        let syntax = syn::parse_file(contents).map_err(|error| error.to_string())?;
+        let declaration = syntax
+            .items
+            .iter()
+            .find_map(|item| match item {
+                Item::Const(item) if item.ident == "PROFILES" => Some(item),
+                _ => None,
+            })
+            .ok_or_else(|| String::from("entrypoint must declare `const PROFILES`"))?;
+        let array = match declaration.expr.as_ref() {
+            Expr::Reference(reference) => reference.expr.as_ref(),
+            expression => expression,
+        };
+        let Expr::Array(array) = array else {
+            return Err(String::from(
+                "`PROFILES` must be an array of Profile values",
+            ));
+        };
+        let mut profiles = Vec::new();
+        for entry in &array.elems {
+            let Expr::Struct(ExprStruct { fields, .. }) = entry else {
+                return Err(String::from(
+                    "each `PROFILES` entry must be a Profile struct",
+                ));
+            };
+            let mut id = None;
+            let mut directory = None;
+            for field in fields {
+                let Member::Named(name) = &field.member else {
+                    continue;
+                };
+                let Expr::Lit(ExprLit {
+                    lit: Lit::Str(value),
+                    ..
+                }) = &field.expr
+                else {
+                    continue;
+                };
+                match name.to_string().as_str() {
+                    "id" => id = Some(value.value()),
+                    "commands_directory" => directory = Some(value.value()),
+                    _ => {}
+                }
+            }
+            profiles.push((
+                id.ok_or_else(|| String::from("profile is missing its `id`"))?,
+                directory
+                    .ok_or_else(|| String::from("profile is missing its `commands_directory`"))?,
+            ));
+        }
+        if profiles.is_empty() {
+            return Err(String::from("`PROFILES` must contain at least one profile"));
+        }
+        Ok(profiles)
+    }
+
+    fn compile_profile_sources(
+        source_root: &str,
+        profiles: &[(String, String)],
+    ) -> Result<(), String> {
         let manifest = PathBuf::from(
             env::var_os("CARGO_MANIFEST_DIR").ok_or("CARGO_MANIFEST_DIR is missing")?,
         );
@@ -753,8 +849,8 @@ pub mod build {
         println!("cargo:rerun-if-changed={}", root.display());
         let mut source = String::new();
         let mut visited = Vec::new();
-        for profile in profiles {
-            let relative = Path::new(profile.commands_directory);
+        for (profile_id, command_directory) in profiles {
+            let relative = Path::new(command_directory);
             if relative.is_absolute()
                 || relative.components().any(|part| match part {
                     std::path::Component::ParentDir
@@ -765,14 +861,14 @@ pub mod build {
             {
                 return Err(std::format!(
                     "profile `{}` command directory must stay under the configured source root",
-                    profile.id
+                    profile_id
                 ));
             }
             let profile_directory = root.join(relative);
             if !profile_directory.is_dir() {
                 return Err(std::format!(
                     "profile `{}` command directory `{}` does not exist",
-                    profile.id,
+                    profile_id,
                     profile_directory.display()
                 ));
             }
@@ -788,7 +884,7 @@ pub mod build {
                     &mut source,
                     "#[path = {:?}] pub(crate) mod {};",
                     support,
-                    profile_support_name(profile.id)
+                    profile_support_name(profile_id)
                 )
                 .map_err(|error| error.to_string())?;
             }
@@ -812,7 +908,7 @@ pub mod build {
                 let command_relative = file
                     .strip_prefix(&profile_directory)
                     .map_err(|error| error.to_string())?;
-                let module = module_name(profile.id, command_relative);
+                let module = module_name(profile_id, command_relative);
                 std::writeln!(&mut source, "#[path = {:?}] mod {module};", file)
                     .map_err(|error| error.to_string())?;
             }

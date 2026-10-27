@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 
-use crate::__feluqa_profile_feluqa::{context, global, make};
 use crate::__feluqa_profile_feluqa::context::Application;
+use crate::__feluqa_profile_feluqa::{context, global, make};
 use crate::std::assert;
 use crate::std::assert_eq;
 use crate::std::clone::Clone;

@@ -458,6 +458,7 @@ version = "0.1.1"
 dependencies = [
  "feluqa-console-macros",
  "inventory",
+ "syn 2.0.119",
 ]
 
 [[package]]
