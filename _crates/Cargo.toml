@@ -4,6 +4,7 @@ members = [
     "feluqa",
     "feluqa-model-derive",
     "feluqa-console",
+    "feluqa-console-macros",
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-panel",
@@ -30,6 +31,7 @@ serde = { version = "1", default-features = false, features = ["derive", "alloc"
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "2", features = ["full"] }
+inventory = "0.3"
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
 hmac = "0.12"
 sha2 = "0.10"

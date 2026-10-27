@@ -10,7 +10,7 @@ rust-version.workspace = true
 publish = ["feluqa"]
 
 [dependencies]
-feluqa = { version = "0.2.0", registry = "feluqa", path = "../../_crates/feluqa", default-features = false }
+feluqa = { version = "0.2.0", registry = "feluqa", path = "../../_crates/feluqa", default-features = false, features = ["console"] }
 serde.workspace = true
 serde_json.workspace = true
 toml.workspace = true
@@ -18,3 +18,11 @@ toml.workspace = true
 [[bin]]
 name = "feluqa"
 path = "src/main.rs"
+
+[[bin]]
+name = "nadim"
+path = "src/bin/nadim.rs"
+
+[[bin]]
+name = "feluqa-dev"
+path = "src/bin/feluqa-dev.rs"

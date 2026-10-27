@@ -36,6 +36,19 @@ pub(crate) enum Context {
     Global,
 }
 
+/// Product state supplied to registered console handlers.
+pub(crate) struct CliHost {
+    pub(crate) current: PathBuf,
+    pub(crate) context: Context,
+    pub(crate) exit_code: ExitCode,
+}
+
+impl CliHost {
+    pub(crate) fn new(current: &Path) -> Result<Self, String> {
+        Ok(Self { current: current.to_path_buf(), context: detect(current)?, exit_code: ExitCode::SUCCESS })
+    }
+}
+
 #[derive(Deserialize)]
 struct CargoDocument {
     package: CargoPackage,

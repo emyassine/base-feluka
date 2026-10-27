@@ -7,10 +7,7 @@ product; its `feluqa`, `feluqa-dev` and `nadim` profiles are its configuration
 of this general capability, not a rule that profiles belong to that product.
 The API is available when the `console` feature is enabled.
 
-**Implementation status:** the crate currently contains a small command
-contract only. Distributed command registration, metadata-driven help,
-profiles, aliases, hidden commands, interactive prompts and rich output
-described here are the target design; they are not implemented yet.
+**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help and basic portable terminal prompts/output. The `feluqa-cli` product is being reorganized around profile command directories and one source file per command. The full prompt set, shell completions, rich task/progress widgets and build-time profile-directory scanner remain in progress.
 
 ## Command names
 
@@ -36,55 +33,34 @@ Aliases resolve to one canonical command and do not create a second command.
 
 ## Automatic command discovery
 
-Command registration belongs in `feluqa-console`, not a CLI-specific dispatcher.
-An attribute such as `#[feluqa::command(...)]` expands the annotated handler
-into a normal compiled function plus a typed command descriptor registered with
-the console registry. A distributed static registry (the
-[`inventory` pattern](https://docs.rs/inventory/latest/inventory/)
-is the leading candidate) collects descriptors from any linked source file or
-crate; command help, completions and dispatch all read this registry. There is
-no separate hard-coded help list or match arm per command.
-
-Example target declaration (metadata names and handler signature are proposed,
-not implemented):
+Command registration belongs in `feluqa-console`, not a CLI-specific
+command catalogue. `#[feluqa::command(...)]` leaves an ordinary compiled Rust
+handler and registers its metadata in the console registry. Help, path parsing,
+alias resolution and dispatch consume that registry. Products can contribute
+commands from any linked crate or source file, provided the product compiles
+that code.
 
 ```rust
 #![no_implicit_prelude]
 
-extern crate feluqa;
-extern crate core;
-
-use feluqa::console::{CommandContext, CommandResult};
-use core::result::Result::Ok;
-
 #[feluqa::command(
-    namespace = "support:ide",
+    name = "support:ide view-highlight",
     description = "Check Feluqa View highlighting in an editor",
+    usage = "feluqa support:ide view-highlight --ide=<name>",
     aliases = ["support:ide highlight"],
-    profiles = ["feluqa"],
+    profiles = ["feluqa-dev"],
     context = "global",
-    hidden = false,
 )]
-pub fn view_highlight(context: &mut CommandContext) -> CommandResult {
-    // Read the command's parsed options and run the integration check.
-    context.console().success("Feluqa View syntax support is available.");
+pub fn view_highlight(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
+    feluqa::console::terminal::success("Feluqa View syntax support is available.");
     Ok(())
 }
 ```
 
-The function name supplies the family (`view_highlight` becomes
-`view-highlight`); the optional namespace supplies zero or more colon-separated
-segments. Root commands omit `namespace`; commands that need no family may
-declare a complete command path. The attribute records description, usage,
-arguments/options, aliases, profile membership, visibility and context policy.
-The exact Rust type signature must be finalized before this example is
-presented as compilable API.
-
-The registry validates duplicate paths and aliases, sorts commands
-deterministically, and produces root help, namespace help, command help,
-completions and dispatch targets from the same descriptors. Hidden commands
-are omitted from ordinary help but remain callable; `--all` can show them for
-diagnostics. Hidden is not authorization.
+A command declares its full public path, description, optional usage, aliases,
+profile membership and product-defined context label. Registry validation
+rejects duplicate canonical paths and aliases and orders help output
+consistently. Hidden commands stay callable but are omitted from ordinary help.
 
 ### What Rust discovers, and what it does not
 
@@ -122,79 +98,48 @@ generate module declarations for a conventional development-command folder;
 the resulting Rust is compiled before the command is dispatched. The running
 binary never interprets or executes arbitrary Rust source from disk.
 
-### Command source layout
+### Profile-first product layout
 
-Keep command implementations in subdirectories. The tree below is the CLI's
-conventional organization, not a restriction on where a command may live.
-Namespace and subnamespace directories may mirror colon-separated CLI paths,
-but command names come from descriptor metadata, not from filesystem paths.
-Commands in other compiled modules or linked crates can register the same way.
-Put reusable command-specific helpers next to their owner, not in the top-level
-dispatcher.
+The product entry point declares each profile's ID, binary name, command
+source directory and multiline header. A command is one `.rs` file. A command
+may include a shared Rust expression from `profiles-shared-commands/`:
 
 ```text
 products/feluqa-cli/src/
-├── commands.rs              # composition and dispatch only
-└── commands/
-    ├── app.rs
-    ├── app/
-    │   ├── build.rs
-    │   ├── check.rs
-    │   ├── dev.rs
-    │   ├── dev/
-    │   │   └── watcher.rs
-    │   ├── migrate.rs
-    │   ├── seed.rs
-    │   └── test.rs
-    ├── global.rs
-    ├── global/
-    │   ├── list.rs
-    │   ├── new.rs
-    │   ├── update.rs
-    │   └── version.rs
-    ├── help.rs
-    ├── make.rs
-    ├── make/
-    │   ├── controller.rs
-    │   ├── migration.rs
-    │   ├── model.rs
-    │   ├── module.rs
-    │   ├── panel.rs
-    │   ├── resource.rs
-    │   ├── seeder.rs
-    │   └── service.rs
-    ├── support/              # planned
-    │   └── ide/
-    │       ├── check.rs
-    │       ├── install.rs
-    │       └── view_highlight.rs
-    └── tests.rs
+├── main.rs                         # profile declarations and entry point
+├── profiles/
+│   ├── feluqa/commands/             # command files for the `feluqa` binary
+│   │   ├── help.rs
+│   │   ├── new.rs
+│   │   └── make/migration.rs
+│   ├── nadim/commands/              # command files for the `nadim` binary
+│   └── feluqa-dev/commands/         # command files for the `feluqa-dev` binary
+└── profiles-shared-commands/        # optional shared command bodies
+    └── create-project.rs
 ```
 
-In this tree, `app/`, `make/`, and `global/` are present now; `support/ide/`
-is the planned location for the global editor-support command family.
+For example, `profiles/feluqa/commands/new.rs` owns the command metadata and
+handler. If another profile reuses its body, it can include
+`../../../profiles-shared-commands/create-project.rs` from that handler. The
+shared file contains a Rust block expression returning the handler result.
+This is normal compile-time Rust inclusion, with type checking and no runtime
+source loading.
 
-For example, `support/ide/view_highlight.rs` declares
-`support:ide view-highlight`. A top-level command may live in a descriptive
-folder such as `global/` even though its public command has no namespace. The
-App-scoped and global command implementations are grouped under
-`commands/app/` and `commands/global/`; generators remain under
-`commands/make/`. The dispatcher, hand-written help and test plumbing remain
-outside those command folders. Attribute-based registration and generated
-help/dispatch are still outstanding; the current dispatcher matches command
-names directly.
+A product build script may scan only command directories declared by its
+profiles and generate the Rust module declarations. This handles Rust's rule
+that folders are not automatically compiled as modules. The binary does not
+scan directories, interpret source files or execute arbitrary Rust at runtime.
+The generated registration is linked and ready when the process starts.
 
-Application context is policy attached to a command descriptor, not implied
-by the source directory. Global commands such as editor support work from an
-application, a module source tree, a workspace, or an unrelated directory.
-Application operations require a detected application; workspace operations
-require a detected Feluqa workspace. The same command dispatcher resolves
-context before enforcing each command's declared policy.
+Command metadata—not filenames—sets the public path, so a command may be
+stored in a descriptive nested folder without changing its CLI spelling. The
+layout is a convention that products can adopt, not a restriction on commands
+registered by other compiled crates.
 
-The `products/` directory is repository organization; it is not a Rust module
-tree by itself. A product becomes a Cargo package/crate through its manifest
-and configured crate root. Within that crate, ordinary Rust source still uses
-language modules, whether declared by hand or generated for commands.
+Application/workspace context remains a policy on command metadata and is
+checked before an operation can run. Product-specific runtime services stay
+outside the entry point and are supplied to command handlers through the
+console context.
 
 ## Aliases and hidden commands
 
@@ -211,43 +156,20 @@ checks still belong in the command implementation.
 ## Console profiles and development commands
 
 A console profile is a named command set provided through
-`feluqa::console`. Any consuming product can define one or more profiles. Each
-profile defines its ID, display name, default help behavior and enabled command
-descriptors. For example, `feluqa-cli` can define these profiles:
+`feluqa::console`. Any product using the console can declare profiles. Each
+profile declaration names its binary, command directory and header. For
+example, `feluqa-cli` uses:
 
-| Profile | Intended command surface |
-|---|---|
-| `feluqa` | Platform and application commands for regular use. |
-| `feluqa-dev` | Feluqa developer tools plus explicitly registered development-only commands. |
-| `nadim` | Personal commands, packaged as a profile in the same CLI product. |
+| Profile | Binary | Intended command surface |
+|---|---|---|
+| `feluqa` | `feluqa` | Platform and application commands. |
+| `nadim` | `nadim` | Personal commands. |
+| `feluqa-dev` | `feluqa-dev` | Developer tools and development-only commands. |
 
-Within `feluqa-cli`, the normal invocation selects the `feluqa` profile. Users
-can select another profile with `feluqa --profile=feluqa-dev` or
-`feluqa --profile=nadim`; convenience launchers named `feluqa-dev` and `nadim`
-may select those same profiles. Those launchers are entry points to
-`feluqa-cli`, not separate CLI products. Other consuming products define and
-select their own profiles through the same console API. The selected profile
-filters command help and dispatch; profile selection is not an authorization
-mechanism. Commands still apply their own context, permission and environment
-checks.
-
-Product development commands may live in a configured folder such as
-`development/commands/` and use
-`#[feluqa::command(profiles = ["feluqa-dev"], ...)]`. The development build
-system can scan that folder and generate the Rust module declarations needed
-to compile those commands. `feluqa dev` then discovers them from the compiled
-console registry and executes the compiled handlers. When a source file
-changes, the dev watcher rebuilds/restarts the process before registering the
-updated command. Production builds exclude development-only command modules
-and profiles.
-
-There is no safe way for a running Rust binary to execute a new `.rs` file just
-because it appeared in a folder. Runtime source loading would need a separate
-compiler/plugin ABI and explicit trust model; that is not the default. The
-developer workflow compiles commands before execution. This lets any product
-using the console API expose compiled development commands in a dedicated
-profile without confusing console profiles with Feluqa platform modules or
-Rust modules.
+The selected profile filters command help and dispatch; it does not grant
+permissions. Executable aliases select profiles from the same product. The
+product does not own the profile mechanism: any consumer can define its own
+profile list and command folders.
 
 ## Rust toolchain commands
 

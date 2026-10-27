@@ -8,4 +8,10 @@ license-file.workspace = true
 rust-version.workspace = true
 publish = ["feluqa"]
 
+[features]
+default = ["std"]
+std = []
+
 [dependencies]
+inventory.workspace = true
+feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros" }

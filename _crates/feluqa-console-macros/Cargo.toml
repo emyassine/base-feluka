@@ -1,0 +1,17 @@
+[package]
+name = "feluqa-console-macros"
+version = "0.1.0"
+description = "Command registration macros for Feluqa Console."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2.workspace = true
+quote.workspace = true
+syn.workspace = true

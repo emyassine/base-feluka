@@ -3,11 +3,9 @@
 use crate::context::Application;
 use crate::std::convert::From;
 use crate::std::ffi::OsString;
-use crate::std::option::Option::Some;
 use crate::std::process::ExitCode;
 use crate::std::result::Result;
 use crate::std::result::Result::Err;
-use crate::std::result::Result::Ok;
 use crate::std::string::String;
 
 pub(crate) mod controller;
@@ -29,11 +27,6 @@ pub(crate) fn run(arguments: &[OsString], application: &Application) -> Result<E
         return Err(String::from("usage: feluqa make <thing> <name>"));
     }
     let arguments = &arguments[1..];
-    if arguments.first().and_then(|argument| argument.to_str()) == Some("--help")
-        || arguments.first().and_then(|argument| argument.to_str()) == Some("-h")
-    {
-        return Ok(crate::commands::help::make_command(target));
-    }
     match target {
         "migration" => migration::run(arguments, application),
         "panel" => panel::run(arguments, application),

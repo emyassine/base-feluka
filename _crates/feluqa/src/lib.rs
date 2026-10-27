@@ -29,6 +29,9 @@ pub extern crate feluqa_auth as auth;
 /// CLI and console command contracts.
 #[cfg(feature = "console")]
 pub extern crate feluqa_console as console;
+/// Register a compiled command in `feluqa::console`'s distributed inventory.
+#[cfg(feature = "console")]
+pub use crate::console::command;
 /// Feluqa Core identity, roles, persistent session and audit contracts.
 #[cfg(feature = "core")]
 pub extern crate feluqa_core as core;
