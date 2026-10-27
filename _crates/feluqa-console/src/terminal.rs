@@ -4,6 +4,7 @@ use crate::std::cmp::Ord;
 use crate::std::convert::From;
 use crate::std::io::{self, IsTerminal, Write};
 use crate::std::iter::{Extend, IntoIterator, Iterator};
+use crate::std::ops::Drop;
 use crate::std::option::Option;
 use crate::std::option::Option::{None, Some};
 use crate::std::result::Result;
@@ -11,7 +12,7 @@ use crate::std::result::Result::{Err, Ok};
 use crate::std::string::{String, ToString};
 use crate::std::sync::OnceLock;
 use crate::std::vec::Vec;
-use crate::std::{eprintln, print, println};
+use crate::std::{eprintln, matches, print, println, vec, write, writeln};
 
 /// ANSI style used by Feluqa Console output.
 #[derive(Clone, Copy)]
@@ -30,9 +31,43 @@ pub enum Color {
     Muted,
 }
 
+/// Styling for the console's compact message output.
+#[derive(Clone, Copy)]
+pub enum OutputStyle {
+    /// Blue informational badge.
+    Info,
+    /// Green success badge.
+    Success,
+    /// Yellow warning badge.
+    Warning,
+    /// Red error badge.
+    Error,
+    /// Plain message without a badge.
+    Plain,
+}
+
+impl From<&str> for OutputStyle {
+    fn from(value: &str) -> Self {
+        match value.to_ascii_lowercase().as_str() {
+            "success" | "ok" => Self::Success,
+            "warning" | "warn" => Self::Warning,
+            "error" | "danger" => Self::Error,
+            "plain" | "line" => Self::Plain,
+            _ => Self::Info,
+        }
+    }
+}
+
 /// Whether stdin and stdout are interactive terminals.
 pub fn interactive() -> bool {
     io::stdin().is_terminal() && io::stdout().is_terminal()
+}
+
+fn cursor_controls_enabled() -> bool {
+    interactive()
+        && crate::std::env::var("TERM")
+            .map(|value| value != "dumb")
+            .unwrap_or(true)
 }
 
 /// Whether this process should emit ANSI colors.
@@ -65,7 +100,52 @@ pub fn paint(value: &str, color: Color) -> String {
 
 /// Format a cyan informational notice.
 pub fn info_line(message: &str) -> String {
-    crate::std::format!("{}  {message}", paint("INFO", Color::Cyan))
+    crate::std::format!("{}  {message}", badge("INFO", OutputStyle::Info))
+}
+
+/// Return a colored label with a contrasting background.
+pub fn badge(label: &str, style: OutputStyle) -> String {
+    if !colors_enabled() {
+        return String::from(label);
+    }
+    let colors = match style {
+        OutputStyle::Info => "30;46",
+        OutputStyle::Success => "30;102",
+        OutputStyle::Warning => "30;103",
+        OutputStyle::Error => "97;41",
+        OutputStyle::Plain => return String::from(label),
+    };
+    crate::std::format!("\u{1b}[1;{colors}m {label} \u{1b}[0m")
+}
+
+/// Write a message with the selected Laravel-style status badge.
+pub fn echo(message: &str, style: OutputStyle) {
+    let label = match style {
+        OutputStyle::Info => Some("INFO"),
+        OutputStyle::Success => Some("SUCCESS"),
+        OutputStyle::Warning => Some("WARNING"),
+        OutputStyle::Error => Some("ERROR"),
+        OutputStyle::Plain => None,
+    };
+    match label {
+        Some(label) => println!("{}  {message}", badge(label, style)),
+        None => println!("{message}"),
+    }
+}
+
+/// Write a message using a built-in style name (`info`, `success`, `warning`, `error`, `plain`).
+pub fn echo_kind(message: &str, style: &str) {
+    echo(message, OutputStyle::from(style));
+}
+
+/// Write a blank line.
+pub fn blankline() {
+    println!();
+}
+
+/// Alias for [`blankline`].
+pub fn blank_line() {
+    blankline();
 }
 
 /// Format a command and description with terminal-width-aware dotted leaders.
@@ -164,26 +244,30 @@ fn wrap(value: &str, width: usize) -> Vec<String> {
 
 /// Write a green success line.
 pub fn success(message: &str) {
-    println!("{}  {message}", paint("✓", Color::Green));
+    echo(message, OutputStyle::Success);
 }
 
 /// Write a cyan informational line.
 pub fn info(message: &str) {
-    println!("{}  {message}", info_line_label());
-}
-
-fn info_line_label() -> String {
-    paint("INFO", Color::Cyan)
+    echo(message, OutputStyle::Info);
 }
 
 /// Write a yellow warning line to stderr.
 pub fn warning(message: &str) {
-    eprintln!("{}  {message}", paint("WARNING", Color::Yellow));
+    if colors_enabled() {
+        eprintln!("{}  {message}", badge("WARNING", OutputStyle::Warning));
+    } else {
+        eprintln!("WARNING  {message}");
+    }
 }
 
 /// Write a red error line to stderr.
 pub fn error(message: &str) {
-    eprintln!("{}  {message}", paint("ERROR", Color::Red));
+    if colors_enabled() {
+        eprintln!("{}  {message}", badge("ERROR", OutputStyle::Error));
+    } else {
+        eprintln!("ERROR  {message}");
+    }
 }
 
 /// Display a titled callout using portable terminal formatting.
@@ -255,24 +339,29 @@ pub fn confirm(label: &str, default: bool) -> Result<bool, String> {
     }
 }
 
-/// Choose one option by its displayed number.
+/// Choose one option with arrow keys, or by number in a non-interactive terminal.
 pub fn select(label: &str, options: &[&str], default: usize) -> Result<usize, String> {
     if options.is_empty() {
         return Err(String::from("select requires at least one option"));
     }
+    if default >= options.len() {
+        return Err(String::from(
+            "default choice is outside the available range",
+        ));
+    }
+    if cursor_controls_enabled() {
+        return interactive_select(label, options, default);
+    }
     println!("{}", paint(label, Color::Accent));
     for (index, option) in options.iter().enumerate() {
-        let number = paint(&crate::std::format!("{:>2}.", index + 1), Color::Cyan);
-        let marker = if index == default {
-            paint("›", Color::Green)
-        } else {
-            String::from(" ")
-        };
-        println!("  {marker} {number} {option}");
+        println!(
+            "  {}  {option}",
+            paint(&crate::std::format!("{}.", index + 1), Color::Cyan)
+        );
     }
     let answer = text(
         "Choice",
-        Some("use the number shown"),
+        Some("enter a number"),
         Some(&crate::std::format!("{}", default + 1)),
         true,
     )?;
@@ -281,6 +370,210 @@ pub fn select(label: &str, options: &[&str], default: usize) -> Result<usize, St
         return Err(String::from("choice is outside the available range"));
     }
     Ok(selected - 1)
+}
+
+/// Choose any number of options with arrows and the space bar.
+pub fn multiselect(
+    label: &str,
+    options: &[&str],
+    defaults: &[usize],
+) -> Result<Vec<usize>, String> {
+    if options.is_empty() {
+        return Err(String::from("multiselect requires at least one option"));
+    }
+    if !cursor_controls_enabled() {
+        return Err(String::from(
+            "multiselect requires an interactive terminal with cursor controls",
+        ));
+    }
+    if defaults.iter().any(|index| *index >= options.len()) {
+        return Err(String::from(
+            "a default selection is outside the available range",
+        ));
+    }
+    let mut selected = vec![false; options.len()];
+    for index in defaults {
+        if let Some(value) = selected.get_mut(*index) {
+            *value = true;
+        }
+    }
+    let _cursor = interactive_choices(label, options, 0, &mut selected, true)?;
+    Ok(selected
+        .iter()
+        .enumerate()
+        .filter_map(|(index, is_selected)| if *is_selected { Some(index) } else { None })
+        .collect())
+}
+
+fn interactive_select(label: &str, options: &[&str], default: usize) -> Result<usize, String> {
+    let mut selected = vec![false; options.len()];
+    selected[default.min(options.len() - 1)] = true;
+    let index = interactive_choices(
+        label,
+        options,
+        default.min(options.len() - 1),
+        &mut selected,
+        false,
+    )?;
+    Ok(index)
+}
+
+fn interactive_choices(
+    label: &str,
+    options: &[&str],
+    mut cursor: usize,
+    selected: &mut [bool],
+    multiple: bool,
+) -> Result<usize, String> {
+    use crate::crossterm::ExecutableCommand;
+    use crate::crossterm::cursor::MoveUp;
+    use crate::crossterm::event::{self, Event, KeyCode, KeyEventKind, KeyModifiers};
+    use crate::crossterm::terminal::{Clear, ClearType, enable_raw_mode};
+    use crate::std::io::stdout;
+
+    enable_raw_mode().map_err(|error| error.to_string())?;
+    let _raw_mode = RawMode;
+    let mut output = stdout();
+    draw_choices(
+        &mut output,
+        label,
+        options,
+        cursor,
+        selected,
+        multiple,
+        false,
+    )
+    .map_err(|error| error.to_string())?;
+    loop {
+        match event::read().map_err(|error| error.to_string())? {
+            Event::Key(key) if matches!(key.kind, KeyEventKind::Press | KeyEventKind::Repeat) => {
+                match key.code {
+                    KeyCode::Up => cursor = cursor.saturating_sub(1),
+                    KeyCode::Down => cursor = (cursor + 1).min(options.len() - 1),
+                    KeyCode::Home => cursor = 0,
+                    KeyCode::End => cursor = options.len() - 1,
+                    KeyCode::Char(' ') if multiple => selected[cursor] = !selected[cursor],
+                    KeyCode::Enter => {
+                        if multiple {
+                            return Ok(cursor);
+                        }
+                        selected.fill(false);
+                        selected[cursor] = true;
+                        return Ok(cursor);
+                    }
+                    KeyCode::Esc | KeyCode::Char('q') => {
+                        return Err(String::from("selection cancelled"));
+                    }
+                    KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
+                        return Err(String::from("selection cancelled"));
+                    }
+                    KeyCode::Char(value) if !multiple && value.is_ascii_digit() => {
+                        let index = value.to_digit(10).unwrap_or(0) as usize;
+                        if index > 0 && index <= options.len() {
+                            return Ok(index - 1);
+                        }
+                    }
+                    _ => {}
+                }
+                output
+                    .execute(MoveUp((options.len() + 2) as u16))
+                    .and_then(|stream| stream.execute(Clear(ClearType::FromCursorDown)))
+                    .map_err(|error| error.to_string())?;
+                draw_choices(
+                    &mut output,
+                    label,
+                    options,
+                    cursor,
+                    selected,
+                    multiple,
+                    true,
+                )
+                .map_err(|error| error.to_string())?;
+            }
+            Event::Resize(_, _) => {
+                output
+                    .execute(MoveUp((options.len() + 2) as u16))
+                    .and_then(|stream| stream.execute(Clear(ClearType::FromCursorDown)))
+                    .map_err(|error| error.to_string())?;
+                draw_choices(
+                    &mut output,
+                    label,
+                    options,
+                    cursor,
+                    selected,
+                    multiple,
+                    true,
+                )
+                .map_err(|error| error.to_string())?;
+            }
+            _ => {}
+        }
+    }
+}
+
+fn draw_choices<W: Write>(
+    output: &mut W,
+    label: &str,
+    options: &[&str],
+    cursor: usize,
+    selected: &[bool],
+    multiple: bool,
+    redraw: bool,
+) -> crate::std::io::Result<()> {
+    if redraw {
+        write!(output, "{}", paint(label, Color::Accent))?;
+        output.write_all(b"\r\n")?;
+    } else {
+        writeln!(output, "{}", paint(label, Color::Accent))?;
+    }
+    for (index, option) in options.iter().enumerate() {
+        let marker = if index == cursor {
+            paint("›", Color::Green)
+        } else {
+            String::from(" ")
+        };
+        let check = if multiple {
+            if selected[index] { "[x]" } else { "[ ]" }
+        } else {
+            "   "
+        };
+        let value = crate::std::format!("  {marker} {check} {option}");
+        if index == cursor {
+            write!(output, "{}", reverse_video(&value))?;
+        } else {
+            write!(output, "{value}")?;
+        }
+        output.write_all(b"\r\n")?;
+    }
+    writeln!(
+        output,
+        "{}",
+        paint(
+            if multiple {
+                "↑/↓ move · space toggle · enter done · q cancel"
+            } else {
+                "↑/↓ move · enter select · number shortcut · q cancel"
+            },
+            Color::Muted
+        )
+    )?;
+    output.flush()
+}
+
+fn reverse_video(value: &str) -> String {
+    if colors_enabled() {
+        crate::std::format!("\u{1b}[7m{value}\u{1b}[0m")
+    } else {
+        crate::std::format!("› {value}")
+    }
+}
+
+struct RawMode;
+
+impl Drop for RawMode {
+    fn drop(&mut self) {
+        let _ = crate::crossterm::terminal::disable_raw_mode();
+    }
 }
 
 /// Display a simple aligned table.

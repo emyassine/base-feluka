@@ -11,6 +11,8 @@
 
 extern crate alloc;
 extern crate core;
+#[cfg(feature = "std")]
+extern crate crossterm;
 extern crate feluqa_console_macros;
 pub extern crate inventory;
 #[cfg(feature = "std")]
@@ -28,6 +30,47 @@ pub mod build;
 /// Interactive prompts and terminal output.
 #[cfg(feature = "std")]
 pub mod terminal;
+
+/// Status styles accepted by [`echo`].
+#[cfg(feature = "std")]
+pub use terminal::OutputStyle;
+/// Write a message with an explicit status style.
+#[cfg(feature = "std")]
+pub use terminal::echo;
+/// Write a message by its built-in style name.
+#[cfg(feature = "std")]
+pub use terminal::echo_kind;
+/// Write an empty output line.
+#[cfg(feature = "std")]
+pub use terminal::{blank_line, blankline};
+/// Print a callout, confirmation, error, info, table, text or warning message.
+#[cfg(feature = "std")]
+pub use terminal::{callout, confirm, error, info, success, table, text, warning};
+/// Interactive single and multiple selection prompts.
+#[cfg(feature = "std")]
+pub use terminal::{multiselect, select};
+
+/// Monotonic elapsed-time measurement for CLI tasks and request instrumentation.
+#[cfg(feature = "std")]
+pub struct Timer(std::time::Instant);
+
+#[cfg(feature = "std")]
+impl Timer {
+    /// Start measuring elapsed time.
+    pub fn start() -> Self {
+        Self(std::time::Instant::now())
+    }
+
+    /// Return the elapsed duration.
+    pub fn elapsed(&self) -> std::time::Duration {
+        self.0.elapsed()
+    }
+
+    /// Return the elapsed time in milliseconds.
+    pub fn elapsed_millis(&self) -> u128 {
+        self.elapsed().as_millis()
+    }
+}
 
 /// File and template generation for compiled console commands.
 #[cfg(feature = "std")]
@@ -105,7 +148,9 @@ use core::option::Option;
 use core::option::Option::{None, Some};
 use core::result::Result;
 use core::result::Result::{Err, Ok};
-use core::{write, writeln};
+use core::write;
+#[cfg(feature = "std")]
+use core::writeln;
 
 /// Result returned by a command handler.
 pub type CommandResult = Result<(), String>;
@@ -288,7 +333,7 @@ impl CommandRegistry {
         let mut paths: Vec<&str> = Vec::new();
         for command in &commands {
             for path in core::iter::once(command.name).chain(command.aliases.iter().copied()) {
-                if paths.iter().any(|known| *known == path) {
+                if paths.contains(&path) {
                     return Err(RegistryError::DuplicatePath(path.to_string()));
                 }
                 paths.push(path);
@@ -603,10 +648,9 @@ fn parse_descriptors<'a>(
                     .iter()
                     .zip(words.iter())
                     .all(|(part, word)| *part == word.as_str())
+                && best.map(|(_, length)| parts.len() > length).unwrap_or(true)
             {
-                if best.map(|(_, length)| parts.len() > length).unwrap_or(true) {
-                    best = Some((descriptor, parts.len()));
-                }
+                best = Some((descriptor, parts.len()));
             }
         }
     }
@@ -882,13 +926,20 @@ pub fn run_in_context(
         .select(requested.as_deref(), Some(binary_name))
         .map_err(|error| error.to_string())?;
     let registry = CommandRegistry::discover().map_err(|error| error.to_string())?;
+    if arguments.is_empty() && terminal::interactive() {
+        print_startup_notices(profile.id, command_context);
+    }
+    let is_help = arguments.is_empty()
+        || arguments
+            .first()
+            .is_some_and(|word| matches!(word.as_str(), "--help" | "-h" | "help"))
+        || arguments
+            .iter()
+            .any(|word| matches!(word.as_str(), "--help" | "-h"));
+    if !is_help {
+        print_startup_notices(profile.id, command_context);
+    }
     let parsed = if arguments.is_empty() && terminal::interactive() {
-        if let Some(notice) = profile_notice(profile.id) {
-            terminal::info(notice);
-        }
-        if let Some(notice) = context_notice(command_context) {
-            terminal::info(notice);
-        }
         let commands = registry.commands_in_context(profile.id, false, command_context);
         let selected = choose_command(&commands, "What would you like to do?")?;
         ParsedCommand {
@@ -951,28 +1002,39 @@ pub fn run_in_context(
     } else {
         match parse_in_context(&registry, profile.id, arguments, command_context) {
             Ok(parsed) => parsed,
-            Err(RegistryError::UnknownCommand(_)) if terminal::interactive() => {
-                let prefix = alloc::format!("{} ", arguments.join(" "));
+            Err(RegistryError::UnknownCommand(_)) => {
+                let prefix = arguments.join(" ");
                 let commands = registry
                     .commands_in_context(profile.id, false, command_context)
                     .into_iter()
-                    .filter(|command| command.name.starts_with(&prefix))
+                    .filter(|command| {
+                        command.name.starts_with(&prefix)
+                            && (command.name.len() > prefix.len() || command.name == prefix)
+                    })
                     .collect::<Vec<_>>();
                 if commands.is_empty() {
-                    return Err(parse_in_context(
-                        &registry,
-                        profile.id,
-                        arguments,
-                        command_context,
-                    )
-                    .err()
-                    .map(|error| error.to_string())
-                    .unwrap_or_else(|| String::from("no command is available here")));
+                    return Err(RegistryError::UnknownCommand(prefix).to_string());
                 }
-                let selected = choose_command(&commands, "Choose a command:")?;
-                ParsedCommand {
-                    descriptor: commands[selected],
-                    arguments: &arguments[arguments.len()..],
+                if terminal::interactive() {
+                    let selected = choose_command(&commands, "Choose a command:")?;
+                    ParsedCommand {
+                        descriptor: commands[selected],
+                        arguments: &arguments[arguments.len()..],
+                    }
+                } else if commands.len() == 1 {
+                    return Err(alloc::format!(
+                        "unknown command `{prefix}`. Did you mean `{}`?",
+                        commands[0].name
+                    ));
+                } else {
+                    let choices = commands
+                        .iter()
+                        .map(|command| command.name)
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    return Err(alloc::format!(
+                        "unknown command prefix `{prefix}`. Available commands: {choices}"
+                    ));
                 }
             }
             Err(error) => return Err(error.to_string()),
@@ -981,6 +1043,18 @@ pub fn run_in_context(
     let mut context =
         CommandContext::new_in_context(profile.id, command_context, parsed.arguments, host);
     (parsed.descriptor.handler)(&mut context).map_err(|error| error.to_string())
+}
+
+#[cfg(feature = "std")]
+fn print_startup_notices(profile: &str, context: &str) {
+    if let Some(notice) = profile_notice(profile) {
+        terminal::info(notice);
+        terminal::blankline();
+    }
+    if let Some(notice) = context_notice(context) {
+        terminal::info(notice);
+        terminal::blankline();
+    }
 }
 
 #[cfg(feature = "std")]

@@ -10,10 +10,11 @@ publish = ["feluqa"]
 
 [features]
 default = ["std"]
-std = []
+std = ["dep:crossterm"]
 build = ["std", "dep:syn"]
 
 [dependencies]
 inventory.workspace = true
+crossterm = { workspace = true, optional = true }
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros" }
 syn = { workspace = true, optional = true }

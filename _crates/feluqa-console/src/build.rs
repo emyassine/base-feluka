@@ -10,6 +10,7 @@ use std::ffi::OsStr;
 use std::fmt::Write;
 use std::fs;
 use std::iter::Iterator;
+use std::matches;
 use std::option::Option::{None, Some};
 use std::path::{Path, PathBuf};
 use std::println;
@@ -127,11 +128,13 @@ fn compile_profile_sources(source_root: &str, profiles: &[(String, String)]) -> 
     for (profile_id, command_directory) in profiles {
         let relative = Path::new(command_directory);
         if relative.is_absolute()
-            || relative.components().any(|part| match part {
-                std::path::Component::ParentDir
-                | std::path::Component::RootDir
-                | std::path::Component::Prefix(_) => true,
-                _ => false,
+            || relative.components().any(|part| {
+                matches!(
+                    part,
+                    std::path::Component::ParentDir
+                        | std::path::Component::RootDir
+                        | std::path::Component::Prefix(_)
+                )
             })
         {
             return Err(std::format!(

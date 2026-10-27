@@ -7,7 +7,7 @@ product; its `feluqa` and `nadim` profiles are its configuration
 of this general capability, not a rule that profiles belong to that product.
 The API is available when the `console` feature is enabled.
 
-**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile filtering, aliases, hidden-command handling, longest-path parsing, generated help, basic portable terminal prompts/output, and built-in file/template operations. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Products own their template data and choose which files to generate; `feluqa::console::generator` provides the cross-platform operations for safe relative paths, directory creation, non-overwriting file writes, placeholder replacement and module registration. Only deliberately reused command bodies belong in a shared-commands directory. The richer prompt set, shell completions and task/progress widgets remain in progress.
+**Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile and context filtering, aliases, hidden-command handling, longest-path parsing, generated help, colored status badges, arrow-key single/multiple selection, text and confirmation prompts, a monotonic timer, and built-in file/template operations. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Products own their template data and choose which files to generate; `feluqa::console::generator` provides the cross-platform operations for safe relative paths, directory creation, non-overwriting file writes, placeholder replacement and module registration. Only deliberately reused command bodies belong in a shared-commands directory. Search/autocomplete, form backtracking, progress/task widgets, shell completions and process supervision remain planned.
 
 ## Command names
 
@@ -176,6 +176,69 @@ The selected profile filters command help and dispatch; it does not grant
 permissions. Executable aliases select profiles from the same product. The
 product does not own the profile mechanism: any consumer can define its own
 profile list and command folders.
+
+The CLI roadmap keeps `feluqa` and `nadim` as independent profiles. Runtime
+command inspection (`feluqa ps`), an interactive multi-process screen, and
+workspace-safe `feluqa route:list <app-identifier>` are planned Console/CLI
+capabilities. They must use the active profile and context registries rather
+than hardcoded command lists.
+
+## Output, prompts and timing
+
+Use the console facade for consistent CLI output:
+
+```rust
+feluqa::console::echo("Scaffolding the application", feluqa::console::OutputStyle::Info);
+feluqa::console::blankline();
+feluqa::console::echo("Files created", "success".into());
+feluqa::console::echo_kind("Database ready", "info");
+feluqa::console::warning("The optional database is not configured.");
+feluqa::console::error("The requested application was not found.");
+```
+
+Status labels use contrasting background colors when output is an interactive
+terminal. `NO_COLOR`, `CLICOLOR=0`, redirected output and dumb terminals disable
+ANSI styling. `blankline()` and `blank_line()` are aliases.
+
+Single and multiple choice prompts use the arrow keys, Enter, and (for multiple
+choice) Space. Escape or `q` cancels. Non-interactive single-choice calls accept
+a number on stdin; multiple choice refuses to block a non-interactive process.
+
+```rust
+let environment = feluqa::console::select(
+    "Select an environment",
+    &["Development", "Staging", "Production"],
+    0,
+)?;
+let permissions = feluqa::console::multiselect(
+    "Select permissions",
+    &["Read", "Create", "Update", "Delete"],
+    &[0],
+)?;
+```
+
+`feluqa::console::Timer::start()` is a monotonic stopwatch. A command or web
+middleware can decide when to report its elapsed time; Console does not silently
+log every measurement. Keep handler time, whole server request time, and
+client-observed latency as separate measurements.
+
+Search/autocomplete, form backtracking, task output, progress bars and shell
+completions remain planned; they are not part of the current prompt API.
+
+## Process and route commands
+
+The next Console/CLI delivery should add:
+
+| Capability | Planned interface | Design requirement |
+|---|---|---|
+| Process inspection | `feluqa ps` / `feluqa processes` | Show only processes started and tracked by the selected product/profile; never imply visibility into unrelated OS processes. |
+| Interactive process screen | `feluqa screen` | Follow, stop and inspect managed child processes with explicit confirmation for termination. |
+| Route listing | `feluqa route:list <app-identifier>` | Resolve an application only inside the current Feluqa workspace and read route metadata from compiled route providers. |
+
+Console should provide the process table, lifecycle and screen primitives so a
+product does not build a second terminal engine. Web runtime request timing
+should use the same monotonic timer but expose separate handler and full-request
+durations.
 
 ## Rust toolchain commands
 

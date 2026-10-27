@@ -14,9 +14,16 @@ scope in its help. In interactive terminals, it offers command choices and
 prompts for required generator names; piped and scripted runs receive usage
 errors instead of blocking prompts.
 
-The command grammar, metadata, discovery, context filtering, aliases, styled
-help and prompt behavior are described in the
+The command grammar, metadata, discovery, context filtering, aliases, colored
+help and interactive prompt behavior are described in the
 [console design](../../../_todo/console/console.en.md).
+
+Interactive choices move with the arrow keys and confirm with Enter. Multi-
+selection uses Space to toggle options. Escape or `q` cancels. Console status
+messages use background-colored `INFO`, `SUCCESS`, `WARNING` and `ERROR` badges;
+set `NO_COLOR` to disable ANSI styling. The CLI prints the active profile and
+detected-location notice before running a command, so users know which command
+surface is available and when to switch between `feluqa` and `nadim`.
 
 ## Context detection
 
