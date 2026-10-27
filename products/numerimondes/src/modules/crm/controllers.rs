@@ -1,9 +1,9 @@
 #![no_implicit_prelude]
 
-use crate::app::controllers::panels::{protected_customer_page, session_csrf_valid};
 use crate::app::services::panel::PanelState;
 use crate::feluqa;
 use crate::modules::crm::validation::{valid_customer, valid_customer_email, valid_customer_name};
+use crate::modules::system::controllers::{protected_customer_page, session_csrf_valid};
 use crate::views;
 use feluqa::prelude::*;
 

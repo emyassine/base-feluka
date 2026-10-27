@@ -30,6 +30,9 @@ pub extern crate feluqa_core as core;
 /// Named database pools and dialect-specific migrations.
 #[cfg(feature = "database")]
 pub extern crate feluqa_database as database;
+/// Self-hosted SVG icon collections and safe asset-path helpers.
+#[cfg(feature = "imagery")]
+pub extern crate feluqa_imagery as imagery;
 /// Signed, authorized server action dispatch.
 #[cfg(feature = "live")]
 pub extern crate feluqa_live as live;
@@ -39,6 +42,9 @@ pub extern crate feluqa_module as module;
 /// Validated system and business panel registry.
 #[cfg(feature = "panel")]
 pub extern crate feluqa_panel as panel;
+/// Feluqa-owned default system panel provider and resource declarations.
+#[cfg(feature = "system-panel")]
+pub extern crate feluqa_system_panel as system_panel;
 /// Versioned UI schema and safe component renderer.
 #[cfg(feature = "ui")]
 pub extern crate feluqa_ui as ui;

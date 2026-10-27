@@ -48,6 +48,10 @@ const WEB_FILES: &[(&str, &str)] = &[
         include_str!("../../templates/web/main.rs.tmpl"),
     ),
     (
+        "src/service_provider.rs",
+        include_str!("../../templates/web/service-provider.rs.tmpl"),
+    ),
+    (
         "src/config.rs",
         include_str!("../../templates/web/config.rs.tmpl"),
     ),
@@ -58,10 +62,6 @@ const WEB_FILES: &[(&str, &str)] = &[
     (
         "src/modules/system/mod.rs",
         include_str!("../../templates/web/system-mod.rs.tmpl"),
-    ),
-    (
-        "src/modules/system/resource.rs",
-        include_str!("../../templates/web/system-resource.rs.tmpl"),
     ),
     (
         "src/modules/live.rs",
@@ -198,10 +198,6 @@ const WEB_FILES: &[(&str, &str)] = &[
     (
         "public/assets/site.css",
         include_str!("../../templates/web/site.css.tmpl"),
-    ),
-    (
-        "public/assets/feluqa-live.js",
-        include_str!("../../templates/web/feluqa-live.js.tmpl"),
     ),
     (
         "storage/.gitkeep",

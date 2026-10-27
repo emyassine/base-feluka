@@ -20,3 +20,18 @@ pub async fn about() -> Result<Html<String>, StatusCode> {
         .map(Html)
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
 }
+
+/// Serve the shared Feluqa Live client to the website and every panel.
+pub async fn live_client() -> Response {
+    feluqa::web::live_client()
+}
+
+/// Serve the framework panel theme and browser runtime to every panel.
+pub async fn filament_asset(Path(asset): Path<String>) -> Result<Response, StatusCode> {
+    match asset.as_str() {
+        "theme.css" => Ok(feluqa::web::panel_stylesheet()),
+        "panel.js" => Ok(feluqa::web::panel_client()),
+        "echo.js" => Ok(feluqa::web::panel_echo_client()),
+        _ => Err(StatusCode::NOT_FOUND),
+    }
+}

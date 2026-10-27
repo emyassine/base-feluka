@@ -423,9 +423,11 @@ dependencies = [
  "feluqa-console",
  "feluqa-core",
  "feluqa-database",
+ "feluqa-imagery",
  "feluqa-live",
  "feluqa-module",
  "feluqa-panel",
+ "feluqa-system-panel",
  "feluqa-ui",
  "feluqa-view",
  "serde",
@@ -480,6 +482,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "feluqa-imagery"
+version = "0.1.0"
+
+[[package]]
 name = "feluqa-live"
 version = "0.1.0"
 dependencies = [
@@ -511,6 +517,15 @@ dependencies = [
  "feluqa-auth",
  "feluqa-ui",
  "serde_json",
+]
+
+[[package]]
+name = "feluqa-system-panel"
+version = "0.1.0"
+dependencies = [
+ "feluqa-auth",
+ "feluqa-panel",
+ "feluqa-ui",
 ]
 
 [[package]]

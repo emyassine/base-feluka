@@ -126,16 +126,6 @@ pub fn panel_catalog() -> Result<PanelCatalog, PanelCatalogError> {
     Ok(catalog)
 }
 
-pub(crate) fn system_panel() -> Result<Panel, PanelError> {
-    dashboard_panel(
-        "system",
-        "Feluqa Core",
-        "/system",
-        PanelKind::System,
-        "system.dashboard.read",
-    )
-}
-
 fn dashboard_panel(
     id: &str,
     title: &str,

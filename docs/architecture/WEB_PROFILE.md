@@ -20,7 +20,7 @@ Le profil Web cible est un framework **MVC modulaire**, avec un panneau d'admini
 
 | Élément | Rôle attendu | Règle |
 |---|---|---|
-| Routes | Associer méthode + chemin + middleware à une action de contrôleur | Déclarations statiques dans `routes/web.rs`, `routes/api.rs` et `routes/console.rs`; vérification des collisions au build ou au démarrage. |
+| Routes | Associer méthode + chemin + middleware à une action de contrôleur | Chaque site, panel ou module déclare ses routes dans son propre `routes.rs`; `routes/web.rs` assemble uniquement les routeurs et ajoute les couches globales. Vérification des collisions au démarrage. |
 | Contrôleurs | Adapter HTTP à l'application : valider l'enveloppe de requête, appeler policy/service, choisir réponse ou vue | Pas de SQL, de règle ERP ni de logique métier dans le contrôleur. |
 | Modèles | Représenter les objets métier et leurs opérations de persistance/requêtes | Pas de dépendance au protocole HTTP ni au rendu. Les DTO d'entrée/sortie restent explicites. |
 | Services | Exécuter les cas d'usage et transactions métier | Source commune pour le web, l'API, la CLI et Live. |

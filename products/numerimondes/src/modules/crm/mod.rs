@@ -5,6 +5,7 @@ pub mod model;
 pub mod policies;
 pub mod providers;
 pub mod resource;
+pub mod routes;
 pub mod services;
 mod validation;
 

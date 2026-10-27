@@ -6,6 +6,17 @@
 
 //! Startup-validated registries for system and business panels.
 
+/// Stable browser path used by all Feluqa web panels for Live interactions.
+pub const LIVE_CLIENT_PATH: &str = "/assets/feluqa-live.js";
+/// First-party Feluqa Live browser client served by the web adapter.
+pub const LIVE_CLIENT_JS: &str = include_str!("../assets/feluqa-live.js");
+/// Filament-derived panel theme CSS from the Webkernel Filament adaptation.
+pub const FILAMENT_THEME_CSS: &str = include_str!("../assets/filament-theme.css");
+/// Filament-derived panel browser runtime from the Webkernel Filament adaptation.
+pub const FILAMENT_CLIENT_JS: &str = include_str!("../assets/filament.js");
+/// Filament Echo integration bundle from the Webkernel Filament adaptation.
+pub const FILAMENT_ECHO_JS: &str = include_str!("../assets/filament-echo.js");
+
 extern crate alloc;
 extern crate core;
 extern crate feluqa_auth;
@@ -1059,6 +1070,11 @@ impl PanelCatalog {
         provider: &impl PanelProvider,
     ) -> Result<(), PanelCatalogError> {
         provider.register(self)
+    }
+
+    /// Iterate registered panels in stable identifier order.
+    pub fn panels(&self) -> impl Iterator<Item = &Panel> {
+        self.panels.panels()
     }
 
     /// Register a panel only when none of its pages collide with a module resource route.

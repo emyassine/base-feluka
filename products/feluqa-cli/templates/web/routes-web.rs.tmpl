@@ -29,6 +29,8 @@ pub(crate) fn routes(
     live_runtime: Option<LiveRuntime>,
 ) -> Result<Router<DatabasePools>, RouteError> {
     let routes = Route::<DatabasePools>::new()
+        .get(feluqa::panel::LIVE_CLIENT_PATH, site::live_client)
+        .get("/assets/feluqa/{asset}", site::panel_asset)
         .get("/", site::home)
         .get("/health", site::health)
         .on(

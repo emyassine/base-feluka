@@ -34,6 +34,7 @@ pub async fn run(database: &DatabaseConnection) -> Result<(), Box<dyn Error>> {
             continue;
         }
         crate::modules::crm::model::ActiveModel {
+            tenant_id: Set(1),
             name: Set(String::from(name)),
             email: Set(String::from(email)),
             ..Default::default()

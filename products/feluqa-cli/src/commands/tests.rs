@@ -75,12 +75,16 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
 
     let application = directory.join("products/customer-portal");
     assert!(context::read_application(&application).is_ok());
+    assert!(application.join("src/service_provider.rs").is_file());
+    assert!(
+        fs::read_to_string(application.join("feluqa.toml"))
+            .expect("Feluqa manifest")
+            .contains("service_provider = \"src/service_provider.rs\"")
+    );
     assert!(application.join("src/routes/web.rs").is_file());
     assert!(application.join("src/modules/mod.rs").is_file());
     assert!(application.join("src/modules/live.rs").is_file());
     assert!(application.join("src/app/controllers/live.rs").is_file());
-    assert!(application.join("public/assets/feluqa-live.js").is_file());
-    assert!(application.join("src/modules/system/resource.rs").is_file());
     assert!(application.join("src/modules/seeders/mod.rs").is_file());
     assert!(application.join("src/app/controllers/site.rs").is_file());
     assert!(application.join("src/app/controllers/panels.rs").is_file());
@@ -97,10 +101,11 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     );
     let modules = fs::read_to_string(application.join("src/modules/mod.rs"))
         .expect("system and ERP panel catalogue");
-    assert!(modules.contains("system.dashboard.read"));
+    assert!(modules.contains("catalog.register_provider(&system::CorePanelProvider)?;"));
     assert!(modules.contains("business.erp.manage"));
-    assert!(modules.contains("register_resource(system::resource::ROLES)"));
-    assert!(modules.contains("register_resource(system::resource::USERS)"));
+    let system_provider = fs::read_to_string(application.join("src/modules/system/mod.rs"))
+        .expect("built-in Feluqa Core panel provider");
+    assert!(system_provider.contains("feluqa::system_panel::SystemPanelProvider"));
     let roles_view =
         fs::read_to_string(application.join("src/modules/system/views/pages/system_roles.view.rs"))
             .expect("resource driven Core role view");

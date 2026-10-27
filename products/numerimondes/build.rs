@@ -4,18 +4,25 @@
 
 extern crate feluqa;
 extern crate std;
+extern crate toml;
 
 use feluqa::view::compiler::Compiler;
 use std::boxed::Box;
-use std::convert::From;
+use std::convert::{From, Into};
 use std::env;
 use std::error::Error;
-use std::path::PathBuf;
+use std::format;
+use std::io::{Error as IoError, ErrorKind};
+use std::iter::Iterator;
+use std::matches;
+use std::option::Option::Some;
+use std::path::{Component, Path, PathBuf};
 use std::println;
-use std::result::Result::{self, Ok};
+use std::result::Result::{self, Err, Ok};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let project = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
+    configure_service_provider(&project)?;
     let output = PathBuf::from(env::var("OUT_DIR")?);
     let mut compiler = Compiler::new();
     compiler.add_root("app", &project.join("resources/views"))?;
@@ -95,5 +102,51 @@ fn main() -> Result<(), Box<dyn Error>> {
         &output.join("migrations.rs"),
     )?;
     println!("cargo:rerun-if-changed=build.rs");
+    Ok(())
+}
+
+fn configure_service_provider(project: &Path) -> Result<(), Box<dyn Error>> {
+    let manifest_path = project.join("feluqa.toml");
+    println!("cargo:rerun-if-changed={}", manifest_path.display());
+    let manifest: toml::Value = toml::from_str(&std::fs::read_to_string(&manifest_path)?)?;
+    let provider = manifest
+        .get("app")
+        .and_then(|app| app.get("service_provider"))
+        .and_then(toml::Value::as_str)
+        .ok_or_else(|| {
+            IoError::new(
+                ErrorKind::InvalidData,
+                "feluqa.toml must set app.service_provider to a Rust source path",
+            )
+        })?;
+    let provider_path = Path::new(provider);
+    if provider_path.is_absolute()
+        || provider_path.components().any(|component| {
+            matches!(
+                component,
+                Component::ParentDir | Component::RootDir | Component::Prefix(_)
+            )
+        })
+        || provider_path
+            .extension()
+            .and_then(|extension| extension.to_str())
+            != Some("rs")
+    {
+        return Err(IoError::new(
+            ErrorKind::InvalidInput,
+            "app.service_provider must be a relative .rs path inside the application",
+        )
+        .into());
+    }
+    let source = project.join(provider_path);
+    if !source.is_file() {
+        return Err(format!(
+            "service provider source does not exist: {}",
+            source.display()
+        )
+        .into());
+    }
+    println!("cargo:rerun-if-changed={}", source.display());
+    println!("cargo:rustc-env=FELUQA_SERVICE_PROVIDER={provider}");
     Ok(())
 }

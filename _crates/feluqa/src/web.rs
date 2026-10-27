@@ -8,6 +8,7 @@ use crate::axum;
 use crate::core::service::CoreStore;
 use crate::rust_core as core;
 use crate::rust_core::clone::Clone;
+use crate::rust_core::convert::From;
 use crate::rust_core::default::Default;
 use crate::rust_core::iter::Iterator;
 use crate::rust_core::marker::{Send, Sync};
@@ -57,6 +58,44 @@ pub fn database_error(error: crate::database::orm::DbErr) -> StatusCode {
 /// Mark output from Feluqa's fixed panel renderer as safe for a compiled view's raw slot.
 pub fn trusted_panel_html(rendered: crate::panel::RenderedHtml) -> crate::view::TrustedHtml {
     crate::view::TrustedHtml::from_trusted(rendered.as_str().to_string())
+}
+
+/// Serve the shared Feluqa Live browser client to all panel types.
+pub fn live_client() -> Response {
+    asset_response(
+        crate::panel::LIVE_CLIENT_JS,
+        "text/javascript; charset=utf-8",
+    )
+}
+
+/// Serve the shared Filament-derived panel stylesheet.
+pub fn panel_stylesheet() -> Response {
+    asset_response(crate::panel::FILAMENT_THEME_CSS, "text/css; charset=utf-8")
+}
+
+/// Serve the shared Filament-derived panel browser runtime.
+pub fn panel_client() -> Response {
+    asset_response(
+        crate::panel::FILAMENT_CLIENT_JS,
+        "text/javascript; charset=utf-8",
+    )
+}
+
+/// Serve the optional Filament Echo browser integration.
+pub fn panel_echo_client() -> Response {
+    asset_response(
+        crate::panel::FILAMENT_ECHO_JS,
+        "text/javascript; charset=utf-8",
+    )
+}
+
+fn asset_response(asset: &'static str, content_type: &'static str) -> Response {
+    let mut response = Response::new(axum::body::Body::from(asset));
+    response.headers_mut().insert(
+        axum::http::header::CONTENT_TYPE,
+        axum::http::HeaderValue::from_static(content_type),
+    );
+    response
 }
 
 /// Validate a mutation's `x-csrf-token` header against the readable CSRF cookie

@@ -2,26 +2,12 @@
 
 use crate::feluqa;
 use crate::std::result::Result;
-use crate::std::result::Result::Ok;
-use feluqa::panel::{PanelCatalog, PanelCatalogError, PanelProvider};
 
-pub mod resource;
+pub use feluqa::system_panel::resource;
 
-/// Provider for Feluqa Core's system panel and administration resources.
-pub struct CorePanelProvider;
-impl PanelProvider for CorePanelProvider {
-    fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {
-        catalog.register_panel(crate::modules::system_panel()?)?;
-        catalog.register_resource(resource::USERS)?;
-        catalog.register_resource(resource::ROLES)?;
-        catalog.register_resource(resource::MODULES)?;
-        catalog.register_resource(resource::CONNECTIONS)?;
-        catalog.register_resource(resource::MIGRATIONS)?;
-        catalog.register_resource(resource::AUDIT)?;
-        catalog.register_resource(resource::TENANTS)?;
-        Ok(())
-    }
-}
+pub use feluqa::system_panel::SystemPanelProvider as CorePanelProvider;
+pub mod controllers;
+pub mod routes;
 
 /// Registers Feluqa Core's compiled migration and lifecycle participant.
 pub struct CoreServiceProvider;

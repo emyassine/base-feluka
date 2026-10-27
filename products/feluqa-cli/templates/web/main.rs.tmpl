@@ -18,6 +18,9 @@ mod app;
 mod config;
 mod modules;
 mod routes;
+mod service_provider {
+    include!(concat!(env!("CARGO_MANIFEST_DIR"), "/", env!("FELUQA_SERVICE_PROVIDER")));
+}
 mod generated_migrations {
     include!(concat!(env!("OUT_DIR"), "/migrations.rs"));
 }
@@ -80,7 +83,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             feluqa::database::MigrationRunner::run_declared(&databases, module).await?;
         }
     }
-    let panel_catalog = modules::panel_catalog()?;
+    let panel_catalog = service_provider::panel_catalog()?;
     if command == "migrate" {
         return Ok(());
     }

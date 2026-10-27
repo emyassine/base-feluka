@@ -1,0 +1,11 @@
+[package]
+name = "feluqa-imagery"
+version = "0.1.0"
+description = "Feluqa icon registry and self-hosted SVG assets."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dev-dependencies]
