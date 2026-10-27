@@ -22,6 +22,7 @@ The view compiler and first authz/UI-schema/panel/Live/module contracts now exis
 
 ## Product and architecture
 
+- [Web profile: modular MVC, Core panel, ERP modules, migrations, and databases](architecture/WEB_PROFILE.md)
 - [Product decisions and requirements](architecture/DECISIONS.md)
 - [Open and deferred decisions](architecture/DECISIONS_LATER.md)
 

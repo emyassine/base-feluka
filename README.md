@@ -28,6 +28,8 @@ The build-time view compiler now handles `.view.rs` templates with typed paramet
 
 The `feluqa` facade defaults to the `web` feature set, and offers `spa`, `mobile`, `desktop`, `game` and `realtime` profiles. Set `default-features = false` to avoid linking web-profile crates. `auth`, `ui`, `panel`, and `module` are `no_std` + `alloc`; `live` currently requires `std`. Current contracts provide versioned, validated UI JSON and a small safe server renderer; exact permission checks; a system/business panel registry; HMAC-signed typed actions with replay protection; and deterministic static-module startup/shutdown. Sessions, persisted roles/audit, UI rendering/browser transport, a distributed replay store, plugin loading and production panel routes are not implemented yet.
 
+**The current web scaffold is not yet an MVC application framework, and no usable admin/ERP panel is shipped yet.** The intended Web architecture is a modular MVC framework with Feluqa Core at `/system`, app-specific ERP panels at `/admin`, and per-module dialect migrations with named database connections. See [the Web profile architecture and current delivery gap](docs/architecture/WEB_PROFILE.md).
+
 ## Repository layout
 
 The repository root is reserved for products, documentation, and generated build output. The Cargo workspace and lockfile live under `_crates/`. The compiler version is managed by developer and CI environments; packages declare the minimum Rust version they support.
