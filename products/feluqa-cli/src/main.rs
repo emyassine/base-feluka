@@ -6,7 +6,6 @@ extern crate feluqa;
 extern crate std;
 
 use feluqa::console::{MakeConsole, Profile};
-use std::iter::Iterator;
 use std::process::ExitCode;
 
 /// Every executable and the build-time command scanner use this single profile table.
