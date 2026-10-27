@@ -23,11 +23,7 @@
           <div class="fi-global-search">
             <div class="fi-global-search-field">
               <label for="feluqa-panel-search" class="fi-sr-only">Search navigation</label>
-              <div class="fi-input-wrp">
-                <div class="fi-input-wrp-prefix fi-input-wrp-prefix-has-content fi-inline" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-4-4"/></svg></div>
-                <div class="fi-input-wrp-content-ctn"><input id="feluqa-panel-search" class="fi-input" type="search" autocomplete="off" placeholder="Search" data-feluqa-nav-search></div>
-                <div class="fi-input-wrp-suffix fi-inline"><span class="fi-input-wrp-label">⌘K</span></div>
-              </div>
+              <x-feluqa-panel::input-wrapper suffix="⌘K"><input id="feluqa-panel-search" class="fi-input fi-input-has-inline-prefix" type="search" autocomplete="off" placeholder="Search" data-feluqa-nav-search></x-feluqa-panel::input-wrapper>
             </div>
           </div>
         </div>
@@ -47,6 +43,7 @@
               <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="dark" aria-label="Dark theme" title="Dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 15.75A8.25 8.25 0 0 1 8.25 3.75a8.25 8.25 0 1 0 12 12Z"/></svg></button>
               <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="system" aria-label="System theme" title="System"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4"/></svg></button>
             </div>
+            <x-feluqa-panel::language-selector :csrf_token="csrf_token" :active="active" />
             <form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="fi-user-menu-logout" type="submit">Sign out</button></form>
           </div>
         </details>

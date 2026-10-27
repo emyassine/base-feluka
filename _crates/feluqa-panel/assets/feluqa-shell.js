@@ -11,6 +11,23 @@
   const search = sidebar.querySelector('[data-feluqa-nav-search]');
   const themeButtons = document.querySelectorAll('[data-feluqa-theme]');
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+  const languageSelector = document.querySelector('[data-feluqa-language-selector]');
+
+  if (languageSelector) {
+    const localeCookie = document.cookie.split(';').map((value) => value.trim()).find((value) => value.startsWith('feluqa_locale='));
+    const supported = ['en', 'fr', 'ar', 'es', 'de', 'pt'];
+    const locale = localeCookie?.slice('feluqa_locale='.length);
+    const activeLocale = supported.includes(locale) ? locale : 'en';
+    const label = languageSelector.querySelector('[data-feluqa-locale-label]');
+    if (label) label.textContent = activeLocale.toUpperCase();
+    languageSelector.querySelectorAll('[data-feluqa-locale-option]').forEach((button) => {
+      const selected = button.dataset.feluqaLocaleOption === activeLocale;
+      button.setAttribute('aria-current', selected ? 'true' : 'false');
+      if (selected) button.insertAdjacentHTML('beforeend', '<span class="w-lang-selected" aria-hidden="true">✓</span>');
+    });
+    document.documentElement.lang = activeLocale;
+    document.documentElement.dir = activeLocale === 'ar' ? 'rtl' : 'ltr';
+  }
 
   const applyTheme = (theme, persist) => {
     currentTheme = theme;

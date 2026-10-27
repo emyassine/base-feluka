@@ -580,7 +580,7 @@ fn render_form(
             render_input(props, output)?;
         }
     }
-    output.push_str("<button type=\"submit\">");
+    output.push_str("<button type=\"submit\" class=\"fi-btn fi-btn-size-md fi-btn-color-primary\">");
     push_escaped(output, submit);
     output.push_str("</button></form>");
     Ok(())
@@ -632,13 +632,17 @@ fn render_input(
     if !valid_html_id(&id) {
         return Err(RenderError::InvalidPropertyValue("id"));
     }
-    output.push_str("<label for=\"");
+    output.push_str("<div class=\"fi-fo-field-wrp\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
     push_escaped(output, &id);
-    output.push_str("\">");
+    output.push_str("\"><span class=\"fi-fo-field-label-content\">");
     push_escaped(output, label);
-    output.push_str("</label>");
+    output.push_str("</span>");
+    if required {
+        output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
+    }
+    output.push_str("</label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\">");
     if input_type == "textarea" {
-        output.push_str("<textarea id=\"");
+        output.push_str("<textarea class=\"fi-textarea\" id=\"");
         push_escaped(output, &id);
         output.push_str("\" name=\"");
         push_escaped(output, name);
@@ -656,7 +660,7 @@ fn render_input(
         push_escaped(output, value);
         output.push_str("</textarea>");
     } else {
-        output.push_str("<input id=\"");
+        output.push_str("<input class=\"fi-input\" id=\"");
         push_escaped(output, &id);
         output.push_str("\" name=\"");
         push_escaped(output, name);
@@ -676,6 +680,7 @@ fn render_input(
         }
         output.push('>');
     }
+    output.push_str("</div></div></div></div>");
     Ok(())
 }
 
@@ -720,11 +725,15 @@ fn render_select(
         }
     }
 
-    output.push_str("<label for=\"");
+    output.push_str("<div class=\"fi-fo-field-wrp\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
     push_escaped(output, id);
-    output.push_str("\">");
+    output.push_str("\"><span class=\"fi-fo-field-label-content\">");
     push_escaped(output, label);
-    output.push_str("</label><select id=\"");
+    output.push_str("</span>");
+    if required {
+        output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
+    }
+    output.push_str("</label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\"><select class=\"fi-select-input\" id=\"");
     push_escaped(output, id);
     output.push_str("\" name=\"");
     push_escaped(output, name);
@@ -771,7 +780,7 @@ fn render_select(
         push_escaped(output, label);
         output.push_str("</option>");
     }
-    output.push_str("</select>");
+    output.push_str("</select></div></div></div></div>");
     Ok(())
 }
 
@@ -808,19 +817,19 @@ fn render_table(
         .and_then(Value::as_array)
         .filter(|headers| !headers.is_empty() && headers.len() <= 32)
         .ok_or(RenderError::InvalidPropertyType("headers"))?;
-    output.push_str("<table class=\"feluqa-table\"><caption>");
+    output.push_str("<div class=\"fi-ta\"><div class=\"fi-ta-ctn fi-ta-ctn-with-header\"><div class=\"fi-ta-header-ctn\"><div class=\"fi-ta-header\"><div><h3 class=\"fi-ta-header-heading\">");
     push_escaped(output, caption);
-    output.push_str("</caption><thead><tr>");
+    output.push_str("</h3></div></div></div><div class=\"fi-ta-content-ctn\"><div class=\"fi-ta-content\"><table class=\"fi-ta-table\"><thead><tr class=\"fi-ta-row\">");
     for header in headers {
         let header = header
             .as_str()
             .filter(|header| !header.trim().is_empty() && header.len() <= 512)
             .ok_or(RenderError::InvalidPropertyValue("headers"))?;
-        output.push_str("<th scope=\"col\">");
+        output.push_str("<th scope=\"col\" class=\"fi-ta-header-cell\"><span class=\"fi-ta-header-cell-label\">");
         push_escaped(output, header);
-        output.push_str("</th>");
+        output.push_str("</span></th>");
     }
-    output.push_str("</tr></thead><tbody>");
+    output.push_str("</tr></thead><tbody class=\"fi-ta-rows\">");
     for row in rows {
         let UiNode::Component {
             name,
@@ -860,7 +869,7 @@ fn render_table(
         }
         output.push_str("</tr>");
     }
-    output.push_str("</tbody></table>");
+        output.push_str("</tbody></table></div></div></div></div>");
     Ok(())
 }
 
