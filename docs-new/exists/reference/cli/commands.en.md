@@ -18,6 +18,13 @@ context takes precedence, including when the app is a workspace member.
 | Feluqa workspace root | Global `help`, `--version`, `new`, `list`; explicit-target `migrate <app>` and `seed <app> <seeder-id>`, resolved only within that workspace. |
 | Unrelated directory | Global `help`, `--version`, `new`. App commands fail with a context error before invoking Cargo or mutating files. |
 
+IDE support commands are planned as a context-independent global namespace.
+They will work from all three contexts above and will not require app or
+workspace detection. They are not implemented yet; see the
+[IDE command plan](../../../_todo/editor/ide-support-commands.en.md) for the
+proposed `feluqa support:ide view-highlight --ide=<name>` interface and
+editor-neutral Tree-sitter target.
+
 The CLI does not use the installed binary's build path to find an app and does
 not scan workspaces after detecting an app. `update` is reserved for a future
 distribution channel and is not implemented. An explicit app target is

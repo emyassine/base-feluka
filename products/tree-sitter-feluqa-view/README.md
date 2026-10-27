@@ -6,7 +6,7 @@ that are compiled with the application.
 
 ## Supported syntax
 
-- HTML elements, void/self-closing elements, attributes and quoted values
+- Nested HTML elements, explicit self-closing tags, attributes and quoted values
 - HTML entities, comments, doctypes, and script/style content
 - `{{ expression }}` escaped output and `{!! expression !!}` raw output
 - Rust expressions in bound attributes such as `:title="page.title"`
@@ -18,6 +18,10 @@ The grammar is registered as `feluqa_view`; the Zed extension recognizes the
 compound `.view.rs` suffix. Rust highlighting is supplied by the extension's
 injection query. The external scanner protects closing markers inside Rust
 strings, raw strings, character literals, and comments.
+
+HTML void-element inference and tag-name-aware closing-tag recovery are not
+implemented yet; markup that omits a void element's closing syntax may produce
+an imperfect syntax tree.
 
 ## Generate
 

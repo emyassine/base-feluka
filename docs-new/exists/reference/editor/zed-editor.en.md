@@ -52,17 +52,31 @@ detected as Feluqa Views and that ordinary `main.rs` remains Rust.
 
 ## Grammar and queries
 
-The grammar recognizes HTML/template elements, registered components and
-slots, static and bound attributes, escaped/trusted expressions, Rust blocks,
-conditions, loops, includes, layouts, sections and template comments.
+The generated grammar has parsed a representative sample containing a
+doctype, nested HTML, static and Rust-bound attributes, escaped output,
+components, conditionals and script content. It also defines includes, layouts,
+sections, loops and template comments.
 `highlights.scm` colors those nodes; `injections.scm` embeds Rust only in the
 Rust expression/block regions. Bracket, indentation and outline queries must
 reference node names that exist in the generated `node-types.json`.
+
+The parser has not yet adopted a stateful HTML tag scanner. Matching tag names,
+implicit end tags and malformed-HTML recovery are incomplete. A parser smoke
+parse confirms basic effectiveness but does not establish full HTML parity or
+interactive Zed acceptance.
 
 The parser should recover from incomplete edits without interpreting the rest
 of a file as Rust. Rust string/raw-string/comment boundaries matter for
 `@rs`, `}}` and nested delimiters. Highlighting and injection do not provide
 Rust name resolution or rust-analyzer diagnostics for template expressions.
+
+Zed is the current editor adapter, not the grammar's only intended consumer.
+The canonical Tree-sitter parser, query files and conformance fixtures should
+remain editor-neutral. VS Code requires its own TextMate highlighting adapter;
+IntelliJ IDEA requires a native language plugin adapter. The planned generic
+Tree-sitter export is intended for other editors that can load custom grammars.
+The global CLI proposal takes an explicit `--ide=...` target; see the
+[IDE support plan](../../../_todo/editor/ide-support-commands.en.md).
 
 The compiler remains the semantic authority. Grammar, compiler and docs should
 share fixtures and a versioned language contract; new syntax changes all of

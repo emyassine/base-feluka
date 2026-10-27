@@ -7,6 +7,7 @@ Do not promote an item to `exists/` until its acceptance evidence passes.
 - [Open architecture decisions](open-decisions.en.md)
 - [Webkernel view compatibility and port sequence](views/webkernel-view-compatibility.en.md)
 - [Browser testing research](testing/browser-testing-research.en.md)
+- [Global IDE support commands](editor/ide-support-commands.en.md)
 
 Dynamic module installation, per-domain license enforcement, full Filament
 theme/component parity, generic CRUD and production deployment/restore remain

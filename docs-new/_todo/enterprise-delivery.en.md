@@ -12,7 +12,7 @@ change calendar time. `exists/` describes what has actually been verified.
 |---|---:|---|
 | F0. Webkernel language/component inventory and shared conformance fixtures | 3–5 days | Complete the directive/component matrix and connect compiler, Tree-sitter and editor fixtures. |
 | F1. `.view.rs` compiler | 10–16 days | Initial compiler exists; finish the grammar contract, diagnostics and conformance checks across build profiles. |
-| F2. Tree-sitter and Zed | 6–10 days | Grammar/package generation exist; install in a pinned Zed release and verify suffix detection, injections, highlighting and recovery. |
+| F2. Tree-sitter and Zed | 6–10 days | Grammar/package generation exist and a representative parser smoke sample succeeds; port stateful HTML tag matching/recovery, add shared compiler/grammar fixtures, then install in a pinned Zed release and verify suffix detection, injections, highlighting and recovery. Global IDE CLI commands are estimated separately at 2–4 days. |
 | F3. Components and SDUI | 12–20 days | Initial schema and renderer exist; add typed props/slots, accessible forms, theme APIs and browser-tested behavior. |
 | F4. Data, Core and panels | 15–25 days | Database, auth and vertical panel slices exist; finish generic resources/actions, tenant lifecycle, PostgreSQL HTTP coverage and restore. |
 | F5. Live actions | 10–18 days | Signed typed dispatch exists; add shared replay protection, client reconciliation/focus handling and failure/reconnect tests. |
@@ -22,6 +22,11 @@ change calendar time. `exists/` describes what has actually been verified.
 These tracks have dependencies and some can run in parallel. Do not sum the
 ranges as a committed schedule; re-estimate after each acceptance gate exposes
 the actual integration work.
+
+The global `feluqa support:ide ...` command family and its context rules are
+specified in the [IDE support plan](editor/ide-support-commands.en.md). These
+commands are available regardless of app/module/workspace context; they are
+not implemented yet.
 
 ## Release gates
 
