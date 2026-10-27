@@ -7,6 +7,7 @@ members = [
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-panel",
+    "feluqa-notifications",
     "feluqa-system-panel",
     "feluqa-imagery",
     "feluqa-live",

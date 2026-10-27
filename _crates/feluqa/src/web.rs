@@ -60,6 +60,23 @@ pub fn trusted_panel_html(rendered: crate::panel::RenderedHtml) -> crate::view::
     crate::view::TrustedHtml::from_trusted(rendered.as_str().to_string())
 }
 
+/// Mark navigation HTML rendered from a validated panel provider as safe view content.
+pub fn trusted_navigation_html(
+    rendered: crate::panel::RenderedNavigation,
+) -> crate::view::TrustedHtml {
+    crate::view::TrustedHtml::from_trusted(rendered.as_str().to_string())
+}
+
+/// Render one validated notification with Feluqa's fixed-tag panel markup.
+pub fn notification_html(
+    notification: &crate::notifications::Notification,
+) -> Result<crate::view::TrustedHtml, crate::notifications::NotificationError> {
+    let rendered = notification.render()?;
+    Ok(crate::view::TrustedHtml::from_trusted(
+        rendered.as_str().to_string(),
+    ))
+}
+
 /// Serve the shared Feluqa Live browser client to all panel types.
 pub fn live_client() -> Response {
     asset_response(
@@ -97,6 +114,14 @@ pub fn panel_echo_client() -> Response {
     )
 }
 
+/// Serve the framework-owned notification toast lifecycle client.
+pub fn notifications_client() -> Response {
+    asset_response(
+        crate::panel::NOTIFICATIONS_CLIENT_JS,
+        "text/javascript; charset=utf-8",
+    )
+}
+
 /// Serve one framework-owned Filament panel asset by its stable public filename.
 pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, StatusCode> {
     match asset.as_str() {
@@ -104,6 +129,7 @@ pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, St
         "panel.css" => Ok(panel_adapter_stylesheet()),
         "panel.js" => Ok(panel_client()),
         "echo.js" => Ok(panel_echo_client()),
+        "notifications.js" => Ok(notifications_client()),
         _ => Err(StatusCode::NOT_FOUND),
     }
 }

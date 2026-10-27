@@ -3,7 +3,9 @@
 use crate::app::services::panel::PanelState;
 use crate::feluqa;
 use crate::modules::crm::validation::{valid_customer, valid_customer_email, valid_customer_name};
-use crate::modules::system::controllers::{protected_customer_page, session_csrf_valid};
+use crate::modules::system::controllers::{
+    protected_customer_page, registered_panel_navigation, session_csrf_valid,
+};
 use crate::views;
 use feluqa::prelude::*;
 
@@ -123,11 +125,19 @@ pub async fn crm_customers(
         page: customer_page.page,
         page_count: customer_page.page_count,
     };
+    let navigation =
+        match registered_panel_navigation(&state, &access.identity, "business", "/admin/customers")
+            .await
+        {
+            Ok(navigation) => navigation,
+            Err(status) => return status.into_response(),
+        };
     match views::generated_views::crm_customers(
         &access.identity.display_name,
         &access.identity.email,
         access.csrf,
         &panel,
+        navigation,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

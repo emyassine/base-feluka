@@ -54,7 +54,7 @@ pub async fn system_modules(State(state): State<PanelState>, headers: HeaderMap)
         Ok(table) => table,
         Err(status) => return status.into_response(),
     };
-    render_core_resource(&identity, "Modules", table)
+    render_core_resource(&state, &identity, "Modules", "/system/modules", table).await
 }
 
 /// List connection names and dialects without displaying connection URLs or secrets.
@@ -95,7 +95,14 @@ pub async fn system_connections(State(state): State<PanelState>, headers: Header
         Ok(table) => table,
         Err(status) => return status.into_response(),
     };
-    render_core_resource(&identity, "Database connections", table)
+    render_core_resource(
+        &state,
+        &identity,
+        "Database connections",
+        "/system/connections",
+        table,
+    )
+    .await
 }
 
 /// Inspect migration status for each registered module and named database.
@@ -155,11 +162,23 @@ pub async fn system_migrations(State(state): State<PanelState>, headers: HeaderM
         }
     }
     let run_actions = feluqa::view::TrustedHtml::from_trusted(actions);
+    let navigation = match registered_panel_navigation(
+        &state,
+        &identity,
+        "system",
+        "/system/migrations",
+    )
+    .await
+    {
+        Ok(navigation) => navigation,
+        Err(status) => return status.into_response(),
+    };
     match views::generated_views::core_migrations(
         &identity.display_name,
         &identity.email,
         table,
         run_actions,
+        navigation,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -294,7 +313,14 @@ pub async fn system_audit(State(state): State<PanelState>, headers: HeaderMap) -
         Ok(table) => table,
         Err(status) => return status.into_response(),
     };
-    render_core_resource(&identity, "Audit log · latest 100 events", table)
+    render_core_resource(
+        &state,
+        &identity,
+        "Audit log · latest 100 events",
+        "/system/audit",
+        table,
+    )
+    .await
 }
 
 /// List tenants and render the platform-only tenant creation form.
@@ -405,12 +431,18 @@ pub async fn system_tenants(State(state): State<PanelState>, headers: HeaderMap)
         Ok(None) => feluqa::view::TrustedHtml::from_trusted(String::new()),
         Err(status) => return status.into_response(),
     };
+    let navigation =
+        match registered_panel_navigation(&state, &identity, "system", "/system/tenants").await {
+            Ok(navigation) => navigation,
+            Err(status) => return status.into_response(),
+        };
     match views::generated_views::core_tenants(
         &identity.display_name,
         &identity.email,
         table,
         tenant_actions,
         create_form,
+        navigation,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

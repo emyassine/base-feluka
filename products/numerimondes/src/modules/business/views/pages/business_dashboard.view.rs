@@ -5,12 +5,12 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Business · Numerimondes</title>
+		<title>Business - Numerimondes</title>
 	</head>
 
 	<body class="fi fi-body fi-body-has-navigation fi-body-has-topbar">
 		<x-feluqa-panel::assets />
-		<x-feluqa-panel::shell panel="business" active="/admin">
+		<x-feluqa-panel::shell panel="business" active="/admin" :navigation="navigation">
 			<div class="fi-panel-page-content">
 				<header>
 					<p class="eyebrow">Numerimondes · Business</p>

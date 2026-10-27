@@ -6,6 +6,7 @@ use crate::std::convert::From;
 use crate::std::default::Default;
 use crate::std::format;
 use crate::std::iter::Iterator;
+use crate::std::option::Option::Some;
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
@@ -13,7 +14,8 @@ use crate::std::vec;
 use crate::std::vec::Vec;
 use feluqa::auth::Permission;
 use feluqa::panel::{
-    Panel, PanelCatalog, PanelCatalogError, PanelError, PanelKind, PanelPage, PanelProvider,
+    ContentWidth, NavigationGroup, NavigationItem, Panel, PanelBuilder, PanelCatalog,
+    PanelCatalogError, PanelError, PanelKind, PanelPage, PanelProvider,
 };
 use feluqa::ui::{SCHEMA_VERSION, UiDocument, UiNode};
 
@@ -143,13 +145,47 @@ fn dashboard_panel(
             PanelKind::Business => "business",
         },
     )?;
-    Ok(Panel {
-        id: String::from(id),
-        title: String::from(title),
-        prefix: String::from(prefix),
-        kind,
-        pages: vec![page],
-    })
+    let mut builder = PanelBuilder::new(id, title, prefix, kind)
+        .brand_name("Numerimondes")
+        .max_content_width(ContentWidth::SevenExtraLarge)
+        .sidebar_collapsible(true)
+        .sidebar_fully_collapsible(true)
+        .login()
+        .page(page);
+    if id == "business" {
+        builder = builder.navigation_group(NavigationGroup {
+            label: Some(String::from("Workspace")),
+            items: vec![
+                NavigationItem {
+                    label: String::from("Overview"),
+                    path: String::from("/admin"),
+                    icon: Some(String::from("home")),
+                    permission: Some(
+                        Permission::new(String::from("business.erp.manage")).map_err(|_| {
+                            PanelError::InvalidPermission {
+                                panel: String::from(id),
+                                expected: String::from("business"),
+                            }
+                        })?,
+                    ),
+                },
+                NavigationItem {
+                    label: String::from("Customers"),
+                    path: String::from("/admin/customers"),
+                    icon: Some(String::from("users")),
+                    permission: Some(
+                        Permission::new(String::from("business.crm.customers.read")).map_err(
+                            |_| PanelError::InvalidPermission {
+                                panel: String::from(id),
+                                expected: String::from("business"),
+                            },
+                        )?,
+                    ),
+                },
+            ],
+        });
+    }
+    builder.build()
 }
 
 fn panel_page(

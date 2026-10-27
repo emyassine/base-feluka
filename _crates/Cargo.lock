@@ -426,6 +426,7 @@ dependencies = [
  "feluqa-imagery",
  "feluqa-live",
  "feluqa-module",
+ "feluqa-notifications",
  "feluqa-panel",
  "feluqa-system-panel",
  "feluqa-ui",
@@ -509,6 +510,15 @@ dependencies = [
 [[package]]
 name = "feluqa-module"
 version = "0.1.0"
+
+[[package]]
+name = "feluqa-notifications"
+version = "0.1.0"
+dependencies = [
+ "feluqa-auth",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "feluqa-panel"

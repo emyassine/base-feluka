@@ -48,6 +48,7 @@ use self::rendering::*;
 mod access;
 pub(crate) use self::access::protected_customer_page;
 pub(crate) use self::access::protected_registered_page;
+pub(crate) use self::access::registered_panel_navigation;
 use self::access::*;
 mod security;
 pub(crate) use self::security::session_csrf_valid;

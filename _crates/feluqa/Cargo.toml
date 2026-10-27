@@ -10,13 +10,14 @@ publish = ["feluqa"]
 
 [features]
 default = ["web"]
-web = ["console", "view", "auth", "ui", "panel", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde"]
+web = ["console", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde"]
 console = ["dep:feluqa-console"]
 view = ["dep:feluqa-view"]
 view-compiler = ["view", "feluqa-view/compiler"]
 auth = ["dep:feluqa-auth"]
 ui = ["dep:feluqa-ui"]
 panel = ["auth", "ui", "dep:feluqa-panel"]
+notifications = ["dep:feluqa-notifications"]
 live = ["auth", "dep:feluqa-live"]
 module = ["dep:feluqa-module"]
 database = ["dep:feluqa-database"]
@@ -33,6 +34,7 @@ realtime = []
 feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth", optional = true}
 feluqa-ui = { version = "0.1.0", registry = "feluqa", path = "../feluqa-ui", optional = true}
 feluqa-panel = { version = "0.1.0", registry = "feluqa", path = "../feluqa-panel", optional = true}
+feluqa-notifications = { version = "0.1.0", registry = "feluqa", path = "../feluqa-notifications", optional = true}
 feluqa-live = { version = "0.1.0", registry = "feluqa", path = "../feluqa-live", optional = true}
 feluqa-module = { version = "0.1.0", registry = "feluqa", path = "../feluqa-module", optional = true}
 feluqa-database = { version = "0.1.0", registry = "feluqa", path = "../feluqa-database", optional = true}

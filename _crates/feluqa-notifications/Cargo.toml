@@ -1,0 +1,17 @@
+[package]
+name = "feluqa-notifications"
+version = "0.1.0"
+description = "Validated Filament-style notification data and session mailbox contracts for Feluqa."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+

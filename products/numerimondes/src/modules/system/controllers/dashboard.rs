@@ -5,7 +5,7 @@ use super::*;
 /// Render `/system` only for an authenticated identity with its exact Core grant.
 pub async fn system_dashboard(State(state): State<PanelState>, headers: HeaderMap) -> Response {
     match protected_registered_page(&state, &headers, "/system").await {
-        Ok(Some((identity, _))) => render_dashboard(&identity, &headers, true),
+        Ok(Some((identity, _))) => render_dashboard(&state, &identity, &headers, true).await,
         Ok(None) => Redirect::to("/system/login").into_response(),
         Err(status) => status.into_response(),
     }

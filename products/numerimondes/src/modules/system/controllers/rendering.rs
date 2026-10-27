@@ -164,7 +164,8 @@ pub(super) fn render_anonymous_form(state: &PanelState, setup: bool, notice: &st
     response
 }
 
-pub(crate) fn render_dashboard(
+pub(crate) async fn render_dashboard(
+    state: &PanelState,
     identity: &SessionIdentity,
     headers: &HeaderMap,
     system: bool,
@@ -172,13 +173,26 @@ pub(crate) fn render_dashboard(
     let Some(csrf_token) = cookie(headers, CSRF_COOKIE) else {
         return StatusCode::FORBIDDEN.into_response();
     };
+    let panel_id = if system { "system" } else { "business" };
+    let active_path = if system { "/system" } else { "/admin" };
+    let navigation = match registered_panel_navigation(state, identity, panel_id, active_path).await
+    {
+        Ok(navigation) => navigation,
+        Err(status) => return status.into_response(),
+    };
     let html = if system {
-        views::generated_views::core_dashboard(&identity.display_name, &identity.email, csrf_token)
+        views::generated_views::core_dashboard(
+            &identity.display_name,
+            &identity.email,
+            csrf_token,
+            navigation,
+        )
     } else {
         views::generated_views::business_dashboard(
             &identity.display_name,
             &identity.email,
             csrf_token,
+            navigation,
         )
     };
     match html {
@@ -194,16 +208,25 @@ pub(crate) fn render_dashboard(
     }
 }
 
-pub(super) fn render_core_resource(
+pub(super) async fn render_core_resource(
+    state: &PanelState,
     identity: &SessionIdentity,
     title: &str,
+    active_path: &str,
     table: feluqa::view::TrustedHtml,
 ) -> Response {
+    let navigation = match registered_panel_navigation(state, identity, "system", active_path).await
+    {
+        Ok(navigation) => navigation,
+        Err(status) => return status.into_response(),
+    };
     match views::generated_views::core_resource(
         &identity.display_name,
         &identity.email,
         title,
         table,
+        active_path,
+        navigation,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

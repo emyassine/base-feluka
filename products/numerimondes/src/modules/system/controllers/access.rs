@@ -109,6 +109,26 @@ pub(crate) async fn protected_registered_page<'a>(
         .map(|(identity, csrf, _)| (identity, csrf)))
 }
 
+pub(crate) async fn registered_panel_navigation(
+    state: &PanelState,
+    identity: &SessionIdentity,
+    panel_id: &str,
+    active_path: &str,
+) -> Result<feluqa::view::TrustedHtml, StatusCode> {
+    let grants = state
+        .core
+        .permissions_for(identity.user_id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let principal = principal_for_user(identity.user_id, Some(identity.tenant_id), &grants)
+        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+    let navigation = state
+        .catalog
+        .render_navigation(panel_id, &principal, &PermissionSetAuthorizer, active_path)
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(feluqa::web::trusted_navigation_html(navigation))
+}
+
 pub(super) async fn protected_resource_page<'a>(
     state: &PanelState,
     headers: &'a HeaderMap,

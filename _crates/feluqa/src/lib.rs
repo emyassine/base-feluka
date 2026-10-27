@@ -39,6 +39,9 @@ pub extern crate feluqa_live as live;
 /// Deterministic lifecycle for statically linked modules.
 #[cfg(feature = "module")]
 pub extern crate feluqa_module as module;
+/// Typed Filament-style notification contracts and bounded mailbox behavior.
+#[cfg(feature = "notifications")]
+pub extern crate feluqa_notifications as notifications;
 /// Validated system and business panel registry.
 #[cfg(feature = "panel")]
 pub extern crate feluqa_panel as panel;

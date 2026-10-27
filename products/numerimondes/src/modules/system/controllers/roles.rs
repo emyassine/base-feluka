@@ -44,6 +44,11 @@ pub async fn system_roles(State(state): State<PanelState>, headers: HeaderMap) -
         Ok(forms) => forms,
         Err(status) => return status.into_response(),
     };
+    let navigation =
+        match registered_panel_navigation(&state, &identity, "system", "/system/roles").await {
+            Ok(navigation) => navigation,
+            Err(status) => return status.into_response(),
+        };
     match views::generated_views::core_roles(
         &identity.display_name,
         &identity.email,
@@ -51,6 +56,7 @@ pub async fn system_roles(State(state): State<PanelState>, headers: HeaderMap) -
         table,
         create_form,
         edit_forms,
+        navigation,
     ) {
         Ok(html) => Html(html).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

@@ -16,11 +16,17 @@ use alloc::string::String;
 use alloc::vec;
 use alloc::vec::Vec;
 use core::convert::From;
+use core::default::Default;
+use core::option::Option;
+use core::option::Option::{None, Some};
 use core::result::Result;
 use core::result::Result::Ok;
 use feluqa_auth::Permission;
 use feluqa_ui::{SCHEMA_VERSION, UiDocument, UiNode};
-use panel::{Panel, PanelCatalog, PanelCatalogError, PanelKind, PanelPage, PanelProvider};
+use panel::{
+    ContentWidth, NavigationGroup, NavigationItem, Panel, PanelBuilder, PanelCatalog,
+    PanelCatalogError, PanelKind, PanelOptions, PanelPage, PanelProvider,
+};
 
 /// Root directory containing the compiled Feluqa Core panel pages.
 pub const VIEW_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/resources/views");
@@ -33,14 +39,40 @@ pub struct SystemPanelProvider;
 
 impl PanelProvider for SystemPanelProvider {
     fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {
-        catalog.register_panel(Panel::single_page(
-            "system",
-            "Feluqa Core",
-            "/system",
-            PanelKind::System,
-            "system.dashboard.read",
-            "Feluqa Core system dashboard",
-        )?)?;
+        let panel = PanelBuilder::new("system", "Feluqa Core", "/system", PanelKind::System)
+            .brand_name("Feluqa Core")
+            .max_content_width(ContentWidth::SevenExtraLarge)
+            .sidebar_collapsible(true)
+            .sidebar_fully_collapsible(true)
+            .login()
+            .navigation_group(NavigationGroup {
+                label: Some(String::from("Platform")),
+                items: vec![
+                    navigation_item("Overview", "/system", None)?,
+                    navigation_item("Users", "/system/users", Some("system.users.read"))?,
+                    navigation_item("Roles", "/system/roles", Some("system.roles.read"))?,
+                    navigation_item("Tenants", "/system/tenants", Some("system.tenants.read"))?,
+                    navigation_item("Modules", "/system/modules", Some("system.modules.read"))?,
+                    navigation_item(
+                        "Connections",
+                        "/system/connections",
+                        Some("system.connections.read"),
+                    )?,
+                    navigation_item(
+                        "Migrations",
+                        "/system/migrations",
+                        Some("system.migrations.read"),
+                    )?,
+                    navigation_item("Audit log", "/system/audit", Some("system.audit.read"))?,
+                ],
+            })
+            .page(page(
+                "/",
+                "Feluqa Core system dashboard",
+                "system.dashboard.read",
+            )?)
+            .build()?;
+        catalog.register_panel(panel)?;
         catalog.register_resource(resource::USERS)?;
         catalog.register_resource(resource::ROLES)?;
         catalog.register_resource(resource::MODULES)?;
@@ -50,6 +82,27 @@ impl PanelProvider for SystemPanelProvider {
         catalog.register_resource(resource::TENANTS)?;
         Ok(())
     }
+}
+
+fn navigation_item(
+    label: &str,
+    path: &str,
+    permission: Option<&str>,
+) -> Result<NavigationItem, panel::PanelError> {
+    Ok(NavigationItem {
+        label: String::from(label),
+        path: String::from(path),
+        icon: None,
+        permission: match permission {
+            Some(name) => Some(Permission::new(String::from(name)).map_err(|_| {
+                panel::PanelError::InvalidPermission {
+                    panel: String::from("system"),
+                    expected: String::from("system"),
+                }
+            })?),
+            None => None,
+        },
+    })
 }
 
 /// Construct a page owned by Feluqa Core for downstream panel extensions.
@@ -79,5 +132,6 @@ pub fn panel_with_pages(pages: Vec<PanelPage>) -> Panel {
         prefix: String::from("/system"),
         kind: PanelKind::System,
         pages,
+        options: PanelOptions::default(),
     }
 }

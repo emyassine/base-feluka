@@ -15,6 +15,7 @@ Current implementation: `feluqa` facade with opt-in target features; no_std auth
 | Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs/planning/ENTERPRISE_DELIVERY.md) |
 | `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs/views/LANGUAGE.md) |
 | Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs/architecture/PANELS_COMPONENTS.md) |
+| Filament/Webkernel behavior port inventory and parity status | [Filament port status](docs/architecture/FILAMENT_PORT_STATUS.md) |
 | Web MVC, ERP modules, named databases, dialect migrations | [Web profile architecture](docs/architecture/WEB_PROFILE.md) |
 | Product/workspace directory ownership and provider composition | [Project layout](docs/architecture/PROJECT_LAYOUT.md) |
 | Zed extension, Tree-sitter and language tooling | [Zed product](docs/editor/ZED.md) |

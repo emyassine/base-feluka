@@ -11,7 +11,7 @@ use crate::std::result::Result::{Err, Ok};
 /// Render the business workspace using the exact grant registered on its panel page.
 pub async fn dashboard(State(state): State<PanelState>, headers: HeaderMap) -> Response {
     match protected_registered_page(&state, &headers, "/admin").await {
-        Ok(Some((identity, _))) => render_dashboard(&identity, &headers, false),
+        Ok(Some((identity, _))) => render_dashboard(&state, &identity, &headers, false).await,
         Ok(None) => Redirect::to("/system/login").into_response(),
         Err(status) => status.into_response(),
     }

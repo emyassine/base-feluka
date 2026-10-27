@@ -21,6 +21,8 @@ pub const FILAMENT_CLIENT_JS: &str = include_str!("../assets/filament.js");
 pub const FILAMENT_ECHO_JS: &str = include_str!("../assets/filament-echo.js");
 /// Small Feluqa adaptation rules for the shared Filament panel DOM shell.
 pub const FILAMENT_ADAPTER_CSS: &str = include_str!("../assets/filament-panel.css");
+/// Feluqa's accessible notification timeout, dismissal, and action-event client.
+pub const NOTIFICATIONS_CLIENT_JS: &str = include_str!("../assets/feluqa-notifications.js");
 
 extern crate alloc;
 extern crate core;
@@ -37,7 +39,9 @@ use alloc::vec;
 use alloc::vec::Vec;
 use core::clone::Clone;
 use core::convert::{From, Into};
+use core::default::Default;
 use core::fmt;
+use core::fmt::Write as FmtWrite;
 use core::iter::{IntoIterator, Iterator};
 use core::matches;
 use core::option::Option;
@@ -49,6 +53,21 @@ use feluqa_auth::{Authorizer, Denial, Permission, Principal};
 pub use feluqa_ui::RenderedHtml;
 use feluqa_ui::{RenderError, SCHEMA_VERSION, SchemaError, UiDocument, UiNode};
 use serde_json::{Map, Value};
+
+fn escape_html(value: &str) -> String {
+    let mut escaped = String::new();
+    for character in value.chars() {
+        match character {
+            '&' => escaped.push_str("&amp;"),
+            '<' => escaped.push_str("&lt;"),
+            '>' => escaped.push_str("&gt;"),
+            '"' => escaped.push_str("&quot;"),
+            '\'' => escaped.push_str("&#39;"),
+            _ => escaped.push(character),
+        }
+    }
+    escaped
+}
 
 /// Distinguishes application control surfaces from business-facing administration.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -68,6 +87,204 @@ pub struct PanelPage {
     pub permission: Permission,
     /// Versioned UI schema rendered by the shared component catalogue.
     pub document: UiDocument,
+}
+
+/// Navigation placement supported by a panel shell.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum NavigationPosition {
+    /// Display navigation in the collapsible desktop/mobile sidebar.
+    #[default]
+    Sidebar,
+    /// Display navigation in the horizontal top navigation bar.
+    Topbar,
+}
+
+/// A permission-filtered destination in one panel's navigation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct NavigationItem {
+    /// Visible label.
+    pub label: String,
+    /// Absolute route below this panel's prefix.
+    pub path: String,
+    /// Optional stable Feluqa imagery/icon identifier.
+    pub icon: Option<String>,
+    /// Optional grant required to reveal the item. The destination still checks its own grant.
+    pub permission: Option<Permission>,
+}
+
+/// A labeled group of navigation destinations.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct NavigationGroup {
+    /// Optional group label.
+    pub label: Option<String>,
+    /// Ordered destinations in this group.
+    pub items: Vec<NavigationItem>,
+}
+
+/// Typed width tokens corresponding to Filament's content width options.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum ContentWidth {
+    /// 640px maximum width.
+    Small,
+    /// 768px maximum width.
+    Medium,
+    /// 1024px maximum width.
+    Large,
+    /// 1280px maximum width.
+    ExtraLarge,
+    /// 1536px maximum width.
+    TwoExtraLarge,
+    /// 1792px maximum width.
+    ThreeExtraLarge,
+    /// 2048px maximum width.
+    SevenExtraLarge,
+    /// No maximum width.
+    Full,
+    /// Use the panel theme default (1536px).
+    #[default]
+    Default,
+}
+
+/// Panel authentication pages and account flows enabled by the provider.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct PanelAuthentication {
+    /// Expose the panel's login flow.
+    pub login: bool,
+    /// Expose user registration.
+    pub registration: bool,
+    /// Expose password reset.
+    pub password_reset: bool,
+    /// Require/allow email verification.
+    pub email_verification: bool,
+}
+
+/// Appearance and shared shell configuration stored with a panel definition.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct PanelAppearance {
+    /// Brand text shown in the shell.
+    pub brand_name: Option<String>,
+    /// Light-mode logo URL, restricted to a local absolute path.
+    pub brand_logo: Option<String>,
+    /// Dark-mode logo URL, restricted to a local absolute path.
+    pub dark_brand_logo: Option<String>,
+    /// Browser favicon URL, restricted to a local absolute path.
+    pub favicon: Option<String>,
+    /// Whether the theme switch is available.
+    pub dark_mode: bool,
+    /// Whether all clients must use dark mode.
+    pub force_dark_mode: bool,
+    /// Maximum content width used by the panel page layout.
+    pub content_width: ContentWidth,
+    /// Sidebar can collapse on desktop.
+    pub sidebar_collapsible: bool,
+    /// Sidebar can collapse fully on desktop.
+    pub sidebar_fully_collapsible: bool,
+    /// Sidebar versus horizontal top navigation.
+    pub navigation_position: NavigationPosition,
+}
+
+/// Complete framework-level settings used by every page in one panel.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct PanelOptions {
+    /// Enabled account flows.
+    pub authentication: PanelAuthentication,
+    /// Brand, theme, width, and shell settings.
+    pub appearance: PanelAppearance,
+    /// Ordered navigation groups.
+    pub navigation: Vec<NavigationGroup>,
+}
+
+impl PanelOptions {
+    /// Copy only navigation destinations granted to `principal`.
+    ///
+    /// The destination handler must still authorize the request; hiding a link is not access
+    /// control. Groups with no visible entries are omitted.
+    pub fn visible_navigation(
+        &self,
+        principal: &Principal,
+        authorizer: &impl Authorizer,
+    ) -> Vec<NavigationGroup> {
+        self.navigation
+            .iter()
+            .filter_map(|group| {
+                let items = group
+                    .items
+                    .iter()
+                    .filter(|item| {
+                        item.permission.as_ref().is_none_or(|permission| {
+                            authorizer.authorize(principal, permission).is_ok()
+                        })
+                    })
+                    .cloned()
+                    .collect::<Vec<_>>();
+                (!items.is_empty()).then(|| NavigationGroup {
+                    label: group.label.clone(),
+                    items,
+                })
+            })
+            .collect()
+    }
+
+    /// Render authorized navigation entries with Filament-compatible DOM classes.
+    pub fn render_navigation(
+        &self,
+        principal: &Principal,
+        authorizer: &impl Authorizer,
+        active_path: &str,
+    ) -> Result<RenderedNavigation, PanelError> {
+        let mut html = String::from(
+            "<nav class=\"fi-sidebar-nav\" aria-label=\"Panel navigation\"><ul class=\"fi-sidebar-nav-groups\">",
+        );
+        for group in self.visible_navigation(principal, authorizer) {
+            html.push_str("<li class=\"fi-sidebar-group\">");
+            if let Some(label) = &group.label {
+                write!(
+                    html,
+                    "<div class=\"fi-sidebar-group-label\">{}</div>",
+                    escape_html(label)
+                )
+                .map_err(|_| PanelError::InvalidNavigation)?;
+            }
+            html.push_str("<ul class=\"fi-sidebar-group-items\">");
+            for item in group.items {
+                let active = item.path == active_path;
+                let active_class = if active { " fi-active" } else { "" };
+                write!(
+                    html,
+                    "<li class=\"fi-sidebar-item fi-sidebar-item-has-url{active_class}\"><a class=\"fi-sidebar-item-btn\" href=\"{}\"{}>",
+                    escape_html(&item.path),
+                    if active { " aria-current=\"page\"" } else { "" },
+                )
+                .map_err(|_| PanelError::InvalidNavigation)?;
+                if let Some(icon) = &item.icon {
+                    write!(html, "<span class=\"fi-sidebar-item-icon\" data-icon=\"{}\" aria-hidden=\"true\"></span>", escape_html(icon))
+                        .map_err(|_| PanelError::InvalidNavigation)?;
+                }
+                write!(
+                    html,
+                    "<span class=\"fi-sidebar-item-label\">{}</span></a></li>",
+                    escape_html(&item.label)
+                )
+                .map_err(|_| PanelError::InvalidNavigation)?;
+            }
+            html.push_str("</ul></li>");
+        }
+        html.push_str("</ul></nav>");
+        Ok(RenderedNavigation { html })
+    }
+}
+
+/// Escaped, fixed-structure navigation HTML produced from registered panel declarations.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RenderedNavigation {
+    html: String,
+}
+
+impl RenderedNavigation {
+    /// Borrow the safe navigation markup for a compiled view.
+    pub fn as_str(&self) -> &str {
+        &self.html
+    }
 }
 
 /// CRUD operation declared by a module-owned resource.
@@ -952,6 +1169,162 @@ pub struct Panel {
     pub kind: PanelKind,
     /// Registered pages owned by this panel.
     pub pages: Vec<PanelPage>,
+    /// Authentication, appearance, and navigation settings used by the shared shell.
+    pub options: PanelOptions,
+}
+
+/// Fluent, convention-friendly panel configuration, analogous to Filament's `PanelProvider`.
+#[derive(Clone, Debug)]
+pub struct PanelBuilder {
+    panel: Panel,
+}
+
+impl PanelBuilder {
+    /// Start a panel declaration when the ID, title and route prefix will be set fluently.
+    pub fn for_kind(kind: PanelKind) -> Self {
+        Self::new("", "", "", kind)
+    }
+
+    /// Start defining a panel. Add at least one page before calling [`Self::build`].
+    pub fn new(
+        id: impl Into<String>,
+        title: impl Into<String>,
+        prefix: impl Into<String>,
+        kind: PanelKind,
+    ) -> Self {
+        let mut panel = Panel {
+            id: id.into(),
+            title: title.into(),
+            prefix: prefix.into(),
+            kind,
+            pages: Vec::new(),
+            options: PanelOptions::default(),
+        };
+        panel.options.appearance.sidebar_collapsible = true;
+        panel.options.appearance.sidebar_fully_collapsible = true;
+        Self { panel }
+    }
+
+    /// Set the stable panel identifier.
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.panel.id = id.into();
+        self
+    }
+
+    /// Set the visible panel title.
+    pub fn title(mut self, title: impl Into<String>) -> Self {
+        self.panel.title = title.into();
+        self
+    }
+
+    /// Set the route prefix owned by this panel.
+    pub fn path(mut self, prefix: impl Into<String>) -> Self {
+        self.panel.prefix = prefix.into();
+        self
+    }
+
+    /// Set the visible brand name, defaulting to the panel title.
+    pub fn brand_name(mut self, name: impl Into<String>) -> Self {
+        self.panel.options.appearance.brand_name = Some(name.into());
+        self
+    }
+
+    /// Set the light-mode logo to a local absolute URL.
+    pub fn brand_logo(mut self, path: impl Into<String>) -> Self {
+        self.panel.options.appearance.brand_logo = Some(path.into());
+        self
+    }
+
+    /// Set the dark-mode logo to a local absolute URL.
+    pub fn dark_brand_logo(mut self, path: impl Into<String>) -> Self {
+        self.panel.options.appearance.dark_brand_logo = Some(path.into());
+        self
+    }
+
+    /// Set the browser favicon to a local absolute URL.
+    pub fn favicon(mut self, path: impl Into<String>) -> Self {
+        self.panel.options.appearance.favicon = Some(path.into());
+        self
+    }
+
+    /// Enable a client-selectable light/dark theme.
+    pub fn dark_mode(mut self) -> Self {
+        self.panel.options.appearance.dark_mode = true;
+        self
+    }
+
+    /// Force dark theme for every request.
+    pub fn force_dark_mode(mut self) -> Self {
+        self.panel.options.appearance.dark_mode = true;
+        self.panel.options.appearance.force_dark_mode = true;
+        self
+    }
+
+    /// Set the maximum width of page content.
+    pub fn max_content_width(mut self, width: ContentWidth) -> Self {
+        self.panel.options.appearance.content_width = width;
+        self
+    }
+
+    /// Allow the desktop sidebar to collapse.
+    pub fn sidebar_collapsible(mut self, enabled: bool) -> Self {
+        self.panel.options.appearance.sidebar_collapsible = enabled;
+        self
+    }
+
+    /// Allow the desktop sidebar to collapse to its icon rail.
+    pub fn sidebar_fully_collapsible(mut self, enabled: bool) -> Self {
+        self.panel.options.appearance.sidebar_fully_collapsible = enabled;
+        self
+    }
+
+    /// Put navigation in the horizontal top bar.
+    pub fn top_navigation(mut self) -> Self {
+        self.panel.options.appearance.navigation_position = NavigationPosition::Topbar;
+        self
+    }
+
+    /// Enable the panel login page.
+    pub fn login(mut self) -> Self {
+        self.panel.options.authentication.login = true;
+        self
+    }
+
+    /// Enable public account registration.
+    pub fn registration(mut self) -> Self {
+        self.panel.options.authentication.registration = true;
+        self
+    }
+
+    /// Enable the password reset flow.
+    pub fn password_reset(mut self) -> Self {
+        self.panel.options.authentication.password_reset = true;
+        self
+    }
+
+    /// Enable email verification pages and middleware policy.
+    pub fn email_verification(mut self) -> Self {
+        self.panel.options.authentication.email_verification = true;
+        self
+    }
+
+    /// Add a page declared by this panel provider.
+    pub fn page(mut self, page: PanelPage) -> Self {
+        self.panel.pages.push(page);
+        self
+    }
+
+    /// Add an ordered navigation group. Route authorization remains mandatory on the page.
+    pub fn navigation_group(mut self, group: NavigationGroup) -> Self {
+        self.panel.options.navigation.push(group);
+        self
+    }
+
+    /// Validate and return the compiled panel declaration.
+    pub fn build(self) -> Result<Panel, PanelError> {
+        validate_panel(&self.panel)?;
+        Ok(self.panel)
+    }
 }
 
 impl Panel {
@@ -987,6 +1360,14 @@ impl Panel {
                     }],
                 },
             }],
+            options: PanelOptions {
+                appearance: PanelAppearance {
+                    sidebar_collapsible: true,
+                    sidebar_fully_collapsible: true,
+                    ..PanelAppearance::default()
+                },
+                ..PanelOptions::default()
+            },
         };
         validate_panel(&panel)?;
         Ok(panel)
@@ -1080,6 +1461,24 @@ impl PanelCatalog {
     /// Iterate registered panels in stable identifier order.
     pub fn panels(&self) -> impl Iterator<Item = &Panel> {
         self.panels.panels()
+    }
+
+    /// Render the permission-filtered navigation declared by one registered panel.
+    pub fn render_navigation(
+        &self,
+        panel_id: &str,
+        principal: &Principal,
+        authorizer: &impl Authorizer,
+        active_path: &str,
+    ) -> Result<RenderedNavigation, PanelError> {
+        let panel = self
+            .panels
+            .panels
+            .get(panel_id)
+            .ok_or_else(|| PanelError::NotFound(String::from(panel_id)))?;
+        panel
+            .options
+            .render_navigation(principal, authorizer, active_path)
     }
 
     /// Register a panel only when none of its pages collide with a module resource route.
@@ -1229,13 +1628,62 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
     if prefix == "/" {
         return Err(PanelError::InvalidPrefix);
     }
-    if panel.pages.is_empty() {
-        return Err(PanelError::EmptyPanel);
+    for asset in [
+        panel.options.appearance.brand_logo.as_deref(),
+        panel.options.appearance.dark_brand_logo.as_deref(),
+        panel.options.appearance.favicon.as_deref(),
+    ]
+    .into_iter()
+    .flatten()
+    {
+        if !valid_local_asset_path(asset) {
+            return Err(PanelError::InvalidNavigation);
+        }
     }
     let expected_namespace = match panel.kind {
         PanelKind::System => "system",
         PanelKind::Business => "business",
     };
+    let mut navigation_paths = BTreeMap::new();
+    for group in &panel.options.navigation {
+        if group.items.is_empty()
+            || group
+                .label
+                .as_ref()
+                .is_some_and(|label| label.trim().is_empty())
+        {
+            return Err(PanelError::InvalidNavigation);
+        }
+        for item in &group.items {
+            let item_path =
+                normalize_path(&item.path).map_err(|_| PanelError::InvalidNavigation)?;
+            if item.label.trim().is_empty()
+                || item_path != item.path
+                || !(item_path == prefix
+                    || item_path
+                        .strip_prefix(&prefix)
+                        .is_some_and(|suffix| suffix.starts_with('/')))
+                || navigation_paths.insert(item_path, ()).is_some()
+                || item
+                    .icon
+                    .as_ref()
+                    .is_some_and(|icon| !valid_identifier(icon))
+            {
+                return Err(PanelError::InvalidNavigation);
+            }
+            if let Some(permission) = &item.permission {
+                if permission.namespace() != expected_namespace {
+                    return Err(PanelError::WrongPermissionNamespace {
+                        panel: panel.id.clone(),
+                        expected: String::from(expected_namespace),
+                    });
+                }
+            }
+        }
+    }
+    if panel.pages.is_empty() {
+        return Err(PanelError::EmptyPanel);
+    }
     let mut local_routes = BTreeMap::new();
     for page in &panel.pages {
         let path = normalize_path(&page.path)?;
@@ -1257,6 +1705,18 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
         validate_action_namespaces(&page.document.root, expected_namespace, &panel.id)?;
     }
     Ok(())
+}
+
+fn valid_local_asset_path(path: &str) -> bool {
+    path.starts_with('/')
+        && !path.starts_with("//")
+        && path.len() <= 2_048
+        && !path
+            .chars()
+            .any(|character| matches!(character, '?' | '#' | '\\'))
+        && !path
+            .split('/')
+            .any(|segment| segment == ".." || segment == ".")
 }
 
 fn validate_action_namespaces(
@@ -1342,6 +1802,8 @@ pub enum PanelError {
     InvalidPath(String),
     /// A panel has no pages.
     EmptyPanel,
+    /// Navigation or branding contains an invalid path, label, icon, or permission.
+    InvalidNavigation,
     /// The panel ID is already registered.
     DuplicatePanel(String),
     /// A route conflicts with a registered route.
@@ -1383,6 +1845,9 @@ impl fmt::Display for PanelError {
             Self::InvalidPrefix => formatter.write_str("panel prefix cannot be the site root"),
             Self::InvalidPath(path) => write!(formatter, "invalid panel path `{path}`"),
             Self::EmptyPanel => formatter.write_str("panel must register at least one page"),
+            Self::InvalidNavigation => {
+                formatter.write_str("panel navigation or branding configuration is invalid")
+            }
             Self::DuplicatePanel(id) => write!(formatter, "panel `{id}` is already registered"),
             Self::DuplicateRoute(path) => {
                 write!(formatter, "panel route `{path}` is already registered")
@@ -1431,7 +1896,8 @@ impl core::error::Error for PanelRenderError {}
 #[cfg(test)]
 mod tests {
     use super::{
-        Panel, PanelCatalog, PanelCatalogError, PanelError, PanelKind, PanelPage, PanelRegistry,
+        ContentWidth, NavigationGroup, NavigationItem, Panel, PanelBuilder, PanelCatalog,
+        PanelCatalogError, PanelError, PanelKind, PanelOptions, PanelPage, PanelRegistry,
         PanelRenderError, Resource, ResourceAction, ResourceAuthorizationError, ResourceField,
         ResourceInput, ResourceInputKind, ResourceOperation, ResourceOption, ResourceRecordScope,
         ResourceRegistry, ResourceRegistryError, ResourceTableError, ResourceTableRow,
@@ -1610,7 +2076,105 @@ mod tests {
                     }],
                 },
             }],
+            options: PanelOptions::default(),
         }
+    }
+
+    #[test]
+    fn filament_style_panel_provider_builds_typed_auth_branding_and_navigation() {
+        let builder = PanelBuilder::new("crm", "CRM", "/admin", PanelKind::Business)
+            .brand_name("Numerimondes")
+            .brand_logo("/assets/branding/logo.svg")
+            .favicon("/assets/branding/favicon.svg")
+            .dark_mode()
+            .max_content_width(ContentWidth::SevenExtraLarge)
+            .login()
+            .registration()
+            .password_reset()
+            .email_verification()
+            .navigation_group(NavigationGroup {
+                label: Some(String::from("CRM")),
+                items: vec![NavigationItem {
+                    label: String::from("Customers"),
+                    path: String::from("/admin/customers"),
+                    icon: Some(String::from("users")),
+                    permission: Some(
+                        Permission::new(String::from("business.crm.customers.read"))
+                            .expect("grant"),
+                    ),
+                }],
+            })
+            .page(PanelPage {
+                path: String::from("/"),
+                permission: Permission::new(String::from("business.erp.manage")).expect("grant"),
+                document: UiDocument {
+                    schema_version: SCHEMA_VERSION,
+                    root: vec![UiNode::Text {
+                        value: String::from("CRM"),
+                    }],
+                },
+            });
+        let built = builder.build().expect("valid panel provider configuration");
+        assert!(built.options.authentication.login);
+        assert!(built.options.authentication.registration);
+        assert!(built.options.authentication.password_reset);
+        assert!(built.options.authentication.email_verification);
+        assert_eq!(
+            built.options.appearance.brand_name.as_deref(),
+            Some("Numerimondes")
+        );
+        assert_eq!(
+            built.options.appearance.content_width,
+            ContentWidth::SevenExtraLarge
+        );
+        assert_eq!(built.options.navigation.len(), 1);
+
+        let auth = PermissionSetAuthorizer;
+        let granted_principal = principal(&["business.crm.customers.read"]);
+        let visible = built.options.visible_navigation(&granted_principal, &auth);
+        assert_eq!(visible.len(), 1);
+        assert_eq!(visible[0].items[0].label, "Customers");
+
+        let denied = principal(&[]);
+        assert!(built.options.visible_navigation(&denied, &auth).is_empty());
+    }
+
+    #[test]
+    fn panel_provider_rejects_external_brand_assets_and_out_of_prefix_navigation() {
+        let page = PanelPage {
+            path: String::from("/"),
+            permission: Permission::new(String::from("system.dashboard.read")).expect("grant"),
+            document: UiDocument {
+                schema_version: SCHEMA_VERSION,
+                root: vec![UiNode::Text {
+                    value: String::from("System"),
+                }],
+            },
+        };
+        assert_eq!(
+            PanelBuilder::new("system", "System", "/system", PanelKind::System)
+                .brand_logo("https://external.example/logo.svg")
+                .page(page.clone())
+                .build()
+                .unwrap_err(),
+            PanelError::InvalidNavigation
+        );
+        assert_eq!(
+            PanelBuilder::new("system", "System", "/system", PanelKind::System)
+                .navigation_group(NavigationGroup {
+                    label: None,
+                    items: vec![NavigationItem {
+                        label: String::from("Outside"),
+                        path: String::from("/admin"),
+                        icon: None,
+                        permission: None,
+                    }],
+                })
+                .page(page)
+                .build()
+                .unwrap_err(),
+            PanelError::InvalidNavigation
+        );
     }
 
     #[test]

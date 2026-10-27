@@ -12,3 +12,6 @@ publish = ["feluqa"]
 feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
 feluqa-panel = { version = "0.1.0", registry = "feluqa", path = "../feluqa-panel" }
 feluqa-ui = { version = "0.1.0", registry = "feluqa", path = "../feluqa-ui" }
+
+[dev-dependencies]
+feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
