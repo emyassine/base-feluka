@@ -122,6 +122,14 @@ pub fn notifications_client() -> Response {
     )
 }
 
+/// Serve the framework-owned responsive sidebar interaction client.
+pub fn shell_client() -> Response {
+    asset_response(
+        crate::panel::PANEL_SHELL_CLIENT_JS,
+        "text/javascript; charset=utf-8",
+    )
+}
+
 /// Serve one framework-owned Filament panel asset by its stable public filename.
 pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, StatusCode> {
     match asset.as_str() {
@@ -130,6 +138,7 @@ pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, St
         "panel.js" => Ok(panel_client()),
         "echo.js" => Ok(panel_echo_client()),
         "notifications.js" => Ok(notifications_client()),
+        "shell.js" => Ok(shell_client()),
         _ => Err(StatusCode::NOT_FOUND),
     }
 }

@@ -23,10 +23,13 @@ pub const FILAMENT_ECHO_JS: &str = include_str!("../assets/filament-echo.js");
 pub const FILAMENT_ADAPTER_CSS: &str = include_str!("../assets/filament-panel.css");
 /// Feluqa's accessible notification timeout, dismissal, and action-event client.
 pub const NOTIFICATIONS_CLIENT_JS: &str = include_str!("../assets/feluqa-notifications.js");
+/// Feluqa-owned responsive sidebar and keyboard interactions.
+pub const PANEL_SHELL_CLIENT_JS: &str = include_str!("../assets/feluqa-shell.js");
 
 extern crate alloc;
 extern crate core;
 extern crate feluqa_auth;
+extern crate feluqa_imagery;
 extern crate feluqa_ui;
 extern crate serde_json;
 #[cfg(test)]
@@ -257,8 +260,13 @@ impl PanelOptions {
                 )
                 .map_err(|_| PanelError::InvalidNavigation)?;
                 if let Some(icon) = &item.icon {
-                    write!(html, "<span class=\"fi-sidebar-item-icon\" data-icon=\"{}\" aria-hidden=\"true\"></span>", escape_html(icon))
-                        .map_err(|_| PanelError::InvalidNavigation)?;
+                    let svg = feluqa_imagery::panel_heroicon(icon)
+                        .ok_or(PanelError::InvalidNavigation)?;
+                    write!(
+                        html,
+                        "<span class=\"fi-sidebar-item-icon\" aria-hidden=\"true\">{svg}</span>"
+                    )
+                    .map_err(|_| PanelError::InvalidNavigation)?;
                 }
                 write!(
                     html,
@@ -1667,7 +1675,7 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
                 || item
                     .icon
                     .as_ref()
-                    .is_some_and(|icon| !valid_identifier(icon))
+                    .is_some_and(|icon| feluqa_imagery::panel_heroicon(icon).is_none())
             {
                 return Err(PanelError::InvalidNavigation);
             }
@@ -2097,7 +2105,7 @@ mod tests {
                 items: vec![NavigationItem {
                     label: String::from("Customers"),
                     path: String::from("/admin/customers"),
-                    icon: Some(String::from("users")),
+                    icon: Some(String::from("o-users")),
                     permission: Some(
                         Permission::new(String::from("business.crm.customers.read"))
                             .expect("grant"),
@@ -2134,6 +2142,12 @@ mod tests {
         let visible = built.options.visible_navigation(&granted_principal, &auth);
         assert_eq!(visible.len(), 1);
         assert_eq!(visible[0].items[0].label, "Customers");
+        let rendered = built
+            .options
+            .render_navigation(&granted_principal, &auth, "/admin/customers")
+            .expect("registered navigation with embedded icon");
+        assert!(rendered.as_str().contains("<svg"));
+        assert!(rendered.as_str().contains("aria-current=\"page\""));
 
         let denied = principal(&[]);
         assert!(built.options.visible_navigation(&denied, &auth).is_empty());

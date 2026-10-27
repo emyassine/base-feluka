@@ -41,6 +41,10 @@ pub extern crate feluqa_imagery as imagery;
 /// Signed, authorized server action dispatch.
 #[cfg(feature = "live")]
 pub extern crate feluqa_live as live;
+/// Server-driven interaction contracts. The current runtime uses signed HTTP actions;
+/// WebSocket-backed component sessions remain a separate transport capability.
+#[cfg(feature = "live")]
+pub use crate::live as liveview;
 /// Deterministic lifecycle for statically linked modules.
 #[cfg(feature = "module")]
 pub extern crate feluqa_module as module;

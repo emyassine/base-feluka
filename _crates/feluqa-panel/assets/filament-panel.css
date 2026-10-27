@@ -1,58 +1,204 @@
+/* Feluqa keeps Filament's compiled theme intact and only supplies framework-owned runtime state. */
 :root {
     --sidebar-width: 16rem;
-    --topbar-height: 3.75rem;
+    --topbar-height: 4rem;
 }
 
-html.fi,
-body.fi-body {
-    min-height: 100%;
+.fi-body .fi-main-ctn {
+    display: flex !important;
+    opacity: 1 !important;
 }
 
-body.fi-body {
-    margin: 0;
-    background: var(--gray-50, #f9fafb);
+.fi-sidebar-close-overlay[hidden] {
+    display: none !important;
 }
 
-.fi-app-shell {
-    min-height: 100dvh;
-}
-
-.fi-app-shell .fi-sidebar {
-    width: var(--sidebar-width);
-    min-width: var(--sidebar-width);
-    flex: 0 0 var(--sidebar-width);
-}
-
-.fi-app-shell .fi-sidebar-header-logo-ctn {
-    width: 100%;
-    padding-inline: 1.5rem;
-    font-size: 1rem;
-    font-weight: 650;
-    letter-spacing: -.025em;
-}
-
-.fi-app-shell .fi-sidebar-nav {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1rem .75rem;
-}
-
-.fi-app-shell .fi-sidebar-nav-groups,
-.fi-app-shell .fi-sidebar-group-items {
-    width: 100%;
-    margin: 0;
+.fi-sidebar-close-overlay {
+    appearance: none;
     padding: 0;
+    border: 0;
+}
+
+.fi-topbar-open-sidebar-btn,
+.fi-topbar-close-sidebar-btn {
+    display: none;
+}
+
+.fi-sidebar-item-icon,
+.fi-sidebar-item-icon svg {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 1.25rem;
+}
+
+.fi-user-menu {
+    position: relative;
+}
+
+.fi-user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: .625rem;
+    padding: .375rem .5rem;
+    border: 0;
+    border-radius: .625rem;
+    background: transparent;
+    color: var(--gray-800, #1f2937);
+    cursor: pointer;
     list-style: none;
 }
 
-.fi-app-shell .fi-sidebar-item-btn {
-    min-height: 2.5rem;
-    text-decoration: none;
+.fi-user-menu-trigger::-webkit-details-marker {
+    display: none;
 }
 
-.fi-app-shell .fi-main-ctn {
-    min-width: 0;
-    flex: 1;
+.fi-user-avatar {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 2.25rem;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: 999px;
+    background: var(--gray-100, #f3f4f6);
+    color: var(--gray-700, #374151);
+    font-size: .7rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.fi-user-menu-trigger-text {
+    display: grid;
+    gap: .1rem;
+    text-align: start;
+}
+
+.fi-user-menu-trigger-text strong {
+    font-size: .8125rem;
+    font-weight: 600;
+}
+
+.fi-user-menu-trigger-text small {
+    color: var(--gray-500, #6b7280);
+    font-size: .6875rem;
+}
+
+.fi-user-menu[open] .fi-dropdown-panel {
+    position: absolute;
+    top: calc(100% + .5rem);
+    right: 0;
+    z-index: 60;
+    min-width: 14rem;
+    padding: .75rem 1rem;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: .75rem;
+    background: var(--color-white, #fff);
+    box-shadow: 0 12px 24px rgb(0 0 0 / .1);
+}
+
+.fi-app-shell .fi-panel-page-content {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.fi-app-shell .fi-panel-page-content > header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: .75rem 1.5rem;
+}
+
+.fi-app-shell .fi-panel-page-content h1 {
+    margin: 0;
+    color: var(--gray-950, #030712);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 650;
+    letter-spacing: -.035em;
+}
+
+.fi-app-shell .fi-panel-page-content .eyebrow {
+    width: 100%;
+    margin: 0;
+    color: var(--gray-500, #6b7280);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.fi-app-shell .card {
+    overflow-x: auto;
+    padding: 1.25rem;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: .75rem;
+    background: var(--color-white, #fff);
+    box-shadow: 0 1px 2px rgb(0 0 0 / .04);
+}
+
+.fi-app-shell .feluqa-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.fi-app-shell .feluqa-table th,
+.fi-app-shell .feluqa-table td {
+    padding: .75rem 1rem;
+    border-bottom: 1px solid var(--gray-200, #e5e7eb);
+    vertical-align: top;
+}
+
+@media (min-width: 64rem) {
+    .fi-app-shell .fi-sidebar {
+        position: fixed;
+        inset-block: 0;
+        transform: none;
+        translate: none;
+    }
+
+    .fi-app-shell .fi-main-ctn {
+        margin-inline-start: var(--sidebar-width);
+    }
+}
+
+@media (max-width: 63.999rem) {
+    .fi-app-shell .fi-sidebar {
+        position: fixed;
+        inset-block: 0;
+        transform: translateX(-100%);
+        transition: transform 180ms ease;
+        box-shadow: 0 12px 32px rgb(0 0 0 / .16);
+    }
+
+    .fi-app-shell .fi-sidebar[data-sidebar-open="true"] {
+        transform: translateX(0);
+    }
+
+    .fi-app-shell .fi-mobile-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fi-app-shell .fi-sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 45;
+        border: 0;
+        background: rgb(15 23 42 / .4);
+    }
+
+    .fi-app-shell:has(.fi-sidebar[data-sidebar-open="true"]) .fi-sidebar-backdrop {
+        display: block;
+    }
+
+    .fi-app-shell .fi-main-ctn {
+        margin-inline-start: 0;
+    }
 }
 
 .fi-app-shell .fi-main {
@@ -188,23 +334,3 @@ body.fi-body {
     gap: 1rem;
 }
 
-@media (max-width: 64rem) {
-    .fi-app-shell .fi-layout {
-        display: block;
-    }
-
-    .fi-app-shell .fi-sidebar {
-        position: static;
-        width: 100%;
-        min-width: 0;
-        height: auto;
-        border-inline-end: 0;
-        border-bottom: 1px solid var(--gray-200, #e5e7eb);
-        transform: none;
-    }
-
-    .fi-app-shell .fi-sidebar-header { height: 3.5rem; justify-content: flex-start; }
-    .fi-app-shell .fi-sidebar-nav { padding: .5rem .75rem; }
-    .fi-app-shell .fi-sidebar-group-items { display: flex; flex-wrap: wrap; gap: .25rem; }
-    .fi-app-shell .fi-main { padding-top: 1rem; }
-}

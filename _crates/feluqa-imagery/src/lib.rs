@@ -15,6 +15,8 @@ use std::format;
 use std::fs;
 use std::io;
 use std::iter::Iterator;
+use std::option::Option;
+use std::option::Option::{None, Some};
 use std::path::{Path, PathBuf};
 use std::result::Result;
 use std::result::Result::{Err, Ok};
@@ -126,6 +128,27 @@ impl Error for IconError {}
 /// Resolve and read one icon from the Feluqa imagery bundle.
 pub fn icon_svg(set: IconSet, name: &str) -> Result<String, IconError> {
     IconCatalog::bundled().read_svg(set, name)
+}
+
+/// Return a compile-time embedded Heroicon used by Feluqa's built-in panel shell.
+///
+/// These common interface icons are embedded in the application binary, so panel
+/// requests do not read package assets from the build host at runtime.
+pub fn panel_heroicon(name: &str) -> Option<&'static str> {
+    match name {
+        "o-home" => Some(include_str!("../assets/icons/heroicons/o-home.svg")),
+        "o-users" => Some(include_str!("../assets/icons/heroicons/o-users.svg")),
+        "o-shield-check" => Some(include_str!("../assets/icons/heroicons/o-shield-check.svg")),
+        "o-building-office-2" => Some(include_str!("../assets/icons/heroicons/o-building-office-2.svg")),
+        "o-cube" => Some(include_str!("../assets/icons/heroicons/o-cube.svg")),
+        "o-circle-stack" => Some(include_str!("../assets/icons/heroicons/o-circle-stack.svg")),
+        "o-clipboard-document-list" => Some(include_str!("../assets/icons/heroicons/o-clipboard-document-list.svg")),
+        "o-clipboard-document-check" => Some(include_str!("../assets/icons/heroicons/o-clipboard-document-check.svg")),
+        "o-squares-2x2" => Some(include_str!("../assets/icons/heroicons/o-squares-2x2.svg")),
+        "o-bars-3" => Some(include_str!("../assets/icons/heroicons/o-bars-3.svg")),
+        "o-x-mark" => Some(include_str!("../assets/icons/heroicons/o-x-mark.svg")),
+        _ => None,
+    }
 }
 
 fn valid_name(name: &str) -> bool {
