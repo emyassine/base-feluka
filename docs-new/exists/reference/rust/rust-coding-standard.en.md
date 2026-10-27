@@ -69,7 +69,7 @@ Run `cargo fmt --check`, `cargo check --workspace --all-targets`, `cargo clippy 
 
 ## 7. Views, escaping and generated code
 
-Follow [the `.view.rs` language contract](../../../knowledge/archive/view-language.fr.md) and keep compiler/editor fixtures aligned. `@rs/@endrs` encloses trusted developer Rust compiled into the application, never user-submitted code.
+Follow [the `.view.rs` language contract](../views/view-language.en.md) and keep compiler/editor fixtures aligned. `@rs/@endrs` encloses trusted developer Rust compiled into the application, never user-submitted code.
 
 - Feluqa templates use a defined, documented grammar inspired by Webkernel `.view.php` files; they are not PHP and must not evaluate untrusted source code.
 - Dynamic text is escaped by default. Raw HTML requires an explicit trusted type/API and must never be inferred from a string.

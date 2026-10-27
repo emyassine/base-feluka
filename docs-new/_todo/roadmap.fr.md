@@ -1,11 +1,11 @@
 # Feluqa — feuille de route du framework
 
 Date de cadrage : 26 octobre 2026
-Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](enterprise-delivery.fr.md), [le contrat des vues](../knowledge/archive/view-language.fr.md) et [les panels/composants](../knowledge/archive/panels-components-status.fr.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
+Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](enterprise-delivery.fr.md), [le contrat des vues](../exists/reference/views/view-language.en.md) et [les panels/composants](../exists/reference/panels/filament-port-status.en.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
 
 ## État de réalisation (26 octobre 2026)
 
-Le vertical initial est commencé : workspace Cargo sous `_crates/` (MSRV déclaré à 1.85), façade publique `feluqa::view` et `feluqa::console`, moteur de substitution échappée, produit Numerimondes sous `products/`, serveur Axum/Tokio et config Serde/TOML. Les routes de l'application sont dans `products/numerimondes/routes/`. Les vues actuelles sont `/` et `/about`; le build génère du Rust depuis les fichiers `.view`. Les ressources du site de référence sont servies sous `products/numerimondes/public/assets`.
+Le vertical initial est commencé : workspace Cargo sous `_crates/` (MSRV déclaré à 1.85), façade publique `feluqa::view` et `feluqa::console`, moteur de substitution échappée, application web de référence sous `products/`, serveur Axum/Tokio et config Serde/TOML. Les routes appartiennent au produit; le build génère du Rust depuis les fichiers `.view.rs`.
 
 La page affiche le temps handler « Request … ms ». Le middleware mesure à part le temps complet de traitement côté binaire, l’écrit dans `Server-Timing: feluqa_binary;dur=…` et le journal du serveur. Compilation validée le 26 octobre 2026; parité visuelle et déploiement restent à valider.
 
@@ -17,7 +17,7 @@ Feluqa doit devenir un framework applicatif souverain, avec une seule identité 
 
 La priorité immédiate est de livrer plusieurs sites web en production. Le premier chemin doit donc permettre à une petite équipe de créer une application, écrire des routes et des vues familières, prévisualiser rapidement, compiler un binaire autonome et déployer sous un compte POSIX ordinaire (notamment derrière Hestia). Les profils client, jeu et embarqué gardent leur place dans l’architecture mais ne bloquent pas cette première livraison.
 
-Le contrat d’entreprise Numerimondes (Casablanca, contrôle des outils et des données, environnements critiques et haute disponibilité) guide les décisions de propriété des données, de déploiement, de dépendances et d’évolution. C’est un positionnement produit, pas une certification de sûreté ou une promesse de logiciel certifié.
+Le positionnement de l'entreprise propriétaire (contrôle des outils et des données, environnements critiques et haute disponibilité) guide les décisions de propriété des données, de déploiement, de dépendances et d’évolution. C’est un positionnement produit, pas une certification de sûreté ou une promesse de logiciel certifié.
 
 ## Principes non négociables
 
@@ -31,7 +31,7 @@ Le contrat d’entreprise Numerimondes (Casablanca, contrôle des outils et des 
 ## DX visée pour les sites
 
 ```text
-numerimondes/
+sample-module/
 ├── Cargo.toml
 ├── feluqa.toml
 ├── config/
@@ -77,7 +77,7 @@ La syntaxe ci-dessus est indicative; l’API sera arrêtée par un exemple exéc
 
 ### Vues Webkernel
 
-Le format cible est désormais `.view.rs` avec notamment `@rs/@endrs`; voir le [contrat v1](../knowledge/archive/view-language.fr.md). Les `.view` du prototype restent à migrer avec le build.
+Le format cible est désormais `.view.rs` avec notamment `@rs/@endrs`; voir le [contrat v1](../exists/reference/views/view-language.en.md). Les `.view` du prototype restent à migrer avec le build.
 
 Inspecter et porter le contrat utile de `webkernel-src/y-dev-platform/...` dans `/home/yassine/Projects/Php/framework/__work/`, en conservant une syntaxe de template familière : `{{ value }}` échappé, `{!! trusted_html !!}` explicite, `@if/@else/@endif`, `@foreach/@endforeach`, layouts/sections et composants `<x-...>`. Adapter les directives qui exécutent du PHP en API de vue déclarative et fonctions Rust typées : aucune exécution PHP ni `eval` dans Feluqa.
 
@@ -104,7 +104,7 @@ feluqa/
 │   └── feluqa-storage/         # chemins et stockage utilisateur POSIX
 ├── products/
 │   ├── feluqa-cli/             # produit CLI, binaire `feluqa`
-│   └── numerimondes/           # application réelle, profil web
+│   └── sample-module/          # application consommatrice, profil web
 ├── target/                    # artefacts de build générés
 └── docs-new/
 ```
@@ -143,7 +143,7 @@ Estimations d’effort en **jours-personne (JP)**, pas une date promise. Hypoth�
 | 1. Workspace et strictness | 5–8 JP | workspace, `feluqa::` façade, kernel, lint CI, config Serde, logger d’erreurs | exemple compilable; erreurs de config indiquent clé/fichier; aucun `unsafe` non justifié |
 | 2. Routes/serveur et CLI dev | 8–12 JP | `routes/web.rs`, `routes/console.rs`, Axum/Tokio, `feluqa dev`, graceful shutdown | nouvel exemple démarre et sert route statique/dynamique; rechargement dev documenté |
 | 3. Vues Webkernel v1 | 12–20 JP | syntaxe échappée, layouts, if/loop, composants, slots, erreurs de source, build release | tests de parité dev/build; XSS tests; templates compilés dans l’artefact |
-| 4. Fondation sites | 10–16 JP | config, assets/public, formulaires sécurisés, sessions/CSRF, pages d’erreur, stockage POSIX | un vrai site Numerimondes avec pages et formulaire, sans dépendance externe obligatoire |
+| 4. Fondation sites | 10–16 JP | config, assets/public, formulaires sécurisés, sessions/CSRF, pages d’erreur, stockage POSIX | un site de référence avec pages et formulaire, sans dépendance externe obligatoire |
 | 5. Données et livraison multi-sites | 10–16 JP | SQLite/migrations si besoin métier, logs/backups, CLI build, profils de déploiement, Hestia guide | au moins un site réel déployé sous utilisateur non-root; deuxième site reproductible |
 | 6. Durcissement M1 | 12–20 JP | auth/ACL selon besoin, tests intégration, perf baseline, upgrade/config migration | critères FEL M1 ciblés satisfaits ou écarts chiffrés et acceptés |
 | **Total première plateforme web pilotable** | **60–97 JP** | framework v1 web réutilisable pour plusieurs sites | premier pilote produit, procédure de duplication et déploiement vérifiée |
@@ -153,7 +153,7 @@ Un profilement des fourchettes doit être fait après les phases 0–3. L’ambi
 
 ## Ordre de livraison conseillé
 
-1. Faire un prototype vertical Numerimondes : accueil, page service, page contact/formulaire, layout partagé, assets, 404, routes et déploiement Hestia.
+1. Faire un prototype vertical de site : accueil, page service, page contact/formulaire, layout partagé, assets, 404, routes et déploiement Hestia.
 2. Mettre le second site sur la même version du framework pour révéler ce qui est réellement réutilisable (config par site, layouts, contenu, assets, secrets et isolation du stockage).
 3. Consolider API de vue et CLI seulement à partir de cette friction observée; garder une checklist de migration des vues Webkernel si des vues existantes doivent être reprises.
 4. Ajouter DB/auth/jobs/mail/Core/SDUI par besoins des sites et gates de sécurité, sans retarder le chemin statique et contenu.

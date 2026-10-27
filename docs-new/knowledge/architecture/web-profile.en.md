@@ -1,48 +1,60 @@
 # Web profile architecture
 
-Feluqa is the server platform; a module is compiled against it and installed
-into the platform. This document describes the current web-profile foundation
-and its remaining gaps. See [platform/module layout](platform-module-layout.en.md)
-for module packaging and [product intent](../intent.en.md) for the operator
-lifecycle.
+This document records the design boundaries for the Web target. Current
+capabilities and gaps belong in the [implementation guides](../../exists/index.en.md).
 
-## Current implementation
+## Runtime boundary
 
-The workspace contains the `feluqa` facade, Axum/Tokio web profile, SeaORM
-database layer, typed TOML configuration, named SQLite/PostgreSQL pools,
-checksummed dialect SQL migrations, compiled `.view.rs` templates, auth/session
-and CSRF support, resource/panel registries, SDUI rendering, signed Live
-actions and a framework-owned System panel crate. Numerimondes currently
-statically composes those crates and demonstrates account/role administration,
-tenant listing/provisioning, migration/audit pages, and initial tenant-scoped
-CRM CRUD.
+The Web profile uses Tokio, Axum and Tower for asynchronous HTTP. Database,
+view compilation and browser delivery remain behind the `feluqa::...` facade.
+Other target profiles share schemas and application contracts where useful,
+but do not inherit the Web runtime.
 
-This is a development/product binary, not the final module installer. The
-System panel does not yet dynamically install packaged modules or enforce
-licenses per domain. Numerimondes still contains transitional `src/app/` and
-`src/modules/` trees; domain-owned layout is recommended, but developers may
-choose another structure.
+## Application composition
 
-## Database model
+An application selects a statically compiled Rust service provider from its
+Feluqa manifest. Providers register owned routes, panels, resources, views,
+services and module implementations. The process composition root combines
+those providers and global middleware. Product URLs do not belong in framework
+crates or the generic composition root.
 
-Modules that belong to one Numerimondes installation share the `default`
-application database. Modules own their tables and migrations, not isolated
-databases. Additional named connections are explicit integration boundaries.
-Each declared SQL dialect must provide matching migration identities. The
-runner records checksums and applies the matching dialect variant.
+## Database boundary
 
-## Request and access boundaries
+Modules in one installation share the `default` application database unless
+they declare a named integration connection. Each module owns its table
+migrations and seeder definitions. SQL migrations have the same identity in
+each supported dialect folder; the build embeds the variants and the runner
+selects by connection dialect and records checksums.
 
-Routes adapt HTTP input to services. Services own business operations and
-transactions; policies decide access. A handler validates session, CSRF when
-required, grants, tenant/record scope and input independently of navigation
-visibility. The resource renderer filters tables/forms, but custom operations
-still require server-side checks.
+SQLite and PostgreSQL are the current supported drivers. Additional drivers
+require matching configuration, migrations, integration coverage and an
+explicit support claim.
 
-## Open work
+## Request and authorization boundaries
 
-Generic resource persistence/actions, complete Filament-like panel resources
-and components, dynamic module lifecycle, production license/activation
-checks, full browser Live reconciliation, full ERP workflows, standalone
-generated-module builds, and deployment/restore qualification remain open.
-Follow the [delivery plan](../../_todo/enterprise-delivery.en.md).
+Routes adapt HTTP inputs into services. Services own business operations and
+transactions; policies decide access. Handlers validate session and CSRF as
+required, then apply grants, tenant/record scope and input validation. Apply
+record and tenant restrictions in database queries. UI schema and navigation
+visibility do not enforce authorization.
+
+## Remaining design work
+
+Generic resource persistence/actions, complete panel/component APIs, dynamic
+module lifecycle, production license and activation checks, browser Live
+reconciliation, standalone generated-app builds and deployment/restore
+qualification remain open. The [delivery plan](../../_todo/enterprise-delivery.en.md)
+tracks acceptance criteria.
+
+## Performance objectives
+
+The current target budgets are under 10 ms for a warm dynamic business
+request, including authorization, a database query and rendering, and under
+50 µs for warm static-file handling on the server, excluding network round
+trip. These are goals, not guarantees or results. Reports must include median,
+p95 and p99, host/OS, compiler profile, response size, concurrency, cache and
+database temperature, sample count and instrumentation. Pool startup, process
+startup, cold storage and network latency are separate measurements. A failed
+target stays visible in the report; do not change the budget to make a result
+pass. See the [M0 measurements](../../exists/reference/research/m0-results.en.md)
+for the scope and limits of existing evidence.

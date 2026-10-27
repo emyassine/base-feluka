@@ -1,4 +1,4 @@
-> Update 2026-10-26: [delivery sequencing](../../_todo/enterprise-delivery.fr.md), [`.view.rs` language](../archive/view-language.fr.md), [panels/components](../archive/panels-components-status.fr.md), and [Zed tooling](../archive/zed-editor.fr.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
+> Update 2026-10-26: [delivery sequencing](../../_todo/enterprise-delivery.en.md), [`.view.rs` language](../../exists/reference/views/view-language.en.md), [panel status](../../exists/reference/panels/filament-port-status.en.md), and [Zed tooling](../../exists/reference/editor/zed-editor.en.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
 
 # Feluqa — Product brief, decisions and critique
 
@@ -81,23 +81,12 @@ Exhibit 1b | Target profiles and their binding constraints
 
 ### A1c. Feluqa platform and installable modules
 
-Feluqa is installed on a server as the host platform. Its System panel is
-built-in and manages the installation's domains and the Feluqa modules enabled
-for them. A developer authors an installable module against Feluqa; examples
-include HRM and the Numerimondes platform module. The operator installs and
-configures that module for a domain through System, subject to package
-compatibility, license and granted permissions. A module declares its panels,
-resources, pages, routes, migrations and capabilities through Feluqa APIs;
-Feluqa owns the panel system, shared components, runtime and security checks.
-
-An installable module may be a focused unit or a composed product that groups
-business modules under `business/`. Rust's `mod`/`pub mod` namespace is a
-separate concern and is always called a **module Rust** in project docs. The
-System install/configure/license lifecycle is a platform requirement, not a
-claim of current support: current application module registration is static
-and compiled. Compatibility resolution, domain-scoped activation, licensing,
-upgrade/recovery, and safe disable/uninstall remain implementation work. See
-[module and product layout](platform-module-layout.en.md).
+Feluqa is the installed host platform; its built-in System panel manages
+modules for domains. Modules contribute capabilities through Feluqa APIs and
+are subject to compatibility, license and permission checks. Runtime
+installation, domain activation and license enforcement remain unfinished;
+registration is static and compiled today. For package shapes, vocabulary and
+the target lifecycle, see [platform and module layout](platform-module-layout.en.md).
 
 **Critique: mobile and downloadable modules.** App stores restrict code downloaded and executed at run time, so runtime modules (D-0005) may be limited on iOS. Verify the current store rules before promising it; the fallback is compile-time modules delivered through store updates.
 
@@ -253,8 +242,8 @@ For Hestia the project can live in the domain's `public_html/` with the custom d
 
 ```sh
 feluqa app add \
-  --dir=/home/yassine/web/rust-demo.numerimondes.com/public_html \
-  --domain=rust-demo.numerimondes.com \
+  --dir=/home/yassine/web/rust-demo.example.com/public_html \
+  --domain=rust-demo.example.com \
   --adapter=hestia
 ```
 

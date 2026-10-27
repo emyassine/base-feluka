@@ -2,30 +2,12 @@
 
 ## Choose the package shape
 
-A module is a Rust library package installed into Feluqa; it is not a second
-Feluqa server. A focused module can own all its capabilities. A composed
-product such as Numerimondes can group business modules under `business/` or
-another developer-chosen folder. Generic `src/app/` or `src/modules/` buckets
-are allowed when useful, but domain-owned paths are the recommended default.
-
-```text
-my-module/
-├── Cargo.toml
-├── feluqa-module.toml       # target manifest contract; packaging is pending
-├── resources/views/
-├── src/
-│   ├── lib.rs
-│   ├── provider.rs
-│   ├── panel.rs
-│   ├── resources/
-│   ├── pages/
-│   ├── features/
-│   ├── routes.rs
-│   ├── services.rs
-│   ├── policies.rs
-│   └── migrations/{sqlite,postgresql}/
-└── tests/
-```
+A module is authored against Feluqa; it is not a second Feluqa server. Decide
+whether its installable boundary contains one capability or composes several
+business domains. Keep resources, policies, migrations, seeders and services
+with the domain that owns them. The [module layout reference](../../knowledge/architecture/platform-module-layout.en.md)
+shows both source shapes and explains how Feluqa modules differ from Rust
+modules.
 
 ## Current development workflow
 
@@ -35,8 +17,8 @@ inputs, then rebuilds and restarts the development process. Follow the current
 [CLI guide](../reference/cli/commands.en.md) and the repository
 [quick start](../../../README.md).
 
-The package format illustrated above is the target for installable modules.
-Today, module registration is static and linked into the compiled product.
+The installable package format is still a target contract. Today, module
+registration is static and linked into the compiled product.
 System-panel installation, package compatibility resolution, license checks,
 domain activation and safe upgrade/uninstall are not implemented.
 

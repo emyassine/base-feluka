@@ -19,5 +19,6 @@ Pages use `<slug>.<language>.md`. Translations share the same slug, for example
 and kebab-case; the language suffix is an ISO-style language code.
 
 The repository [README](../README.md) is the quick start for the current
-Numerimondes development harness. It does not demonstrate dynamic installation
-of a module through the System panel; that lifecycle remains planned.
+workspace. Product-specific implementation details are collected under
+[product guides](exists/products/index.en.md); the platform documentation
+does not repeat them.

@@ -21,6 +21,10 @@ items.
 - [Add custom routes](for-developers/custom-routes.en.md)
 - [Test and release a module](for-developers/testing-and-release.en.md)
 
+## Product implementations
+
+- [Product-specific guides](products/index.en.md)
+
 ## Reference
 
 - [Technical reference index](reference/index.en.md)

@@ -8,6 +8,6 @@ Run from the repository root:
 ./scripts/capture-system-panel.sh /tmp/feluqa-system-panel.png
 ```
 
-The script runs the authenticated HTTP integration flow, captures the rendered `/system/connections` response, serves it with the framework's CSS and JavaScript assets, and takes Firefox screenshots for the default theme, dark theme, and a 390 px mobile viewport. The mobile capture uses a capture-only stylesheet to hold the drawer open after the shell script initializes; it is a layout snapshot, not a click-interaction test. Verify the sidebar, active route, page heading, searchable database connection table, dark colors, and mobile drawer. It does not start or stop the Numerimondes development server.
+The script runs the authenticated HTTP integration flow, captures the rendered `/system/connections` response, serves it with the framework's CSS and JavaScript assets, and takes Firefox screenshots for the default theme, dark theme, and a 390 px mobile viewport. The mobile capture uses a capture-only stylesheet to hold the drawer open after the shell script initializes; it is a layout snapshot, not a click-interaction test. Verify the sidebar, active route, page heading, searchable database connection table, dark colors, and mobile drawer. It does not start or stop a development server.
 
 The output paths are the requested PNG plus `.dark.png` and `.mobile.png` variants.

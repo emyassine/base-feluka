@@ -17,8 +17,8 @@ The app-owned Webkernel site has three view sources:
 
 The checkout also contains 137 package-owned view sources under `webkernel-src`.
 Those demonstrate the broader component and Liveview syntax, but cannot be ported
-by copying PHP expressions into Feluqa. Numerimondes currently has 15 compiled
-`.view.rs` files and is the Feluqa consumer used for compiler conformance.
+by copying PHP expressions into Feluqa. The current compiled consumer has 15
+`.view.rs` files and is used for compiler conformance.
 
 ## Observed syntax and current treatment
 

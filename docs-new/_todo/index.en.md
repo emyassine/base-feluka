@@ -4,7 +4,6 @@ This section is for work that is planned, incomplete, or not yet verified.
 Do not promote an item to `exists/` until its acceptance evidence passes.
 
 - [Enterprise delivery plan](enterprise-delivery.en.md)
-- [Initial roadmap](roadmap.fr.md)
 - [Open architecture decisions](open-decisions.en.md)
 - [Webkernel view compatibility and port sequence](views/webkernel-view-compatibility.en.md)
 - [Browser testing research](testing/browser-testing-research.en.md)

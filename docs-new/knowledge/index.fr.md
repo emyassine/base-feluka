@@ -6,7 +6,6 @@
 - [Décisions de plateforme](architecture/platform-vision-decisions.en.md)
 - [Politique propriétaire et registre privé](policy/proprietary.en.md)
 - [Notes de travail](notes/)
-- [Documents techniques conservés en français](archive/index.en.md)
 
 Les guides d'utilisation et de développement sous `exists/` sont actuellement
 publiés en anglais.

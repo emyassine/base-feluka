@@ -2,7 +2,7 @@
 
 ## Share the installation database
 
-Modules in the same Numerimondes installation use the `default` connection by
+Modules in the same platform installation use the `default` connection by
 default. Each module owns its tables and migration files, but does not receive
 an isolated database automatically. Declare a named connection only for an
 actual external, legacy or analytics integration.
@@ -26,7 +26,7 @@ belong in separate files/directories.
 ## Current database foundation
 
 Feluqa uses SeaORM with SQLite and PostgreSQL pools and named connections.
-Numerimondes has CRM migration variants for SQLite and PostgreSQL. Migration
+SQLite and PostgreSQL are the currently supported dialects. Migration
 application is explicit and recorded. Rollback does not restore deleted data;
 use reviewed expand/contract changes for destructive schema evolution.
 

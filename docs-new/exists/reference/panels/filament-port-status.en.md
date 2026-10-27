@@ -9,12 +9,12 @@ A copied asset bundle is not feature parity. Each row below tracks an independen
 
 | Capability | Rust location | Current state | Still required for parity |
 |---|---|---|---|
-| Panel configuration/provider | `_crates/feluqa-panel` | Typed builder for branding, auth-flow flags, sidebar/topbar placement, widths, groups, and permission-filtered navigation. Core registers initial provider data; Numerimondes and the CLI render links from registered providers. | Render the remaining appearance options in the panel shell; auth pages and registration/reset/verification handlers; middleware ordering; tenant selection/registration; panel events, hooks, plugins, themes, SPA mode and global search. |
+| Panel configuration/provider | `_crates/feluqa-panel` | Typed builder for branding, auth-flow flags, sidebar/topbar placement, widths, groups, and permission-filtered navigation. Core and the CLI render links from registered providers. | Render the remaining appearance options in the panel shell; auth pages and registration/reset/verification handlers; middleware ordering; tenant selection/registration; panel events, hooks, plugins, themes, SPA mode and global search. |
 | Theme system and visual assets | `_crates/feluqa-panel/assets` | Selected compiled Filament/Webkernel CSS and browser runtime assets are bundled and served by Feluqa, with a small Feluqa adapter and light/dark switch. | **Filament theming is not fully imported.** Theme providers/configuration, theme compilation/customization, all theme assets/tokens and dark-mode behavior parity remain. Bundling a compiled CSS file is not the Filament theme API. |
 | Panel shell and Blade-style views | `_crates/feluqa-panel/resources/views`, `_crates/feluqa-panel/assets` | Framework-owned `.view.rs` templates own the document and expose partial input-wrapper, section, shell, theme-switcher and Webkernel-style language-selector components. The shell includes local nav search, grouped navigation, icons, active route, mobile drawer, avatar/user menu and CSRF-protected sign out. Six language flags are bundled and served by Feluqa. | **The Filament component catalog is not fully imported.** The input wrapper lacks prefix/suffix actions, complete icon/loading/validation/disabled state; sections lack full collapse/persist/header/footer behavior; tables, schemas, notifications, actions, widgets, modals, navigation and pages remain partial. Search only filters sidebar links, not a server-backed global search. Browser captures are visual evidence, not parity. |
 | Notifications | `_crates/feluqa-notifications` | Typed toast payload, status/duration/action validation, bounded mailbox, batch selection, camelCase JSON, escaped HTML renderer and shared browser dismissal/action client. | Session-bound persistent mailbox adapter; flush/pull middleware; database notifications, read/unread, pagination, broadcast delivery, server-side action execution, safe custom-view registry and end-to-end panel integration. |
 | Schemas/forms | `_crates/feluqa-ui`, `_crates/feluqa-panel/resources/views/components/input` | Versioned closed SDUI tree and safe HTML renderer; basic resource fields render with Filament field-wrapper, input-wrapper, input/select/textarea and button classes. | The wrapper is only the first static slice of Filament's component; prefix/suffix actions and icons, loading targets, dynamic validity/disabled states, form component state, nested schema, validation, layout schemas (grid/fieldset/tabs/wizard/repeater), upload, model hydration and operation hooks remain. |
-| Panels, resources, pages and clusters | `_crates/feluqa-panel`, `_crates/feluqa-ui` | Typed `.pages()` / `.resources()` registration, resource access checks, basic generated forms and escaped table markup. Numerimondes CRM uses the resource contract. | Full resource CRUD lifecycle, built-in operation pages, custom typed pages, optional resource clusters, widgets per page/resource, query adapters, pagination/search/sort/filters/bulk actions/column manager/summaries/empty states/exports/relation managers/record actions remain. Public websites are not yet first-class panel providers. |
+| Panels, resources, pages and clusters | `_crates/feluqa-panel`, `_crates/feluqa-ui` | Typed `.pages()` / `.resources()` registration, resource access checks, basic generated forms and escaped table markup. | Full resource CRUD lifecycle, built-in operation pages, custom typed pages, optional resource clusters, widgets per page/resource, query adapters, pagination/search/sort/filters/bulk actions/column manager/summaries/empty states/exports/relation managers/record actions remain. Public websites are not yet first-class panel providers. |
 | Actions/widgets/LiveView | `_crates/feluqa-panel`, `_crates/feluqa-live`, public alias `feluqa::liveview` | Live actions are signed, CSRF checked, permission checked, and replay protected over HTTP. The panel's health action completed in the browser-facing HTTP integration test. | This is not yet Livewire-style LiveView: there is no persistent component session, event transport, state diff/morph lifecycle, reconnect, or streaming. `axum-wire` is currently version 0.0.6; Shelly's Axum adapter is version 0.6.0 and its published history starts in May 2026. Neither has enough production history to make it Feluqa's core contract. Keep the signed Feluqa action contract and choose a transport behind it only after protocol/security and browser acceptance tests. Full action/group lifecycle, modal forms, confirmation, notifications, transactions, widgets/stats/charts and grid layout also remain. |
 | CLI and app ownership | `products/feluqa-cli` | Scaffold compiles framework panel views/assets from crate roots rather than generating copies into the app. A generated application compiles with the Core panel and permission-filtered menu. | Feature generators and integration tests for every provider, resource/page/widget/action type; standalone published-crate packaging. |
 
@@ -29,9 +29,45 @@ Each feature is complete only when its source behavior has a corresponding Rust 
 `.view.rs`/component where applicable, browser behavior where applicable, integration into the Core panel, and
 tests for both allowed and denied paths. A checklist row stays open until all of those are delivered.
 
+## Target composition model
+
+Feluqa owns the panel runtime, shared shell/components and built-in System
+panel. A product or module declares a provider and contributes resources,
+pages, widgets, navigation and exceptional routes to a Feluqa panel instance.
+A public website is intended to use the same panel/page composition contracts
+where that fits; it must not copy the framework panel shell or assets.
+
+A resource describes data fields, columns, operations and access policy. The
+framework should supply standard CRUD pages and connect schemas/forms/tables,
+navigation and authorization. Resources may belong to a navigation cluster or
+remain unclustered. Pages are typed declarations that can select compiled
+views or compose schemas and widgets. Exceptional routes remain possible and
+must declare whether they are public or protected.
+
+Terminology: a **Feluqa module** is an installable platform package; a
+**business module** is a domain grouped inside a composed package; a **feature**
+is a narrower capability within a module; a **Rust module** means only a
+language `mod`/`pub mod`. Source folders do not by themselves define runtime
+installation or packaging boundaries.
+
+## Authorization and Live behavior
+
+The server authorizes every page, resource operation, field, record and custom
+action. Hiding a navigation item is only presentation. UI schemas describe
+presentation; services and policies own business behavior. Tenant and record
+scope must be applied in database queries, not after fetching unrestricted
+data.
+
+The current Live contract issues short-lived signed snapshots and dispatches
+typed actions after the host validates session, CSRF, permission and scope.
+The browser transport does not yet provide a Livewire-style persistent
+component session, event protocol, state reconciliation/morphing, reconnect or
+streaming. Snapshots are signed, not encrypted; they must not contain secrets.
+An in-memory replay guard is not suitable for shared production deployment.
+
 ## Browser-level visual check
 
-`scripts/capture-system-panel.sh /tmp/feluqa-system-panel.png` runs the authenticated Numerimondes HTTP test,
+`scripts/capture-system-panel.sh /tmp/feluqa-system-panel.png` runs the authenticated HTTP test,
 captures its actual rendered `/system/connections` response, serves the framework assets, and makes Firefox
 headless screenshots at desktop, dark and mobile sizes. The mobile image forces the drawer open in a capture-only
 stylesheet; it proves the narrow layout can render, not that the browser toggle interaction passes. No pixel

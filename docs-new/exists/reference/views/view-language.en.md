@@ -1,23 +1,107 @@
 # Feluqa View language
 
-Feluqa View files use the `.view.rs` suffix. They are HTML templates containing
-trusted Rust expressions and blocks; they compile into the consuming product
-at build time. They are not PHP files or runtime scripts.
+This is the technical contract for `.view.rs` templates. The task-oriented
+[view guide](../../for-developers/views-and-components.en.md) covers when to
+use templates and how they fit into a module.
 
-The current language contract includes escaped `{{ expression }}` output,
-trusted HTML values, `@rs` / `@endrs`, conditionals, loops, includes,
-layouts, sections, namespaced components and slots. Rust blocks are trusted
-developer code and must never be accepted from panel users.
+## File model and compilation
 
-Escape output by default. Use typed trusted HTML only for framework-rendered
-markup. Local links and form actions must be validated; URL attributes use
-`SafeUrl`. JavaScript and CSS interpolation are not supported without dedicated
-encoders. Production templates are compiled; development recompiles changed
-views and reports source errors.
+`.view.rs` is an HTML template language with trusted developer Rust, not a Rust
+module, a PHP file or a runtime script. A consuming crate declares view roots
+and namespaces. The build resolves templates, includes, layouts and registered
+components, detects cycles, validates Rust fragments and generates Rust into
+`OUT_DIR`. Production binaries serve compiled views and do not need `rustc` or
+the source templates.
 
-The panel shell and document boilerplate belong to Feluqa. Panel page templates
-should supply page content, not their own `<html>`, `<head>` or `<body>`.
+View names are resolved from declared roots at build time; they are not
+derived from request input. Duplicate names, paths escaping a root, missing
+props and include cycles are errors with source locations. Rust embedded in a
+template has the application's full process privileges. Never compile
+templates supplied by panel users.
 
-The compiler and Tree-sitter grammar still need a shared conformance corpus.
-See the [developer view guide](../../for-developers/views-and-components.en.md)
-and [Webkernel conversion inventory](../../../_todo/views/webkernel-view-compatibility.en.md).
+## Syntax
+
+The shipped syntax is HTML-like and Blade-inspired:
+
+| Form | Meaning |
+|---|---|
+| `{{ expression }}` | Write a typed Rust expression with HTML escaping. |
+| `{!! expression !!}` | Write only a framework-created `TrustedHtml` value. Arbitrary strings cannot be cast to trusted markup. |
+| `{{-- comment --}}` | Remove a template comment from output. |
+| `@@` | Emit a literal `@`. CSS at-rules such as `@media` remain text. |
+| `@rs ... @endrs` | Compile trusted Rust statements in the surrounding lexical scope. |
+| `@if (...)`, `@elseif (...)`, `@else`, `@endif` | Render conditional branches from Rust boolean expressions. |
+| `@foreach (pattern in iterable)`, `@endforeach` | Iterate with Rust pattern and iterable syntax. |
+| `@include("namespace::name", prop = expression)` | Render a statically named template with explicit typed props. |
+| `@extends("namespace::layout")`, `@section`, `@yield` | Compose a view with one statically named parent and named sections. |
+| `<x-namespace::component ... />` | Render a component registered at build time with declared typed props. |
+| `<x-slot name="actions">...</x-slot>` | Pass named content to a registered component. Content outside named slots is the default slot. |
+
+Unknown directives and unregistered components are errors. Includes do not
+implicitly copy every variable from the parent template. Props, slots and
+attribute bags have explicit types and documented evaluation scope.
+
+## Escaping and context safety
+
+- Text and ordinary HTML attributes are escaped by default.
+- `href`, `src`, `action`, `formaction`, `cite` and `poster` values require
+  `SafeUrl`. Its constructor permits local paths, fragments/queries and the
+  `http`, `https`, `mailto` and `tel` schemes; it rejects protocol-relative
+  URLs, unsupported schemes, user-info authorities, whitespace, control bytes
+  and backslashes.
+- `TrustedHtml` is reserved for output from trusted Feluqa renderers. It is not
+  an input sanitizer.
+- HTML escaping does not encode JavaScript or CSS. Dynamic interpolation in
+  those contexts is prohibited without a dedicated encoder.
+- Authentication and permission checks belong in server handlers and
+  services. A template directive or hidden navigation entry is not access
+  control.
+- Component attributes are escaped and serialized deterministically. Unknown
+  props are rejected unless explicitly declared as pass-through HTML attrs.
+
+## Parser and diagnostics
+
+The scanner tracks nested delimiters, strings, raw Rust strings, character
+literals, lifetimes and comments. A delimiter inside a Rust string/comment
+cannot close the template expression or block. Source maps connect generated
+Rust errors to template locations. Text replacement or a regular expression
+alone is not a valid parser for nested Rust expressions.
+
+## Development and edits
+
+`feluqa dev` polls product Rust source, view, config and migration inputs plus
+local framework crate sources. It builds a replacement process while the
+current process serves traffic. On success it stops the previous process and
+starts the new one; on failure it keeps the previous process and reports the
+compiler diagnostics. Public assets are served from the configured document
+root and do not trigger a Rust rebuild.
+
+An interpreted development subset may be considered only if it shares an AST
+and conformance corpus with the compiler. It cannot execute arbitrary `@rs`
+without a compiler or another explicitly designed runtime. Native compilation
+is the reference behavior.
+
+## Current coverage and conversion limits
+
+Implemented templates cover escaped expressions, trusted output, Rust blocks,
+conditions, loops, explicit includes, layouts/sections, registered components
+and slots. The compiler exposes dependencies/source maps and reports failures
+against the source template. URL attributes require `SafeUrl`.
+
+Compiler coverage includes nested delimiters, include cycles, missing props,
+Unicode, delimiters inside Rust strings/comments, HTML escaping, slots,
+invalid URLs and generated Rust type errors. Debug and release rendering use
+the same fixtures. Tree-sitter has a separate initial corpus; that corpus is
+not yet shared with the compiler.
+
+The following source-framework constructs are not implemented as automatic
+compatibility features: `@markdown`, `@js`, dynamic `@class`/`@style`, `@once`,
+asset-manifest directives, `@forelse`, `@auth`/`@guest`/`@can`, `@liveview`,
+`@stack`, PHP blocks, PHP closures, implicit variable capture and dynamic
+component discovery. Port the behavior into Rust services, typed view models,
+registered components or explicit schema instead of renaming PHP syntax.
+
+Tree-sitter has its own grammar and editor queries. The compiler and grammar
+still need one shared conformance corpus and interactive editor acceptance.
+The observed source inventory and conversion priorities are in the
+[Webkernel conversion plan](../../../_todo/views/webkernel-view-compatibility.en.md).

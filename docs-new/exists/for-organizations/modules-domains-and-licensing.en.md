@@ -3,8 +3,8 @@
 ## What a module means
 
 A Feluqa module is an installable package for the Feluqa platform. It may
-provide a focused capability such as HRM, or a larger product such as
-Numerimondes. A larger module source may organize business areas under
+provide a focused capability such as HRM, or a larger composed product. A
+larger module source may organize business areas under
 `business/` or another folder chosen by its developer. Those folders describe
 ownership; the package manifest defines the installable unit.
 
@@ -25,13 +25,11 @@ the grants allowed for their account and domain.
 - A visible navigation link is not an authorization check. The server must
   enforce both entitlement and user permission for every protected action.
 
-## Availability today
+## Current implementation status
 
-Feluqa currently registers modules statically in compiled products. The System
-panel has first-stage account, role, tenant and module inspection pages, but it
-does not yet download/install arbitrary module packages, verify licenses per
-domain, activate capabilities dynamically, or upgrade/uninstall modules.
-These are platform requirements, not current product claims. See the
-[delivery plan](../../_todo/enterprise-delivery.en.md).
+The domain-level package lifecycle and license enforcement are not implemented
+end to end. Current shipped capabilities and limitations are listed once in
+the [platform capability table](platform-overview.en.md#what-is-available-now);
+remaining implementation tasks are in the [delivery plan](../../_todo/enterprise-delivery.en.md).
 
 For package and source structure, see [develop a Feluqa module](../for-developers/develop-a-module.en.md).

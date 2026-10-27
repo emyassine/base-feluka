@@ -4,7 +4,7 @@
 
 Feluqa owns the panel framework, System panel, shared shell and component
 assets. A module registers its resources and pages with Feluqa panel instances;
-it does not ship a separate panel framework. A product can contribute an
+it does not ship a separate panel framework. A module can contribute an
 administration panel, a public website panel, or both.
 
 ## Resources
@@ -25,11 +25,7 @@ panel layout.
 ## What is implemented
 
 The current panel registry validates page/resource paths and permissions.
-Numerimondes CRM demonstrates resource-based access checks, generated basic
-forms and tables, and record/field filtering. Full Filament-compatible
-resource lifecycles, clusters, page classes, widget APIs, query adapters and
-complete component schemas are still incomplete. The current Filament theme
-and component catalog are **not fully imported**. See the
-[port inventory](../reference/panels/filament-port-status.en.md).
+Implementation status and remaining gaps are tracked in the dedicated
+[panel port inventory](../reference/panels/filament-port-status.en.md).
 
 Next: [store data and run migrations](data-and-migrations.en.md).

@@ -1,67 +1,42 @@
 # Feluqa
 
-Feluqa is NUMERIMONDES's Rust platform for installable modules across web, SPA, mobile, desktop, games, APIs and real-time targets. The server profile is the current focus; other profiles will share schemas and tools while keeping their own runtimes.
+Feluqa is a proprietary Rust platform and ecosystem for installable modules
+across web, SPAs, mobile, desktop, games, APIs and real-time systems. Products
+share tools and schemas while keeping runtime profiles suited to their
+targets. Web delivery is the current priority.
 
-Cross Platform
-- Embedded Applications
-- Desktop Applications
-- Industrial Applications
-- Consumer Applications
-- Automotive Applications
-- Medical Applications
+## Start here
 
-## Run the Numerimondes site
+- [Documentation](docs-new/index.en.md): organization guides, module developer
+  guides, technical references, architecture intent and remaining work.
+- [Contributor instructions](AGENTS.md): repository boundaries, Rust rules
+  and validation commands.
 
-From the repository root, run the Feluqa CLI product:
-
-```sh
-cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- dev
-```
-
-Open [http://127.0.0.1:38127/](http://127.0.0.1:38127/). The Numerimondes product resolves its config from `products/numerimondes/feluqa.toml`; its profile is `web`. It currently serves `/` and `/about`.
-
-This launches the current Numerimondes module source in its development harness; it does not exercise the future System-panel package installation flow. The page navigation shows handler elapsed time as **Request … ms**. The full server middleware duration is separate: inspect `Server-Timing: feluqa_binary;dur=…` in browser DevTools → Network → Response Headers, or watch the CLI terminal.
-
-Check the no-default-dependency realtime facade profile with `cargo check --manifest-path _crates/Cargo.toml -p feluqa --no-default-features --features realtime`. This proves host compilation only, not a specific embedded target or hard-deadline behavior.
-
-Build the standalone application binary with:
+The CLI product is `products/feluqa-cli/` and its binary is `feluqa`. From this
+checkout, inspect its help with:
 
 ```sh
-cargo build --manifest-path _crates/Cargo.toml -p numerimondes --release --locked
+cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- help
 ```
 
-The CLI is a first-class product at `products/feluqa-cli/`, with the executable name `feluqa`. From source, run it with `cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- help`.
+Product-specific run/build instructions belong in the corresponding guide
+under `docs-new/exists/products/`.
 
-The build-time view compiler now handles `.view.rs` templates with typed parameters, escaped and trusted output, `SafeUrl`-checked links, `@rs`, conditions/loops, includes, layouts/sections, registered components and slots. `feluqa dev` watches application and local framework sources, keeps the last working server alive after a failed build, and restarts after a successful build.
+## Workspace
 
-The `feluqa` facade defaults to the `web` feature set, and offers `spa`, `mobile`, `desktop`, `game` and `realtime` profiles. Set `default-features = false` to avoid linking web-profile crates. `auth`, `ui`, `panel`, and `module` are `no_std` + `alloc`; `live` currently requires `std`. The contracts provide versioned UI JSON and a safe initial renderer, exact permissions, panel registration, signed typed actions, and deterministic static-module lifecycle. Feluqa Core also has persistent users, roles, sessions and audit. Browser Live transport, distributed replay, dynamic module installation and a reusable generic administration panel remain unfinished.
+The Cargo workspace and lockfile live under `_crates/`; product sources live
+under `products/`. The `feluqa` facade exposes target profiles. The web profile
+uses Tokio, Axum, Tower, Serde and SeaORM. Shared contracts such as auth,
+versioned UI schemas, panel registration and module lifecycle are kept behind
+Feluqa namespaces; a non-web target does not inherit the server runtime by
+default.
 
-Numerimondes now exercises a first product-specific MVC path: Core setup/login/logout and user/role administration under `/system`, plus an audited CRM customer CRUD under `/admin`. This is an initial vertical slice, not yet a reusable enterprise ERP panel. The CLI generates a web MVC starter with routes, controllers, compiled views and dialect migration folders. Inside this monorepo, generated apps use local Feluqa crates; outside it, the private registry must first receive the current `0.2.0` crate set (it currently exposes `feluqa` through `0.1.1`). See [the Web profile architecture and current delivery gap](docs-new/knowledge/architecture/web-profile.en.md).
+Every handwritten crate root and generated app entrypoint uses
+`#![no_implicit_prelude]`. Views use the compiled `.view.rs` template language.
+The panel and view references document current behavior and gaps; browser
+assets alone do not establish feature parity with any PHP framework.
 
-The Web data foundation uses SeaORM 1.1.20 with named SQLite/PostgreSQL pools, typed TOML configuration, and checksummed SQL migrations compiled by module and dialect. Numerimondes supplies both CRM migration variants; the initial `/system` and `/admin` routes enforce sessions, CSRF, grants and CRM record scope. PostgreSQL migration application is verified, while the full panel HTTP suite still needs PostgreSQL coverage.
-
-## Repository layout
-
-The repository root is reserved for products, documentation, and generated build output. The Cargo workspace and lockfile live under `_crates/`. The compiler version is managed by developer and CI environments; packages declare the minimum Rust version they support.
-
-```text
-_crates/Cargo.toml         workspace and shared dependency versions
-_crates/Cargo.lock         workspace dependency lockfile
-_crates/feluqa/            public framework facade
-_crates/feluqa-console/    public console command contract
-_crates/feluqa-auth/       no_std identity and permission contracts
-_crates/feluqa-ui/         no_std versioned SDUI schema
-_crates/feluqa-panel/      system/business panel registry
-_crates/feluqa-live/       signed typed action dispatch
-_crates/feluqa-module/     deterministic static module lifecycle
-_crates/feluqa-view/       compiled view engine
-products/feluqa-cli/       Feluqa CLI product (binary: feluqa)
-products/numerimondes/     Numerimondes platform module source (currently statically composed)
-docs-new/                  product intent, current state, and remaining work
-target/                    generated Rust build output
-products/__M0/             retained language benchmark evidence and tools
-```
-
-See [the documentation index](docs-new/index.en.md) for the roadmap, architecture decisions, and coding standard.
-
-Implementation contracts: [delivery plan](docs-new/_todo/enterprise-delivery.en.md), [`.view.rs` language](docs-new/exists/reference/views/view-language.en.md), [panels and components](docs-new/exists/for-developers/panels-resources-and-pages.en.md), [Zed tooling](docs-new/exists/reference/editor/zed-editor.en.md). Contributors start with [AGENTS.md](AGENTS.md).
+The platform remains in active development. Dynamic module installation,
+domain license enforcement, complete Filament-compatible panels, production
+Live reconciliation, deployment/restore qualification and enterprise release
+gates are not complete. See the [delivery plan](docs-new/_todo/index.en.md).

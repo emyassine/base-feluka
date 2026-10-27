@@ -8,8 +8,8 @@ must be authorized again on the server.
 
 Feluqa's current authorization model uses exact grants and a `Principal`
 bound to a session and tenant. Resource authorization can return the operation
-allowed, record scope, and readable/writable fields. Numerimondes CRM applies
-record ownership and field grants to its database query and form renderer.
+allowed, record scope, and readable/writable fields. Resource handlers must
+apply record ownership and field grants to database queries and form rendering.
 
 ## Protect custom handlers
 
