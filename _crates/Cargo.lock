@@ -445,6 +445,7 @@ version = "0.1.0"
 name = "feluqa-cli"
 version = "0.1.0"
 dependencies = [
+ "feluqa",
  "serde",
  "serde_json",
  "toml",

@@ -55,3 +55,32 @@ fn core_provider_registers_framework_panel_and_resources() {
     assert!(catalog.resource("system.roles").is_some());
     assert!(catalog.resource("system.audit").is_some());
 }
+
+#[test]
+fn panel_pages_delegate_document_shell_to_framework_layouts() {
+    let pages = [
+        include_str!("../resources/views/pages/core_dashboard.view.rs"),
+        include_str!("../resources/views/pages/core_login.view.rs"),
+        include_str!("../resources/views/pages/core_migrations.view.rs"),
+        include_str!("../resources/views/pages/core_resource.view.rs"),
+        include_str!("../resources/views/pages/core_roles.view.rs"),
+        include_str!("../resources/views/pages/core_setup.view.rs"),
+        include_str!("../resources/views/pages/core_tenants.view.rs"),
+        include_str!("../resources/views/pages/core_users.view.rs"),
+        include_str!("../resources/views/pages/system_audit.view.rs"),
+        include_str!("../resources/views/pages/system_connections.view.rs"),
+        include_str!("../resources/views/pages/system_dashboard.view.rs"),
+        include_str!("../resources/views/pages/system_login.view.rs"),
+        include_str!("../resources/views/pages/system_migrations.view.rs"),
+        include_str!("../resources/views/pages/system_modules.view.rs"),
+        include_str!("../resources/views/pages/system_roles.view.rs"),
+        include_str!("../resources/views/pages/system_setup.view.rs"),
+        include_str!("../resources/views/pages/system_tenants.view.rs"),
+        include_str!("../resources/views/pages/system_users.view.rs"),
+    ];
+    for page in pages {
+        assert!(!page.contains("<!doctype"));
+        assert!(!page.contains("<html"));
+        assert!(!page.contains("<body"));
+    }
+}

@@ -1,0 +1,280 @@
+#![no_implicit_prelude]
+
+use crate::feluqa;
+
+use crate::app::controllers::site;
+use crate::app::controllers::panels;
+use crate::app::controllers::system;
+use crate::app::controllers::live;
+use crate::axum::Router;
+use crate::axum::extract::Extension;
+use feluqa::core::service::CoreStore;
+use feluqa::database::DatabasePools;
+use feluqa::panel::PanelCatalog;
+use feluqa::prelude::Result;
+use feluqa::web::{Route, RouteError, on_get};
+use crate::std::clone::Clone;
+use crate::std::convert::From;
+use crate::std::path::PathBuf;
+use crate::std::option::Option;
+use crate::std::sync::Arc;
+use crate::std::result::Result::Ok;
+use crate::tower_http::services::ServeDir;
+use feluqa::live::LiveRuntime;
+
+pub(crate) fn routes(
+    core_store: CoreStore,
+    catalog: PanelCatalog,
+    secure_cookies: bool,
+    live_runtime: Option<LiveRuntime>,
+) -> Result<Router<DatabasePools>, RouteError> {
+    let routes = Route::<DatabasePools>::new()
+        .get(feluqa::panel::LIVE_CLIENT_PATH, feluqa::web::serve_live_client)
+        .get("/assets/feluqa/{asset}", feluqa::web::serve_panel_asset)
+        .get("/", site::home)
+        .get("/health", site::health)
+        .on(
+            "/system/setup",
+            on_get(system::setup_form).post(system::setup),
+        )
+        .on(
+            "/system/login",
+            on_get(system::login_form).post(system::login),
+        )
+        .group("/system", |routes| {
+            Ok(routes
+                .on(
+                    "/users",
+                    on_get(system::administration::users)
+                        .post(system::administration::create_user),
+                )
+                .post("/users/active", system::administration::set_user_active)
+                .post("/users/role", system::administration::set_user_role)
+                .post("/users/update", system::administration::update_user_role)
+                .on(
+                    "/roles",
+                    on_get(system::administration::roles)
+                        .post(system::administration::create_role),
+                )
+                .post("/roles/update", system::administration::update_role)
+                .on(
+                    "/tenants",
+                    on_get(system::operations::tenants)
+                        .post(system::operations::create_tenant),
+                )
+                .post("/tenants/status", system::operations::set_tenant_active)
+                .get("/modules", system::operations::modules)
+                .get("/connections", system::operations::connections)
+                .on(
+                    "/migrations",
+                    on_get(system::operations::migrations)
+                        .post(system::operations::run_migrations),
+                )
+                .get("/audit", system::operations::audit)
+                .post("/logout", system::logout)
+                .authenticated(core_store.clone()))
+        })?
+        .group("/system", |routes| {
+            Ok(routes
+                .get("/", system::operations::dashboard)
+                .get("/{*path}", panels::registered)
+                .authenticated(core_store.clone()))
+        })?
+        .group("/admin", |routes| {
+            Ok(routes
+                .get("/", panels::registered)
+                .get("/{*path}", panels::registered)
+                .authenticated(core_store.clone()))
+        })?;
+    let live_routes = Route::<DatabasePools>::new()
+        .get("/live/snapshots/{action}", live::snapshot)
+        .post("/live/actions", live::action)
+        .authenticated(core_store.clone())
+        .finish();
+    let resource_routes = crate::app::controllers::resources::routes(core_store.clone());
+    let router = routes
+        .finish()
+        .merge(live_routes)
+        .merge(resource_routes)
+        .nest_service(
+            "/assets",
+            ServeDir::new(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("public/assets")),
+        )
+        .layer(Extension(catalog))
+        .layer(Extension(core_store))
+        .layer(Extension(secure_cookies))
+        .layer(Extension(live_runtime.map(Arc::new)));
+    Ok(router)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::routes;
+    use crate::feluqa;
+        use crate::app::controllers::system::administration;
+    use crate::axum::body::{Body, to_bytes};
+    use crate::axum::http::header::{COOKIE, HOST};
+    use crate::axum::http::{Method, Request};
+    use feluqa::auth::Principal;
+    use feluqa::core::{MIGRATIONS, service::CoreStore};
+    use feluqa::core::service::SessionIdentity;
+    use feluqa::database::{DatabasePools, DatabaseSettings, MigrationRunner};
+    use feluqa::http::{Extension, HeaderMap, StatusCode};
+    use crate::modules::panel_catalog;
+    use crate::std::assert;
+    use crate::std::assert_eq;
+    use crate::std::clone::Clone;
+    use crate::std::convert::From;
+    use crate::std::format;
+    use crate::std::option::Option::{None, Some};
+    use crate::std::string::{String, ToString};
+    use crate::tokio;
+    use crate::tower::ServiceExt;
+
+    #[tokio::test]
+    async fn system_and_business_routes_build_after_core_migrations() {
+        let settings = DatabaseSettings::from_toml(
+            "[connections.default]\nurl = \"sqlite::memory:\"\nmax_connections = 1\n",
+        )
+        .expect("valid in-memory database settings");
+        let pools = DatabasePools::connect(&settings)
+            .await
+            .expect("connect in-memory database");
+        MigrationRunner::run_module(
+            &pools,
+            "default",
+            &MIGRATIONS,
+        )
+        .await
+        .expect("apply Core migrations");
+        let core = CoreStore::new(
+            pools
+                .default_connection()
+                .expect("default database")
+                .clone(),
+        )
+        .expect("create Core service");
+        core.bootstrap_first_admin(
+            "owner@example.test",
+            "Live Owner",
+            "live-owner-password-strong",
+        )
+        .await
+        .expect("create test administrator");
+        let session = core
+            .login("owner@example.test", "live-owner-password-strong")
+            .await
+            .expect("authenticate test administrator");
+        let cookies = format!(
+            "feluqa_session={}; feluqa_csrf={}",
+            session.session_token, session.csrf_token
+        );
+        let app = routes(
+            core.clone(),
+            panel_catalog().expect("panel catalogue"),
+            false,
+            Some(
+                crate::modules::live::runtime(crate::std::vec![42; 32])
+                    .expect("Live runtime"),
+            ),
+        )
+        .expect("build application routes")
+        .with_state(pools);
+
+        let snapshot_response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(Method::GET)
+                    .uri("/live/snapshots/system::health::ping?revision=0")
+                    .header(HOST, "127.0.0.1:3000")
+                    .header(COOKIE, cookies.as_str())
+                    .body(Body::empty())
+                    .expect("build Live snapshot request"),
+            )
+            .await
+            .expect("issue Live snapshot");
+        assert_eq!(snapshot_response.status(), StatusCode::OK);
+        let snapshot = to_bytes(snapshot_response.into_body(), 64 * 1024)
+            .await
+            .expect("read Live snapshot body");
+        let snapshot = String::from_utf8(snapshot.to_vec())
+            .expect("Live snapshot JSON string")
+            .trim_matches('"')
+            .to_string();
+        let action_request_body = format!(
+            "{{\"snapshot\":\"{snapshot}\",\"action\":\"system::health::ping\",\"revision\":0,\"payload\":null}}"
+        );
+        let missing_csrf = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(Method::POST)
+                    .uri("/live/actions")
+                    .header(HOST, "127.0.0.1:3000")
+                    .header(COOKIE, cookies.as_str())
+                    .header("content-type", "application/json")
+                    .body(Body::from(action_request_body.clone()))
+                    .expect("build CSRF denial request"),
+            )
+            .await
+            .expect("reject missing Live CSRF header");
+        assert_eq!(missing_csrf.status(), StatusCode::FORBIDDEN);
+
+        let action_response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(Method::POST)
+                    .uri("/live/actions")
+                    .header(HOST, "127.0.0.1:3000")
+                    .header(COOKIE, cookies.as_str())
+                    .header("content-type", "application/json")
+                    .header("x-csrf-token", session.csrf_token.as_str())
+                    .body(Body::from(action_request_body.clone()))
+                    .expect("build Live action request"),
+            )
+            .await
+            .expect("dispatch Live action");
+        assert_eq!(action_response.status(), StatusCode::OK);
+        let action_body = to_bytes(action_response.into_body(), 64 * 1024)
+            .await
+            .expect("read Live action response");
+        let action_body = String::from_utf8(action_body.to_vec()).expect("Live action JSON");
+        assert!(action_body.contains("\"value\":\"pong\""));
+        assert!(action_body.contains("\"revision\":1"));
+
+        let replay = app
+            .oneshot(
+                Request::builder()
+                    .method(Method::POST)
+                    .uri("/live/actions")
+                    .header(HOST, "127.0.0.1:3000")
+                    .header(COOKIE, cookies.as_str())
+                    .header("content-type", "application/json")
+                    .header("x-csrf-token", session.csrf_token.as_str())
+                    .body(Body::from(action_request_body))
+                    .expect("build Live replay request"),
+            )
+            .await
+            .expect("reject Live replay");
+        assert_eq!(replay.status(), StatusCode::CONFLICT);
+        let principal = Principal::new("anonymous-role", None).expect("valid principal");
+        let identity = SessionIdentity {
+            user_id: 9,
+            tenant_id: 1,
+            email: String::from("nobody@example.invalid"),
+            display_name: String::from("Nobody"),
+            session_id: String::from("test-session"),
+        };
+        let denied = administration::users(
+            Extension(core),
+            Extension(panel_catalog().expect("panel catalogue")),
+            Extension(principal),
+            Extension(identity),
+            HeaderMap::new(),
+        )
+        .await;
+        assert_eq!(denied.status(), StatusCode::FORBIDDEN);
+    }
+}

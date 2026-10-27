@@ -6,9 +6,14 @@
 
 //! Feature-gated public namespace for Feluqa runtime and shared contracts.
 
+/// Version of the Feluqa facade crate, embedded by Cargo at build time.
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 extern crate alloc;
+#[cfg(feature = "web")]
 extern crate axum;
 extern crate core as rust_core;
+#[cfg(feature = "web")]
 extern crate serde;
 #[cfg(test)]
 extern crate std;

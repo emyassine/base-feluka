@@ -123,7 +123,8 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     let dashboard_view = fs::read_to_string(system_views.join("system_dashboard.view.rs"))
         .expect("framework-owned Live-enabled Core dashboard");
     assert!(dashboard_view.contains("data-feluqa-live"));
-    assert!(dashboard_view.contains("<x-feluqa-panel::assets />"));
+    assert!(dashboard_view.contains("<x-feluqa-panel::document"));
+    assert!(!dashboard_view.contains("<!doctype"));
     assert!(
         PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../_crates/feluqa-panel/resources/views/components/shell.view.rs")
@@ -183,7 +184,10 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     let external = directory.join("remote-site");
     let external_manifest =
         fs::read_to_string(external.join("Cargo.toml")).expect("registry-based manifest");
-    assert!(external_manifest.contains("version = \"0.2.0\", registry = \"feluqa\""));
+    assert!(external_manifest.contains(&format!(
+        "version = \"{}\", registry = \"feluqa\"",
+        crate::feluqa::VERSION
+    )));
     let registry = fs::read_to_string(external.join(".cargo/config.toml"))
         .expect("private registry configuration");
     assert!(registry.contains("/api/v1/crates/"));

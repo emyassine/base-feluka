@@ -194,15 +194,26 @@ pub(crate) fn run(
 
     let dependency = match workspace {
         Some(_) => (
-            "{ path = \"../../_crates/feluqa\" }",
-            "path = \"../../_crates/feluqa\"",
+            String::from("{ path = \"../../_crates/feluqa\" }"),
+            String::from("path = \"../../_crates/feluqa\""),
         ),
         None => (
-            "{ version = \"0.2.0\", registry = \"feluqa\" }",
-            "version = \"0.2.0\", registry = \"feluqa\"",
+            format!(
+                "{{ version = \"{}\", registry = \"feluqa\" }}",
+                crate::feluqa::VERSION
+            ),
+            format!(
+                "version = \"{}\", registry = \"feluqa\"",
+                crate::feluqa::VERSION
+            ),
         ),
     };
-    let result = write_web_project(&target, &slug, &display_name, dependency);
+    let result = write_web_project(
+        &target,
+        &slug,
+        &display_name,
+        (&dependency.0, &dependency.1),
+    );
     if let Err(error) = result {
         let _ = fs::remove_dir_all(&target);
         return Err(error);
@@ -210,7 +221,8 @@ pub(crate) fn run(
     println!("Created {display_name} at {}", target.display());
     if workspace.is_none() {
         println!(
-            "This standalone app requires Feluqa 0.2.0 from the private registry before it can compile."
+            "This standalone app requires Feluqa {} from the private registry before it can compile.",
+            crate::feluqa::VERSION
         );
     }
     println!("Next: cd {} && feluqa dev", target.display());

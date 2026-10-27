@@ -1,3 +1,1 @@
-<!doctype html>
-<html lang="en" class="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ title }} · Feluqa Core</title></head>
-<body class="fi fi-body fi-body-has-navigation fi-body-has-topbar"><x-feluqa-panel::assets /><x-feluqa-panel::shell panel="system" :active="active" :navigation="navigation"><div class="fi-panel-page-content"><header><p class="eyebrow">Feluqa Core · System</p><h1>{{ title }}</h1><p>Signed in as {{ display_name }} · {{ email }}</p></header><section class="card">{!! table !!}</section></div></x-feluqa-panel::shell></body></html>
+<x-feluqa-panel::document panel="system" :active="active" :title="title" :navigation="navigation"><div class="fi-panel-page-content"><header><p class="eyebrow">Feluqa Core · System</p><h1>{{ title }}</h1><p>Signed in as {{ display_name }} · {{ email }}</p></header><section class="card">{!! table !!}</section></div></x-feluqa-panel::document>

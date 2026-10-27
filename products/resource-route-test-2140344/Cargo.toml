@@ -1,0 +1,24 @@
+[package]
+name = "resource-route-test-2140344"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+build = "build.rs"
+
+[dependencies]
+axum = "0.8"
+feluqa = { path = "../../_crates/feluqa" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+subtle = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
+toml = "0.8"
+tower-http = { version = "0.6", features = ["fs"] }
+
+[build-dependencies]
+feluqa = { path = "../../_crates/feluqa", features = ["view-compiler"] }
+toml = "0.8"
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }

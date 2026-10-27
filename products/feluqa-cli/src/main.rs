@@ -2,6 +2,7 @@
 #![deny(unsafe_code)]
 #![deny(unused_must_use)]
 
+extern crate feluqa;
 extern crate std;
 
 mod commands;

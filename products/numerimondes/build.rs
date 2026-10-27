@@ -77,6 +77,21 @@ fn main() -> Result<(), Box<dyn Error>> {
         "id: &str, eyebrow: &str, title: &str",
     )?;
     compiler.parameters(
+        "feluqa-panel::components.document",
+        "panel: &str, active: &str, title: &str, navigation: crate::feluqa::view::TrustedHtml",
+    )?;
+    compiler.parameters("feluqa-panel::components.simple-document", "title: &str")?;
+    compiler.component(
+        "feluqa-panel::document",
+        "feluqa-panel::components.document",
+        &["default"],
+    )?;
+    compiler.component(
+        "feluqa-panel::simple-document",
+        "feluqa-panel::components.simple-document",
+        &["default"],
+    )?;
+    compiler.parameters(
         "feluqa-panel::components.shell",
         "panel: &str, active: &str, navigation: crate::feluqa::view::TrustedHtml",
     )?;
