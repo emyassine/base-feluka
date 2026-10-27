@@ -143,6 +143,12 @@ pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, St
     }
 }
 
+/// Serve a bundled Webkernel language flag for the panel language selector.
+pub async fn serve_panel_language_flag(Path(locale): Path<String>) -> Result<Response, StatusCode> {
+    let svg = crate::panel::language_flag_svg(&locale).ok_or(StatusCode::NOT_FOUND)?;
+    Ok(asset_response(svg, "image/svg+xml; charset=utf-8"))
+}
+
 /// HTTP handler for the framework-owned Feluqa Live browser client.
 pub async fn serve_live_client() -> Response {
     live_client()

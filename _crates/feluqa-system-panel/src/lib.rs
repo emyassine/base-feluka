@@ -160,6 +160,7 @@ pub fn panel_with_pages(pages: Vec<PanelPage>) -> Panel {
         prefix: String::from("/system"),
         kind: PanelKind::System,
         pages,
+        resources: Vec::new(),
         options: PanelOptions::default(),
     }
 }

@@ -23,7 +23,7 @@
           <div class="fi-global-search">
             <div class="fi-global-search-field">
               <label for="feluqa-panel-search" class="fi-sr-only">Search navigation</label>
-              <x-feluqa-panel::input-wrapper suffix="⌘K"><input id="feluqa-panel-search" class="fi-input fi-input-has-inline-prefix" type="search" autocomplete="off" placeholder="Search" data-feluqa-nav-search></x-feluqa-panel::input-wrapper>
+              <x-feluqa-panel::input-wrapper prefix="" prefix_icon="search" suffix="⌘K"><input id="feluqa-panel-search" class="fi-input fi-input-has-inline-prefix" type="search" autocomplete="off" placeholder="Search" data-feluqa-nav-search></x-feluqa-panel::input-wrapper>
             </div>
           </div>
         </div>
@@ -38,11 +38,7 @@
           </summary>
           <div class="fi-dropdown-panel">
             <div class="fi-user-menu-profile"><span class="fi-user-avatar" aria-hidden="true" data-user-name="{{ display_name }}">{{ display_name }}</span><span><strong>{{ display_name }}</strong><small>{{ email }}</small></span></div>
-            <div class="fi-theme-switcher" role="group" aria-label="Theme" data-feluqa-theme-switcher>
-              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="light" aria-label="Light theme" title="Light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
-              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="dark" aria-label="Dark theme" title="Dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 15.75A8.25 8.25 0 0 1 8.25 3.75a8.25 8.25 0 1 0 12 12Z"/></svg></button>
-              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="system" aria-label="System theme" title="System"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4"/></svg></button>
-            </div>
+            <x-feluqa-panel::theme-switcher />
             <x-feluqa-panel::language-selector :csrf_token="csrf_token" :active="active" />
             <form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="fi-user-menu-logout" type="submit">Sign out</button></form>
           </div>

@@ -26,6 +26,19 @@ pub const NOTIFICATIONS_CLIENT_JS: &str = include_str!("../assets/feluqa-notific
 /// Feluqa-owned responsive sidebar and keyboard interactions.
 pub const PANEL_SHELL_CLIENT_JS: &str = include_str!("../assets/feluqa-shell.js");
 
+/// Webkernel language selector flags bundled with the framework panel.
+pub fn language_flag_svg(locale: &str) -> Option<&'static str> {
+    match locale {
+        "en" => Some(include_str!("../assets/flags/en.svg")),
+        "fr" => Some(include_str!("../assets/flags/fr.svg")),
+        "ar" => Some(include_str!("../assets/flags/ar.svg")),
+        "es" => Some(include_str!("../assets/flags/es.svg")),
+        "de" => Some(include_str!("../assets/flags/de.svg")),
+        "pt" => Some(include_str!("../assets/flags/pt.svg")),
+        _ => None,
+    }
+}
+
 extern crate alloc;
 extern crate core;
 extern crate feluqa_auth;
@@ -45,7 +58,7 @@ use core::convert::{From, Into};
 use core::default::Default;
 use core::fmt;
 use core::fmt::Write as FmtWrite;
-use core::iter::{IntoIterator, Iterator};
+use core::iter::{Extend, IntoIterator, Iterator};
 use core::matches;
 use core::option::Option;
 use core::option::Option::{None, Some};
@@ -1187,6 +1200,8 @@ pub struct Panel {
     pub kind: PanelKind,
     /// Registered pages owned by this panel.
     pub pages: Vec<PanelPage>,
+    /// Resources owned by this panel, discovered by the shared startup catalogue.
+    pub resources: Vec<Resource>,
     /// Authentication, appearance, and navigation settings used by the shared shell.
     pub options: PanelOptions,
 }
@@ -1216,6 +1231,7 @@ impl PanelBuilder {
             prefix: prefix.into(),
             kind,
             pages: Vec::new(),
+            resources: Vec::new(),
             options: PanelOptions::default(),
         };
         panel.options.appearance.sidebar_collapsible = true;
@@ -1332,6 +1348,24 @@ impl PanelBuilder {
         self
     }
 
+    /// Add pages from one module or page provider in declaration order.
+    pub fn pages(mut self, pages: impl IntoIterator<Item = PanelPage>) -> Self {
+        self.panel.pages.extend(pages);
+        self
+    }
+
+    /// Add one resource contract owned by this panel.
+    pub fn resource(mut self, resource: Resource) -> Self {
+        self.panel.resources.push(resource);
+        self
+    }
+
+    /// Add resources from a module provider to this panel's route catalogue.
+    pub fn resources(mut self, resources: impl IntoIterator<Item = Resource>) -> Self {
+        self.panel.resources.extend(resources);
+        self
+    }
+
     /// Add an ordered navigation group. Route authorization remains mandatory on the page.
     pub fn navigation_group(mut self, group: NavigationGroup) -> Self {
         self.panel.options.navigation.push(group);
@@ -1378,6 +1412,7 @@ impl Panel {
                     }],
                 },
             }],
+            resources: Vec::new(),
             options: PanelOptions {
                 appearance: PanelAppearance {
                     sidebar_collapsible: true,
@@ -1514,18 +1549,35 @@ impl PanelCatalog {
     /// Register a panel only when none of its pages collide with a module resource route.
     pub fn register_panel(&mut self, panel: Panel) -> Result<(), PanelCatalogError> {
         validate_panel(&panel).map_err(PanelCatalogError::Panel)?;
+        let mut resources = self.resources.clone();
+        for resource in &panel.resources {
+            resource
+                .validate()
+                .map_err(ResourceRegistryError::InvalidResource)
+                .map_err(PanelCatalogError::Resource)?;
+            if self.panels.routes().any(|path| path == resource.path) {
+                return Err(PanelCatalogError::RouteCollision(String::from(
+                    resource.path,
+                )));
+            }
+            resources
+                .register(*resource)
+                .map_err(PanelCatalogError::Resource)?;
+        }
         for page in &panel.pages {
             let path = join_path(
                 &panel.prefix,
                 &normalize_path(&page.path).map_err(PanelCatalogError::Panel)?,
             );
-            if self.resources.routes.contains_key(path.as_str()) {
+            if resources.routes.contains_key(path.as_str()) {
                 return Err(PanelCatalogError::RouteCollision(path));
             }
         }
         self.panels
             .register(panel)
-            .map_err(PanelCatalogError::Panel)
+            .map_err(PanelCatalogError::Panel)?;
+        self.resources = resources;
+        Ok(())
     }
 
     /// Register a resource only when its route is not owned by a panel page.
@@ -1668,6 +1720,25 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
     {
         if !valid_local_asset_path(asset) {
             return Err(PanelError::InvalidNavigation);
+        }
+    }
+    let mut resource_ids = BTreeMap::new();
+    let mut resource_paths = BTreeMap::new();
+    for resource in &panel.resources {
+        resource
+            .validate()
+            .map_err(PanelError::InvalidPanelResource)?;
+        let resource_path = normalize_path(resource.path)?;
+        if resource_path != resource.path
+            || resource.kind != panel.kind
+            || !(resource_path == prefix
+                || resource_path
+                    .strip_prefix(&prefix)
+                    .is_some_and(|suffix| suffix.starts_with('/')))
+            || resource_ids.insert(resource.id, ()).is_some()
+            || resource_paths.insert(resource_path, ()).is_some()
+        {
+            return Err(PanelError::InvalidPanelResource(ResourceError::InvalidPath));
         }
     }
     let expected_namespace = match panel.kind {
@@ -1834,6 +1905,8 @@ pub enum PanelError {
     EmptyPanel,
     /// Navigation or branding contains an invalid path, label, icon, or permission.
     InvalidNavigation,
+    /// A resource declaration failed validation or falls outside this panel's path/kind.
+    InvalidPanelResource(ResourceError),
     /// The panel ID is already registered.
     DuplicatePanel(String),
     /// A route conflicts with a registered route.
@@ -1877,6 +1950,9 @@ impl fmt::Display for PanelError {
             Self::EmptyPanel => formatter.write_str("panel must register at least one page"),
             Self::InvalidNavigation => {
                 formatter.write_str("panel navigation or branding configuration is invalid")
+            }
+            Self::InvalidPanelResource(error) => {
+                write!(formatter, "panel resource declaration is invalid: {error}")
             }
             Self::DuplicatePanel(id) => write!(formatter, "panel `{id}` is already registered"),
             Self::DuplicateRoute(path) => {
@@ -1932,6 +2008,7 @@ mod tests {
         ResourceInput, ResourceInputKind, ResourceOperation, ResourceOption, ResourceRecordScope,
         ResourceRegistry, ResourceRegistryError, ResourceTableError, ResourceTableRow,
     };
+    use crate::alloc::vec::Vec;
     use crate::core::clone::Clone;
     use crate::core::convert::From;
     use crate::core::default::Default;
@@ -2106,6 +2183,7 @@ mod tests {
                     }],
                 },
             }],
+            resources: Vec::new(),
             options: PanelOptions::default(),
         }
     }
@@ -2134,7 +2212,7 @@ mod tests {
                     ),
                 }],
             })
-            .page(PanelPage {
+            .pages([PanelPage {
                 path: String::from("/"),
                 permission: Permission::new(String::from("business.erp.manage")).expect("grant"),
                 document: UiDocument {
@@ -2143,7 +2221,8 @@ mod tests {
                         value: String::from("CRM"),
                     }],
                 },
-            });
+            }])
+            .resources([CUSTOMER_RESOURCE]);
         let built = builder.build().expect("valid panel provider configuration");
         assert!(built.options.authentication.login);
         assert!(built.options.authentication.registration);
@@ -2158,6 +2237,18 @@ mod tests {
             ContentWidth::SevenExtraLarge
         );
         assert_eq!(built.options.navigation.len(), 1);
+        assert_eq!(built.pages.len(), 1);
+        assert_eq!(built.resources.len(), 1);
+        let mut catalog = PanelCatalog::default();
+        catalog
+            .register_panel(built.clone())
+            .expect("panel provider registers its pages and resources together");
+        assert_eq!(
+            catalog
+                .resource_at_path("/admin/customers")
+                .map(|value| value.id),
+            Some("crm.customers")
+        );
 
         let auth = PermissionSetAuthorizer;
         let granted_principal = principal(&["business.crm.customers.read"]);
@@ -2614,7 +2705,14 @@ mod tests {
             .render_table(&access, "Customers", &[row])
             .expect("render authorized columns");
         assert!(html.as_str().contains("&lt;Acme&gt;"));
-        assert!(html.as_str().contains("<th scope=\"col\">Name</th>"));
+        assert!(
+            html.as_str()
+                .contains("<th scope=\"col\" class=\"fi-ta-header-cell\">")
+        );
+        assert!(
+            html.as_str()
+                .contains("<span class=\"fi-ta-header-cell-label\">Name</span>")
+        );
         assert!(!html.as_str().contains("Email"));
         assert!(!html.as_str().contains("secret@example.test"));
 
@@ -2787,7 +2885,7 @@ mod tests {
             .expect("select form renders");
         assert!(
             form.as_str()
-                .contains("<select id=\"feluqa-field-new-role_id\"")
+                .contains("<select class=\"fi-select-input\" id=\"feluqa-field-new-role_id\"")
         );
         assert!(
             form.as_str()

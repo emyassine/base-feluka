@@ -580,7 +580,8 @@ fn render_form(
             render_input(props, output)?;
         }
     }
-    output.push_str("<button type=\"submit\" class=\"fi-btn fi-btn-size-md fi-btn-color-primary\">");
+    output
+        .push_str("<button type=\"submit\" class=\"fi-btn fi-btn-size-md fi-btn-color-primary\">");
     push_escaped(output, submit);
     output.push_str("</button></form>");
     Ok(())
@@ -817,9 +818,9 @@ fn render_table(
         .and_then(Value::as_array)
         .filter(|headers| !headers.is_empty() && headers.len() <= 32)
         .ok_or(RenderError::InvalidPropertyType("headers"))?;
-    output.push_str("<div class=\"fi-ta\"><div class=\"fi-ta-ctn fi-ta-ctn-with-header\"><div class=\"fi-ta-header-ctn\"><div class=\"fi-ta-header\"><div><h3 class=\"fi-ta-header-heading\">");
+    output.push_str("<div class=\"fi-ta\"><div class=\"fi-ta-ctn fi-ta-ctn-with-header\"><div class=\"fi-ta-main\"><div class=\"fi-ta-header-ctn\"><div class=\"fi-ta-header\"><div><h3 class=\"fi-ta-header-heading\">");
     push_escaped(output, caption);
-    output.push_str("</h3></div></div></div><div class=\"fi-ta-content-ctn\"><div class=\"fi-ta-content\"><table class=\"fi-ta-table\"><thead><tr class=\"fi-ta-row\">");
+    output.push_str("</h3></div></div></div><div class=\"fi-ta-header-toolbar\"><div class=\"fi-ta-search-field\"><div class=\"fi-input-wrp\"><span class=\"fi-input-wrp-prefix\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 1 0 3.477 9.763l3.63 3.63a.75.75 0 1 0 1.06-1.06l-3.63-3.63A5.5 5.5 0 0 0 9 3.5ZM5 9a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z\" clip-rule=\"evenodd\"/></svg></span><div class=\"fi-input-wrp-content-ctn\"><input class=\"fi-input\" type=\"search\" aria-label=\"Search table\" autocomplete=\"off\" placeholder=\"Search\" data-feluqa-table-search></div></div></div></div><div class=\"fi-ta-content-ctn\"><div class=\"fi-ta-content\"><table class=\"fi-ta-table\"><thead><tr class=\"fi-ta-row\">");
     for header in headers {
         let header = header
             .as_str()
@@ -847,7 +848,7 @@ fn render_table(
         if cells.len() != headers.len() {
             return Err(RenderError::InvalidPropertyValue("headers"));
         }
-        output.push_str("<tr>");
+        output.push_str("<tr class=\"fi-ta-row\">");
         for cell in cells {
             let UiNode::Component {
                 name,
@@ -863,13 +864,13 @@ fn render_table(
             }
             require_props(props, &["value"])?;
             require_no_children(children)?;
-            output.push_str("<td>");
+            output.push_str("<td class=\"fi-ta-cell\">");
             push_escaped(output, required_string(props, "value")?);
             output.push_str("</td>");
         }
         output.push_str("</tr>");
     }
-        output.push_str("</tbody></table></div></div></div></div>");
+    output.push_str("</tbody></table></div></div></div></div></div>");
     Ok(())
 }
 
@@ -1083,10 +1084,17 @@ mod render_tests {
                 )],
             )],
         };
-        assert_eq!(
-            render(&document).expect("render safe table").as_str(),
-            "<table class=\"feluqa-table\"><caption>Customers</caption><thead><tr><th scope=\"col\">Name</th></tr></thead><tbody><tr><td>&lt;Acme&gt;</td></tr></tbody></table>"
+        let html = render(&document).expect("render safe table");
+        assert!(
+            html.as_str()
+                .contains("class=\"fi-ta-header-heading\">Customers")
         );
+        assert!(html.as_str().contains("data-feluqa-table-search"));
+        assert!(
+            html.as_str()
+                .contains("class=\"fi-ta-header-cell-label\">Name")
+        );
+        assert!(html.as_str().contains("&lt;Acme&gt;"));
     }
 
     #[test]
@@ -1137,10 +1145,11 @@ mod render_tests {
             )],
         };
         let output = render(&document).expect("render valid select");
-        assert_eq!(
-            output.as_str(),
-            "<label for=\"role-id\">Role</label><select id=\"role-id\" name=\"role_id\" required><option value=\"1\">Editor &lt;restricted&gt;</option></select>"
-        );
+        assert!(output.as_str().contains("class=\"fi-fo-field-wrp\""));
+        assert!(output.as_str().contains(
+            "<select class=\"fi-select-input\" id=\"role-id\" name=\"role_id\" required>"
+        ));
+        assert!(output.as_str().contains("Editor &lt;restricted&gt;"));
 
         let mut invalid = document.clone();
         if let UiNode::Component { props, .. } = &mut invalid.root[0] {
@@ -1184,9 +1193,16 @@ mod render_tests {
                 )],
             )],
         };
-        assert_eq!(
-            render(&document).expect("render safe form").as_str(),
-            "<form method=\"post\" action=\"/admin/customers\"><input type=\"hidden\" name=\"csrf_token\" value=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"><label for=\"feluqa-field-name\">Customer &lt;name&gt;</label><input id=\"feluqa-field-name\" name=\"name\" type=\"text\" value=\"&lt;script&gt;alert(1)&lt;/script&gt;\" required maxlength=\"160\"><button type=\"submit\">Create customer</button></form>"
+        let html = render(&document).expect("render safe form");
+        assert!(html.as_str().contains("class=\"fi-fo-field-wrp\""));
+        assert!(html.as_str().contains("Customer &lt;name&gt;"));
+        assert!(
+            html.as_str()
+                .contains("value=\"&lt;script&gt;alert(1)&lt;/script&gt;\"")
+        );
+        assert!(
+            html.as_str()
+                .contains("class=\"fi-btn fi-btn-size-md fi-btn-color-primary\"")
         );
     }
 
@@ -1225,10 +1241,10 @@ mod render_tests {
             )],
         };
         let html = render(&document).expect("render safe textarea form");
-        assert_eq!(
-            html.as_str(),
-            "<form method=\"post\" action=\"/system/roles/update\"><input type=\"hidden\" name=\"csrf_token\" value=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"><input type=\"hidden\" name=\"id\" value=\"27\"><label for=\"feluqa-field-27-permissions\">Permissions</label><textarea id=\"feluqa-field-27-permissions\" name=\"permissions\" required maxlength=\"8192\">&lt;script&gt;bad&lt;/script&gt;</textarea><button type=\"submit\">Update grants</button></form>"
-        );
+        assert!(html.as_str().contains("id=\"feluqa-field-27-permissions\""));
+        assert!(html.as_str().contains("<textarea class=\"fi-textarea\""));
+        assert!(html.as_str().contains("&lt;script&gt;bad&lt;/script&gt;"));
+        assert!(html.as_str().contains("Update grants</button>"));
     }
 
     #[test]

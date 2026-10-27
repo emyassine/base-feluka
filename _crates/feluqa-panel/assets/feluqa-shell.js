@@ -19,7 +19,9 @@
     const locale = localeCookie?.slice('feluqa_locale='.length);
     const activeLocale = supported.includes(locale) ? locale : 'en';
     const label = languageSelector.querySelector('[data-feluqa-locale-label]');
+    const currentFlag = languageSelector.querySelector('[data-feluqa-current-flag]');
     if (label) label.textContent = activeLocale.toUpperCase();
+    if (currentFlag) currentFlag.src = `/assets/feluqa/flags/${activeLocale}`;
     languageSelector.querySelectorAll('[data-feluqa-locale-option]').forEach((button) => {
       const selected = button.dataset.feluqaLocaleOption === activeLocale;
       button.setAttribute('aria-current', selected ? 'true' : 'false');
@@ -135,6 +137,16 @@
         if (items) items.hidden = false;
         group.classList.remove('fi-collapsed');
       }
+    });
+  });
+
+  document.querySelectorAll('[data-feluqa-table-search]').forEach((input) => {
+    input.addEventListener('input', () => {
+      const query = input.value.trim().toLocaleLowerCase();
+      const table = input.closest('.fi-ta')?.querySelector('.fi-ta-table tbody');
+      table?.querySelectorAll('tr').forEach((row) => {
+        row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
+      });
     });
   });
 
