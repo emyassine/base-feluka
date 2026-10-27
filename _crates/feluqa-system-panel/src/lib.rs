@@ -43,6 +43,7 @@ impl PanelProvider for SystemPanelProvider {
             .brand_name("Feluqa Core")
             .max_content_width(ContentWidth::SevenExtraLarge)
             .sidebar_collapsible(true)
+            .dark_mode()
             .login()
             .navigation_group(NavigationGroup {
                 label: Some(String::from("Platform")),

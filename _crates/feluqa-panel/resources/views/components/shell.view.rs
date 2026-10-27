@@ -37,10 +37,18 @@
         <details class="fi-user-menu">
           <summary class="fi-user-menu-trigger" aria-label="Open account menu">
             <span class="fi-user-avatar" role="img" :aria-label="display_name" data-user-name="{{ display_name }}">{{ display_name }}</span>
-            <span class="fi-user-menu-trigger-text"><strong>{{ display_name }}</strong><small>{{ email }}</small></span>
+            <span class="fi-user-menu-trigger-text">{{ display_name }}</span>
             <span class="fi-user-menu-toggle-button" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg></span>
           </summary>
-          <div class="fi-dropdown-panel"><strong>{{ display_name }}</strong><small>{{ email }}</small><form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="fi-user-menu-logout" type="submit">Sign out</button></form></div>
+          <div class="fi-dropdown-panel">
+            <div class="fi-user-menu-profile"><span class="fi-user-avatar" aria-hidden="true" data-user-name="{{ display_name }}">{{ display_name }}</span><span><strong>{{ display_name }}</strong><small>{{ email }}</small></span></div>
+            <div class="fi-theme-switcher" role="group" aria-label="Theme" data-feluqa-theme-switcher>
+              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="light" aria-label="Light theme" title="Light"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="dark" aria-label="Dark theme" title="Dark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 15.75A8.25 8.25 0 0 1 8.25 3.75a8.25 8.25 0 1 0 12 12Z"/></svg></button>
+              <button type="button" class="fi-theme-switcher-btn" data-feluqa-theme="system" aria-label="System theme" title="System"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4"/></svg></button>
+            </div>
+            <form method="post" action="/system/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="fi-user-menu-logout" type="submit">Sign out</button></form>
+          </div>
         </details>
       </footer>
     </aside>

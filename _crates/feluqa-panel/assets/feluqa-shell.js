@@ -9,6 +9,41 @@
   const overlay = document.querySelector('.fi-sidebar-close-overlay');
   const mobile = window.matchMedia('(max-width: 63.999rem)');
   const search = sidebar.querySelector('[data-feluqa-nav-search]');
+  const themeButtons = document.querySelectorAll('[data-feluqa-theme]');
+  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const applyTheme = (theme, persist) => {
+    currentTheme = theme;
+    const dark = theme === 'dark' || (theme === 'system' && systemTheme.matches);
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    themeButtons.forEach((button) => {
+      const selected = button.dataset.feluqaTheme === theme;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('fi-active', selected);
+    });
+    if (persist) {
+      try {
+        localStorage.setItem('feluqa:theme', theme);
+      } catch {
+        // Theme choice remains active for this page when storage is unavailable.
+      }
+    }
+  };
+
+  let currentTheme = 'system';
+  try {
+    currentTheme = localStorage.getItem('feluqa:theme') || 'system';
+  } catch {
+    // Use the operating-system theme when storage is unavailable.
+  }
+  applyTheme(currentTheme, false);
+  themeButtons.forEach((button) => button.addEventListener('click', () => {
+    applyTheme(button.dataset.feluqaTheme, true);
+  }));
+  systemTheme.addEventListener('change', () => {
+    if (currentTheme === 'system') applyTheme('system', false);
+  });
 
   const setOpen = (open) => {
     sidebar.dataset.sidebarOpen = String(open);

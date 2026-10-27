@@ -1,6 +1,6 @@
 /* Feluqa keeps Filament's compiled theme intact and only supplies framework-owned runtime state. */
 :root {
-    --sidebar-width: 20rem;
+    --sidebar-width: 21rem;
     --collapsed-sidebar-width: 4.5rem;
     --topbar-height: 4rem;
 }
@@ -134,6 +134,16 @@
     font-weight: 600;
 }
 
+.fi-user-menu-trigger-text {
+    overflow: hidden;
+    flex: 1;
+    color: var(--gray-700, #374151);
+    font-size: .8125rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .fi-user-menu-trigger-text small {
     color: var(--gray-500, #6b7280);
     font-size: .6875rem;
@@ -154,6 +164,86 @@
 
 .fi-user-menu[open] .fi-dropdown-panel form {
     margin-top: .75rem;
+}
+
+.fi-user-menu-profile {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .25rem 0 .75rem;
+}
+
+.fi-user-menu-profile > span:last-child {
+    display: grid;
+    gap: .15rem;
+}
+
+.fi-user-menu-profile strong {
+    font-size: .8125rem;
+}
+
+.fi-user-menu-profile small {
+    color: var(--gray-500, #6b7280);
+    font-size: .6875rem;
+}
+
+.fi-dropdown-panel .fi-theme-switcher {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .25rem;
+    margin-block: .5rem;
+    padding: .25rem;
+    border: 1px solid var(--gray-200, #e5e7eb);
+    border-radius: .625rem;
+}
+
+.fi-dropdown-panel .fi-theme-switcher-btn {
+    display: grid;
+    min-height: 2rem;
+    place-items: center;
+    padding: .375rem;
+    border: 0;
+    border-radius: .375rem;
+    background: transparent;
+    color: var(--gray-500, #6b7280);
+    cursor: pointer;
+}
+
+.fi-dropdown-panel .fi-theme-switcher-btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.fi-dropdown-panel .fi-theme-switcher-btn.fi-active {
+    background: var(--gray-100, #f3f4f6);
+    color: var(--gray-900, #111827);
+}
+
+.dark .fi-user-menu-trigger,
+.dark .fi-user-menu-trigger-text {
+    color: var(--gray-100, #f3f4f6);
+}
+
+.dark .fi-user-avatar {
+    border-color: var(--gray-700, #374151);
+    background: var(--gray-800, #1f2937);
+    color: var(--gray-200, #e5e7eb);
+}
+
+.dark .fi-user-menu[open] .fi-dropdown-panel {
+    border-color: var(--gray-700, #374151);
+    background: var(--gray-900, #111827);
+}
+
+.dark .fi-dropdown-panel .fi-theme-switcher {
+    border-color: var(--gray-700, #374151);
+}
+
+.dark .fi-dropdown-panel .fi-theme-switcher-btn.fi-active,
+.dark .fi-user-menu-logout:hover,
+.dark .fi-user-menu-logout:focus-visible {
+    background: var(--gray-800, #1f2937);
+    color: var(--gray-100, #f3f4f6);
 }
 
 .fi-user-menu-logout {
@@ -194,6 +284,10 @@
     letter-spacing: -.035em;
 }
 
+.dark .fi-app-shell .fi-panel-page-content h1 {
+    color: var(--gray-50, #f9fafb);
+}
+
 .fi-app-shell .fi-panel-page-content .eyebrow {
     width: 100%;
     margin: 0;
@@ -219,11 +313,65 @@
     text-align: left;
 }
 
+.fi-app-shell .feluqa-table caption {
+    padding: .25rem 0 .75rem;
+    text-align: center;
+    white-space: normal;
+}
+
 .fi-app-shell .feluqa-table th,
 .fi-app-shell .feluqa-table td {
     padding: .75rem 1rem;
     border-bottom: 1px solid var(--gray-200, #e5e7eb);
     vertical-align: top;
+}
+
+.dark .fi-app-shell .card {
+    border-color: #303036;
+    background: #1f1f23 !important;
+    color: #e5e7eb !important;
+}
+
+.dark .fi-app-shell .fi-page-content .card {
+    border-color: #303036;
+    background: #1f1f23 !important;
+    color: #e5e7eb !important;
+}
+
+.dark .fi-app-shell .card :is(caption, th, td) {
+    color: #e5e7eb !important;
+}
+
+.dark .fi-app-shell .feluqa-table th,
+.dark .fi-app-shell .feluqa-table td {
+    border-color: #303036;
+}
+
+.dark .fi-sidebar {
+    color: var(--gray-100, #f3f4f6);
+}
+
+.dark .fi-sidebar-item-btn,
+.dark .fi-sidebar-group-btn {
+    color: var(--gray-300, #d1d5db);
+}
+
+.dark .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    background: var(--gray-800, #1f2937);
+    color: var(--primary-400, #60a5fa);
+}
+
+.dark .fi-sidebar-group-btn:hover,
+.dark .fi-sidebar-item-btn:hover {
+    background: var(--gray-800, #1f2937);
+}
+
+.dark .fi-sidebar-group-label {
+    color: var(--gray-400, #9ca3af);
+}
+
+.dark .fi-sidebar-header-ctn::after {
+    border-color: var(--gray-800, #1f2937);
 }
 
 @media (min-width: 64rem) {
@@ -241,6 +389,7 @@
 
 @media (max-width: 63.999rem) {
     .fi-app-shell .fi-sidebar {
+        z-index: 40;
         position: fixed;
         inset-block: 0;
         transform: translateX(-100%);
@@ -250,6 +399,9 @@
 
     .fi-app-shell .fi-sidebar[data-sidebar-open="true"] {
         transform: translateX(0);
+        translate: 0 !important;
+        inset-inline-start: 0;
+        z-index: 40;
     }
 
     .fi-app-shell .fi-mobile-menu-button {
