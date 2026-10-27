@@ -9,6 +9,7 @@ use crate::std::option::Option::{None, Some};
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::{String, ToString};
+use crate::std::sync::OnceLock;
 use crate::std::vec::Vec;
 use crate::std::{eprintln, print, println};
 
@@ -95,11 +96,50 @@ pub fn command_entry(name: &str, description: &str) -> String {
 
 /// Current terminal width, honoring the conventional `COLUMNS` setting.
 pub fn columns() -> usize {
-    crate::std::env::var("COLUMNS")
+    static WIDTH: OnceLock<usize> = OnceLock::new();
+    *WIDTH.get_or_init(detect_columns)
+}
+
+fn detect_columns() -> usize {
+    let configured = crate::std::env::var("COLUMNS")
         .ok()
         .and_then(|value| value.parse::<usize>().ok())
-        .filter(|width| *width >= 40 && *width <= 300)
+        .filter(|width| *width >= 40 && *width <= 300);
+    configured
+        .or_else(unix_terminal_columns)
+        .or_else(windows_terminal_columns)
         .unwrap_or(80)
+}
+
+fn unix_terminal_columns() -> Option<usize> {
+    let output = crate::std::process::Command::new("stty")
+        .arg("size")
+        .output()
+        .ok()?;
+    let dimensions = String::from_utf8(output.stdout).ok()?;
+    let mut values = dimensions.split_whitespace();
+    values.next()?;
+    values
+        .next()?
+        .parse::<usize>()
+        .ok()
+        .filter(|width| *width >= 40 && *width <= 300)
+}
+
+fn windows_terminal_columns() -> Option<usize> {
+    let output = crate::std::process::Command::new("cmd.exe")
+        .args(["/C", "mode", "con"])
+        .output()
+        .ok()?;
+    let mode = String::from_utf8(output.stdout).ok()?;
+    mode.lines().find_map(|line| {
+        let (_, value) = line.split_once(':')?;
+        value
+            .trim()
+            .parse::<usize>()
+            .ok()
+            .filter(|width| *width >= 40 && *width <= 300)
+    })
 }
 
 fn wrap(value: &str, width: usize) -> Vec<String> {

@@ -719,28 +719,28 @@ impl MakeConsole {
         {
             Ok(arguments) => arguments,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
         let (requested, _) = match selected_profile(&arguments) {
             Ok(selected) => selected,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
         let profiles = match Profiles::new(self.profiles) {
             Ok(profiles) => profiles,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
         let profile = match profiles.select(requested.as_deref(), Some(binary_name)) {
             Ok(profile) => profile,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
@@ -751,14 +751,16 @@ impl MakeConsole {
                 let current = match std::env::current_dir() {
                     Ok(directory) => directory,
                     Err(error) => {
-                        std::eprintln!("{binary_name}: could not read current directory: {error}");
+                        terminal::error(&std::format!(
+                            "{binary_name}: could not read current directory: {error}"
+                        ));
                         return ExitCode::FAILURE;
                     }
                 };
                 match (provider.create)(&current) {
                     Ok(host) => host,
                     Err(error) => {
-                        std::eprintln!("{binary_name}: {error}");
+                        terminal::error(&std::format!("{binary_name}: {error}"));
                         return ExitCode::FAILURE;
                     }
                 }
@@ -779,7 +781,7 @@ impl MakeConsole {
                 .map(|provider| (provider.exit_code)(&*host))
                 .unwrap_or(ExitCode::SUCCESS),
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 ExitCode::FAILURE
             }
         }
@@ -831,21 +833,21 @@ impl MakeConsole {
         {
             Ok(arguments) => arguments,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
         let mut host = match create_host() {
             Ok(host) => host,
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 return ExitCode::FAILURE;
             }
         };
         match run(self.profiles, binary_name, &arguments, &mut host) {
             Ok(()) => exit_code(&host),
             Err(error) => {
-                std::eprintln!("{binary_name}: {error}");
+                terminal::error(&std::format!("{binary_name}: {error}"));
                 ExitCode::FAILURE
             }
         }
