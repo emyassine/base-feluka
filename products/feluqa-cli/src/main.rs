@@ -46,9 +46,11 @@ fn main() -> ExitCode {
     )
 }
 
-// These tests cover private CLI context and generator helpers
+// These tests cover private
+// CLI context and generator helpers
 // across multiple command modules.
-// Cargo integration tests remain standalone in `tests/*.rs`.
+// Cargo integration tests remain
+// standalone in `tests/*.rs`.
 #[cfg(test)]
 #[path = "../tests/support/console.rs"]
 mod console_tests;
