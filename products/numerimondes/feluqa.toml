@@ -3,3 +3,14 @@ name = "Numerimondes"
 profile = "web"
 host = "127.0.0.1"
 port = 38127
+
+[runtime]
+environment = "development"
+
+[security]
+secure_cookies = false
+live_enabled = true
+live_signing_key_env = "FELUQA_LIVE_SIGNING_KEY"
+
+[modules]
+enabled = ["numerimondes.crm"]

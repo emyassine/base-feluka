@@ -1,0 +1,75 @@
+"use strict";
+
+function readCsrfCookie() {
+    const prefix = "feluqa_csrf=";
+    const entry = document.cookie
+        .split(";")
+        .map((part) => part.trim())
+        .find((part) => part.startsWith(prefix));
+
+    return entry ? decodeURIComponent(entry.slice(prefix.length)) : null;
+}
+
+async function readJson(response) {
+    if (!response.ok) {
+        throw new Error(`Request failed (${response.status}).`);
+    }
+
+    return response.json();
+}
+
+async function sendLiveAction(button) {
+    const status = document.getElementById("live-status");
+    const csrf = readCsrfCookie();
+    if (!csrf || !status) {
+        throw new Error("The session token is unavailable. Sign in again.");
+    }
+
+    const action = button.dataset.action;
+    const revision = Number(button.dataset.revision);
+    const snapshotUrl = new URL(button.dataset.snapshotUrl, window.location.origin);
+    snapshotUrl.searchParams.set("revision", String(revision));
+    const snapshot = await readJson(await fetch(snapshotUrl, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: { "accept": "application/json" },
+    }));
+
+    const result = await readJson(await fetch("/live/actions", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "content-type": "application/json",
+            "x-csrf-token": csrf,
+        },
+        body: JSON.stringify({
+            snapshot,
+            action,
+            revision,
+            payload: null,
+        }),
+    }));
+
+    button.dataset.revision = String(result.revision);
+    status.textContent = `Server replied: ${String(result.value)} (revision ${result.revision}).`;
+}
+
+document.querySelectorAll("[data-feluqa-live]").forEach((button) => {
+    button.addEventListener("click", async () => {
+        const status = document.getElementById("live-status");
+        button.disabled = true;
+        if (status) status.textContent = "Contacting server…";
+
+        try {
+            await sendLiveAction(button);
+        } catch (error) {
+            if (status) {
+                status.textContent = error instanceof Error
+                    ? error.message
+                    : "The live action failed.";
+            }
+        } finally {
+            button.disabled = false;
+        }
+    });
+});

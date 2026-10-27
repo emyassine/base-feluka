@@ -11,6 +11,9 @@ build = "build.rs"
 [dependencies]
 axum.workspace = true
 serde.workspace = true
+serde_json.workspace = true
+sea-orm.workspace = true
+subtle.workspace = true
 tokio.workspace = true
 toml.workspace = true
 tower-http.workspace = true
@@ -18,3 +21,6 @@ feluqa = { version = "0.2.0", path = "../../_crates/feluqa" }
 
 [build-dependencies]
 feluqa = { path = "../../_crates/feluqa", features = ["view-compiler"] }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
