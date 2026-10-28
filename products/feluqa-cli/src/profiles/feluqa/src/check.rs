@@ -13,7 +13,7 @@ use crate::feluqa::console::platform::Application;
 #[feluqa::command(
     name = "check",
     description = "Check the current application",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,

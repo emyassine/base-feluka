@@ -700,7 +700,9 @@ fn command_profile(command: &CommandDescriptor) -> Option<String> {
 }
 
 fn context_matches(required: &str, active: &str) -> bool {
-    matches!(required, "any" | "anywhere") || required == active
+    matches!(required, "any" | "anywhere")
+        || required == active
+        || (required == "in_dev" && active == "in_app")
 }
 
 /// Parse a command path by selecting the longest registered path prefix.

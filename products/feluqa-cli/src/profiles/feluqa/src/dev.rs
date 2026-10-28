@@ -3,15 +3,17 @@
 use crate::feluqa;
 use crate::feluqa::console::platform::Application;
 use crate::std::collections::BTreeMap;
+use crate::std::clone::Clone;
 use crate::std::convert::From;
 use crate::std::eprintln;
+use crate::std::ffi::OsString;
 use crate::std::format;
 use crate::std::fs;
 use crate::std::io::ErrorKind;
 use crate::std::iter::{Extend, Iterator};
 use crate::std::matches;
 use crate::std::option::Option;
-use crate::std::option::Option::Some;
+use crate::std::option::Option::{None, Some};
 use crate::std::path::{Path, PathBuf};
 use crate::std::println;
 use crate::std::process::{Child, Command, ExitCode, ExitStatus};
@@ -30,20 +32,79 @@ extern crate std;
 #[feluqa::command(
     name = "dev",
     description = "Build and run the current application with file watching",
+    usage = "feluqa dev [<app>|--app=<app>]",
     context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let arguments = crate::feluqa::console::platform::arguments(context);
+    let mut arguments = crate::feluqa::console::platform::arguments(context);
+    let workspace = {
+        let host = crate::feluqa::console::platform::host(context)?;
+        match &host.context {
+            crate::feluqa::console::platform::Context::Workspace(path) => Some(path.clone()),
+            _ => None,
+        }
+    };
+    if workspace.is_some() && arguments.is_empty() {
+        let name = context.argument_or_prompt(
+            0,
+            "Application",
+            Some("e.g. numerimondes"),
+            "usage: feluqa dev <app>",
+        )?;
+        arguments.push(OsString::from(name));
+    }
     let host = crate::feluqa::console::platform::host(context)?;
-    let application = crate::feluqa::console::platform::application(host)?;
-    let result = if arguments.is_empty() {
-        watch(application)
-    } else {
-        Err(crate::std::string::String::from("usage: feluqa dev"))
+    let result = match &host.context {
+        crate::feluqa::console::platform::Context::App(application) => {
+            if arguments.is_empty() {
+                watch(application)
+            } else {
+                Err(crate::std::string::String::from(
+                    "inside an application, run `feluqa dev` without an app name",
+                ))
+            }
+        }
+        crate::feluqa::console::platform::Context::Workspace(path) => {
+            let name = application_argument(&arguments)?;
+            let application =
+                crate::feluqa::console::platform::workspace_application(path, name)?;
+            watch(&application)
+        }
+        crate::feluqa::console::platform::Context::Global
+        | crate::feluqa::console::platform::Context::Platform(_) => Err(
+            crate::std::string::String::from(
+                "run `feluqa dev` inside an application, or `feluqa dev <app>` from its workspace",
+            ),
+        ),
     };
     crate::feluqa::console::platform::finish(host, result)
+}
+
+fn application_argument(arguments: &[OsString]) -> Result<&str, String> {
+    match arguments {
+        [argument] => {
+            let value = argument
+                .to_str()
+                .ok_or_else(|| String::from("application name must be valid UTF-8"))?;
+            match value.strip_prefix("--app=") {
+                Some(name) if !name.is_empty() => Ok(name),
+                Some(_) => Err(String::from("usage: feluqa dev <app>")),
+                None if !value.starts_with('-') => Ok(value),
+                None => Err(String::from(
+                    "usage: feluqa dev <app> or `feluqa dev --app=<app>`",
+                )),
+            }
+        }
+        [flag, name] if flag.to_str() == Some("--app") => name
+            .to_str()
+            .filter(|name| !name.is_empty())
+            .ok_or_else(|| String::from("usage: feluqa dev --app <app>")),
+        _ => Err(String::from(
+            "usage: feluqa dev <app> or `feluqa dev --app=<app>`",
+        )),
+    }
 }
 
 const POLL_INTERVAL: Duration = Duration::from_millis(400);
