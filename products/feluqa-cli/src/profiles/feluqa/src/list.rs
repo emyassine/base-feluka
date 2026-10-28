@@ -17,7 +17,6 @@ use crate::std::vec::Vec;
 #[feluqa::command(
     name = "list",
     description = "List applications in the current Feluqa workspace",
-    profiles = ["feluqa"],
     context = "workspace",
 )]
 pub(crate) fn run(

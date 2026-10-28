@@ -30,7 +30,6 @@ extern crate std;
 #[feluqa::command(
     name = "dev",
     description = "Build and run the current application with file watching",
-    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(
@@ -90,10 +89,7 @@ fn watch(application: &Application) -> Result<ExitCode, String> {
 
     let mut snapshot = fingerprint(&target.watch_roots)?;
     let mut server = start_server(&target.executable, application)?;
-    println!(
-        "{} development server started; watching Rust, views, config and migrations (Ctrl+C to stop)",
-        application.display_name
-    );
+    println!("Development server ready. Press Ctrl+C to stop.");
 
     loop {
         thread::sleep(POLL_INTERVAL);
@@ -237,7 +233,7 @@ fn add_watch_roots(roots: &mut Vec<PathBuf>, directory: &Path, include_app_files
 
 fn build(application: &Application) -> Result<ExitStatus, String> {
     let mut cargo = Command::new("cargo");
-    cargo.arg("build").arg("--manifest-path").arg(&application.manifest)
+    cargo.arg("build").arg("--quiet").arg("--manifest-path").arg(&application.manifest)
         .arg("--package").arg(&application.package_name)
         .current_dir(&application.directory)
         .env("FELUQA_ENV", "development");

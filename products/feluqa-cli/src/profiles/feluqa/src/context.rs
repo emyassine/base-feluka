@@ -114,15 +114,9 @@ impl crate::feluqa::console::ConsoleHost for CliHost {
             return None;
         }
         match &self.context {
-            Context::App(_) => Some(
-                "Application detected. This help lists application and global commands; workspace commands appear at the workspace root.",
-            ),
-            Context::Workspace(_) => Some(
-                "Feluqa workspace detected. Application commands appear when you run Feluqa inside an application.",
-            ),
-            Context::Global => Some(
-                "No application or workspace detected. Enter one to see its context-specific commands.",
-            ),
+            Context::App(_) => Some("Feluqa application detected."),
+            Context::Workspace(_) => Some("Feluqa workspace detected."),
+            Context::Global => Some("No Feluqa application or workspace detected."),
         }
     }
 }

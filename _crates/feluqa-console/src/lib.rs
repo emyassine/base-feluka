@@ -270,8 +270,8 @@ pub struct CommandDescriptor {
     pub usage: Option<&'static str>,
     /// Alternate command paths.
     pub aliases: &'static [&'static str],
-    /// Profiles that expose this command; empty means every profile.
-    pub profiles: &'static [&'static str],
+    /// Compiled module path, which identifies the owning profile directory.
+    pub module_path: &'static str,
     /// Product-defined execution context label, such as `global`, `workspace`, or `app`.
     pub context: &'static str,
     /// Omit this command from ordinary help while keeping it callable.
@@ -384,8 +384,7 @@ impl CommandRegistry {
             .iter()
             .copied()
             .filter(|command| {
-                (include_hidden || !command.hidden)
-                    && (command.profiles.is_empty() || command.profiles.contains(&profile))
+                (include_hidden || !command.hidden) && command_belongs_to_profile(command, profile)
             })
             .collect()
     }
@@ -413,7 +412,7 @@ impl CommandRegistry {
             .iter()
             .copied()
             .find(|command| {
-                (command.profiles.is_empty() || command.profiles.contains(&profile))
+                command_belongs_to_profile(command, profile)
                     && (command.name == path || command.aliases.contains(&path))
             })
             .ok_or_else(|| RegistryError::UnknownCommand(path.to_string()))
@@ -644,6 +643,22 @@ impl CommandRegistry {
             notice,
         )
     }
+}
+
+fn command_belongs_to_profile(command: &CommandDescriptor, profile: &str) -> bool {
+    let mut prefix = String::from("__feluqa_command_");
+    for character in profile.chars() {
+        prefix.push(if character.is_ascii_alphanumeric() {
+            character.to_ascii_lowercase()
+        } else {
+            '_'
+        });
+    }
+    prefix.push('_');
+    command
+        .module_path
+        .split("::")
+        .any(|component| component.starts_with(&prefix))
 }
 
 fn context_matches(required: &str, active: &str) -> bool {

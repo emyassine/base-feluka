@@ -64,7 +64,6 @@ fn expand_command(arguments: TokenStream2, item: TokenStream2) -> syn::Result<To
     let mut description = None;
     let mut usage = None;
     let mut aliases = Vec::new();
-    let mut profiles = Vec::new();
     let mut context = String::from("any");
     let mut hidden = false;
 
@@ -90,7 +89,6 @@ fn expand_command(arguments: TokenStream2, item: TokenStream2) -> syn::Result<To
             "context" => context = literal_string(&value.value, "context")?,
             "hidden" => hidden = literal_bool(&value.value, "hidden")?,
             "aliases" => aliases = literal_strings(&value.value, "aliases")?,
-            "profiles" => profiles = literal_strings(&value.value, "profiles")?,
             _ => {
                 return Err(syn::Error::new_spanned(
                     value.path,
@@ -116,7 +114,6 @@ fn expand_command(arguments: TokenStream2, item: TokenStream2) -> syn::Result<To
         ));
     }
     let alias_literals = aliases.iter();
-    let profile_literals = profiles.iter();
     let usage_expression = match usage {
         Some(usage) => quote!(::core::option::Option::Some(#usage)),
         None => quote!(::core::option::Option::None),
@@ -130,7 +127,7 @@ fn expand_command(arguments: TokenStream2, item: TokenStream2) -> syn::Result<To
                 description: #description,
                 usage: #usage_expression,
                 aliases: &[#(#alias_literals),*],
-                profiles: &[#(#profile_literals),*],
+                module_path: module_path!(),
                 context: #context,
                 hidden: #hidden,
                 handler: #identifier,

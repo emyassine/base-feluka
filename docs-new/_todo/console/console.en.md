@@ -76,7 +76,6 @@ that code.
     description = "Check Feluqa View highlighting in an editor",
     usage = "feluqa support:ide view-highlight --ide=<name>",
     aliases = ["support:ide highlight"],
-    profiles = ["feluqa"],
     context = "global",
 )]
 pub fn view_highlight(context: &mut feluqa::console::CommandContext<'_>) -> feluqa::console::CommandResult {
@@ -85,10 +84,12 @@ pub fn view_highlight(context: &mut feluqa::console::CommandContext<'_>) -> felu
 }
 ```
 
-A command declares its full public path, description, optional usage, aliases,
-profile membership and product-defined context label. Registry validation
-rejects duplicate canonical paths and aliases and orders help output
-consistently. Hidden commands stay callable but are omitted from ordinary help.
+A command declares its full public path, description, optional usage, aliases
+and product-defined context label. Its owning profile is inferred from the
+configured command directory that contains its source file. Registry
+validation rejects duplicate canonical paths and aliases and orders help
+output consistently. Hidden commands stay callable but are omitted from
+ordinary help.
 
 ### What Rust discovers, and what it does not
 
@@ -160,8 +161,6 @@ from disk.
 Commands are compiled Rust functions, not runtime scripts. Every command file
 contains its command declaration and implementation; there is no profile-wide
 handler router. Commands live in their owning profile's command directory.
-The command attribute's `profiles = [...]` list is the explicit sharing/import
-list: only list another profile when its users should receive that command.
 `MakeConsole` owns profile selection, context-filtered help, interactive choices,
 argument prompts, parsing, command discovery and dispatch. The
 profile's `context.rs` registers its host factory

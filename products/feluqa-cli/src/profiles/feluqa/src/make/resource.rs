@@ -19,7 +19,6 @@ use crate::std::string::String;
     name = "make resource",
     description = "Generate a permission-aware CRUD resource",
     usage = "feluqa make resource <arguments>",
-    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(
@@ -97,7 +96,7 @@ fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCod
         ));
     }
     let registration = format!(
-        "routes = routes.merge(crate::app::controllers::{file_slug}::{name}Controller::routes(core_store.clone()));"
+        "let routes = routes.merge(crate::app::controllers::{file_slug}::{name}Controller::routes(crate::std::clone::Clone::clone(&_core_store)));"
     );
     if registry.contains(&registration) {
         return Err(format!("routes for `{model_name}` are already registered"));

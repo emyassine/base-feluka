@@ -17,7 +17,6 @@ use crate::std::string::String;
     name = "make module",
     description = "Generate a Feluqa module source",
     usage = "feluqa make module <arguments>",
-    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

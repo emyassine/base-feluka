@@ -13,7 +13,6 @@ use crate::__feluqa_profile_feluqa::context::Application;
 #[feluqa::command(
     name = "check",
     description = "Check the current application",
-    profiles = ["feluqa"],
     context = "app",
 )]
 pub(crate) fn run(

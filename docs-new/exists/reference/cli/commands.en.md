@@ -7,10 +7,10 @@ resource APIs and data conventions are covered by the corresponding
 
 The product builds two executables: `feluqa` for platform and application
 work, and `nadim` for personal commands. Each command is visible only to the
-profiles listed in its `#[feluqa::command(profiles = [...])]` declaration.
-Both executables display the same Feluqa release version from the workspace
-package version.
-There is no implicit sharing; listing another profile is the explicit import.
+profile whose configured `commands_directory` contains its source file. The
+command attribute contains command metadata only; file placement controls
+profile membership. Both executables display the same Feluqa release version
+from the workspace package version.
 Feluqa filters commands by detected location and explains the active command
 scope in its help. In interactive terminals, it offers command choices and
 prompts for missing required generator names; piped and scripted runs receive

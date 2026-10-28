@@ -229,6 +229,7 @@ fn module_name(profile: &str, path: &Path) -> String {
             '_'
         });
     }
+    name.push_str("__");
     for component in path.components() {
         name.push('_');
         for character in component.as_os_str().to_string_lossy().chars() {

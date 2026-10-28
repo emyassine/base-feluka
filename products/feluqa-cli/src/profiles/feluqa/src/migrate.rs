@@ -13,7 +13,6 @@ use crate::__feluqa_profile_feluqa::context::Application;
 #[feluqa::command(
     name = "migrate",
     description = "Apply application migrations",
-    profiles = ["feluqa"],
     context = "app-or-workspace",
 )]
 pub(crate) fn run(
