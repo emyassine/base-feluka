@@ -1,87 +1,99 @@
-# Feluqa Documentation Operating Principles for AI Agents
+# Documentation guidelines
 
-Audience: coding agents, technical writers and core engineers. Scope: `docs/`.
-English is the normative baseline. Start with [the index](00.index.en.md) and
+Write Feluqa documentation for people who need to make a decision or complete
+a task. Keep it direct, readable and easy to translate.
+
+The house style is [README_Voice_And_Tone.en.md](../README_Voice_And_Tone.en.md).
+Follow its linked Google Developer Documentation Style Guide pages on [global
+audiences](https://developers.google.com/style/translation),
+[accessibility](https://developers.google.com/style/accessibility),
+[inclusive language](https://developers.google.com/style/inclusive-documentation),
+[jargon](https://developers.google.com/style/jargon),
+[punctuation](https://developers.google.com/style/periods#exclamation-points),
+[abbreviations](https://developers.google.com/style/abbreviations#dont-use), and
+the [word list](https://developers.google.com/style/word-list). Use RFC 2119
+keywords only for requirements.
+
+## Write for readers
+
+- Put the purpose and current status near the start.
+- Use short sentences, active voice, familiar words and consistent names.
+- Address the reader directly when giving instructions.
+- Explain an uncommon technical term the first time you use it, or link to a
+  clear definition.
+- Avoid idioms, metaphors, slang, unexplained abbreviations and exclamation marks.
+  Write “for example” instead of “e.g.”
+- Use descriptive headings and links. A link should make sense on its own.
+- Use headings in order, starting with one page title. Use numbered steps for
+  procedures and tables for information readers need to compare.
+- Include text alternatives for images. Do not put information only in an image.
+- Prefer examples that readers from different backgrounds can understand.
+
+## Keep the documentation organized
+
+| Directory | Use it for |
+|---|---|
+| `01.introduction/` | Platform overview, product intent and roadmap entry point |
+| `02.architecture/` | Workspace, compilation, runtime and UI contracts |
+| `03.for-developers/` | Module authoring, routes, data, permissions and testing |
+| `04.for-organizations/` | Availability, modules, licensing, data and security |
+| `05.reference/` | CLI, editor, Rust, visual QA and view-language references |
+| `06.governance-and-policy/` | Dependencies, proprietary distribution, updates and migration records |
+| `07.research-and-notes/` | Experiments, source notes and measured results |
+| `roadmap/` | Planned work, dependencies and acceptance criteria |
+| `decisions/` | Accepted decisions and choices that remain open |
+
+English is the normative language. A translated page should use the same number
+and slug as its English source. Keep repository and product README files, legal
+notices, and benchmark evidence with their owners.
+
+## Name and order pages
+
+Name documentation pages `<two-digit-number>.<kebab-case-name>.<language>.md`.
+Use `00.index.en.md` as the documentation entry point. The required
+`DOCS_GUIDELINES.md` filename is an exception. JSON manifests and other support
+files do not use the page naming pattern.
+
+Use unique whole numbers within each directory. When you insert a page, renumber
+later pages and update their links. Do not use decimal numbering.
+
+## Show status and authority
+
+- `[Delivered]` means the feature exists and its stated behavior has evidence.
+- `[Target]` means Feluqa has selected the direction, but has not necessarily
+  delivered it.
+- `[Exploring]` means the idea still needs evaluation or a decision.
+
+The owner-designated [Monorepo Architecture](02.architecture/01.monorepo-architecture.en.md),
+[Product Document](01.introduction/02.intent.en.md), and
+[Compilation requirements](02.architecture/02.compilation-and-targets.en.md)
+set the architecture, product and compilation direction. They take precedence
+over conflicting pages and older decision records. Follow the
+[index of accepted decisions](decisions/03.accepted-decisions.en.md).
+Use [the open-decision register](decisions/01.pending-decisions.en.md) only for
+choices those sources leave unresolved.
+
+A selected target is not proof that a feature has shipped. Describe current
+behavior with implementation evidence and link to the
 [current baseline](01.introduction/01.platform-overview.en.md).
 
-## Directory structure
+## Maintain decisions and historical sources
 
-| Directory | Responsibility |
-|---|---|
-| `01.introduction/` | Platform overview, intent and roadmap entry point |
-| `02.architecture/` | Layout, compilation, runtime, UI and application contracts |
-| `03.for-developers/` | Module authoring, routes, data, authorization, tests and product consumers |
-| `04.for-organizations/` | Availability, modules, licensing, data and security |
-| `05.reference/` | CLI, editor, Rust rules, visual QA and view language |
-| `06.governance-and-policy/` | Dependencies, proprietary distribution, updates and documentation provenance |
-| `07.research-and-notes/` | Experiments, ideas, original prompts and measured research |
-| `roadmap/` | Delivery tracks, dependencies, estimates and acceptance gates |
-| `decisions/` | Pending owner choices, options, consequences and existing decision records |
+Record a new decision with its status, reason, consequences and acceptance
+criteria. When the owner decides an open question, add it to accepted decisions,
+update the affected chapters and remove it from the open register.
 
-`roadmap/` replaces `_todo/`. `decisions/` is intentionally unnumbered as requested.
-There is no new `exists/` tree: delivered behavior lives in the relevant guides
-and reference pages, with explicit status and evidence. Directory membership
-alone never proves implementation.
+Preserve source blocks that serve as historical evidence. Do not rewrite their
+content while claiming to preserve the original. Put current status and
+corrections before the source block and make its authority clear.
 
-## Naming
+When English changes, update its French translation or state that translation
+work remains. Keep historical task identifiers tied to their source language
+until you have a reviewed mapping.
 
-Documentation pages MUST use `<two-digit-order>.<kebab-case-slug>.<lang>.md`.
-Translations share number and slug. `00.index.en.md` is the entry point.
-`DOCS_GUIDELINES.md` is the explicitly requested filename exception.
-Machine-readable support files such as `migration-manifest.json` are not pages.
-Use unique integer positions within each directory; renumber and update all links
-when inserting a page. Do not use decimal ordering, which would break the exact
-filename convention. Leave repository/product README files, legal notices and
-preserved benchmark evidence under their owners; the numbering rule is for `docs/`.
+## Check the result
 
-## Status and authority
-
-- `[Delivered]`: a bounded capability with implementation and acceptance evidence.
-- `[Target]`: accepted direction or planned work, never a shipped guarantee.
-- `[Exploring]`: proposal or hypothesis awaiting evaluation/decision.
-
-Architecture and product pages MUST identify mixed status explicitly. An accepted
-ADR is a decision, not proof of delivery. Use MUST, SHOULD and MAY with their
-RFC 2119 meanings; do not turn a research suggestion into a requirement.
-
-The owner-designated **Monorepo Architecture**, **Product Document**, and
-**Compilation** chapters are the normative architecture/product/compilation
-contracts. When they conflict with other documentation, those three chapters
-take precedence; update the lower-priority document and `AGENTS.md` to match.
-The source establishes target direction and does not turn `[Target]` into shipped
-behavior. Implementation facts still require current code and acceptance evidence.
-Owner instructions take precedence over every repository document. Historical
-source blocks remain for traceability and are explicitly subordinate wherever
-they disagree with these canonical chapters.
-
-## Decisions and maintenance
-
-Use `decisions/` for choices the canonical chapters actually leave open (for
-example registry trust, sync semantics and agent approval defaults). Do not reopen
-a conflict already resolved by the owner-designated architecture/product/compilation
-chapters. Record the controlling clause, options, impact and required evidence.
-Preserve superseded statements as history and update `AGENTS.md`, roadmap and
-templates to match the controlling contract.
-
-Consolidate related work into navigable chapters; preserve detailed acceptance
-criteria, task IDs, examples, caveats and evidence. Link to one canonical contract
-instead of copying it into each guide. Do not erase a rejected alternative without
-retaining its rationale in the decision record.
-
-When English changes, update French or explicitly mark synchronization pending.
-The inherited French enterprise plan is a historical detailed record, not a
-synchronized translation: F8/F9 differ from English. Preserve those IDs until
-a mapping is approved. Some inherited `.en.md` notes contain French; their notices
-identify that provenance, and language normalization remains tracked in decisions.
-
-## Verification and evidence
-
-Check local Markdown file links, anchors, naming, entry-point reachability and
-references outside `docs/`. Use `python3 scripts/check-docs.py`.
-For this migration, the manifest records original hashes and retained-body hashes;
-`--migration` verifies those retained bodies. Update provenance deliberately when
-editing a retained body later; do not refresh hashes to hide accidental loss.
-
-M0 raw reports, snapshots and hashes MUST remain unchanged. External source URLs
-are preserved references, not a fresh verification of their claims. A documentation
-migration does not establish runtime, security, editor or release acceptance.
+Check page names, headings, local links, link text and index navigation. For the
+migration record, compare retained text with its original source. Keep the raw
+M0 reports, samples and hashes unchanged. A documentation update does not prove
+runtime, security, browser or release acceptance.

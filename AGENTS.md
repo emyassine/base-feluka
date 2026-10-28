@@ -1,6 +1,6 @@
 # Feluqa — instructions for contributors and coding agents
 
-Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read the [documentation index](docs/00.index.en.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs/decisions/ and update this summary when the contract changes. Follow [documentation maintenance rules](docs/DOCS_GUIDELINES.md). The owner-designated [monorepo architecture](docs/02.architecture/01.monorepo-architecture.en.md), [product document](docs/01.introduction/02.intent.en.md), and [compilation requirements](docs/02.architecture/02.compilation-and-targets.en.md) are authoritative over other docs. Their target architecture supersedes conflicting older decisions; actual implementation status is summarized in [the baseline](docs/01.introduction/01.platform-overview.en.md). Current crate migration is planned in [the crate change plan](docs/roadmap/08.crates-change-plan.en.md).
+Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read the [documentation index](docs/00.index.en.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record owner decisions in `docs/decisions/03.accepted-decisions.en.md`; keep only unresolved choices in `docs/decisions/01.pending-decisions.en.md`. Update this summary when a contract changes. Follow the [house style](README_Voice_And_Tone.en.md) and [documentation guidelines](docs/DOCS_GUIDELINES.md). The owner-designated [monorepo architecture](docs/02.architecture/01.monorepo-architecture.en.md), [product document](docs/01.introduction/02.intent.en.md), and [compilation requirements](docs/02.architecture/02.compilation-and-targets.en.md) are authoritative over other docs. Their target architecture supersedes conflicting older decisions; actual implementation status is summarized in [the baseline](docs/01.introduction/01.platform-overview.en.md). Current crate migration is planned in [the crate change plan](docs/roadmap/08.crates-change-plan.en.md).
 
 ## Goal and honest status
 
@@ -22,8 +22,8 @@ Current implementation: the `feluqa` facade with opt-in target features; `feluqa
 | Zed extension, Tree-sitter and language tooling | [Zed product](docs/05.reference/02.zed-editor.en.md) |
 | Mandatory Rust rules | [Coding standard](docs/05.reference/03.rust-coding-standard.en.md) |
 | Current CLI and planned commands | [CLI](docs/05.reference/01.cli-commands.en.md) |
-| Ecosystem decisions and target profiles | [Decisions](docs/decisions/02.platform-vision-record.en.md) |
-| Deferred questions | [Later decisions](docs/decisions/03.open-architecture.en.md) |
+| Decisions already made | [Accepted decisions](docs/decisions/03.accepted-decisions.en.md) |
+| Decisions that remain open | [Open decisions](docs/decisions/01.pending-decisions.en.md) |
 | Proprietary distribution and registry | [Licensing](docs/06.governance-and-policy/02.proprietary.en.md) and [LICENSE](LICENSE) |
 | Measured language comparison, limits and evidence | [M0 results](docs/07.research-and-notes/05.m0-results.en.md) |
 
@@ -34,7 +34,7 @@ The delivery plan and domain contracts define current sequencing. Basic views/co
 - Current code: `_crates/` contains the Cargo workspace, lockfile and reusable libraries, including `feluqa-definitions`; facade APIs are under `feluqa::...`. Target: follow the root virtual workspace and domain-grouped `crates/` tree in the canonical Monorepo Architecture; migration steps are in `docs/roadmap/08.crates-change-plan.en.md`.
 - `products/`: CLI/editor products and Feluqa module sources, including the current statically composed development consumer.
 - Routes are declared by the owning site, panel or module; `src/routes/web.rs` only composes route providers and applies global middleware. Don't add product paths to the composition root.
-- `docs/`: canonical numbered documentation, with `roadmap/` for delivery work and `decisions/` for unresolved choices and decision records. Read `docs/DOCS_GUIDELINES.md`; retained source proposals do not override accepted contracts.
+- `docs/`: canonical numbered documentation, with `roadmap/` for delivery work and `decisions/` for accepted decisions and choices that remain open. Read `README_Voice_And_Tone.en.md` and `docs/DOCS_GUIDELINES.md`; retained source material does not override accepted contracts.
 - `target/`: generated build/package output, ignored by Git. `.cargo/config.toml` selects this location.
 - Current manifests and product paths still point into `_crates/`; migrate them to the canonical root workspace. The target includes root `Cargo.toml`, `Cargo.lock` and pinned `rust-toolchain.toml`.
 - `products/__M0/`: retained benchmark source and evidence. Preserve raw reports, snapshots and hashes; update navigational docs without rewriting measurements.
