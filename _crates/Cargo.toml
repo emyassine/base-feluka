@@ -102,3 +102,6 @@ feluqa-ui-server-functions-macros-default = { path = "feluqa-ui-server-functions
 feluqa-ui-dom-renderer = { path = "feluqa-ui-dom-renderer" }
 feluqa-ui-errors = { path = "feluqa-ui-errors" }
 feluqa-ui-task-runtime = { path = "feluqa-ui-task-runtime" }
+
+[profile.dev.package.feluqa-ui-components]
+debug = 0

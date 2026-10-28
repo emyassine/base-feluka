@@ -29,6 +29,7 @@ pub use crate::feluqa_ui_navigation as navigation;
 pub use crate::feluqa_ui_runtime as runtime;
 
 /// Layout blocks maintained by Feluqa.
+#[cfg(feature = "full-catalog")]
 pub mod block;
 /// Chart components maintained by Feluqa.
 #[cfg(feature = "full-catalog")]
@@ -36,14 +37,17 @@ pub mod chart;
 /// UI components maintained by Feluqa.
 pub mod component;
 /// Shared component constants.
+#[cfg(feature = "full-catalog")]
 pub mod constants;
 /// UI hooks maintained by Feluqa.
 #[cfg(feature = "full-catalog")]
 pub mod hook;
 /// Shared UI utilities.
+#[cfg(feature = "full-catalog")]
 pub mod utils;
 
 /// Feluqa's icon set.
+#[cfg(feature = "full-catalog")]
 pub mod icons {
     pub mod animated;
     pub mod common;

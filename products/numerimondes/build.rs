@@ -176,8 +176,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("cargo:rerun-if-changed={}", dependency.display());
     }
     generated.write_to(&output.join("views.rs"))?;
-    feluqa::database::build_support::generate_migration_registry(
-        &project,
+    feluqa::database::build_support::generate_migration_registry_from(
+        &project.join("src/panels/business"),
         &output.join("migrations.rs"),
     )?;
     println!("cargo:rerun-if-changed=build.rs");

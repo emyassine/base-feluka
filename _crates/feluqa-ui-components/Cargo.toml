@@ -9,6 +9,7 @@ rust-version = "1.88"
 publish = ["feluqa"]
 
 [features]
+card = []
 full-catalog = []
 
 [dependencies]

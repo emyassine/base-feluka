@@ -16,14 +16,17 @@ pub mod attachment;
 pub mod auto_form;
 #[cfg(feature = "full-catalog")]
 pub mod avatar;
+#[cfg(feature = "full-catalog")]
 pub mod badge;
 #[cfg(feature = "full-catalog")]
 pub mod bento_grid;
 #[cfg(feature = "full-catalog")]
 pub mod bottom_nav;
+#[cfg(feature = "full-catalog")]
 pub mod breadcrumb;
 #[cfg(feature = "full-catalog")]
 pub mod bubble;
+#[cfg(feature = "full-catalog")]
 pub mod button;
 #[cfg(feature = "full-catalog")]
 pub mod button_action;
@@ -31,6 +34,7 @@ pub mod button_action;
 pub mod button_group;
 #[cfg(feature = "full-catalog")]
 pub mod callout;
+#[cfg(any(feature = "full-catalog", feature = "card"))]
 pub mod card;
 #[cfg(feature = "full-catalog")]
 pub mod card_carousel;
@@ -102,6 +106,7 @@ pub mod input_prompt;
 pub mod item;
 #[cfg(feature = "full-catalog")]
 pub mod kbd;
+#[cfg(feature = "full-catalog")]
 pub mod label;
 #[cfg(feature = "full-catalog")]
 pub mod link;
@@ -137,11 +142,13 @@ pub mod scroll_area;
 pub mod select;
 #[cfg(feature = "full-catalog")]
 pub mod select_native;
+#[cfg(feature = "full-catalog")]
 pub mod separator;
 #[cfg(feature = "full-catalog")]
 pub mod sheet;
 #[cfg(feature = "full-catalog")]
 pub mod shimmer;
+#[cfg(feature = "full-catalog")]
 pub mod sidenav;
 #[cfg(feature = "full-catalog")]
 pub mod skeleton;

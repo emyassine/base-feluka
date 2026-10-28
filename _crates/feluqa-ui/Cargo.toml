@@ -16,3 +16,4 @@ feluqa-ui-components = { version = "0.1.0", registry = "feluqa", path = "../felu
 [features]
 default = []
 components = ["dep:feluqa-ui-components"]
+components-card = ["components", "feluqa-ui-components/card"]

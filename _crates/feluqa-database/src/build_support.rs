@@ -48,6 +48,14 @@ pub fn generate_migration_registry(project: &Path, output: &Path) -> Result<(), 
     } else {
         project.join("modules")
     };
+    generate_migration_registry_from(&modules_root, output)
+}
+
+/// Validate migration manifests under a caller-selected module root and generate the registry.
+pub fn generate_migration_registry_from(
+    modules_root: &Path,
+    output: &Path,
+) -> Result<(), Box<dyn Error>> {
     println!("cargo:rerun-if-changed={}", modules_root.display());
     let mut module_directories = Vec::new();
     for entry in fs::read_dir(&modules_root)? {

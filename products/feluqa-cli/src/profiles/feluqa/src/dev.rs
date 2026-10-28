@@ -306,7 +306,7 @@ fn add_watch_roots(roots: &mut Vec<PathBuf>, directory: &Path, include_app_files
 
 fn build(application: &Application) -> Result<ExitStatus, String> {
     let mut cargo = Command::new("cargo");
-    cargo.arg("build").arg("--quiet").arg("--manifest-path").arg(&application.manifest)
+    cargo.arg("build").arg("--manifest-path").arg(&application.manifest)
         .arg("--package").arg(&application.package_name)
         .current_dir(&application.directory)
         .env("FELUQA_ENV", "development");
