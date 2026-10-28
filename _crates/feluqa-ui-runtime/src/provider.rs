@@ -1,6 +1,6 @@
 use crate::{children::TypedChildren, component, IntoView};
-use feluqa_ui_reactivity::owner::{provide_context, Owner};
 use feluqa_ui_dom_renderer::feluqa_ui_reactivity::OwnedView;
+use feluqa_ui_reactivity::owner::{provide_context, Owner};
 
 #[component]
 /// Uses the context API to [`provide_context`] to its children and descendants,

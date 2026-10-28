@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 /* ========================================================== */
 /*                       Enums                                */
@@ -78,8 +78,10 @@ pub fn Message(
     #[prop(optional, into)] class: String,
     children: Children,
 ) -> impl IntoView {
-    let merged_class =
-        class_merge!("group/message relative flex w-full min-w-0 gap-2 text-sm data-[align=End]:flex-row-reverse", class);
+    let merged_class = class_merge!(
+        "group/message relative flex w-full min-w-0 gap-2 text-sm data-[align=End]:flex-row-reverse",
+        class
+    );
     let align_str = align.to_string();
     view! {
         <div class=merged_class data-name="Message" data-align=align_str>

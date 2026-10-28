@@ -9,8 +9,8 @@ use crate::{
     computed::suspense::SuspenseContext,
     diagnostics::SpecialNonReactiveFuture,
     graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, SourceSet, Subscriber,
-        SubscriberSet, ToAnySource, ToAnySubscriber, WithObserver,
+        AnySource, AnySubscriber, ReactiveNode, Source, SourceSet, Subscriber, SubscriberSet,
+        ToAnySource, ToAnySubscriber, WithObserver,
     },
     owner::{use_context, Owner},
     send_wrapper_ext::SendOption,
@@ -18,10 +18,7 @@ use crate::{
         guards::{AsyncPlain, Mapped, MappedMut, ReadGuard, WriteGuard},
         ArcTrigger,
     },
-    traits::{
-        DefinedAt, IsDisposed, Notify, ReadUntracked, Track, UntrackableGuard,
-        Write,
-    },
+    traits::{DefinedAt, IsDisposed, Notify, ReadUntracked, Track, UntrackableGuard, Write},
     transition::AsyncTransition,
 };
 use async_lock::RwLock as AsyncRwLock;
@@ -118,12 +115,9 @@ pub struct ArcAsyncDerived<T> {
 
 #[allow(dead_code)]
 pub(crate) trait BlockingLock<T> {
-    fn blocking_read_arc(self: &Arc<Self>)
-        -> async_lock::RwLockReadGuardArc<T>;
+    fn blocking_read_arc(self: &Arc<Self>) -> async_lock::RwLockReadGuardArc<T>;
 
-    fn blocking_write_arc(
-        self: &Arc<Self>,
-    ) -> async_lock::RwLockWriteGuardArc<T>;
+    fn blocking_write_arc(self: &Arc<Self>) -> async_lock::RwLockWriteGuardArc<T>;
 
     fn blocking_read(&self) -> async_lock::RwLockReadGuard<'_, T>;
 
@@ -131,9 +125,7 @@ pub(crate) trait BlockingLock<T> {
 }
 
 impl<T> BlockingLock<T> for AsyncRwLock<T> {
-    fn blocking_read_arc(
-        self: &Arc<Self>,
-    ) -> async_lock::RwLockReadGuardArc<T> {
+    fn blocking_read_arc(self: &Arc<Self>) -> async_lock::RwLockReadGuardArc<T> {
         #[cfg(not(target_family = "wasm"))]
         {
             self.read_arc_blocking()
@@ -144,9 +136,7 @@ impl<T> BlockingLock<T> for AsyncRwLock<T> {
         }
     }
 
-    fn blocking_write_arc(
-        self: &Arc<Self>,
-    ) -> async_lock::RwLockWriteGuardArc<T> {
+    fn blocking_write_arc(self: &Arc<Self>) -> async_lock::RwLockWriteGuardArc<T> {
         #[cfg(not(target_family = "wasm"))]
         {
             self.write_arc_blocking()
@@ -235,7 +225,7 @@ macro_rules! spawn_derived {
             state: AsyncDerivedState::Clean,
             version: 0,
             suspenses: Vec::new(),
-            pending_suspenses: Vec::new()
+            pending_suspenses: Vec::new(),
         }));
         let value = Arc::new(AsyncRwLock::new($initial));
         let wakers = Arc::new(RwLock::new(Vec::new()));
@@ -250,14 +240,10 @@ macro_rules! spawn_derived {
         };
         let any_subscriber = this.to_any_subscriber();
         let initial_fut = if $should_track {
-            owner.with_cleanup(|| {
-                any_subscriber
-                    .with_observer(|| ScopedFuture::new($fun()))
-            })
+            owner.with_cleanup(|| any_subscriber.with_observer(|| ScopedFuture::new($fun())))
         } else {
             owner.with_cleanup(|| {
-                any_subscriber
-                    .with_observer_untracked(|| ScopedFuture::new($fun()))
+                any_subscriber.with_observer_untracked(|| ScopedFuture::new($fun()))
             })
         };
         #[cfg(feature = "sandboxed-arenas")]
@@ -314,7 +300,8 @@ macro_rules! spawn_derived {
                     // if the AsyncDerived has *already* been marked dirty (i.e., one of its
                     // sources has changed after creation), we should throw out the Future
                     // we already created, because its values might be stale
-                    let already_dirty = inner.upgrade()
+                    let already_dirty = inner
+                        .upgrade()
                         .as_ref()
                         .and_then(|inner| inner.read().ok())
                         .map(|inner| inner.state == AsyncDerivedState::Dirty)
@@ -324,15 +311,22 @@ macro_rules! spawn_derived {
                     }
 
                     while rx.next().await.is_some() {
-                        let update_if_necessary = !owner.paused() && if $should_track {
-                            any_subscriber
-                                .with_observer(|| any_subscriber.update_if_necessary())
-                        } else {
-                            any_subscriber
-                                .with_observer_untracked(|| any_subscriber.update_if_necessary())
-                        };
+                        let update_if_necessary = !owner.paused()
+                            && if $should_track {
+                                any_subscriber
+                                    .with_observer(|| any_subscriber.update_if_necessary())
+                            } else {
+                                any_subscriber.with_observer_untracked(|| {
+                                    any_subscriber.update_if_necessary()
+                                })
+                            };
                         if update_if_necessary || first_run.is_some() {
-                            match (value.upgrade(), inner.upgrade(), wakers.upgrade(), loading.upgrade()) {
+                            match (
+                                value.upgrade(),
+                                inner.upgrade(),
+                                wakers.upgrade(),
+                                loading.upgrade(),
+                            ) {
                                 (Some(value), Some(inner), Some(wakers), Some(loading)) => {
                                     // generate new Future
                                     let owner = inner.read().or_poisoned().owner.clone();
@@ -344,8 +338,9 @@ macro_rules! spawn_derived {
                                             })
                                         } else {
                                             owner.with_cleanup(|| {
-                                                any_subscriber
-                                                    .with_observer_untracked(|| ScopedFuture::new($fun()))
+                                                any_subscriber.with_observer_untracked(|| {
+                                                    ScopedFuture::new($fun())
+                                                })
                                             })
                                         };
                                         #[cfg(feature = "sandboxed-arenas")]
@@ -386,7 +381,15 @@ macro_rules! spawn_derived {
                                     };
 
                                     if latest_version == this_version {
-                                        Self::set_inner_value(new_value, value, wakers, inner, loading, Some(ready_tx)).await;
+                                        Self::set_inner_value(
+                                            new_value,
+                                            value,
+                                            wakers,
+                                            inner,
+                                            loading,
+                                            Some(ready_tx),
+                                        )
+                                        .await;
                                     }
                                 }
                                 _ => break,
@@ -521,10 +524,9 @@ impl<T: 'static> ArcAsyncDerived<T> {
     {
         let fun = move || {
             let fut = fun();
-            let fut =
-                ScopedFuture::new_untracked_with_diagnostics(async move {
-                    SendOption::new(Some(fut.await))
-                });
+            let fut = ScopedFuture::new_untracked_with_diagnostics(async move {
+                SendOption::new(Some(fut.await))
+            });
             #[cfg(feature = "sandboxed-arenas")]
             let fut = Sandboxed::new(fut);
             fut
@@ -589,11 +591,7 @@ impl<T: 'static> ArcAsyncDerived<T> {
 
     /// Returns a `Future` that is ready when this resource has next finished loading.
     pub fn ready(&self) -> AsyncDerivedReadyFuture {
-        AsyncDerivedReadyFuture::new(
-            self.to_any_source(),
-            &self.loading,
-            &self.wakers,
-        )
+        AsyncDerivedReadyFuture::new(self.to_any_source(), &self.loading, &self.wakers)
     }
 }
 
@@ -627,8 +625,7 @@ impl<T: 'static> ArcAsyncDerived<T> {
 }
 
 impl<T: 'static> ReadUntracked for ArcAsyncDerived<T> {
-    type Value =
-        ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
+    type Value = ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
 
     fn try_read_untracked(&self) -> Option<Self::Value> {
         if let Some(suspense_context) = use_context::<SuspenseContext>() {
@@ -636,8 +633,7 @@ impl<T: 'static> ReadUntracked for ArcAsyncDerived<T> {
             let handle = suspense_context.task_id();
 
             // check if the task is *already* ready
-            let mut ready =
-                Box::pin(SpecialNonReactiveFuture::new(self.ready()));
+            let mut ready = Box::pin(SpecialNonReactiveFuture::new(self.ready()));
             match ready.as_mut().now_or_never() {
                 Some(_) => {
                     // if it's already ready, drop the handle immediately
@@ -661,9 +657,8 @@ impl<T: 'static> ReadUntracked for ArcAsyncDerived<T> {
                 .suspenses
                 .push(suspense_context);
         }
-        AsyncPlain::try_new(&self.value).map(|plain| {
-            ReadGuard::new(Mapped::new_with_guard(plain, |v| v.deref()))
-        })
+        AsyncPlain::try_new(&self.value)
+            .map(|plain| ReadGuard::new(Mapped::new_with_guard(plain, |v| v.deref())))
     }
 }
 
@@ -692,9 +687,7 @@ impl<T: 'static> Write for ArcAsyncDerived<T> {
         ))
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         // increment the version, such that a rerun triggered previously does not overwrite this
         // new value
         let mut guard = self.inner.write().or_poisoned();

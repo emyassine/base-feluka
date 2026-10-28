@@ -86,9 +86,8 @@ impl ViewMacros {
             } else {
                 let tokens = view.tokens.clone().into_iter();
                 // TODO handle class = ...
-                let rsx = feluqa_ui_markup_parser::parse2(
-                    tokens.collect::<proc_macro2::TokenStream>(),
-                )?;
+                let rsx =
+                    feluqa_ui_markup_parser::parse2(tokens.collect::<proc_macro2::TokenStream>())?;
                 let template = LNode::parse_view(rsx)?;
                 views.push(MacroInvocation { id, template });
             }
@@ -107,9 +106,7 @@ impl ViewMacros {
             Some(current_views) => {
                 if current_views.len() == new_views.len() {
                     let mut diffs = Vec::new();
-                    for (current_view, new_view) in
-                        current_views.iter().zip(&new_views)
-                    {
+                    for (current_view, new_view) in current_views.iter().zip(&new_views) {
                         if current_view.id == new_view.id
                             && current_view.template != new_view.template
                         {

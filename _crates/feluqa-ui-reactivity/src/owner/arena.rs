@@ -161,10 +161,7 @@ pub mod sandboxed {
     {
         type Output = Fut::Output;
 
-        fn poll(
-            self: Pin<&mut Self>,
-            cx: &mut Context<'_>,
-        ) -> Poll<Self::Output> {
+        fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
             if let Some(arena) = self.arena.as_ref() {
                 Arena::set(arena);
             }
@@ -179,10 +176,7 @@ pub mod sandboxed {
     {
         type Item = T::Item;
 
-        fn poll_next(
-            self: Pin<&mut Self>,
-            cx: &mut Context<'_>,
-        ) -> Poll<Option<Self::Item>> {
+        fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
             if let Some(arena) = self.arena.as_ref() {
                 Arena::set(arena);
             }

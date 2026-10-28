@@ -123,8 +123,7 @@ where
     T: Borrow<bool> + Send + 'static,
 {
     type AsyncOutput = (&'static str, bool);
-    type State =
-        RenderEffectWithClassName<(crate::renderer::types::ClassList, bool)>;
+    type State = RenderEffectWithClassName<(crate::renderer::types::ClassList, bool)>;
     type Cloneable = (&'static str, SharedReactiveFunction<T>);
     type CloneableOwned = (&'static str, SharedReactiveFunction<T>);
 
@@ -140,10 +139,7 @@ where
         }
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         // TODO FROM_SERVER vs template
         let (name, mut f) = self;
         let class_list = Rndr::class_list(el);
@@ -152,10 +148,7 @@ where
         RenderEffectWithClassName::new(
             name,
             RenderEffect::new(
-                move |prev: Option<(
-                    crate::renderer::types::ClassList,
-                    bool,
-                )>| {
+                move |prev: Option<(crate::renderer::types::ClassList, bool)>| {
                     let include = *f.invoke().borrow();
                     if let Some((class_list, prev)) = prev {
                         if include {
@@ -180,10 +173,7 @@ where
         RenderEffectWithClassName::new(
             name,
             RenderEffect::new(
-                move |prev: Option<(
-                    crate::renderer::types::ClassList,
-                    bool,
-                )>| {
+                move |prev: Option<(crate::renderer::types::ClassList, bool)>| {
                     let include = *f.invoke().borrow();
                     match prev {
                         Some((class_list, prev)) => {
@@ -793,8 +783,8 @@ mod reactive_stores {
     #[allow(deprecated)]
     use feluqa_ui_reactivity::{owner::Storage, traits::Get};
     use reactive_stores::{
-        ArcField, ArcStore, AtIndex, AtKeyed, DerefedField, Field,
-        KeyedSubfield, Store, StoreField, Subfield,
+        ArcField, ArcStore, AtIndex, AtKeyed, DerefedField, Field, KeyedSubfield, Store,
+        StoreField, Subfield,
     };
     use std::ops::{Deref, DerefMut, Index, IndexMut};
 

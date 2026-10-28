@@ -3,9 +3,21 @@ use crate::{
     hydration::Cursor,
     ssr::StreamBuilder,
     view::{
-        add_attr::AddAnyAttr, iterators::OptionState, Mountable, Position,
-        PositionState, Render, RenderHtml,
+        add_attr::AddAnyAttr, iterators::OptionState, Mountable, Position, PositionState, Render,
+        RenderHtml,
     },
+};
+use feluqa_ui_errors::ErrorHook;
+use feluqa_ui_reactivity::{
+    computed::{
+        suspense::{LocalResourceNotifier, SuspenseContext},
+        ScopedFuture,
+    },
+    graph::{
+        AnySource, AnySubscriber, Observer, ReactiveNode, Source, Subscriber, ToAnySubscriber,
+        WithObserver,
+    },
+    owner::{on_cleanup, provide_context, use_context},
 };
 use feluqa_ui_task_runtime::Executor;
 use futures::{
@@ -13,17 +25,6 @@ use futures::{
     select, FutureExt,
 };
 use or_poisoned::OrPoisoned;
-use feluqa_ui_reactivity::{
-    computed::{
-        suspense::{LocalResourceNotifier, SuspenseContext},
-        ScopedFuture,
-    },
-    graph::{
-        AnySource, AnySubscriber, Observer, ReactiveNode, Source, Subscriber,
-        ToAnySubscriber, WithObserver,
-    },
-    owner::{on_cleanup, provide_context, use_context},
-};
 use std::{
     cell::RefCell,
     fmt::Debug,
@@ -33,7 +34,6 @@ use std::{
     rc::Rc,
     sync::{Arc, Mutex, Weak},
 };
-use feluqa_ui_errors::ErrorHook;
 
 /// A suspended `Future`, which can be used in the view.
 pub struct Suspend<T> {
@@ -70,8 +70,7 @@ impl SuspendSubscriber {
     /// triggering the render effect to run a second time.
     pub fn forward(&self) {
         if let Some(to) = &self.inner.outer_subscriber {
-            let sources =
-                mem::take(&mut *self.inner.sources.lock().or_poisoned());
+            let sources = mem::take(&mut *self.inner.sources.lock().or_poisoned());
             for source in sources {
                 source.add_subscriber(to.clone());
                 to.add_source(source);
@@ -122,8 +121,7 @@ impl<T> Suspend<T> {
     {
         let subscriber = SuspendSubscriber::new();
         let any_subscriber = subscriber.to_any_subscriber();
-        let inner = any_subscriber
-            .with_observer(|| Box::pin(ScopedFuture::new(fut.into_future())));
+        let inner = any_subscriber.with_observer(|| Box::pin(ScopedFuture::new(fut.into_future())));
         Self { subscriber, inner }
     }
 }
@@ -201,9 +199,9 @@ where
             feluqa_ui_reactivity::spawn_local_scoped({
                 let state = Rc::clone(&inner);
                 async move {
-                    let _guard = error_hook.as_ref().map(|hook| {
-                        feluqa_ui_errors::set_error_hook(Arc::clone(hook))
-                    });
+                    let _guard = error_hook
+                        .as_ref()
+                        .map(|hook| feluqa_ui_errors::set_error_hook(Arc::clone(hook)));
 
                     let value = fut.as_mut().await;
                     drop(id);
@@ -268,10 +266,7 @@ where
     type Output<SomeNewAttr: Attribute> =
         Suspend<<T as AddAnyAttr>::Output<SomeNewAttr::CloneableOwned>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -304,13 +299,7 @@ where
         // currently this is just used for Routes, which creates a Suspend but never actually needs
         // it (because we don't lazy-load routes on the server)
         if let Some(inner) = self.inner.now_or_never() {
-            inner.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs,
-            );
+            inner.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         }
     }
 
@@ -336,8 +325,7 @@ where
             None => {
                 if use_context::<SuspenseContext>().is_none() {
                     buf.next_id();
-                    let (local_tx, mut local_rx) =
-                        futures::channel::oneshot::channel::<()>();
+                    let (local_tx, mut local_rx) = futures::channel::oneshot::channel::<()>();
                     provide_context(LocalResourceNotifier::from(local_tx));
                     let mut fut = fut.fuse();
                     let fut = async move {
@@ -364,12 +352,7 @@ where
                         // but unfortunately the Nonce type is defined in `feluqa_ui_runtime`, not in `feluqa_ui_dom_renderer`
                         //
                         // missing it here only affects top-level Suspend, not Suspense components
-                        buf.push_async_out_of_order(
-                            fut,
-                            position,
-                            mark_branches,
-                            extra_attrs,
-                        );
+                        buf.push_async_out_of_order(fut, position, mark_branches, extra_attrs);
                     } else {
                         buf.push_async({
                             let mut position = *position;
@@ -428,9 +411,9 @@ where
             feluqa_ui_reactivity::spawn_local_scoped({
                 let state = Rc::clone(&inner);
                 async move {
-                    let _guard = error_hook.as_ref().map(|hook| {
-                        feluqa_ui_errors::set_error_hook(Arc::clone(hook))
-                    });
+                    let _guard = error_hook
+                        .as_ref()
+                        .map(|hook| feluqa_ui_errors::set_error_hook(Arc::clone(hook)));
 
                     let value = fut.as_mut().await;
                     drop(id);
@@ -470,8 +453,7 @@ where
         // stuff them back into a new Future, which can safely be polled after its completion
         if let Some(mut inner) = self.inner.as_mut().now_or_never() {
             inner.dry_resolve();
-            self.inner = Box::pin(async move { inner })
-                as Pin<Box<dyn Future<Output = T> + Send>>;
+            self.inner = Box::pin(async move { inner }) as Pin<Box<dyn Future<Output = T> + Send>>;
         }
     }
 

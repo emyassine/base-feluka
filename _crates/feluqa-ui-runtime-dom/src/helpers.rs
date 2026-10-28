@@ -1,12 +1,12 @@
 //! A variety of DOM utility functions.
 
-use or_poisoned::OrPoisoned;
+use feluqa_ui_dom_renderer::html::event::EventDescriptor;
 #[cfg(debug_assertions)]
 use feluqa_ui_reactivity::diagnostics::SpecialNonReactiveZone;
 use feluqa_ui_reactivity::owner::Owner;
+use or_poisoned::OrPoisoned;
 use send_wrapper::SendWrapper;
 use std::time::Duration;
-use feluqa_ui_dom_renderer::html::event::EventDescriptor;
 #[cfg(feature = "tracing")]
 use tracing::instrument;
 use wasm_bindgen::{prelude::Closure, JsCast, JsValue, UnwrapThrowExt};
@@ -34,11 +34,7 @@ pub fn document() -> web_sys::Document {
 }
 
 /// Sets a property on a DOM element.
-pub fn set_property(
-    el: &web_sys::Element,
-    prop_name: &str,
-    value: &Option<JsValue>,
-) {
+pub fn set_property(el: &web_sys::Element, prop_name: &str, value: &Option<JsValue>) {
     let key = JsValue::from_str(prop_name);
     match value {
         Some(value) => _ = js_sys::Reflect::set(el, &key, value),
@@ -48,10 +44,7 @@ pub fn set_property(
 
 /// Gets the value of a property set on a DOM element.
 #[doc(hidden)]
-pub fn get_property(
-    el: &web_sys::Element,
-    prop_name: &str,
-) -> Result<JsValue, JsValue> {
+pub fn get_property(el: &web_sys::Element, prop_name: &str) -> Result<JsValue, JsValue> {
     let key = JsValue::from_str(prop_name);
     js_sys::Reflect::get(el, &key)
 }
@@ -353,10 +346,7 @@ pub fn set_timeout_with_handle(
 /// ### Note about Context
 ///
 /// The callback is called outside of the reactive ownership tree. This means that it does not have access to context via [`use_context`](feluqa_ui_reactivity::owner::use_context). If you want to use context inside the callback, you should either call `use_context` in the body of the component, and move the value into the callback, or access the current owner inside the component body using [`Owner::current`](feluqa_ui_reactivity::owner::Owner::current) and reestablish it in the callback with [`Owner::with`](feluqa_ui_reactivity::owner::Owner::with).
-pub fn debounce<T: 'static>(
-    delay: Duration,
-    mut cb: impl FnMut(T) + 'static,
-) -> impl FnMut(T) {
+pub fn debounce<T: 'static>(delay: Duration, mut cb: impl FnMut(T) + 'static) -> impl FnMut(T) {
     use std::sync::{Arc, RwLock};
 
     #[cfg(debug_assertions)]
@@ -462,10 +452,7 @@ pub fn set_interval_with_handle(
     };
 
     #[inline(never)]
-    fn si(
-        cb: Box<dyn FnMut()>,
-        duration: Duration,
-    ) -> Result<IntervalHandle, JsValue> {
+    fn si(cb: Box<dyn FnMut()>, duration: Duration) -> Result<IntervalHandle, JsValue> {
         let cb = Closure::wrap(cb).into_js_value();
 
         window()
@@ -509,22 +496,13 @@ pub fn window_event_listener_untyped(
 
     if !is_server() {
         #[inline(never)]
-        fn wel(
-            cb: Box<dyn FnMut(web_sys::Event)>,
-            event_name: &str,
-        ) -> WindowListenerHandle {
+        fn wel(cb: Box<dyn FnMut(web_sys::Event)>, event_name: &str) -> WindowListenerHandle {
             let cb = Closure::wrap(cb).into_js_value();
-            _ = window().add_event_listener_with_callback(
-                event_name,
-                cb.unchecked_ref(),
-            );
+            _ = window().add_event_listener_with_callback(event_name, cb.unchecked_ref());
             let event_name = event_name.to_string();
             let cb = SendWrapper::new(cb);
             WindowListenerHandle(Box::new(move || {
-                _ = window().remove_event_listener_with_callback(
-                    &event_name,
-                    cb.unchecked_ref(),
-                );
+                _ = window().remove_event_listener_with_callback(&event_name, cb.unchecked_ref());
             }))
         }
 

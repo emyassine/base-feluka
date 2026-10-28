@@ -5,23 +5,20 @@ pub use crate::nested_router::Outlet;
 use crate::{
     flat_router::FlatRoutesView,
     hooks::{use_matched, use_navigate},
-    location::{
-        BrowserUrl, Location, LocationChange, LocationProvider, State, Url,
-    },
+    location::{BrowserUrl, Location, LocationChange, LocationProvider, State, Url},
     navigate::NavigateOptions,
     nested_router::NestedRoutesView,
     resolve_path::resolve_path,
-    ChooseView, MatchNestedRoutes, NestedRoute, PossibleRouteMatch, RouteDefs,
-    SsrMode,
+    ChooseView, MatchNestedRoutes, NestedRoute, PossibleRouteMatch, RouteDefs, SsrMode,
 };
 use either_of::EitherOf3;
-use feluqa_ui_runtime::{children, prelude::*};
 use feluqa_ui_reactivity::{
     owner::{provide_context, use_context, Owner},
     signal::ArcRwSignal,
     traits::{GetUntracked, ReadUntracked, Set},
     wrappers::write::SignalSetter,
 };
+use feluqa_ui_runtime::{children, prelude::*};
 use std::{
     borrow::Cow,
     fmt::{Debug, Display},
@@ -83,8 +80,7 @@ where
     #[cfg(not(feature = "ssr"))]
     let (location_provider, current_url, redirect_hook) = {
         let owner = Owner::current();
-        let location =
-            BrowserUrl::new().expect("could not access browser navigation"); // TODO options here
+        let location = BrowserUrl::new().expect("could not access browser navigation"); // TODO options here
         location.init(base.clone());
         provide_context(location.clone());
         let current_url = location.as_url().clone();
@@ -125,8 +121,7 @@ pub(crate) struct RouterContext {
     pub location: Location,
     pub state: ArcRwSignal<State>,
     pub set_is_routing: Option<SignalSetter<bool>>,
-    pub query_mutations:
-        ArcStoredValue<Vec<(Oco<'static, str>, Option<String>)>>,
+    pub query_mutations: ArcStoredValue<Vec<(Oco<'static, str>, Option<String>)>>,
     pub location_provider: Option<BrowserUrl>,
 }
 
@@ -151,8 +146,7 @@ impl RouterContext {
                 return;
             }
         };
-        let query_mutations =
-            mem::take(&mut *self.query_mutations.write_value());
+        let query_mutations = mem::take(&mut *self.query_mutations.write_value());
         if !query_mutations.is_empty() {
             for (key, value) in query_mutations {
                 if let Some(value) = value {
@@ -195,11 +189,7 @@ impl RouterContext {
         }
     }
 
-    pub fn resolve_path<'a>(
-        &'a self,
-        path: &'a str,
-        from: Option<&'a str>,
-    ) -> Cow<'a, str> {
+    pub fn resolve_path<'a>(&'a self, path: &'a str, from: Option<&'a str>) -> Cow<'a, str> {
         let base = self.base.as_deref().unwrap_or_default();
         resolve_path(base, path, from)
     }
@@ -237,24 +227,17 @@ where
         base,
         set_is_routing,
         ..
-    } = use_context()
-        .expect("<Routes> should be used inside a <Router> component");
+    } = use_context().expect("<Routes> should be used inside a <Router> component");
     let base = base.map(|base| {
         let mut base = Oco::from(base);
         base.upgrade_inplace();
         base
     });
-    let routes = RouteDefs::new_with_base(
-        children.into_inner(),
-        base.clone().unwrap_or_default(),
-    );
-    let outer_owner =
-        Owner::current().expect("creating Routes, but no Owner was found");
+    let routes = RouteDefs::new_with_base(children.into_inner(), base.clone().unwrap_or_default());
+    let outer_owner = Owner::current().expect("creating Routes, but no Owner was found");
     move || {
         current_url.track();
-        outer_owner.with(|| {
-            current_url.read_untracked().provide_server_action_error()
-        });
+        outer_owner.with(|| current_url.read_untracked().provide_server_action_error());
         NestedRoutesView {
             location: location.clone(),
             routes: routes.clone(),
@@ -290,8 +273,7 @@ where
         base,
         set_is_routing,
         ..
-    } = use_context()
-        .expect("<FlatRoutes> should be used inside a <Router> component");
+    } = use_context().expect("<FlatRoutes> should be used inside a <Router> component");
 
     // TODO base
     #[allow(unused)]
@@ -300,19 +282,13 @@ where
         base.upgrade_inplace();
         base
     });
-    let routes = RouteDefs::new_with_base(
-        children.into_inner(),
-        base.clone().unwrap_or_default(),
-    );
+    let routes = RouteDefs::new_with_base(children.into_inner(), base.clone().unwrap_or_default());
 
-    let outer_owner =
-        Owner::current().expect("creating Router, but no Owner was found");
+    let outer_owner = Owner::current().expect("creating Router, but no Owner was found");
 
     move || {
         current_url.track();
-        outer_owner.with(|| {
-            current_url.read_untracked().provide_server_action_error()
-        });
+        outer_owner.with(|| current_url.read_untracked().provide_server_action_error());
         FlatRoutesView {
             current_url: current_url.clone(),
             location: location.clone(),
@@ -458,15 +434,7 @@ define_protected_route!(NestedRoute<Segments, (), (), impl Fn() -> AnyView + Sen
 macro_rules! define_protected_parent_route {
     ($ret:ty) => {
         #[component(transparent)]
-        pub fn ProtectedParentRoute<
-            Segments,
-            ViewFn,
-            View,
-            C,
-            PathFn,
-            P,
-            Children,
-        >(
+        pub fn ProtectedParentRoute<Segments, ViewFn, View, C, PathFn, P, Children>(
             /// The path fragment that this route should match. This can be created using the
             /// [`path`](crate::path) macro, or path segments ([`StaticSegment`](crate::StaticSegment),
             /// [`ParamSegment`](crate::ParamSegment), [`WildcardSegment`](crate::WildcardSegment), and
@@ -525,8 +493,7 @@ macro_rules! define_protected_parent_route {
                             Some(true) => EitherOf3::A(owner.with(|| view())),
                             #[allow(clippy::unit_arg)]
                             Some(false) => EitherOf3::B(
-                                view! { <Redirect path=redirect_path()/> }
-                                    .into_inner(),
+                                view! { <Redirect path=redirect_path()/> }.into_inner(),
                             ),
                             None => EitherOf3::C(fallback()),
                         })
@@ -647,8 +614,7 @@ pub fn RoutingProgress(
     before_hiding: std::time::Duration,
 ) -> impl IntoView {
     const INCREMENT_EVERY_MS: f32 = 5.0;
-    let expected_increments =
-        max_time.as_secs_f32() / (INCREMENT_EVERY_MS / 1000.0);
+    let expected_increments = max_time.as_secs_f32() / (INCREMENT_EVERY_MS / 1000.0);
     let percent_per_increment = 100.0 / expected_increments;
 
     let (is_showing, set_is_showing) = signal(false);

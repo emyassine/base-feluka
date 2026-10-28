@@ -1,8 +1,8 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::runtime::prelude::*;
 
-use crate::hook::use_press_hold::use_press_hold;
 use crate::component::button::{Button, ButtonSize, ButtonVariant};
+use crate::hook::use_press_hold::use_press_hold;
 
 /// A button that requires press-and-hold to activate.
 /// Shows a progress indicator filling from left to right.
@@ -18,8 +18,10 @@ pub fn ButtonAction(
 ) -> impl IntoView {
     let press_hold = use_press_hold(duration_ms, on_complete, disabled);
 
-    let button_class =
-        class_merge!("relative overflow-hidden select-none active:scale-[0.99] transition-transform", class);
+    let button_class = class_merge!(
+        "relative overflow-hidden select-none active:scale-[0.99] transition-transform",
+        class
+    );
 
     let progress_style = move || {
         let width_percent = press_hold.progress_signal.get() * 100.0;
@@ -29,7 +31,11 @@ pub fn ButtonAction(
     };
 
     let wrapper_class = move || {
-        if disabled.get() { "pointer-events-none opacity-50" } else { "" }
+        if disabled.get() {
+            "pointer-events-none opacity-50"
+        } else {
+            ""
+        }
     };
 
     let ph1 = press_hold.clone();

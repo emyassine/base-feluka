@@ -12,18 +12,15 @@ use codee::{
     Decoder, Encoder,
 };
 use core::{fmt::Debug, marker::PhantomData};
-use futures::Future;
-use hydration_context::{SerializedDataId, SharedContext};
 use feluqa_ui_reactivity::{
-    computed::{
-        ArcAsyncDerived, ArcMemo, AsyncDerived, AsyncDerivedFuture,
-        AsyncDerivedRefFuture,
-    },
+    computed::{ArcAsyncDerived, ArcMemo, AsyncDerived, AsyncDerivedFuture, AsyncDerivedRefFuture},
     graph::{Source, ToAnySubscriber},
     owner::Owner,
     prelude::*,
     signal::{ArcRwSignal, RwSignal},
 };
+use futures::Future;
+use hydration_context::{SerializedDataId, SharedContext};
 use std::{
     future::{pending, IntoFuture},
     ops::{Deref, DerefMut},
@@ -34,8 +31,7 @@ use std::{
     },
 };
 
-pub(crate) static IS_SUPPRESSING_RESOURCE_LOAD: AtomicBool =
-    AtomicBool::new(false);
+pub(crate) static IS_SUPPRESSING_RESOURCE_LOAD: AtomicBool = AtomicBool::new(false);
 
 /// Used to prevent resources from actually loading, in environments (like server route generation)
 /// where they are not needed.
@@ -181,9 +177,7 @@ where
         self.data.try_write()
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.data.try_write_untracked()
     }
 }
@@ -196,8 +190,7 @@ thread_local! {
 #[cfg(debug_assertions)]
 /// Returns whether the current thread is currently running a resource source signal.
 pub fn in_resource_source_signal() -> bool {
-    RESOURCE_SOURCE_SIGNAL_ACTIVE
-        .with(|scope| scope.load(std::sync::atomic::Ordering::Relaxed))
+    RESOURCE_SOURCE_SIGNAL_ACTIVE.with(|scope| scope.load(std::sync::atomic::Ordering::Relaxed))
 }
 
 /// Set a static to true whilst running the given function.
@@ -206,13 +199,11 @@ fn run_in_resource_source_signal<T>(fun: impl FnOnce() -> T) -> T {
     #[cfg(debug_assertions)]
     {
         // For the theoretical nested case, set back to initial value rather than false:
-        let initial = RESOURCE_SOURCE_SIGNAL_ACTIVE.with(|scope| {
-            scope.swap(true, std::sync::atomic::Ordering::Relaxed)
-        });
+        let initial = RESOURCE_SOURCE_SIGNAL_ACTIVE
+            .with(|scope| scope.swap(true, std::sync::atomic::Ordering::Relaxed));
         let result = fun();
-        RESOURCE_SOURCE_SIGNAL_ACTIVE.with(|scope| {
-            scope.store(initial, std::sync::atomic::Ordering::Relaxed)
-        });
+        RESOURCE_SOURCE_SIGNAL_ACTIVE
+            .with(|scope| scope.store(initial, std::sync::atomic::Ordering::Relaxed));
         result
     }
     #[cfg(not(debug_assertions))]
@@ -232,8 +223,7 @@ where
         #[cfg(all(feature = "hydration", debug_assertions))]
         {
             use feluqa_ui_reactivity::{
-                computed::suspense::SuspenseContext, effect::in_effect_scope,
-                owner::use_context,
+                computed::suspense::SuspenseContext, effect::in_effect_scope, owner::use_context,
             };
             if !in_effect_scope()
                 && !in_resource_source_signal()
@@ -323,9 +313,7 @@ where
             }
         };
 
-        let data = ArcAsyncDerived::new_with_manual_dependencies(
-            initial, fun, &source,
-        );
+        let data = ArcAsyncDerived::new_with_manual_dependencies(initial, fun, &source);
         if is_ready {
             source.with_untracked(|_| ());
             source.add_subscriber(data.to_any_subscriber());
@@ -347,9 +335,7 @@ where
                         ready_fut.await;
                         value.with_untracked(|data| match &data {
                             // TODO handle serialization errors
-                            Some(val) => {
-                                Ser::encode(val).unwrap().into_encoded_string()
-                            }
+                            Some(val) => Ser::encode(val).unwrap().into_encoded_string(),
                             _ => unreachable!(),
                         })
                     }),
@@ -404,16 +390,14 @@ where
         if let Some(shared_context) = shared_context {
             let value = shared_context.read_data(id);
             if let Some(value) = value {
-                let encoded =
-                    match <Ser as Decoder<T>>::Encoded::from_encoded_str(&value)
-                    {
-                        Ok(value) => value,
-                        Err(e) => {
-                            #[cfg(feature = "tracing")]
-                            tracing::error!("couldn't deserialize: {e:?}");
-                            return None;
-                        }
-                    };
+                let encoded = match <Ser as Decoder<T>>::Encoded::from_encoded_str(&value) {
+                    Ok(value) => value,
+                    Err(e) => {
+                        #[cfg(feature = "tracing")]
+                        tracing::error!("couldn't deserialize: {e:?}");
+                        return None;
+                    }
+                };
                 let encoded = encoded.borrow();
                 match Ser::decode(encoded) {
                     Ok(value) => return Some(value),
@@ -434,8 +418,7 @@ where
     Ser: Encoder<Result<T, E>> + Decoder<Result<T, E>>,
     <Ser as Encoder<Result<T, E>>>::Error: Debug,
     <Ser as Decoder<Result<T, E>>>::Error: Debug,
-    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <Ser as Encoder<Result<T, E>>>::Encoded: IntoEncodedString,
     <Ser as Decoder<Result<T, E>>>::Encoded: FromEncodedStr,
     T: Send + Sync + 'static,
@@ -459,8 +442,7 @@ where
     JsonSerdeCodec: Encoder<T> + Decoder<T>,
     <JsonSerdeCodec as Encoder<T>>::Error: Debug,
     <JsonSerdeCodec as Decoder<T>>::Error: Debug,
-    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -516,7 +498,8 @@ where
 impl<T> ArcResource<T, FromToStringCodec>
 where
     FromToStringCodec: Encoder<T> + Decoder<T>,
-    <FromToStringCodec as Encoder<T>>::Error: Debug, <FromToStringCodec as Decoder<T>>::Error: Debug,
+    <FromToStringCodec as Encoder<T>>::Error: Debug,
+    <FromToStringCodec as Decoder<T>>::Error: Debug,
     <<FromToStringCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <FromToStringCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <FromToStringCodec as Decoder<T>>::Encoded: FromEncodedStr,
@@ -572,7 +555,8 @@ where
 impl<T> ArcResource<T, JsonSerdeWasmCodec>
 where
     JsonSerdeWasmCodec: Encoder<T> + Decoder<T>,
-    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug, <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
     <<JsonSerdeWasmCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeWasmCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeWasmCodec as Decoder<T>>::Encoded: FromEncodedStr,
@@ -631,8 +615,7 @@ where
     MiniserdeCodec: Encoder<T> + Decoder<T>,
     <MiniserdeCodec as Encoder<T>>::Error: Debug,
     <MiniserdeCodec as Decoder<T>>::Error: Debug,
-    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <MiniserdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <MiniserdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -689,7 +672,8 @@ where
 impl<T> ArcResource<T, SerdeLite<JsonSerdeCodec>>
 where
     SerdeLite<JsonSerdeCodec>: Encoder<T> + Decoder<T>,
-    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug, <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
     <<SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Encoded: IntoEncodedString,
     <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded: FromEncodedStr,
@@ -750,8 +734,7 @@ where
     RkyvCodec: Encoder<T> + Decoder<T>,
     <RkyvCodec as Encoder<T>>::Error: Debug,
     <RkyvCodec as Decoder<T>>::Error: Debug,
-    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <RkyvCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <RkyvCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -923,9 +906,7 @@ where
         self.data.try_write()
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.data.try_write_untracked()
     }
 }
@@ -941,8 +922,7 @@ where
         #[cfg(all(feature = "hydration", debug_assertions))]
         {
             use feluqa_ui_reactivity::{
-                computed::suspense::SuspenseContext, effect::in_effect_scope,
-                owner::use_context,
+                computed::suspense::SuspenseContext, effect::in_effect_scope, owner::use_context,
             };
             if !in_effect_scope()
                 && !in_resource_source_signal()
@@ -970,7 +950,8 @@ where
 impl<T> Resource<T, FromToStringCodec>
 where
     FromToStringCodec: Encoder<T> + Decoder<T>,
-    <FromToStringCodec as Encoder<T>>::Error: Debug, <FromToStringCodec as Decoder<T>>::Error: Debug,
+    <FromToStringCodec as Encoder<T>>::Error: Debug,
+    <FromToStringCodec as Decoder<T>>::Error: Debug,
     <<FromToStringCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <FromToStringCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <FromToStringCodec as Decoder<T>>::Encoded: FromEncodedStr,
@@ -1030,8 +1011,7 @@ where
     JsonSerdeCodec: Encoder<T> + Decoder<T>,
     <JsonSerdeCodec as Encoder<T>>::Error: Debug,
     <JsonSerdeCodec as Decoder<T>>::Error: Debug,
-    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
     T: Send + Sync,
@@ -1090,7 +1070,8 @@ where
 impl<T> Resource<T, JsonSerdeWasmCodec>
 where
     JsonSerdeWasmCodec: Encoder<T> + Decoder<T>,
-    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug, <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
     <<JsonSerdeWasmCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeWasmCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeWasmCodec as Decoder<T>>::Encoded: FromEncodedStr,
@@ -1150,8 +1131,7 @@ where
     MiniserdeCodec: Encoder<T> + Decoder<T>,
     <MiniserdeCodec as Encoder<T>>::Error: Debug,
     <MiniserdeCodec as Decoder<T>>::Error: Debug,
-    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <MiniserdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <MiniserdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
     T: Send + Sync,
@@ -1208,9 +1188,9 @@ where
 impl<T> Resource<T, SerdeLite<JsonSerdeCodec>>
 where
     SerdeLite<JsonSerdeCodec>: Encoder<T> + Decoder<T>,
-    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug, <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
-    <<SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
+    <<SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Encoded: IntoEncodedString,
     <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded: FromEncodedStr,
     T: Send + Sync,
@@ -1269,8 +1249,7 @@ where
     RkyvCodec: Encoder<T> + Decoder<T>,
     <RkyvCodec as Encoder<T>>::Error: Debug,
     <RkyvCodec as Decoder<T>>::Error: Debug,
-    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <RkyvCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <RkyvCodec as Decoder<T>>::Encoded: FromEncodedStr,
     T: Send + Sync,
@@ -1388,8 +1367,7 @@ where
     Ser: Encoder<Result<T, E>> + Decoder<Result<T, E>>,
     <Ser as Encoder<Result<T, E>>>::Error: Debug,
     <Ser as Decoder<Result<T, E>>>::Error: Debug,
-    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <Ser as Encoder<Result<T, E>>>::Encoded: IntoEncodedString,
     <Ser as Decoder<Result<T, E>>>::Encoded: FromEncodedStr,
     T: Send + Sync,

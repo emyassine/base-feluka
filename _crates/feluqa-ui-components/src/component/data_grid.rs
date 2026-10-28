@@ -1,20 +1,22 @@
 use crate::std::collections::{HashMap, HashSet};
 use crate::std::hash::Hash;
 
-use crate::icons::{ArrowDownWideNarrow, ArrowUpNarrowWide, ChevronDown, CircleX, EyeOff, PanelLeft, PanelLeftClose};
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
+use crate::icons::{
+    ArrowDownWideNarrow, ArrowUpNarrowWide, ChevronDown, CircleX, EyeOff, PanelLeft, PanelLeftClose,
+};
 use crate::runtime::ev::KeyboardEvent;
 use crate::runtime::html;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
-use crate::hook::use_cell_edit::CellEditContext;
-use crate::hook::use_virtual_scroll::{VirtualScrollState, use_virtual_scroll};
 use crate::component::checkbox::Checkbox;
 use crate::component::dropdown_menu::{
-    DropdownMenu, DropdownMenuAction, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRadioGroup,
-    DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger,
+    DropdownMenu, DropdownMenuAction, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
+    DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger,
 };
+use crate::hook::use_cell_edit::CellEditContext;
+use crate::hook::use_virtual_scroll::{VirtualScrollState, use_virtual_scroll};
 
 /// Enforces display logic (class + value) to live in data structs, not inline in views.
 #[derive(Debug, Clone, Default)]
@@ -83,10 +85,14 @@ pub trait SortableColumn<R: Default>: Copy {
         // Check if this column supports sorting
         if self.compare(&R::default(), &R::default()).is_some() {
             match direction {
-                SortDirection::Asc => rows.sort_by(|a, b| self.compare(a, b).unwrap_or(std::cmp::Ordering::Equal)),
-                SortDirection::Desc => {
-                    rows.sort_by(|a, b| self.compare(a, b).unwrap_or(std::cmp::Ordering::Equal).reverse())
+                SortDirection::Asc => {
+                    rows.sort_by(|a, b| self.compare(a, b).unwrap_or(std::cmp::Ordering::Equal))
                 }
+                SortDirection::Desc => rows.sort_by(|a, b| {
+                    self.compare(a, b)
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                        .reverse()
+                }),
                 SortDirection::None => {}
             }
         }
@@ -198,7 +204,11 @@ pub fn get_pinned_left_position<C: PinnableColumn + 'static>(col: C, pinned: &Ha
 
 /// Get the width for a pinnable column, or 150 as default if not found.
 pub fn get_column_width<C: PinnableColumn + 'static>(col: C) -> i32 {
-    C::pinnable_columns().iter().find(|(c, _)| *c == col).map(|(_, w)| *w).unwrap_or(150)
+    C::pinnable_columns()
+        .iter()
+        .find(|(c, _)| *c == col)
+        .map(|(_, w)| *w)
+        .unwrap_or(150)
 }
 
 /// Generates CSS custom properties for column sizes from pinnable columns.
@@ -209,7 +219,9 @@ pub fn generate_grid_style<C: PinnableColumn + AsRef<str> + 'static>() -> String
     for (col, width) in C::pinnable_columns() {
         // Remove spaces for CSS-safe variable names (e.g., "Is Active" -> "IsActive")
         let name: String = col.as_ref().chars().filter(|c| *c != ' ').collect();
-        style.push_str(&crate::std::format!("--header-{name}-size: {width}; --col-{name}-size: {width}; "));
+        style.push_str(&crate::std::format!(
+            "--header-{name}-size: {width}; --col-{name}-size: {width}; "
+        ));
     }
     style.push_str("max-height: calc(100vh - 16rem);");
     style
@@ -226,7 +238,8 @@ where
     C::pinnable_columns()
         .iter()
         .filter(|(col, _)| {
-            pinned_columns_signal.with(|p| p.contains(col)) && visible_columns_signal.with(|v| v.contains(col.as_ref()))
+            pinned_columns_signal.with(|p| p.contains(col))
+                && visible_columns_signal.with(|v| v.contains(col.as_ref()))
         })
         .copied()
         .collect()
@@ -258,7 +271,10 @@ pub fn Grid(
     #[prop(optional)] node_ref: Option<NodeRef<html::Div>>,
 ) -> impl IntoView {
     // NOTE: Avoid `select-none` here to allow text selection via double-click
-    let merged_class = class_merge!("grid overflow-auto relative rounded-md border focus:outline-none", class);
+    let merged_class = class_merge!(
+        "grid overflow-auto relative rounded-md border focus:outline-none",
+        class
+    );
 
     view! {
         <div
@@ -350,7 +366,10 @@ pub fn VirtualizedGrid(
 /// Grid body that automatically uses virtual scroll context for height.
 /// Must be used within a `VirtualizedGrid`.
 #[component]
-pub fn VirtualizedGridBody(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
+pub fn VirtualizedGridBody(
+    children: Children,
+    #[prop(optional, into)] class: String,
+) -> impl IntoView {
     let virtual_scroll = expect_context::<VirtualScrollState>();
 
     let merged_class = class_merge!("grid relative", class);
@@ -376,7 +395,11 @@ pub fn VirtualizedGridBody(children: Children, #[prop(optional, into)] class: St
 /// rows re-render when data changes. This fixes issues where deleting rows
 /// would not update the UI because FeluqaUi reuses views with matching keys.
 #[component]
-pub fn VirtualFor<T, K, KF, CF, CV>(#[prop(into)] data: Signal<Vec<T>>, key: KF, children: CF) -> impl IntoView
+pub fn VirtualFor<T, K, KF, CF, CV>(
+    #[prop(into)] data: Signal<Vec<T>>,
+    key: KF,
+    children: CF,
+) -> impl IntoView
 where
     T: Clone + Send + Sync + 'static,
     K: Eq + crate::std::hash::Hash + Clone + Send + 'static,
@@ -485,7 +508,10 @@ pub fn GridHeaderCell(
     #[prop(optional, into)] class: String,
     #[prop(optional)] visible: Option<Signal<bool>>,
 ) -> impl IntoView {
-    let merged_class = class_merge!("relative border-r opacity-100 bg-background data-[visible=false]:hidden", class);
+    let merged_class = class_merge!(
+        "relative border-r opacity-100 bg-background data-[visible=false]:hidden",
+        class
+    );
 
     let formatted_style = crate::std::format!("width: calc(var(--header-{column}-size) * 1px);");
 

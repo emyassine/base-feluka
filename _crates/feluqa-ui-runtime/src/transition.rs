@@ -4,7 +4,7 @@ use crate::{
     suspense_component::SuspenseBoundary,
     IntoView,
 };
-use feluqa_ui_runtime_macros::component;
+use feluqa_ui_dom_renderer::feluqa_ui_reactivity::OwnedView;
 use feluqa_ui_reactivity::{
     computed::{suspense::SuspenseContext, ArcMemo},
     effect::Effect,
@@ -13,8 +13,8 @@ use feluqa_ui_reactivity::{
     traits::{Get, Set, Track, With},
     wrappers::write::SignalSetter,
 };
+use feluqa_ui_runtime_macros::component;
 use slotmap::{DefaultKey, SlotMap};
-use feluqa_ui_dom_renderer::feluqa_ui_reactivity::OwnedView;
 
 /// If any [`Resource`](crate::prelude::Resource) is read in the `children` of this
 /// component, it will show the `fallback` while they are loading. Once all are resolved,

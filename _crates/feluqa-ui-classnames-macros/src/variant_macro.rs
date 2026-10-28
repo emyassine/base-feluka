@@ -20,7 +20,10 @@ pub fn variant_impl(input: TokenStream) -> TokenStream {
 
     let base_class = container.class;
 
-    let defaults = variants.iter().filter(|v| v.default.is_present()).collect::<Vec<_>>();
+    let defaults = variants
+        .iter()
+        .filter(|v| v.default.is_present())
+        .collect::<Vec<_>>();
 
     if defaults.is_empty() {
         return syn::Error::new(
@@ -34,7 +37,10 @@ pub fn variant_impl(input: TokenStream) -> TokenStream {
     if defaults.len() > 1 {
         let error = format!(
             "Only one variant can be marked as default: {:?}",
-            defaults.iter().map(|v| v.ident.to_string()).collect::<Vec<_>>()
+            defaults
+                .iter()
+                .map(|v| v.ident.to_string())
+                .collect::<Vec<_>>()
         );
         let span = defaults[1].default.span();
         return syn::Error::new(span, error).to_compile_error().into();
@@ -59,7 +65,11 @@ pub fn variant_impl(input: TokenStream) -> TokenStream {
             (
                 variant,
                 syn::Ident::new(
-                    &format!("{}_{}", variant.ident.to_string().to_ascii_uppercase(), enum_ident_string),
+                    &format!(
+                        "{}_{}",
+                        variant.ident.to_string().to_ascii_uppercase(),
+                        enum_ident_string
+                    ),
                     proc_macro2::Span::call_site(),
                 ),
             )

@@ -45,15 +45,11 @@ impl Observer {
     }
 
     pub(crate) fn is(observer: &AnySubscriber) -> bool {
-        OBSERVER.with_borrow(|o| {
-            o.as_ref().map(|o| &o.subscriber) == Some(observer)
-        })
+        OBSERVER.with_borrow(|o| o.as_ref().map(|o| &o.subscriber) == Some(observer))
     }
 
     fn take() -> SetObserverOnDrop {
-        SetObserverOnDrop(
-            OBSERVER.with_borrow_mut(Option::take).map(|o| o.subscriber),
-        )
+        SetObserverOnDrop(OBSERVER.with_borrow_mut(Option::take).map(|o| o.subscriber))
     }
 
     fn set(observer: Option<AnySubscriber>) {

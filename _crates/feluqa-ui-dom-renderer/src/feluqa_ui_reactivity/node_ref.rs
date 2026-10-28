@@ -7,8 +7,7 @@ use feluqa_ui_reactivity::{
         RwSignal,
     },
     traits::{
-        DefinedAt, Get, IsDisposed, Notify, ReadUntracked, Set, Track,
-        UntrackableGuard, Write,
+        DefinedAt, Get, IsDisposed, Notify, ReadUntracked, Set, Track, UntrackableGuard, Write,
     },
 };
 use send_wrapper::SendWrapper;
@@ -127,9 +126,7 @@ where
         self.0.try_write()
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.0.try_write_untracked()
     }
 }

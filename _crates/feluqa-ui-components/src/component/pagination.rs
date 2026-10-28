@@ -1,12 +1,12 @@
-use crate::icons::{ChevronLeft, ChevronRight, Ellipsis};
-use crate::runtime::prelude::*;
+use crate::feluqa_ui_classnames::*;
 use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_component_macros::clx::IntoTailwindClass;
+use crate::icons::{ChevronLeft, ChevronRight, Ellipsis};
+use crate::runtime::prelude::*;
 use crate::strum::Display;
-use crate::feluqa_ui_classnames::*;
 
-use crate::hook::use_pagination::{PaginationContext, use_pagination};
 use crate::component::button::{ButtonClass, ButtonSize, ButtonVariant};
+use crate::hook::use_pagination::{PaginationContext, use_pagination};
 
 mod components {
     use super::*;
@@ -23,7 +23,10 @@ pub use components::*;
 /* ========================================================== */
 
 #[component]
-pub fn Pagination(children: Children, #[prop(default = false.into(), into)] scroll: Signal<bool>) -> impl IntoView {
+pub fn Pagination(
+    children: Children,
+    #[prop(default = false.into(), into)] scroll: Signal<bool>,
+) -> impl IntoView {
     let ctx = use_pagination();
     provide_context(ctx);
     provide_context(scroll);
@@ -52,19 +55,36 @@ pub fn PaginationNavButton(direction: PageDirection) -> impl IntoView {
     let navigate = use_navigate();
 
     let (href, is_disabled, icon) = match direction {
-        PageDirection::Previous => (ctx.prev_href, ctx.is_first_page, view! { <ChevronLeft /> }.into_any()),
-        PageDirection::Next => (ctx.next_href, Signal::derive(|| false), view! { <ChevronRight /> }.into_any()),
+        PageDirection::Previous => (
+            ctx.prev_href,
+            ctx.is_first_page,
+            view! { <ChevronLeft /> }.into_any(),
+        ),
+        PageDirection::Next => (
+            ctx.next_href,
+            Signal::derive(|| false),
+            view! { <ChevronRight /> }.into_any(),
+        ),
     };
 
     let on_click = move |ev: crate::runtime::ev::MouseEvent| {
         ev.prevent_default();
         let url = href.get();
         if url != "#" {
-            navigate(&url, NavigateOptions { scroll: scroll.get(), ..Default::default() });
+            navigate(
+                &url,
+                NavigateOptions {
+                    scroll: scroll.get(),
+                    ..Default::default()
+                },
+            );
         }
     };
 
-    let button_class = ButtonClass { variant: ButtonVariant::Ghost, size: ButtonSize::Default };
+    let button_class = ButtonClass {
+        variant: ButtonVariant::Ghost,
+        size: ButtonSize::Default,
+    };
 
     view! {
         <a
@@ -95,10 +115,19 @@ pub fn PaginationLink(page: u32, #[prop(into, optional)] class: String) -> impl 
     let on_click = move |ev: crate::runtime::ev::MouseEvent| {
         ev.prevent_default();
         let url = href.get();
-        navigate(&url, NavigateOptions { scroll: scroll.get(), ..Default::default() });
+        navigate(
+            &url,
+            NavigateOptions {
+                scroll: scroll.get(),
+                ..Default::default()
+            },
+        );
     };
 
-    let button_class = ButtonClass { variant: ButtonVariant::Ghost, size: ButtonSize::Icon };
+    let button_class = ButtonClass {
+        variant: ButtonVariant::Ghost,
+        size: ButtonSize::Icon,
+    };
 
     let merged_class = button_class.with_class(class_merge!(
         "aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground aria-[current=page]:hover:bg-primary/90",

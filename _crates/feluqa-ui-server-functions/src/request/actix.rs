@@ -38,8 +38,8 @@ impl From<(HttpRequest, Payload)> for ActixRequest {
     }
 }
 
-impl<Error, InputStreamError, OutputStreamError>
-    Req<Error, InputStreamError, OutputStreamError> for ActixRequest
+impl<Error, InputStreamError, OutputStreamError> Req<Error, InputStreamError, OutputStreamError>
+    for ActixRequest
 where
     Error: FromServerFnError + Send,
     InputStreamError: FromServerFnError + Send,
@@ -63,53 +63,38 @@ where
         self.header("Referer")
     }
 
-    fn try_into_bytes(
-        self,
-    ) -> impl Future<Output = Result<Bytes, Error>> + Send {
+    fn try_into_bytes(self) -> impl Future<Output = Result<Bytes, Error>> + Send {
         // Actix is going to keep this on a single thread anyway so it's fine to wrap it
         // with SendWrapper, which makes it `Send` but will panic if it moves to another thread
         SendWrapper::new(async move {
             let (req, payload) = self.0.take();
             let mut payload = payload.into_inner();
-            Bytes::from_request(&req, &mut payload).await.map_err(|e| {
-                ServerFnErrorErr::Deserialization(e.to_string())
-                    .into_app_error()
-            })
+            Bytes::from_request(&req, &mut payload)
+                .await
+                .map_err(|e| ServerFnErrorErr::Deserialization(e.to_string()).into_app_error())
         })
     }
 
-    fn try_into_string(
-        self,
-    ) -> impl Future<Output = Result<String, Error>> + Send {
+    fn try_into_string(self) -> impl Future<Output = Result<String, Error>> + Send {
         // Actix is going to keep this on a single thread anyway so it's fine to wrap it
         // with SendWrapper, which makes it `Send` but will panic if it moves to another thread
         SendWrapper::new(async move {
             let (req, payload) = self.0.take();
             let mut payload = payload.into_inner();
-            let bytes =
-                Bytes::from_request(&req, &mut payload).await.map_err(|e| {
-                    Error::from_server_fn_error(
-                        ServerFnErrorErr::Deserialization(e.to_string()),
-                    )
-                })?;
+            let bytes = Bytes::from_request(&req, &mut payload).await.map_err(|e| {
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(e.to_string()))
+            })?;
             String::from_utf8(bytes.into()).map_err(|e| {
-                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(
-                    e.to_string(),
-                ))
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(e.to_string()))
             })
         })
     }
 
-    fn try_into_stream(
-        self,
-    ) -> Result<impl Stream<Item = Result<Bytes, Bytes>> + Send, Error> {
+    fn try_into_stream(self) -> Result<impl Stream<Item = Result<Bytes, Bytes>> + Send, Error> {
         let payload = self.0.take().1;
         let stream = payload.map(|res| {
             res.map_err(|e| {
-                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(
-                    e.to_string(),
-                ))
-                .ser()
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(e.to_string())).ser()
             })
         });
         Ok(SendWrapper::new(stream))
@@ -126,15 +111,10 @@ where
         Error,
     > {
         let (request, payload) = self.0.take();
-        let (response, mut session, mut msg_stream) =
-            actix_ws::handle(&request, payload).map_err(|e| {
-                Error::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?;
+        let (response, mut session, mut msg_stream) = actix_ws::handle(&request, payload)
+            .map_err(|e| Error::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?;
 
-        let (mut response_stream_tx, response_stream_rx) =
-            futures::channel::mpsc::channel(2048);
+        let (mut response_stream_tx, response_stream_rx) = futures::channel::mpsc::channel(2048);
         let (response_sink_tx, mut response_sink_rx) =
             futures::channel::mpsc::channel::<Bytes>(2048);
 

@@ -147,10 +147,7 @@ where
 
 impl<T> ArcRwSignal<T> {
     /// Creates a new signal, taking the initial value as its argument.
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     #[track_caller]
     pub fn new(value: T) -> Self {
         Self {
@@ -192,10 +189,7 @@ impl<T> ArcRwSignal<T> {
     /// Reunites the two halves of a signal. Returns `None` if the two signals
     /// provided were not created from the same signal.
     #[track_caller]
-    pub fn unite(
-        read: ArcReadSignal<T>,
-        write: ArcWriteSignal<T>,
-    ) -> Option<Self> {
+    pub fn unite(read: ArcReadSignal<T>, write: ArcWriteSignal<T>) -> Option<Self> {
         if Arc::ptr_eq(&read.inner, &write.inner) {
             Some(Self {
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]

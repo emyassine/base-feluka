@@ -43,7 +43,11 @@ mod tests {
 
     #[test]
     fn test_static_svg_element_circle_creation() {
-        let circle = StaticSvgElement::Circle { cx: "10", cy: "20", r: "5" };
+        let circle = StaticSvgElement::Circle {
+            cx: "10",
+            cy: "20",
+            r: "5",
+        };
 
         match circle {
             StaticSvgElement::Circle { cx, cy, r } => {
@@ -57,10 +61,24 @@ mod tests {
 
     #[test]
     fn test_static_svg_element_rect_with_rx_ry() {
-        let rect = StaticSvgElement::Rect { x: "0", y: "0", width: "50", height: "50", rx: Some("5"), ry: Some("10") };
+        let rect = StaticSvgElement::Rect {
+            x: "0",
+            y: "0",
+            width: "50",
+            height: "50",
+            rx: Some("5"),
+            ry: Some("10"),
+        };
 
         match rect {
-            StaticSvgElement::Rect { x, y, width, height, rx, ry } => {
+            StaticSvgElement::Rect {
+                x,
+                y,
+                width,
+                height,
+                rx,
+                ry,
+            } => {
                 assert_eq!(x, "0");
                 assert_eq!(y, "0");
                 assert_eq!(width, "50");
@@ -76,7 +94,11 @@ mod tests {
     fn test_static_svg_element_zero_allocation() {
         // Verify that StaticSvgElement doesn't allocate
         let path = StaticSvgElement::Path { d: "M0 0 L10 10" };
-        let circle = StaticSvgElement::Circle { cx: "5", cy: "5", r: "3" };
+        let circle = StaticSvgElement::Circle {
+            cx: "5",
+            cy: "5",
+            r: "3",
+        };
 
         // These should all be stack allocated with static string references
         match path {

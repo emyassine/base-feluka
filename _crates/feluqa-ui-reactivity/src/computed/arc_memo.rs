@@ -1,8 +1,7 @@
 use super::inner::MemoInner;
 use crate::{
     graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber,
-        ToAnySource, ToAnySubscriber,
+        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber, ToAnySource, ToAnySubscriber,
     },
     owner::{Storage, StorageAccess, SyncStorage},
     signal::{
@@ -106,10 +105,7 @@ where
     /// This is lazy: the function will not be called until the memo's value is read for the first
     /// time.
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     pub fn new(fun: impl Fn(Option<&T>) -> T + Send + Sync + 'static) -> Self
     where
         T: PartialEq,
@@ -124,10 +120,7 @@ where
     /// This is lazy: the function will not be called until the memo's value is read for the first
     /// time.
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     pub fn new_with_compare(
         fun: impl Fn(Option<&T>) -> T + Send + Sync + 'static,
         changed: fn(Option<&T>, Option<&T>) -> bool,
@@ -147,13 +140,8 @@ where
     /// This is lazy: the function will not be called until the memo's value is read for the first
     /// time.
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
-    pub fn new_owning(
-        fun: impl Fn(Option<T>) -> (T, bool) + Send + Sync + 'static,
-    ) -> Self {
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
+    pub fn new_owning(fun: impl Fn(Option<T>) -> (T, bool) + Send + Sync + 'static) -> Self {
         let inner = Arc::new_cyclic(|weak| {
             let subscriber = AnySubscriber(
                 weak.as_ptr() as usize,

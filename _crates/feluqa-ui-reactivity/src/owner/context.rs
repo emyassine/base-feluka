@@ -30,23 +30,18 @@ impl Owner {
                 let mut this_parent = this_parent.write().or_poisoned();
                 let contexts = &mut this_parent.contexts;
                 let value = contexts.remove(&ty);
-                let downcast =
-                    value.and_then(|context| context.downcast::<T>().ok());
+                let downcast = value.and_then(|context| context.downcast::<T>().ok());
                 if let Some(value) = downcast {
                     return Some(*value);
                 } else {
-                    parent =
-                        this_parent.parent.as_ref().and_then(|p| p.upgrade());
+                    parent = this_parent.parent.as_ref().and_then(|p| p.upgrade());
                 }
             }
             None
         }
     }
 
-    fn with_context<T: 'static, R>(
-        &self,
-        cb: impl FnOnce(&T) -> R,
-    ) -> Option<R> {
+    fn with_context<T: 'static, R>(&self, cb: impl FnOnce(&T) -> R) -> Option<R> {
         let ty = TypeId::of::<T>();
         let inner = self.inner.read().or_poisoned();
         let contexts = &inner.contexts;
@@ -58,13 +53,11 @@ impl Owner {
                 let this_parent = this_parent.read().or_poisoned();
                 let contexts = &this_parent.contexts;
                 let value = contexts.get(&ty);
-                let downcast =
-                    value.and_then(|context| context.downcast_ref::<T>());
+                let downcast = value.and_then(|context| context.downcast_ref::<T>());
                 if let Some(value) = downcast {
                     return Some(cb(value));
                 } else {
-                    parent =
-                        this_parent.parent.as_ref().and_then(|p| p.upgrade());
+                    parent = this_parent.parent.as_ref().and_then(|p| p.upgrade());
                 }
             }
 
@@ -73,10 +66,7 @@ impl Owner {
         reference.map(cb)
     }
 
-    fn update_context<T: 'static, R>(
-        &self,
-        cb: impl FnOnce(&mut T) -> R,
-    ) -> Option<R> {
+    fn update_context<T: 'static, R>(&self, cb: impl FnOnce(&mut T) -> R) -> Option<R> {
         let ty = TypeId::of::<T>();
         let mut inner = self.inner.write().or_poisoned();
         let contexts = &mut inner.contexts;
@@ -88,13 +78,11 @@ impl Owner {
                 let mut this_parent = this_parent.write().or_poisoned();
                 let contexts = &mut this_parent.contexts;
                 let value = contexts.get_mut(&ty);
-                let downcast =
-                    value.and_then(|context| context.downcast_mut::<T>());
+                let downcast = value.and_then(|context| context.downcast_mut::<T>());
                 if let Some(value) = downcast {
                     return Some(cb(value));
                 } else {
-                    parent =
-                        this_parent.parent.as_ref().and_then(|p| p.upgrade());
+                    parent = this_parent.parent.as_ref().and_then(|p| p.upgrade());
                 }
             }
             None
@@ -435,8 +423,6 @@ pub fn with_context<T: 'static, R>(cb: impl FnOnce(&T) -> R) -> Option<R> {
 /// });
 /// # });
 /// ```
-pub fn update_context<T: 'static, R>(
-    cb: impl FnOnce(&mut T) -> R,
-) -> Option<R> {
+pub fn update_context<T: 'static, R>(cb: impl FnOnce(&mut T) -> R) -> Option<R> {
     Owner::current().and_then(|owner| owner.update_context(cb))
 }

@@ -42,9 +42,8 @@ where
 
     fn decode(bytes: Bytes) -> Result<T, Self::Error> {
         T::deserialize(
-            &serde_json::from_slice(&bytes).map_err(|e| {
-                ServerFnErrorErr::Deserialization(e.to_string())
-            })?,
+            &serde_json::from_slice(&bytes)
+                .map_err(|e| ServerFnErrorErr::Deserialization(e.to_string()))?,
         )
         .map_err(|e| ServerFnErrorErr::Deserialization(e.to_string()))
     }

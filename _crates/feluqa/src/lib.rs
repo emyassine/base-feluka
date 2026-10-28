@@ -15,13 +15,19 @@ extern crate axum;
 extern crate core as rust_core;
 #[cfg(feature = "web")]
 extern crate serde;
+#[cfg(feature = "web")]
+extern crate std;
 #[cfg(test)]
 extern crate std;
 extern crate subtle;
+#[cfg(feature = "web")]
+extern crate tokio;
 #[cfg(test)]
 extern crate tokio;
 #[cfg(test)]
 extern crate tower;
+#[cfg(feature = "web")]
+extern crate tower_http;
 
 /// Authentication and permission contracts for the selected target.
 #[cfg(feature = "auth")]

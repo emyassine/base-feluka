@@ -1,7 +1,5 @@
 use super::{Res, TryRes};
-use crate::error::{
-    FromServerFnError, ServerFnErrorWrapper, SERVER_FN_ERROR_HEADER,
-};
+use crate::error::{FromServerFnError, ServerFnErrorWrapper, SERVER_FN_ERROR_HEADER};
 use actix_web::{
     http::{
         header,
@@ -64,9 +62,7 @@ where
         Ok(ActixResponse(SendWrapper::new(
             builder
                 .insert_header((header::CONTENT_TYPE, content_type))
-                .streaming(data.map(|data| {
-                    data.map_err(|e| ServerFnErrorWrapper(E::de(e)))
-                })),
+                .streaming(data.map(|data| data.map_err(|e| ServerFnErrorWrapper(E::de(e))))),
         )))
     }
 }

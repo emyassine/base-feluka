@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::*;
 use crate::icons::{ChevronLeft, ChevronRight};
 use crate::runtime::context::Provider;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::*;
 
 use crate::hook::use_random::use_random_id_for;
 
@@ -34,7 +34,10 @@ pub fn Carousel(
     #[prop(optional)] looping: bool,
 ) -> impl IntoView {
     let carousel_id = use_random_id_for("carousel");
-    let ctx = CarouselContext { carousel_id: carousel_id.clone(), orientation };
+    let ctx = CarouselContext {
+        carousel_id: carousel_id.clone(),
+        orientation,
+    };
 
     let orientation_str = match orientation {
         CarouselOrientation::Horizontal => "horizontal",
@@ -167,12 +170,14 @@ pub fn CarouselContent(children: Children, #[prop(optional, into)] class: String
     let carousel_id = ctx.carousel_id;
 
     let (scroll_class, inner_class) = match ctx.orientation {
-        CarouselOrientation::Horizontal => {
-            ("overflow-x-auto snap-x snap-mandatory scroll-smooth", class_merge!("flex -ml-4", class))
-        }
-        CarouselOrientation::Vertical => {
-            ("overflow-y-auto snap-y snap-mandatory scroll-smooth", class_merge!("flex flex-col -mt-4", class))
-        }
+        CarouselOrientation::Horizontal => (
+            "overflow-x-auto snap-x snap-mandatory scroll-smooth",
+            class_merge!("flex -ml-4", class),
+        ),
+        CarouselOrientation::Vertical => (
+            "overflow-y-auto snap-y snap-mandatory scroll-smooth",
+            class_merge!("flex flex-col -mt-4", class),
+        ),
     };
 
     view! {
@@ -199,7 +204,11 @@ pub fn CarouselItem(children: Children, #[prop(optional, into)] class: String) -
         CarouselOrientation::Vertical => "pt-4",
     };
 
-    let class = class_merge!("min-w-0 shrink-0 grow-0 basis-full snap-start", padding, class);
+    let class = class_merge!(
+        "min-w-0 shrink-0 grow-0 basis-full snap-start",
+        padding,
+        class
+    );
 
     view! {
         <div data-name="CarouselItem" role="group" aria-roledescription="slide" class=class>

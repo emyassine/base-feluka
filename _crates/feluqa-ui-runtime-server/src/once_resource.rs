@@ -1,7 +1,4 @@
-use crate::{
-    initial_value, FromEncodedStr, IntoEncodedString,
-    IS_SUPPRESSING_RESOURCE_LOAD,
-};
+use crate::{initial_value, FromEncodedStr, IntoEncodedString, IS_SUPPRESSING_RESOURCE_LOAD};
 #[cfg(feature = "rkyv")]
 use codee::binary::RkyvCodec;
 #[cfg(feature = "serde-wasm-bindgen")]
@@ -15,12 +12,8 @@ use codee::{
     Decoder, Encoder,
 };
 use core::{fmt::Debug, marker::PhantomData};
-use futures::{Future, FutureExt};
-use or_poisoned::OrPoisoned;
 use feluqa_ui_reactivity::{
-    computed::{
-        suspense::SuspenseContext, AsyncDerivedReadyFuture, ScopedFuture,
-    },
+    computed::{suspense::SuspenseContext, AsyncDerivedReadyFuture, ScopedFuture},
     diagnostics::{SpecialNonReactiveFuture, SpecialNonReactiveZone},
     graph::{AnySource, ToAnySource},
     owner::{use_context, ArenaItem, Owner},
@@ -31,6 +24,8 @@ use feluqa_ui_reactivity::{
     },
     unwrap_signal,
 };
+use futures::{Future, FutureExt};
+use or_poisoned::OrPoisoned;
 use std::{
     future::IntoFuture,
     mem,
@@ -185,8 +180,7 @@ where
     Ser: Encoder<Result<T, E>> + Decoder<Result<T, E>>,
     <Ser as Encoder<Result<T, E>>>::Error: Debug,
     <Ser as Decoder<Result<T, E>>>::Error: Debug,
-    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <Ser as Encoder<Result<T, E>>>::Encoded: IntoEncodedString,
     <Ser as Decoder<Result<T, E>>>::Encoded: FromEncodedStr,
     T: Send + Sync + 'static,
@@ -208,11 +202,7 @@ where
 impl<T, Ser> ArcOnceResource<T, Ser> {
     /// Returns a `Future` that is ready when this resource has next finished loading.
     pub fn ready(&self) -> AsyncDerivedReadyFuture {
-        AsyncDerivedReadyFuture::new(
-            self.to_any_source(),
-            &self.loading,
-            &self.wakers,
-        )
+        AsyncDerivedReadyFuture::new(self.to_any_source(), &self.loading, &self.wakers)
     }
 }
 
@@ -258,8 +248,7 @@ where
         if let Some(suspense_context) = use_context::<SuspenseContext>() {
             if self.value.read().or_poisoned().is_none() {
                 let handle = suspense_context.task_id();
-                let mut ready =
-                    Box::pin(SpecialNonReactiveFuture::new(self.ready()));
+                let mut ready = Box::pin(SpecialNonReactiveFuture::new(self.ready()));
                 match ready.as_mut().now_or_never() {
                     Some(_) => drop(handle),
                     None => {
@@ -326,9 +315,7 @@ where
             self.wakers.write().or_poisoned().push(waker.clone());
             Poll::Pending
         } else {
-            Poll::Ready(
-                self.value.read().or_poisoned().as_ref().unwrap().clone(),
-            )
+            Poll::Ready(self.value.read().or_poisoned().as_ref().unwrap().clone())
         }
     }
 }
@@ -339,8 +326,7 @@ where
     JsonSerdeCodec: Encoder<T> + Decoder<T>,
     <JsonSerdeCodec as Encoder<T>>::Error: Debug,
     <JsonSerdeCodec as Decoder<T>>::Error: Debug,
-    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -363,18 +349,16 @@ where
 
 impl<T> ArcOnceResource<T, FromToStringCodec>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     FromToStringCodec: Encoder<T> + Decoder<T>,
-    <FromToStringCodec as Encoder<T>>::Error: Debug, <FromToStringCodec as Decoder<T>>::Error: Debug,
+    <FromToStringCodec as Encoder<T>>::Error: Debug,
+    <FromToStringCodec as Decoder<T>>::Error: Debug,
     <<FromToStringCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <FromToStringCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <FromToStringCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`FromToStringCodec`] for encoding/decoding the value.
-    pub fn new_str(
-        fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_str(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, false)
     }
 
@@ -383,10 +367,7 @@ T: Send + Sync + 'static,
     /// Blocking resources prevent any of the HTTP response from being sent until they have loaded.
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
-    pub fn new_str_blocking(
-        fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_str_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, true)
     }
 }
@@ -395,19 +376,17 @@ T: Send + Sync + 'static,
 #[cfg_attr(docsrs, doc(cfg(feature = "serde-wasm-bindgen")))]
 impl<T> ArcOnceResource<T, JsonSerdeWasmCodec>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     JsonSerdeWasmCodec: Encoder<T> + Decoder<T>,
-    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug, <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
     <<JsonSerdeWasmCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeWasmCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeWasmCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`JsonSerdeWasmCodec`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_serde_wb(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_wb(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, false)
     }
 
@@ -417,10 +396,7 @@ fut: impl Future<Output = T> + Send + 'static
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_serde_wb_blocking(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_wb_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, true)
     }
 }
@@ -432,16 +408,13 @@ where
     MiniserdeCodec: Encoder<T> + Decoder<T>,
     <MiniserdeCodec as Encoder<T>>::Error: Debug,
     <MiniserdeCodec as Decoder<T>>::Error: Debug,
-    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <MiniserdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <MiniserdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`MiniserdeCodec`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_miniserde(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_miniserde(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, false)
     }
 
@@ -451,9 +424,7 @@ where
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_miniserde_blocking(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_miniserde_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, true)
     }
 }
@@ -462,19 +433,17 @@ where
 #[cfg_attr(docsrs, doc(cfg(feature = "serde-lite")))]
 impl<T> ArcOnceResource<T, SerdeLite<JsonSerdeCodec>>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     SerdeLite<JsonSerdeCodec>: Encoder<T> + Decoder<T>,
-    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug, <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
     <<SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Encoded: IntoEncodedString,
     <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`SerdeLite`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_serde_lite(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_lite(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, false)
     }
 
@@ -484,10 +453,7 @@ fut: impl Future<Output = T> + Send + 'static
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_serde_lite_blocking(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_lite_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, true)
     }
 }
@@ -500,8 +466,7 @@ where
     RkyvCodec: Encoder<T> + Decoder<T>,
     <RkyvCodec as Encoder<T>>::Error: Debug,
     <RkyvCodec as Decoder<T>>::Error: Debug,
-    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <RkyvCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <RkyvCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -517,9 +482,7 @@ where
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_rkyv_blocking(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_rkyv_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         ArcOnceResource::new_with_options(fut, true)
     }
 }
@@ -565,16 +528,11 @@ where
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_with_options(
-        fut: impl Future<Output = T> + Send + 'static,
-        blocking: bool,
-    ) -> Self {
+    pub fn new_with_options(fut: impl Future<Output = T> + Send + 'static, blocking: bool) -> Self {
         #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let defined_at = Location::caller();
         Self {
-            inner: ArenaItem::new(ArcOnceResource::new_with_options(
-                fut, blocking,
-            )),
+            inner: ArenaItem::new(ArcOnceResource::new_with_options(fut, blocking)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at,
         }
@@ -592,8 +550,7 @@ where
     Ser: Encoder<Result<T, E>> + Decoder<Result<T, E>>,
     <Ser as Encoder<Result<T, E>>>::Error: Debug,
     <Ser as Decoder<Result<T, E>>>::Error: Debug,
-    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<Ser as Decoder<Result<T, E>>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <Ser as Encoder<Result<T, E>>>::Encoded: IntoEncodedString,
     <Ser as Decoder<Result<T, E>>>::Encoded: FromEncodedStr,
     T: Send + Sync + 'static,
@@ -705,8 +662,7 @@ where
     JsonSerdeCodec: Encoder<T> + Decoder<T>,
     <JsonSerdeCodec as Encoder<T>>::Error: Debug,
     <JsonSerdeCodec as Decoder<T>>::Error: Debug,
-    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -729,18 +685,16 @@ where
 
 impl<T> OnceResource<T, FromToStringCodec>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     FromToStringCodec: Encoder<T> + Decoder<T>,
-    <FromToStringCodec as Encoder<T>>::Error: Debug, <FromToStringCodec as Decoder<T>>::Error: Debug,
+    <FromToStringCodec as Encoder<T>>::Error: Debug,
+    <FromToStringCodec as Decoder<T>>::Error: Debug,
     <<FromToStringCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <FromToStringCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <FromToStringCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`FromToStringCodec`] for encoding/decoding the value.
-    pub fn new_str(
-        fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_str(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, false)
     }
 
@@ -749,10 +703,7 @@ T: Send + Sync + 'static,
     /// Blocking resources prevent any of the HTTP response from being sent until they have loaded.
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
-    pub fn new_str_blocking(
-        fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_str_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, true)
     }
 }
@@ -761,19 +712,17 @@ T: Send + Sync + 'static,
 #[cfg_attr(docsrs, doc(cfg(feature = "serde-wasm-bindgen")))]
 impl<T> OnceResource<T, JsonSerdeWasmCodec>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     JsonSerdeWasmCodec: Encoder<T> + Decoder<T>,
-    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug, <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Encoder<T>>::Error: Debug,
+    <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
     <<JsonSerdeWasmCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <JsonSerdeWasmCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeWasmCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`JsonSerdeWasmCodec`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_serde_wb(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_wb(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, false)
     }
 
@@ -783,10 +732,7 @@ fut: impl Future<Output = T> + Send + 'static
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_serde_wb_blocking(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_wb_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, true)
     }
 }
@@ -798,16 +744,13 @@ where
     MiniserdeCodec: Encoder<T> + Decoder<T>,
     <MiniserdeCodec as Encoder<T>>::Error: Debug,
     <MiniserdeCodec as Decoder<T>>::Error: Debug,
-    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<MiniserdeCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <MiniserdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <MiniserdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`MiniserdeCodec`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_miniserde(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_miniserde(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, false)
     }
 
@@ -817,9 +760,7 @@ where
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_miniserde_blocking(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_miniserde_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, true)
     }
 }
@@ -828,19 +769,17 @@ where
 #[cfg_attr(docsrs, doc(cfg(feature = "serde-lite")))]
 impl<T> OnceResource<T, SerdeLite<JsonSerdeCodec>>
 where
-T: Send + Sync + 'static,
+    T: Send + Sync + 'static,
     SerdeLite<JsonSerdeCodec>: Encoder<T> + Decoder<T>,
-    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug, <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Error: Debug,
+    <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Error: Debug,
     <<SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <SerdeLite<JsonSerdeCodec> as Encoder<T>>::Encoded: IntoEncodedString,
     <SerdeLite<JsonSerdeCodec> as Decoder<T>>::Encoded: FromEncodedStr,
 {
     /// Creates a resource using [`SerdeLite`] for encoding/decoding the value.
     #[track_caller]
-    pub fn new_serde_lite(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_lite(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, false)
     }
 
@@ -850,10 +789,7 @@ fut: impl Future<Output = T> + Send + 'static
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_serde_lite_blocking(
-fut: impl Future<Output = T> + Send + 'static
-    ) -> Self
-    {
+    pub fn new_serde_lite_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, true)
     }
 }
@@ -866,8 +802,7 @@ where
     RkyvCodec: Encoder<T> + Decoder<T>,
     <RkyvCodec as Encoder<T>>::Error: Debug,
     <RkyvCodec as Decoder<T>>::Error: Debug,
-    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<RkyvCodec as Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
     <RkyvCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <RkyvCodec as Decoder<T>>::Encoded: FromEncodedStr,
 {
@@ -883,9 +818,7 @@ where
     /// This is useful if you need their data to set HTML document metadata or information that
     /// needs to appear in HTTP headers.
     #[track_caller]
-    pub fn new_rkyv_blocking(
-        fut: impl Future<Output = T> + Send + 'static,
-    ) -> Self {
+    pub fn new_rkyv_blocking(fut: impl Future<Output = T> + Send + 'static) -> Self {
         OnceResource::new_with_options(fut, true)
     }
 }

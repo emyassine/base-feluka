@@ -194,10 +194,7 @@ where
 
 impl<T: 'static, U> Mapped<Plain<T>, U> {
     /// Creates a mapped read guard from the inner lock.
-    pub fn try_new(
-        inner: Arc<RwLock<T>>,
-        map_fn: fn(&T) -> &U,
-    ) -> Option<Self> {
+    pub fn try_new(inner: Arc<RwLock<T>>, map_fn: fn(&T) -> &U) -> Option<Self> {
         let inner = Plain::try_new(inner)?;
         Some(Self { inner, map_fn })
     }
@@ -208,10 +205,7 @@ where
     Inner: Deref,
 {
     /// Creates a mapped read guard from the inner guard.
-    pub fn new_with_guard(
-        inner: Inner,
-        map_fn: fn(&Inner::Target) -> &U,
-    ) -> Self {
+    pub fn new_with_guard(inner: Inner, map_fn: fn(&Inner::Target) -> &U) -> Self {
         Self { inner, map_fn }
     }
 }
@@ -482,10 +476,7 @@ where
     Inner: Deref,
 {
     /// Creates a new mapped guard from the inner guard and the map function.
-    pub fn new(
-        inner: Inner,
-        map_fn: impl Fn(&Inner::Target) -> &U + 'static,
-    ) -> Self {
+    pub fn new(inner: Inner, map_fn: impl Fn(&Inner::Target) -> &U + 'static) -> Self {
         Self {
             inner,
             map_fn: Arc::new(map_fn),

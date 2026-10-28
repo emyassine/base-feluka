@@ -970,7 +970,12 @@ fn valid_blend(mode: &[&str]) -> bool {
     )
 }
 
-fn valid_trbl(mode: &[&str], arbitrary: &str, success: &'static str, error: &'static str) -> Result<&'static str> {
+fn valid_trbl(
+    mode: &[&str],
+    arbitrary: &str,
+    success: &'static str,
+    error: &'static str,
+) -> Result<&'static str> {
     if mode.len() == 1 && valid_top_right_bottom_left(mode[0]) {
         return Ok(success);
     }
@@ -990,7 +995,10 @@ fn valid_top_right_bottom_left(mode: &str) -> bool {
 }
 
 fn valid_break_after(mode: &str) -> bool {
-    crate::std::matches!(mode, "auto" | "avoid" | "all" | "avoid-page" | "page" | "left" | "right" | "column")
+    crate::std::matches!(
+        mode,
+        "auto" | "avoid" | "all" | "avoid-page" | "page" | "left" | "right" | "column"
+    )
 }
 
 /// Need starts_with for this https://tailwindcss.com/docs/font-size#setting-the-line-height
@@ -1009,7 +1017,10 @@ fn valid_text_size(mode: &str) -> bool {
 }
 
 fn parse_fraction_or_usize(input: &str) -> bool {
-    parse_fraction(input).map(|_| ()).or_else(|| input.parse::<usize>().ok().map(|_| ())).is_some()
+    parse_fraction(input)
+        .map(|_| ())
+        .or_else(|| input.parse::<usize>().ok().map(|_| ()))
+        .is_some()
 }
 
 fn parse_fraction(input: &str) -> Option<(usize, usize)> {
@@ -1060,7 +1071,11 @@ fn is_arbitrary_bg_image(input: &str) -> bool {
 }
 
 fn is_arbitrary_size(input: &str) -> bool {
-    is_valid_arbitrary_value(input, |label| label == "length" || label == "size" || label == "percentage", |_| false)
+    is_valid_arbitrary_value(
+        input,
+        |label| label == "length" || label == "size" || label == "percentage",
+        |_| false,
+    )
 }
 
 /// Validates CSS time values for duration/delay arbitrary values
@@ -1079,13 +1094,18 @@ fn is_arbitrary_time(input: &str) -> bool {
     }
     // CSS time with s unit (e.g., "0.5s", ".5s", "1s")
     if let Some(num) = input.strip_suffix('s') {
-        return num.parse::<f64>().is_ok() || num.starts_with('.') && num[1..].parse::<f64>().is_ok();
+        return num.parse::<f64>().is_ok()
+            || num.starts_with('.') && num[1..].parse::<f64>().is_ok();
     }
     // CSS variable or calc()
     input.starts_with("var(") || input.starts_with("calc(")
 }
 
-fn is_valid_arbitrary_value(input: &str, label: impl Fn(&str) -> bool, func: impl Fn(&str) -> bool) -> bool {
+fn is_valid_arbitrary_value(
+    input: &str,
+    label: impl Fn(&str) -> bool,
+    func: impl Fn(&str) -> bool,
+) -> bool {
     match validators::arbitrary::parse(input).ok() {
         Some((_, (Some(captured_label), _))) => label(captured_label),
         Some((_, (None, rest))) => func(rest),
@@ -1221,7 +1241,9 @@ mod test {
 
     #[test]
     fn parse_border_color_arb() {
-        assert!(!is_arbitrary_len("color:rgb(var(--color-gray-500-rgb)/50%)"));
+        assert!(!is_arbitrary_len(
+            "color:rgb(var(--color-gray-500-rgb)/50%)"
+        ));
         let result = get_collision_id(&["border"], "color:rgb(var(--color-gray-500-rgb)/50%)");
         assert_eq!(result, Ok("border-color"));
 

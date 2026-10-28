@@ -6,8 +6,8 @@ use crate::{
     view::{iterators::OptionState, Mountable, Render},
 };
 use either_of::Either;
-use std::sync::Arc;
 use feluqa_ui_errors::{Error as AnyError, ErrorHook};
+use std::sync::Arc;
 
 impl<T, E> Render for Result<T, E>
 where
@@ -119,13 +119,9 @@ where
 
     E: Into<AnyError> + Send + 'static,
 {
-    type Output<SomeNewAttr: Attribute> =
-        Result<<T as AddAnyAttr>::Output<SomeNewAttr>, E>;
+    type Output<SomeNewAttr: Attribute> = Result<<T as AddAnyAttr>::Output<SomeNewAttr>, E>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -173,13 +169,7 @@ where
     ) {
         match self {
             Ok(inner) => {
-                inner.to_html_with_buf(
-                    buf,
-                    position,
-                    escape,
-                    mark_branches,
-                    extra_attrs,
-                );
+                inner.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
             }
             Err(e) => {
                 buf.push_str("<!>");
@@ -225,19 +215,17 @@ where
                 None,
             ),
             Err(e) => {
-                let state =
-                    RenderHtml::hydrate::<FROM_SERVER>((), cursor, position);
-                (Either::Right(state), Some(feluqa_ui_errors::throw(e.into())))
+                let state = RenderHtml::hydrate::<FROM_SERVER>((), cursor, position);
+                (
+                    Either::Right(state),
+                    Some(feluqa_ui_errors::throw(e.into())),
+                )
             }
         };
         ResultState { state, error, hook }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let hook = feluqa_ui_errors::get_error_hook();
         let (state, error) = match self {
             Ok(view) => (
@@ -245,9 +233,11 @@ where
                 None,
             ),
             Err(e) => {
-                let state =
-                    RenderHtml::hydrate_async((), cursor, position).await;
-                (Either::Right(state), Some(feluqa_ui_errors::throw(e.into())))
+                let state = RenderHtml::hydrate_async((), cursor, position).await;
+                (
+                    Either::Right(state),
+                    Some(feluqa_ui_errors::throw(e.into())),
+                )
             }
         };
         ResultState { state, error, hook }

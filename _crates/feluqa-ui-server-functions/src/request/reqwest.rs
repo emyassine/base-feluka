@@ -28,9 +28,8 @@ where
         method: Method,
     ) -> Result<Self, E> {
         let url = format!("{}{}", get_server_url(), path);
-        let mut url = Url::try_from(url.as_str()).map_err(|e| {
-            E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string()))
-        })?;
+        let mut url = Url::try_from(url.as_str())
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?;
         url.set_query(Some(query));
         let req = match method {
             Method::GET => CLIENT.get(url),
@@ -48,9 +47,7 @@ where
         .header(CONTENT_TYPE, content_type)
         .header(ACCEPT, accepts)
         .build()
-        .map_err(|e| {
-            E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string()))
-        })?;
+        .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?;
         Ok(req)
     }
 
@@ -158,9 +155,8 @@ where
         method: Method,
     ) -> Result<Self, E> {
         let url = format!("{}{}", get_server_url(), path);
-        let body = Body::wrap_stream(
-            body.map(|chunk| Ok(chunk) as Result<Bytes, ServerFnErrorErr>),
-        );
+        let body =
+            Body::wrap_stream(body.map(|chunk| Ok(chunk) as Result<Bytes, ServerFnErrorErr>));
         match method {
             Method::POST => CLIENT.post(url),
             Method::PUT => CLIENT.put(url),

@@ -5,9 +5,11 @@ extern crate alloc;
 
 use crate::auth::{Authorizer, Permission, PermissionSetAuthorizer, Principal};
 use crate::axum;
+use crate::axum::extract::Request;
 use crate::core::service::CoreStore;
 use crate::rust_core as core;
 use crate::rust_core::clone::Clone;
+use crate::rust_core::convert::AsRef;
 use crate::rust_core::convert::From;
 use crate::rust_core::default::Default;
 use crate::rust_core::iter::Iterator;
@@ -17,7 +19,11 @@ use crate::rust_core::option::Option;
 use crate::rust_core::option::Option::{None, Some};
 use crate::rust_core::result::Result;
 use crate::rust_core::result::Result::{Err, Ok};
+use crate::std::io::{Error as IoError, ErrorKind};
+use crate::std::net::SocketAddr;
+use crate::std::time::Instant;
 use crate::subtle::ConstantTimeEq;
+use crate::tower_http::services::ServeDir;
 use alloc::collections::BTreeMap;
 use alloc::format;
 use alloc::string::{String, ToString};
@@ -38,6 +44,81 @@ pub use axum::routing::get as on_get;
 pub const SESSION_COOKIE_NAME: &str = "feluqa_session";
 /// Cookie name used by Feluqa Core's readable double-submit CSRF token.
 pub const CSRF_COOKIE_NAME: &str = "feluqa_csrf";
+
+/// Mount the application's public asset directory at `/assets`.
+pub fn public_assets<S>(router: Router<S>, root: impl AsRef<crate::std::path::Path>) -> Router<S>
+where
+    S: Clone + Send + Sync + 'static,
+{
+    router.nest_service("/assets", ServeDir::new(root))
+}
+
+/// Start a Feluqa web host with request timing and graceful shutdown enabled.
+pub async fn serve(
+    router: Router,
+    address: SocketAddr,
+    application: &str,
+    profile: &str,
+) -> Result<(), IoError> {
+    let listener = crate::tokio::net::TcpListener::bind(address)
+        .await
+        .map_err(|error| listener_bind_error(address, error))?;
+    crate::std::println!("{application} ({profile}) listening on http://{address}");
+    crate::axum::serve(
+        listener,
+        router.layer(crate::axum::middleware::from_fn(request_timing)),
+    )
+    .with_graceful_shutdown(shutdown_signal())
+    .await
+}
+
+fn listener_bind_error(address: SocketAddr, error: IoError) -> IoError {
+    let message = if error.kind() == ErrorKind::AddrInUse {
+        format!(
+            "Feluqa cannot start at http://{address}: port {} is already in use. Stop the process using that port or change `app.port` in config/app.toml.",
+            address.port()
+        )
+    } else {
+        format!("Feluqa cannot bind to http://{address}: {error}")
+    };
+    IoError::new(error.kind(), message)
+}
+
+async fn request_timing(request: Request, next: Next) -> Response {
+    let method = String::from(request.method().as_str());
+    let path = String::from(request.uri().path());
+    let started_at = Instant::now();
+    let mut response = next.run(request).await;
+    let duration_ms = started_at.elapsed().as_secs_f64() * 1_000.0;
+    crate::std::eprintln!("[feluqa] {method} {path} response: {duration_ms:.3} ms");
+    if let Ok(header) =
+        crate::axum::http::HeaderValue::from_str(&format!("feluqa;dur={duration_ms:.3}"))
+    {
+        response.headers_mut().insert(
+            crate::axum::http::HeaderName::from_static("server-timing"),
+            header,
+        );
+    }
+    response
+}
+
+async fn shutdown_signal() {
+    let control_c = crate::tokio::signal::ctrl_c();
+    #[cfg(unix)]
+    match crate::tokio::signal::unix::signal(crate::tokio::signal::unix::SignalKind::terminate()) {
+        Ok(mut terminate) => {
+            crate::tokio::select! {
+                _ = control_c => {},
+                _ = terminate.recv() => {},
+            }
+        }
+        Err(_) => {
+            let _signal_result = control_c.await;
+        }
+    }
+    #[cfg(not(unix))]
+    let _signal_result = control_c.await;
+}
 
 /// Require one exact permission granted to the authenticated request principal.
 pub fn authorize(principal: &Principal, name: &str) -> Result<(), StatusCode> {

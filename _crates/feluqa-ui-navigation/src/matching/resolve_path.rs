@@ -1,10 +1,6 @@
 use std::borrow::Cow;
 
-pub fn resolve_path<'a>(
-    base: &'a str,
-    path: &'a str,
-    from: Option<&'a str>,
-) -> Cow<'a, str> {
+pub fn resolve_path<'a>(base: &'a str, path: &'a str, from: Option<&'a str>) -> Cow<'a, str> {
     if has_scheme(path) {
         path.into()
     } else {
@@ -36,9 +32,9 @@ fn has_scheme(path: &str) -> bool {
         || path
             .split_once("://")
             .map(|(prefix, _)| {
-                prefix.chars().all(
-                    |c: char| matches!(c, 'a'..='z' | 'A'..='Z' | '0'..='9'),
-                )
+                prefix
+                    .chars()
+                    .all(|c: char| matches!(c, 'a'..='z' | 'A'..='Z' | '0'..='9'))
             })
             .unwrap_or(false)
 }

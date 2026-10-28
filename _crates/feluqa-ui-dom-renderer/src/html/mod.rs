@@ -144,10 +144,7 @@ impl Render for InertElement {
 impl AddAnyAttr for InertElement {
     type Output<SomeNewAttr: Attribute> = Self;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        _attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, _attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -197,8 +194,7 @@ impl RenderHtml for InertElement {
         } else if curr_position != Position::Current {
             cursor.sibling();
         }
-        let el = crate::renderer::types::Element::cast_from(cursor.current())
-            .unwrap();
+        let el = crate::renderer::types::Element::cast_from(cursor.current()).unwrap();
         position.set(Position::NextChild);
         InertElementState(self.html, el)
     }

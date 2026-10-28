@@ -80,7 +80,7 @@
 //!   should decide whenever to preserve quotation.
 //!
 //! ```rust
-//! 
+//!
 //!   # use quote::quote;
 //!   # use feluqa_ui_markup_parser::parse2;
 //!   # parse2(quote! {
@@ -263,7 +263,10 @@ pub fn parse(tokens: proc_macro::TokenStream) -> Result<Vec<Node>> {
 /// [`proc-macro::TokenStream`]: https://doc.rust-lang.org/proc_macro/struct.TokenStream.html
 /// [`Node`]: struct.Node.html
 /// [`ParserConfig`]: struct.ParserConfig.html
-#[deprecated(since = "0.10.2", note = "use feluqa_ui_markup_parser::Parser::parse_simple instead")]
+#[deprecated(
+    since = "0.10.2",
+    note = "use feluqa_ui_markup_parser::Parser::parse_simple instead"
+)]
 pub fn parse_with_config<C: CustomNode + std::fmt::Debug>(
     tokens: proc_macro::TokenStream,
     config: ParserConfig<C>,
@@ -292,7 +295,10 @@ pub fn parse2(tokens: proc_macro2::TokenStream) -> Result<Vec<Node>> {
 /// [`proc-macro2::TokenStream`]: https://docs.rs/proc-macro2/latest/proc_macro2/struct.TokenStream.html
 /// [`Node`]: struct.Node.html
 /// [`ParserConfig`]: struct.ParserConfig.html
-#[deprecated(since = "0.10.2", note = "use feluqa_ui_markup_parser::Parser::parse_simple instead")]
+#[deprecated(
+    since = "0.10.2",
+    note = "use feluqa_ui_markup_parser::Parser::parse_simple instead"
+)]
 pub fn parse2_with_config<C: CustomNode + std::fmt::Debug>(
     tokens: proc_macro2::TokenStream,
     config: ParserConfig<C>,

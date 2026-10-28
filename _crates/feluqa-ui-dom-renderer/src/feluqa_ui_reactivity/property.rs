@@ -33,11 +33,7 @@ where
         })
     }
 
-    fn build(
-        mut self,
-        el: &crate::renderer::types::Element,
-        key: &str,
-    ) -> Self::State {
+    fn build(mut self, el: &crate::renderer::types::Element, key: &str) -> Self::State {
         let key = Rndr::intern(key);
         let key = key.to_owned();
         let el = el.to_owned();
@@ -190,8 +186,8 @@ mod reactive_stores {
     #[allow(deprecated)]
     use feluqa_ui_reactivity::{effect::RenderEffect, owner::Storage, traits::Get};
     use reactive_stores::{
-        ArcField, ArcStore, AtIndex, AtKeyed, DerefedField, Field,
-        KeyedSubfield, Store, StoreField, Subfield,
+        ArcField, ArcStore, AtIndex, AtKeyed, DerefedField, Field, KeyedSubfield, Store,
+        StoreField, Subfield,
     };
     use std::ops::{Deref, DerefMut, Index, IndexMut};
 

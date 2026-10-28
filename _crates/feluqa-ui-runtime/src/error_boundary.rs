@@ -1,8 +1,12 @@
 use crate::{children::TypedChildren, IntoView};
-use futures::{channel::oneshot, future::join_all};
-use hydration_context::{SerializedDataId, SharedContext};
-use feluqa_ui_runtime_macros::component;
-use or_poisoned::OrPoisoned;
+use feluqa_ui_dom_renderer::{
+    feluqa_ui_reactivity::OwnedView,
+    html::attribute::{any_attribute::AnyAttribute, Attribute},
+    hydration::Cursor,
+    ssr::{StreamBuilder, StreamChunk},
+    view::{add_attr::AddAnyAttr, Mountable, Position, PositionState, Render, RenderHtml},
+};
+use feluqa_ui_errors::{Error, ErrorHook, ErrorId};
 use feluqa_ui_reactivity::{
     computed::ArcMemo,
     effect::RenderEffect,
@@ -10,6 +14,10 @@ use feluqa_ui_reactivity::{
     signal::ArcRwSignal,
     traits::{Get, Update, With, WithUntracked, WriteValue},
 };
+use feluqa_ui_runtime_macros::component;
+use futures::{channel::oneshot, future::join_all};
+use hydration_context::{SerializedDataId, SharedContext};
+use or_poisoned::OrPoisoned;
 use rustc_hash::FxHashMap;
 use std::{
     collections::VecDeque,
@@ -17,17 +25,6 @@ use std::{
     mem,
     sync::{Arc, Mutex},
 };
-use feluqa_ui_dom_renderer::{
-    html::attribute::{any_attribute::AnyAttribute, Attribute},
-    hydration::Cursor,
-    feluqa_ui_reactivity::OwnedView,
-    ssr::{StreamBuilder, StreamChunk},
-    view::{
-        add_attr::AddAnyAttr, Mountable, Position, PositionState, Render,
-        RenderHtml,
-    },
-};
-use feluqa_ui_errors::{Error, ErrorHook, ErrorId};
 
 /// When you render a `Result<_, _>` in your view, in the `Err` case it will
 /// render nothing, and search up through the view tree for an `<ErrorBoundary/>`.
@@ -88,8 +85,7 @@ where
 {
     let sc = Owner::current_shared_context();
     let boundary_id = sc.as_ref().map(|sc| sc.next_id()).unwrap_or_default();
-    let initial_errors =
-        sc.map(|sc| sc.errors(&boundary_id)).unwrap_or_default();
+    let initial_errors = sc.map(|sc| sc.errors(&boundary_id)).unwrap_or_default();
 
     let hook = Arc::new(ErrorBoundaryErrorHook::new(
         boundary_id.clone(),
@@ -126,8 +122,7 @@ where
     )
 }
 
-pub(crate) type ErrorBoundarySuspendedChildren =
-    ArcStoredValue<Vec<oneshot::Receiver<()>>>;
+pub(crate) type ErrorBoundarySuspendedChildren = ArcStoredValue<Vec<oneshot::Receiver<()>>>;
 
 struct ErrorBoundaryView<Chil, FalFn> {
     hook: Arc<dyn ErrorHook>,
@@ -200,9 +195,7 @@ where
         let _hook = feluqa_ui_errors::set_error_hook(Arc::clone(&hook));
         let mut children = Some(self.children.build());
         RenderEffect::new(
-            move |prev: Option<
-                ErrorBoundaryViewState<Chil::State, Fal::State>,
-            >| {
+            move |prev: Option<ErrorBoundaryViewState<Chil::State, Fal::State>>| {
                 let _hook = feluqa_ui_errors::set_error_hook(Arc::clone(&hook));
                 if let Some(mut state) = prev {
                     match (self.errors_empty.get(), &mut state.fallback) {
@@ -214,12 +207,8 @@ where
                         }
                         // yes errors, and was showing children
                         (false, None) => {
-                            state.fallback = Some(
-                                (self.fallback)(self.errors.clone()).build(),
-                            );
-                            state
-                                .children
-                                .insert_before_this(&mut state.fallback);
+                            state.fallback = Some((self.fallback)(self.errors.clone()).build());
+                            state.children.insert_before_this(&mut state.fallback);
                             state.children.unmount();
                         }
                         // either there were no errors, and we were already showing the children
@@ -257,10 +246,7 @@ where
     type Output<SomeNewAttr: Attribute> =
         ErrorBoundaryView<Chil::Output<SomeNewAttr::CloneableOwned>, FalFn>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -380,8 +366,7 @@ where
             extra_attrs.clone(),
         );
 
-        let suspense_children =
-            mem::take(&mut *self.suspended_children.write_value());
+        let suspense_children = mem::take(&mut *self.suspended_children.write_value());
 
         // not waiting for any suspended children: just render
         if suspense_children.is_empty() {
@@ -415,9 +400,7 @@ where
                 let mut my_chunks = VecDeque::new();
                 for chunk in new_buf.take_chunks() {
                     match chunk {
-                        StreamChunk::Sync(data) => {
-                            my_chunks.push_back(StreamChunk::Sync(data))
-                        }
+                        StreamChunk::Sync(data) => my_chunks.push_back(StreamChunk::Sync(data)),
                         StreamChunk::Async { chunks } => {
                             let chunks = chunks.await;
                             my_chunks.extend(chunks);
@@ -463,9 +446,7 @@ where
         let cursor = cursor.to_owned();
         let position = position.to_owned();
         RenderEffect::new(
-            move |prev: Option<
-                ErrorBoundaryViewState<Chil::State, Fal::State>,
-            >| {
+            move |prev: Option<ErrorBoundaryViewState<Chil::State, Fal::State>>| {
                 let _hook = feluqa_ui_errors::set_error_hook(Arc::clone(&hook));
                 if let Some(mut state) = prev {
                     match (self.errors_empty.get(), &mut state.fallback) {
@@ -477,12 +458,8 @@ where
                         }
                         // yes errors, and was showing children
                         (false, None) => {
-                            state.fallback = Some(
-                                (self.fallback)(self.errors.clone()).build(),
-                            );
-                            state
-                                .children
-                                .insert_before_this(&mut state.fallback);
+                            state.fallback = Some((self.fallback)(self.errors.clone()).build());
+                            state.children.insert_before_this(&mut state.fallback);
                             state.children.unmount();
                         }
                         // either there were no errors, and we were already showing the children
@@ -494,10 +471,7 @@ where
                 } else {
                     let children = children.take().unwrap();
                     let (children, fallback) = if self.errors_empty.get() {
-                        (
-                            children.hydrate::<FROM_SERVER>(&cursor, &position),
-                            None,
-                        )
+                        (children.hydrate::<FROM_SERVER>(&cursor, &position), None)
                     } else {
                         (
                             children.build(),
@@ -514,11 +488,7 @@ where
         )
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let mut children = Some(self.children);
         let hook = Arc::clone(&self.hook);
         let cursor = cursor.to_owned();
@@ -535,10 +505,8 @@ where
                     (children.hydrate_async(&cursor, &position).await, None)
                 } else {
                     let children = children.build();
-                    let fallback =
-                        (fallback_fn.lock().or_poisoned())(errors.clone());
-                    let fallback =
-                        fallback.hydrate_async(&cursor, &position).await;
+                    let fallback = (fallback_fn.lock().or_poisoned())(errors.clone());
+                    let fallback = fallback.hydrate_async(&cursor, &position).await;
                     (children, Some(fallback))
                 };
 
@@ -547,9 +515,7 @@ where
         };
 
         RenderEffect::new_with_async_value(
-            move |prev: Option<
-                ErrorBoundaryViewState<Chil::State, Fal::State>,
-            >| {
+            move |prev: Option<ErrorBoundaryViewState<Chil::State, Fal::State>>| {
                 let _hook = feluqa_ui_errors::set_error_hook(Arc::clone(&hook));
                 if let Some(mut state) = prev {
                     match (self.errors_empty.get(), &mut state.fallback) {
@@ -562,14 +528,9 @@ where
                         // yes errors, and was showing children
                         (false, None) => {
                             state.fallback = Some(
-                                (fallback_fn.lock().or_poisoned())(
-                                    self.errors.clone(),
-                                )
-                                .build(),
+                                (fallback_fn.lock().or_poisoned())(self.errors.clone()).build(),
                             );
-                            state
-                                .children
-                                .insert_before_this(&mut state.fallback);
+                            state.children.insert_before_this(&mut state.fallback);
                             state.children.unmount();
                         }
                         // either there were no errors, and we were already showing the children
@@ -605,9 +566,7 @@ impl ErrorBoundaryErrorHook {
         initial_errors: impl IntoIterator<Item = (ErrorId, Error)>,
     ) -> Self {
         Self {
-            errors: ArcRwSignal::new(Errors(
-                initial_errors.into_iter().collect(),
-            )),
+            errors: ArcRwSignal::new(Errors(initial_errors.into_iter().collect())),
             id,
             shared_context: Owner::current_shared_context(),
         }
@@ -703,9 +662,7 @@ impl Iterator for IntoIter {
     type Item = (ErrorId, Error);
 
     #[inline(always)]
-    fn next(
-        &mut self,
-    ) -> std::option::Option<<Self as std::iter::Iterator>::Item> {
+    fn next(&mut self) -> std::option::Option<<Self as std::iter::Iterator>::Item> {
         self.0.next()
     }
 }
@@ -718,9 +675,7 @@ impl<'a> Iterator for Iter<'a> {
     type Item = (&'a ErrorId, &'a Error);
 
     #[inline(always)]
-    fn next(
-        &mut self,
-    ) -> std::option::Option<<Self as std::iter::Iterator>::Item> {
+    fn next(&mut self) -> std::option::Option<<Self as std::iter::Iterator>::Item> {
         self.0.next()
     }
 }

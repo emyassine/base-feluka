@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::ChevronDown;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
 /// TODO 💪: Use Label from label.rs.
 
@@ -11,7 +11,9 @@ pub fn SelectNative(
     #[prop(into)] id: &'static str,
     #[prop(optional, into)] class: String,
     #[prop(default = RwSignal::new(String::new()).read_only())] value: ReadSignal<String>,
-    #[prop(optional)] on_change: Option<crate::runtime::prelude::Callback<crate::runtime::ev::Event>>,
+    #[prop(optional)] on_change: Option<
+        crate::runtime::prelude::Callback<crate::runtime::ev::Event>,
+    >,
 ) -> impl IntoView {
     clx! {
         SelectNativeRoot, select,
@@ -66,8 +68,10 @@ pub fn LabelNative(
     #[prop(optional, into)] r#for: String,
     children: Children,
 ) -> impl IntoView {
-    let class =
-        class_merge!("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70", class);
+    let class = class_merge!(
+        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        class
+    );
 
     view! {
         <label class=class r#for=r#for>

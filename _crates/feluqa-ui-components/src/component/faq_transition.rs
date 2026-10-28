@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 mod components {
     use super::*;
@@ -33,7 +33,10 @@ pub fn FaqLabel(
     #[prop(into)] for_attr: &'static str,
     children: Children,
 ) -> impl IntoView {
-    let merged_class = class_merge!("flex justify-between items-center py-2 px-4 mt-2 w-full cursor-pointer", class);
+    let merged_class = class_merge!(
+        "flex justify-between items-center py-2 px-4 mt-2 w-full cursor-pointer",
+        class
+    );
 
     view! {
         <label class=merged_class for=for_attr>

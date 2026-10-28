@@ -185,8 +185,8 @@ pub fn batch<T>(f: impl FnOnce() -> T) -> T {
 mod inner {
     use crate::{
         graph::{
-            AnySource, AnySubscriber, ReactiveNode, ReactiveNodeState,
-            SourceSet, Subscriber, ToAnySubscriber, WithObserver,
+            AnySource, AnySubscriber, ReactiveNode, ReactiveNodeState, SourceSet, Subscriber,
+            ToAnySubscriber, WithObserver,
         },
         log_warning,
         owner::Owner,
@@ -202,8 +202,7 @@ mod inner {
 
     /// Only the [super::batch] function ever writes to the outer RwLock.
     /// While the effects will write to the inner one.
-    pub(super) static BATCH: RwLock<Option<RwLock<IndexSet<AnySubscriber>>>> =
-        RwLock::new(None);
+    pub(super) static BATCH: RwLock<Option<RwLock<IndexSet<AnySubscriber>>>> = RwLock::new(None);
 
     /// Handles subscription logic for effects.
     ///
@@ -256,9 +255,7 @@ mod inner {
 
     impl EffectInner {
         #[track_caller]
-        pub fn new(
-            fun: impl Fn() + Send + Sync + 'static,
-        ) -> Arc<RwLock<EffectInner>> {
+        pub fn new(fun: impl Fn() + Send + Sync + 'static) -> Arc<RwLock<EffectInner>> {
             let owner = Owner::new();
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             let defined_at = Location::caller();
@@ -323,8 +320,7 @@ mod inner {
             {
                 if let Some(batch) = &*BATCH.read().or_poisoned() {
                     let mut batch = batch.write().or_poisoned();
-                    let subscriber =
-                        self.read().or_poisoned().any_subscriber.clone();
+                    let subscriber = self.read().or_poisoned().any_subscriber.clone();
 
                     batch.insert(subscriber);
                     return needs_update;
@@ -367,8 +363,7 @@ mod inner {
                 // We update the done count.
                 // Sources will only be added if recursion_done_max < recursion_count_start.
                 // (Meaning the last run is not done yet.)
-                guard.run_done_max =
-                    Ord::max(recursion_count, guard.run_done_max);
+                guard.run_done_max = Ord::max(recursion_count, guard.run_done_max);
 
                 // The same amount of runs has started and completed,
                 // so we can clear everything up for next time.

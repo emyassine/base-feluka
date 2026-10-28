@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
 use crate::runtime::ev;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::class_merge;
 
 /* ========================================================== */
 /*                       Enums                                */
@@ -38,7 +38,10 @@ pub use components::*;
 
 #[component]
 pub fn MarkerIcon(#[prop(optional, into)] class: String, children: Children) -> impl IntoView {
-    let merged_class = class_merge!("size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4", class);
+    let merged_class = class_merge!(
+        "size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        class
+    );
 
     view! {
         <span class=merged_class data-name="MarkerIcon" aria-hidden="true">
@@ -56,14 +59,11 @@ pub fn Marker(
     // we split into two explicit props: `href` (→ <a>) and `on_click` (→ <button>).
     // If neither is set, renders a plain <div>. Matches shadcn behavior for all 3 cases.
     // Renders the marker as an <a> element
-    #[prop(optional, into)]
-    href: Option<String>,
+    #[prop(optional, into)] href: Option<String>,
     // Renders the marker as a <button> element
-    #[prop(optional)]
-    on_click: Option<Callback<ev::MouseEvent>>,
+    #[prop(optional)] on_click: Option<Callback<ev::MouseEvent>>,
     // role attribute (e.g. "status" for streaming markers)
-    #[prop(optional, into)]
-    role: Option<String>,
+    #[prop(optional, into)] role: Option<String>,
     children: Children,
 ) -> impl IntoView {
     let merged_class = class_merge!(

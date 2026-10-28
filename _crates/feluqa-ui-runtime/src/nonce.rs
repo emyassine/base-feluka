@@ -4,9 +4,9 @@ use base64::{
     engine::{self, general_purpose},
     Engine,
 };
+use feluqa_ui_dom_renderer::html::attribute::AttributeValue;
 use rand::{rng, RngCore};
 use std::{fmt::Display, ops::Deref, sync::Arc};
-use feluqa_ui_dom_renderer::html::attribute::AttributeValue;
 
 /// A cryptographic nonce ("number used once") which can be
 /// used by Content Security Policy to determine whether or not a given

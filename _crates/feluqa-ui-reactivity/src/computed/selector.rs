@@ -87,8 +87,7 @@ where
         source: impl Fn() -> T + Clone + Send + Sync + 'static,
         f: impl Fn(&T, &T) -> bool + Send + Sync + Clone + 'static,
     ) -> Self {
-        let subs: Arc<RwLock<FxHashMap<T, ArcRwSignal<bool>>>> =
-            Default::default();
+        let subs: Arc<RwLock<FxHashMap<T, ArcRwSignal<bool>>>> = Default::default();
         let v: Arc<RwLock<Option<T>>> = Default::default();
         let f = Arc::new(f) as Arc<dyn Fn(&T, &T) -> bool + Send + Sync>;
 
@@ -101,9 +100,7 @@ where
                 *v.write().or_poisoned() = Some(next_value.clone());
                 if prev.as_ref() != Some(&next_value) {
                     for (key, signal) in &*subs.read().or_poisoned() {
-                        if f(key, &next_value)
-                            || (prev.is_some()
-                                && f(key, prev.as_ref().unwrap()))
+                        if f(key, &next_value) || (prev.is_some() && f(key, prev.as_ref().unwrap()))
                         {
                             signal.update(|n| *n = true);
                         }

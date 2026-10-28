@@ -1,8 +1,12 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::runtime::prelude::*;
 
 #[component]
-pub fn RadioGroup(#[prop(into, optional)] class: String, value: RwSignal<String>, children: Children) -> impl IntoView {
+pub fn RadioGroup(
+    #[prop(into, optional)] class: String,
+    value: RwSignal<String>,
+    children: Children,
+) -> impl IntoView {
     provide_context(value);
 
     let class = class_merge!("flex flex-col gap-3", class);

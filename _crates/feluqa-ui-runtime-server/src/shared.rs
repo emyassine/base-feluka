@@ -44,8 +44,7 @@ where
     <JsonSerdeCodec as Decoder<T>>::Error: Debug,
     <JsonSerdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
-    <<JsonSerdeCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -65,8 +64,7 @@ where
     <FromToStringCodec as Decoder<T>>::Error: Debug,
     <FromToStringCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <FromToStringCodec as Decoder<T>>::Encoded: FromEncodedStr,
-    <<FromToStringCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<FromToStringCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -111,8 +109,7 @@ where
     <JsonSerdeWasmCodec as Decoder<T>>::Error: Debug,
     <JsonSerdeWasmCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <JsonSerdeWasmCodec as Decoder<T>>::Encoded: FromEncodedStr,
-    <<JsonSerdeWasmCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<JsonSerdeWasmCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -134,8 +131,7 @@ where
     <MiniserdeCodec as Decoder<T>>::Error: Debug,
     <MiniserdeCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <MiniserdeCodec as Decoder<T>>::Encoded: FromEncodedStr,
-    <<MiniserdeCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<MiniserdeCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -157,8 +153,7 @@ where
     <RkyvCodec as Decoder<T>>::Error: Debug,
     <RkyvCodec as Encoder<T>>::Encoded: IntoEncodedString,
     <RkyvCodec as Decoder<T>>::Encoded: FromEncodedStr,
-    <<RkyvCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<RkyvCodec as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -178,8 +173,7 @@ where
     <Ser as Decoder<T>>::Error: Debug,
     <Ser as Encoder<T>>::Encoded: IntoEncodedString,
     <Ser as Decoder<T>>::Encoded: FromEncodedStr,
-    <<Ser as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError:
-        Debug,
+    <<Ser as codee::Decoder<T>>::Encoded as FromEncodedStr>::DecodingError: Debug,
 {
     /// Wraps the initial value.
     ///
@@ -197,8 +191,7 @@ where
             let sc = Owner::current_shared_context();
             let id = sc.as_ref().map(|sc| sc.next_id()).unwrap_or_default();
             let serialized = sc.as_ref().and_then(|sc| sc.read_data(&id));
-            let hydrating =
-                sc.as_ref().map(|sc| sc.during_hydration()).unwrap_or(false);
+            let hydrating = sc.as_ref().map(|sc| sc.during_hydration()).unwrap_or(false);
             value = if hydrating {
                 let value = match serialized {
                     None => {
@@ -207,22 +200,17 @@ where
                         None
                     }
                     Some(data) => {
-                        match <Ser as Decoder<T>>::Encoded::from_encoded_str(
-                            &data,
-                        ) {
+                        match <Ser as Decoder<T>>::Encoded::from_encoded_str(&data) {
                             #[allow(unused_variables)] // used in tracing
                             Err(e) => {
                                 #[cfg(feature = "tracing")]
-                                tracing::error!(
-                                    "couldn't deserialize from {data:?}: {e:?}"
-                                );
+                                tracing::error!("couldn't deserialize from {data:?}: {e:?}");
                                 None
                             }
                             Ok(encoded) => {
                                 let decoded = Ser::decode(encoded.borrow());
                                 #[cfg(feature = "tracing")]
-                                let decoded = decoded
-                                    .inspect_err(|e| tracing::error!("{e:?}"));
+                                let decoded = decoded.inspect_err(|e| tracing::error!("{e:?}"));
                                 decoded.ok()
                             }
                         }
@@ -234,13 +222,8 @@ where
                 #[cfg(feature = "ssr")]
                 if let Some(sc) = sc {
                     if sc.get_is_hydrating() {
-                        match Ser::encode(&init)
-                            .map(IntoEncodedString::into_encoded_string)
-                        {
-                            Ok(value) => sc.write_async(
-                                id,
-                                Box::pin(async move { value }),
-                            ),
+                        match Ser::encode(&init).map(IntoEncodedString::into_encoded_string) {
+                            Ok(value) => sc.write_async(id, Box::pin(async move { value })),
                             #[allow(unused_variables)] // used in tracing
                             Err(e) => {
                                 #[cfg(feature = "tracing")]

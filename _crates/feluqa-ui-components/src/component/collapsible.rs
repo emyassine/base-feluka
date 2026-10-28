@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::*;
 use crate::runtime::context::Provider;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::*;
 
 /* ========================================================== */
 /*                         CONTEXT                             */
@@ -18,11 +18,9 @@ struct CollapsibleContext {
 #[component]
 pub fn Collapsible(
     // Controlled: pass an external RwSignal to drive open/closed from outside.
-    #[prop(optional)]
-    open: Option<RwSignal<bool>>,
+    #[prop(optional)] open: Option<RwSignal<bool>>,
     // Initial open state when uncontrolled.
-    #[prop(default = false)]
-    default_open: bool,
+    #[prop(default = false)] default_open: bool,
     children: Children,
     #[prop(optional, into)] class: String,
 ) -> impl IntoView {
@@ -49,7 +47,10 @@ pub fn Collapsible(
 /* ========================================================== */
 
 #[component]
-pub fn CollapsibleTrigger(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
+pub fn CollapsibleTrigger(
+    children: Children,
+    #[prop(optional, into)] class: String,
+) -> impl IntoView {
     let ctx = expect_context::<CollapsibleContext>();
 
     view! {

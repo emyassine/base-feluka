@@ -1,9 +1,6 @@
 use crate::{
     channel::Sender,
-    graph::{
-        AnySource, AnySubscriber, ReactiveNode, SourceSet, Subscriber,
-        ToAnySubscriber,
-    },
+    graph::{AnySource, AnySubscriber, ReactiveNode, SourceSet, Subscriber, ToAnySubscriber},
 };
 use or_poisoned::OrPoisoned;
 use std::sync::{Arc, RwLock, Weak};

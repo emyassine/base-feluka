@@ -1,7 +1,7 @@
 use crate::parsing::is_component_node;
 use anyhow::Result;
-use quote::ToTokens;
 use feluqa_ui_markup_parser::node::{Node, NodeAttribute};
+use quote::ToTokens;
 use serde::{Deserialize, Serialize};
 
 /// A lightweight virtual DOM structure we can use to hold
@@ -48,9 +48,8 @@ impl LNode {
             LNode::parse_node(node, &mut out)?;
         }
         if out.len() == 1 {
-            out.pop().ok_or_else(|| {
-                unreachable!("The last element should not be None.")
-            })
+            out.pop()
+                .ok_or_else(|| unreachable!("The last element should not be None."))
         } else {
             Ok(LNode::Fragment(out))
         }
@@ -73,9 +72,7 @@ impl LNode {
                 views.push(LNode::Text(text.value_string()));
             }
             Node::Block(block) => {
-                views.push(LNode::DynChild(
-                    block.into_token_stream().to_string(),
-                ));
+                views.push(LNode::DynChild(block.into_token_stream().to_string()));
             }
             Node::Element(el) => {
                 if is_component_node(&el) {
@@ -91,10 +88,9 @@ impl LNode {
                             .attributes
                             .into_iter()
                             .filter_map(|attr| match attr {
-                                NodeAttribute::Attribute(attr) => Some((
-                                    attr.key.to_string(),
-                                    format!("{:#?}", attr.value()),
-                                )),
+                                NodeAttribute::Attribute(attr) => {
+                                    Some((attr.key.to_string(), format!("{:#?}", attr.value())))
+                                }
                                 NodeAttribute::Block(_) => None,
                             })
                             .collect(),
@@ -108,10 +104,7 @@ impl LNode {
                         if let NodeAttribute::Attribute(attr) = attr {
                             let name = attr.key.to_string();
                             if let Some(value) = attr.value_literal_string() {
-                                attrs.push((
-                                    name,
-                                    LAttributeValue::Static(value),
-                                ));
+                                attrs.push((name, LAttributeValue::Static(value)));
                             } else {
                                 attrs.push((name, LAttributeValue::Dynamic));
                             }
@@ -160,17 +153,12 @@ impl LNode {
                     .iter()
                     .filter_map(|(name, value)| match value {
                         LAttributeValue::Boolean => Some(format!("{name} ")),
-                        LAttributeValue::Static(value) => {
-                            Some(format!("{name}=\"{value}\" "))
-                        }
-                        LAttributeValue::Dynamic | LAttributeValue::Noop => {
-                            None
-                        }
+                        LAttributeValue::Static(value) => Some(format!("{name}=\"{value}\" ")),
+                        LAttributeValue::Dynamic | LAttributeValue::Noop => None,
                     })
                     .collect::<String>();
 
-                let children =
-                    children.iter().map(LNode::to_html).collect::<String>();
+                let children = children.iter().map(LNode::to_html).collect::<String>();
 
                 if is_self_closing {
                     format!("<{name} {attrs}/>")

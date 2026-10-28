@@ -1,6 +1,6 @@
 use super::attribute::{
-    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute,
-    NamedAttributeKey, NextAttribute,
+    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute, NamedAttributeKey,
+    NextAttribute,
 };
 use crate::{
     html::attribute::maybe_next_attr_erasure_macros::next_attr_combine,
@@ -65,10 +65,7 @@ where
         self.class.to_html(class);
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         self.class.hydrate::<FROM_SERVER>(el)
     }
 
@@ -113,10 +110,7 @@ where
 {
     next_attr_output_type!(Self, NewAttr);
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         next_attr_combine!(self, new_attr)
     }
 }
@@ -172,10 +166,7 @@ pub trait IntoClass: Send {
 
     /// Adds interactivity as necessary, given DOM nodes that were created from HTML that has
     /// either been rendered on the server, or cloned for a `<template>`.
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State;
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State;
 
     /// Adds this class to the element during client-side rendering.
     fn build(self, el: &crate::renderer::types::Element) -> Self::State;
@@ -217,10 +208,7 @@ impl<T: IntoClass> IntoClass for Option<T> {
         }
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if let Some(t) = self {
             (el.clone(), Some(t.hydrate::<FROM_SERVER>(el)))
         } else {
@@ -303,10 +291,7 @@ impl IntoClass for &str {
         true
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if !FROM_SERVER {
             Rndr::set_attribute(el, "class", self);
         }
@@ -364,10 +349,7 @@ impl IntoClass for Cow<'_, str> {
         true
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if !FROM_SERVER {
             Rndr::set_attribute(el, "class", &self);
         }
@@ -425,10 +407,7 @@ impl IntoClass for String {
         true
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if !FROM_SERVER {
             Rndr::set_attribute(el, "class", &self);
         }
@@ -486,10 +465,7 @@ impl IntoClass for Arc<str> {
         true
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if !FROM_SERVER {
             Rndr::set_attribute(el, "class", &self);
         }
@@ -546,10 +522,7 @@ impl IntoClass for (&'static str, bool) {
         }
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         let (name, include) = self;
         let class_list = Rndr::class_list(el);
         if !FROM_SERVER && include {

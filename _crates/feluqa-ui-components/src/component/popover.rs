@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 use crate::hook::use_random::use_random_id;
 
@@ -39,7 +39,8 @@ pub fn Popover(
     #[prop(default = PopoverAlign::default())] align: PopoverAlign,
 ) -> impl IntoView {
     let popover_id = use_random_id();
-    let popover_anchor_name = anchor_name.unwrap_or_else(|| crate::std::format!("--anchor_{}", popover_id));
+    let popover_anchor_name =
+        anchor_name.unwrap_or_else(|| crate::std::format!("--anchor_{}", popover_id));
     let popover_target_id = crate::std::format!("popover_{}", popover_id);
 
     let (position_styles, transform_origin) = match align {
@@ -91,10 +92,16 @@ pub fn Popover(
             .to_string(),
             "left top".to_string(),
         ),
-        PopoverAlign::Center => ("position-area: block-start;".to_string(), "center top".to_string()),
+        PopoverAlign::Center => (
+            "position-area: block-start;".to_string(),
+            "center top".to_string(),
+        ),
     };
 
-    let ctx = PopoverContext { anchor_name: popover_anchor_name.clone(), target_id: popover_target_id.clone() };
+    let ctx = PopoverContext {
+        anchor_name: popover_anchor_name.clone(),
+        target_id: popover_target_id.clone(),
+    };
 
     view! {
         <crate::runtime::context::Provider value=ctx>

@@ -2,16 +2,16 @@
 //!
 //! Use the `#[derive(AutoForm)]` macro to automatically generate form UI from Rust structs.
 
+use crate::feluqa_ui_classnames::class_merge;
 use crate::runtime::prelude::*;
 use crate::serde::{Deserialize, Serialize};
-use crate::feluqa_ui_classnames::class_merge;
 use crate::validator::Validate;
 
-use crate::hook::use_form::{AutoFormFields, FieldContext, Form, FormContext};
 use crate::component::checkbox::Checkbox;
 use crate::component::form::{Form as FormElement, FormProvider, FormSet};
 use crate::component::label::Label;
 use crate::component::switch::SwitchLabel;
+use crate::hook::use_form::{AutoFormFields, FieldContext, Form, FormContext};
 
 /// AutoForm component that automatically renders form fields based on a struct.
 ///
@@ -50,17 +50,22 @@ pub fn AutoForm<T>(
     // The form instance from `use_form::<T>()`
     form: Form<T>,
     // Optional callback when form is submitted with valid data
-    #[prop(optional, into)]
-    on_submit: Option<Callback<T>>,
+    #[prop(optional, into)] on_submit: Option<Callback<T>>,
     // Optional CSS class for the form element
-    #[prop(into, optional)]
-    class: String,
+    #[prop(into, optional)] class: String,
     // Optional children (typically a submit button)
-    #[prop(optional)]
-    children: Option<Children>,
+    #[prop(optional)] children: Option<Children>,
 ) -> impl IntoView
 where
-    T: AutoFormFields + Validate + Clone + Default + Serialize + for<'de> Deserialize<'de> + Send + Sync + 'static,
+    T: AutoFormFields
+        + Validate
+        + Clone
+        + Default
+        + Serialize
+        + for<'de> Deserialize<'de>
+        + Send
+        + Sync
+        + 'static,
 {
     let merged_class = class_merge!("max-w-md", class);
 
@@ -141,20 +146,32 @@ pub fn FormTextarea(
 
 /// Form checkbox component that integrates with the form context.
 #[component]
-pub fn FormCheckbox(#[prop(into, optional)] class: String, #[prop(into)] label: String) -> impl IntoView {
+pub fn FormCheckbox(
+    #[prop(into, optional)] class: String,
+    #[prop(into)] label: String,
+) -> impl IntoView {
     let field_name = expect_context::<FieldContext>().name;
     let form_ctx = expect_context::<FormContext>();
 
     // Get the current checked state from form values
     let checked = Signal::derive({
         let field_name = field_name.clone();
-        move || form_ctx.values_signal.get().get(&field_name).map(|v| v == "true").unwrap_or(false)
+        move || {
+            form_ctx
+                .values_signal
+                .get()
+                .get(&field_name)
+                .map(|v| v == "true")
+                .unwrap_or(false)
+        }
     });
 
     let on_change = {
         let field_name = field_name.clone();
         Callback::new(move |new_value: bool| {
-            form_ctx.set_value.with_value(|f| f(&field_name, new_value.to_string()));
+            form_ctx
+                .set_value
+                .with_value(|f| f(&field_name, new_value.to_string()));
         })
     };
 
@@ -172,14 +189,24 @@ pub fn FormCheckbox(#[prop(into, optional)] class: String, #[prop(into)] label: 
 
 /// Form switch component that integrates with the form context.
 #[component]
-pub fn FormSwitch(#[prop(into, optional)] class: String, #[prop(into)] label: String) -> impl IntoView {
+pub fn FormSwitch(
+    #[prop(into, optional)] class: String,
+    #[prop(into)] label: String,
+) -> impl IntoView {
     let field_name = expect_context::<FieldContext>().name;
     let form_ctx = expect_context::<FormContext>();
 
     // Get the current checked state from form values
     let checked = {
         let field_name = field_name.clone();
-        move || form_ctx.values_signal.get().get(&field_name).map(|v| v == "true").unwrap_or(false)
+        move || {
+            form_ctx
+                .values_signal
+                .get()
+                .get(&field_name)
+                .map(|v| v == "true")
+                .unwrap_or(false)
+        }
     };
 
     let handle_change = {
@@ -187,7 +214,9 @@ pub fn FormSwitch(#[prop(into, optional)] class: String, #[prop(into)] label: St
         move |ev: crate::runtime::ev::Event| {
             let target = event_target::<crate::web_sys::HtmlInputElement>(&ev);
             let new_value = target.checked();
-            form_ctx.set_value.with_value(|f| f(&field_name, new_value.to_string()));
+            form_ctx
+                .set_value
+                .with_value(|f| f(&field_name, new_value.to_string()));
         }
     };
 

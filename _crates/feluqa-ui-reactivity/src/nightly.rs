@@ -3,10 +3,7 @@ use crate::wrappers::read::{MaybeProp, MaybeSignal};
 use crate::{
     computed::{ArcMemo, Memo},
     owner::Storage,
-    signal::{
-        ArcReadSignal, ArcRwSignal, ArcWriteSignal, ReadSignal, RwSignal,
-        WriteSignal,
-    },
+    signal::{ArcReadSignal, ArcRwSignal, ArcWriteSignal, ReadSignal, RwSignal, WriteSignal},
     traits::{Get, Set},
     wrappers::{
         read::{ArcSignal, Signal, SignalTypes},

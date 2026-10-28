@@ -112,9 +112,7 @@ pub fn arc_signal<T>(value: T) -> (ArcReadSignal<T>, ArcWriteSignal<T>) {
 /// ```
 #[inline(always)]
 #[track_caller]
-pub fn signal<T: Send + Sync + 'static>(
-    value: T,
-) -> (ReadSignal<T>, WriteSignal<T>) {
+pub fn signal<T: Send + Sync + 'static>(value: T) -> (ReadSignal<T>, WriteSignal<T>) {
     let (r, w) = arc_signal(value);
     (r.into(), w.into())
 }
@@ -175,9 +173,7 @@ pub fn signal_local<T: 'static>(
 #[track_caller]
 #[deprecated = "This function is being renamed to `signal()` to conform to \
                 Rust idioms."]
-pub fn create_signal<T: Send + Sync + 'static>(
-    value: T,
-) -> (ReadSignal<T>, WriteSignal<T>) {
+pub fn create_signal<T: Send + Sync + 'static>(value: T) -> (ReadSignal<T>, WriteSignal<T>) {
     signal(value)
 }
 

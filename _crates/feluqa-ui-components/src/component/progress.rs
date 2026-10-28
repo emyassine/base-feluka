@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::runtime::prelude::*;
 
 #[component]
 pub fn Progress(
@@ -12,7 +12,10 @@ pub fn Progress(
         crate::std::format!("transform: translateX(-{}%)", 100.0 - pct)
     };
 
-    let merged_class = class_merge!("relative h-2 w-full overflow-hidden rounded-full bg-secondary", class);
+    let merged_class = class_merge!(
+        "relative h-2 w-full overflow-hidden rounded-full bg-secondary",
+        class
+    );
 
     view! {
         <div

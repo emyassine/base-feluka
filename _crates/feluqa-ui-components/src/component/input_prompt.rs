@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 use crate::component::button::{Button, ButtonSize};
 use crate::component::input_group::{InputGroup, InputGroupAddon, InputGroupAddonAlign};
@@ -57,7 +57,10 @@ pub fn InputPromptTextarea(
 
 /// Block-end footer row. Holds tools on the left, submit on the right.
 #[component]
-pub fn InputPromptFooter(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {
+pub fn InputPromptFooter(
+    #[prop(into, optional)] class: String,
+    children: Children,
+) -> impl IntoView {
     let merged_class = class_merge!("border-t px-2 py-2 justify-between gap-1", class);
     view! {
         <InputGroupAddon align=InputGroupAddonAlign::BlockEnd class=merged_class>

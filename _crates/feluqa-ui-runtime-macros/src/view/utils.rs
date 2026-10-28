@@ -1,6 +1,6 @@
+use feluqa_ui_markup_parser::node::{KeyedAttribute, NodeName};
 use proc_macro2::Ident;
 use quote::format_ident;
-use feluqa_ui_markup_parser::node::{KeyedAttribute, NodeName};
 use syn::{spanned::Spanned, ExprPath};
 
 pub fn filter_prefixed_attrs<'a, A>(attrs: A, prefix: &str) -> Vec<Ident>
@@ -23,11 +23,9 @@ where
 /// the prop should be an Option<T> and shouldn't be called on the builder if None,
 /// if Some(T) then T supplied to the builder.
 pub fn is_nostrip_optional_and_update_key(key: &mut NodeName) -> bool {
-    let maybe_cleaned_name_and_span = if let NodeName::Punctuated(punct) = &key
-    {
+    let maybe_cleaned_name_and_span = if let NodeName::Punctuated(punct) = &key {
         if punct.len() == 2 {
-            if let Some(cleaned_name) = key.to_string().strip_prefix("nostrip:")
-            {
+            if let Some(cleaned_name) = key.to_string().strip_prefix("nostrip:") {
                 punct
                     .get(1)
                     .map(|segment| (cleaned_name.to_string(), segment.span()))

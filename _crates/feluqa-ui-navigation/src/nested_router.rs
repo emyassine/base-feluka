@@ -5,14 +5,21 @@ use crate::{
     matching::RouteDefs,
     params::ParamsMap,
     view_transition::start_view_transition,
-    ChooseView, MatchInterface, MatchNestedRoutes, MatchParams, PathSegment,
-    RouteList, RouteListing, RouteMatchId,
+    ChooseView, MatchInterface, MatchNestedRoutes, MatchParams, PathSegment, RouteList,
+    RouteListing, RouteMatchId,
 };
-use feluqa_ui_task_runtime::Executor;
 use either_of::{Either, EitherOf3};
-use futures::{channel::oneshot, future::join_all, FutureExt};
-use feluqa_ui_runtime::{attr::any_attribute::AnyAttribute, component, oco::Oco};
-use or_poisoned::OrPoisoned;
+use feluqa_ui_dom_renderer::{
+    feluqa_ui_reactivity::{OwnedView, Suspend},
+    hydration::Cursor,
+    ssr::StreamBuilder,
+    view::{
+        add_attr::AddAnyAttr,
+        any_view::{AnyView, IntoAny},
+        either::EitherOf3State,
+        Mountable, Position, PositionState, Render, RenderHtml,
+    },
+};
 use feluqa_ui_reactivity::{
     computed::{ArcMemo, ScopedFuture},
     owner::{provide_context, use_context, Owner},
@@ -21,6 +28,10 @@ use feluqa_ui_reactivity::{
     transition::AsyncTransition,
     wrappers::write::SignalSetter,
 };
+use feluqa_ui_runtime::{attr::any_attribute::AnyAttribute, component, oco::Oco};
+use feluqa_ui_task_runtime::Executor;
+use futures::{channel::oneshot, future::join_all, FutureExt};
+use or_poisoned::OrPoisoned;
 use send_wrapper::SendWrapper;
 use std::{
     cell::RefCell,
@@ -30,17 +41,6 @@ use std::{
     pin::Pin,
     rc::Rc,
     sync::{Arc, Mutex},
-};
-use feluqa_ui_dom_renderer::{
-    hydration::Cursor,
-    feluqa_ui_reactivity::{OwnedView, Suspend},
-    ssr::StreamBuilder,
-    view::{
-        add_attr::AddAnyAttr,
-        any_view::{AnyView, IntoAny},
-        either::EitherOf3State,
-        Mountable, Position, PositionState, Render, RenderHtml,
-    },
 };
 
 pub(crate) struct NestedRoutesView<Loc, Defs, FalFn> {
@@ -104,12 +104,7 @@ where
         let matched_view = match new_match {
             None => EitherOf3::B(fallback()),
             Some(route) => {
-                route.build_nested_route(
-                    &url,
-                    base,
-                    &mut loaders,
-                    &mut outlets,
-                );
+                route.build_nested_route(&url, base, &mut loaders, &mut outlets);
                 drop(url);
 
                 EitherOf3::C(top_level_outlet(&outlets, &outer_owner))
@@ -282,19 +277,10 @@ where
                 .map(|data| {
                     let path = base
                         .into_iter()
-                        .flat_map(|base| {
-                            iter::once(PathSegment::Static(
-                                base.to_string().into(),
-                            ))
-                        })
+                        .flat_map(|base| iter::once(PathSegment::Static(base.to_string().into())))
                         .chain(data.segments)
                         .collect::<Vec<_>>();
-                    RouteListing::new(
-                        path,
-                        data.ssr_mode,
-                        data.methods,
-                        data.regenerate,
-                    )
+                    RouteListing::new(path, data.ssr_mode, data.methods, data.regenerate)
                 })
                 .collect::<Vec<_>>();
 
@@ -333,12 +319,7 @@ where
                 None => Either::Left(fallback()),
                 Some(route) => {
                     let mut loaders = Vec::new();
-                    route.build_nested_route(
-                        &current_url,
-                        base,
-                        &mut loaders,
-                        &mut outlets,
-                    );
+                    route.build_nested_route(&current_url, base, &mut loaders, &mut outlets);
 
                     // outlets will not send their views if the loaders are never polled
                     // the loaders are async so that they can lazy-load routes in the browser,
@@ -350,13 +331,7 @@ where
                     Either::Right(top_level_outlet(&outlets, &outer_owner))
                 }
             };
-            view.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs,
-            );
+            view.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         }
     }
 
@@ -386,12 +361,7 @@ where
             None => Either::Left(fallback()),
             Some(route) => {
                 let mut loaders = Vec::new();
-                route.build_nested_route(
-                    &current_url,
-                    base,
-                    &mut loaders,
-                    &mut outlets,
-                );
+                route.build_nested_route(&current_url, base, &mut loaders, &mut outlets);
 
                 // outlets will not send their views if the loaders are never polled
                 // the loaders are async so that they can lazy-load routes in the browser,
@@ -439,12 +409,7 @@ where
             match new_match {
                 None => EitherOf3::B(fallback()),
                 Some(route) => {
-                    route.build_nested_route(
-                        &url,
-                        base,
-                        &mut loaders,
-                        &mut outlets,
-                    );
+                    route.build_nested_route(&url, base, &mut loaders, &mut outlets);
                     drop(url);
 
                     // TODO support for lazy hydration
@@ -620,8 +585,7 @@ where
         };
         if !outlets.is_empty() {
             let prev_index = outlets.len().saturating_sub(1);
-            *outlets[prev_index].child.0.lock().or_poisoned() =
-                Some(outlet.clone());
+            *outlets[prev_index].child.0.lock().or_poisoned() = Some(outlet.clone());
         }
         outlets.push(outlet.clone());
 
@@ -640,43 +604,32 @@ where
             async move {
                 view.preload().await;
                 let child = outlet.child.clone();
-                *view_fn.lock().or_poisoned() =
-                    Box::new(move |owner_where_used| {
-                        *route_owner.lock().or_poisoned() =
-                            Some(owner_where_used.clone());
-                        let view = view.clone();
-                        let child = child.clone();
-                        let params = params.clone();
-                        let url = url.clone();
+                *view_fn.lock().or_poisoned() = Box::new(move |owner_where_used| {
+                    *route_owner.lock().or_poisoned() = Some(owner_where_used.clone());
+                    let view = view.clone();
+                    let child = child.clone();
+                    let params = params.clone();
+                    let url = url.clone();
+                    let matched = matched.clone();
+                    owner_where_used.with({
                         let matched = matched.clone();
-                        owner_where_used.with({
-                            let matched = matched.clone();
-                            move || {
-                                let child = child.clone();
-                                Suspend::new(Box::pin(async move {
-                                    provide_context(child.clone());
-                                    provide_context(params.clone());
-                                    provide_context(url.clone());
-                                    provide_context(matched.clone());
-                                    let view = SendWrapper::new(
-                                        ScopedFuture::new(view.choose()),
-                                    );
-                                    let view = view.await;
-                                    let view = MatchedRoute(
-                                        matched.0.get_untracked(),
-                                        view,
-                                    );
+                        move || {
+                            let child = child.clone();
+                            Suspend::new(Box::pin(async move {
+                                provide_context(child.clone());
+                                provide_context(params.clone());
+                                provide_context(url.clone());
+                                provide_context(matched.clone());
+                                let view = SendWrapper::new(ScopedFuture::new(view.choose()));
+                                let view = view.await;
+                                let view = MatchedRoute(matched.0.get_untracked(), view);
 
-                                    OwnedView::new(view).into_any()
-                                })
-                                    as Pin<
-                                        Box<
-                                            dyn Future<Output = AnyView> + Send,
-                                        >,
-                                    >)
-                            }
-                        })
-                    });
+                                OwnedView::new(view).into_any()
+                            })
+                                as Pin<Box<dyn Future<Output = AnyView> + Send>>)
+                        }
+                    })
+                });
                 trigger
             }
         })));
@@ -708,8 +661,7 @@ where
             .unzip();
 
         if outlets.get(*items).is_some() && *items > 0 {
-            *outlets[*items - 1].child.0.lock().or_poisoned() =
-                Some(outlets[*items].clone());
+            *outlets[*items - 1].child.0.lock().or_poisoned() = Some(outlets[*items].clone());
         }
 
         let current = outlets.get_mut(*items);
@@ -726,8 +678,7 @@ where
                 let id = self.as_id();
 
                 // build new params and matched strings
-                let new_params =
-                    self.to_params().into_iter().collect::<ParamsMap>();
+                let new_params = self.to_params().into_iter().collect::<ParamsMap>();
                 let new_match = self.as_matched().to_owned();
 
                 let (view, child) = self.into_view_and_child();
@@ -744,18 +695,11 @@ where
                     current.id = id;
 
                     // create new URL and params signals
-                    let old_url = mem::replace(
-                        &mut current.url,
-                        ArcRwSignal::new(url.to_owned()),
-                    );
-                    let old_params = mem::replace(
-                        &mut current.params,
-                        ArcRwSignal::new(new_params),
-                    );
-                    let old_matched = mem::replace(
-                        &mut current.matched,
-                        ArcRwSignal::new(new_match),
-                    );
+                    let old_url = mem::replace(&mut current.url, ArcRwSignal::new(url.to_owned()));
+                    let old_params =
+                        mem::replace(&mut current.params, ArcRwSignal::new(new_params));
+                    let old_matched =
+                        mem::replace(&mut current.matched, ArcRwSignal::new(new_match));
                     let matched_including_parents = {
                         ArcMemo::new({
                             let matched = current.matched.clone();
@@ -801,50 +745,40 @@ where
                         async move {
                             view.preload().await;
                             let child = child.clone();
-                            *view_fn.lock().or_poisoned() =
-                                Box::new(move |owner_where_used| {
-                                    let prev_owner = route_owner
-                                        .lock()
-                                        .or_poisoned()
-                                        .replace(owner_where_used.clone());
-                                    let view = view.clone();
-                                    let full_tx =
-                                        full_tx.lock().or_poisoned().take();
-                                    let child = child.clone();
-                                    let params =
-                                        params_including_parents.clone();
-                                    let url = url.clone();
-                                    let matched = matched.clone();
-                                    Suspend::new(Box::pin(async move {
-                                        let view = SendWrapper::new(
-                                            owner_where_used.with(|| {
-                                                provide_context(child.clone());
-                                                provide_context(params);
-                                                provide_context(url);
-                                                provide_context(matched);
-                                                ScopedFuture::new(async move {
-                                                    if set_is_routing {
-                                                        AsyncTransition::run(
-                                                            || view.choose(),
-                                                        )
-                                                        .await
-                                                    } else {
-                                                        view.choose().await
-                                                    }
-                                                })
-                                            }),
-                                        );
-
-                                        let view = view.await;
-
-                                        if let Some(tx) = full_tx {
-                                            _ = tx.send(prev_owner);
-                                        }
-                                        owner_where_used.with(|| {
-                                            OwnedView::new(view).into_any()
+                            *view_fn.lock().or_poisoned() = Box::new(move |owner_where_used| {
+                                let prev_owner = route_owner
+                                    .lock()
+                                    .or_poisoned()
+                                    .replace(owner_where_used.clone());
+                                let view = view.clone();
+                                let full_tx = full_tx.lock().or_poisoned().take();
+                                let child = child.clone();
+                                let params = params_including_parents.clone();
+                                let url = url.clone();
+                                let matched = matched.clone();
+                                Suspend::new(Box::pin(async move {
+                                    let view = SendWrapper::new(owner_where_used.with(|| {
+                                        provide_context(child.clone());
+                                        provide_context(params);
+                                        provide_context(url);
+                                        provide_context(matched);
+                                        ScopedFuture::new(async move {
+                                            if set_is_routing {
+                                                AsyncTransition::run(|| view.choose()).await
+                                            } else {
+                                                view.choose().await
+                                            }
                                         })
-                                    }))
-                                });
+                                    }));
+
+                                    let view = view.await;
+
+                                    if let Some(tx) = full_tx {
+                                        _ = tx.send(prev_owner);
+                                    }
+                                    owner_where_used.with(|| OwnedView::new(view).into_any())
+                                }))
+                            });
 
                             drop(old_params);
                             drop(old_url);
@@ -859,8 +793,7 @@ where
 
                     // if this children has matches, then rebuild the lower section of the tree
                     if let Some(child) = child {
-                        child
-                            .build_nested_route(url, base, preloaders, outlets);
+                        child.build_nested_route(url, base, preloaders, outlets);
                     } else {
                         *outlets[*items].child.0.lock().or_poisoned() = None;
                     }
@@ -942,8 +875,8 @@ fn top_level_outlet(outlets: &[RouteContext], outer_owner: &Owner) -> AnyView {
 pub fn Outlet() -> impl RenderHtml
 where
 {
-    let ChildRoute(child) = use_context()
-        .expect("<Outlet/> used without RouteContext being provided.");
+    let ChildRoute(child) =
+        use_context().expect("<Outlet/> used without RouteContext being provided.");
     let child = child.lock().or_poisoned().clone();
     let outer_owner = Owner::current().unwrap();
     child.map(|child| {

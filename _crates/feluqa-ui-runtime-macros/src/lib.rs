@@ -283,9 +283,7 @@ pub fn template(tokens: TokenStream) -> TokenStream {
     }
 }
 
-fn view_macro_output(
-    result: syn::Result<proc_macro2::TokenStream>,
-) -> TokenStream {
+fn view_macro_output(result: syn::Result<proc_macro2::TokenStream>) -> TokenStream {
     result
         .unwrap_or_else(|error| {
             let errors = error.into_compile_error();
@@ -301,10 +299,7 @@ fn macro_output(result: syn::Result<proc_macro2::TokenStream>) -> TokenStream {
     result.unwrap_or_else(syn::Error::into_compile_error).into()
 }
 
-fn view_macro_impl(
-    tokens: TokenStream,
-    template: bool,
-) -> syn::Result<proc_macro2::TokenStream> {
+fn view_macro_impl(tokens: TokenStream, template: bool) -> syn::Result<proc_macro2::TokenStream> {
     let tokens: proc_macro2::TokenStream = tokens.into();
     let mut tokens = tokens.into_iter();
 
@@ -317,9 +312,7 @@ fn view_macro_impl(
             if *first == "class" && eq.as_char() == '=' =>
         {
             match &fourth {
-                Some(TokenTree::Punct(comma)) if comma.as_char() == ',' => {
-                    third.clone()
-                }
+                Some(TokenTree::Punct(comma)) if comma.as_char() == ',' => third.clone(),
                 _ => {
                     return Err(syn::Error::new(
                         second.span(),
@@ -400,18 +393,15 @@ pub fn include_view(tokens: TokenStream) -> TokenStream {
     view_macro_output(include_view_impl(tokens))
 }
 
-fn include_view_impl(
-    tokens: TokenStream,
-) -> syn::Result<proc_macro2::TokenStream> {
+fn include_view_impl(tokens: TokenStream) -> syn::Result<proc_macro2::TokenStream> {
     let file_name = syn::parse::<syn::LitStr>(tokens).map_err(|_| {
         syn::Error::new(
             Span::call_site(),
             "the only supported argument is a string literal",
         )
     })?;
-    let file = std::fs::read_to_string(file_name.value()).map_err(|_| {
-        syn::Error::new(Span::call_site(), "could not open file")
-    })?;
+    let file = std::fs::read_to_string(file_name.value())
+        .map_err(|_| syn::Error::new(Span::call_site(), "could not open file"))?;
     let tokens = proc_macro2::TokenStream::from_str(&file)
         .map_err(|e| syn::Error::new(Span::call_site(), e))?;
     view_macro_impl(tokens.into(), false)
@@ -737,8 +727,7 @@ fn component_macro(
                 span: unexpanded.vis.span(),
             })
         }
-        unexpanded.sig.ident =
-            unmodified_fn_name_from_fn_name(&unexpanded.sig.ident);
+        unexpanded.sig.ident = unmodified_fn_name_from_fn_name(&unexpanded.sig.ident);
 
         let output = expanded.map(|expanded| {
             quote! {
@@ -874,10 +863,7 @@ fn slot_impl(
     if !args.is_empty() {
         return Err(syn::Error::new(
             Span::call_site(),
-            diagnostics::message_with_help(
-                "no arguments are supported",
-                "try just `#[slot]`",
-            ),
+            diagnostics::message_with_help("no arguments are supported", "try just `#[slot]`"),
         ));
     }
 
@@ -995,7 +981,9 @@ pub fn server(args: proc_macro::TokenStream, s: TokenStream) -> TokenStream {
     match feluqa_ui_server_functions_macros::server_macro_impl(
         args.into(),
         s.into(),
-        Some(syn::parse_quote!(::feluqa_ui_runtime::feluqa_ui_server_functions)),
+        Some(syn::parse_quote!(
+            ::feluqa_ui_runtime::feluqa_ui_server_functions
+        )),
         option_env!("SERVER_FN_PREFIX").unwrap_or("/api"),
         None,
         None,
@@ -1008,9 +996,7 @@ pub fn server(args: proc_macro::TokenStream, s: TokenStream) -> TokenStream {
 /// Derives a trait that parses a map of string keys and values into a typed
 /// data structure, e.g., for route params.
 #[proc_macro_derive(Params)]
-pub fn params_derive(
-    input: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
+pub fn params_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     match syn::parse(input) {
         Ok(ast) => params::params_impl(&ast),
         Err(err) => err.to_compile_error().into(),

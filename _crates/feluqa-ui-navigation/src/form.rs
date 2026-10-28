@@ -112,18 +112,13 @@ where
                     ..Default::default()
                 };
 
-                let (form, method, action, enctype) =
-                    extract_form_attributes(&ev);
+                let (form, method, action, enctype) = extract_form_attributes(&ev);
 
-                let form_data =
-                    web_sys::FormData::new_with_form(&form).unwrap_throw();
+                let form_data = web_sys::FormData::new_with_form(&form).unwrap_throw();
                 if let Some(on_form_data) = on_form_data.clone() {
                     on_form_data(&form_data);
                 }
-                let params =
-                    web_sys::UrlSearchParams::new_with_str_sequence_sequence(
-                        &form_data,
-                    )
+                let params = web_sys::UrlSearchParams::new_with_str_sequence_sequence(&form_data)
                     .unwrap_throw();
                 // multipart POST (setting Context-Type breaks the request)
                 if method == "post" && enctype == "multipart/form-data" {
@@ -161,29 +156,18 @@ where
                                     let resp_url = &resp.url();
                                     match BrowserUrl::parse(resp_url.as_str()) {
                                         Ok(url) => {
-                                            if url.origin()
-                                                != current_window_origin()
+                                            if url.origin() != current_window_origin()
                                                 || navigate.is_none()
                                             {
-                                                _ = window()
-                                                    .location()
-                                                    .set_href(
-                                                        resp_url.as_str(),
-                                                    );
+                                                _ = window().location().set_href(resp_url.as_str());
                                             } else {
-                                                #[allow(
-                                                    clippy::unnecessary_unwrap
-                                                )]
-                                                let navigate =
-                                                    navigate.unwrap();
+                                                #[allow(clippy::unnecessary_unwrap)]
+                                                let navigate = navigate.unwrap();
                                                 navigate(
                                                     &format!(
                                                         "{}{}{}",
                                                         url.path(),
-                                                        if url
-                                                            .search()
-                                                            .is_empty()
-                                                        {
+                                                        if url.search().is_empty() {
                                                             ""
                                                         } else {
                                                             "?"
@@ -237,29 +221,18 @@ where
                                     let resp_url = &resp.url();
                                     match BrowserUrl::parse(resp_url.as_str()) {
                                         Ok(url) => {
-                                            if url.origin()
-                                                != current_window_origin()
+                                            if url.origin() != current_window_origin()
                                                 || navigate.is_none()
                                             {
-                                                _ = window()
-                                                    .location()
-                                                    .set_href(
-                                                        resp_url.as_str(),
-                                                    );
+                                                _ = window().location().set_href(resp_url.as_str());
                                             } else {
-                                                #[allow(
-                                                    clippy::unnecessary_unwrap
-                                                )]
-                                                let navigate =
-                                                    navigate.unwrap();
+                                                #[allow(clippy::unnecessary_unwrap)]
+                                                let navigate = navigate.unwrap();
                                                 navigate(
                                                     &format!(
                                                         "{}{}{}",
                                                         url.path(),
-                                                        if url
-                                                            .search()
-                                                            .is_empty()
-                                                        {
+                                                        if url.search().is_empty() {
                                                             ""
                                                         } else {
                                                             "?"
@@ -279,17 +252,11 @@ where
                 }
                 // otherwise, GET
                 else {
-                    let params =
-                        params.to_string().as_string().unwrap_or_default();
+                    let params = params.to_string().as_string().unwrap_or_default();
                     if let Some(navigate) = navigate {
-                        navigate(
-                            &format!("{action}?{params}"),
-                            navigate_options,
-                        );
+                        navigate(&format!("{action}?{params}"), navigate_options);
                     } else {
-                        _ = window()
-                            .location()
-                            .set_href(&format!("{action}?{params}"));
+                        _ = window().location().set_href(&format!("{action}?{params}"));
                     }
                     ev.prevent_default();
                     ev.stop_propagation();
@@ -359,14 +326,10 @@ fn extract_form_attributes(
                         .unwrap_or_default()
                         .to_lowercase(),
                     form.get_attribute("enctype")
-                        .unwrap_or_else(|| {
-                            "application/x-www-form-urlencoded".to_string()
-                        })
+                        .unwrap_or_else(|| "application/x-www-form-urlencoded".to_string())
                         .to_lowercase(),
                 )
-            } else if let Some(input) =
-                el.dyn_ref::<web_sys::HtmlInputElement>()
-            {
+            } else if let Some(input) = el.dyn_ref::<web_sys::HtmlInputElement>() {
                 let form = ev
                     .target()
                     .unwrap()
@@ -385,15 +348,11 @@ fn extract_form_attributes(
                     }),
                     input.get_attribute("enctype").unwrap_or_else(|| {
                         form.get_attribute("enctype")
-                            .unwrap_or_else(|| {
-                                "application/x-www-form-urlencoded".to_string()
-                            })
+                            .unwrap_or_else(|| "application/x-www-form-urlencoded".to_string())
                             .to_lowercase()
                     }),
                 )
-            } else if let Some(button) =
-                el.dyn_ref::<web_sys::HtmlButtonElement>()
-            {
+            } else if let Some(button) = el.dyn_ref::<web_sys::HtmlButtonElement>() {
                 let form = ev
                     .target()
                     .unwrap()
@@ -412,9 +371,7 @@ fn extract_form_attributes(
                     }),
                     button.get_attribute("enctype").unwrap_or_else(|| {
                         form.get_attribute("enctype")
-                            .unwrap_or_else(|| {
-                                "application/x-www-form-urlencoded".to_string()
-                            })
+                            .unwrap_or_else(|| "application/x-www-form-urlencoded".to_string())
                             .to_lowercase()
                     }),
                 )
@@ -440,9 +397,8 @@ fn extract_form_attributes(
                     form.get_attribute("method")
                         .unwrap_or_else(|| "get".to_string()),
                     form.get_attribute("action").unwrap_or_default(),
-                    form.get_attribute("enctype").unwrap_or_else(|| {
-                        "application/x-www-form-urlencoded".to_string()
-                    }),
+                    form.get_attribute("enctype")
+                        .unwrap_or_else(|| "application/x-www-form-urlencoded".to_string()),
                 )
             }
         },

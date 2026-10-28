@@ -217,27 +217,20 @@ impl FeluqaUiOptions {
             site_root: env_w_default("FELUQA_UI_SITE_ROOT", "target/site")?.into(),
             site_pkg_dir: env_w_default("FELUQA_UI_SITE_PKG_DIR", "pkg")?.into(),
             env: env_from_str(env_w_default("FELUQA_UI_ENV", "DEV")?.as_str())?,
-            site_addr: env_w_default("FELUQA_UI_SITE_ADDR", "127.0.0.1:3000")?
-                .parse()?,
-            reload_port: env_w_default("FELUQA_UI_RELOAD_PORT", "3001")?
-                .parse()?,
-            reload_external_port: match env_wo_default(
-                "FELUQA_UI_RELOAD_EXTERNAL_PORT",
-            )? {
+            site_addr: env_w_default("FELUQA_UI_SITE_ADDR", "127.0.0.1:3000")?.parse()?,
+            reload_port: env_w_default("FELUQA_UI_RELOAD_PORT", "3001")?.parse()?,
+            reload_external_port: match env_wo_default("FELUQA_UI_RELOAD_EXTERNAL_PORT")? {
                 Some(val) => Some(val.parse()?),
                 None => None,
             },
             reload_ws_protocol: ws_from_str(
                 env_w_default("FELUQA_UI_RELOAD_WS_PROTOCOL", "ws")?.as_str(),
             )?,
-            not_found_path: env_w_default("FELUQA_UI_NOT_FOUND_PATH", "/404")?
-                .into(),
-            hash_file: env_w_default("FELUQA_UI_HASH_FILE_NAME", "hash.txt")?
-                .into(),
+            not_found_path: env_w_default("FELUQA_UI_NOT_FOUND_PATH", "/404")?.into(),
+            hash_file: env_w_default("FELUQA_UI_HASH_FILE_NAME", "hash.txt")?.into(),
             hash_files: env_w_default("FELUQA_UI_HASH_FILES", "false")?.parse()?,
             server_fn_prefix: env_wo_default("SERVER_FN_PREFIX")?,
-            disable_server_fn_hash: env_wo_default("DISABLE_SERVER_FN_HASH")?
-                .is_some(),
+            disable_server_fn_hash: env_wo_default("DISABLE_SERVER_FN_HASH")?.is_some(),
             server_fn_mod_path: env_wo_default("SERVER_FN_MOD_PATH")?.is_some(),
         })
     }
@@ -282,10 +275,7 @@ fn env_wo_default(key: &str) -> Result<Option<String>, FeluqaUiConfigError> {
         Err(e) => Err(FeluqaUiConfigError::EnvVarError(format!("{key}: {e}"))),
     }
 }
-fn env_w_default(
-    key: &str,
-    default: &str,
-) -> Result<String, FeluqaUiConfigError> {
+fn env_w_default(key: &str, default: &str) -> Result<String, FeluqaUiConfigError> {
     match std::env::var(key) {
         Ok(val) => Ok(val),
         Err(VarError::NotPresent) => Ok(default.to_string()),
@@ -337,9 +327,7 @@ impl From<&str> for Env {
 impl From<&Result<String, VarError>> for Env {
     fn from(input: &Result<String, VarError>) -> Self {
         match input {
-            Ok(str) => {
-                env_from_str(str).unwrap_or_else(|err| panic!("{}", err))
-            }
+            Ok(str) => env_from_str(str).unwrap_or_else(|err| panic!("{}", err)),
             Err(_) => Self::default(),
         }
     }
@@ -359,10 +347,7 @@ struct EnvVisitor;
 impl<'de> serde::de::Visitor<'de> for EnvVisitor {
     type Value = Env;
 
-    fn expecting(
-        &self,
-        formatter: &mut std::fmt::Formatter,
-    ) -> std::fmt::Result {
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             formatter,
             "a case-insensitive string of either `{ENV_DEV_KEY_SHORT}`, \
@@ -390,9 +375,7 @@ impl<'de> serde::Deserialize<'de> for Env {
 
 /// An enum that can be used to define the websocket protocol FeluqaUi uses for hotreloading
 /// Defaults to `ws`.
-#[derive(
-    Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, Eq, Default,
-)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, Eq, Default)]
 pub enum ReloadWSProtocol {
     #[default]
     WS,
@@ -449,9 +432,7 @@ impl TryFrom<String> for ReloadWSProtocol {
 /// This function will return an error if either:
 /// - config section was not found;
 /// - failed to deserialize the config section.
-pub fn get_config_from_str(
-    text: &str,
-) -> Result<FeluqaUiOptions, FeluqaUiConfigError> {
+pub fn get_config_from_str(text: &str) -> Result<FeluqaUiOptions, FeluqaUiConfigError> {
     let re: Regex = Regex::new(r"(?m)^\[package.metadata.feluqa_ui_runtime\]").unwrap();
     let re_workspace: Regex =
         Regex::new(r"(?m)^\[\[workspace.metadata.feluqa_ui_runtime\]\]").unwrap();
@@ -483,10 +464,7 @@ pub fn get_config_from_str(
         // Layer on the environment-specific values.
         // Add in settings from environment variables (with a prefix of FELUQA_UI)
         // E.g. `FELUQA_UI_RELOAD_PORT=5001 would set `FeluqaUiOptions.reload_port`
-        .add_source(
-            config::Environment::with_prefix("FELUQA_UI")
-                .convert_case(Case::Kebab),
-        )
+        .add_source(config::Environment::with_prefix("FELUQA_UI").convert_case(Case::Kebab))
         .build()?;
 
     settings
@@ -503,9 +481,7 @@ pub fn get_config_from_str(
 /// # Errors
 ///
 /// See [`get_config_from_file`] & [`get_config_from_env`]
-pub fn get_configuration(
-    path: Option<&str>,
-) -> Result<ConfFile, FeluqaUiConfigError> {
+pub fn get_configuration(path: Option<&str>) -> Result<ConfFile, FeluqaUiConfigError> {
     if let Some(path) = path {
         get_config_from_file(path)
     } else {
@@ -523,11 +499,8 @@ pub fn get_configuration(
 /// This function will return an error if either:
 /// - path was not found, or other I/O error has occurred;
 /// - [`get_config_from_str`] returned an error.
-pub fn get_config_from_file<P: AsRef<Path>>(
-    path: P,
-) -> Result<ConfFile, FeluqaUiConfigError> {
-    let text = fs::read_to_string(path)
-        .map_err(|_| FeluqaUiConfigError::ConfigNotFound)?;
+pub fn get_config_from_file<P: AsRef<Path>>(path: P) -> Result<ConfFile, FeluqaUiConfigError> {
+    let text = fs::read_to_string(path).map_err(|_| FeluqaUiConfigError::ConfigNotFound)?;
     let feluqa_ui_options = get_config_from_str(&text)?;
     Ok(ConfFile { feluqa_ui_options })
 }

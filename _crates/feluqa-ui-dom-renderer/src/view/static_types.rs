@@ -1,15 +1,11 @@
 use super::{
-    add_attr::AddAnyAttr, Mountable, Position, PositionState, Render,
-    RenderHtml, ToTemplate,
+    add_attr::AddAnyAttr, Mountable, Position, PositionState, Render, RenderHtml, ToTemplate,
 };
 use crate::{
     html::attribute::{
         any_attribute::AnyAttribute,
-        maybe_next_attr_erasure_macros::{
-            next_attr_combine, next_attr_output_type,
-        },
-        Attribute, AttributeKey, AttributeValue, NamedAttributeKey,
-        NextAttribute,
+        maybe_next_attr_erasure_macros::{next_attr_combine, next_attr_output_type},
+        Attribute, AttributeKey, AttributeValue, NamedAttributeKey, NextAttribute,
     },
     hydration::Cursor,
     renderer::{CastFrom, Rndr},
@@ -37,8 +33,7 @@ impl<K: AttributeKey, const V: &'static str> PartialEq for StaticAttr<K, V> {
 }
 
 /// Creates an [`Attribute`] whose key and value are both known at compile time.
-pub fn static_attr<K: AttributeKey, const V: &'static str>() -> StaticAttr<K, V>
-{
+pub fn static_attr<K: AttributeKey, const V: &'static str>() -> StaticAttr<K, V> {
     StaticAttr { ty: PhantomData }
 }
 
@@ -124,10 +119,7 @@ where
 {
     next_attr_output_type!(Self, NewAttr);
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         next_attr_combine!(StaticAttr::<K, V> { ty: PhantomData }, new_attr)
     }
 }
@@ -222,9 +214,7 @@ impl<const V: &'static str> RenderHtml for Static<V> {
 
         let node = cursor.current();
         let node = crate::renderer::types::Text::cast_from(node.clone())
-            .unwrap_or_else(|| {
-                crate::hydration::failed_to_cast_text_node(node)
-            });
+            .unwrap_or_else(|| crate::hydration::failed_to_cast_text_node(node));
 
         position.set(Position::NextChildAfterText);
 
@@ -239,10 +229,7 @@ impl<const V: &'static str> RenderHtml for Static<V> {
 impl<const V: &'static str> AddAnyAttr for Static<V> {
     type Output<NewAttr: Attribute> = Static<V>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        _attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, _attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {

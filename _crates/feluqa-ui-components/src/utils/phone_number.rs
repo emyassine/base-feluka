@@ -7,7 +7,13 @@ pub struct PhoneNumber(String);
 impl PhoneNumber {
     /// Creates a new PhoneNumber with a maximum number of digits.
     pub fn new(input: &str, max_digits: usize) -> Self {
-        Self(input.chars().filter(|c| c.is_ascii_digit()).take(max_digits).collect())
+        Self(
+            input
+                .chars()
+                .filter(|c| c.is_ascii_digit())
+                .take(max_digits)
+                .collect(),
+        )
     }
 
     /// Returns the raw digits as a string slice.
@@ -34,7 +40,11 @@ impl PhoneNumber {
             Some(prefix) => self.0.strip_prefix(prefix).unwrap_or(&self.0),
             None => &self.0,
         };
-        crate::std::format!("{} {}", country.dial_code_formatted(), PhoneFormat::for_country(country).format(subscriber))
+        crate::std::format!(
+            "{} {}",
+            country.dial_code_formatted(),
+            PhoneFormat::for_country(country).format(subscriber)
+        )
     }
 }
 
@@ -57,46 +67,88 @@ impl PhoneFormat {
             | Country::Barbados
             | Country::DominicanRepublic
             | Country::Jamaica
-            | Country::TrinidadAndTobago => Self { groups: &[3, 3, 4], max_digits: 10 },
+            | Country::TrinidadAndTobago => Self {
+                groups: &[3, 3, 4],
+                max_digits: 10,
+            },
 
             // France: 9 subscriber digits (6/7 XX XX XX XX) — trunk 0 dropped with +33
-            Country::France => Self { groups: &[1, 2, 2, 2, 2], max_digits: 9 },
+            Country::France => Self {
+                groups: &[1, 2, 2, 2, 2],
+                max_digits: 9,
+            },
 
             // UK: 10 subscriber digits (7XXX XXX XXX) — trunk 0 dropped with +44
-            Country::UnitedKingdom => Self { groups: &[4, 3, 3], max_digits: 10 },
+            Country::UnitedKingdom => Self {
+                groups: &[4, 3, 3],
+                max_digits: 10,
+            },
 
             // Germany: 10 subscriber digits (15X XXX XXXX) — trunk 0 dropped with +49
-            Country::Germany => Self { groups: &[3, 3, 4], max_digits: 10 },
+            Country::Germany => Self {
+                groups: &[3, 3, 4],
+                max_digits: 10,
+            },
 
             // Thailand: 9 subscriber digits (8X XXX XXXX) — trunk 0 dropped with +66
-            Country::Thailand => Self { groups: &[2, 3, 4], max_digits: 9 },
+            Country::Thailand => Self {
+                groups: &[2, 3, 4],
+                max_digits: 9,
+            },
 
             // Japan: 10 subscriber digits (90 XXXX XXXX) — trunk 0 dropped with +81
-            Country::Japan => Self { groups: &[2, 4, 4], max_digits: 10 },
+            Country::Japan => Self {
+                groups: &[2, 4, 4],
+                max_digits: 10,
+            },
 
             // China: 3-4-4, 11 digits
-            Country::China => Self { groups: &[3, 4, 4], max_digits: 11 },
+            Country::China => Self {
+                groups: &[3, 4, 4],
+                max_digits: 11,
+            },
 
             // India: 5-5, 10 digits
-            Country::India => Self { groups: &[5, 5], max_digits: 10 },
+            Country::India => Self {
+                groups: &[5, 5],
+                max_digits: 10,
+            },
 
             // Australia: 3-3-3, 9 digits
-            Country::Australia => Self { groups: &[3, 3, 3], max_digits: 9 },
+            Country::Australia => Self {
+                groups: &[3, 3, 3],
+                max_digits: 9,
+            },
 
             // Brazil: 2-5-4, 11 digits
-            Country::Brazil => Self { groups: &[2, 5, 4], max_digits: 11 },
+            Country::Brazil => Self {
+                groups: &[2, 5, 4],
+                max_digits: 11,
+            },
 
             // Mexico: 2-4-4, 10 digits
-            Country::Mexico => Self { groups: &[2, 4, 4], max_digits: 10 },
+            Country::Mexico => Self {
+                groups: &[2, 4, 4],
+                max_digits: 10,
+            },
 
             // Spain: 3-3-3, 9 digits
-            Country::Spain => Self { groups: &[3, 3, 3], max_digits: 9 },
+            Country::Spain => Self {
+                groups: &[3, 3, 3],
+                max_digits: 9,
+            },
 
             // Italy: 3-3-4, 10 digits
-            Country::Italy => Self { groups: &[3, 3, 4], max_digits: 10 },
+            Country::Italy => Self {
+                groups: &[3, 3, 4],
+                max_digits: 10,
+            },
 
             // Default: 3-3-4, 15 digits (ITU-T E.164 max)
-            _ => Self { groups: &[3, 3, 4], max_digits: 15 },
+            _ => Self {
+                groups: &[3, 3, 4],
+                max_digits: 15,
+            },
         }
     }
 
@@ -134,7 +186,9 @@ impl PhoneFormat {
     /// Returns a placeholder string showing the format pattern.
     /// Example: "06 12 34 56 78" for France.
     pub fn placeholder(&self) -> String {
-        let digits: String = (0..self.max_digits).map(|i| char::from(b'0' + (i % 10) as u8)).collect();
+        let digits: String = (0..self.max_digits)
+            .map(|i| char::from(b'0' + (i % 10) as u8))
+            .collect();
         self.format(&digits)
     }
 }
@@ -345,7 +399,10 @@ mod tests {
     #[test]
     fn test_phone_number_format_international() {
         let phone = PhoneNumber::new("612345678", 9);
-        assert_eq!(phone.format_international(Country::France), "+33 6 12 34 56 78");
+        assert_eq!(
+            phone.format_international(Country::France),
+            "+33 6 12 34 56 78"
+        );
     }
 
     #[test]
@@ -372,18 +429,32 @@ mod tests {
         ];
         for (country, digits, expected) in cases {
             let phone = PhoneNumber::new(digits, PhoneFormat::for_country(country).max_digits);
-            assert_eq!(phone.format_international(country), expected, "Failed for {:?}", country);
+            assert_eq!(
+                phone.format_international(country),
+                expected,
+                "Failed for {:?}",
+                country
+            );
         }
     }
 
     #[test]
     fn test_format_international_no_trunk_countries_unchanged() {
         let phone_us = PhoneNumber::new("5551234567", 10);
-        assert_eq!(phone_us.format_international(Country::UnitedStatesOfAmerica), "+1 555 123 4567");
+        assert_eq!(
+            phone_us.format_international(Country::UnitedStatesOfAmerica),
+            "+1 555 123 4567"
+        );
         let phone_es = PhoneNumber::new("612345678", 9);
-        assert_eq!(phone_es.format_international(Country::Spain), "+34 612 345 678");
+        assert_eq!(
+            phone_es.format_international(Country::Spain),
+            "+34 612 345 678"
+        );
         let phone_it = PhoneNumber::new("3123456789", 10);
-        assert_eq!(phone_it.format_international(Country::Italy), "+39 312 345 6789");
+        assert_eq!(
+            phone_it.format_international(Country::Italy),
+            "+39 312 345 6789"
+        );
     }
 
     #[test]

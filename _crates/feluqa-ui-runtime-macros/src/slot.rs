@@ -1,13 +1,8 @@
-use crate::component::{
-    convert_from_snake_case, drain_filter, is_option, unwrap_option, Docs,
-};
+use crate::component::{convert_from_snake_case, drain_filter, is_option, unwrap_option, Docs};
 use attribute_derive::FromAttr;
 use proc_macro2::{Ident, TokenStream};
 use quote::{quote, ToTokens};
-use syn::{
-    parse::Parse, parse_quote, Field, ItemStruct, LitStr, Meta, Type,
-    Visibility,
-};
+use syn::{parse::Parse, parse_quote, Field, ItemStruct, LitStr, Meta, Type, Visibility};
 
 pub struct Model {
     docs: Docs,
@@ -69,10 +64,7 @@ impl Model {
 
         let prop_builder_fields = prop_builder_fields(vis, props)?;
         let prop_docs = generate_prop_docs(props)?;
-        let builder_name_doc = LitStr::new(
-            &format!("Props for the [`{name}`] slot."),
-            name.span(),
-        );
+        let builder_name_doc = LitStr::new(&format!("Props for the [`{name}`] slot."), name.span());
 
         let output = quote! {
             #[doc = #builder_name_doc]
@@ -227,10 +219,7 @@ impl TypedBuilderOpts<'_> {
     }
 }
 
-fn prop_builder_fields(
-    vis: &Visibility,
-    props: &[Prop],
-) -> syn::Result<TokenStream> {
+fn prop_builder_fields(vis: &Visibility, props: &[Prop]) -> syn::Result<TokenStream> {
     props
         .iter()
         .map(|prop| {
@@ -241,8 +230,7 @@ fn prop_builder_fields(
                 ty,
             } = prop;
 
-            let builder_attrs =
-                TypedBuilderOpts::from_opts(prop_opts, ty).expand()?;
+            let builder_attrs = TypedBuilderOpts::from_opts(prop_opts, ty).expand()?;
 
             let builder_docs = prop_to_doc(prop, PropDocStyle::Inline)?;
 
@@ -259,17 +247,13 @@ fn prop_builder_fields(
 fn generate_prop_docs(props: &[Prop]) -> syn::Result<TokenStream> {
     let required_prop_docs = props
         .iter()
-        .filter(|Prop { prop_opts, .. }| {
-            !(prop_opts.optional || prop_opts.optional_no_strip)
-        })
+        .filter(|Prop { prop_opts, .. }| !(prop_opts.optional || prop_opts.optional_no_strip))
         .map(|p| prop_to_doc(p, PropDocStyle::List))
         .collect::<syn::Result<TokenStream>>()?;
 
     let optional_prop_docs = props
         .iter()
-        .filter(|Prop { prop_opts, .. }| {
-            prop_opts.optional || prop_opts.optional_no_strip
-        })
+        .filter(|Prop { prop_opts, .. }| prop_opts.optional || prop_opts.optional_no_strip)
         .map(|p| prop_to_doc(p, PropDocStyle::List))
         .collect::<syn::Result<TokenStream>>()?;
 
@@ -312,8 +296,7 @@ fn prop_to_doc(
     }: &Prop,
     style: PropDocStyle,
 ) -> syn::Result<TokenStream> {
-    let ty = if (prop_opts.optional || prop_opts.strip_option) && is_option(ty)
-    {
+    let ty = if (prop_opts.optional || prop_opts.strip_option) && is_option(ty) {
         unwrap_option(ty)?
     } else {
         ty.to_owned()
@@ -340,11 +323,7 @@ fn prop_to_doc(
                 &if !prop_opts.into {
                     format!("- **{}**: [`{}`]", quote!(#name), pretty_ty)
                 } else {
-                    format!(
-                        "- **{}**: `impl`[`Into<{}>`]",
-                        quote!(#name),
-                        pretty_ty
-                    )
+                    format!("- **{}**: `impl`[`Into<{}>`]", quote!(#name), pretty_ty)
                 },
                 name.span(),
             );

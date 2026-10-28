@@ -1,7 +1,7 @@
 use crate::{children::TypedChildrenFn, mount, IntoView};
+use feluqa_ui_reactivity::{effect::Effect, graph::untrack, owner::Owner};
 use feluqa_ui_runtime_dom::helpers::document;
 use feluqa_ui_runtime_macros::component;
-use feluqa_ui_reactivity::{effect::Effect, graph::untrack, owner::Owner};
 use std::sync::Arc;
 
 /// Renders components somewhere else in the DOM.
@@ -36,9 +36,8 @@ where
         use send_wrapper::SendWrapper;
         use wasm_bindgen::JsCast;
 
-        let mount = mount.unwrap_or_else(|| {
-            document().body().expect("body to exist").unchecked_into()
-        });
+        let mount =
+            mount.unwrap_or_else(|| document().body().expect("body to exist").unchecked_into());
         let children = children.into_inner();
 
         Effect::new(move |_| {
@@ -54,9 +53,7 @@ where
 
             let render_root = if use_shadow {
                 container
-                    .attach_shadow(&web_sys::ShadowRootInit::new(
-                        web_sys::ShadowRootMode::Open,
-                    ))
+                    .attach_shadow(&web_sys::ShadowRootInit::new(web_sys::ShadowRootMode::Open))
                     .map(|root| root.unchecked_into())
                     .unwrap_or(container.clone())
             } else {

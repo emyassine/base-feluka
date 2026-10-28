@@ -20,8 +20,7 @@ impl<View> Island<View> {
     /// Creates a new island with the given component name.
     pub fn new(component: &'static str, view: View) -> Self {
         Island {
-            has_element_representation:
-                Self::should_have_element_representation(),
+            has_element_representation: Self::should_have_element_representation(),
             component,
             props_json: String::new(),
             view,
@@ -60,8 +59,7 @@ impl<View> Island<View> {
         #[cfg(feature = "feluqa_ui_reactivity")]
         {
             use feluqa_ui_reactivity::owner::{use_context, IsHydrating};
-            let already_hydrating =
-                use_context::<IsHydrating>().map(|h| h.0).unwrap_or(false);
+            let already_hydrating = use_context::<IsHydrating>().map(|h| h.0).unwrap_or(false);
             !already_hydrating
         }
         #[cfg(not(feature = "feluqa_ui_reactivity"))]
@@ -90,13 +88,9 @@ impl<View> AddAnyAttr for Island<View>
 where
     View: RenderHtml,
 {
-    type Output<SomeNewAttr: Attribute> =
-        Island<<View as AddAnyAttr>::Output<SomeNewAttr>>;
+    type Output<SomeNewAttr: Attribute> = Island<<View as AddAnyAttr>::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -122,11 +116,8 @@ where
     type AsyncOutput = Island<View::AsyncOutput>;
     type Owned = Island<View::Owned>;
 
-    const MIN_LENGTH: usize = ISLAND_TAG.len() * 2
-        + "<>".len()
-        + "</>".len()
-        + "data-component".len()
-        + View::MIN_LENGTH;
+    const MIN_LENGTH: usize =
+        ISLAND_TAG.len() * 2 + "<>".len() + "</>".len() + "data-component".len() + View::MIN_LENGTH;
 
     fn dry_resolve(&mut self) {
         self.view.dry_resolve()
@@ -159,13 +150,8 @@ where
         if has_element {
             Self::open_tag(self.component, &self.props_json, buf);
         }
-        self.view.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.view
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         if has_element {
             Self::close_tag(buf);
         }
@@ -250,10 +236,7 @@ impl<View> IslandChildren<View> {
 
     /// Creates a new representation of the children, with a function to be called whenever
     /// a child island hydrates.
-    pub fn new_with_on_hydrate(
-        view: View,
-        on_hydrate: impl Fn() + Send + Sync + 'static,
-    ) -> Self {
+    pub fn new_with_on_hydrate(view: View, on_hydrate: impl Fn() + Send + Sync + 'static) -> Self {
         IslandChildren {
             view,
             on_hydrate: Some(Box::new(on_hydrate)),
@@ -288,13 +271,9 @@ impl<View> AddAnyAttr for IslandChildren<View>
 where
     View: RenderHtml,
 {
-    type Output<SomeNewAttr: Attribute> =
-        IslandChildren<<View as AddAnyAttr>::Output<SomeNewAttr>>;
+    type Output<SomeNewAttr: Attribute> = IslandChildren<<View as AddAnyAttr>::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -313,10 +292,8 @@ where
     type AsyncOutput = IslandChildren<View::AsyncOutput>;
     type Owned = IslandChildren<View::Owned>;
 
-    const MIN_LENGTH: usize = ISLAND_CHILDREN_TAG.len() * 2
-        + "<>".len()
-        + "</>".len()
-        + View::MIN_LENGTH;
+    const MIN_LENGTH: usize =
+        ISLAND_CHILDREN_TAG.len() * 2 + "<>".len() + "</>".len() + View::MIN_LENGTH;
 
     fn dry_resolve(&mut self) {
         self.view.dry_resolve()
@@ -339,13 +316,8 @@ where
         extra_attrs: Vec<AnyAttribute>,
     ) {
         Self::open_tag(buf);
-        self.view.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.view
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         Self::close_tag(buf);
     }
 
@@ -396,21 +368,13 @@ where
         position.set(Position::NextChild);
 
         if let Some(on_hydrate) = self.on_hydrate {
-            use crate::{
-                hydration::failed_to_cast_element, renderer::CastFrom,
-            };
+            use crate::{hydration::failed_to_cast_element, renderer::CastFrom};
 
             let el =
-                crate::renderer::types::Element::cast_from(cursor.current())
-                    .unwrap_or_else(|| {
-                        failed_to_cast_element(
-                            "feluqa_ui_runtime-children",
-                            cursor.current(),
-                        )
-                    });
-            let cb = wasm_bindgen::closure::Closure::wrap(
-                on_hydrate as Box<dyn Fn()>,
-            );
+                crate::renderer::types::Element::cast_from(cursor.current()).unwrap_or_else(|| {
+                    failed_to_cast_element("feluqa_ui_runtime-children", cursor.current())
+                });
+            let cb = wasm_bindgen::closure::Closure::wrap(on_hydrate as Box<dyn Fn()>);
             _ = js_sys::Reflect::set(
                 &el,
                 &wasm_bindgen::JsValue::from_str("$$on_hydrate"),

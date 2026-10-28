@@ -4,13 +4,20 @@ use crate::{
     matching::{MatchParams, RouteDefs},
     params::ParamsMap,
     view_transition::start_view_transition,
-    ChooseView, MatchInterface, MatchNestedRoutes, PathSegment, RouteList,
-    RouteListing, RouteMatchId,
+    ChooseView, MatchInterface, MatchNestedRoutes, PathSegment, RouteList, RouteListing,
+    RouteMatchId,
 };
-use feluqa_ui_task_runtime::Executor;
 use either_of::Either;
-use futures::FutureExt;
-use feluqa_ui_runtime::attr::{any_attribute::AnyAttribute, Attribute};
+use feluqa_ui_dom_renderer::{
+    feluqa_ui_reactivity::OwnedView,
+    hydration::Cursor,
+    ssr::StreamBuilder,
+    view::{
+        add_attr::AddAnyAttr,
+        any_view::{AnyView, AnyViewState, IntoAny},
+        MarkBranch, Mountable, Position, PositionState, Render, RenderHtml,
+    },
+};
 use feluqa_ui_reactivity::{
     computed::{ArcMemo, ScopedFuture},
     owner::{provide_context, Owner},
@@ -19,17 +26,10 @@ use feluqa_ui_reactivity::{
     transition::AsyncTransition,
     wrappers::write::SignalSetter,
 };
+use feluqa_ui_runtime::attr::{any_attribute::AnyAttribute, Attribute};
+use feluqa_ui_task_runtime::Executor;
+use futures::FutureExt;
 use std::{cell::RefCell, iter, mem, rc::Rc};
-use feluqa_ui_dom_renderer::{
-    hydration::Cursor,
-    feluqa_ui_reactivity::OwnedView,
-    ssr::StreamBuilder,
-    view::{
-        add_attr::AddAnyAttr,
-        any_view::{AnyView, AnyViewState, IntoAny},
-        MarkBranch, Mountable, Position, PositionState, Render, RenderHtml,
-    },
-};
 
 pub(crate) struct FlatRoutesView<Loc, Defs, FalFn> {
     pub current_url: ArcRwSignal<Url>,
@@ -135,9 +135,7 @@ where
 
                 #[cfg(debug_assertions)]
                 if child.is_some() {
-                    panic!(
-                        "<FlatRoutes> should not be used with nested routes."
-                    );
+                    panic!("<FlatRoutes> should not be used with nested routes.");
                 }
 
                 let mut view = Box::pin(owner.with(|| {
@@ -164,23 +162,21 @@ where
                         matched,
                     })),
                     None => {
-                        let state =
-                            Rc::new(RefCell::new(FlatRoutesViewState {
-                                view: ().into_any().build(),
-                                id,
-                                owner,
-                                params,
-                                path,
-                                url,
-                                matched,
-                            }));
+                        let state = Rc::new(RefCell::new(FlatRoutesViewState {
+                            view: ().into_any().build(),
+                            id,
+                            owner,
+                            params,
+                            path,
+                            url,
+                            matched,
+                        }));
 
                         Executor::spawn_local({
                             let state = Rc::clone(&state);
                             async move {
                                 let view = view.await;
-                                view.into_any()
-                                    .rebuild(&mut state.borrow_mut().view);
+                                view.into_any().rebuild(&mut state.borrow_mut().view);
                             }
                         });
 
@@ -252,11 +248,9 @@ where
         let params_memo = ArcMemo::from(params.clone());
         let old_owner = mem::replace(&mut initial_state.owner, owner.clone());
         let old_url = mem::replace(&mut initial_state.url, url.clone());
-        let old_params =
-            mem::replace(&mut initial_state.params, params.clone());
+        let old_params = mem::replace(&mut initial_state.params, params.clone());
         let new_matched = ArcRwSignal::new(matched_string);
-        let old_matched =
-            mem::replace(&mut initial_state.matched, new_matched.clone());
+        let old_matched = mem::replace(&mut initial_state.matched, new_matched.clone());
 
         // we drop the route state here, in case there is a <Redirect/> or similar that occurs
         // while rendering either the fallback or the new route
@@ -280,9 +274,7 @@ where
 
                 #[cfg(debug_assertions)]
                 if child.is_some() {
-                    panic!(
-                        "<FlatRoutes> should not be used with nested routes."
-                    );
+                    panic!("<FlatRoutes> should not be used with nested routes.");
                 }
 
                 let spawned_path = url_snapshot.path().to_string();
@@ -297,30 +289,22 @@ where
                         async move {
                             provide_context(url);
                             provide_context(params_memo);
-                            provide_context(Matched(ArcMemo::from(
-                                new_matched,
-                            )));
-                            let view = OwnedView::new(
-                                if let Some(set_is_routing) = set_is_routing {
+                            provide_context(Matched(ArcMemo::from(new_matched)));
+                            let view =
+                                OwnedView::new(if let Some(set_is_routing) = set_is_routing {
                                     set_is_routing.set(true);
-                                    let value =
-                                        AsyncTransition::run(|| view.choose())
-                                            .await;
+                                    let value = AsyncTransition::run(|| view.choose()).await;
                                     set_is_routing.set(false);
                                     value
                                 } else {
                                     view.choose().await
-                                },
-                            );
+                                });
 
                             // only update the route if it's still the current path
                             // i.e., if we've navigated away before this has loaded, do nothing
-                            if current_url.read_untracked().path()
-                                == spawned_path
-                            {
+                            if current_url.read_untracked().path() == spawned_path {
                                 let rebuild = move || {
-                                    view.into_any()
-                                        .rebuild(&mut state.borrow_mut().view);
+                                    view.into_any().rebuild(&mut state.borrow_mut().view);
                                 };
                                 if transition {
                                     start_view_transition(0, is_back, rebuild);
@@ -351,8 +335,7 @@ where
     FalFn: FnOnce() -> Fal + Send + 'static,
     Fal: RenderHtml + 'static,
 {
-    type Output<SomeNewAttr: feluqa_ui_runtime::attr::Attribute> =
-        FlatRoutesView<Loc, Defs, FalFn>;
+    type Output<SomeNewAttr: feluqa_ui_runtime::attr::Attribute> = FlatRoutesView<Loc, Defs, FalFn>;
 
     fn add_any_attr<NewAttr: feluqa_ui_runtime::attr::Attribute>(
         self,
@@ -383,10 +366,7 @@ impl Render for MatchedRoute {
 impl AddAnyAttr for MatchedRoute {
     type Output<SomeNewAttr: Attribute> = Self;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -421,13 +401,8 @@ impl RenderHtml for MatchedRoute {
         if mark_branches && escape {
             buf.open_branch(&self.0);
         }
-        self.1.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.1
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         if mark_branches && escape {
             buf.close_branch(&self.0);
             if *position == Position::NextChildAfterText {
@@ -566,19 +541,10 @@ where
                 .map(|data| {
                     let path = base
                         .into_iter()
-                        .flat_map(|base| {
-                            iter::once(PathSegment::Static(
-                                base.to_string().into(),
-                            ))
-                        })
+                        .flat_map(|base| iter::once(PathSegment::Static(base.to_string().into())))
                         .chain(data.segments)
                         .collect::<Vec<_>>();
-                    RouteListing::new(
-                        path,
-                        data.ssr_mode,
-                        data.methods,
-                        data.regenerate,
-                    )
+                    RouteListing::new(path, data.ssr_mode, data.methods, data.regenerate)
                 })
                 .collect::<Vec<_>>();
 
@@ -602,13 +568,7 @@ where
             RouteList::register(RouteList::from(routes));
         } else {
             let view = self.choose_ssr();
-            view.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs,
-            );
+            view.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         }
     }
 
@@ -695,9 +655,7 @@ where
 
                 #[cfg(debug_assertions)]
                 if child.is_some() {
-                    panic!(
-                        "<FlatRoutes> should not be used with nested routes."
-                    );
+                    panic!("<FlatRoutes> should not be used with nested routes.");
                 }
 
                 let mut view = Box::pin(owner.with(|| {
@@ -715,9 +673,7 @@ where
 
                 match view.as_mut().now_or_never() {
                     Some(view) => Rc::new(RefCell::new(FlatRoutesViewState {
-                        view: view
-                            .into_any()
-                            .hydrate::<FROM_SERVER>(cursor, position),
+                        view: view.into_any().hydrate::<FROM_SERVER>(cursor, position),
                         id,
                         owner,
                         params,

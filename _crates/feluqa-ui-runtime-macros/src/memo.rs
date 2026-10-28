@@ -19,8 +19,7 @@ impl Parse for MemoMacroInput {
         let root: syn::Ident = input.parse()?;
         input.parse::<Token![.]>()?;
         // do not accept trailing punctuation
-        let path: Punctuated<syn::Member, Token![.]> =
-            Punctuated::parse_separated_nonempty(input)?;
+        let path: Punctuated<syn::Member, Token![.]> = Punctuated::parse_separated_nonempty(input)?;
 
         if path.is_empty() {
             return Err(input.error("expected identifier"));

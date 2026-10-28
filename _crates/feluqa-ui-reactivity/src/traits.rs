@@ -74,10 +74,7 @@ macro_rules! unwrap_signal {
             {
                 panic!(
                     "{}",
-                    $crate::traits::panic_getting_disposed_signal(
-                        $signal.defined_at(),
-                        location
-                    )
+                    $crate::traits::panic_getting_disposed_signal($signal.defined_at(), location)
                 );
             }
             #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
@@ -247,9 +244,7 @@ pub trait Write: Sized + DefinedAt + Notify {
 
     /// Returns a guard that will not notify subscribers when dropped,
     /// or `None` if the signal has already been disposed.
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>>;
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>>;
 
     /// Returns the guard.
     ///
@@ -278,10 +273,7 @@ pub trait WithUntracked: DefinedAt {
     /// Applies the closure to the value, and returns the result,
     /// or `None` if the signal has already been disposed.
     #[track_caller]
-    fn try_with_untracked<U>(
-        &self,
-        fun: impl FnOnce(&Self::Value) -> U,
-    ) -> Option<U>;
+    fn try_with_untracked<U>(&self, fun: impl FnOnce(&Self::Value) -> U) -> Option<U>;
 
     /// Applies the closure to the value, and returns the result.
     ///
@@ -300,10 +292,7 @@ where
 {
     type Value = <<Self as ReadUntracked>::Value as Deref>::Target;
 
-    fn try_with_untracked<U>(
-        &self,
-        fun: impl FnOnce(&Self::Value) -> U,
-    ) -> Option<U> {
+    fn try_with_untracked<U>(&self, fun: impl FnOnce(&Self::Value) -> U) -> Option<U> {
         self.try_read_untracked().map(|value| fun(&value))
     }
 }
@@ -427,10 +416,7 @@ pub trait UpdateUntracked: DefinedAt {
     /// # Panics
     /// Panics if you try to update a signal that has been disposed.
     #[track_caller]
-    fn update_untracked<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> U {
+    fn update_untracked<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> U {
         self.try_update_untracked(fun)
             .unwrap_or_else(unwrap_signal!(self))
     }
@@ -438,10 +424,7 @@ pub trait UpdateUntracked: DefinedAt {
     /// Updates the value by applying a function, returning the value returned by that function,
     /// or `None` if the signal has already been disposed.
     /// Does not notify subscribers that the signal has changed.
-    fn try_update_untracked<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> Option<U>;
+    fn try_update_untracked<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> Option<U>;
 }
 
 impl<T> UpdateUntracked for T
@@ -451,10 +434,7 @@ where
     type Value = <Self as Write>::Value;
 
     #[track_caller]
-    fn try_update_untracked<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> Option<U> {
+    fn try_update_untracked<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> Option<U> {
         let mut guard = self.try_write_untracked()?;
         Some(fun(&mut *guard))
     }
@@ -485,20 +465,14 @@ pub trait Update {
     /// Updates the value of the signal and notifies subscribers, returning the value that is
     /// returned by the update function, or `None` if the signal has already been disposed.
     #[track_caller]
-    fn try_update<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> Option<U> {
+    fn try_update<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> Option<U> {
         self.try_maybe_update(|val| (true, fun(val)))
     }
 
     /// Updates the value of the signal, notifying subscribers if the update function returns
     /// `(true, _)`, and returns the value returned by the update function,
     /// or `None` if the signal has already been disposed.
-    fn try_maybe_update<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> (bool, U),
-    ) -> Option<U>;
+    fn try_maybe_update<U>(&self, fun: impl FnOnce(&mut Self::Value) -> (bool, U)) -> Option<U>;
 }
 
 impl<T> Update for T
@@ -508,10 +482,7 @@ where
     type Value = <Self as Write>::Value;
 
     #[track_caller]
-    fn try_maybe_update<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> (bool, U),
-    ) -> Option<U> {
+    fn try_maybe_update<U>(&self, fun: impl FnOnce(&mut Self::Value) -> (bool, U)) -> Option<U> {
         let mut lock = self.try_write()?;
         let (did_update, val) = fun(&mut *lock);
         if !did_update {
@@ -717,10 +688,7 @@ pub trait WithValue: DefinedAt {
     /// Applies the closure to the value, non-reactively, and returns the result,
     /// or `None` if the value has already been disposed.
     #[track_caller]
-    fn try_with_value<U>(
-        &self,
-        fun: impl FnOnce(&Self::Value) -> U,
-    ) -> Option<U>;
+    fn try_with_value<U>(&self, fun: impl FnOnce(&Self::Value) -> U) -> Option<U>;
 
     /// Applies the closure to the value, non-reactively, and returns the result.
     ///
@@ -739,10 +707,7 @@ where
 {
     type Value = <<Self as ReadValue>::Value as Deref>::Target;
 
-    fn try_with_value<U>(
-        &self,
-        fun: impl FnOnce(&Self::Value) -> U,
-    ) -> Option<U> {
+    fn try_with_value<U>(&self, fun: impl FnOnce(&Self::Value) -> U) -> Option<U> {
         self.try_read_value().map(|value| fun(&value))
     }
 }
@@ -809,10 +774,7 @@ pub trait UpdateValue: DefinedAt {
     /// Updates the value, returning the value that is
     /// returned by the update function, or `None` if the value has already been disposed.
     #[track_caller]
-    fn try_update_value<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> Option<U>;
+    fn try_update_value<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> Option<U>;
 
     /// Updates the value.
     #[track_caller]
@@ -828,10 +790,7 @@ where
     type Value = <Self as WriteValue>::Value;
 
     #[track_caller]
-    fn try_update_value<U>(
-        &self,
-        fun: impl FnOnce(&mut Self::Value) -> U,
-    ) -> Option<U> {
+    fn try_update_value<U>(&self, fun: impl FnOnce(&mut Self::Value) -> U) -> Option<U> {
         let mut guard = self.try_write_value()?;
         Some(fun(&mut *guard))
     }

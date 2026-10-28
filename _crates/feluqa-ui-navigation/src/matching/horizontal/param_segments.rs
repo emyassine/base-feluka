@@ -219,9 +219,7 @@ impl PossibleRouteMatch for OptionalParamSegment {
 #[cfg(test)]
 mod tests {
     use super::PossibleRouteMatch;
-    use crate::{
-        OptionalParamSegment, ParamSegment, StaticSegment, WildcardSegment,
-    };
+    use crate::{OptionalParamSegment, ParamSegment, StaticSegment, WildcardSegment};
 
     #[test]
     fn single_param_match() {

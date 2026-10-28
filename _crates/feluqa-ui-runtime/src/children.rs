@@ -1,12 +1,12 @@
 use crate::into_view::{IntoView, View};
-use std::{
-    fmt::{self, Debug},
-    sync::Arc,
-};
 use feluqa_ui_dom_renderer::view::{
     any_view::{AnyView, IntoAny},
     fragment::{Fragment, IntoFragment},
     RenderHtml,
+};
+use std::{
+    fmt::{self, Debug},
+    sync::Arc,
 };
 
 /// The most common type for the `children` property on components,

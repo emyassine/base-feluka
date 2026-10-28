@@ -22,19 +22,22 @@ where
     Effect::new(move |_| {
         let callback = on_click_outside.clone();
         let handler =
-            crate::wasm_bindgen::closure::Closure::<dyn Fn(crate::web_sys::MouseEvent)>::new(move |ev: crate::web_sys::MouseEvent| {
-                // Use try_get_untracked() since we're in an event handler, not a reactive context
-                if let Some(Some(element)) = node_ref.try_get_untracked()
-                    && let Some(target) = ev.target()
-                    && let Ok(target_node) = target.dyn_into::<crate::web_sys::Node>()
-                    && !element.contains(Some(&target_node))
-                {
-                    callback();
-                }
-            });
+            crate::wasm_bindgen::closure::Closure::<dyn Fn(crate::web_sys::MouseEvent)>::new(
+                move |ev: crate::web_sys::MouseEvent| {
+                    // Use try_get_untracked() since we're in an event handler, not a reactive context
+                    if let Some(Some(element)) = node_ref.try_get_untracked()
+                        && let Some(target) = ev.target()
+                        && let Ok(target_node) = target.dyn_into::<crate::web_sys::Node>()
+                        && !element.contains(Some(&target_node))
+                    {
+                        callback();
+                    }
+                },
+            );
 
         if let Some(document) = crate::web_sys::window().and_then(|w| w.document()) {
-            let _ = document.add_event_listener_with_callback("mousedown", handler.as_ref().unchecked_ref());
+            let _ = document
+                .add_event_listener_with_callback("mousedown", handler.as_ref().unchecked_ref());
         }
 
         // Keep the closure alive for the lifetime of the component

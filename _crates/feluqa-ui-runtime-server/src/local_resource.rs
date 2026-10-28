@@ -1,11 +1,9 @@
 use feluqa_ui_reactivity::{
     computed::{
-        suspense::LocalResourceNotifier, ArcAsyncDerived, AsyncDerived,
-        AsyncDerivedFuture,
+        suspense::LocalResourceNotifier, ArcAsyncDerived, AsyncDerived, AsyncDerivedFuture,
     },
     graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber,
-        ToAnySource, ToAnySubscriber,
+        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber, ToAnySource, ToAnySubscriber,
     },
     owner::use_context,
     send_wrapper_ext::SendOption,
@@ -14,8 +12,7 @@ use feluqa_ui_reactivity::{
         ArcRwSignal, RwSignal,
     },
     traits::{
-        DefinedAt, IsDisposed, Notify, ReadUntracked, Track, UntrackableGuard,
-        Update, With, Write,
+        DefinedAt, IsDisposed, Notify, ReadUntracked, Track, UntrackableGuard, Update, With, Write,
     },
 };
 use std::{
@@ -186,9 +183,7 @@ where
         self.data.try_write()
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.data.try_write_untracked()
     }
 }
@@ -197,8 +192,7 @@ impl<T> ReadUntracked for ArcLocalResource<T>
 where
     T: 'static,
 {
-    type Value =
-        ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
+    type Value = ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
 
     fn try_read_untracked(&self) -> Option<Self::Value> {
         if let Some(mut notifier) = use_context::<LocalResourceNotifier>() {
@@ -427,9 +421,7 @@ where
         self.data.try_write()
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.data.try_write_untracked()
     }
 }
@@ -438,8 +430,7 @@ impl<T> ReadUntracked for LocalResource<T>
 where
     T: 'static,
 {
-    type Value =
-        ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
+    type Value = ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
 
     fn try_read_untracked(&self) -> Option<Self::Value> {
         if let Some(mut notifier) = use_context::<LocalResourceNotifier>() {

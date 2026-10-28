@@ -21,14 +21,8 @@ mod generated_migrations {
     include!(concat!(env!("OUT_DIR"), "/migrations.rs"));
 }
 mod modules;
+mod panel;
 mod routes;
-mod service_provider {
-    include!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/",
-        env!("FELUQA_SERVICE_PROVIDER")
-    ));
-}
 mod views;
 
 use std::boxed::Box;
@@ -54,9 +48,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let Some(command) = routes::console::run()? else {
         return Ok(());
     };
-    let catalog = service_provider::panel_catalog()?;
+    let business_panel = panel::business::declaration()?;
+    let catalog = panel::declaration(business_panel)?;
     let config = config::AppConfig::load_default()?;
-    let mut module_runtime = service_provider::lifecycle_runtime(&config.modules.enabled)?;
+    let mut module_runtime = modules::lifecycle_runtime(&config.modules.enabled)?;
     if matches!(&command, routes::console::RuntimeCommand::Seed(_))
         && !config
             .modules
@@ -88,7 +83,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
         .await?;
         println!("Applied {} Feluqa Core migration(s)", core_migrations.len());
-        for module in service_provider::enabled_migrations(&config.modules.enabled) {
+        for module in modules::enabled_migrations(&config.modules.enabled) {
             for (connection, applied) in
                 feluqa::database::MigrationRunner::run_declared(&databases, module).await?
             {

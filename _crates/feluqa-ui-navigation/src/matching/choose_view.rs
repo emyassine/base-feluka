@@ -1,6 +1,6 @@
 use either_of::*;
-use std::{future::Future, marker::PhantomData};
 use feluqa_ui_dom_renderer::view::any_view::{AnyView, IntoAny};
+use std::{future::Future, marker::PhantomData};
 
 pub trait ChooseView
 where

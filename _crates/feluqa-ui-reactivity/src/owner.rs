@@ -89,8 +89,7 @@ impl WeakOwner {
     pub fn upgrade(&self) -> Option<Owner> {
         self.inner.upgrade().map(|inner| {
             #[cfg(feature = "hydration")]
-            let shared_context =
-                self.shared_context.as_ref().and_then(|sc| sc.upgrade());
+            let shared_context = self.shared_context.as_ref().and_then(|sc| sc.upgrade());
             Owner {
                 inner,
                 #[cfg(feature = "hydration")]
@@ -156,9 +155,10 @@ impl Owner {
         #[cfg(feature = "hydration")]
         let (parent, shared_context) = OWNER
             .with(|o| {
-                o.borrow().as_ref().and_then(|o| o.upgrade()).map(|o| {
-                    (Some(Arc::downgrade(&o.inner)), o.shared_context.clone())
-                })
+                o.borrow()
+                    .as_ref()
+                    .and_then(|o| o.upgrade())
+                    .map(|o| (Some(Arc::downgrade(&o.inner)), o.shared_context.clone()))
             })
             .unwrap_or((None, None));
         let this = Self {
@@ -196,9 +196,7 @@ impl Owner {
     /// by any other `Owner`s created under this one.
     #[cfg(feature = "hydration")]
     #[track_caller]
-    pub fn new_root(
-        shared_context: Option<Arc<dyn SharedContext + Send + Sync>>,
-    ) -> Self {
+    pub fn new_root(shared_context: Option<Arc<dyn SharedContext + Send + Sync>>) -> Self {
         let this = Self {
             inner: Arc::new(RwLock::new(OwnerInner {
                 parent: None,
@@ -337,9 +335,7 @@ impl Owner {
 
     /// Returns the [`SharedContext`] associated with this owner, if any.
     #[cfg(feature = "hydration")]
-    pub fn shared_context(
-        &self,
-    ) -> Option<Arc<dyn SharedContext + Send + Sync>> {
+    pub fn shared_context(&self) -> Option<Arc<dyn SharedContext + Send + Sync>> {
         self.shared_context.clone()
     }
 
@@ -373,8 +369,7 @@ impl Owner {
 
     /// Returns the current [`SharedContext`], if any.
     #[cfg(feature = "hydration")]
-    pub fn current_shared_context(
-    ) -> Option<Arc<dyn SharedContext + Send + Sync>> {
+    pub fn current_shared_context() -> Option<Arc<dyn SharedContext + Send + Sync>> {
         OWNER.with(|o| {
             o.borrow()
                 .as_ref()

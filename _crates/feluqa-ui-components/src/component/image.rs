@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::runtime::prelude::*;
 
 #[component]
 pub fn Image(
@@ -14,7 +14,11 @@ pub fn Image(
     #[prop(optional, into)] sizes: String,
     #[prop(default = false)] priority: bool,
 ) -> impl IntoView {
-    let loading_attr = if priority { "eager".to_string() } else { loading };
+    let loading_attr = if priority {
+        "eager".to_string()
+    } else {
+        loading
+    };
     let fetchpriority_attr = if priority { Some("high") } else { None };
     let merged_class = class_merge!(class);
 

@@ -3,19 +3,15 @@ use crate::{
     matching::nested::any_nested_match::{AnyNestedMatch, IntoAnyNestedMatch},
     GeneratedRouteData, MatchNestedRoutes, RouteMatchId,
 };
-use std::fmt::Debug;
 use feluqa_ui_dom_renderer::{erased::Erased, prelude::IntoMaybeErased};
+use std::fmt::Debug;
 
 /// A type-erased container for any [`MatchNestedRoutes`].
 pub struct AnyNestedRoute {
     value: Erased,
     clone: fn(&Erased) -> AnyNestedRoute,
     match_nested:
-        for<'a> fn(
-            &'a Erased,
-            &'a str,
-        )
-            -> (Option<(RouteMatchId, AnyNestedMatch)>, &'a str),
+        for<'a> fn(&'a Erased, &'a str) -> (Option<(RouteMatchId, AnyNestedMatch)>, &'a str),
     generate_routes: fn(&Erased) -> Vec<GeneratedRouteData>,
     optional: fn(&Erased) -> bool,
 }
@@ -51,9 +47,7 @@ where
     T: MatchNestedRoutes + Send + Clone + 'static,
 {
     fn into_any_nested_route(self) -> AnyNestedRoute {
-        fn clone<T: MatchNestedRoutes + Send + Clone + 'static>(
-            value: &Erased,
-        ) -> AnyNestedRoute {
+        fn clone<T: MatchNestedRoutes + Send + Clone + 'static>(value: &Erased) -> AnyNestedRoute {
             value.get_ref::<T>().clone().into_any_nested_route()
         }
 
@@ -63,8 +57,7 @@ where
         ) -> (Option<(RouteMatchId, AnyNestedMatch)>, &'a str) {
             let (maybe_match, path) = value.get_ref::<T>().match_nested(path);
             (
-                maybe_match
-                    .map(|(id, matched)| (id, matched.into_any_nested_match())),
+                maybe_match.map(|(id, matched)| (id, matched.into_any_nested_match())),
                 path,
             )
         }
@@ -75,9 +68,7 @@ where
             value.get_ref::<T>().generate_routes().into_iter().collect()
         }
 
-        fn optional<T: MatchNestedRoutes + Send + Clone + 'static>(
-            value: &Erased,
-        ) -> bool {
+        fn optional<T: MatchNestedRoutes + Send + Clone + 'static>(value: &Erased) -> bool {
             value.get_ref::<T>().optional()
         }
 
@@ -95,10 +86,7 @@ impl MatchNestedRoutes for AnyNestedRoute {
     type Data = AnyNestedMatch;
     type Match = AnyNestedMatch;
 
-    fn match_nested<'a>(
-        &'a self,
-        path: &'a str,
-    ) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
+    fn match_nested<'a>(&'a self, path: &'a str) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
         (self.match_nested)(&self.value, path)
     }
 

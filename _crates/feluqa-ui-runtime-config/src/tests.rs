@@ -1,6 +1,6 @@
 use crate::{
-    env_from_str, env_w_default, env_wo_default, ws_from_str, Env,
-    FeluqaUiOptions, ReloadWSProtocol,
+    env_from_str, env_w_default, env_wo_default, ws_from_str, Env, FeluqaUiOptions,
+    ReloadWSProtocol,
 };
 use std::{net::SocketAddr, path::Ancestors, str::FromStr};
 

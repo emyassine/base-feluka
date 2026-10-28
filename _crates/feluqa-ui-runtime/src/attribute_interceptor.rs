@@ -90,8 +90,10 @@ impl<T: IntoView + 'static, A> AddAnyAttr for AttributeInterceptorInner<T, A>
 where
     A: Attribute,
 {
-    type Output<SomeNewAttr: feluqa_ui_runtime::attr::Attribute> =
-        AttributeInterceptorInner<T, <<A as NextAttribute>::Output<SomeNewAttr> as Attribute>::CloneableOwned>;
+    type Output<SomeNewAttr: feluqa_ui_runtime::attr::Attribute> = AttributeInterceptorInner<
+        T,
+        <<A as NextAttribute>::Output<SomeNewAttr> as Attribute>::CloneableOwned,
+    >;
 
     fn add_any_attr<NewAttr: feluqa_ui_runtime::attr::Attribute>(
         self,
@@ -100,11 +102,9 @@ where
     where
         Self::Output<NewAttr>: RenderHtml,
     {
-        let attributes =
-            self.attributes.add_any_attr(attr).into_cloneable_owned();
+        let attributes = self.attributes.add_any_attr(attr).into_cloneable_owned();
 
-        let children =
-            (self.children_builder)(attributes.clone().into_any_attr());
+        let children = (self.children_builder)(attributes.clone().into_any_attr());
 
         AttributeInterceptorInner {
             children_builder: self.children_builder,
@@ -114,9 +114,7 @@ where
     }
 }
 
-impl<T: IntoView + 'static, A: Attribute> RenderHtml
-    for AttributeInterceptorInner<T, A>
-{
+impl<T: IntoView + 'static, A: Attribute> RenderHtml for AttributeInterceptorInner<T, A> {
     type AsyncOutput = T::AsyncOutput;
     type Owned = AttributeInterceptorInner<T, A::CloneableOwned>;
 
@@ -126,9 +124,7 @@ impl<T: IntoView + 'static, A: Attribute> RenderHtml
         self.children.dry_resolve()
     }
 
-    fn resolve(
-        self,
-    ) -> impl std::future::Future<Output = Self::AsyncOutput> + Send {
+    fn resolve(self) -> impl std::future::Future<Output = Self::AsyncOutput> + Send {
         self.children.resolve()
     }
 
@@ -140,13 +136,8 @@ impl<T: IntoView + 'static, A: Attribute> RenderHtml
         mark_branches: bool,
         _extra_attrs: Vec<AnyAttribute>,
     ) {
-        self.children.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            vec![],
-        )
+        self.children
+            .to_html_with_buf(buf, position, escape, mark_branches, vec![])
     }
 
     fn hydrate<const FROM_SERVER: bool>(

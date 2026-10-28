@@ -1,11 +1,11 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::{Check, ChevronRight};
 use crate::runtime::context::Provider;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
-use crate::hook::use_random::use_random_id_for;
 pub use crate::component::separator::Separator as DropdownMenuSeparator;
+use crate::hook::use_random::use_random_id_for;
 
 mod components {
     use super::*;
@@ -37,7 +37,9 @@ pub fn DropdownMenuRadioGroup<T>(
 where
     T: Clone + PartialEq + Send + Sync + 'static,
 {
-    let ctx = DropdownMenuRadioContext { value_signal: value };
+    let ctx = DropdownMenuRadioContext {
+        value_signal: value,
+    };
 
     view! {
         <Provider value=ctx>
@@ -105,8 +107,12 @@ pub fn DropdownMenuAction(
     let _ctx = expect_context::<DropdownMenuContext>();
 
     let variant_class = match variant {
-        DropdownMenuActionVariant::Default => "text-popover-foreground hover:bg-accent hover:text-accent-foreground",
-        DropdownMenuActionVariant::Destructive => "text-destructive hover:bg-destructive/10 hover:text-destructive",
+        DropdownMenuActionVariant::Default => {
+            "text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+        }
+        DropdownMenuActionVariant::Destructive => {
+            "text-destructive hover:bg-destructive/10 hover:text-destructive"
+        }
     };
 
     let class = class_merge!(
@@ -199,7 +205,10 @@ pub fn DropdownMenu(
 ) -> impl IntoView {
     let dropdown_target_id = use_random_id_for("dropdown");
 
-    let ctx = DropdownMenuContext { target_id: dropdown_target_id, align };
+    let ctx = DropdownMenuContext {
+        target_id: dropdown_target_id,
+        align,
+    };
 
     view! {
         <Provider value=ctx>
@@ -239,8 +248,7 @@ pub fn DropdownMenuTrigger(
     #[prop(optional, into)] class: String,
     // Render children directly instead of wrapping in a button.
     // Use when the child is already a button (e.g. InputGroupButton) to avoid nested buttons.
-    #[prop(optional)]
-    as_child: bool,
+    #[prop(optional)] as_child: bool,
 ) -> impl IntoView {
     let ctx = expect_context::<DropdownMenuContext>();
 
@@ -543,7 +551,10 @@ pub fn DropdownMenuSub(children: Children) -> impl IntoView {
 }
 
 #[component]
-pub fn DropdownMenuSubTrigger(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
+pub fn DropdownMenuSubTrigger(
+    children: Children,
+    #[prop(optional, into)] class: String,
+) -> impl IntoView {
     let class = class_merge!("flex items-center justify-between w-full", class);
 
     view! {
@@ -555,7 +566,10 @@ pub fn DropdownMenuSubTrigger(children: Children, #[prop(optional, into)] class:
 }
 
 #[component]
-pub fn DropdownMenuSubItem(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
+pub fn DropdownMenuSubItem(
+    children: Children,
+    #[prop(optional, into)] class: String,
+) -> impl IntoView {
     let class = class_merge!(
         "inline-flex gap-2 items-center w-full rounded-sm px-3 py-2 text-sm transition-all duration-150 ease text-popover-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer hover:translate-x-[2px]",
         class

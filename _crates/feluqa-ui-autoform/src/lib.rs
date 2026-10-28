@@ -128,7 +128,11 @@ pub fn auto_form_derive(input: TokenStream) -> TokenStream {
     };
 
     let struct_ident = &container.ident;
-    let fields = container.data.take_struct().map(|s| s.fields).unwrap_or_default();
+    let fields = container
+        .data
+        .take_struct()
+        .map(|s| s.fields)
+        .unwrap_or_default();
 
     let field_renders: Vec<_> = fields
         .iter()
@@ -144,7 +148,10 @@ pub fn auto_form_derive(input: TokenStream) -> TokenStream {
             };
 
             // Determine the label
-            let label = field.label.clone().unwrap_or_else(|| to_title_case(&field_name));
+            let label = field
+                .label
+                .clone()
+                .unwrap_or_else(|| to_title_case(&field_name));
 
             // Determine field type
             let is_bool = is_bool_type(base_ty);

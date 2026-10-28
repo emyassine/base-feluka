@@ -43,11 +43,7 @@ impl ServerFnCall {
     ///     }
     /// }
     /// ```
-    pub fn parse(
-        default_path: &str,
-        args: TokenStream2,
-        body: TokenStream2,
-    ) -> Result<Self> {
+    pub fn parse(default_path: &str, args: TokenStream2, body: TokenStream2) -> Result<Self> {
         let args = syn::parse2(args)?;
         let body = syn::parse2(body)?;
         let mut myself = ServerFnCall {
@@ -206,9 +202,9 @@ impl ServerFnCall {
                 }
             })
             .unwrap_or_else(|| {
-                self.default_input_encoding.clone().unwrap_or_else(
-                    || parse_quote!(#server_fn_path::codec::PostUrl),
-                )
+                self.default_input_encoding
+                    .clone()
+                    .unwrap_or_else(|| parse_quote!(#server_fn_path::codec::PostUrl))
             })
     }
 
@@ -226,9 +222,9 @@ impl ServerFnCall {
                 }
             })
             .unwrap_or_else(|| {
-                self.default_output_encoding.clone().unwrap_or_else(
-                    || parse_quote!(#server_fn_path::codec::Json),
-                )
+                self.default_output_encoding
+                    .clone()
+                    .unwrap_or_else(|| parse_quote!(#server_fn_path::codec::Json))
             })
     }
 
@@ -268,9 +264,7 @@ impl ServerFnCall {
 
     fn input_ident(&self) -> Option<String> {
         match &self.args.input {
-            Some(Type::Path(path)) => {
-                path.path.segments.last().map(|seg| seg.ident.to_string())
-            }
+            Some(Type::Path(path)) => path.path.segments.last().map(|seg| seg.ident.to_string()),
             None => Some("PostUrl".to_string()),
             _ => None,
         }
@@ -347,9 +341,9 @@ impl ServerFnCall {
                     Clone, #server_fn_path::bitcode::Encode, #server_fn_path::bitcode::Decode
                 },
             ),
-            Some("MultipartFormData")
-            | Some("Streaming")
-            | Some("StreamingText") => (PathInfo::None, quote! {}),
+            Some("MultipartFormData") | Some("Streaming") | Some("StreamingText") => {
+                (PathInfo::None, quote! {})
+            }
             Some("SerdeLite") => (
                 PathInfo::Serde,
                 quote! {
@@ -461,8 +455,7 @@ impl ServerFnCall {
         if cfg!(feature = "ssr") {
             let server_fn_path = self.server_fn_path();
             let wrapped_struct_name = self.wrapped_struct_name();
-            let wrapped_struct_name_turbofish =
-                self.wrapped_struct_name_turbofish();
+            let wrapped_struct_name_turbofish = self.wrapped_struct_name_turbofish();
             quote! {
                 #server_fn_path::inventory::submit! {{
                     use #server_fn_path::{ServerFn, codec::Encoding};
@@ -481,10 +474,11 @@ impl ServerFnCall {
     /// a hash of the function name and location in the source code.
     pub fn server_fn_url(&self) -> TokenStream2 {
         let default_path = &self.default_path;
-        let prefix =
-            self.args.prefix.clone().unwrap_or_else(|| {
-                LitStr::new(default_path, Span::call_site())
-            });
+        let prefix = self
+            .args
+            .prefix
+            .clone()
+            .unwrap_or_else(|| LitStr::new(default_path, Span::call_site()));
         let server_fn_path = self.server_fn_path();
         let fn_path = self.args.fn_path.clone().map(|fn_path| {
             let fn_path = fn_path.value();
@@ -493,8 +487,7 @@ impl ServerFnCall {
             fn_path
         });
 
-        let enable_server_fn_mod_path =
-            option_env!("SERVER_FN_MOD_PATH").is_some();
+        let enable_server_fn_mod_path = option_env!("SERVER_FN_MOD_PATH").is_some();
         let mod_path = if enable_server_fn_mod_path {
             quote! {
                 #server_fn_path::const_format::concatcp!(
@@ -561,9 +554,8 @@ impl ServerFnCall {
         let protocol = self.protocol();
         let middlewares = &self.body.middlewares;
         let return_ty = &self.body.return_ty;
-        let output_ty = self.body.output_ty
-            .as_ref()
-            .map_or_else(|| {
+        let output_ty = self.body.output_ty.as_ref().map_or_else(
+            || {
                 quote! {
                     <#return_ty as #server_fn_path::error::ServerFnMustReturnResult>::Ok
                 }
@@ -571,9 +563,8 @@ impl ServerFnCall {
             ToTokens::to_token_stream,
         );
         let error_ty = &self.body.error_ty;
-        let error_ty = error_ty
-            .as_ref()
-            .map_or_else(|| {
+        let error_ty = error_ty.as_ref().map_or_else(
+            || {
                 quote! {
                     <#return_ty as #server_fn_path::error::ServerFnMustReturnResult>::Err
                 }
@@ -602,16 +593,15 @@ impl ServerFnCall {
 
         // run_body in the trait implementation
         let run_body = if cfg!(feature = "ssr") {
-            let destructure =
-                if let Some(wrapper) = self.args.custom_wrapper.as_ref() {
-                    quote! {
-                        let #wrapper(#struct_name { #(#field_names),* }) = self;
-                    }
-                } else {
-                    quote! {
-                        let #struct_name { #(#field_names),* } = self;
-                    }
-                };
+            let destructure = if let Some(wrapper) = self.args.custom_wrapper.as_ref() {
+                quote! {
+                    let #wrapper(#struct_name { #(#field_names),* }) = self;
+                }
+            } else {
+                quote! {
+                    let #struct_name { #(#field_names),* } = self;
+                }
+            };
             let dummy_name = self.body.to_dummy_ident();
 
             // using the impl Future syntax here is thanks to Actix
@@ -788,9 +778,7 @@ impl ServerFnCall {
                 }
             }
         } else {
-            let restructure = if let Some(custom_wrapper) =
-                self.args.custom_wrapper.as_ref()
-            {
+            let restructure = if let Some(custom_wrapper) = self.args.custom_wrapper.as_ref() {
                 quote! {
                     let data = #custom_wrapper(#struct_name { #(#field_names),* });
                 }
@@ -924,9 +912,7 @@ fn output_type(return_ty: &Type) -> Option<&Type> {
         if pat.path.segments[0].ident == "Result" {
             if pat.path.segments.is_empty() {
                 panic!("{:#?}", pat.path);
-            } else if let PathArguments::AngleBracketed(args) =
-                &pat.path.segments[0].arguments
-            {
+            } else if let PathArguments::AngleBracketed(args) = &pat.path.segments[0].arguments {
                 if let GenericArgument::Type(ty) = &args.args[0] {
                     return Some(ty);
                 }
@@ -940,9 +926,7 @@ fn output_type(return_ty: &Type) -> Option<&Type> {
 fn err_type(return_ty: &Type) -> Option<&Type> {
     if let syn::Type::Path(pat) = &return_ty {
         if pat.path.segments[0].ident == "Result" {
-            if let PathArguments::AngleBracketed(args) =
-                &pat.path.segments[0].arguments
-            {
+            if let PathArguments::AngleBracketed(args) = &pat.path.segments[0].arguments {
                 // Result<T>
                 if args.args.len() == 1 {
                     return None;
@@ -958,18 +942,14 @@ fn err_type(return_ty: &Type) -> Option<&Type> {
     None
 }
 
-fn err_ws_in_type(
-    inputs: &Punctuated<ServerFnArg, syn::token::Comma>,
-) -> Option<Type> {
+fn err_ws_in_type(inputs: &Punctuated<ServerFnArg, syn::token::Comma>) -> Option<Type> {
     inputs.into_iter().find_map(|pat| {
         if let syn::Type::Path(ref pat) = *pat.arg.ty {
             if pat.path.segments[0].ident != "BoxedStream" {
                 return None;
             }
 
-            if let PathArguments::AngleBracketed(args) =
-                &pat.path.segments[0].arguments
-            {
+            if let PathArguments::AngleBracketed(args) = &pat.path.segments[0].arguments {
                 // BoxedStream<T>
                 if args.args.len() == 1 {
                     return None;
@@ -988,9 +968,7 @@ fn err_ws_in_type(
 fn err_ws_out_type(output_ty: &Option<Type>) -> Result<Option<Type>> {
     if let Some(syn::Type::Path(ref pat)) = output_ty {
         if pat.path.segments[0].ident == "BoxedStream" {
-            if let PathArguments::AngleBracketed(args) =
-                &pat.path.segments[0].arguments
-            {
+            if let PathArguments::AngleBracketed(args) = &pat.path.segments[0].arguments {
                 // BoxedStream<T>
                 if args.args.len() == 1 {
                     return Ok(None);
@@ -1207,10 +1185,7 @@ impl Parse for ServerFnArgs {
                     if arg_pos == 1 {
                         struct_name = Some(value)
                     } else {
-                        return Err(syn::Error::new(
-                            value.span(),
-                            "expected string literal",
-                        ));
+                        return Err(syn::Error::new(value.span(), "expected string literal"));
                     }
                 }
             } else if lookahead.peek(LitStr) {
@@ -1227,12 +1202,7 @@ impl Parse for ServerFnArgs {
                     2 => prefix = Some(stream.parse()?),
                     3 => encoding = Some(stream.parse()?),
                     4 => fn_path = Some(stream.parse()?),
-                    _ => {
-                        return Err(syn::Error::new(
-                            stream.span(),
-                            "unexpected extra argument",
-                        ))
-                    }
+                    _ => return Err(syn::Error::new(stream.span(), "unexpected extra argument")),
                 }
             } else {
                 return Err(lookahead.error());
@@ -1267,12 +1237,7 @@ impl Parse for ServerFnArgs {
                     output = Some(syn::parse_quote!(Json));
                     builtin_encoding = true;
                 }
-                _ => {
-                    return Err(syn::Error::new(
-                        encoding.span(),
-                        "Encoding not found.",
-                    ))
-                }
+                _ => return Err(syn::Error::new(encoding.span(), "Encoding not found.")),
             }
         }
 
@@ -1380,27 +1345,17 @@ impl Parse for ServerFnArg {
                     let args = attr.parse_args::<Meta>()?;
                     match args {
                         // #[server(default)]
-                        Meta::Path(path) if path.is_ident("default") => {
-                            Ok(attr.clone())
-                        }
+                        Meta::Path(path) if path.is_ident("default") => Ok(attr.clone()),
                         // #[server(flatten)]
-                        Meta::Path(path) if path.is_ident("flatten") => {
-                            Ok(attr.clone())
-                        }
+                        Meta::Path(path) if path.is_ident("flatten") => Ok(attr.clone()),
                         // #[server(default = "value")]
-                        Meta::NameValue(name_value)
-                            if name_value.path.is_ident("default") =>
-                        {
+                        Meta::NameValue(name_value) if name_value.path.is_ident("default") => {
                             Ok(attr.clone())
                         }
                         // #[server(skip)]
-                        Meta::Path(path) if path.is_ident("skip") => {
-                            Ok(attr.clone())
-                        }
+                        Meta::Path(path) if path.is_ident("skip") => Ok(attr.clone()),
                         // #[server(rename = "value")]
-                        Meta::NameValue(name_value)
-                            if name_value.path.is_ident("rename") =>
-                        {
+                        Meta::NameValue(name_value) if name_value.path.is_ident("rename") => {
                             Ok(attr.clone())
                         }
                         _ => Err(Error::new(
@@ -1529,8 +1484,7 @@ impl Parse for ServerFnBody {
             };
             !attr.path.is_ident("doc")
         });
-        let (lint_attrs, mut attrs): (Vec<_>, Vec<_>) =
-            attrs.into_iter().partition(is_lint_attr);
+        let (lint_attrs, mut attrs): (Vec<_>, Vec<_>) = attrs.into_iter().partition(is_lint_attr);
 
         // extract all #[middleware] attributes, removing them from signature of dummy
         let mut middlewares: Vec<Middleware> = vec![];

@@ -1,7 +1,7 @@
 use super::ChooseView;
+use feluqa_ui_dom_renderer::{erased::Erased, view::any_view::AnyView};
 use futures::FutureExt;
 use std::{future::Future, pin::Pin};
-use feluqa_ui_dom_renderer::{erased::Erased, view::any_view::AnyView};
 
 /// A type-erased [`ChooseView`].
 pub struct AnyChooseView {
@@ -23,15 +23,11 @@ impl AnyChooseView {
             AnyChooseView::new(value.get_ref::<T>().clone())
         }
 
-        fn choose<T: ChooseView>(
-            value: Erased,
-        ) -> Pin<Box<dyn Future<Output = AnyView>>> {
+        fn choose<T: ChooseView>(value: Erased) -> Pin<Box<dyn Future<Output = AnyView>>> {
             value.into_inner::<T>().choose().boxed_local()
         }
 
-        fn preload<'a, T: ChooseView>(
-            value: &'a Erased,
-        ) -> Pin<Box<dyn Future<Output = ()> + 'a>> {
+        fn preload<'a, T: ChooseView>(value: &'a Erased) -> Pin<Box<dyn Future<Output = ()> + 'a>> {
             value.get_ref::<T>().preload().boxed_local()
         }
 

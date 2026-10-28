@@ -1,7 +1,7 @@
-use crate::runtime::prelude::*;
+use crate::feluqa_ui_classnames::*;
 use crate::navigation::components::A;
 use crate::navigation::hooks::use_location;
-use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum PathMatchType {
@@ -42,7 +42,11 @@ pub fn Link(
     };
 
     let class_with_active = move |path_segment: &str| -> String {
-        let active_styles = if is_active(path_segment) { "font-semibold" } else { "" };
+        let active_styles = if is_active(path_segment) {
+            "font-semibold"
+        } else {
+            ""
+        };
         class_merge!(&class, active_styles)
     };
 

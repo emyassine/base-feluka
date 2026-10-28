@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::*;
 use crate::runtime::prelude::*;
 use crate::strum::AsRefStr;
-use crate::feluqa_ui_classnames::*;
 
 #[derive(Default, Clone, Copy, PartialEq, Eq, AsRefStr, crate::strum::Display)]
 #[strum(serialize_all = "lowercase")]

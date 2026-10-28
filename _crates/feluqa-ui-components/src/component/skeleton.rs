@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::void;
+use crate::runtime::prelude::*;
 
 const PULSE_ANIMATION: &str = "animate-pulse";
 

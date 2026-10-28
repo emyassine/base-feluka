@@ -159,8 +159,8 @@ extern crate self as feluqa_ui_runtime;
 pub mod prelude {
     // Traits
     // These should always be exported from the prelude
-    pub use feluqa_ui_reactivity::prelude::*;
     pub use feluqa_ui_dom_renderer::prelude::*;
+    pub use feluqa_ui_reactivity::prelude::*;
 
     /// Structs
     /// In the future, maybe we should remove this blanket export
@@ -169,15 +169,13 @@ pub mod prelude {
         #[cfg(feature = "nonce")]
         pub use crate::nonce::*;
         pub use crate::{
-            callback::*, children::*, component::*, control_flow::*, error::*,
-            form::*, hydration::*, into_view::*, mount::*, suspense::*,
-            text_prop::*,
+            callback::*, children::*, component::*, control_flow::*, error::*, form::*,
+            hydration::*, into_view::*, mount::*, suspense::*, text_prop::*,
         };
-        pub use feluqa_ui_runtime_config::*;
-        pub use feluqa_ui_runtime_dom::helpers::*;
-        pub use feluqa_ui_runtime_macros::*;
-        pub use feluqa_ui_runtime_server::*;
-        pub use oco_ref::*;
+        pub use feluqa_ui_dom_renderer::{
+            feluqa_ui_reactivity::{bind::BindAttribute, node_ref::*, Suspend},
+            view::{fragment::Fragment, template::ViewTemplate},
+        };
         pub use feluqa_ui_reactivity::{
             actions::*,
             computed::*,
@@ -187,14 +185,15 @@ pub mod prelude {
             signal::*,
             wrappers::{read::*, write::*},
         };
+        pub use feluqa_ui_runtime_config::*;
+        pub use feluqa_ui_runtime_dom::helpers::*;
+        pub use feluqa_ui_runtime_macros::*;
+        pub use feluqa_ui_runtime_server::*;
         pub use feluqa_ui_server_functions::{
             self,
             error::{FromServerFnError, ServerFnError, ServerFnErrorErr},
         };
-        pub use feluqa_ui_dom_renderer::{
-            feluqa_ui_reactivity::{bind::BindAttribute, node_ref::*, Suspend},
-            view::{fragment::Fragment, template::ViewTemplate},
-        };
+        pub use oco_ref::*;
     }
     pub use export_types::*;
 }
@@ -224,9 +223,7 @@ pub mod error {
 
 /// Control-flow components like `<Show>`, `<For>`, and `<Await>`.
 pub mod control_flow {
-    pub use crate::{
-        animated_show::*, await_::*, for_loop::*, show::*, show_let::*,
-    };
+    pub use crate::{animated_show::*, await_::*, for_loop::*, show::*, show_let::*};
 }
 mod animated_show;
 mod await_;
@@ -263,9 +260,9 @@ pub use typed_builder;
 #[doc(hidden)]
 pub use typed_builder_macro;
 mod into_view;
-pub use into_view::IntoView;
 #[doc(inline)]
 pub use feluqa_ui_runtime_dom;
+pub use into_view::IntoView;
 mod provider;
 #[doc(inline)]
 pub use feluqa_ui_dom_renderer;
@@ -287,8 +284,6 @@ pub mod context {
     pub use feluqa_ui_reactivity::owner::{provide_context, use_context};
 }
 
-#[doc(inline)]
-pub use feluqa_ui_runtime_server as server;
 /// HTML attribute types.
 #[doc(inline)]
 pub use feluqa_ui_dom_renderer::html::attribute as attr;
@@ -304,6 +299,8 @@ pub use feluqa_ui_dom_renderer::mathml as math;
 /// SVG element types.
 #[doc(inline)]
 pub use feluqa_ui_dom_renderer::svg;
+#[doc(inline)]
+pub use feluqa_ui_runtime_server as server;
 
 #[cfg(feature = "subsecond")]
 /// Utilities for using binary hot-patching with [`subsecond`].
@@ -311,15 +308,13 @@ pub mod subsecond;
 
 /// Utilities for simple isomorphic logging to the console or terminal.
 pub mod logging {
-    pub use feluqa_ui_runtime_dom::{
-        debug_error, debug_log, debug_warn, error, log, warn,
-    };
+    pub use feluqa_ui_runtime_dom::{debug_error, debug_log, debug_warn, error, log, warn};
 }
 
 /// Utilities for working with asynchronous tasks.
 pub mod task {
-    use feluqa_ui_task_runtime::Executor;
     use feluqa_ui_reactivity::computed::ScopedFuture;
+    use feluqa_ui_task_runtime::Executor;
     use std::future::Future;
 
     /// Spawns a thread-safe [`Future`].
@@ -349,9 +344,7 @@ pub mod task {
         Executor::tick().await
     }
 
-    pub use feluqa_ui_reactivity::{
-        spawn_local_scoped, spawn_local_scoped_with_cancellation,
-    };
+    pub use feluqa_ui_reactivity::{spawn_local_scoped, spawn_local_scoped_with_cancellation};
 }
 
 // these reexports are used in islands
@@ -379,9 +372,7 @@ pub mod __reexports {
 #[doc(hidden)]
 #[derive(Clone, Debug, Default)]
 pub struct PrefetchLazyFn(
-    pub  feluqa_ui_reactivity::owner::ArcStoredValue<
-        std::collections::HashSet<&'static str>,
-    >,
+    pub feluqa_ui_reactivity::owner::ArcStoredValue<std::collections::HashSet<&'static str>>,
 );
 
 #[doc(hidden)]
@@ -400,6 +391,6 @@ pub struct WasmSplitManifest(
     pub  feluqa_ui_reactivity::owner::ArcStoredValue<(
         String,                                         // the pkg root
         std::collections::HashMap<String, Vec<String>>, // preloads
-        String, // the name of the __wasm_split.js file
+        String,                                         // the name of the __wasm_split.js file
     )>,
 );

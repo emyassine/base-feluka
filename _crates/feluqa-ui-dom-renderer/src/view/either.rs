@@ -1,12 +1,8 @@
 use super::{
-    add_attr::AddAnyAttr, MarkBranch, Mountable, Position, PositionState,
-    Render, RenderHtml,
+    add_attr::AddAnyAttr, MarkBranch, Mountable, Position, PositionState, Render, RenderHtml,
 };
 use crate::{
-    html::attribute::{
-        any_attribute::AnyAttribute, Attribute, NamedAttributeKey,
-        NextAttribute,
-    },
+    html::attribute::{any_attribute::AnyAttribute, Attribute, NamedAttributeKey, NextAttribute},
     hydration::Cursor,
     ssr::StreamBuilder,
 };
@@ -94,15 +90,10 @@ where
     A: RenderHtml,
     B: RenderHtml,
 {
-    type Output<SomeNewAttr: Attribute> = Either<
-        <A as AddAnyAttr>::Output<SomeNewAttr>,
-        <B as AddAnyAttr>::Output<SomeNewAttr>,
-    >;
+    type Output<SomeNewAttr: Attribute> =
+        Either<<A as AddAnyAttr>::Output<SomeNewAttr>, <B as AddAnyAttr>::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -132,15 +123,10 @@ where
     B: NextAttribute,
     A: NextAttribute,
 {
-    type Output<NewAttr: Attribute> = Either<
-        <A as NextAttribute>::Output<NewAttr>,
-        <B as NextAttribute>::Output<NewAttr>,
-    >;
+    type Output<NewAttr: Attribute> =
+        Either<<A as NextAttribute>::Output<NewAttr>, <B as NextAttribute>::Output<NewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         match self {
             Either::Left(left) => Either::Left(left.add_any_attr(new_attr)),
             Either::Right(right) => Either::Right(right.add_any_attr(new_attr)),
@@ -156,10 +142,7 @@ where
 {
     type Output<NewAttr: Attribute> = Vec<AnyAttribute>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         use crate::html::attribute::any_attribute::IntoAnyAttribute;
 
         vec![
@@ -200,21 +183,14 @@ where
     ) {
         match self {
             Either::Left(left) => left.to_html(buf, class, style, inner_html),
-            Either::Right(right) => {
-                right.to_html(buf, class, style, inner_html)
-            }
+            Either::Right(right) => right.to_html(buf, class, style, inner_html),
         }
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         match self {
             Either::Left(left) => Either::Left(left.hydrate::<FROM_SERVER>(el)),
-            Either::Right(right) => {
-                Either::Right(right.hydrate::<FROM_SERVER>(el))
-            }
+            Either::Right(right) => Either::Right(right.hydrate::<FROM_SERVER>(el)),
         }
     }
 
@@ -321,13 +297,7 @@ where
                 if mark_branches && escape {
                     buf.open_branch("0");
                 }
-                left.to_html_with_buf(
-                    buf,
-                    position,
-                    escape,
-                    mark_branches,
-                    extra_attrs,
-                );
+                left.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
                 if mark_branches && escape {
                     buf.close_branch("0");
                     if *position == Position::NextChildAfterText {
@@ -339,13 +309,7 @@ where
                 if mark_branches && escape {
                     buf.open_branch("1");
                 }
-                right.to_html_with_buf(
-                    buf,
-                    position,
-                    escape,
-                    mark_branches,
-                    extra_attrs,
-                );
+                right.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
                 if mark_branches && escape {
                     buf.close_branch("1");
                     if *position == Position::NextChildAfterText {
@@ -412,27 +376,15 @@ where
         position: &PositionState,
     ) -> Self::State {
         match self {
-            Either::Left(left) => {
-                Either::Left(left.hydrate::<FROM_SERVER>(cursor, position))
-            }
-            Either::Right(right) => {
-                Either::Right(right.hydrate::<FROM_SERVER>(cursor, position))
-            }
+            Either::Left(left) => Either::Left(left.hydrate::<FROM_SERVER>(cursor, position)),
+            Either::Right(right) => Either::Right(right.hydrate::<FROM_SERVER>(cursor, position)),
         }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         match self {
-            Either::Left(left) => {
-                Either::Left(left.hydrate_async(cursor, position).await)
-            }
-            Either::Right(right) => {
-                Either::Right(right.hydrate_async(cursor, position).await)
-            }
+            Either::Left(left) => Either::Left(left.hydrate_async(cursor, position).await),
+            Either::Right(right) => Either::Right(right.hydrate_async(cursor, position).await),
         }
     }
 
@@ -523,10 +475,7 @@ where
         <B as AddAnyAttr>::Output<SomeNewAttr::Cloneable>,
     >;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -590,23 +539,11 @@ where
         if self.show_b {
             self.b
                 .expect("rendering B to HTML without filling it")
-                .to_html_with_buf(
-                    buf,
-                    position,
-                    escape,
-                    mark_branches,
-                    extra_attrs,
-                );
+                .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         } else {
             self.a
                 .expect("rendering A to HTML without filling it")
-                .to_html_with_buf(
-                    buf,
-                    position,
-                    escape,
-                    mark_branches,
-                    extra_attrs,
-                );
+                .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
         }
     }
 
@@ -667,11 +604,7 @@ where
         EitherKeepAliveState { showing_b, a, b }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let showing_b = self.show_b;
         let a = if let Some(a) = self.a {
             Some(if showing_b {

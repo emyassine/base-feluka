@@ -1,11 +1,11 @@
+pub(crate) mod class_merge_override;
 pub(crate) mod config;
 pub(crate) mod get_collision_id;
 pub(crate) mod get_collisions;
-pub(crate) mod class_merge_override;
 pub(crate) mod validators;
 
-pub use config::*;
 pub use class_merge_override::class_merge_override;
+pub use config::*;
 
 /// Merges all the Tailwind classes, resolving conflicts.
 ///
@@ -59,7 +59,12 @@ pub fn class_merge_slice(class: &[&str]) -> String {
 /// ```
 #[inline]
 pub fn class_merge_options(class: impl AsRef<str>, options: MergeOptions) -> String {
-    class_merge_override::class_merge_override(&[class.as_ref()], options, |_: &[&str], _: Option<&str>| None, |_: &str| None)
+    class_merge_override::class_merge_override(
+        &[class.as_ref()],
+        options,
+        |_: &[&str], _: Option<&str>| None,
+        |_: &str| None,
+    )
 }
 
 /// Merges all the Tailwind classes in the provided strings, resolving conflicts.
@@ -82,7 +87,12 @@ pub fn class_merge_options(class: impl AsRef<str>, options: MergeOptions) -> Str
 /// ```
 #[inline]
 pub fn class_merge_slice_options(class: &[&str], options: MergeOptions) -> String {
-    class_merge_override::class_merge_override(class, options, |_: &[&str], _: Option<&str>| None, |_: &str| None)
+    class_merge_override::class_merge_override(
+        class,
+        options,
+        |_: &[&str], _: Option<&str>| None,
+        |_: &str| None,
+    )
 }
 
 /// Return a ConflictId for a given Tailwind Class.

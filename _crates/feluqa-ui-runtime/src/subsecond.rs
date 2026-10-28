@@ -36,9 +36,7 @@ pub fn connect_to_hot_patch_messages() {
             let string: String = text.into();
             let string = Box::leak(string.into_boxed_str());
 
-            if let Ok(DevserverMsg::HotReload(msg)) =
-                serde_json::from_str::<DevserverMsg>(string)
-            {
+            if let Ok(DevserverMsg::HotReload(msg)) = serde_json::from_str::<DevserverMsg>(string) {
                 if let Some(jump_table) = msg.jump_table.as_ref().cloned() {
                     if msg.for_build_id == Some(feluqa_ui_cli_config::build_id()) {
                         let our_pid = if cfg!(target_family = "wasm") {
@@ -48,8 +46,7 @@ pub fn connect_to_hot_patch_messages() {
                         };
 
                         if msg.for_pid == our_pid {
-                            unsafe { subsecond::apply_patch(jump_table) }
-                                .unwrap();
+                            unsafe { subsecond::apply_patch(jump_table) }.unwrap();
                         }
                     }
                 }

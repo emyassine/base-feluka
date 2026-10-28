@@ -1,14 +1,14 @@
 use super::{
-    component_builder::maybe_optimised_component_children,
-    convert_to_snake_case, full_path_from_tag_name,
+    component_builder::maybe_optimised_component_children, convert_to_snake_case,
+    full_path_from_tag_name,
 };
 use crate::{
     diagnostics::Errors,
     view::{fragment_to_tokens, utils::filter_prefixed_attrs, TagType},
 };
+use feluqa_ui_markup_parser::node::{CustomNode, KeyedAttribute, NodeAttribute, NodeElement};
 use proc_macro2::{Ident, TokenStream, TokenTree};
 use quote::{quote, quote_spanned};
-use feluqa_ui_markup_parser::node::{CustomNode, KeyedAttribute, NodeAttribute, NodeElement};
 use std::collections::HashMap;
 use syn::spanned::Spanned;
 
@@ -106,11 +106,9 @@ pub(crate) fn slot_to_tokens(
     let mut slots = HashMap::new();
     let children = if node.children.is_empty() {
         quote! {}
-    } else if let Some(children) = maybe_optimised_component_children(
-        &node.children,
-        &items_to_bind,
-        &items_to_clone,
-    ) {
+    } else if let Some(children) =
+        maybe_optimised_component_children(&node.children, &items_to_bind, &items_to_clone)
+    {
         children
     } else {
         let children = fragment_to_tokens(
@@ -139,8 +137,7 @@ pub(crate) fn slot_to_tokens(
         let view_marker = quote! {};
 
         if let Some(children) = children {
-            let bindables =
-                items_to_bind.iter().map(|ident| quote! { #ident, });
+            let bindables = items_to_bind.iter().map(|ident| quote! { #ident, });
 
             let clonables = items_to_clone.iter().map(|ident| {
                 quote_spanned! {ident.span()=>
@@ -224,9 +221,7 @@ pub(crate) fn is_slot(node: &KeyedAttribute) -> bool {
     key == "slot" || key.starts_with("slot:")
 }
 
-pub(crate) fn get_slot(
-    node: &NodeElement<impl CustomNode>,
-) -> Option<&KeyedAttribute> {
+pub(crate) fn get_slot(node: &NodeElement<impl CustomNode>) -> Option<&KeyedAttribute> {
     node.attributes().iter().find_map(|node| {
         if let NodeAttribute::Attribute(node) = node {
             if is_slot(node) {

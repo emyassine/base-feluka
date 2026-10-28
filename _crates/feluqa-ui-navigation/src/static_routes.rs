@@ -1,7 +1,7 @@
 use crate::{hooks::RawParamsMap, params::ParamsMap, PathSegment};
-use futures::{channel::oneshot, stream, Stream, StreamExt};
-use feluqa_ui_runtime::task::spawn;
 use feluqa_ui_reactivity::{owner::Owner, traits::GetUntracked};
+use feluqa_ui_runtime::task::spawn;
+use futures::{channel::oneshot, stream, Stream, StreamExt};
 use std::{
     fmt::{Debug, Display},
     future::Future,
@@ -17,15 +17,12 @@ type PinnedStream<T> = Pin<Box<dyn Stream<Item = T> + Send>>;
 /// generation.
 pub type StaticParams = Arc<StaticParamsFn>;
 /// A function that generates a set of params for generating a static route.
-pub type StaticParamsFn =
-    dyn Fn() -> PinnedFuture<StaticParamsMap> + Send + Sync + 'static;
+pub type StaticParamsFn = dyn Fn() -> PinnedFuture<StaticParamsMap> + Send + Sync + 'static;
 
 /// A function that defines when a statically-generated page should be regenerated.
 #[derive(Clone)]
 #[allow(clippy::type_complexity)]
-pub struct RegenerationFn(
-    Arc<dyn Fn(&ParamsMap) -> PinnedStream<()> + Send + Sync>,
-);
+pub struct RegenerationFn(Arc<dyn Fn(&ParamsMap) -> PinnedStream<()> + Send + Sync>);
 
 impl Debug for RegenerationFn {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -62,10 +59,7 @@ impl StaticRoute {
 
     /// Defines a set of params that should be prerendered on server start-up, depending on some
     /// asynchronous function that returns their values.
-    pub fn prerender_params<Fut>(
-        mut self,
-        params: impl Fn() -> Fut + Send + Sync + 'static,
-    ) -> Self
+    pub fn prerender_params<Fut>(mut self, params: impl Fn() -> Fut + Send + Sync + 'static) -> Self
     where
         Fut: Future<Output = StaticParamsMap> + Send + 'static,
     {
@@ -116,8 +110,7 @@ impl Ord for StaticRoute {
 
 impl PartialEq for StaticRoute {
     fn eq(&self, other: &Self) -> bool {
-        let prerender = match (&self.prerender_params, &other.prerender_params)
-        {
+        let prerender = match (&self.prerender_params, &other.prerender_params) {
             (None, None) => true,
             (None, Some(_)) | (Some(_), None) => false,
             (Some(this), Some(that)) => Arc::ptr_eq(this, that),
@@ -172,9 +165,7 @@ impl IntoIterator for StaticParamsMap {
 
 /// An iterator over a set of (key, value) pairs for statically-routed params.
 #[derive(Debug)]
-pub struct StaticParamsIter(
-    <Vec<(String, Vec<String>)> as IntoIterator>::IntoIter,
-);
+pub struct StaticParamsIter(<Vec<(String, Vec<String>)> as IntoIterator>::IntoIter);
 
 impl Iterator for StaticParamsIter {
     type Item = (String, Vec<String>);
@@ -204,10 +195,7 @@ impl StaticPath {
         Self { segments }
     }
 
-    pub fn into_paths(
-        self,
-        params: Option<StaticParamsMap>,
-    ) -> Vec<ResolvedStaticPath> {
+    pub fn into_paths(self, params: Option<StaticParamsMap>) -> Vec<ResolvedStaticPath> {
         use PathSegment::*;
         let mut paths = vec![ResolvedStaticPath {
             path: String::new(),
@@ -240,17 +228,11 @@ impl StaticPath {
                                 for val in params.iter() {
                                     new_paths.push(if val.starts_with("/") {
                                         ResolvedStaticPath {
-                                            path: format!(
-                                                "{}{}",
-                                                path.path, val
-                                            ),
+                                            path: format!("{}{}", path.path, val),
                                         }
                                     } else {
                                         ResolvedStaticPath {
-                                            path: format!(
-                                                "{}/{}",
-                                                path.path, val
-                                            ),
+                                            path: format!("{}/{}", path.path, val),
                                         }
                                     });
                                 }
@@ -296,10 +278,7 @@ impl ResolvedStaticPath {
     pub async fn build<Fut, WriterFut>(
         self,
         render_fn: impl Fn(&ResolvedStaticPath) -> Fut + Send + Clone + 'static,
-        writer: impl Fn(&ResolvedStaticPath, &Owner, String) -> WriterFut
-            + Send
-            + Clone
-            + 'static,
+        writer: impl Fn(&ResolvedStaticPath, &Owner, String) -> WriterFut + Send + Clone + 'static,
         was_404: impl Fn(&Owner) -> bool + Send + Clone + 'static,
         regenerate: Vec<RegenerationFn>,
     ) -> (Owner, Option<String>)

@@ -1,16 +1,12 @@
 use super::{ArcAsyncDerived, AsyncDerivedReadyFuture, BlockingLock};
 use crate::{
     graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber,
-        ToAnySource, ToAnySubscriber,
+        AnySource, AnySubscriber, ReactiveNode, Source, Subscriber, ToAnySource, ToAnySubscriber,
     },
     owner::{ArenaItem, FromLocal, LocalStorage, Storage, SyncStorage},
     send_wrapper_ext::SendOption,
     signal::guards::{AsyncPlain, Mapped, MappedMut, ReadGuard, WriteGuard},
-    traits::{
-        DefinedAt, Dispose, IsDisposed, Notify, ReadUntracked,
-        UntrackableGuard, Write,
-    },
+    traits::{DefinedAt, Dispose, IsDisposed, Notify, ReadUntracked, UntrackableGuard, Write},
     unwrap_signal,
 };
 use core::fmt::Debug;
@@ -180,9 +176,10 @@ where
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
-            inner: ArenaItem::new_with_storage(
-                ArcAsyncDerived::new_with_initial(initial_value, fun),
-            ),
+            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_with_initial(
+                initial_value,
+                fun,
+            )),
         }
     }
 }
@@ -203,9 +200,7 @@ impl<T> AsyncDerived<T> {
 
     /// Same as [`AsyncDerived::new_unsync`] except it produces AsyncDerived<T> instead of AsyncDerived<T, LocalStorage>.
     /// The internal value will still be wrapped in a [`send_wrapper::SendWrapper`].
-    pub fn new_unsync_threadsafe_storage<Fut>(
-        fun: impl Fn() -> Fut + 'static,
-    ) -> Self
+    pub fn new_unsync_threadsafe_storage<Fut>(fun: impl Fn() -> Fut + 'static) -> Self
     where
         T: 'static,
         Fut: Future<Output = T> + 'static,
@@ -213,9 +208,7 @@ impl<T> AsyncDerived<T> {
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
-            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_unsync(
-                fun,
-            )),
+            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_unsync(fun)),
         }
     }
 }
@@ -237,9 +230,7 @@ where
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
-            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_unsync(
-                fun,
-            )),
+            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_unsync(fun)),
         }
     }
 
@@ -258,9 +249,10 @@ where
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
-            inner: ArenaItem::new_with_storage(
-                ArcAsyncDerived::new_unsync_with_initial(initial_value, fun),
-            ),
+            inner: ArenaItem::new_with_storage(ArcAsyncDerived::new_unsync_with_initial(
+                initial_value,
+                fun,
+            )),
         }
     }
 }
@@ -320,8 +312,7 @@ where
     T: 'static,
     S: Storage<ArcAsyncDerived<T>>,
 {
-    type Value =
-        ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
+    type Value = ReadGuard<Option<T>, Mapped<AsyncPlain<SendOption<T>>, Option<T>>>;
 
     fn try_read_untracked(&self) -> Option<Self::Value> {
         self.inner
@@ -369,9 +360,7 @@ where
         ))
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.inner.try_with_value(|n| {
             let mut guard = n.inner.write().or_poisoned();
             // increment the version, such that a rerun triggered previously does not overwrite this
@@ -384,9 +373,7 @@ where
 
         self.inner
             .try_with_value(|n| n.value.blocking_write_arc())
-            .map(|inner| {
-                MappedMut::new(inner, |v| v.deref(), |v| v.deref_mut())
-            })
+            .map(|inner| MappedMut::new(inner, |v| v.deref(), |v| v.deref_mut()))
     }
 }
 

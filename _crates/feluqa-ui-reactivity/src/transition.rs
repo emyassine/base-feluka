@@ -37,15 +37,9 @@ impl AsyncTransition {
         let (tx, rx) = mpsc::channel();
         let global_transition = global_transition();
         let inner = TransitionInner { tx };
-        let prev = Option::replace(
-            &mut *global_transition.write().or_poisoned(),
-            inner.clone(),
-        );
+        let prev = Option::replace(&mut *global_transition.write().or_poisoned(), inner.clone());
         let value = action().await;
-        _ = std::mem::replace(
-            &mut *global_transition.write().or_poisoned(),
-            prev,
-        );
+        _ = std::mem::replace(&mut *global_transition.write().or_poisoned(), prev);
         let mut pending = Vec::new();
         while let Ok(tx) = rx.try_recv() {
             pending.push(tx);

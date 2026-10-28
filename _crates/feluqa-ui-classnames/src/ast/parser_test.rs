@@ -1,6 +1,8 @@
 use nom::multi::many0;
 
-use super::parser::{parse_arbitrary_attribute_variant, parse_data_attribute_variant, parse_variant};
+use super::parser::{
+    parse_arbitrary_attribute_variant, parse_data_attribute_variant, parse_variant,
+};
 use super::{ASTVariant, AstParseOptions, AstStyle};
 
 fn parse_tailwind<'a>(class: &'a str) -> Vec<Result<AstStyle<'a>, &'a str>> {
@@ -47,7 +49,10 @@ fn basic_parse() {
 fn test_with_options() {
     let class = "dark|hover|tw-flex";
     let class = [class];
-    let options = AstParseOptions { prefix: "tw-", separator: "|" };
+    let options = AstParseOptions {
+        prefix: "tw-",
+        separator: "|",
+    };
     let result = super::parse_tailwind(&class, options);
     let expected = crate::std::vec![Ok(AstStyle {
         source: "dark|hover|tw-flex",
@@ -335,8 +340,7 @@ fn test_named_group_focus_within() {
 
 #[test]
 fn test_multiple_named_group_classes() {
-    let class =
-        "group-hover/dropdown:opacity-100 group-hover/dropdown:visible group-hover/dropdown:pointer-events-auto";
+    let class = "group-hover/dropdown:opacity-100 group-hover/dropdown:visible group-hover/dropdown:pointer-events-auto";
     let result = parse_tailwind(class);
     let expected = crate::std::vec![
         Ok(AstStyle {

@@ -39,7 +39,10 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
             // Use try_set to avoid panic if component is unmounted
             let _ = animation_name_signal.try_set(slide_out_animation_name);
 
-            set_timeout(move || toaster.remove(toast.id), Duration::from_millis(ANIMATION_DURATION));
+            set_timeout(
+                move || toaster.remove(toast.id),
+                Duration::from_millis(ANIMATION_DURATION),
+            );
         }
     });
 

@@ -1,21 +1,21 @@
 use super::{handle_anchor_click, LocationChange, LocationProvider, Url};
 use crate::{hooks::use_navigate, params::ParamsMap};
 use core::fmt;
-use futures::channel::oneshot;
-use js_sys::{try_iter, Array, JsString};
-use feluqa_ui_runtime::prelude::*;
-use or_poisoned::OrPoisoned;
+use feluqa_ui_dom_renderer::dom::{document, window};
 use feluqa_ui_reactivity::{
     signal::ArcRwSignal,
     traits::{ReadUntracked, Set},
 };
+use feluqa_ui_runtime::prelude::*;
+use futures::channel::oneshot;
+use js_sys::{try_iter, Array, JsString};
+use or_poisoned::OrPoisoned;
 use std::{
     borrow::Cow,
     boxed::Box,
     string::String,
     sync::{Arc, Mutex},
 };
-use feluqa_ui_dom_renderer::dom::{document, window};
 use wasm_bindgen::{closure::Closure, JsCast, JsValue};
 use web_sys::{Event, UrlSearchParams};
 
@@ -61,9 +61,7 @@ impl LocationProvider for BrowserUrl {
 
     fn new() -> Result<Self, JsValue> {
         let url = ArcRwSignal::new(Self::current()?);
-        let path_stack = ArcStoredValue::new(
-            Self::current().map(|n| vec![n]).unwrap_or_default(),
-        );
+        let path_stack = ArcStoredValue::new(Self::current().map(|n| vec![n]).unwrap_or_default());
         Ok(Self {
             url,
             pending_navigation: Default::default(),
@@ -86,9 +84,9 @@ impl LocationProvider for BrowserUrl {
                 .strip_prefix('?')
                 .map(String::from)
                 .unwrap_or_default(),
-            search_params: search_params_from_web_url(
-                &UrlSearchParams::new_with_str(&location.search()?)?,
-            )?,
+            search_params: search_params_from_web_url(&UrlSearchParams::new_with_str(
+                &location.search()?,
+            )?)?,
             hash: location.hash()?,
         })
     }
@@ -108,9 +106,7 @@ impl LocationProvider for BrowserUrl {
                 .strip_prefix('?')
                 .map(String::from)
                 .unwrap_or_default(),
-            search_params: search_params_from_web_url(
-                &location.search_params(),
-            )?,
+            search_params: search_params_from_web_url(&location.search_params())?,
             hash: location.hash(),
         })
     }
@@ -124,8 +120,7 @@ impl LocationProvider for BrowserUrl {
             move |new_url: Url, loc| {
                 let same_path = {
                     let curr = url.read_untracked();
-                    curr.origin() == new_url.origin()
-                        && curr.path() == new_url.path()
+                    curr.origin() == new_url.origin() && curr.path() == new_url.path()
                 };
 
                 url.set(new_url.clone());
@@ -157,8 +152,7 @@ impl LocationProvider for BrowserUrl {
             }
         };
 
-        let handle_anchor_click =
-            handle_anchor_click(base, Self::parse_with_base, navigate);
+        let handle_anchor_click = handle_anchor_click(base, Self::parse_with_base, navigate);
         let closure = Closure::wrap(Box::new(move |ev: Event| {
             if let Err(e) = handle_anchor_click(ev) {
                 #[cfg(feature = "tracing")]
@@ -169,10 +163,7 @@ impl LocationProvider for BrowserUrl {
         }) as Box<dyn FnMut(Event)>)
         .into_js_value();
         window
-            .add_event_listener_with_callback(
-                "click",
-                closure.as_ref().unchecked_ref(),
-            )
+            .add_event_listener_with_callback("click", closure.as_ref().unchecked_ref())
             .expect(
                 "couldn't add `click` listener to `window` to handle `<a>` \
                  clicks",
@@ -187,8 +178,7 @@ impl LocationProvider for BrowserUrl {
                 Ok(new_url) => {
                     let stack = path_stack.read_value();
                     let is_navigating_back = stack.len() == 1
-                        || (stack.len() >= 2
-                            && stack.get(stack.len() - 2) == Some(&new_url));
+                        || (stack.len() >= 2 && stack.get(stack.len() - 2) == Some(&new_url));
 
                     is_back.set(is_navigating_back);
 
@@ -202,13 +192,9 @@ impl LocationProvider for BrowserUrl {
                 }
             }
         };
-        let closure =
-            Closure::wrap(Box::new(cb) as Box<dyn Fn()>).into_js_value();
+        let closure = Closure::wrap(Box::new(cb) as Box<dyn Fn()>).into_js_value();
         window
-            .add_event_listener_with_callback(
-                "popstate",
-                closure.as_ref().unchecked_ref(),
-            )
+            .add_event_listener_with_callback("popstate", closure.as_ref().unchecked_ref())
             .expect("couldn't add `popstate` listener to `window`");
     }
 
@@ -223,11 +209,7 @@ impl LocationProvider for BrowserUrl {
 
         if loc.replace {
             history
-                .replace_state_with_url(
-                    &loc.state.to_js_value(),
-                    "",
-                    Some(&loc.value),
-                )
+                .replace_state_with_url(&loc.state.to_js_value(), "", Some(&loc.value))
                 .unwrap();
         } else {
             // push the "forward direction" marker
@@ -271,9 +253,7 @@ impl LocationProvider for BrowserUrl {
     }
 }
 
-fn search_params_from_web_url(
-    params: &web_sys::UrlSearchParams,
-) -> Result<ParamsMap, JsValue> {
+fn search_params_from_web_url(params: &web_sys::UrlSearchParams) -> Result<ParamsMap, JsValue> {
     try_iter(params)?
         .into_iter()
         .flatten()

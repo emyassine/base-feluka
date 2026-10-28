@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 #[component]
 pub fn SvgIcon(

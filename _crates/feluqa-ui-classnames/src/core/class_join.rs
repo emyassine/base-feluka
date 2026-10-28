@@ -38,8 +38,14 @@ fn join() {
     assert_eq!(class_join!("a", "b", "c", "d", "e"), "a b c d e");
     assert_eq!(class_join!("a", "b", "c", "d", "e", "f"), "a b c d e f");
 
-    assert_eq!(class_join!(" one", "two ", " three".to_string()), "one two three");
+    assert_eq!(
+        class_join!(" one", "two ", " three".to_string()),
+        "one two three"
+    );
     assert_eq!(class_join!("a", "    ", "b", "c", " "), "a b c");
 
-    assert_eq!(class_join!("a", (false).then_some("b"), (true).then_some("c")), "a c")
+    assert_eq!(
+        class_join!("a", (false).then_some("b"), (true).then_some("c")),
+        "a c"
+    )
 }

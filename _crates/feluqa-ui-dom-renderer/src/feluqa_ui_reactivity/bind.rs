@@ -2,11 +2,8 @@ use crate::{
     dom::{event_target_checked, event_target_value},
     html::{
         attribute::{
-            maybe_next_attr_erasure_macros::{
-                next_attr_combine, next_attr_output_type,
-            },
-            Attribute, AttributeKey, AttributeValue, NamedAttributeKey,
-            NextAttribute,
+            maybe_next_attr_erasure_macros::{next_attr_combine, next_attr_output_type},
+            Attribute, AttributeKey, AttributeValue, NamedAttributeKey, NextAttribute,
         },
         event::{change, input, on},
         property::{prop, IntoProperty},
@@ -26,8 +23,7 @@ use wasm_bindgen::JsValue;
 use {
     feluqa_ui_reactivity::owner::Storage,
     reactive_stores::{
-        ArcField, AtIndex, AtKeyed, DerefedField, Field, KeyedSubfield,
-        StoreField, Subfield,
+        ArcField, AtIndex, AtKeyed, DerefedField, Field, KeyedSubfield, StoreField, Subfield,
     },
     std::ops::{Deref, DerefMut, IndexMut},
 };
@@ -86,18 +82,12 @@ where
     Sig: IntoSplitSignal<Value = T>,
     T: FromEventTarget + AttributeValue + PartialEq + Sync + 'static,
     Signal<BoolOrT<T>>: IntoProperty,
-    <Sig as IntoSplitSignal>::Read:
-        Get<Value = T> + Send + Sync + Clone + 'static,
+    <Sig as IntoSplitSignal>::Read: Get<Value = T> + Send + Sync + Clone + 'static,
     <Sig as IntoSplitSignal>::Write: Send + Clone + 'static,
     Element: GetValue<T>,
 {
     type Output = <Self as AddAnyAttr>::Output<
-        Bind<
-            Key,
-            T,
-            <Sig as IntoSplitSignal>::Read,
-            <Sig as IntoSplitSignal>::Write,
-        >,
+        Bind<Key, T, <Sig as IntoSplitSignal>::Read, <Sig as IntoSplitSignal>::Write>,
     >;
 
     fn bind(self, key: Key, signal: Sig) -> Self::Output {
@@ -179,9 +169,7 @@ where
         if Key::KEY == "group" {
             let el = SendWrapper::new(el.clone());
 
-            Signal::derive(move || {
-                BoolOrT::Bool(el.get_value() == read_signal.get())
-            })
+            Signal::derive(move || BoolOrT::Bool(el.get_value() == read_signal.get()))
         } else {
             Signal::derive(move || BoolOrT::T(read_signal.get()))
         }
@@ -295,10 +283,7 @@ where
 {
     next_attr_output_type!(Self, NewAttr);
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         next_attr_combine!(self, new_attr)
     }
 }
@@ -442,9 +427,8 @@ where
 #[cfg(feature = "reactive_stores")]
 impl<S> IntoSplitSignal for DerefedField<S>
 where
-    Self: Get<Value = <S::Value as Deref>::Target>
-        + Set<Value = <S::Value as Deref>::Target>
-        + Clone,
+    Self:
+        Get<Value = <S::Value as Deref>::Target> + Set<Value = <S::Value as Deref>::Target> + Clone,
     S: Clone + StoreField + Send + Sync + 'static,
     <S as StoreField>::Value: Deref + DerefMut,
     <S::Value as Deref>::Target: Sized,
@@ -481,11 +465,7 @@ impl FromEventTarget for String {
 /// - `<input type="checkbox">`, `<input type="radio">` and `<select>` use the `change` event;
 pub trait ChangeEvent {
     /// Attaches the appropriate change event listener to the element.
-    fn attach_change_event<T, W>(
-        &self,
-        key: &str,
-        write_signal: W,
-    ) -> RemoveEventHandler<Self>
+    fn attach_change_event<T, W>(&self, key: &str, write_signal: W) -> RemoveEventHandler<Self>
     where
         T: FromEventTarget + AttributeValue + 'static,
         W: Set<Value = T> + 'static,
@@ -493,11 +473,7 @@ pub trait ChangeEvent {
 }
 
 impl ChangeEvent for web_sys::Element {
-    fn attach_change_event<T, W>(
-        &self,
-        key: &str,
-        write_signal: W,
-    ) -> RemoveEventHandler<Self>
+    fn attach_change_event<T, W>(&self, key: &str, write_signal: W) -> RemoveEventHandler<Self>
     where
         T: FromEventTarget + AttributeValue + 'static,
         W: Set<Value = T> + 'static,
@@ -558,20 +534,13 @@ pub enum BoolOrT<T> {
 
 impl<T> IntoProperty for BoolOrT<T>
 where
-    T: IntoProperty<State = (Element, JsValue)>
-        + Into<JsValue>
-        + Clone
-        + 'static,
+    T: IntoProperty<State = (Element, JsValue)> + Into<JsValue> + Clone + 'static,
 {
     type State = (Element, JsValue);
     type Cloneable = Self;
     type CloneableOwned = Self;
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &Element,
-        key: &str,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &Element, key: &str) -> Self::State {
         match self.clone() {
             Self::T(s) => {
                 s.hydrate::<FROM_SERVER>(el, key);
@@ -602,11 +571,9 @@ where
 
         match self {
             Self::T(s) => s.rebuild(&mut (el.clone(), prev.clone()), key),
-            Self::Bool(b) => <bool as IntoProperty>::rebuild(
-                b,
-                &mut (el.clone(), prev.clone()),
-                key,
-            ),
+            Self::Bool(b) => {
+                <bool as IntoProperty>::rebuild(b, &mut (el.clone(), prev.clone()), key)
+            }
         }
     }
 

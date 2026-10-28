@@ -8,9 +8,7 @@ use proc_macro::{TokenStream, TokenTree};
 use proc_macro2::Span;
 use proc_macro_error2::{abort, proc_macro_error};
 use quote::{quote, ToTokens};
-use syn::{
-    spanned::Spanned, Block, Ident, ImplItem, ItemImpl, Path, Type, TypePath,
-};
+use syn::{spanned::Spanned, Block, Ident, ImplItem, ItemImpl, Path, Type, TypePath};
 
 const RFC3986_UNRESERVED: [char; 4] = ['-', '.', '_', '~'];
 const RFC3986_PCHAR_OTHER: [char; 1] = ['@'];
@@ -176,8 +174,7 @@ impl ToTokens for Segment {
                 tokens.extend(quote! { feluqa_ui_navigation::ParamSegment(#p) });
             }
             Segment::OptionalParam(p) => {
-                tokens
-                    .extend(quote! { feluqa_ui_navigation::OptionalParamSegment(#p) });
+                tokens.extend(quote! { feluqa_ui_navigation::OptionalParamSegment(#p) });
             }
         }
     }
@@ -202,20 +199,13 @@ impl ToTokens for Segments {
 /// [`lazy`]: https://docs.rs/feluqa_ui_runtime_macros/latest/feluqa_ui_runtime_macros/macro.lazy.html
 #[proc_macro_attribute]
 #[proc_macro_error]
-pub fn lazy_route(
-    args: proc_macro::TokenStream,
-    s: TokenStream,
-) -> TokenStream {
+pub fn lazy_route(args: proc_macro::TokenStream, s: TokenStream) -> TokenStream {
     lazy_route_impl(args, s)
 }
 
-fn lazy_route_impl(
-    _args: proc_macro::TokenStream,
-    s: TokenStream,
-) -> TokenStream {
-    let mut im = syn::parse::<ItemImpl>(s).unwrap_or_else(|e| {
-        abort!(e.span(), "`lazy_route` can only be used on an `impl` block")
-    });
+fn lazy_route_impl(_args: proc_macro::TokenStream, s: TokenStream) -> TokenStream {
+    let mut im = syn::parse::<ItemImpl>(s)
+        .unwrap_or_else(|e| abort!(e.span(), "`lazy_route` can only be used on an `impl` block"));
     if im.trait_.is_none() {
         abort!(
             im.span(),
@@ -256,13 +246,9 @@ fn lazy_route_impl(
 
                     view(self).await
             }};
-            let block =
-                syn::parse::<Block>(new_block.into()).unwrap_or_else(|e| {
-                    abort!(
-                        e.span(),
-                        "`lazy_route` can only be used on an `impl` block"
-                    )
-                });
+            let block = syn::parse::<Block>(new_block.into()).unwrap_or_else(|e| {
+                abort!(e.span(), "`lazy_route` can only be used on an `impl` block")
+            });
             fun.block = block;
         }
     }

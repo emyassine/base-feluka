@@ -4,7 +4,6 @@ use crate::{
     navigate::NavigateOptions,
     params::{Params, ParamsError, ParamsMap},
 };
-use feluqa_ui_runtime::{feluqa_ui_runtime_dom::helpers::request_animation_frame, oco::Oco};
 use feluqa_ui_reactivity::{
     computed::{ArcMemo, Memo},
     owner::{expect_context, use_context},
@@ -12,6 +11,7 @@ use feluqa_ui_reactivity::{
     traits::{Get, GetUntracked, ReadUntracked, With, WriteValue},
     wrappers::write::SignalSetter,
 };
+use feluqa_ui_runtime::{feluqa_ui_runtime_dom::helpers::request_animation_frame, oco::Oco};
 use std::{
     str::FromStr,
     sync::atomic::{AtomicBool, Ordering},
@@ -113,11 +113,7 @@ where
 
     let get = Memo::new({
         let key = key.clone_inplace();
-        move |_| {
-            query_map.with(|map| {
-                map.get_str(&key).and_then(|value| value.parse().ok())
-            })
-        }
+        move |_| query_map.with(|map| map.get_str(&key).and_then(|value| value.parse().ok()))
     });
 
     let set = SignalSetter::map(move |value: Option<T>| {
@@ -178,9 +174,7 @@ pub(crate) type RawParamsMap = ArcMemo<ParamsMap>;
 
 #[track_caller]
 fn use_params_raw() -> RawParamsMap {
-    use_context().expect(
-        "Tried to access params outside the context of a matched <Route>.",
-    )
+    use_context().expect("Tried to access params outside the context of a matched <Route>.")
 }
 
 /// Returns a raw key-value map of route params.
@@ -203,9 +197,8 @@ where
 #[track_caller]
 fn use_url_raw() -> ArcRwSignal<Url> {
     use_context().unwrap_or_else(|| {
-        let RouterContext { current_url, .. } = use_context().expect(
-            "Tried to access reactive URL outside a <Router> component.",
-        );
+        let RouterContext { current_url, .. } =
+            use_context().expect("Tried to access reactive URL outside a <Router> component.");
         current_url
     })
 }
@@ -241,8 +234,8 @@ pub(crate) struct Matched(pub ArcMemo<String>);
 pub(crate) fn use_resolved_path(
     path: impl Fn() -> String + Send + Sync + 'static,
 ) -> ArcMemo<String> {
-    let router = use_context::<RouterContext>()
-        .expect("called use_resolved_path outside a <Router>");
+    let router =
+        use_context::<RouterContext>().expect("called use_resolved_path outside a <Router>");
     // TODO make this work with flat routes too?
     let matched = use_context::<Matched>().map(|n| n.0);
     ArcMemo::new(move |_| {
@@ -251,10 +244,7 @@ pub(crate) fn use_resolved_path(
             path
         } else {
             router
-                .resolve_path(
-                    &path,
-                    matched.as_ref().map(|n| n.get()).as_deref(),
-                )
+                .resolve_path(&path, matched.as_ref().map(|n| n.get()).as_deref())
                 .to_string()
         }
     })
@@ -273,8 +263,8 @@ pub(crate) fn use_resolved_path(
 /// ```
 #[track_caller]
 pub fn use_navigate() -> impl Fn(&str, NavigateOptions) + Clone {
-    let cx = use_context::<RouterContext>()
-        .expect("You cannot call `use_navigate` outside a <Router>.");
+    let cx =
+        use_context::<RouterContext>().expect("You cannot call `use_navigate` outside a <Router>.");
     move |path: &str, options: NavigateOptions| cx.navigate(path, options)
 }
 

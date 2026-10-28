@@ -133,9 +133,7 @@ where
 #[track_caller]
 #[deprecated = "This function is being removed to conform to Rust idioms. \
                 Please use `Memo::new()` instead."]
-pub fn create_memo<T>(
-    fun: impl Fn(Option<&T>) -> T + Send + Sync + 'static,
-) -> Memo<T>
+pub fn create_memo<T>(fun: impl Fn(Option<&T>) -> T + Send + Sync + 'static) -> Memo<T>
 where
     T: PartialEq + Send + Sync + 'static,
 {
@@ -162,9 +160,7 @@ where
 #[track_caller]
 #[deprecated = "This function is being removed to conform to Rust idioms. \
                 Please use `Selector::new()` instead."]
-pub fn create_selector<T>(
-    source: impl Fn() -> T + Clone + Send + Sync + 'static,
-) -> Selector<T>
+pub fn create_selector<T>(source: impl Fn() -> T + Clone + Send + Sync + 'static) -> Selector<T>
 where
     T: PartialEq + Eq + Send + Sync + Clone + std::hash::Hash + 'static,
 {

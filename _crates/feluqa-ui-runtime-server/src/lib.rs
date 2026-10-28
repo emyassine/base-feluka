@@ -36,9 +36,7 @@ pub trait FromEncodedStr {
     type DecodingError;
 
     /// Decodes the string.
-    fn from_encoded_str(
-        data: &str,
-    ) -> Result<Self::DecodedType<'_>, Self::DecodingError>;
+    fn from_encoded_str(data: &str) -> Result<Self::DecodedType<'_>, Self::DecodingError>;
 }
 
 impl IntoEncodedString for String {
@@ -51,9 +49,7 @@ impl FromEncodedStr for str {
     type DecodedType<'a> = &'a str;
     type DecodingError = ();
 
-    fn from_encoded_str(
-        data: &str,
-    ) -> Result<Self::DecodedType<'_>, Self::DecodingError> {
+    fn from_encoded_str(data: &str) -> Result<Self::DecodedType<'_>, Self::DecodingError> {
         Ok(data)
     }
 }
@@ -68,9 +64,7 @@ impl FromEncodedStr for [u8] {
     type DecodedType<'a> = Vec<u8>;
     type DecodingError = DecodeError;
 
-    fn from_encoded_str(
-        data: &str,
-    ) -> Result<Self::DecodedType<'_>, Self::DecodingError> {
+    fn from_encoded_str(data: &str) -> Result<Self::DecodedType<'_>, Self::DecodingError> {
         STANDARD_NO_PAD.decode(data)
     }
 }
@@ -78,17 +72,15 @@ impl FromEncodedStr for [u8] {
 #[cfg(feature = "feluqa_ui_dom_renderer")]
 mod view_implementations {
     use crate::Resource;
-    use feluqa_ui_reactivity::traits::Read;
-    use std::future::Future;
     use feluqa_ui_dom_renderer::{
+        feluqa_ui_reactivity::{RenderEffectState, Suspend, SuspendState},
         html::attribute::{any_attribute::AnyAttribute, Attribute},
         hydration::Cursor,
-        feluqa_ui_reactivity::{RenderEffectState, Suspend, SuspendState},
         ssr::StreamBuilder,
-        view::{
-            add_attr::AddAnyAttr, Position, PositionState, Render, RenderHtml,
-        },
+        view::{add_attr::AddAnyAttr, Position, PositionState, Render, RenderHtml},
     };
+    use feluqa_ui_reactivity::traits::Read;
+    use std::future::Future;
 
     impl<T, Ser> Render for Resource<T, Ser>
     where
@@ -113,17 +105,13 @@ mod view_implementations {
     {
         type Output<SomeNewAttr: Attribute> = Box<
             dyn FnMut() -> Suspend<
-                <T as AddAnyAttr>::Output<
-                    <SomeNewAttr::CloneableOwned as Attribute>::CloneableOwned,
-                >,
-            >
-            + Send
+                    <T as AddAnyAttr>::Output<
+                        <SomeNewAttr::CloneableOwned as Attribute>::CloneableOwned,
+                    >,
+                > + Send,
         >;
 
-        fn add_any_attr<NewAttr: Attribute>(
-            self,
-            attr: NewAttr,
-        ) -> Self::Output<NewAttr>
+        fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
         where
             Self::Output<NewAttr>: RenderHtml,
         {

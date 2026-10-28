@@ -4,8 +4,8 @@
 //! This crate contains the default implementation of the #[macro@crate::server] macro without additional context from the server.
 //! See the [feluqa_ui_server_functions_macros] crate for more information.
 
-use proc_macro::TokenStream;
 use feluqa_ui_server_functions_macros::server_macro_impl;
+use proc_macro::TokenStream;
 use syn::__private::ToTokens;
 
 /// Declares that a function is a [server function](https://docs.rs/feluqa_ui_server_functions/).

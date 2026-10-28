@@ -1,7 +1,6 @@
 use crate::{children::ChildrenFn, component, control_flow::Show, IntoView};
 use core::time::Duration;
-use feluqa_ui_runtime_dom::helpers::TimeoutHandle;
-use feluqa_ui_runtime_macros::view;
+use feluqa_ui_dom_renderer::prelude::*;
 use feluqa_ui_reactivity::{
     effect::RenderEffect,
     owner::{on_cleanup, StoredValue},
@@ -9,7 +8,8 @@ use feluqa_ui_reactivity::{
     traits::{Get, GetUntracked, GetValue, Set, SetValue},
     wrappers::read::Signal,
 };
-use feluqa_ui_dom_renderer::prelude::*;
+use feluqa_ui_runtime_dom::helpers::TimeoutHandle;
+use feluqa_ui_runtime_macros::view;
 
 /// A component that will show its children when the `when` condition is `true`.
 /// Additionally, you need to specify a `hide_delay`. If the `when` condition changes to `false`,

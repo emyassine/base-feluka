@@ -22,9 +22,8 @@ pub fn lazy_impl(
         None
     };
 
-    let fun = syn::parse::<ItemFn>(s).map_err(|e| {
-        syn::Error::new(e.span(), "`lazy` can only be used on a function")
-    })?;
+    let fun = syn::parse::<ItemFn>(s)
+        .map_err(|e| syn::Error::new(e.span(), "`lazy` can only be used on a function"))?;
 
     let was_async = fun.sig.asyncness.is_some();
 
@@ -110,9 +109,7 @@ impl Parse for LazyPath {
     }
 }
 
-pub fn lazy_preload_impl(
-    s: proc_macro::TokenStream,
-) -> syn::Result<proc_macro2::TokenStream> {
+pub fn lazy_preload_impl(s: proc_macro::TokenStream) -> syn::Result<proc_macro2::TokenStream> {
     let LazyPath(mut path) = syn::parse::<LazyPath>(s).map_err(|e| {
         syn::Error::new(
             e.span(),

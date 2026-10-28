@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 clx! {Tooltip, div, "inline-block relative mx-0 whitespace-nowrap transition-all duration-300 ease-in-out group/tooltip my-[5px]"}
 

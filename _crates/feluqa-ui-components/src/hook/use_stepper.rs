@@ -75,5 +75,14 @@ pub fn use_stepper(total_steps: usize, default_index: usize) -> StepperContext {
         }
     });
 
-    StepperContext { current_index, total_steps, can_go_prev, can_go_next, go_next, go_prev, go_to, step_state }
+    StepperContext {
+        current_index,
+        total_steps,
+        can_go_prev,
+        can_go_next,
+        go_next,
+        go_prev,
+        go_to,
+        step_state,
+    }
 }

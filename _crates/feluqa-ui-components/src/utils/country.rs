@@ -287,7 +287,9 @@ impl Country {
     pub fn flag_emoji(&self) -> String {
         self.alpha2()
             .chars()
-            .flat_map(|c| crate::std::char::from_u32(0x1F1E6 + (c.to_ascii_uppercase() as u32 - 'A' as u32)))
+            .flat_map(|c| {
+                crate::std::char::from_u32(0x1F1E6 + (c.to_ascii_uppercase() as u32 - 'A' as u32))
+            })
             .collect()
     }
 
@@ -351,8 +353,14 @@ mod tests {
         assert_eq!(Some(Country::DominicanRepublic), Country::from_alpha2("Do"));
         assert_eq!(Some(Country::France), Country::from_alpha2("FR"));
         assert_eq!(Some(Country::France), Country::from_alpha2("fr"));
-        assert_eq!(Some(Country::UnitedArabEmirates), Country::from_alpha2("AE"));
-        assert_eq!(Some(Country::UnitedArabEmirates), Country::from_alpha2("aE"));
+        assert_eq!(
+            Some(Country::UnitedArabEmirates),
+            Country::from_alpha2("AE")
+        );
+        assert_eq!(
+            Some(Country::UnitedArabEmirates),
+            Country::from_alpha2("aE")
+        );
 
         assert_eq!(None, Country::from_alpha2("FZ"));
         assert_eq!(None, Country::from_alpha2("XX"));
@@ -360,12 +368,24 @@ mod tests {
 
     #[test]
     fn test_from_alpha3() {
-        assert_eq!(Some(Country::DominicanRepublic), Country::from_alpha3("DOM"));
-        assert_eq!(Some(Country::DominicanRepublic), Country::from_alpha3("Dom"));
+        assert_eq!(
+            Some(Country::DominicanRepublic),
+            Country::from_alpha3("DOM")
+        );
+        assert_eq!(
+            Some(Country::DominicanRepublic),
+            Country::from_alpha3("Dom")
+        );
         assert_eq!(Some(Country::France), Country::from_alpha3("FRA"));
         assert_eq!(Some(Country::France), Country::from_alpha3("fra"));
-        assert_eq!(Some(Country::UnitedArabEmirates), Country::from_alpha3("ARE"));
-        assert_eq!(Some(Country::UnitedArabEmirates), Country::from_alpha3("arE"));
+        assert_eq!(
+            Some(Country::UnitedArabEmirates),
+            Country::from_alpha3("ARE")
+        );
+        assert_eq!(
+            Some(Country::UnitedArabEmirates),
+            Country::from_alpha3("arE")
+        );
 
         assert_eq!(None, Country::from_alpha3("FZq"));
         assert_eq!(None, Country::from_alpha2("XXX"));

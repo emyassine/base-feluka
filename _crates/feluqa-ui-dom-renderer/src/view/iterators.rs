@@ -1,7 +1,4 @@
-use super::{
-    add_attr::AddAnyAttr, Mountable, Position, PositionState, Render,
-    RenderHtml,
-};
+use super::{add_attr::AddAnyAttr, Mountable, Position, PositionState, Render, RenderHtml};
 use crate::{
     html::attribute::{any_attribute::AnyAttribute, Attribute},
     hydration::Cursor,
@@ -41,13 +38,9 @@ impl<T> AddAnyAttr for Option<T>
 where
     T: AddAnyAttr,
 {
-    type Output<SomeNewAttr: Attribute> =
-        Option<<T as AddAnyAttr>::Output<SomeNewAttr>>;
+    type Output<SomeNewAttr: Attribute> = Option<<T as AddAnyAttr>::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -96,13 +89,7 @@ where
             Some(value) => Either::Left(value),
             None => Either::Right(()),
         }
-        .to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        )
+        .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs)
     }
 
     fn to_html_async_with_buf<const OUT_OF_ORDER: bool>(
@@ -141,11 +128,7 @@ where
         .hydrate::<FROM_SERVER>(cursor, position)
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         match self {
             Some(value) => Either::Left(value),
             None => Either::Right(()),
@@ -194,9 +177,7 @@ where
             let mut removes_at_end = 0;
             for item in self.into_iter().zip_longest(old.iter_mut()) {
                 match item {
-                    itertools::EitherOrBoth::Both(new, old) => {
-                        T::rebuild(new, old)
-                    }
+                    itertools::EitherOrBoth::Both(new, old) => T::rebuild(new, old),
                     itertools::EitherOrBoth::Left(new) => {
                         let mut new_state = new.build();
                         Rndr::try_mount_before(&mut new_state, marker.as_ref());
@@ -270,13 +251,9 @@ impl<T> AddAnyAttr for Vec<T>
 where
     T: AddAnyAttr,
 {
-    type Output<SomeNewAttr: Attribute> =
-        Vec<<T as AddAnyAttr>::Output<SomeNewAttr::Cloneable>>;
+    type Output<SomeNewAttr: Attribute> = Vec<<T as AddAnyAttr>::Output<SomeNewAttr::Cloneable>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -323,13 +300,7 @@ where
     ) {
         let mut children = self.into_iter();
         if let Some(first) = children.next() {
-            first.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs.clone(),
-            );
+            first.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs.clone());
         }
         for child in children {
             child.to_html_with_buf(
@@ -398,11 +369,7 @@ where
         VecState { states, marker }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let mut states = Vec::with_capacity(self.len());
         for child in self {
             states.push(child.hydrate_async(cursor, position).await);
@@ -542,9 +509,7 @@ where
             let mut removes_at_end = 0;
             for item in self.0.into_iter().zip_longest(old.iter_mut()) {
                 match item {
-                    itertools::EitherOrBoth::Both(new, old) => {
-                        T::rebuild(new, old)
-                    }
+                    itertools::EitherOrBoth::Both(new, old) => T::rebuild(new, old),
                     itertools::EitherOrBoth::Left(new) => {
                         let mut new_state = new.build();
                         Rndr::mount_before(&mut new_state, marker.as_ref());
@@ -569,10 +534,7 @@ where
     type Output<SomeNewAttr: Attribute> =
         StaticVec<<T as AddAnyAttr>::Output<SomeNewAttr::Cloneable>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -621,13 +583,7 @@ where
         extra_attrs: Vec<AnyAttribute>,
     ) {
         for child in self.0.into_iter() {
-            child.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs.clone(),
-            );
+            child.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs.clone());
         }
         if escape {
             buf.push_str("<!>");
@@ -677,11 +633,7 @@ where
         Self::State { states, marker }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let mut states = Vec::with_capacity(self.0.len());
         for child in self.0 {
             states.push(child.hydrate_async(cursor, position).await);
@@ -770,13 +722,9 @@ impl<T, const N: usize> AddAnyAttr for [T; N]
 where
     T: AddAnyAttr,
 {
-    type Output<SomeNewAttr: Attribute> =
-        [<T as AddAnyAttr>::Output<SomeNewAttr::Cloneable>; N];
+    type Output<SomeNewAttr: Attribute> = [<T as AddAnyAttr>::Output<SomeNewAttr::Cloneable>; N];
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -822,13 +770,7 @@ where
         extra_attrs: Vec<AnyAttribute>,
     ) {
         for child in self.into_iter() {
-            child.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs.clone(),
-            );
+            child.to_html_with_buf(buf, position, escape, mark_branches, extra_attrs.clone());
         }
     }
 
@@ -858,16 +800,11 @@ where
         cursor: &Cursor,
         position: &PositionState,
     ) -> Self::State {
-        let states =
-            self.map(|child| child.hydrate::<FROM_SERVER>(cursor, position));
+        let states = self.map(|child| child.hydrate::<FROM_SERVER>(cursor, position));
         ArrayState { states }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let mut states = Vec::with_capacity(self.len());
         for child in self {
             states.push(child.hydrate_async(cursor, position).await);

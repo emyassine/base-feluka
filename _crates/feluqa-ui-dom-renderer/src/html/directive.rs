@@ -1,11 +1,8 @@
 use super::attribute::{
-    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute,
-    NextAttribute,
+    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute, NextAttribute,
 };
 use crate::{
-    html::attribute::{
-        maybe_next_attr_erasure_macros::next_attr_combine, NamedAttributeKey,
-    },
+    html::attribute::{maybe_next_attr_erasure_macros::next_attr_combine, NamedAttributeKey},
     prelude::AddAnyAttr,
     view::{Position, ToTemplate},
 };
@@ -117,10 +114,7 @@ where
     ) {
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         let inner = self.0.expect("directive removed early").take();
         inner.handler.run(el.clone(), inner.param);
         el.clone()
@@ -172,10 +166,7 @@ where
 {
     next_attr_output_type!(Self, NewAttr);
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         next_attr_combine!(self, new_attr)
     }
 }

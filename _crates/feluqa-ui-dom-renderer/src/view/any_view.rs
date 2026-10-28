@@ -1,10 +1,7 @@
 #![allow(clippy::type_complexity)]
 #[cfg(feature = "ssr")]
 use super::MarkBranch;
-use super::{
-    add_attr::AddAnyAttr, Mountable, Position, PositionState, Render,
-    RenderHtml,
-};
+use super::{add_attr::AddAnyAttr, Mountable, Position, PositionState, Render, RenderHtml};
 use crate::{
     erased::{Erased, ErasedLocal},
     html::attribute::{
@@ -42,26 +39,11 @@ pub struct AnyView {
     #[cfg(feature = "ssr")]
     html_len: usize,
     #[cfg(feature = "ssr")]
-    to_html:
-        fn(Erased, &mut String, &mut Position, bool, bool, Vec<AnyAttribute>),
+    to_html: fn(Erased, &mut String, &mut Position, bool, bool, Vec<AnyAttribute>),
     #[cfg(feature = "ssr")]
-    to_html_async: fn(
-        Erased,
-        &mut StreamBuilder,
-        &mut Position,
-        bool,
-        bool,
-        Vec<AnyAttribute>,
-    ),
+    to_html_async: fn(Erased, &mut StreamBuilder, &mut Position, bool, bool, Vec<AnyAttribute>),
     #[cfg(feature = "ssr")]
-    to_html_async_ooo: fn(
-        Erased,
-        &mut StreamBuilder,
-        &mut Position,
-        bool,
-        bool,
-        Vec<AnyAttribute>,
-    ),
+    to_html_async_ooo: fn(Erased, &mut StreamBuilder, &mut Position, bool, bool, Vec<AnyAttribute>),
     #[cfg(feature = "ssr")]
     #[allow(clippy::type_complexity)]
     resolve: fn(Erased) -> Pin<Box<dyn Future<Output = AnyView> + Send>>,
@@ -72,11 +54,8 @@ pub struct AnyView {
     hydrate_from_server: fn(Erased, &Cursor, &PositionState) -> AnyViewState,
     #[cfg(feature = "hydrate")]
     #[allow(clippy::type_complexity)]
-    hydrate_async: fn(
-        Erased,
-        &Cursor,
-        &PositionState,
-    ) -> Pin<Box<dyn Future<Output = AnyViewState>>>,
+    hydrate_async:
+        fn(Erased, &Cursor, &PositionState) -> Pin<Box<dyn Future<Output = AnyViewState>>>,
 }
 
 impl AnyView {
@@ -210,8 +189,7 @@ where
         ) -> Pin<Box<dyn Future<Output = AnyView> + Send>> {
             use futures::FutureExt;
 
-            async move { value.into_inner::<T>().resolve().await.into_any() }
-                .boxed()
+            async move { value.into_inner::<T>().resolve().await.into_any() }.boxed()
         }
 
         #[cfg(feature = "ssr")]
@@ -297,11 +275,8 @@ where
             cursor: &Cursor,
             position: &PositionState,
         ) -> AnyViewState {
-            let state = ErasedLocal::new(
-                value.into_inner::<T>().hydrate::<true>(cursor, position),
-            );
-            let placeholder =
-                (!T::EXISTS).then(|| cursor.next_placeholder(position));
+            let state = ErasedLocal::new(value.into_inner::<T>().hydrate::<true>(cursor, position));
+            let placeholder = (!T::EXISTS).then(|| cursor.next_placeholder(position));
             AnyViewState {
                 type_id: TypeId::of::<T>(),
                 state,
@@ -328,8 +303,7 @@ where
                         .hydrate_async(&cursor, &position)
                         .await,
                 );
-                let placeholder =
-                    (!T::EXISTS).then(|| cursor.next_placeholder(&position));
+                let placeholder = (!T::EXISTS).then(|| cursor.next_placeholder(&position));
                 AnyViewState {
                     type_id: TypeId::of::<T>(),
                     state,
@@ -342,10 +316,7 @@ where
             })
         }
 
-        fn rebuild<T: RenderHtml + 'static>(
-            value: Erased,
-            state: &mut AnyViewState,
-        ) {
+        fn rebuild<T: RenderHtml + 'static>(value: Erased, state: &mut AnyViewState) {
             let state = state.state.get_mut::<<T as Render>::State>();
             value.into_inner::<T>().rebuild(state);
         }
@@ -404,10 +375,7 @@ impl AddAnyAttr for AnyView {
     type Output<SomeNewAttr: Attribute> = AnyViewWithAttrs;
 
     #[allow(unused_variables)]
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -594,15 +562,10 @@ impl RenderHtml for AnyView {
         }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         #[cfg(feature = "hydrate")]
         {
-            let state =
-                (self.hydrate_async)(self.value, cursor, position).await;
+            let state = (self.hydrate_async)(self.value, cursor, position).await;
             state
         }
         #[cfg(not(feature = "hydrate"))]
@@ -723,8 +686,7 @@ impl RenderHtml for AnyViewWithAttrs {
 
     async fn resolve(self) -> Self::AsyncOutput {
         let resolve_view = self.view.resolve();
-        let resolve_attrs =
-            join_all(self.attrs.into_iter().map(|attr| attr.resolve()));
+        let resolve_attrs = join_all(self.attrs.into_iter().map(|attr| attr.resolve()));
         let (view, attrs) = join(resolve_view, resolve_attrs).await;
         Self { view, attrs }
     }
@@ -740,13 +702,8 @@ impl RenderHtml for AnyViewWithAttrs {
         // `extra_attrs` will be empty here in most cases, but it will have
         // attributes in it already if this is, itself, receiving additional attrs
         extra_attrs.extend(self.attrs);
-        self.view.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.view
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
     }
 
     fn to_html_async_with_buf<const OUT_OF_ORDER: bool>(
@@ -785,11 +742,7 @@ impl RenderHtml for AnyViewWithAttrs {
         AnyViewWithAttrsState { view, attrs }
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let view = self.view.hydrate_async(cursor, position).await;
         let elements = view.elements();
         let mut attrs = Vec::with_capacity(elements.len() * self.attrs.len());
@@ -802,8 +755,7 @@ impl RenderHtml for AnyViewWithAttrs {
     }
 
     fn html_len(&self) -> usize {
-        self.view.html_len()
-            + self.attrs.iter().map(|attr| attr.html_len()).sum::<usize>()
+        self.view.html_len() + self.attrs.iter().map(|attr| attr.html_len()).sum::<usize>()
     }
 
     fn into_owned(self) -> Self::Owned {
@@ -814,10 +766,7 @@ impl RenderHtml for AnyViewWithAttrs {
 impl AddAnyAttr for AnyViewWithAttrs {
     type Output<SomeNewAttr: Attribute> = AnyViewWithAttrs;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        mut self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(mut self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {

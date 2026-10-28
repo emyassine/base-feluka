@@ -1,33 +1,27 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 use crate::hook::use_random::use_random_id_for;
 
 #[component]
 pub fn Shimmer(
     // Controls shimmer visibility (works with any bool signal)
-    #[prop(into)]
-    loading: Signal<bool>,
+    #[prop(into)] loading: Signal<bool>,
 
     // Color of the shimmer wave (default: "rgba(255,255,255,0.15)")
-    #[prop(into, optional)]
-    shimmer_color: Option<String>,
+    #[prop(into, optional)] shimmer_color: Option<String>,
 
     // Background color of shimmer blocks (default: "rgba(255,255,255,0.08)")
-    #[prop(into, optional)]
-    background_color: Option<String>,
+    #[prop(into, optional)] background_color: Option<String>,
 
     // Animation duration in seconds (default: 1.5)
-    #[prop(optional)]
-    duration: Option<f64>,
+    #[prop(optional)] duration: Option<f64>,
 
     // Fallback border-radius for text elements in px (default: 4)
-    #[prop(optional)]
-    fallback_border_radius: Option<f64>,
+    #[prop(optional)] fallback_border_radius: Option<f64>,
 
     // Additional classes
-    #[prop(into, optional)]
-    class: String,
+    #[prop(into, optional)] class: String,
 
     // Children to wrap
     children: Children,

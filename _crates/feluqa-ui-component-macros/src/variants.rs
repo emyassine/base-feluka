@@ -1,7 +1,7 @@
 // Re-export dependencies for macro usage
+pub use feluqa_ui_classnames;
 pub use feluqa_ui_runtime;
 pub use paste;
-pub use feluqa_ui_classnames;
 
 /// Ultra-sophisticated variants macro for standardized Tailwind CSS component patterns
 ///

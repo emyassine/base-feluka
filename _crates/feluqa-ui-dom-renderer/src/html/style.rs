@@ -1,13 +1,10 @@
 use super::attribute::{
-    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute,
-    NextAttribute,
+    maybe_next_attr_erasure_macros::next_attr_output_type, Attribute, NextAttribute,
 };
 #[cfg(all(feature = "nightly", rustc_nightly))]
 use crate::view::static_types::Static;
 use crate::{
-    html::attribute::{
-        maybe_next_attr_erasure_macros::next_attr_combine, NamedAttributeKey,
-    },
+    html::attribute::{maybe_next_attr_erasure_macros::next_attr_combine, NamedAttributeKey},
     renderer::{dom::CssStyleDeclaration, Rndr},
     view::{Position, ToTemplate},
 };
@@ -66,10 +63,7 @@ where
         self.style.to_html(style);
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         self.style.hydrate::<FROM_SERVER>(el)
     }
 
@@ -114,10 +108,7 @@ where
 {
     next_attr_output_type!(Self, NewAttr);
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        new_attr: NewAttr,
-    ) -> Self::Output<NewAttr> {
+    fn add_any_attr<NewAttr: Attribute>(self, new_attr: NewAttr) -> Self::Output<NewAttr> {
         next_attr_combine!(self, new_attr)
     }
 }
@@ -156,10 +147,7 @@ pub trait IntoStyle: Send {
 
     /// Adds interactivity as necessary, given DOM nodes that were created from HTML that has
     /// either been rendered on the server, or cloned for a `<template>`.
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State;
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State;
 
     /// Adds this style to the element during client-side rendering.
     fn build(self, el: &crate::renderer::types::Element) -> Self::State;
@@ -197,10 +185,7 @@ impl<T: IntoStyle> IntoStyle for Option<T> {
         }
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         if let Some(t) = self {
             (el.clone(), Some(t.hydrate::<FROM_SERVER>(el)))
         } else {
@@ -276,10 +261,7 @@ impl<'a> IntoStyle for &'a str {
         style.push(';');
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         (el.clone(), self)
     }
 
@@ -327,10 +309,7 @@ impl IntoStyle for Arc<str> {
         style.push(';');
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         (el.clone(), self)
     }
 
@@ -378,10 +357,7 @@ impl IntoStyle for String {
         style.push(';');
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         (el.clone(), self)
     }
 
@@ -439,12 +415,7 @@ pub trait IntoStyleValue: Send {
     fn build(self, style: &CssStyleDeclaration, name: &str) -> Self::State;
 
     /// Updates the value.
-    fn rebuild(
-        self,
-        style: &CssStyleDeclaration,
-        name: &str,
-        state: &mut Self::State,
-    );
+    fn rebuild(self, style: &CssStyleDeclaration, name: &str, state: &mut Self::State);
 
     /// Adds interactivity as necessary, given DOM nodes that were created from HTML that has
     /// either been rendered on the server, or cloned for a `<template>`.
@@ -480,10 +451,7 @@ where
         value.to_html(name.as_ref(), style);
     }
 
-    fn hydrate<const FROM_SERVER: bool>(
-        self,
-        el: &crate::renderer::types::Element,
-    ) -> Self::State {
+    fn hydrate<const FROM_SERVER: bool>(self, el: &crate::renderer::types::Element) -> Self::State {
         let style = Rndr::style(el);
         let state = self.1.hydrate(&style, self.0.as_ref());
         (style, self.0, state)
@@ -545,32 +513,19 @@ macro_rules! impl_style_value {
                 style.push(';');
             }
 
-            fn build(
-                self,
-                style: &CssStyleDeclaration,
-                name: &str,
-            ) -> Self::State {
+            fn build(self, style: &CssStyleDeclaration, name: &str) -> Self::State {
                 Rndr::set_css_property(style, name, &self);
                 self
             }
 
-            fn rebuild(
-                self,
-                style: &CssStyleDeclaration,
-                name: &str,
-                state: &mut Self::State,
-            ) {
+            fn rebuild(self, style: &CssStyleDeclaration, name: &str, state: &mut Self::State) {
                 if &self != &*state {
                     Rndr::set_css_property(style, name, &self);
                 }
                 *state = self;
             }
 
-            fn hydrate(
-                self,
-                _style: &CssStyleDeclaration,
-                _name: &str,
-            ) -> Self::State {
+            fn hydrate(self, _style: &CssStyleDeclaration, _name: &str) -> Self::State {
                 self
             }
 
@@ -604,29 +559,18 @@ macro_rules! impl_style_value {
                 }
             }
 
-            fn build(
-                self,
-                style: &CssStyleDeclaration,
-                name: &str,
-            ) -> Self::State {
+            fn build(self, style: &CssStyleDeclaration, name: &str) -> Self::State {
                 if let Some(value) = &self {
                     Rndr::set_css_property(style, name, &value);
                 }
                 self
             }
 
-            fn rebuild(
-                self,
-                style: &CssStyleDeclaration,
-                name: &str,
-                state: &mut Self::State,
-            ) {
+            fn rebuild(self, style: &CssStyleDeclaration, name: &str, state: &mut Self::State) {
                 match (&state, &self) {
                     (None, None) => {}
                     (Some(_), None) => Rndr::remove_css_property(style, name),
-                    (None, Some(value)) => {
-                        Rndr::set_css_property(style, name, &value)
-                    }
+                    (None, Some(value)) => Rndr::set_css_property(style, name, &value),
                     (Some(old), Some(new)) => {
                         if new != &*old {
                             Rndr::set_css_property(style, name, &new);
@@ -636,11 +580,7 @@ macro_rules! impl_style_value {
                 *state = self;
             }
 
-            fn hydrate(
-                self,
-                _style: &CssStyleDeclaration,
-                _name: &str,
-            ) -> Self::State {
+            fn hydrate(self, _style: &CssStyleDeclaration, _name: &str) -> Self::State {
                 self
             }
 
@@ -686,13 +626,7 @@ impl<const V: &'static str> IntoStyleValue for Static<V> {
         self
     }
 
-    fn rebuild(
-        self,
-        _style: &CssStyleDeclaration,
-        _name: &str,
-        _state: &mut Self::State,
-    ) {
-    }
+    fn rebuild(self, _style: &CssStyleDeclaration, _name: &str, _state: &mut Self::State) {}
 
     fn hydrate(self, _style: &CssStyleDeclaration, _name: &str) -> Self::State {
         self
@@ -736,12 +670,7 @@ impl<const V: &'static str> IntoStyleValue for Option<Static<V>> {
         self
     }
 
-    fn rebuild(
-        self,
-        style: &CssStyleDeclaration,
-        name: &str,
-        state: &mut Self::State,
-    ) {
+    fn rebuild(self, style: &CssStyleDeclaration, name: &str, state: &mut Self::State) {
         match (&state, &self) {
             (None, None) => {}
             (Some(_), None) => Rndr::remove_css_property(style, name),

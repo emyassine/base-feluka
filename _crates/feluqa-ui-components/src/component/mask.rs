@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 /// TODO UI 🐛 : Fix MaskColor (-> demo)
 
@@ -44,7 +44,10 @@ pub enum MaskSide {
 
 #[derive(FeluqaVariant)]
 pub enum MaskColor {
-    #[feluqa(default, class = "from-pink-500 to-violet-500 dark:from-purple-700 dark:to-indigo-700")]
+    #[feluqa(
+        default,
+        class = "from-pink-500 to-violet-500 dark:from-purple-700 dark:to-indigo-700"
+    )]
     Pink,
 }
 

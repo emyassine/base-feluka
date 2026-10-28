@@ -147,10 +147,7 @@ where
     T: Send + Sync + 'static,
 {
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "debug", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "debug", skip_all))]
     /// Creates a new memoized, computed reactive value.
     ///
     /// As with an [`Effect`](crate::effect::Effect), the argument to the memo function is the previous value,
@@ -182,10 +179,7 @@ where
     }
 
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     /// Creates a new memo with a custom comparison function. By default, memos simply use
     /// [`PartialEq`] to compare the previous value to the new value. Passing a custom comparator
     /// allows you to compare the old and new values using any criteria.
@@ -199,9 +193,7 @@ where
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
-            inner: ArenaItem::new_with_storage(ArcMemo::new_with_compare(
-                fun, changed,
-            )),
+            inner: ArenaItem::new_with_storage(ArcMemo::new_with_compare(fun, changed)),
         }
     }
 
@@ -213,13 +205,8 @@ where
     /// This is lazy: the function will not be called until the memo's value is read for the first
     /// time.
     #[track_caller]
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
-    pub fn new_owning(
-        fun: impl Fn(Option<T>) -> (T, bool) + Send + Sync + 'static,
-    ) -> Self {
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
+    pub fn new_owning(fun: impl Fn(Option<T>) -> (T, bool) + Send + Sync + 'static) -> Self {
         Self {
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
@@ -306,8 +293,7 @@ where
     T: 'static,
     S: Storage<ArcMemo<T, S>> + Storage<T>,
 {
-    type Value =
-        ReadGuard<T, Mapped<Plain<Option<<S as Storage<T>>::Wrapped>>, T>>;
+    type Value = ReadGuard<T, Mapped<Plain<Option<<S as Storage<T>>::Wrapped>>, T>>;
 
     fn try_read_untracked(&self) -> Option<Self::Value> {
         self.inner

@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::{ChevronsUpDown, Search, X};
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
 use crate::component::command::{
     Command, CommandEmpty, CommandGroup, CommandGroupLabel, CommandInput, CommandItem, CommandList,
@@ -40,7 +40,12 @@ pub use components::*;
 
 #[component]
 fn CountryItem(country: Country, selected_country: RwSignal<Country>) -> impl IntoView {
-    let search_value = crate::std::format!("{} {} {}", country.name(), country.alpha2(), country.dial_code_formatted(),);
+    let search_value = crate::std::format!(
+        "{} {} {}",
+        country.name(),
+        country.alpha2(),
+        country.dial_code_formatted(),
+    );
     let is_selected = Signal::derive(move || selected_country.get() == country);
 
     view! {

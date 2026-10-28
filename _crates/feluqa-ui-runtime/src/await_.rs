@@ -1,7 +1,7 @@
 use crate::{prelude::Suspend, suspense_component::Suspense, IntoView};
+use feluqa_ui_reactivity::prelude::ReadUntracked;
 use feluqa_ui_runtime_macros::{component, view};
 use feluqa_ui_runtime_server::ArcOnceResource;
-use feluqa_ui_reactivity::prelude::ReadUntracked;
 use serde::{de::DeserializeOwned, Serialize};
 
 #[component]

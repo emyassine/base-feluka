@@ -1428,6 +1428,7 @@ dependencies = [
  "subtle",
  "tokio",
  "tower",
+ "tower-http",
 ]
 
 [[package]]

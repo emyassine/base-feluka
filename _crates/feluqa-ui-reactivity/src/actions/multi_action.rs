@@ -122,9 +122,7 @@ where
     /// # });
     /// ```
     #[track_caller]
-    pub fn new<Fut>(
-        action_fn: impl Fn(&I) -> Fut + Send + Sync + 'static,
-    ) -> Self
+    pub fn new<Fut>(action_fn: impl Fn(&I) -> Fut + Send + Sync + 'static) -> Self
     where
         Fut: Future<Output = O> + Send + 'static,
     {
@@ -278,8 +276,7 @@ impl<I, O, S> MultiAction<I, O, S>
 where
     I: 'static,
     O: 'static,
-    S: Storage<ArcMultiAction<I, O>>
-        + Storage<ArcReadSignal<Vec<ArcSubmission<I, O>>>>,
+    S: Storage<ArcMultiAction<I, O>> + Storage<ArcReadSignal<Vec<ArcSubmission<I, O>>>>,
 {
     /// How many times an action has successfully resolved.
     /// ```rust
@@ -360,9 +357,7 @@ pub struct ArcMultiAction<I, O> {
     version: ArcRwSignal<usize>,
     submissions: ArcRwSignal<Vec<ArcSubmission<I, O>>>,
     #[allow(clippy::complexity)]
-    action_fn: Arc<
-        dyn Fn(&I) -> Pin<Box<dyn Future<Output = O> + Send>> + Send + Sync,
-    >,
+    action_fn: Arc<dyn Fn(&I) -> Pin<Box<dyn Future<Output = O> + Send>> + Send + Sync>,
 }
 
 impl<I, O> Debug for ArcMultiAction<I, O>
@@ -420,9 +415,7 @@ impl<I, O> ArcMultiAction<I, O> {
     /// # });
     /// ```
     #[track_caller]
-    pub fn new<Fut>(
-        action_fn: impl Fn(&I) -> Fut + Send + Sync + 'static,
-    ) -> Self
+    pub fn new<Fut>(action_fn: impl Fn(&I) -> Fut + Send + Sync + 'static) -> Self
     where
         Fut: Future<Output = O> + Send + 'static,
     {

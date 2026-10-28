@@ -1,13 +1,16 @@
+use crate::feluqa_ui_classnames::*;
 use crate::icons::X;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::*;
 
 /* ========================================================== */
 /*                     ✨ FUNCTIONS ✨                        */
 /* ========================================================== */
 
 #[component]
-pub fn ExpandableTrigger(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {
+pub fn ExpandableTrigger(
+    #[prop(into, optional)] class: String,
+    children: Children,
+) -> impl IntoView {
     let merged_class = class_merge!(
         "overflow-hidden relative rounded-lg bg-primary text-primary-foreground hover:bg-primary/90    h-[32px] w-[162px]    expandableMainWrapper ",
         class
@@ -21,8 +24,14 @@ pub fn ExpandableTrigger(#[prop(into, optional)] class: String, children: Childr
 }
 
 #[component]
-pub fn ExpandableTransition(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {
-    let merged_class = class_merge!("absolute transition-opacity duration-200 delay-100 from", class);
+pub fn ExpandableTransition(
+    #[prop(into, optional)] class: String,
+    children: Children,
+) -> impl IntoView {
+    let merged_class = class_merge!(
+        "absolute transition-opacity duration-200 delay-100 from",
+        class
+    );
 
     view! {
         <div class=merged_class style="transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);">
@@ -34,7 +43,10 @@ pub fn ExpandableTransition(#[prop(into, optional)] class: String, children: Chi
 }
 
 #[component]
-pub fn ExpandableContent(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {
+pub fn ExpandableContent(
+    #[prop(into, optional)] class: String,
+    children: Children,
+) -> impl IntoView {
     let merged_class = class_merge!(
         "relative w-full bg-muted    h-full scale-[0.55] origin-top-left transition-transform duration-300 ease-[cubic-bezier(0.4,0.0,0.2,1)]  to-contents",
         class

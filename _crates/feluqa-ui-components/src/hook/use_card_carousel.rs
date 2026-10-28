@@ -45,27 +45,47 @@ fn setup_listeners() -> Option<Listeners> {
 
     let _ = target.add_event_listener_with_callback("click", click_cb.as_ref().unchecked_ref());
     // Capture phase: scroll events on overflow-scroll track don't bubble.
-    let _ = target.add_event_listener_with_callback_and_bool("scroll", scroll_cb.as_ref().unchecked_ref(), true);
+    let _ = target.add_event_listener_with_callback_and_bool(
+        "scroll",
+        scroll_cb.as_ref().unchecked_ref(),
+        true,
+    );
 
-    Some(Listeners { _click: click_cb, _scroll: scroll_cb })
+    Some(Listeners {
+        _click: click_cb,
+        _scroll: scroll_cb,
+    })
 }
 
 /// ── Click handler ─────────────────────────────────────────────────────────────
 
 fn handle_click(event: Event) {
     let Some(target) = event.target() else { return };
-    let Ok(el) = target.dyn_into::<Element>() else { return };
-    let Some(btn) = el.closest(CAROUSEL_NAV_BUTTON).ok().flatten() else { return };
+    let Ok(el) = target.dyn_into::<Element>() else {
+        return;
+    };
+    let Some(btn) = el.closest(CAROUSEL_NAV_BUTTON).ok().flatten() else {
+        return;
+    };
 
     // Prevent navigation when NavButton is inside an <a> tag.
     event.stop_propagation();
     event.prevent_default();
 
-    let Some(root) = btn.closest(CAROUSEL_ROOT).ok().flatten() else { return };
-    let Some(track) = root.query_selector(CAROUSEL_TRACK).ok().flatten() else { return };
-    let Ok(buttons) = root.query_selector_all(CAROUSEL_NAV_BUTTON) else { return };
+    let Some(root) = btn.closest(CAROUSEL_ROOT).ok().flatten() else {
+        return;
+    };
+    let Some(track) = root.query_selector(CAROUSEL_TRACK).ok().flatten() else {
+        return;
+    };
+    let Ok(buttons) = root.query_selector_all(CAROUSEL_NAV_BUTTON) else {
+        return;
+    };
 
-    let is_prev = buttons.item(0).and_then(|n| n.dyn_into::<Element>().ok()).is_some_and(|first| first == btn);
+    let is_prev = buttons
+        .item(0)
+        .and_then(|n| n.dyn_into::<Element>().ok())
+        .is_some_and(|first| first == btn);
 
     let delta = f64::from(track.client_width()) * if is_prev { -1.0 } else { 1.0 };
     // No explicit behavior — CSS scroll-smooth on the track handles the animation,
@@ -77,22 +97,39 @@ fn handle_click(event: Event) {
 
 fn handle_scroll(event: Event) {
     let Some(target) = event.target() else { return };
-    let Ok(el) = target.dyn_into::<Element>() else { return };
-    let Some(track) = el.closest(CAROUSEL_TRACK).ok().flatten() else { return };
-    let Some(root) = track.closest(CAROUSEL_ROOT).ok().flatten() else { return };
+    let Ok(el) = target.dyn_into::<Element>() else {
+        return;
+    };
+    let Some(track) = el.closest(CAROUSEL_TRACK).ok().flatten() else {
+        return;
+    };
+    let Some(root) = track.closest(CAROUSEL_ROOT).ok().flatten() else {
+        return;
+    };
 
-    let Ok(indicators) = root.query_selector_all(CAROUSEL_INDICATOR) else { return };
-    let Ok(buttons) = root.query_selector_all(CAROUSEL_NAV_BUTTON) else { return };
+    let Ok(indicators) = root.query_selector_all(CAROUSEL_INDICATOR) else {
+        return;
+    };
+    let Ok(buttons) = root.query_selector_all(CAROUSEL_NAV_BUTTON) else {
+        return;
+    };
 
     let client_width = track.client_width();
-    let index =
-        if client_width > 0 { (f64::from(track.scroll_left()) / f64::from(client_width)).round() as u32 } else { 0 };
+    let index = if client_width > 0 {
+        (f64::from(track.scroll_left()) / f64::from(client_width)).round() as u32
+    } else {
+        0
+    };
 
     let count = indicators.length();
 
     for i in 0..count {
-        let Some(node) = indicators.item(i) else { continue };
-        let Ok(dot) = node.dyn_into::<Element>() else { continue };
+        let Some(node) = indicators.item(i) else {
+            continue;
+        };
+        let Ok(dot) = node.dyn_into::<Element>() else {
+            continue;
+        };
         if i == index {
             let _ = dot.set_attribute("aria-current", "true");
         } else {
@@ -108,7 +145,9 @@ fn handle_scroll(event: Event) {
 
 fn set_aria_disabled(node: Option<crate::web_sys::Node>, disabled: bool) {
     let Some(node) = node else { return };
-    let Ok(el) = node.dyn_into::<Element>() else { return };
+    let Ok(el) = node.dyn_into::<Element>() else {
+        return;
+    };
     if disabled {
         let _ = el.set_attribute("aria-disabled", "true");
     } else {

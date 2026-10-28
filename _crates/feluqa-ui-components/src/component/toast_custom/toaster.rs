@@ -5,8 +5,12 @@ use crate::component::toast_custom::_data::{ToastData, ToastPosition};
 use crate::component::toast_custom::_template_styles::TEMPLATE_STYLES;
 use crate::component::toast_custom::toast::Toast;
 
-const CONTAINER_POSITIONS: &[ToastPosition] =
-    &[ToastPosition::TopLeft, ToastPosition::TopRight, ToastPosition::BottomRight, ToastPosition::BottomLeft];
+const CONTAINER_POSITIONS: &[ToastPosition] = &[
+    ToastPosition::TopLeft,
+    ToastPosition::TopRight,
+    ToastPosition::BottomRight,
+    ToastPosition::BottomLeft,
+];
 
 #[component]
 pub fn Toaster(#[prop(optional, into)] stacked: Signal<bool>) -> impl IntoView {
@@ -78,7 +82,11 @@ pub fn expect_toaster() -> ToasterContext {
 /* ========================================================== */
 
 fn is_container_empty(position: &ToastPosition) -> bool {
-    !expect_toaster().queue_signal.get().iter().any(|toast| toast.position.eq(position))
+    !expect_toaster()
+        .queue_signal
+        .get()
+        .iter()
+        .any(|toast| toast.position.eq(position))
 }
 
 fn get_container_id(position: &ToastPosition) -> &'static str {
@@ -112,7 +120,9 @@ fn get_container_class(stacked: bool, position: &ToastPosition) -> Option<&'stat
     }
 
     match position {
-        ToastPosition::BottomLeft | ToastPosition::BottomRight => Some("leptoaster-stack-container-bottom"),
+        ToastPosition::BottomLeft | ToastPosition::BottomRight => {
+            Some("leptoaster-stack-container-bottom")
+        }
 
         ToastPosition::TopLeft | ToastPosition::TopRight => Some("leptoaster-stack-container-top"),
     }

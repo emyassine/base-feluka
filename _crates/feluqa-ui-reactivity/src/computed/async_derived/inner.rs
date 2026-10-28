@@ -2,10 +2,7 @@ use super::suspense::TaskHandle;
 use crate::{
     channel::Sender,
     computed::suspense::SuspenseContext,
-    graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, SourceSet, Subscriber,
-        SubscriberSet,
-    },
+    graph::{AnySource, AnySubscriber, ReactiveNode, Source, SourceSet, Subscriber, SubscriberSet},
     owner::Owner,
 };
 use or_poisoned::OrPoisoned;
@@ -60,8 +57,7 @@ impl ReactiveNode for RwLock<ArcAsyncDerivedInner> {
         let mut guard = self.write().or_poisoned();
         let (is_dirty, sources) = (
             guard.state == AsyncDerivedState::Dirty,
-            (guard.state != AsyncDerivedState::Notifying)
-                .then(|| guard.sources.clone()),
+            (guard.state != AsyncDerivedState::Notifying).then(|| guard.sources.clone()),
         );
 
         if is_dirty {

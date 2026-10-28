@@ -6,8 +6,7 @@ use crate::{
     owner::{StoredValue, SyncStorage},
     signal::guards::WriteGuard,
     traits::{
-        DefinedAt, GetValue, IsDisposed, Notify, ReadUntracked, Track,
-        UntrackableGuard, Write,
+        DefinedAt, GetValue, IsDisposed, Notify, ReadUntracked, Track, UntrackableGuard, Write,
     },
 };
 use guardian::ArcRwLockWriteGuardian;
@@ -29,14 +28,9 @@ pub struct ArcMappedSignal<T> {
     #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
     #[allow(clippy::type_complexity)]
-    try_read_untracked: Arc<
-        dyn Fn() -> Option<DoubleDeref<Box<dyn Deref<Target = T>>>>
-            + Send
-            + Sync,
-    >,
-    try_write: Arc<
-        dyn Fn() -> Option<Box<dyn UntrackableGuard<Target = T>>> + Send + Sync,
-    >,
+    try_read_untracked:
+        Arc<dyn Fn() -> Option<DoubleDeref<Box<dyn Deref<Target = T>>>> + Send + Sync>,
+    try_write: Arc<dyn Fn() -> Option<Box<dyn UntrackableGuard<Target = T>>> + Send + Sync>,
     notify: Arc<dyn Fn() + Send + Sync>,
     track: Arc<dyn Fn() + Send + Sync>,
 }
@@ -57,11 +51,7 @@ impl<T> Clone for ArcMappedSignal<T> {
 impl<T> ArcMappedSignal<T> {
     /// Wraps a signal with the given mapping functions for shared and exclusive references.
     #[track_caller]
-    pub fn new<U>(
-        inner: ArcRwSignal<U>,
-        map: fn(&U) -> &T,
-        map_mut: fn(&mut U) -> &mut T,
-    ) -> Self
+    pub fn new<U>(inner: ArcRwSignal<U>, map: fn(&U) -> &T, map_mut: fn(&mut U) -> &mut T) -> Self
     where
         T: 'static,
         U: Send + Sync + 'static,
@@ -81,14 +71,9 @@ impl<T> ArcMappedSignal<T> {
             try_write: {
                 let this = inner.clone();
                 Arc::new(move || {
-                    let guard = ArcRwLockWriteGuardian::try_take(Arc::clone(
-                        &this.value,
-                    ))?
-                    .ok()?;
-                    let mapped = WriteGuard::new(
-                        this.clone(),
-                        MappedMutArc::new(guard, map, map_mut),
-                    );
+                    let guard = ArcRwLockWriteGuardian::try_take(Arc::clone(&this.value))?.ok()?;
+                    let mapped =
+                        WriteGuard::new(this.clone(), MappedMutArc::new(guard, map, map_mut));
                     Some(Box::new(mapped))
                 })
             },
@@ -161,9 +146,7 @@ where
 {
     type Value = T;
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         let mut guard = self.try_write()?;
         guard.untrack();
         Some(guard)
@@ -236,11 +219,7 @@ pub struct MappedSignal<T, S = SyncStorage> {
 impl<T> MappedSignal<T> {
     /// Wraps a signal with the given mapping functions for shared and exclusive references.
     #[track_caller]
-    pub fn new<U>(
-        inner: RwSignal<U>,
-        map: fn(&U) -> &T,
-        map_mut: fn(&mut U) -> &mut T,
-    ) -> Self
+    pub fn new<U>(inner: RwSignal<U>, map: fn(&U) -> &T, map_mut: fn(&mut U) -> &mut T) -> Self
     where
         T: Send + Sync + 'static,
         U: Send + Sync + 'static,
@@ -250,9 +229,7 @@ impl<T> MappedSignal<T> {
             defined_at: Location::caller(),
             inner: {
                 let this = ArcRwSignal::from(inner);
-                StoredValue::new_with_storage(ArcMappedSignal::new(
-                    this, map, map_mut,
-                ))
+                StoredValue::new_with_storage(ArcMappedSignal::new(this, map, map_mut))
             },
         }
     }
@@ -329,9 +306,7 @@ where
 {
     type Value = T;
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         let mut guard = self.try_write()?;
         guard.untrack();
         Some(guard)

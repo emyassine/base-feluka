@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::*;
 use crate::icons::Minus;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::*;
 
 #[cfg(target_arch = "wasm32")]
 use crate::hook::use_input_otp;
@@ -23,7 +23,10 @@ pub fn InputOTP(
 
     let id = use_random_id();
     let container_id = crate::std::format!("otp_{}", id);
-    let class = class_merge!("relative flex items-center gap-2 has-[:disabled]:opacity-50", class);
+    let class = class_merge!(
+        "relative flex items-center gap-2 has-[:disabled]:opacity-50",
+        class
+    );
 
     view! {
         <div data-slot="input-otp" data-otp-root="" id=container_id class=class>
@@ -86,7 +89,10 @@ pub fn InputOTPSlot(
 
 #[component]
 pub fn InputOTPSeparator(#[prop(optional, into)] class: String) -> impl IntoView {
-    let class = class_merge!("flex items-center justify-center text-muted-foreground", class);
+    let class = class_merge!(
+        "flex items-center justify-center text-muted-foreground",
+        class
+    );
     view! {
         <div data-slot="input-otp-separator" role="separator" class=class>
             <Minus class="size-4" />

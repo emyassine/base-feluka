@@ -66,9 +66,7 @@ where
                 .map(Err)
         });
         Self {
-            inner: ArcAction::new_with_value(err, |input: &S| {
-                S::run_on_client(input.clone())
-            }),
+            inner: ArcAction::new_with_value(err, |input: &S| S::run_on_client(input.clone())),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -154,9 +152,7 @@ where
                 .map(Err)
         });
         Self {
-            inner: Action::new_with_value(err, |input: &S| {
-                S::run_on_client(input.clone())
-            }),
+            inner: Action::new_with_value(err, |input: &S| S::run_on_client(input.clone())),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }

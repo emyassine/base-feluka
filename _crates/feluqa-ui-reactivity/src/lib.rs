@@ -110,9 +110,7 @@ mod nightly;
 
 /// Reexports frequently-used traits.
 pub mod prelude {
-    pub use crate::{
-        into_reactive_value::IntoReactiveValue, owner::FromLocal, traits::*,
-    };
+    pub use crate::{into_reactive_value::IntoReactiveValue, owner::FromLocal, traits::*};
 }
 
 /// TODO remove this, it's just useful while developing
@@ -169,9 +167,7 @@ pub fn spawn_local_scoped(task: impl Future<Output = ()> + 'static) {
 /// Calls [`Executor::spawn_local`](feluqa_ui_task_runtime::Executor), but ensures that the task runs under the current reactive [`Owner`](crate::owner::Owner) and observer.
 ///
 /// Cancels the task if the owner is cleaned up.
-pub fn spawn_local_scoped_with_cancellation(
-    task: impl Future<Output = ()> + 'static,
-) {
+pub fn spawn_local_scoped_with_cancellation(task: impl Future<Output = ()> + 'static) {
     use crate::owner::on_cleanup;
     use futures::future::{AbortHandle, Abortable};
 

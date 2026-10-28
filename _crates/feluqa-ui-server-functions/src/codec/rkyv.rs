@@ -12,8 +12,7 @@ use rkyv::{
     Archive, Deserialize, Serialize,
 };
 
-type RkyvSerializer<'a> =
-    HighSerializer<AlignedVec, ArenaHandle<'a>, rancor::Error>;
+type RkyvSerializer<'a> = HighSerializer<AlignedVec, ArenaHandle<'a>, rancor::Error>;
 type RkyvDeserializer = HighDeserializer<rancor::Error>;
 type RkyvValidator<'a> = HighValidator<'a, rancor::Error>;
 
@@ -31,8 +30,7 @@ impl FormatType for RkyvEncoding {
 impl<T> Encodes<T> for RkyvEncoding
 where
     T: Archive + for<'a> Serialize<RkyvSerializer<'a>>,
-    T::Archived: Deserialize<T, RkyvDeserializer>
-        + for<'a> CheckBytes<RkyvValidator<'a>>,
+    T::Archived: Deserialize<T, RkyvDeserializer> + for<'a> CheckBytes<RkyvValidator<'a>>,
 {
     type Error = rancor::Error;
 
@@ -45,8 +43,7 @@ where
 impl<T> Decodes<T> for RkyvEncoding
 where
     T: Archive + for<'a> Serialize<RkyvSerializer<'a>>,
-    T::Archived: Deserialize<T, RkyvDeserializer>
-        + for<'a> CheckBytes<RkyvValidator<'a>>,
+    T::Archived: Deserialize<T, RkyvDeserializer> + for<'a> CheckBytes<RkyvValidator<'a>>,
 {
     type Error = rancor::Error;
 

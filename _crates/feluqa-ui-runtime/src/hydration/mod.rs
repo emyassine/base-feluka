@@ -59,24 +59,19 @@ pub fn HydrationScripts(
     #[prop(optional, into)]
     root: Option<String>,
 ) -> impl IntoView {
-    static SPLIT_MANIFEST: OnceLock<Option<WasmSplitManifest>> =
-        OnceLock::new();
+    static SPLIT_MANIFEST: OnceLock<Option<WasmSplitManifest>> = OnceLock::new();
 
     if let Some(splits) = SPLIT_MANIFEST.get_or_init(|| {
         let root = root.clone().unwrap_or_default();
 
         let (wasm_split_js, wasm_split_manifest) = if options.hash_files {
             let hash_path = std::env::current_exe()
-                .map(|path| {
-                    path.parent().map(|p| p.to_path_buf()).unwrap_or_default()
-                })
+                .map(|path| path.parent().map(|p| p.to_path_buf()).unwrap_or_default())
                 .unwrap_or_default()
                 .join(options.hash_file.as_ref());
-            let hashes = std::fs::read_to_string(&hash_path)
-                .expect("failed to read hash file");
+            let hashes = std::fs::read_to_string(&hash_path).expect("failed to read hash file");
 
-            let mut split =
-                "__wasm_split.______________________.js".to_string();
+            let mut split = "__wasm_split.______________________.js".to_string();
             let mut manifest = "__wasm_split_manifest.json".to_string();
             for line in hashes.lines() {
                 let line = line.trim();
@@ -126,14 +121,11 @@ pub fn HydrationScripts(
     let mut wasm_file_name = options.output_name.to_string();
     if options.hash_files {
         let hash_path = std::env::current_exe()
-            .map(|path| {
-                path.parent().map(|p| p.to_path_buf()).unwrap_or_default()
-            })
+            .map(|path| path.parent().map(|p| p.to_path_buf()).unwrap_or_default())
             .unwrap_or_default()
             .join(options.hash_file.as_ref());
         if hash_path.exists() {
-            let hashes = std::fs::read_to_string(&hash_path)
-                .expect("failed to read hash file");
+            let hashes = std::fs::read_to_string(&hash_path).expect("failed to read hash file");
             for line in hashes.lines() {
                 let line = line.trim();
                 if !line.is_empty() {
@@ -141,16 +133,13 @@ pub fn HydrationScripts(
                         if file == "js" {
                             js_file_name.push_str(&format!(".{}", hash.trim()));
                         } else if file == "wasm" {
-                            wasm_file_name
-                                .push_str(&format!(".{}", hash.trim()));
+                            wasm_file_name.push_str(&format!(".{}", hash.trim()));
                         }
                     }
                 }
             }
         } else {
-            feluqa_ui_runtime::logging::error!(
-                "File hashing is active but no hash file was found"
-            );
+            feluqa_ui_runtime::logging::error!("File hashing is active but no hash file was found");
         }
     } else if std::option_env!("FELUQA_UI_OUTPUT_NAME").is_none() {
         wasm_file_name.push_str("_bg");

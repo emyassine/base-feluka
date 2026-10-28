@@ -1,6 +1,6 @@
+use feluqa_ui_dom_renderer::prelude::IntoAttributeValue;
 use oco_ref::Oco;
 use std::sync::Arc;
-use feluqa_ui_dom_renderer::prelude::IntoAttributeValue;
 
 /// Describes a value that is either a static or a reactive string, i.e.,
 /// a [`String`], a [`&str`], a `Signal` or a reactive `Fn() -> String`.
@@ -103,7 +103,6 @@ macro_rules! textprop_reactive {
 #[cfg(not(feature = "nightly"))]
 mod stable {
     use super::TextProp;
-    use oco_ref::Oco;
     #[allow(deprecated)]
     use feluqa_ui_reactivity::wrappers::read::MaybeSignal;
     use feluqa_ui_reactivity::{
@@ -113,6 +112,7 @@ mod stable {
         traits::Get,
         wrappers::read::{ArcSignal, Signal},
     };
+    use oco_ref::Oco;
     use std::sync::Arc;
 
     textprop_reactive!(

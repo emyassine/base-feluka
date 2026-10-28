@@ -47,9 +47,7 @@ where
     pub fn new_with_storage(value: T) -> Self {
         let node = {
             Arena::with_mut(|arena| {
-                arena.insert(
-                    Box::new(S::wrap(value)) as Box<dyn Any + Send + Sync>
-                )
+                arena.insert(Box::new(S::wrap(value)) as Box<dyn Any + Send + Sync>)
             })
         };
         OWNER.with(|o| {
@@ -107,10 +105,7 @@ impl<T, S: Storage<T>> ArenaItem<T, S> {
 
     /// Applies a function to a mutable reference to the stored value and returns the result, or `None` if it has already been disposed.
     #[track_caller]
-    pub fn try_update_value<U>(
-        &self,
-        fun: impl FnOnce(&mut T) -> U,
-    ) -> Option<U> {
+    pub fn try_update_value<U>(&self, fun: impl FnOnce(&mut T) -> U) -> Option<U> {
         S::try_with_mut(self.node, fun)
     }
 }

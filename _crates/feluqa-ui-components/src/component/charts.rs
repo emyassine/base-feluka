@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::*;
 use crate::runtime::prelude::*;
 use crate::strum::{AsRefStr, Display};
-use crate::feluqa_ui_classnames::*;
 
 use crate::hook::use_random::use_random_id_for;
 
@@ -24,8 +24,7 @@ pub fn AreaChart(
     #[prop(optional, into)] show_yaxis: Option<bool>,
     #[prop(optional, into)] show_grid: Option<bool>,
     // JSON array of `{x: "YYYY-MM-DD", title: "..."}` for article publish markers.
-    #[prop(optional, into)]
-    json_annotations: Option<String>,
+    #[prop(optional, into)] json_annotations: Option<String>,
 ) -> impl IntoView {
     let area_chart_id = use_random_id_for("AreaChart");
     let merged_class = Signal::derive(move || class_merge!("w-full", class.get()));

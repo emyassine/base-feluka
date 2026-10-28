@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 use super::separator::{Separator, SeparatorOrientation};
 
@@ -61,10 +61,15 @@ pub enum ButtonGroupOrientation {
 
 #[component]
 pub fn ButtonGroupSeparator(
-    #[prop(into, optional, default = SeparatorOrientation::Vertical.into())] orientation: Signal<SeparatorOrientation>,
+    #[prop(into, optional, default = SeparatorOrientation::Vertical.into())] orientation: Signal<
+        SeparatorOrientation,
+    >,
     #[prop(into, optional)] class: String,
 ) -> impl IntoView {
-    let merged_class = class_merge!("relative !m-0 self-stretch data-[orientation=vertical]:h-auto", class);
+    let merged_class = class_merge!(
+        "relative !m-0 self-stretch data-[orientation=vertical]:h-auto",
+        class
+    );
 
     view! { <Separator attr:data-name="ButtonGroupSeparator" orientation=orientation class=merged_class /> }
 }

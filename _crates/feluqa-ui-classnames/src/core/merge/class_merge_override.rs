@@ -27,10 +27,13 @@ pub fn class_merge_override(
         };
 
         let elements = style.elements.as_slice();
-        let result = collision_id_fn.apply(elements, style.arbitrary).map(Ok).unwrap_or_else(|| {
-            let arbitrary = style.arbitrary.unwrap_or_default();
-            super::get_collision_id::get_collision_id(elements, arbitrary)
-        });
+        let result = collision_id_fn
+            .apply(elements, style.arbitrary)
+            .map(Ok)
+            .unwrap_or_else(|| {
+                let arbitrary = style.arbitrary.unwrap_or_default();
+                super::get_collision_id::get_collision_id(elements, arbitrary)
+            });
 
         match result {
             Err(error) => match Collision::check_arbitrary(style.clone()) {
@@ -50,7 +53,11 @@ pub fn class_merge_override(
                 // hover:md:focus
                 let all_variants: Vec<&str> = style.variants.clone();
 
-                let collision = Collision { important: style.important, variants: all_variants.clone(), collision_id };
+                let collision = Collision {
+                    important: style.important,
+                    variants: all_variants.clone(),
+                    collision_id,
+                };
 
                 if collision_styles.contains(&collision) {
                     continue;
@@ -59,12 +66,17 @@ pub fn class_merge_override(
                 // Add the current collision_id.
                 collision_styles.insert(collision);
 
-                let collisions = collisions_fn.apply(collision_id).or_else(|| get_collisions(collision_id));
+                let collisions = collisions_fn
+                    .apply(collision_id)
+                    .or_else(|| get_collisions(collision_id));
 
                 if let Some(collisions) = collisions {
                     collisions.into_iter().for_each(|collision_id| {
-                        let collision =
-                            Collision { important: style.important, variants: all_variants.clone(), collision_id };
+                        let collision = Collision {
+                            important: style.important,
+                            variants: all_variants.clone(),
+                            collision_id,
+                        };
 
                         collision_styles.insert(collision);
                     });
@@ -99,7 +111,11 @@ impl<'a> Collision<'a> {
         let arbitrary = style.arbitrary?;
         let index = arbitrary.find(':')?;
         let (collision_id, _) = arbitrary.split_at(index);
-        Some(Self { collision_id, important: style.important, variants: style.variants })
+        Some(Self {
+            collision_id,
+            important: style.important,
+            variants: style.variants,
+        })
     }
 }
 
@@ -109,10 +125,18 @@ impl<'a> Collision<'a> {
 
 #[test]
 fn check_arbitrary() {
-    let style = crate::ast::parse_tailwind(&["[color:blue]"], Default::default()).into_iter().next().unwrap().unwrap();
+    let style = crate::ast::parse_tailwind(&["[color:blue]"], Default::default())
+        .into_iter()
+        .next()
+        .unwrap()
+        .unwrap();
 
     assert_eq!(
         Collision::check_arbitrary(style),
-        Some(Collision { important: false, variants: crate::std::vec![], collision_id: "color" })
+        Some(Collision {
+            important: false,
+            variants: crate::std::vec![],
+            collision_id: "color"
+        })
     );
 }

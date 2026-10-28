@@ -107,6 +107,14 @@ pub struct PanelPage {
     pub document: UiDocument,
 }
 
+impl PanelPage {
+    /// Set this page's slug relative to its panel.
+    pub fn slug(mut self, slug: impl Into<String>) -> Self {
+        self.path = relative_slug(slug.into());
+        self
+    }
+}
+
 /// A schema-backed panel widget with explicit visibility and dashboard placement.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PanelWidget {
@@ -655,6 +663,14 @@ impl fmt::Display for ResourceAuthorizationError {
 impl core::error::Error for ResourceAuthorizationError {}
 
 impl Resource {
+    /// Declare this resource at a slug relative to its owning panel.
+    pub fn slug(self, slug: impl Into<String>) -> PanelResource {
+        PanelResource {
+            resource: self,
+            slug: Some(relative_slug(slug.into())),
+        }
+    }
+
     /// Validate the resource identity, path, action set, field set and permission namespaces.
     pub fn validate(&self) -> Result<(), ResourceError> {
         if !valid_resource_id(self.id) || self.title.trim().is_empty() {
@@ -1093,6 +1109,22 @@ impl Resource {
     }
 }
 
+/// A resource attached to a panel with a panel-relative slug.
+#[derive(Clone, Debug)]
+pub struct PanelResource {
+    resource: Resource,
+    slug: Option<String>,
+}
+
+impl From<Resource> for PanelResource {
+    fn from(resource: Resource) -> Self {
+        Self {
+            resource,
+            slug: None,
+        }
+    }
+}
+
 impl ResourceInput {
     fn available_for(self, operation: ResourceOperation) -> bool {
         match operation {
@@ -1151,22 +1183,30 @@ impl core::error::Error for ResourceError {}
 #[derive(Clone, Default)]
 pub struct ResourceRegistry {
     resources: BTreeMap<&'static str, Resource>,
-    routes: BTreeMap<&'static str, &'static str>,
+    routes: BTreeMap<String, &'static str>,
 }
 
 impl ResourceRegistry {
     /// Validate and register one resource, rejecting duplicate identifiers and routes.
     pub fn register(&mut self, resource: Resource) -> Result<(), ResourceRegistryError> {
+        self.register_at(resource, String::from(resource.path))
+    }
+
+    fn register_at(
+        &mut self,
+        resource: Resource,
+        route: String,
+    ) -> Result<(), ResourceRegistryError> {
         resource
             .validate()
             .map_err(ResourceRegistryError::InvalidResource)?;
         if self.resources.contains_key(resource.id) {
             return Err(ResourceRegistryError::DuplicateId(resource.id));
         }
-        if self.routes.contains_key(resource.path) {
-            return Err(ResourceRegistryError::DuplicateRoute(resource.path));
+        if self.routes.contains_key(route.as_str()) {
+            return Err(ResourceRegistryError::DuplicateRoute(route));
         }
-        self.routes.insert(resource.path, resource.id);
+        self.routes.insert(route, resource.id);
         self.resources.insert(resource.id, resource);
         Ok(())
     }
@@ -1196,7 +1236,7 @@ pub enum ResourceRegistryError {
     /// A resource identifier is already registered.
     DuplicateId(&'static str),
     /// A panel route is already registered to another resource.
-    DuplicateRoute(&'static str),
+    DuplicateRoute(String),
 }
 
 impl fmt::Display for ResourceRegistryError {
@@ -1276,6 +1316,8 @@ pub struct Panel {
     pub widget_columns: u8,
     /// Resources owned by this panel, discovered by the shared startup catalogue.
     pub resources: Vec<Resource>,
+    /// Panel-relative slugs for resources declared with [`Resource::slug`].
+    pub resource_slugs: BTreeMap<&'static str, String>,
     /// Authentication, appearance, and navigation settings used by the shared shell.
     pub options: PanelOptions,
 }
@@ -1308,6 +1350,7 @@ impl PanelBuilder {
             widgets: Vec::new(),
             widget_columns: 2,
             resources: Vec::new(),
+            resource_slugs: BTreeMap::new(),
             options: PanelOptions::default(),
         };
         panel.options.appearance.sidebar_collapsible = true;
@@ -1331,6 +1374,11 @@ impl PanelBuilder {
     pub fn path(mut self, prefix: impl Into<String>) -> Self {
         self.panel.prefix = prefix.into();
         self
+    }
+
+    /// Set the panel's slug relative to the domain root.
+    pub fn slug(self, slug: impl Into<String>) -> Self {
+        self.path(relative_slug(slug.into()))
     }
 
     /// Set the visible brand name, defaulting to the panel title.
@@ -1449,14 +1497,25 @@ impl PanelBuilder {
     }
 
     /// Add one resource contract owned by this panel.
-    pub fn resource(mut self, resource: Resource) -> Self {
-        self.panel.resources.push(resource);
+    pub fn resource(mut self, declaration: impl Into<PanelResource>) -> Self {
+        let declaration = declaration.into();
+        if let Some(slug) = declaration.slug {
+            self.panel
+                .resource_slugs
+                .insert(declaration.resource.id, slug);
+        }
+        self.panel.resources.push(declaration.resource);
         self
     }
 
     /// Add resources from a module provider to this panel's route catalogue.
-    pub fn resources(mut self, resources: impl IntoIterator<Item = Resource>) -> Self {
-        self.panel.resources.extend(resources);
+    pub fn resources<R: Into<PanelResource>>(
+        mut self,
+        resources: impl IntoIterator<Item = R>,
+    ) -> Self {
+        for declaration in resources {
+            self = self.resource(declaration);
+        }
         self
     }
 
@@ -1509,6 +1568,7 @@ impl Panel {
             widgets: Vec::new(),
             widget_columns: 2,
             resources: Vec::new(),
+            resource_slugs: BTreeMap::new(),
             options: PanelOptions {
                 appearance: PanelAppearance {
                     sidebar_collapsible: true,
@@ -1651,14 +1711,15 @@ impl PanelCatalog {
                 .validate()
                 .map_err(ResourceRegistryError::InvalidResource)
                 .map_err(PanelCatalogError::Resource)?;
-            if self.panels.routes().any(|path| path == resource.path) {
-                return Err(PanelCatalogError::RouteCollision(String::from(
-                    resource.path,
-                )));
+            let route = panel
+                .resource_slugs
+                .get(resource.id)
+                .map(|slug| join_path(&panel.prefix, slug))
+                .unwrap_or_else(|| String::from(resource.path));
+            if self.panels.routes().any(|path| path == route) {
+                return Err(PanelCatalogError::RouteCollision(route));
             }
-            resources
-                .register(*resource)
-                .map_err(PanelCatalogError::Resource)?;
+            resources.register_at(*resource, route)?;
         }
         for page in &panel.pages {
             let path = join_path(
@@ -1690,6 +1751,14 @@ impl PanelCatalog {
         self.resources
             .register(resource)
             .map_err(PanelCatalogError::Resource)
+    }
+
+    /// Resolve the domain path of a resource after its owning panel slug is applied.
+    pub fn resource_path(&self, id: &str) -> Option<&str> {
+        self.resources
+            .routes
+            .iter()
+            .find_map(|(path, resource_id)| (*resource_id == id).then_some(path.as_str()))
     }
 
     /// Resolve an authenticated panel page using the shared authorization contract.
@@ -2066,6 +2135,15 @@ fn normalize_path(path: &str) -> Result<String, PanelError> {
     Ok(normalized)
 }
 
+fn relative_slug(slug: String) -> String {
+    let slug = slug.trim_matches('/');
+    if slug.is_empty() {
+        String::from("/")
+    } else {
+        format!("/{slug}")
+    }
+}
+
 fn join_path(prefix: &str, route: &str) -> String {
     if route == "/" {
         String::from(prefix)
@@ -2377,6 +2455,7 @@ mod tests {
             widget_columns: 2,
             resources: Vec::new(),
             options: PanelOptions::default(),
+            resource_slugs: BTreeMap::new(),
         }
     }
 

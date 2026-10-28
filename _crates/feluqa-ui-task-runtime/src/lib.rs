@@ -76,9 +76,7 @@ fn no_op_spawn(_: PinnedFuture<()>) {
 #[cold]
 #[inline(never)]
 fn no_op_spawn(_: PinnedFuture<()>) {
-    panic!(
-        "Executor::spawn called, but no global 'spawn' function is configured."
-    );
+    panic!("Executor::spawn called, but no global 'spawn' function is configured.");
 }
 
 #[cfg(not(debug_assertions))]
@@ -262,8 +260,7 @@ impl Executor {
 
         fn get_thread_pool() -> &'static ThreadPool {
             THREAD_POOL.get_or_init(|| {
-                ThreadPool::new()
-                    .expect("could not create futures executor ThreadPool")
+                ThreadPool::new().expect("could not create futures executor ThreadPool")
             })
         }
 
@@ -310,8 +307,7 @@ impl Executor {
         use async_executor::{Executor as AsyncExecutor, LocalExecutor};
 
         /// Keep the lazy-init global Executor and thread-local LocalExecutor for spawn_local impl
-        static ASYNC_EXECUTOR: OnceLock<AsyncExecutor<'static>> =
-            OnceLock::new();
+        static ASYNC_EXECUTOR: OnceLock<AsyncExecutor<'static>> = OnceLock::new();
         thread_local! {
             static LOCAL_EXECUTOR_POOL: LocalExecutor<'static> = const { LocalExecutor::new() };
         }
@@ -350,9 +346,8 @@ impl Executor {
     ) -> Result<(), ExecutorError> {
         /// Store the custom executor instance itself to call its methods.
         /// Use Box for dynamic dispatch.
-        static CUSTOM_EXECUTOR_INSTANCE: OnceLock<
-            Box<dyn CustomExecutor + Send + Sync>,
-        > = OnceLock::new();
+        static CUSTOM_EXECUTOR_INSTANCE: OnceLock<Box<dyn CustomExecutor + Send + Sync>> =
+            OnceLock::new();
 
         CUSTOM_EXECUTOR_INSTANCE
             .set(Box::new(custom_executor))
@@ -411,16 +406,13 @@ impl Executor {
         let executor_impl = ExecutorFns {
             spawn: |fut| {
                 // Unwrap is safe because we just set it successfully or returned Err.
-                CUSTOM_EXECUTOR_INSTANCE
-                    .with(|this| this.get().unwrap().spawn(fut));
+                CUSTOM_EXECUTOR_INSTANCE.with(|this| this.get().unwrap().spawn(fut));
             },
             spawn_local: |fut| {
-                CUSTOM_EXECUTOR_INSTANCE
-                    .with(|this| this.get().unwrap().spawn_local(fut));
+                CUSTOM_EXECUTOR_INSTANCE.with(|this| this.get().unwrap().spawn_local(fut));
             },
             poll_local: || {
-                CUSTOM_EXECUTOR_INSTANCE
-                    .with(|this| this.get().unwrap().poll_local());
+                CUSTOM_EXECUTOR_INSTANCE.with(|this| this.get().unwrap().poll_local());
             },
         };
 

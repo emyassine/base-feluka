@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 mod components {
     use super::*;
@@ -25,7 +25,11 @@ pub fn ChatBody(#[prop(optional, into)] class: String, children: Children) -> im
     let merged_class = class_merge!("overflow-hidden flex-1", &class);
 
     Effect::new(move |_| {
-        if let Some(el) = document().query_selector("[data-name='ChatBody']").ok().flatten() {
+        if let Some(el) = document()
+            .query_selector("[data-name='ChatBody']")
+            .ok()
+            .flatten()
+        {
             el.set_scroll_top(el.scroll_height());
         }
     });

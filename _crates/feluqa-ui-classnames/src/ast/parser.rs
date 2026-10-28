@@ -10,7 +10,10 @@ use super::{ASTVariant, AstElements, AstParseOptions, AstStyle};
 
 /// Parses a slice of Tailwind class strings into structured AST nodes.
 #[doc(hidden)]
-pub fn parse_tailwind<'a>(class: &[&'a str], options: AstParseOptions<'a>) -> Vec<Result<AstStyle<'a>, &'a str>> {
+pub fn parse_tailwind<'a>(
+    class: &[&'a str],
+    options: AstParseOptions<'a>,
+) -> Vec<Result<AstStyle<'a>, &'a str>> {
     class
         .iter()
         .flat_map(|s| s.split_whitespace())
@@ -22,16 +25,20 @@ pub fn parse_tailwind<'a>(class: &[&'a str], options: AstParseOptions<'a>) -> Ve
 }
 
 #[inline]
-fn parse_style<'a>(input: &'a str, options: &AstParseOptions<'a>) -> IResult<&'a str, AstStyle<'a>> {
+fn parse_style<'a>(
+    input: &'a str,
+    options: &AstParseOptions<'a>,
+) -> IResult<&'a str, AstStyle<'a>> {
     // v4 supports ! at end (flex!), v3 supports ! at start (!flex)
-    let (rest, (variants, important_prefix, negative, elements, arbitrary, important_suffix)) = tuple((
-        many0(|s| parse_variant(options.separator, s)),
-        opt(char('!')),
-        opt(char('-')),
-        opt(|s| parse_elements(options.prefix, s)),
-        opt(parse_arbitrary),
-        opt(char('!')), // v4: important at end
-    ))(input)?;
+    let (rest, (variants, important_prefix, negative, elements, arbitrary, important_suffix)) =
+        tuple((
+            many0(|s| parse_variant(options.separator, s)),
+            opt(char('!')),
+            opt(char('-')),
+            opt(|s| parse_elements(options.prefix, s)),
+            opt(parse_arbitrary),
+            opt(char('!')), // v4: important at end
+        ))(input)?;
 
     let source = &input[..input.len() - rest.len()];
 
@@ -81,7 +88,11 @@ fn parse_elements<'a>(prefix: &'a str, input: &'a str) -> IResult<&'a str, AstEl
 
 #[inline]
 pub fn parse_variant<'a>(separator: &'a str, input: &'a str) -> IResult<&'a str, ASTVariant<'a>> {
-    let parser = alt((parse_data_attribute_variant, parse_arbitrary_attribute_variant, parse_normal_variant));
+    let parser = alt((
+        parse_data_attribute_variant,
+        parse_arbitrary_attribute_variant,
+        parse_normal_variant,
+    ));
 
     let (rest, (v, _)) = tuple((parser, tag(separator)))(input)?;
     Ok((rest, v))
@@ -94,7 +105,8 @@ fn parse_normal_variant(input: &str) -> IResult<&str, ASTVariant<'_>> {
     // Include '*' for child selector variant (Tailwind 3.4+) like *:text-gray-500
     // Include '@' for container query variants (Tailwind v4) like @lg:, @sm:, @container:, @container/sidebar:
     // https://tailwindcss.com/docs/responsive-design#container-queries
-    let parser = take_while1(|c: char| c.is_alphanumeric() || c == '-' || c == '/' || c == '*' || c == '@');
+    let parser =
+        take_while1(|c: char| c.is_alphanumeric() || c == '-' || c == '/' || c == '*' || c == '@');
     let (rest, result) = parser(input)?;
     Ok((rest, ASTVariant::Normal(result)))
 }
@@ -127,7 +139,10 @@ fn parse_arbitrary(input: &str) -> IResult<&str, &str> {
 }
 
 /// https://stackoverflow.com/questions/70630556/parse-allowing-nested-parentheses-in-nom
-pub fn take_until_unbalanced(opening_bracket: char, closing_bracket: char) -> impl Fn(&str) -> IResult<&str, &str> {
+pub fn take_until_unbalanced(
+    opening_bracket: char,
+    closing_bracket: char,
+) -> impl Fn(&str) -> IResult<&str, &str> {
     move |i: &str| {
         let mut index = 0;
         let mut bracket_counter = 0;

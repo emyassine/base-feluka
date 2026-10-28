@@ -1,6 +1,6 @@
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::{ChevronRight, Ellipsis};
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 
 mod components {
     use super::*;

@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::variants;
+use crate::runtime::prelude::*;
 
 // TODO 💪 Loading state (demo_use_timeout_fn.rs and demo_button.rs)
 

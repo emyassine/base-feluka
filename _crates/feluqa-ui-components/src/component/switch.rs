@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 mod components {
     use super::*;
@@ -17,7 +17,13 @@ pub fn Switch(
     #[prop(into, optional)] class: String,
 ) -> impl IntoView {
     let is_checked = RwSignal::new(checked);
-    let state = move || if is_checked.get() { "checked" } else { "unchecked" };
+    let state = move || {
+        if is_checked.get() {
+            "checked"
+        } else {
+            "unchecked"
+        }
+    };
 
     let track_class = class_merge!(
         "inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",

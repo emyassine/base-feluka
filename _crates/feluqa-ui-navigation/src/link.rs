@@ -1,6 +1,6 @@
 use crate::{components::RouterContext, hooks::use_resolved_path};
-use feluqa_ui_runtime::{children::Children, oco::Oco, prelude::*};
 use feluqa_ui_reactivity::{computed::ArcMemo, owner::use_context};
+use feluqa_ui_runtime::{children::Children, oco::Oco, prelude::*};
 use std::{borrow::Cow, rc::Rc};
 
 /// Describes a value that is either a static or a reactive URL, i.e.,
@@ -163,20 +163,14 @@ where
 }
 
 /// Test if `href` is active for `location`.  Assumes _both_ `href` and `location` begin with a `'/'`.
-fn is_active_for(
-    href: &str,
-    location: &str,
-    strict_trailing_slash: bool,
-) -> bool {
+fn is_active_for(href: &str, location: &str, strict_trailing_slash: bool) -> bool {
     let mut href_f = href.split('/');
     // location _must_ be consumed first to avoid draining href_f early
     // also using enumerate to special case _the first two_ so that the allowance for ignoring the comparison
     // with the loc fragment on an emtpy href fragment for non root related parts.
     std::iter::zip(location.split('/'), href_f.by_ref())
         .enumerate()
-        .all(|(c, (loc_p, href_p))| {
-            loc_p == href_p || href_p.is_empty() && c > 1
-        })
+        .all(|(c, (loc_p, href_p))| loc_p == href_p || href_p.is_empty() && c > 1)
         && match href_f.next() {
             // when no href fragments remain, location is definitely somewhere nested inside href
             None => true,
@@ -314,11 +308,7 @@ mod tests {
             // edge/weird/unexpected cases?
 
             // since empty fragments are not checked, these all highlight
-            assert!(is_active_for(
-                "/item/////",
-                "/item/one/two/three/four/",
-                f
-            ));
+            assert!(is_active_for("/item/////", "/item/one/two/three/four/", f));
             assert!(is_active_for(
                 "/item/////",
                 "/item/1/two/three/three/two/1/item",
@@ -416,11 +406,7 @@ mod tests {
                 f
             ));
 
-            assert!(!is_active_for(
-                "/item/one/two/three/four/",
-                "/item/////",
-                f
-            ));
+            assert!(!is_active_for("/item/one/two/three/four/", "/item/////", f));
             assert!(!is_active_for(
                 "/item/one/two/three/four/",
                 "/item////four/",
@@ -474,10 +460,7 @@ mod tests {
 
         // Correctly removes ".." segments.
         assert!(normalize_path("/some/../another") == "/another".to_string());
-        assert!(
-            normalize_path("/one/two/../three/../../four")
-                == "/four".to_string()
-        );
+        assert!(normalize_path("/one/two/../three/../../four") == "/four".to_string());
 
         // Correctly sets trailing slash if last segement is "..".
         assert!(normalize_path("/one/two/..") == "/one/".to_string());
@@ -488,12 +471,7 @@ mod tests {
         assert!(normalize_path("/../") == "/".to_string());
 
         // Going into negative levels and coming back into the positives.
-        assert!(
-            normalize_path("/one/../../two/three") == "/two/three".to_string()
-        );
-        assert!(
-            normalize_path("/one/../../two/three/")
-                == "/two/three/".to_string()
-        );
+        assert!(normalize_path("/one/../../two/three") == "/two/three".to_string());
+        assert!(normalize_path("/one/../../two/three/") == "/two/three/".to_string());
     }
 }

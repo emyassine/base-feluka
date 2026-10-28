@@ -1,10 +1,6 @@
 #[cfg(debug_assertions)]
 use crate::logging;
 use crate::IntoView;
-use feluqa_ui_task_runtime::Executor;
-use feluqa_ui_reactivity::owner::Owner;
-#[cfg(debug_assertions)]
-use std::cell::Cell;
 use feluqa_ui_dom_renderer::{
     dom::body,
     view::{Mountable, Render},
@@ -14,6 +10,10 @@ use feluqa_ui_dom_renderer::{
     hydration::Cursor,
     view::{PositionState, RenderHtml},
 };
+use feluqa_ui_reactivity::owner::Owner;
+use feluqa_ui_task_runtime::Executor;
+#[cfg(debug_assertions)]
+use std::cell::Cell;
 #[cfg(feature = "hydrate")]
 use wasm_bindgen::JsCast;
 use web_sys::HtmlElement;
@@ -104,10 +104,7 @@ where
 
 #[cfg(feature = "hydrate")]
 /// Runs the provided closure and mounts the result to the provided element.
-pub async fn hydrate_from_async<F, N>(
-    parent: HtmlElement,
-    f: F,
-) -> UnmountHandle<N::State>
+pub async fn hydrate_from_async<F, N>(parent: HtmlElement, f: F) -> UnmountHandle<N::State>
 where
     F: FnOnce() -> N + 'static,
     N: IntoView,

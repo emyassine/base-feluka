@@ -26,7 +26,9 @@ pub fn use_lock_body_scroll_dialog(initial_locked: bool) -> RwSignal<bool> {
     let scroll_position_signal = RwSignal::new(0.0);
 
     Effect::new(move |_| {
-        let Some(document) = window().document() else { return };
+        let Some(document) = window().document() else {
+            return;
+        };
         let Some(body) = document.body() else { return };
 
         if locked_signal.get() {
@@ -42,12 +44,16 @@ pub fn use_lock_body_scroll_dialog(initial_locked: bool) -> RwSignal<bool> {
             // Apply body lock styles
             let style = body.style();
             let _ = style.set_property("position", "fixed");
-            let _ = style.set_property("top", &crate::std::format!("-{}px", scroll_position_signal.get()));
+            let _ = style.set_property(
+                "top",
+                &crate::std::format!("-{}px", scroll_position_signal.get()),
+            );
             let _ = style.set_property("width", "100%");
             let _ = style.set_property("overflow", "hidden");
 
             if scrollbar_width > 0.0 {
-                let _ = style.set_property("padding-right", &crate::std::format!("{scrollbar_width}px"));
+                let _ = style
+                    .set_property("padding-right", &crate::std::format!("{scrollbar_width}px"));
             }
 
             // Manage pointer events

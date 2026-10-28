@@ -8,10 +8,10 @@
 use crate::runtime::html;
 use crate::runtime::prelude::*;
 
+use crate::component::data_grid::DataGridColumn;
 use crate::hook::use_cell_selection::{UseCellSelection, use_cell_selection};
 use crate::hook::use_click_outside::use_click_outside;
 use crate::hook::use_drag_selection::{UseDragSelection, use_drag_selection};
-use crate::component::data_grid::DataGridColumn;
 
 /// State returned by `use_data_grid_state` hook.
 pub struct DataGridState<C: DataGridColumn> {
@@ -51,5 +51,10 @@ pub fn use_data_grid_state<C: DataGridColumn + 'static>() -> DataGridState<C> {
         drag_selection.clear_selection();
     });
 
-    DataGridState { cell_selection, drag_selection, copy_value_signal, grid_wrapper_ref }
+    DataGridState {
+        cell_selection,
+        drag_selection,
+        copy_value_signal,
+        grid_wrapper_ref,
+    }
 }

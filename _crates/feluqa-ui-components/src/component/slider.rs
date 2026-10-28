@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 #[derive(Default, Clone, Copy, PartialEq, Eq, crate::strum::AsRefStr, crate::strum::Display)]
 pub enum SliderVariant {

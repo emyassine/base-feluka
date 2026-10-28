@@ -49,9 +49,7 @@ pub trait Client<Error, InputStreamError = Error, OutputStreamError = Error> {
     type Response: ClientRes<Error> + Send + 'static;
 
     /// Sends the request and receives a response.
-    fn send(
-        req: Self::Request,
-    ) -> impl Future<Output = Result<Self::Response, Error>> + Send;
+    fn send(req: Self::Request) -> impl Future<Output = Result<Self::Response, Error>> + Send;
 
     /// Opens a websocket connection to the server.
     #[allow(clippy::type_complexity)]
@@ -98,10 +96,7 @@ pub mod browser {
         type Request = BrowserRequest;
         type Response = BrowserResponse;
 
-        fn send(
-            req: Self::Request,
-        ) -> impl Future<Output = Result<Self::Response, Error>> + Send
-        {
+        fn send(req: Self::Request) -> impl Future<Output = Result<Self::Response, Error>> + Send {
             SendWrapper::new(async move {
                 let req = req.0.take();
                 let RequestInner {
@@ -112,10 +107,7 @@ pub mod browser {
                     .send()
                     .await
                     .map(|res| BrowserResponse(SendWrapper::new(res)))
-                    .map_err(|e| {
-                        ServerFnErrorErr::Request(e.to_string())
-                            .into_app_error()
-                    });
+                    .map_err(|e| ServerFnErrorErr::Request(e.to_string()).into_app_error());
 
                 // at this point, the future has successfully resolved without being dropped, so we
                 // can prevent the `AbortController` from firing
@@ -131,33 +123,25 @@ pub mod browser {
         ) -> impl Future<
             Output = Result<
                 (
-                    impl futures::Stream<Item = Result<Bytes, Bytes>>
-                        + Send
-                        + 'static,
+                    impl futures::Stream<Item = Result<Bytes, Bytes>> + Send + 'static,
                     impl futures::Sink<Bytes> + Send + 'static,
                 ),
                 Error,
             >,
         > + Send {
             let mut websocket_server_url = get_server_url().to_string();
-            if let Some(postfix) = websocket_server_url.strip_prefix("http://")
-            {
+            if let Some(postfix) = websocket_server_url.strip_prefix("http://") {
                 websocket_server_url = format!("ws://{postfix}");
-            } else if let Some(postfix) =
-                websocket_server_url.strip_prefix("https://")
-            {
+            } else if let Some(postfix) = websocket_server_url.strip_prefix("https://") {
                 websocket_server_url = format!("wss://{postfix}");
             }
             let url = format!("{websocket_server_url}{url}");
             SendWrapper::new(async move {
                 let websocket =
-                    gloo_net::websocket::futures::WebSocket::open(&url)
-                        .map_err(|err| {
-                            web_sys::console::error_1(&err.to_string().into());
-                            Error::from_server_fn_error(
-                                ServerFnErrorErr::Request(err.to_string()),
-                            )
-                        })?;
+                    gloo_net::websocket::futures::WebSocket::open(&url).map_err(|err| {
+                        web_sys::console::error_1(&err.to_string().into());
+                        Error::from_server_fn_error(ServerFnErrorErr::Request(err.to_string()))
+                    })?;
                 let (sink, stream) = websocket.split();
 
                 let stream = stream.map(|message| match message {
@@ -167,10 +151,12 @@ pub mod browser {
                     }),
                     Err(err) => {
                         web_sys::console::error_1(&err.to_string().into());
-                        Err(OutputStreamError::from_server_fn_error(
-                            ServerFnErrorErr::Request(err.to_string()),
+                        Err(
+                            OutputStreamError::from_server_fn_error(ServerFnErrorErr::Request(
+                                err.to_string(),
+                            ))
+                            .ser(),
                         )
-                        .ser())
                     }
                 });
                 let stream = SendWrapper::new(stream);
@@ -196,8 +182,7 @@ pub mod browser {
                     fn poll_ready(
                         self: std::pin::Pin<&mut Self>,
                         cx: &mut std::task::Context<'_>,
-                    ) -> std::task::Poll<Result<(), Self::Error>>
-                    {
+                    ) -> std::task::Poll<Result<(), Self::Error>> {
                         self.get_mut().sink.poll_ready_unpin(cx)
                     }
 
@@ -211,24 +196,20 @@ pub mod browser {
                     fn poll_flush(
                         self: std::pin::Pin<&mut Self>,
                         cx: &mut std::task::Context<'_>,
-                    ) -> std::task::Poll<Result<(), Self::Error>>
-                    {
+                    ) -> std::task::Poll<Result<(), Self::Error>> {
                         self.get_mut().sink.poll_flush_unpin(cx)
                     }
 
                     fn poll_close(
                         self: std::pin::Pin<&mut Self>,
                         cx: &mut std::task::Context<'_>,
-                    ) -> std::task::Poll<Result<(), Self::Error>>
-                    {
+                    ) -> std::task::Poll<Result<(), Self::Error>> {
                         self.get_mut().sink.poll_close_unpin(cx)
                     }
                 }
 
                 let sink = sink.with(|message: Bytes| async move {
-                    Ok::<Message, WebSocketError>(Message::Bytes(
-                        message.into(),
-                    ))
+                    Ok::<Message, WebSocketError>(Message::Bytes(message.into()))
                 });
                 let sink = SendWrapperSink::new(Box::pin(sink));
 
@@ -267,13 +248,10 @@ pub mod reqwest {
         type Request = Request;
         type Response = Response;
 
-        fn send(
-            req: Self::Request,
-        ) -> impl Future<Output = Result<Self::Response, Error>> + Send
-        {
-            CLIENT.execute(req).map_err(|e| {
-                ServerFnErrorErr::Request(e.to_string()).into_app_error()
-            })
+        fn send(req: Self::Request) -> impl Future<Output = Result<Self::Response, Error>> + Send {
+            CLIENT
+                .execute(req)
+                .map_err(|e| ServerFnErrorErr::Request(e.to_string()).into_app_error())
         }
 
         async fn open_websocket(
@@ -286,21 +264,15 @@ pub mod reqwest {
             Error,
         > {
             let mut websocket_server_url = get_server_url().to_string();
-            if let Some(postfix) = websocket_server_url.strip_prefix("http://")
-            {
+            if let Some(postfix) = websocket_server_url.strip_prefix("http://") {
                 websocket_server_url = format!("ws://{postfix}");
-            } else if let Some(postfix) =
-                websocket_server_url.strip_prefix("https://")
-            {
+            } else if let Some(postfix) = websocket_server_url.strip_prefix("https://") {
                 websocket_server_url = format!("wss://{postfix}");
             }
             let url = format!("{websocket_server_url}{path}");
-            let (ws_stream, _) =
-                tokio_tungstenite::connect_async(url).await.map_err(|e| {
-                    Error::from_server_fn_error(ServerFnErrorErr::Request(
-                        e.to_string(),
-                    ))
-                })?;
+            let (ws_stream, _) = tokio_tungstenite::connect_async(url).await.map_err(|e| {
+                Error::from_server_fn_error(ServerFnErrorErr::Request(e.to_string()))
+            })?;
 
             let (write, read) = ws_stream.split();
 
@@ -316,9 +288,7 @@ pub mod reqwest {
                     Ok::<
                         tokio_tungstenite::tungstenite::Message,
                         tokio_tungstenite::tungstenite::Error,
-                    >(
-                        tokio_tungstenite::tungstenite::Message::Binary(msg)
-                    )
+                    >(tokio_tungstenite::tungstenite::Message::Binary(msg))
                 }),
             ))
         }

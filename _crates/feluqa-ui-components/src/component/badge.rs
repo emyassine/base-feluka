@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::variants;
+use crate::runtime::prelude::*;
 
 variants! {
     Badge {

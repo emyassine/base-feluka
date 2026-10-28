@@ -24,8 +24,8 @@ use futures::{
 use http::{Request, Response};
 use std::borrow::Cow;
 
-impl<Error, InputStreamError, OutputStreamError>
-    Req<Error, InputStreamError, OutputStreamError> for Request<Bytes>
+impl<Error, InputStreamError, OutputStreamError> Req<Error, InputStreamError, OutputStreamError>
+    for Request<Bytes>
 where
     Error: FromServerFnError + Send,
     InputStreamError: FromServerFnError + Send,
@@ -38,15 +38,13 @@ where
     }
 
     async fn try_into_string(self) -> Result<String, Error> {
-        String::from_utf8(self.into_body().into()).map_err(|err| {
-            ServerFnErrorErr::Deserialization(err.to_string()).into_app_error()
-        })
+        String::from_utf8(self.into_body().into())
+            .map_err(|err| ServerFnErrorErr::Deserialization(err.to_string()).into_app_error())
     }
 
     fn try_into_stream(
         self,
-    ) -> Result<impl Stream<Item = Result<Bytes, Bytes>> + Send + 'static, Error>
-    {
+    ) -> Result<impl Stream<Item = Result<Bytes, Bytes>> + Send + 'static, Error> {
         Ok(stream::iter(self.into_body())
             .ready_chunks(16)
             .map(|chunk| Ok(Bytes::from(chunk))))

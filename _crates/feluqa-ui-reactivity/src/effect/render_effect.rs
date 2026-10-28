@@ -1,10 +1,7 @@
 use crate::{
     channel::channel,
     effect::inner::EffectInner,
-    graph::{
-        AnySubscriber, ReactiveNode, SourceSet, Subscriber, ToAnySubscriber,
-        WithObserver,
-    },
+    graph::{AnySubscriber, ReactiveNode, SourceSet, Subscriber, ToAnySubscriber, WithObserver},
     owner::Owner,
 };
 use futures::StreamExt;
@@ -67,8 +64,7 @@ where
                 {
                     let fun = Arc::downgrade(&fun);
                     let wrapped = send_wrapper::SendWrapper::new(move || {
-                        fun.upgrade()
-                            .map(|n| n.lock().or_poisoned().ptr_address())
+                        fun.upgrade().map(|n| n.lock().or_poisoned().ptr_address())
                     });
                     // it's not redundant, it's due to the SendWrapper deref
                     #[allow(clippy::redundant_closure)]
@@ -98,8 +94,7 @@ where
                 {
                     let fun = Arc::downgrade(&fun);
                     let wrapped = send_wrapper::SendWrapper::new(move || {
-                        fun.upgrade()
-                            .map(|n| n.lock().or_poisoned().ptr_address())
+                        fun.upgrade().map(|n| n.lock().or_poisoned().ptr_address())
                     });
                     // it's not redundant, it's due to the SendWrapper deref
                     #[allow(clippy::redundant_closure)]
@@ -127,11 +122,7 @@ where
         #[cfg(feature = "subsecond")]
         let fun = move |prev| fun.call((prev,));
 
-        Self::new_with_async_value_erased(
-            Box::new(fun),
-            Box::pin(value.into_future()),
-        )
-        .await
+        Self::new_with_async_value_erased(Box::new(fun), Box::pin(value.into_future())).await
     }
 
     fn new_with_value_erased(
@@ -144,8 +135,7 @@ where
         hot_fn_ptr: CurrentHotPtr,
     ) -> Self {
         /// codegen optimisation:
-        fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver)
-        {
+        fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver) {
             let (observer, rx) = channel();
             let owner = Owner::new();
             let inner = Arc::new(RwLock::new(EffectInner {
@@ -184,21 +174,19 @@ where
                 > = LazyLock::new(|| {
                     subsecond::register_handler(Arc::new(|| {
                         HOT_RELOAD_SUBSCRIBERS.lock().or_poisoned().retain(
-                            |subscriber, (prev_ptr, hot_fn_ptr)| {
-                                match hot_fn_ptr() {
-                                    None => false,
-                                    Some(curr_hot_ptr) => {
-                                        if curr_hot_ptr != *prev_ptr {
-                                            crate::log_warning(format_args!(
-                                                "{prev_ptr:?} <> \
+                            |subscriber, (prev_ptr, hot_fn_ptr)| match hot_fn_ptr() {
+                                None => false,
+                                Some(curr_hot_ptr) => {
+                                    if curr_hot_ptr != *prev_ptr {
+                                        crate::log_warning(format_args!(
+                                            "{prev_ptr:?} <> \
                                                  {curr_hot_ptr:?}",
-                                            ));
-                                            *prev_ptr = curr_hot_ptr;
+                                        ));
+                                        *prev_ptr = curr_hot_ptr;
 
-                                            subscriber.mark_dirty();
-                                        }
-                                        true
+                                        subscriber.mark_dirty();
                                     }
+                                    true
                                 }
                             },
                         );
@@ -215,9 +203,8 @@ where
                 move |prev| fun.call((prev,))
             };
 
-            *value.write().or_poisoned() = Some(
-                owner.with(|| subscriber.with_observer(|| fun(initial_value))),
-            );
+            *value.write().or_poisoned() =
+                Some(owner.with(|| subscriber.with_observer(|| fun(initial_value))));
 
             feluqa_ui_task_runtime::Executor::spawn_local({
                 let value = Arc::clone(&value);
@@ -225,17 +212,13 @@ where
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            })
+                            && subscriber.with_observer(|| subscriber.update_if_necessary())
                         {
                             subscriber.clear_sources(&subscriber);
 
-                            let old_value =
-                                mem::take(&mut *value.write().or_poisoned());
-                            let new_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(|| fun(old_value))
-                            });
+                            let old_value = mem::take(&mut *value.write().or_poisoned());
+                            let new_value =
+                                owner.with_cleanup(|| subscriber.with_observer(|| fun(old_value)));
                             *value.write().or_poisoned() = Some(new_value);
                         }
                     }
@@ -251,8 +234,7 @@ where
         initial_value: Pin<Box<dyn Future<Output = T>>>,
     ) -> Self {
         /// codegen optimisation:
-        fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver)
-        {
+        fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver) {
             let (observer, rx) = channel();
             let owner = Owner::new();
             let inner = Arc::new(RwLock::new(EffectInner {
@@ -292,17 +274,13 @@ where
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            })
+                            && subscriber.with_observer(|| subscriber.update_if_necessary())
                         {
                             subscriber.clear_sources(&subscriber);
 
-                            let old_value =
-                                mem::take(&mut *value.write().or_poisoned());
-                            let new_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(|| fun(old_value))
-                            });
+                            let old_value = mem::take(&mut *value.write().or_poisoned());
+                            let new_value =
+                                owner.with_cleanup(|| subscriber.with_observer(|| fun(old_value)));
                             *value.write().or_poisoned() = Some(new_value);
                         }
                     }
@@ -314,10 +292,7 @@ where
     }
 
     /// Mutably accesses the current value.
-    pub fn with_value_mut<U>(
-        &self,
-        fun: impl FnOnce(&mut T) -> U,
-    ) -> Option<U> {
+    pub fn with_value_mut<U>(&self, fun: impl FnOnce(&mut T) -> U) -> Option<U> {
         self.value.write().or_poisoned().as_mut().map(fun)
     }
 
@@ -332,9 +307,7 @@ where
     T: Send + Sync + 'static,
 {
     /// Creates a render effect that will run whether the `effects` feature is enabled or not.
-    pub fn new_isomorphic(
-        fun: impl FnMut(Option<T>) -> T + Send + Sync + 'static,
-    ) -> Self {
+    pub fn new_isomorphic(fun: impl FnMut(Option<T>) -> T + Send + Sync + 'static) -> Self {
         #[cfg(feature = "subsecond")]
         let mut fun = subsecond::HotFn::current(fun);
         #[cfg(feature = "subsecond")]
@@ -352,8 +325,8 @@ where
                 sources: SourceSet::new(),
             }));
 
-            let initial_value = owner
-                .with(|| inner.to_any_subscriber().with_observer(|| fun(None)));
+            let initial_value =
+                owner.with(|| inner.to_any_subscriber().with_observer(|| fun(None)));
             *value.write().or_poisoned() = Some(initial_value);
 
             crate::spawn({
@@ -363,17 +336,13 @@ where
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            })
+                            && subscriber.with_observer(|| subscriber.update_if_necessary())
                         {
                             subscriber.clear_sources(&subscriber);
 
-                            let old_value =
-                                mem::take(&mut *value.write().or_poisoned());
-                            let new_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(|| fun(old_value))
-                            });
+                            let old_value = mem::take(&mut *value.write().or_poisoned());
+                            let new_value =
+                                owner.with_cleanup(|| subscriber.with_observer(|| fun(old_value)));
                             *value.write().or_poisoned() = Some(new_value);
                         }
                     }

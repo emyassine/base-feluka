@@ -1,13 +1,10 @@
-use std::borrow::Cow;
 use feluqa_ui_dom_renderer::{
     html::attribute::{any_attribute::AnyAttribute, Attribute},
     hydration::Cursor,
     ssr::StreamBuilder,
-    view::{
-        add_attr::AddAnyAttr, Position, PositionState, Render, RenderHtml,
-        ToTemplate,
-    },
+    view::{add_attr::AddAnyAttr, Position, PositionState, Render, RenderHtml, ToTemplate},
 };
+use std::borrow::Cow;
 
 /// A wrapper for any kind of view.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -120,13 +117,8 @@ impl<T: RenderHtml> RenderHtml for View<T> {
             buf.push_str(&format!("<!--hot-reload|{vm}|open-->"));
         }
 
-        self.inner.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.inner
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
 
         #[cfg(debug_assertions)]
         if let Some(vm) = vm.as_ref() {
@@ -178,11 +170,7 @@ impl<T: RenderHtml> RenderHtml for View<T> {
         self.inner.hydrate::<FROM_SERVER>(cursor, position)
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         self.inner.hydrate_async(cursor, position).await
     }
 
@@ -210,10 +198,7 @@ impl<T: ToTemplate> ToTemplate for View<T> {
 impl<T: AddAnyAttr> AddAnyAttr for View<T> {
     type Output<SomeNewAttr: Attribute> = View<T::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {

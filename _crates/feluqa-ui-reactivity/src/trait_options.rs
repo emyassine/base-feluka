@@ -1,8 +1,5 @@
 use crate::{
-    traits::{
-        DefinedAt, Get, GetUntracked, Read, ReadUntracked, Track, With,
-        WithUntracked,
-    },
+    traits::{DefinedAt, Get, GetUntracked, Read, ReadUntracked, Track, With, WithUntracked},
     unwrap_signal,
 };
 use std::panic::Location;
@@ -106,20 +103,14 @@ pub trait WithUntrackedOptional: DefinedAt {
     /// Applies the closure to the value, and returns the result,
     /// or `None` if the signal has already been disposed.
     #[track_caller]
-    fn try_with_untracked<U>(
-        &self,
-        fun: impl FnOnce(Option<&Self::Value>) -> U,
-    ) -> Option<U>;
+    fn try_with_untracked<U>(&self, fun: impl FnOnce(Option<&Self::Value>) -> U) -> Option<U>;
 
     /// Applies the closure to the value, and returns the result.
     ///
     /// # Panics
     /// Panics if you try to access a signal that has been disposed.
     #[track_caller]
-    fn with_untracked<U>(
-        &self,
-        fun: impl FnOnce(Option<&Self::Value>) -> U,
-    ) -> U {
+    fn with_untracked<U>(&self, fun: impl FnOnce(Option<&Self::Value>) -> U) -> U {
         self.try_with_untracked(fun)
             .unwrap_or_else(unwrap_signal!(self))
     }
@@ -133,10 +124,7 @@ where
 {
     type Value = <T as WithUntracked>::Value;
 
-    fn try_with_untracked<U>(
-        &self,
-        fun: impl FnOnce(Option<&Self::Value>) -> U,
-    ) -> Option<U> {
+    fn try_with_untracked<U>(&self, fun: impl FnOnce(Option<&Self::Value>) -> U) -> Option<U> {
         if let Some(signal) = self {
             Some(signal.try_with_untracked(|val| fun(Some(val)))?)
         } else {
@@ -153,10 +141,7 @@ pub trait WithOptional: DefinedAt {
     /// Subscribes to the signal, applies the closure to the value, and returns the result,
     /// or `None` if the signal has already been disposed.
     #[track_caller]
-    fn try_with<U>(
-        &self,
-        fun: impl FnOnce(Option<&Self::Value>) -> U,
-    ) -> Option<U>;
+    fn try_with<U>(&self, fun: impl FnOnce(Option<&Self::Value>) -> U) -> Option<U>;
 
     /// Subscribes to the signal, applies the closure to the value, and returns the result.
     ///
@@ -176,10 +161,7 @@ where
 {
     type Value = <T as With>::Value;
 
-    fn try_with<U>(
-        &self,
-        fun: impl FnOnce(Option<&Self::Value>) -> U,
-    ) -> Option<U> {
+    fn try_with<U>(&self, fun: impl FnOnce(Option<&Self::Value>) -> U) -> Option<U> {
         if let Some(signal) = self {
             Some(signal.try_with(|val| fun(Some(val)))?)
         } else {

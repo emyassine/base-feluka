@@ -5,17 +5,16 @@ use convert_case::{
     Casing,
 };
 use convert_case_extras::is_case;
-use itertools::Itertools;
 use feluqa_ui_runtime_hot_reload::parsing::value_to_string;
+use itertools::Itertools;
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{format_ident, quote, quote_spanned, ToTokens, TokenStreamExt};
 use std::hash::DefaultHasher;
 use syn::{
-    parse::Parse, parse_quote, spanned::Spanned, token::Colon,
-    visit_mut::VisitMut, AngleBracketedGenericArguments, Attribute, FnArg,
-    GenericArgument, GenericParam, Item, ItemFn, LitStr, Meta, Pat, PatIdent,
-    Path, PathArguments, ReturnType, Signature, Stmt, Type, TypeImplTrait,
-    TypeParam, TypePath, Visibility,
+    parse::Parse, parse_quote, spanned::Spanned, token::Colon, visit_mut::VisitMut,
+    AngleBracketedGenericArguments, Attribute, FnArg, GenericArgument, GenericParam, Item, ItemFn,
+    LitStr, Meta, Pat, PatIdent, Path, PathArguments, ReturnType, Signature, Stmt, Type,
+    TypeImplTrait, TypeParam, TypePath, Visibility,
 };
 
 pub struct Model {
@@ -107,19 +106,18 @@ fn maybe_modify_return_type(ret: &mut ReturnType) {
                 // If one of the bounds is MatchNestedRoutes, we need to replace the return type with AnyNestedRoute:
                 if bounds.iter().any(|bound| {
                     if let syn::TypeParamBound::Trait(trait_bound) = bound {
-                        if trait_bound.path.segments.iter().any(
-                            |path_segment| {
-                                path_segment.ident == "MatchNestedRoutes"
-                            },
-                        ) {
+                        if trait_bound
+                            .path
+                            .segments
+                            .iter()
+                            .any(|path_segment| path_segment.ident == "MatchNestedRoutes")
+                        {
                             return true;
                         }
                     }
                     false
                 }) {
-                    *ty = parse_quote!(
-                        ::feluqa_ui_navigation::any_nested_route::AnyNestedRoute
-                    );
+                    *ty = parse_quote!(::feluqa_ui_navigation::any_nested_route::AnyNestedRoute);
                 }
             }
         }
@@ -132,10 +130,7 @@ fn maybe_modify_return_type(ret: &mut ReturnType) {
 
 /// implemented manually because Vec::drain_filter is nightly only
 /// follows std recommended parallel
-pub fn drain_filter<T>(
-    vec: &mut Vec<T>,
-    mut some_predicate: impl FnMut(&mut T) -> bool,
-) {
+pub fn drain_filter<T>(vec: &mut Vec<T>, mut some_predicate: impl FnMut(&mut T) -> bool) {
     let mut i = 0;
     while i < vec.len() {
         if some_predicate(&mut vec[i]) {
@@ -156,10 +151,7 @@ pub fn convert_from_snake_case(name: &Ident) -> Ident {
 }
 
 impl Model {
-    pub(crate) fn expand(
-        mut self,
-        errors: &mut Errors,
-    ) -> syn::Result<TokenStream> {
+    pub(crate) fn expand(mut self, errors: &mut Errors) -> syn::Result<TokenStream> {
         if let Some(error) = self.validation_error.take() {
             return Err(error);
         }
@@ -183,11 +175,10 @@ impl Model {
 
         // check for components that end ;
         if !is_transparent {
-            let ends_semi =
-                body.block.stmts.iter().last().and_then(|stmt| match stmt {
-                    Stmt::Item(Item::Macro(mac)) => mac.semi_token.as_ref(),
-                    _ => None,
-                });
+            let ends_semi = body.block.stmts.iter().last().and_then(|stmt| match stmt {
+                Stmt::Item(Item::Macro(mac)) => mac.semi_token.as_ref(),
+                _ => None,
+            });
             if let Some(semi) = ends_semi {
                 errors.push(syn::Error::new(
                     semi.span(),
@@ -204,8 +195,7 @@ impl Model {
         #[allow(clippy::redundant_clone)] // false positive
         let body_name = body.sig.ident.clone();
 
-        let (impl_generics, generics, where_clause) =
-            body.sig.generics.split_for_impl();
+        let (impl_generics, generics, where_clause) = body.sig.generics.split_for_impl();
 
         let props_name = format_ident!("{name}Props");
         let props_builder_name = format_ident!("{name}PropsBuilder");
@@ -219,8 +209,7 @@ impl Model {
             && ((is_island_with_children && props.len() > 1)
                 || (!is_island_with_children && !props.is_empty()));
 
-        let prop_builder_fields =
-            prop_builder_fields(vis, props, is_island_with_other_props)?;
+        let prop_builder_fields = prop_builder_fields(vis, props, is_island_with_other_props)?;
         let props_serializer = if is_island_with_other_props {
             let fields = prop_serializer_fields(vis, props);
             quote! {
@@ -254,12 +243,7 @@ impl Model {
             }
         };
 
-        let (
-            tracing_instrument_attr,
-            tracing_span_expr,
-            tracing_guard_expr,
-            tracing_props_expr,
-        ) = {
+        let (tracing_instrument_attr, tracing_span_expr, tracing_guard_expr, tracing_props_expr) = {
             #[cfg(feature = "tracing")]
             {
                 /* TODO for 0.8: fix this
@@ -454,63 +438,56 @@ impl Model {
         };
 
         let binding = if is_island {
-            let island_props = if is_island_with_children
-                || is_island_with_other_props
-            {
-                let (destructure, prop_builders, optional_props) =
-                    if is_island_with_other_props {
-                        let prop_names = props
-                            .iter()
-                            .filter_map(|prop| {
-                                if prop.name.ident == "children" {
-                                    None
-                                } else {
-                                    let name = &prop.name.ident;
-                                    Some(quote! { #name, })
-                                }
-                            })
-                            .collect::<TokenStream>();
-                        let destructure = quote! {
-                            let #props_serialized_name {
-                                #prop_names
-                            } = props;
-                        };
-                        let prop_builders = props
-                            .iter()
-                            .filter_map(|prop| {
-                                if prop.name.ident == "children"
-                                    || prop.prop_opts.optional
-                                {
-                                    None
-                                } else {
-                                    let name = &prop.name.ident;
-                                    Some(quote! {
-                                        .#name(#name)
-                                    })
-                                }
-                            })
-                            .collect::<TokenStream>();
-                        let optional_props = props
-                            .iter()
-                            .filter_map(|prop| {
-                                if prop.name.ident == "children"
-                                    || !prop.prop_opts.optional
-                                {
-                                    None
-                                } else {
-                                    let name = &prop.name.ident;
-                                    Some(quote! {
-                                        if let Some(#name) = #name {
-                                            props.#name = Some(#name)
-                                        }
-                                    })
-                                }
-                            })
-                            .collect::<TokenStream>();
-                        (destructure, prop_builders, optional_props)
-                    } else {
-                        (quote! {}, quote! {}, quote! {})
+            let island_props = if is_island_with_children || is_island_with_other_props {
+                let (destructure, prop_builders, optional_props) = if is_island_with_other_props {
+                    let prop_names = props
+                        .iter()
+                        .filter_map(|prop| {
+                            if prop.name.ident == "children" {
+                                None
+                            } else {
+                                let name = &prop.name.ident;
+                                Some(quote! { #name, })
+                            }
+                        })
+                        .collect::<TokenStream>();
+                    let destructure = quote! {
+                        let #props_serialized_name {
+                            #prop_names
+                        } = props;
                     };
+                    let prop_builders = props
+                        .iter()
+                        .filter_map(|prop| {
+                            if prop.name.ident == "children" || prop.prop_opts.optional {
+                                None
+                            } else {
+                                let name = &prop.name.ident;
+                                Some(quote! {
+                                    .#name(#name)
+                                })
+                            }
+                        })
+                        .collect::<TokenStream>();
+                    let optional_props = props
+                        .iter()
+                        .filter_map(|prop| {
+                            if prop.name.ident == "children" || !prop.prop_opts.optional {
+                                None
+                            } else {
+                                let name = &prop.name.ident;
+                                Some(quote! {
+                                    if let Some(#name) = #name {
+                                        props.#name = Some(#name)
+                                    }
+                                })
+                            }
+                        })
+                        .collect::<TokenStream>();
+                    (destructure, prop_builders, optional_props)
+                } else {
+                    (quote! {}, quote! {}, quote! {})
+                };
                 let children = if is_island_with_children {
                     quote! {
                         .children({
@@ -567,8 +544,7 @@ impl Model {
                 std::mem::forget(state);
             };
             if *is_lazy {
-                let outer_name =
-                    Ident::new(&format!("{name}_loader"), name.span());
+                let outer_name = Ident::new(&format!("{name}_loader"), name.span());
 
                 quote! {
                     #[::feluqa_ui_runtime::prelude::lazy]
@@ -772,10 +748,7 @@ impl Prop {
         let typed = if let FnArg::Typed(ty) = arg {
             ty
         } else {
-            return Err(syn::Error::new_spanned(
-                arg,
-                "receiver not allowed in `fn`",
-            ));
+            return Err(syn::Error::new_spanned(arg, "receiver not allowed in `fn`"));
         };
 
         let prop_opts = PropOpt::from_attributes(&typed.attrs)?;
@@ -869,17 +842,13 @@ impl Docs {
                     match view_code_fence_state {
                         ViewCodeFenceState::Outside
                             if trimmed_doc.starts_with("```")
-                                && trimmed_doc
-                                    .trim_start_matches('`')
-                                    .starts_with("view") =>
+                                && trimmed_doc.trim_start_matches('`').starts_with("view") =>
                         {
                             view_code_fence_state = ViewCodeFenceState::Rust;
                             let view = trimmed_doc.find('v').unwrap();
                             trimmed_doc[..view].clone_into(&mut quotes);
                             leading_ws.clone_into(&mut quote_ws);
-                            let rust_options = &trimmed_doc
-                                [view + "view".len()..]
-                                .trim_start();
+                            let rust_options = &trimmed_doc[view + "view".len()..].trim_start();
                             vec![
                                 format!("{leading_ws}{quotes}{rust_options}"),
                                 leading_ws.to_string(),
@@ -889,21 +858,13 @@ impl Docs {
                             view_code_fence_state = ViewCodeFenceState::Outside;
                             vec![leading_ws.to_string(), doc.to_owned()]
                         }
-                        ViewCodeFenceState::Rust
-                            if trimmed_doc.starts_with('<') =>
-                        {
+                        ViewCodeFenceState::Rust if trimmed_doc.starts_with('<') => {
                             view_code_fence_state = ViewCodeFenceState::Rsx;
-                            vec![
-                                format!("{leading_ws}{RSX_START}"),
-                                doc.to_owned(),
-                            ]
+                            vec![format!("{leading_ws}{RSX_START}"), doc.to_owned()]
                         }
                         ViewCodeFenceState::Rsx if trimmed_doc == quotes => {
                             view_code_fence_state = ViewCodeFenceState::Outside;
-                            vec![
-                                format!("{leading_ws}{RSX_END}"),
-                                doc.to_owned(),
-                            ]
+                            vec![format!("{leading_ws}{RSX_END}"), doc.to_owned()]
                         }
                         _ => vec![doc.to_string()],
                     }
@@ -1160,25 +1121,22 @@ fn prop_builder_fields(
 
             let PatIdent { ident, by_ref, .. } = &name;
 
-            let builder_attrs =
-                TypedBuilderOpts::from_opts(prop_opts, ty).expand()?;
+            let builder_attrs = TypedBuilderOpts::from_opts(prop_opts, ty).expand()?;
 
             let builder_docs = prop_to_doc(prop, PropDocStyle::Inline)?;
 
             // Children and markers won't need documentation in many cases
-            let allow_missing_docs = if prop_opts.marker || ident == "children"
-            {
+            let allow_missing_docs = if prop_opts.marker || ident == "children" {
                 quote!(#[allow(missing_docs)])
             } else {
                 quote!()
             };
-            let serde_skip = if is_island_with_other_props
-                && (prop_opts.marker || ident == "children")
-            {
-                quote!(#[serde(skip)])
-            } else {
-                quote!()
-            };
+            let serde_skip =
+                if is_island_with_other_props && (prop_opts.marker || ident == "children") {
+                    quote!(#[serde(skip)])
+                } else {
+                    quote!()
+                };
 
             Ok(quote! {
                 #docs
@@ -1237,9 +1195,7 @@ fn generate_component_fn_prop_docs(props: &[Prop]) -> syn::Result<TokenStream> {
     let required_prop_docs = props
         .iter()
         .filter(|Prop { prop_opts, .. }| {
-            !(prop_opts.optional
-                || prop_opts.optional_no_strip
-                || prop_opts.default.is_some())
+            !(prop_opts.optional || prop_opts.optional_no_strip || prop_opts.default.is_some())
         })
         .filter(|prop| !prop.prop_opts.marker)
         .map(|p| prop_to_doc(p, PropDocStyle::List))
@@ -1248,9 +1204,7 @@ fn generate_component_fn_prop_docs(props: &[Prop]) -> syn::Result<TokenStream> {
     let optional_prop_docs = props
         .iter()
         .filter(|Prop { prop_opts, .. }| {
-            prop_opts.optional
-                || prop_opts.optional_no_strip
-                || prop_opts.default.is_some()
+            prop_opts.optional || prop_opts.optional_no_strip || prop_opts.default.is_some()
         })
         .filter(|prop| !prop.prop_opts.marker)
         .map(|p| prop_to_doc(p, PropDocStyle::List))
@@ -1308,13 +1262,11 @@ pub fn unwrap_option(ty: &Type) -> syn::Result<Type> {
     {
         if let [first] = &segments.iter().collect::<Vec<_>>()[..] {
             if first.ident == "Option" {
-                if let PathArguments::AngleBracketed(
-                    AngleBracketedGenericArguments { args, .. },
-                ) = &first.arguments
+                if let PathArguments::AngleBracketed(AngleBracketedGenericArguments {
+                    args, ..
+                }) = &first.arguments
                 {
-                    if let [GenericArgument::Type(ty)] =
-                        &args.iter().collect::<Vec<_>>()[..]
-                    {
+                    if let [GenericArgument::Type(ty)] = &args.iter().collect::<Vec<_>>()[..] {
                         return Ok(ty.clone());
                     }
                 }
@@ -1324,10 +1276,7 @@ pub fn unwrap_option(ty: &Type) -> syn::Result<Type> {
 
     Err(syn::Error::new_spanned(
         ty,
-        message_with_help(
-            "`Option` must be `std::option::Option`",
-            STD_OPTION_MSG,
-        ),
+        message_with_help("`Option` must be `std::option::Option`", STD_OPTION_MSG),
     ))
 }
 
@@ -1346,8 +1295,7 @@ fn prop_to_doc(
     }: &Prop,
     style: PropDocStyle,
 ) -> syn::Result<TokenStream> {
-    let ty = if (prop_opts.optional || prop_opts.strip_option) && is_option(ty)
-    {
+    let ty = if (prop_opts.optional || prop_opts.strip_option) && is_option(ty) {
         unwrap_option(ty)?
     } else {
         ty.to_owned()
@@ -1442,9 +1390,7 @@ fn convert_impl_trait_to_generic(sig: &mut Signature) {
                     qself: None,
                     path: Path::from(ident),
                 });
-                let Type::ImplTrait(impl_trait) =
-                    std::mem::replace(ty, generic_type)
-                else {
+                let Type::ImplTrait(impl_trait) = std::mem::replace(ty, generic_type) else {
                     unreachable!();
                 };
                 self.0.push(impl_trait);

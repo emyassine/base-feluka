@@ -1,9 +1,9 @@
+use crate::feluqa_ui_component_macros::{clx, variants, void};
+use crate::navigation::hooks::use_location;
 use crate::runtime::ev;
 use crate::runtime::prelude::*;
 use crate::runtime::wasm_bindgen::JsCast;
 use crate::runtime::web_sys::HtmlElement;
-use crate::navigation::hooks::use_location;
-use crate::feluqa_ui_component_macros::{clx, variants, void};
 
 mod components {
     use super::*;
@@ -86,8 +86,11 @@ pub fn SidenavWrapper(
 
         if let Some(element) = document().active_element() {
             let tag_name = element.tag_name();
-            let is_text_input = tag_name.eq_ignore_ascii_case("input") || tag_name.eq_ignore_ascii_case("textarea");
-            let is_content_editable = element.dyn_ref::<HtmlElement>().is_some_and(HtmlElement::is_content_editable);
+            let is_text_input =
+                tag_name.eq_ignore_ascii_case("input") || tag_name.eq_ignore_ascii_case("textarea");
+            let is_content_editable = element
+                .dyn_ref::<HtmlElement>()
+                .is_some_and(HtmlElement::is_content_editable);
 
             if is_text_input || is_content_editable {
                 return;
@@ -99,7 +102,10 @@ pub fn SidenavWrapper(
     });
     on_cleanup(move || listener.remove());
 
-    let merged_class = class_merge!("group/sidenav-wrapper has-data-[variant=Inset]:bg-sidenav flex h-full w-full", class);
+    let merged_class = class_merge!(
+        "group/sidenav-wrapper has-data-[variant=Inset]:bg-sidenav flex h-full w-full",
+        class
+    );
 
     view! {
         <div class=merged_class data-name="SidenavWrapper">
@@ -163,7 +169,9 @@ variants! {
 /*                     ✨ FUNCTIONS ✨                        */
 /* ========================================================== */
 
-#[derive(Clone, Copy, PartialEq, Eq, Default, crate::strum::Display, crate::strum::IntoStaticStr)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, Default, crate::strum::Display, crate::strum::IntoStaticStr,
+)]
 pub enum SidenavVariant {
     #[default]
     Sidenav,
@@ -197,8 +205,9 @@ pub fn Sidenav(
 ) -> impl IntoView {
     let ctx = use_context::<SidenavContext>();
     // Context signal takes priority; falls back to static prop (JS can still mutate data-state directly)
-    let is_open: Signal<bool> =
-        ctx.map(|c| c.open.into()).unwrap_or_else(|| Signal::derive(move || data_state == SidenavState::Expanded));
+    let is_open: Signal<bool> = ctx
+        .map(|c| c.open.into())
+        .unwrap_or_else(|| Signal::derive(move || data_state == SidenavState::Expanded));
 
     view! {
         {if data_collapsible == SidenavCollapsible::None {

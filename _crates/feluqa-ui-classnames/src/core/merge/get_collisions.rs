@@ -2,7 +2,9 @@ pub(crate) fn get_collisions(collision_id: &str) -> Option<Vec<&'static str>> {
     match collision_id {
         "overflow" => Some(crate::std::vec!["overflow-x", "overflow-y"]),
         "overscroll" => Some(crate::std::vec!["overscroll-x", "overscroll-y"]),
-        "inset" => Some(crate::std::vec!["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"]),
+        "inset" => Some(crate::std::vec![
+            "inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"
+        ]),
         "inset-x" => Some(crate::std::vec!["right", "left"]),
         "inset-y" => Some(crate::std::vec!["top", "bottom"]),
         "flex" => Some(crate::std::vec!["basis", "grow", "shrink"]),
@@ -33,7 +35,13 @@ pub(crate) fn get_collisions(collision_id: &str) -> Option<Vec<&'static str>> {
         "margin-y" => Some(crate::std::vec!["margin-top", "margin-bottom"]),
         "size" => Some(crate::std::vec!["width", "height"]),
         "font-size" => Some(crate::std::vec!["line-height"]),
-        "fvn-normal" => Some(crate::std::vec!["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"]),
+        "fvn-normal" => Some(crate::std::vec![
+            "fvn-ordinal",
+            "fvn-slashed-zero",
+            "fvn-figure",
+            "fvn-spacing",
+            "fvn-fraction"
+        ]),
         "fvn-ordinal" => Some(crate::std::vec!["fvn-normal"]),
         "fvn-slashed-zero" => Some(crate::std::vec!["fvn-normal"]),
         "fvn-figure" => Some(crate::std::vec!["fvn-normal"]),
@@ -63,10 +71,22 @@ pub(crate) fn get_collisions(collision_id: &str) -> Option<Vec<&'static str>> {
         "rounded-b" => Some(crate::std::vec!["rounded-br", "rounded-bl"]),
         "rounded-l" => Some(crate::std::vec!["rounded-tl", "rounded-bl"]),
         "border-spacing" => Some(crate::std::vec!["border-spacing-x", "border-spacing-y"]),
-        "border-w" => Some(crate::std::vec!["border-w-s", "border-w-e", "border-w-t", "border-w-r", "border-w-b", "border-w-l"]),
+        "border-w" => Some(crate::std::vec![
+            "border-w-s",
+            "border-w-e",
+            "border-w-t",
+            "border-w-r",
+            "border-w-b",
+            "border-w-l"
+        ]),
         "border-w-x" => Some(crate::std::vec!["border-w-r", "border-w-l"]),
         "border-w-y" => Some(crate::std::vec!["border-w-t", "border-w-b"]),
-        "border-color" => Some(crate::std::vec!["border-color-t", "border-color-r", "border-color-b", "border-color-l"]),
+        "border-color" => Some(crate::std::vec![
+            "border-color-t",
+            "border-color-r",
+            "border-color-b",
+            "border-color-l"
+        ]),
         "border-color-x" => Some(crate::std::vec!["border-color-r", "border-color-l"]),
         "border-color-y" => Some(crate::std::vec!["border-color-t", "border-color-b"]),
         "scroll-m" => Some(crate::std::vec![

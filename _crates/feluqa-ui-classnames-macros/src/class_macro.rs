@@ -17,9 +17,16 @@ pub fn class_impl(input: TokenStream) -> TokenStream {
     let struct_ident = &container.ident;
     let builder_ident = format_ident!("{struct_ident}Builder");
 
-    let fields = container.data.take_struct().expect("Expected struct fields");
+    let fields = container
+        .data
+        .take_struct()
+        .expect("Expected struct fields");
 
-    let base_class = container.class.as_ref().map(syn::LitStr::value).unwrap_or_default();
+    let base_class = container
+        .class
+        .as_ref()
+        .map(syn::LitStr::value)
+        .unwrap_or_default();
 
     let merger = {
         if let Some(merger) = container.merger {
@@ -44,8 +51,10 @@ pub fn class_impl(input: TokenStream) -> TokenStream {
         }
     };
 
-    let field_idents =
-        fields.iter().map(|field| field.ident.as_ref().expect("struct field has ident")).collect::<Vec<_>>();
+    let field_idents = fields
+        .iter()
+        .map(|field| field.ident.as_ref().expect("struct field has ident"))
+        .collect::<Vec<_>>();
 
     let builder_impl = {
         let builder_set_methods = fields.iter().map(|field| {

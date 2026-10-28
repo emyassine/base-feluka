@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 const PING_ANIMATION: &str = "animate-ping";
 const RELATIVE: &str = "relative";
@@ -47,7 +47,9 @@ pub fn StatusIndactor(
     #[prop(into, optional)] class: String,
 ) -> impl IntoView {
     let merged_class = move || {
-        let status_indicator = StatusIndactorClass { variant: variant.get() };
+        let status_indicator = StatusIndactorClass {
+            variant: variant.get(),
+        };
         status_indicator.with_class(class.clone())
     };
 

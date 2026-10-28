@@ -1,20 +1,15 @@
-use super::{
-    fragment_to_tokens, utils::is_nostrip_optional_and_update_key, TagType,
-};
+use super::{fragment_to_tokens, utils::is_nostrip_optional_and_update_key, TagType};
 use crate::{
     diagnostics::Errors,
     view::{attribute_absolute, text_to_tokens, utils::filter_prefixed_attrs},
 };
+use feluqa_ui_markup_parser::node::{
+    CustomNode, KeyedAttributeValue, Node, NodeAttribute, NodeBlock, NodeElement, NodeName,
+};
 use proc_macro2::{Ident, TokenStream, TokenTree};
 use quote::{format_ident, quote, quote_spanned};
-use feluqa_ui_markup_parser::node::{
-    CustomNode, KeyedAttributeValue, Node, NodeAttribute, NodeBlock,
-    NodeElement, NodeName,
-};
 use std::collections::HashMap;
-use syn::{
-    spanned::Spanned, Expr, ExprPath, ExprRange, Item, RangeLimits, Stmt,
-};
+use syn::{spanned::Spanned, Expr, ExprPath, ExprRange, Item, RangeLimits, Stmt};
 
 pub(crate) fn component_to_tokens(
     node: &mut NodeElement<impl CustomNode>,
@@ -111,8 +106,7 @@ pub(crate) fn component_to_tokens(
                 return None;
             }
 
-            let KeyedAttributeValue::Binding(binding) = &attr.possible_value
-            else {
+            let KeyedAttributeValue::Binding(binding) = &attr.possible_value else {
                 let ident = attr.key.to_string();
                 let ident = ident.strip_prefix("let:")?;
                 let span = match &attr.key {
@@ -203,11 +197,9 @@ pub(crate) fn component_to_tokens(
     let mut slots = HashMap::new();
     let children = if node.children.is_empty() {
         quote! {}
-    } else if let Some(children) = maybe_optimised_component_children(
-        &node.children,
-        &items_to_bind,
-        &items_to_clone,
-    ) {
+    } else if let Some(children) =
+        maybe_optimised_component_children(&node.children, &items_to_bind, &items_to_clone)
+    {
         children
     } else {
         let children = fragment_to_tokens(
@@ -235,8 +227,7 @@ pub(crate) fn component_to_tokens(
         */
 
         if let Some(children) = children {
-            let bindables =
-                items_to_bind.iter().map(|ident| quote! { #ident, });
+            let bindables = items_to_bind.iter().map(|ident| quote! { #ident, });
 
             let clonables = items_to_clone_to_tokens(&items_to_clone);
 
@@ -387,14 +378,10 @@ pub fn maybe_optimised_component_children(
                         Stmt::Macro(mac) if is_supported(&mac.mac) => {
                             quote! { #block }
                         }
-                        Stmt::Item(Item::Macro(mac))
-                            if is_supported(&mac.mac) =>
-                        {
+                        Stmt::Item(Item::Macro(mac)) if is_supported(&mac.mac) => {
                             quote! { #block }
                         }
-                        Stmt::Expr(Expr::Macro(mac), _)
-                            if is_supported(&mac.mac) =>
-                        {
+                        Stmt::Expr(Expr::Macro(mac), _) if is_supported(&mac.mac) => {
                             quote! { #block }
                         }
                         _ => return None,

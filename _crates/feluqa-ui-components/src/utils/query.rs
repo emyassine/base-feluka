@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
 use crate::navigation::NavigateOptions;
 use crate::navigation::hooks::{use_location, use_navigate};
+use crate::runtime::prelude::*;
 use crate::time::Date;
 use crate::web_sys::wasm_bindgen;
 
@@ -34,29 +34,54 @@ impl QueryUtils {
         F: FnOnce(&crate::web_sys::UrlSearchParams),
     {
         let location = window().location();
-        let Ok(current_search) = location.search() else { return };
+        let Ok(current_search) = location.search() else {
+            return;
+        };
         let navigate = use_navigate();
 
         // Parse existing query parameters
-        let Ok(url_search_params) = crate::web_sys::UrlSearchParams::new_with_str(&current_search) else { return };
+        let Ok(url_search_params) = crate::web_sys::UrlSearchParams::new_with_str(&current_search)
+        else {
+            return;
+        };
 
         // Apply the parameter modifications
         param_modifier(&url_search_params);
 
-        let Ok(pathname) = location.pathname() else { return };
+        let Ok(pathname) = location.pathname() else {
+            return;
+        };
 
         // Build new URL
-        let new_url = if url_search_params.to_string().as_string().unwrap_or_default().is_empty() {
+        let new_url = if url_search_params
+            .to_string()
+            .as_string()
+            .unwrap_or_default()
+            .is_empty()
+        {
             pathname
         } else {
-            crate::std::format!("{}?{}", pathname, url_search_params.to_string().as_string().unwrap_or_default())
+            crate::std::format!(
+                "{}?{}",
+                pathname,
+                url_search_params
+                    .to_string()
+                    .as_string()
+                    .unwrap_or_default()
+            )
         };
 
         // Update browser history and navigate
-        let Ok(history) = window().history() else { return };
-        let _ = history.push_state_with_url(&crate::wasm_bindgen::JsValue::NULL, "", Some(&new_url));
+        let Ok(history) = window().history() else {
+            return;
+        };
+        let _ =
+            history.push_state_with_url(&crate::wasm_bindgen::JsValue::NULL, "", Some(&new_url));
 
-        let options = NavigateOptions { scroll: false, ..NavigateOptions::default() };
+        let options = NavigateOptions {
+            scroll: false,
+            ..NavigateOptions::default()
+        };
         navigate(&new_url, options);
     }
 
@@ -87,12 +112,25 @@ impl QueryUtils {
     /// Use this for reactive UI state like theme/preset that should be bookmarkable but not navigable.
     pub fn replace_param(query_key: &str, value: &str) {
         let location = window().location();
-        let Ok(current_search) = location.search() else { return };
-        let Ok(params) = crate::web_sys::UrlSearchParams::new_with_str(&current_search) else { return };
+        let Ok(current_search) = location.search() else {
+            return;
+        };
+        let Ok(params) = crate::web_sys::UrlSearchParams::new_with_str(&current_search) else {
+            return;
+        };
         params.set(query_key, value);
-        let Ok(pathname) = location.pathname() else { return };
-        let new_url = crate::std::format!("{}?{}", pathname, params.to_string().as_string().unwrap_or_default());
-        let Ok(history) = window().history() else { return };
-        let _ = history.replace_state_with_url(&crate::wasm_bindgen::JsValue::NULL, "", Some(&new_url));
+        let Ok(pathname) = location.pathname() else {
+            return;
+        };
+        let new_url = crate::std::format!(
+            "{}?{}",
+            pathname,
+            params.to_string().as_string().unwrap_or_default()
+        );
+        let Ok(history) = window().history() else {
+            return;
+        };
+        let _ =
+            history.replace_state_with_url(&crate::wasm_bindgen::JsValue::NULL, "", Some(&new_url));
     }
 }

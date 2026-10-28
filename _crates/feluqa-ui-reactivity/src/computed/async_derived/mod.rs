@@ -57,9 +57,7 @@ impl<Fut> ScopedFuture<Fut> {
 
     #[doc(hidden)]
     #[track_caller]
-    pub fn new_untracked_with_diagnostics(
-        fut: Fut,
-    ) -> ScopedFutureUntrackedWithDiagnostics<Fut> {
+    pub fn new_untracked_with_diagnostics(fut: Fut) -> ScopedFutureUntrackedWithDiagnostics<Fut> {
         let owner = Owner::current().unwrap_or_default();
         ScopedFutureUntrackedWithDiagnostics {
             owner,

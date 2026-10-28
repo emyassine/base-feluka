@@ -1,10 +1,9 @@
 #![allow(clippy::type_complexity)]
 use crate::{
-    matching::any_choose_view::AnyChooseView, ChooseView, MatchInterface,
-    MatchParams, RouteMatchId,
+    matching::any_choose_view::AnyChooseView, ChooseView, MatchInterface, MatchParams, RouteMatchId,
 };
-use std::{borrow::Cow, fmt::Debug};
 use feluqa_ui_dom_renderer::erased::ErasedLocal;
+use std::{borrow::Cow, fmt::Debug};
 
 /// A type-erased container for any [`MatchParams'] + [`MatchInterface`].
 pub struct AnyNestedMatch {
@@ -12,8 +11,7 @@ pub struct AnyNestedMatch {
     to_params: fn(&ErasedLocal) -> Vec<(Cow<'static, str>, String)>,
     as_id: fn(&ErasedLocal) -> RouteMatchId,
     as_matched: for<'a> fn(&'a ErasedLocal) -> &'a str,
-    into_view_and_child:
-        fn(ErasedLocal) -> (AnyChooseView, Option<AnyNestedMatch>),
+    into_view_and_child: fn(ErasedLocal) -> (AnyChooseView, Option<AnyNestedMatch>),
 }
 
 impl Debug for AnyNestedMatch {
@@ -42,16 +40,12 @@ where
             value.to_params()
         }
 
-        fn as_id<T: MatchInterface + 'static>(
-            value: &ErasedLocal,
-        ) -> RouteMatchId {
+        fn as_id<T: MatchInterface + 'static>(value: &ErasedLocal) -> RouteMatchId {
             let value = value.get_ref::<T>();
             value.as_id()
         }
 
-        fn as_matched<T: MatchInterface + 'static>(
-            value: &ErasedLocal,
-        ) -> &str {
+        fn as_matched<T: MatchInterface + 'static>(value: &ErasedLocal) -> &str {
             let value = value.get_ref::<T>();
             value.as_matched()
         }

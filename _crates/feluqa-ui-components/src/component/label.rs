@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
+use crate::runtime::prelude::*;
 
 #[component]
 pub fn Label(
@@ -8,7 +8,11 @@ pub fn Label(
     children: Children,
 ) -> impl IntoView {
     let peer_classes = if !html_for.is_empty() {
-        crate::std::format!("peer-disabled/{}:cursor-not-allowed peer-disabled/{}:opacity-50", html_for, html_for)
+        crate::std::format!(
+            "peer-disabled/{}:cursor-not-allowed peer-disabled/{}:opacity-50",
+            html_for,
+            html_for
+        )
     } else {
         "peer-disabled:cursor-not-allowed peer-disabled:opacity-50".to_string()
     };

@@ -47,10 +47,7 @@ pub trait Storage<T>: Send + Sync + 'static {
 
     /// Applies the given function to a mutable reference to the stored value, if it exists and can be accessed from this
     /// thread.
-    fn try_with_mut<U>(
-        node: NodeId,
-        fun: impl FnOnce(&mut T) -> U,
-    ) -> Option<U>;
+    fn try_with_mut<U>(node: NodeId, fun: impl FnOnce(&mut T) -> U) -> Option<U>;
 
     /// Sets a new value for the stored value. If it has been disposed, returns `Some(T)`.
     fn try_set(node: NodeId, value: T) -> Option<T>;
@@ -83,10 +80,7 @@ where
         .flatten()
     }
 
-    fn try_with_mut<U>(
-        node: NodeId,
-        fun: impl FnOnce(&mut T) -> U,
-    ) -> Option<U> {
+    fn try_with_mut<U>(node: NodeId, fun: impl FnOnce(&mut T) -> U) -> Option<U> {
         Arena::try_with_mut(|arena| {
             let m = arena.get_mut(node);
             m.and_then(|n| n.downcast_mut::<T>()).map(fun)
@@ -142,10 +136,7 @@ where
         })
     }
 
-    fn try_with_mut<U>(
-        node: NodeId,
-        fun: impl FnOnce(&mut T) -> U,
-    ) -> Option<U> {
+    fn try_with_mut<U>(node: NodeId, fun: impl FnOnce(&mut T) -> U) -> Option<U> {
         Arena::with_mut(|arena| {
             let m = arena.get_mut(node);
             m.and_then(|n| n.downcast_mut::<SendWrapper<T>>())

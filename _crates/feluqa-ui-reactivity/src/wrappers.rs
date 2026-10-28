@@ -5,18 +5,12 @@ pub mod read {
     use crate::{
         computed::{ArcMemo, Memo},
         graph::untrack,
-        owner::{
-            ArcStoredValue, ArenaItem, FromLocal, LocalStorage, Storage,
-            SyncStorage,
-        },
+        owner::{ArcStoredValue, ArenaItem, FromLocal, LocalStorage, Storage, SyncStorage},
         signal::{
             guards::{Mapped, Plain, ReadGuard},
-            ArcMappedSignal, ArcReadSignal, ArcRwSignal, MappedSignal,
-            ReadSignal, RwSignal,
+            ArcMappedSignal, ArcReadSignal, ArcRwSignal, MappedSignal, ReadSignal, RwSignal,
         },
-        traits::{
-            DefinedAt, Dispose, Get, Read, ReadUntracked, ReadValue, Track,
-        },
+        traits::{DefinedAt, Dispose, Get, Read, ReadUntracked, ReadValue, Track},
         unwrap_signal,
     };
     use send_wrapper::SendWrapper;
@@ -63,16 +57,10 @@ pub mod read {
     {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             match self {
-                Self::ReadSignal(arg0) => {
-                    f.debug_tuple("ReadSignal").field(arg0).finish()
-                }
+                Self::ReadSignal(arg0) => f.debug_tuple("ReadSignal").field(arg0).finish(),
                 Self::Memo(arg0) => f.debug_tuple("Memo").field(arg0).finish(),
-                Self::DerivedSignal(_) => {
-                    f.debug_tuple("DerivedSignal").finish()
-                }
-                Self::Stored(arg0) => {
-                    f.debug_tuple("Static").field(arg0).finish()
-                }
+                Self::DerivedSignal(_) => f.debug_tuple("DerivedSignal").finish(),
+                Self::Stored(arg0) => f.debug_tuple("Static").field(arg0).finish(),
             }
         }
     }
@@ -85,9 +73,7 @@ pub mod read {
             match (self, other) {
                 (Self::ReadSignal(l0), Self::ReadSignal(r0)) => l0 == r0,
                 (Self::Memo(l0), Self::Memo(r0)) => l0 == r0,
-                (Self::DerivedSignal(l0), Self::DerivedSignal(r0)) => {
-                    std::ptr::eq(l0, r0)
-                }
+                (Self::DerivedSignal(l0), Self::DerivedSignal(r0)) => std::ptr::eq(l0, r0),
                 _ => false,
             }
         }
@@ -189,9 +175,7 @@ pub mod read {
         /// assert_eq!(above_3(&double_count), true);
         /// ```
         #[track_caller]
-        pub fn derive(
-            derived_signal: impl Fn() -> T + Send + Sync + 'static,
-        ) -> Self {
+        pub fn derive(derived_signal: impl Fn() -> T + Send + Sync + 'static) -> Self {
             #[cfg(feature = "tracing")]
             let span = ::tracing::Span::current();
 
@@ -331,9 +315,7 @@ pub mod read {
         #[track_caller]
         fn from(value: &'static str) -> Self {
             Self {
-                inner: SignalTypes::Stored(ArcStoredValue::new(
-                    value.to_string(),
-                )),
+                inner: SignalTypes::Stored(ArcStoredValue::new(value.to_string())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -385,18 +367,10 @@ pub mod read {
 
         fn try_read_untracked(&self) -> Option<Self::Value> {
             match &self.inner {
-                SignalTypes::ReadSignal(i) => {
-                    i.try_read_untracked().map(SignalReadGuard::Read)
-                }
-                SignalTypes::Memo(i) => {
-                    i.try_read_untracked().map(SignalReadGuard::Memo)
-                }
-                SignalTypes::DerivedSignal(i) => {
-                    Some(SignalReadGuard::Owned(untrack(|| i())))
-                }
-                SignalTypes::Stored(i) => {
-                    i.try_read_value().map(SignalReadGuard::Read)
-                }
+                SignalTypes::ReadSignal(i) => i.try_read_untracked().map(SignalReadGuard::Read),
+                SignalTypes::Memo(i) => i.try_read_untracked().map(SignalReadGuard::Memo),
+                SignalTypes::DerivedSignal(i) => Some(SignalReadGuard::Owned(untrack(|| i()))),
+                SignalTypes::Stored(i) => i.try_read_value().map(SignalReadGuard::Read),
             }
             .map(ReadGuard::new)
         }
@@ -406,18 +380,10 @@ pub mod read {
         fn custom_try_read(&self) -> Option<Option<Self::Value>> {
             Some(
                 match &self.inner {
-                    SignalTypes::ReadSignal(i) => {
-                        i.try_read().map(SignalReadGuard::Read)
-                    }
-                    SignalTypes::Memo(i) => {
-                        i.try_read().map(SignalReadGuard::Memo)
-                    }
-                    SignalTypes::DerivedSignal(i) => {
-                        Some(SignalReadGuard::Owned(i()))
-                    }
-                    SignalTypes::Stored(i) => {
-                        i.try_read_value().map(SignalReadGuard::Read)
-                    }
+                    SignalTypes::ReadSignal(i) => i.try_read().map(SignalReadGuard::Read),
+                    SignalTypes::Memo(i) => i.try_read().map(SignalReadGuard::Memo),
+                    SignalTypes::DerivedSignal(i) => Some(SignalReadGuard::Owned(i())),
+                    SignalTypes::Stored(i) => i.try_read_value().map(SignalReadGuard::Read),
                 }
                 .map(ReadGuard::new),
             )
@@ -563,15 +529,11 @@ pub mod read {
                         SignalTypes::ReadSignal(i) => {
                             i.try_read_untracked().map(SignalReadGuard::Read)
                         }
-                        SignalTypes::Memo(i) => {
-                            i.try_read_untracked().map(SignalReadGuard::Memo)
-                        }
+                        SignalTypes::Memo(i) => i.try_read_untracked().map(SignalReadGuard::Memo),
                         SignalTypes::DerivedSignal(i) => {
                             Some(SignalReadGuard::Owned(untrack(|| i())))
                         }
-                        SignalTypes::Stored(i) => {
-                            i.try_read_value().map(SignalReadGuard::Read)
-                        }
+                        SignalTypes::Stored(i) => i.try_read_value().map(SignalReadGuard::Read),
                     }
                     .map(ReadGuard::new)
                 })
@@ -587,18 +549,10 @@ pub mod read {
                     .try_with_value(Clone::clone)
                     .and_then(|inner| {
                         match &inner {
-                            SignalTypes::ReadSignal(i) => {
-                                i.try_read().map(SignalReadGuard::Read)
-                            }
-                            SignalTypes::Memo(i) => {
-                                i.try_read().map(SignalReadGuard::Memo)
-                            }
-                            SignalTypes::DerivedSignal(i) => {
-                                Some(SignalReadGuard::Owned(i()))
-                            }
-                            SignalTypes::Stored(i) => {
-                                i.try_read_value().map(SignalReadGuard::Read)
-                            }
+                            SignalTypes::ReadSignal(i) => i.try_read().map(SignalReadGuard::Read),
+                            SignalTypes::Memo(i) => i.try_read().map(SignalReadGuard::Memo),
+                            SignalTypes::DerivedSignal(i) => Some(SignalReadGuard::Owned(i())),
+                            SignalTypes::Stored(i) => i.try_read_value().map(SignalReadGuard::Read),
                         }
                         .map(ReadGuard::new)
                     }),
@@ -628,9 +582,7 @@ pub mod read {
         /// assert_eq!(above_3(&double_count), true);
         /// ```
         #[track_caller]
-        pub fn derive(
-            derived_signal: impl Fn() -> T + Send + Sync + 'static,
-        ) -> Self {
+        pub fn derive(derived_signal: impl Fn() -> T + Send + Sync + 'static) -> Self {
             #[cfg(feature = "tracing")]
             let span = ::tracing::Span::current();
 
@@ -641,9 +593,9 @@ pub mod read {
             };
 
             Self {
-                inner: ArenaItem::new_with_storage(SignalTypes::DerivedSignal(
-                    Arc::new(derived_signal),
-                )),
+                inner: ArenaItem::new_with_storage(SignalTypes::DerivedSignal(Arc::new(
+                    derived_signal,
+                ))),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -653,9 +605,7 @@ pub mod read {
         #[track_caller]
         pub fn stored(value: T) -> Self {
             Self {
-                inner: ArenaItem::new_with_storage(SignalTypes::Stored(
-                    ArcStoredValue::new(value),
-                )),
+                inner: ArenaItem::new_with_storage(SignalTypes::Stored(ArcStoredValue::new(value))),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -680,9 +630,7 @@ pub mod read {
             };
 
             Self {
-                inner: ArenaItem::new_local(SignalTypes::DerivedSignal(
-                    Arc::new(derived_signal),
-                )),
+                inner: ArenaItem::new_local(SignalTypes::DerivedSignal(Arc::new(derived_signal))),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -693,9 +641,7 @@ pub mod read {
         #[track_caller]
         pub fn stored_local(value: T) -> Self {
             Self {
-                inner: ArenaItem::new_local(SignalTypes::Stored(
-                    ArcStoredValue::new(value),
-                )),
+                inner: ArenaItem::new_local(SignalTypes::Stored(ArcStoredValue::new(value))),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -813,9 +759,7 @@ pub mod read {
         #[track_caller]
         fn from(value: ReadSignal<T, LocalStorage>) -> Self {
             Self {
-                inner: ArenaItem::new_local(SignalTypes::ReadSignal(
-                    value.into(),
-                )),
+                inner: ArenaItem::new_local(SignalTypes::ReadSignal(value.into())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -857,9 +801,7 @@ pub mod read {
         #[track_caller]
         fn from(value: RwSignal<T>) -> Self {
             Self {
-                inner: ArenaItem::new(SignalTypes::ReadSignal(
-                    value.read_only().into(),
-                )),
+                inner: ArenaItem::new(SignalTypes::ReadSignal(value.read_only().into())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -883,9 +825,7 @@ pub mod read {
         #[track_caller]
         fn from(value: RwSignal<T, LocalStorage>) -> Self {
             Self {
-                inner: ArenaItem::new_local(SignalTypes::ReadSignal(
-                    value.read_only().into(),
-                )),
+                inner: ArenaItem::new_local(SignalTypes::ReadSignal(value.read_only().into())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -899,9 +839,7 @@ pub mod read {
         #[track_caller]
         fn from(value: ArcRwSignal<T>) -> Self {
             Self {
-                inner: ArenaItem::new(SignalTypes::ReadSignal(
-                    value.read_only(),
-                )),
+                inner: ArenaItem::new(SignalTypes::ReadSignal(value.read_only())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -925,9 +863,7 @@ pub mod read {
         #[track_caller]
         fn from(value: ArcRwSignal<T>) -> Self {
             Self {
-                inner: ArenaItem::new_local(SignalTypes::ReadSignal(
-                    value.read_only(),
-                )),
+                inner: ArenaItem::new_local(SignalTypes::ReadSignal(value.read_only())),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -1100,18 +1036,14 @@ pub mod read {
         }
     }
 
-    impl From<Signal<Option<&'static str>, LocalStorage>>
-        for Signal<Option<String>, LocalStorage>
-    {
+    impl From<Signal<Option<&'static str>, LocalStorage>> for Signal<Option<String>, LocalStorage> {
         #[track_caller]
         fn from(value: Signal<Option<&'static str>, LocalStorage>) -> Self {
             Signal::derive_local(move || value.read().map(str::to_string))
         }
     }
 
-    impl From<Signal<Option<&'static str>>>
-        for Signal<Option<String>, LocalStorage>
-    {
+    impl From<Signal<Option<&'static str>>> for Signal<Option<String>, LocalStorage> {
         #[track_caller]
         fn from(value: Signal<Option<&'static str>>) -> Self {
             Signal::derive_local(move || value.read().map(str::to_string))
@@ -1341,9 +1273,7 @@ pub mod read {
         fn from(value: MaybeSignal<T>) -> Self {
             match value {
                 MaybeSignal::Static(value) => Signal::stored(Some(value)),
-                MaybeSignal::Dynamic(signal) => {
-                    Signal::derive(move || Some(signal.get()))
-                }
+                MaybeSignal::Dynamic(signal) => Signal::derive(move || Some(signal.get())),
             }
         }
     }
@@ -1357,9 +1287,7 @@ pub mod read {
         fn from(value: MaybeSignal<T, LocalStorage>) -> Self {
             match value {
                 MaybeSignal::Static(value) => Signal::stored_local(Some(value)),
-                MaybeSignal::Dynamic(signal) => {
-                    Signal::derive_local(move || Some(signal.get()))
-                }
+                MaybeSignal::Dynamic(signal) => Signal::derive_local(move || Some(signal.get())),
             }
         }
     }
@@ -1374,8 +1302,7 @@ pub mod read {
         }
     }
 
-    impl<T> From<MaybeProp<T, LocalStorage>>
-        for Option<Signal<Option<T>, LocalStorage>>
+    impl<T> From<MaybeProp<T, LocalStorage>> for Option<Signal<Option<T>, LocalStorage>>
     where
         T: Send + Sync + 'static,
     {
@@ -1491,9 +1418,7 @@ pub mod read {
 
         fn try_read_untracked(&self) -> Option<Self::Value> {
             match self {
-                Self::Static(t) => {
-                    Some(ReadGuard::new(SignalReadGuard::Owned(t.clone())))
-                }
+                Self::Static(t) => Some(ReadGuard::new(SignalReadGuard::Owned(t.clone()))),
                 Self::Dynamic(s) => s.try_read_untracked(),
             }
         }
@@ -1513,9 +1438,7 @@ pub mod read {
     {
         /// Wraps a derived signal, i.e., any computation that accesses one or more
         /// reactive signals.
-        pub fn derive(
-            derived_signal: impl Fn() -> T + Send + Sync + 'static,
-        ) -> Self {
+        pub fn derive(derived_signal: impl Fn() -> T + Send + Sync + 'static) -> Self {
             Self::Dynamic(Signal::derive(derived_signal))
         }
     }
@@ -1707,9 +1630,7 @@ pub mod read {
     /// assert_eq!(above_3(&memoized_double_count.into()), true);
     /// ```
     #[derive(Debug, PartialEq, Eq)]
-    pub struct MaybeProp<T: 'static, S = SyncStorage>(
-        pub(crate) Option<Signal<Option<T>, S>>,
-    )
+    pub struct MaybeProp<T: 'static, S = SyncStorage>(pub(crate) Option<Signal<Option<T>, S>>)
     where
         S: Storage<Option<T>> + Storage<SignalTypes<Option<T>, S>>;
 
@@ -1722,10 +1643,7 @@ pub mod read {
         }
     }
 
-    impl<T, S> Copy for MaybeProp<T, S> where
-        S: Storage<Option<T>> + Storage<SignalTypes<Option<T>, S>>
-    {
-    }
+    impl<T, S> Copy for MaybeProp<T, S> where S: Storage<Option<T>> + Storage<SignalTypes<Option<T>, S>> {}
 
     impl<T, S> Default for MaybeProp<T, S>
     where
@@ -1785,9 +1703,7 @@ pub mod read {
     {
         /// Wraps a derived signal, i.e., any computation that accesses one or more
         /// reactive signals.
-        pub fn derive(
-            derived_signal: impl Fn() -> Option<T> + Send + Sync + 'static,
-        ) -> Self {
+        pub fn derive(derived_signal: impl Fn() -> Option<T> + Send + Sync + 'static) -> Self {
             Self(Some(Signal::derive(derived_signal)))
         }
     }
@@ -1916,9 +1832,7 @@ pub mod read {
     impl<T> MaybeProp<T, LocalStorage> {
         /// Wraps a derived signal, i.e., any computation that accesses one or more
         /// reactive signals.
-        pub fn derive_local(
-            derived_signal: impl Fn() -> Option<T> + 'static,
-        ) -> Self {
+        pub fn derive_local(derived_signal: impl Fn() -> Option<T> + 'static) -> Self {
             Self(Some(Signal::derive_local(derived_signal)))
         }
     }
@@ -1936,8 +1850,7 @@ pub mod read {
     }
 
     #[allow(deprecated)]
-    impl<T> From<MaybeSignal<Option<T>, LocalStorage>>
-        for MaybeProp<T, LocalStorage>
+    impl<T> From<MaybeSignal<Option<T>, LocalStorage>> for MaybeProp<T, LocalStorage>
     where
         T: Send + Sync,
     {
@@ -1947,8 +1860,7 @@ pub mod read {
     }
 
     #[allow(deprecated)]
-    impl<T> From<Option<MaybeSignal<Option<T>, LocalStorage>>>
-        for MaybeProp<T, LocalStorage>
+    impl<T> From<Option<MaybeSignal<Option<T>, LocalStorage>>> for MaybeProp<T, LocalStorage>
     where
         T: Send + Sync,
     {
@@ -2038,15 +1950,13 @@ pub mod read {
         Read(ReadGuard<T, Plain<T>>),
         #[allow(clippy::type_complexity)]
         /// A memo guard.
-        Memo(
-            ReadGuard<T, Mapped<Plain<Option<<S as Storage<T>>::Wrapped>>, T>>,
-        ),
+        Memo(ReadGuard<T, Mapped<Plain<Option<<S as Storage<T>>::Wrapped>>, T>>),
         /// A fake guard for derived signals, the content had to actually be cloned, so it's not a guard but we pretend it is.
         Owned(T),
     }
 
-    impl<T: 'static + std::fmt::Debug, S: Storage<T> + std::fmt::Debug>
-        std::fmt::Debug for SignalReadGuard<T, S>
+    impl<T: 'static + std::fmt::Debug, S: Storage<T> + std::fmt::Debug> std::fmt::Debug
+        for SignalReadGuard<T, S>
     where
         <S as Storage<T>>::Wrapped: std::fmt::Debug,
     {
@@ -2054,9 +1964,7 @@ pub mod read {
             match self {
                 Self::Read(arg0) => f.debug_tuple("Read").field(arg0).finish(),
                 Self::Memo(arg0) => f.debug_tuple("Memo").field(arg0).finish(),
-                Self::Owned(arg0) => {
-                    f.debug_tuple("Owned").field(arg0).finish()
-                }
+                Self::Owned(arg0) => f.debug_tuple("Owned").field(arg0).finish(),
             }
         }
     }
@@ -2231,9 +2139,7 @@ pub mod write {
                 SignalSetterTypes::Mapped(s) => {
                     let mut new_value = Some(new_value);
 
-                    let _ = s.try_with_value(|setter| {
-                        setter(new_value.take().unwrap())
-                    });
+                    let _ = s.try_with_value(|setter| setter(new_value.take().unwrap()));
 
                     new_value
                 }
@@ -2249,9 +2155,9 @@ pub mod write {
         #[track_caller]
         pub fn map(mapped_setter: impl Fn(T) + Send + Sync + 'static) -> Self {
             Self {
-                inner: SignalSetterTypes::Mapped(ArenaItem::new_with_storage(
-                    Box::new(mapped_setter),
-                )),
+                inner: SignalSetterTypes::Mapped(ArenaItem::new_with_storage(Box::new(
+                    mapped_setter,
+                ))),
                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
@@ -2308,13 +2214,9 @@ pub mod write {
     {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             match self {
-                Self::Write(arg0) => {
-                    f.debug_tuple("WriteSignal").field(arg0).finish()
-                }
+                Self::Write(arg0) => f.debug_tuple("WriteSignal").field(arg0).finish(),
                 Self::Mapped(_) => f.debug_tuple("Mapped").finish(),
-                Self::Default => {
-                    f.debug_tuple("SignalSetter<Default>").finish()
-                }
+                Self::Default => f.debug_tuple("SignalSetter<Default>").finish(),
             }
         }
     }

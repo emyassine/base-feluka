@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::class_merge;
 use crate::icons::{Loader, LoaderCircle};
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::class_merge;
 
 #[component]
 pub fn Spinner(#[prop(into, optional)] class: String) -> impl IntoView {

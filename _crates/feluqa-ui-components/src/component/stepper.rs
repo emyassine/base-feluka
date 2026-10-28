@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::{clx, variants, void};
 use crate::icons::Check;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::{clx, variants, void};
-use crate::feluqa_ui_classnames::class_merge;
 
 use crate::hook::use_stepper::{StepState, StepperContext, use_stepper};
 
@@ -105,7 +105,11 @@ pub fn Stepper(
     let orientation_str = orientation.to_string();
     let class = class_merge!(
         "group/stepper flex w-full",
-        if orientation == StepperOrientation::Horizontal { "flex-row flex-wrap items-start" } else { "flex-col" },
+        if orientation == StepperOrientation::Horizontal {
+            "flex-row flex-wrap items-start"
+        } else {
+            "flex-col"
+        },
         class
     );
 
@@ -127,7 +131,13 @@ pub fn StepperItem(
 ) -> impl IntoView {
     let ctx = expect_context::<StepperContext>();
 
-    let state = Memo::new(move |_| if disabled { StepState::Disabled } else { ctx.step_state.run(step) });
+    let state = Memo::new(move |_| {
+        if disabled {
+            StepState::Disabled
+        } else {
+            ctx.step_state.run(step)
+        }
+    });
     provide_context(StepperItemCtx { step, state });
 
     let class = class_merge!(

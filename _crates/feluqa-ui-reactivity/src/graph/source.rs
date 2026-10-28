@@ -26,8 +26,7 @@ pub trait Source: ReactiveNode {
 pub struct AnySource(
     pub(crate) usize,
     pub(crate) Weak<dyn Source + Send + Sync>,
-    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
-    pub(crate)  &'static Location<'static>,
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))] pub(crate) &'static Location<'static>,
 );
 
 impl DefinedAt for AnySource {

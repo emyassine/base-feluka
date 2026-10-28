@@ -17,9 +17,7 @@ pub use render_effect::*;
 #[track_caller]
 #[deprecated = "This function is being removed to conform to Rust idioms. \
                 Please use `RenderEffect::new()` instead."]
-pub fn create_render_effect<T>(
-    fun: impl FnMut(Option<T>) -> T + 'static,
-) -> RenderEffect<T>
+pub fn create_render_effect<T>(fun: impl FnMut(Option<T>) -> T + 'static) -> RenderEffect<T>
 where
     T: 'static,
 {

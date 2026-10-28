@@ -8,8 +8,7 @@ use crate::{
     owner::{ArenaItem, FromLocal, LocalStorage, Storage, SyncStorage},
     signal::guards::{UntrackedWriteGuard, WriteGuard},
     traits::{
-        DefinedAt, Dispose, IntoInner, IsDisposed, Notify, ReadUntracked,
-        UntrackableGuard, Write,
+        DefinedAt, Dispose, IntoInner, IsDisposed, Notify, ReadUntracked, UntrackableGuard, Write,
     },
     unwrap_signal,
 };
@@ -116,10 +115,7 @@ where
     T: Send + Sync + 'static,
 {
     /// Creates a new signal, taking the initial value as its argument.
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     #[track_caller]
     pub fn new(value: T) -> Self {
         Self::new_with_storage(value)
@@ -132,10 +128,7 @@ where
     S: Storage<ArcRwSignal<T>>,
 {
     /// Creates a new signal with the given arena storage method.
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     #[track_caller]
     pub fn new_with_storage(value: T) -> Self {
         Self {
@@ -152,10 +145,7 @@ where
 {
     /// Creates a new signal, taking the initial value as its argument. Unlike [`RwSignal::new`],
     /// this pins the value to the current thread. Accessing it from any other thread will panic.
-    #[cfg_attr(
-        feature = "tracing",
-        tracing::instrument(level = "trace", skip_all)
-    )]
+    #[cfg_attr(feature = "tracing", tracing::instrument(level = "trace", skip_all))]
     #[track_caller]
     pub fn new_local(value: T) -> Self {
         Self::new_with_storage(value)
@@ -209,9 +199,7 @@ where
 impl<T, S> RwSignal<T, S>
 where
     T: 'static,
-    S: Storage<ArcRwSignal<T>>
-        + Storage<ArcWriteSignal<T>>
-        + Storage<ArcReadSignal<T>>,
+    S: Storage<ArcRwSignal<T>> + Storage<ArcWriteSignal<T>> + Storage<ArcReadSignal<T>>,
 {
     /// Splits the signal into its readable and writable halves.
     #[track_caller]
@@ -223,10 +211,7 @@ where
     /// Reunites the two halves of a signal. Returns `None` if the two signals
     /// provided were not created from the same signal.
     #[track_caller]
-    pub fn unite(
-        read: ReadSignal<T, S>,
-        write: WriteSignal<T, S>,
-    ) -> Option<Self> {
+    pub fn unite(read: ReadSignal<T, S>, write: WriteSignal<T, S>) -> Option<Self> {
         match (read.inner.try_get_value(), write.inner.try_get_value()) {
             (Some(read), Some(write)) => {
                 if Arc::ptr_eq(&read.inner, &write.inner) {
@@ -369,9 +354,9 @@ where
     type Value = T;
 
     fn try_write(&self) -> Option<impl UntrackableGuard<Target = Self::Value>> {
-        let guard = self.inner.try_with_value(|n| {
-            ArcRwLockWriteGuardian::take(Arc::clone(&n.value)).ok()
-        })??;
+        let guard = self
+            .inner
+            .try_with_value(|n| ArcRwLockWriteGuardian::take(Arc::clone(&n.value)).ok())??;
         Some(WriteGuard::new(*self, guard))
     }
 

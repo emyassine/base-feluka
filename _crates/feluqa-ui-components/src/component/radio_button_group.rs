@@ -1,5 +1,5 @@
-use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::{clx, void};
+use crate::runtime::prelude::*;
 
 const BASE_BUTTON_GROUP: &str = "flex flex-wrap justify-center mt-2";
 

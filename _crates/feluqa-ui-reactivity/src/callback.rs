@@ -124,9 +124,7 @@ impl_unsync_callable_from_fn!(P1, P2, P3, P4, P5, P6, P7, P8);
 impl_unsync_callable_from_fn!(P1, P2, P3, P4, P5, P6, P7, P8, P9);
 impl_unsync_callable_from_fn!(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10);
 impl_unsync_callable_from_fn!(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11);
-impl_unsync_callable_from_fn!(
-    P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12
-);
+impl_unsync_callable_from_fn!(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12);
 
 /// A callback type that is [`Send`] + [`Sync`].
 ///
@@ -138,9 +136,7 @@ impl_unsync_callable_from_fn!(
 /// let cb: Callback<i32, String> = Callback::new(|x: i32| x.to_string());
 /// assert_eq!(cb.run(42), "42".to_string());
 /// ```
-pub struct Callback<In, Out = ()>(
-    StoredValue<Arc<dyn Fn(In) -> Out + Send + Sync>>,
-)
+pub struct Callback<In, Out = ()>(StoredValue<Arc<dyn Fn(In) -> Out + Send + Sync>>)
 where
     In: 'static,
     Out: 'static;
@@ -221,9 +217,9 @@ impl<In: 'static, Out: 'static> Callback<In, Out> {
     pub fn matches(&self, other: &Self) -> bool {
         self.0
             .try_with_value(|self_value| {
-                other.0.try_with_value(|other_value| {
-                    Arc::ptr_eq(self_value, other_value)
-                })
+                other
+                    .0
+                    .try_with_value(|other_value| Arc::ptr_eq(self_value, other_value))
             })
             .flatten()
             .unwrap_or(false)
@@ -236,11 +232,7 @@ pub struct __IntoReactiveValueMarkerCallbackSingleParam;
 #[doc(hidden)]
 pub struct __IntoReactiveValueMarkerCallbackStrOutputToString;
 
-impl<I, O, F>
-    IntoReactiveValue<
-        Callback<I, O>,
-        __IntoReactiveValueMarkerCallbackSingleParam,
-    > for F
+impl<I, O, F> IntoReactiveValue<Callback<I, O>, __IntoReactiveValueMarkerCallbackSingleParam> for F
 where
     F: Fn(I) -> O + Send + Sync + 'static,
 {
@@ -250,11 +242,8 @@ where
     }
 }
 
-impl<I, O, F>
-    IntoReactiveValue<
-        UnsyncCallback<I, O>,
-        __IntoReactiveValueMarkerCallbackSingleParam,
-    > for F
+impl<I, O, F> IntoReactiveValue<UnsyncCallback<I, O>, __IntoReactiveValueMarkerCallbackSingleParam>
+    for F
 where
     F: Fn(I) -> O + 'static,
 {
@@ -265,10 +254,7 @@ where
 }
 
 impl<I, F>
-    IntoReactiveValue<
-        Callback<I, String>,
-        __IntoReactiveValueMarkerCallbackStrOutputToString,
-    > for F
+    IntoReactiveValue<Callback<I, String>, __IntoReactiveValueMarkerCallbackStrOutputToString> for F
 where
     F: Fn(I) -> &'static str + Send + Sync + 'static,
 {
@@ -279,10 +265,8 @@ where
 }
 
 impl<I, F>
-    IntoReactiveValue<
-        UnsyncCallback<I, String>,
-        __IntoReactiveValueMarkerCallbackStrOutputToString,
-    > for F
+    IntoReactiveValue<UnsyncCallback<I, String>, __IntoReactiveValueMarkerCallbackStrOutputToString>
+    for F
 where
     F: Fn(I) -> &'static str + 'static,
 {
@@ -318,8 +302,7 @@ mod tests {
         let owner = Owner::new();
         owner.set();
 
-        let callback =
-            UnsyncCallback::new(move |_no_clone: NoClone| NoClone {});
+        let callback = UnsyncCallback::new(move |_no_clone: NoClone| NoClone {});
         let _cloned = callback;
     }
 
@@ -329,13 +312,10 @@ mod tests {
         owner.set();
 
         let _callback: Callback<(), String> = (|| "test").into();
-        let _callback: Callback<(i32, String), String> =
-            (|num, s| format!("{num} {s}")).into();
+        let _callback: Callback<(i32, String), String> = (|num, s| format!("{num} {s}")).into();
         // Single params should work without needing the (foo,) tuple using IntoReactiveValue:
-        let _callback: Callback<usize, &'static str> =
-            (|_usize| "test").into_reactive_value();
-        let _callback: Callback<usize, String> =
-            (|_usize| "test").into_reactive_value();
+        let _callback: Callback<usize, &'static str> = (|_usize| "test").into_reactive_value();
+        let _callback: Callback<usize, String> = (|_usize| "test").into_reactive_value();
     }
 
     #[test]
@@ -349,8 +329,7 @@ mod tests {
         // Single params should work without needing the (foo,) tuple using IntoReactiveValue:
         let _callback: UnsyncCallback<usize, &'static str> =
             (|_usize| "test").into_reactive_value();
-        let _callback: UnsyncCallback<usize, String> =
-            (|_usize| "test").into_reactive_value();
+        let _callback: UnsyncCallback<usize, String> = (|_usize| "test").into_reactive_value();
     }
 
     #[test]

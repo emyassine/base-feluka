@@ -146,17 +146,17 @@ mod ssr_mode;
 /// Support for static routing.
 pub mod static_routes;
 
-pub use generate_route_list::*;
 #[doc(inline)]
 pub use feluqa_ui_navigation_macros::path;
+pub use generate_route_list::*;
 pub use matching::*;
 pub use method::*;
 pub use navigate::*;
 pub use ssr_mode::*;
 
 pub(crate) mod view_transition {
-    use js_sys::{Function, Promise, Reflect};
     use feluqa_ui_runtime::feluqa_ui_runtime_dom::helpers::document;
+    use js_sys::{Function, Promise, Reflect};
     use wasm_bindgen::{closure::Closure, intern, JsCast, JsValue};
 
     pub fn start_view_transition(
@@ -167,11 +167,8 @@ pub(crate) mod view_transition {
         let document = document();
         let document_element = document.document_element().unwrap();
         let class_list = document_element.class_list();
-        let svt = Reflect::get(
-            &document,
-            &JsValue::from_str(intern("startViewTransition")),
-        )
-        .and_then(|svt| svt.dyn_into::<Function>());
+        let svt = Reflect::get(&document, &JsValue::from_str(intern("startViewTransition")))
+            .and_then(|svt| svt.dyn_into::<Function>());
         _ = class_list.add_1(&format!("router-outlet-{level}"));
         if is_back_navigation {
             _ = class_list.add_1("router-back");
@@ -181,18 +178,13 @@ pub(crate) mod view_transition {
                 let cb = Closure::once_into_js(Box::new(move || {
                     fun();
                 }));
-                match svt.call1(
-                    document.unchecked_ref(),
-                    cb.as_ref().unchecked_ref(),
-                ) {
+                match svt.call1(document.unchecked_ref(), cb.as_ref().unchecked_ref()) {
                     Ok(view_transition) => {
                         let class_list = document_element.class_list();
-                        let finished = Reflect::get(
-                            &view_transition,
-                            &JsValue::from_str("finished"),
-                        )
-                        .expect("no `finished` property on ViewTransition")
-                        .unchecked_into::<Promise>();
+                        let finished =
+                            Reflect::get(&view_transition, &JsValue::from_str("finished"))
+                                .expect("no `finished` property on ViewTransition")
+                                .unchecked_into::<Promise>();
                         let cb = Closure::new(Box::new(move |_| {
                             if is_back_navigation {
                                 class_list.remove_1("router-back").unwrap();

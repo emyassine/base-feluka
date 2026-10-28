@@ -1,15 +1,15 @@
 use crate::into_view::IntoView;
-use feluqa_ui_runtime_macros::component;
+use feluqa_ui_dom_renderer::{
+    feluqa_ui_reactivity::OwnedView,
+    view::keyed::{keyed, SerializableKey},
+};
 use feluqa_ui_reactivity::{
     owner::Owner,
     signal::{ArcRwSignal, ReadSignal},
     traits::Set,
 };
+use feluqa_ui_runtime_macros::component;
 use std::hash::Hash;
-use feluqa_ui_dom_renderer::{
-    feluqa_ui_reactivity::OwnedView,
-    view::keyed::{keyed, SerializableKey},
-};
 
 /// Iterates over children and displays them, keyed by the `key` function given.
 ///

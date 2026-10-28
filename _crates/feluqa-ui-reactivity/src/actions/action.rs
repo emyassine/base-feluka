@@ -103,9 +103,7 @@ pub struct ArcAction<I, O> {
     version: ArcRwSignal<usize>,
     dispatched: ArcStoredValue<usize>,
     #[allow(clippy::complexity)]
-    action_fn: Arc<
-        dyn Fn(&I) -> Pin<Box<dyn Future<Output = O> + Send>> + Send + Sync,
-    >,
+    action_fn: Arc<dyn Fn(&I) -> Pin<Box<dyn Future<Output = O> + Send>> + Send + Sync>,
     #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
@@ -210,9 +208,7 @@ where
             action_fn: Arc::new(move |input| {
                 let fut = untrack(|| action_fn(input));
                 match weak_owner.as_ref().and_then(|w| w.upgrade()) {
-                    Some(owner) => Box::pin(
-                        owner.with(|| ScopedFuture::new_untracked(fut)),
-                    )
+                    Some(owner) => Box::pin(owner.with(|| ScopedFuture::new_untracked(fut)))
                         as Pin<Box<dyn Future<Output = O> + Send>>,
                     None => Box::pin(ScopedFuture::new_untracked(fut)),
                 }
@@ -395,9 +391,7 @@ where
                     Some(owner) => Box::pin(SendWrapper::new(
                         owner.with(|| ScopedFuture::new_untracked(fut)),
                     )),
-                    None => Box::pin(SendWrapper::new(
-                        ScopedFuture::new_untracked(fut),
-                    )),
+                    None => Box::pin(SendWrapper::new(ScopedFuture::new_untracked(fut))),
                 }
             }),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
@@ -464,11 +458,7 @@ where
     /// ```
     #[track_caller]
     pub fn input(&self) -> ArcMappedSignal<Option<I>> {
-        ArcMappedSignal::new(
-            self.input.clone(),
-            |n| n.deref(),
-            |n| n.deref_mut(),
-        )
+        ArcMappedSignal::new(self.input.clone(), |n| n.deref(), |n| n.deref_mut())
     }
 
     /// The most recent return value of the `async` function. This will be `None` before
@@ -501,11 +491,7 @@ where
     /// ```
     #[track_caller]
     pub fn value(&self) -> ArcMappedSignal<Option<O>> {
-        ArcMappedSignal::new(
-            self.value.clone(),
-            |n| n.deref(),
-            |n| n.deref_mut(),
-        )
+        ArcMappedSignal::new(self.value.clone(), |n| n.deref(), |n| n.deref_mut())
     }
 
     /// Whether the action has been dispatched and is currently waiting to resolve.
@@ -775,9 +761,7 @@ where
         Fu: Future<Output = O> + Send + 'static,
     {
         Self {
-            inner: ArenaItem::new(ArcAction::new_unsync_with_value(
-                value, action_fn,
-            )),
+            inner: ArenaItem::new(ArcAction::new_unsync_with_value(value, action_fn)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -1011,9 +995,7 @@ where
         Fu: Future<Output = O> + 'static,
     {
         Self {
-            inner: ArenaItem::new_with_storage(ArcAction::new_unsync(
-                action_fn,
-            )),
+            inner: ArenaItem::new_with_storage(ArcAction::new_unsync(action_fn)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -1030,9 +1012,7 @@ where
         Fu: Future<Output = O> + 'static,
     {
         Self {
-            inner: ArenaItem::new_with_storage(
-                ArcAction::new_unsync_with_value(value, action_fn),
-            ),
+            inner: ArenaItem::new_with_storage(ArcAction::new_unsync_with_value(value, action_fn)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -1056,9 +1036,7 @@ where
         Fu: Future<Output = O> + 'static,
     {
         Self {
-            inner: ArenaItem::new_with_storage(ArcAction::new_unsync(
-                action_fn,
-            )),
+            inner: ArenaItem::new_with_storage(ArcAction::new_unsync(action_fn)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -1071,18 +1049,13 @@ where
     /// This combines the features of [`Action::new_local_with_value`] and
     /// [`Action::new_unsync_with_value`].
     #[track_caller]
-    pub fn new_unsync_local_with_value<F, Fu>(
-        value: Option<O>,
-        action_fn: F,
-    ) -> Self
+    pub fn new_unsync_local_with_value<F, Fu>(value: Option<O>, action_fn: F) -> Self
     where
         F: Fn(&I) -> Fu + 'static,
         Fu: Future<Output = O> + 'static,
     {
         Self {
-            inner: ArenaItem::new_with_storage(
-                ArcAction::new_unsync_with_value(value, action_fn),
-            ),
+            inner: ArenaItem::new_with_storage(ArcAction::new_unsync_with_value(value, action_fn)),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }

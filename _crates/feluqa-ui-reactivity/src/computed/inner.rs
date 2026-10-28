@@ -1,7 +1,7 @@
 use crate::{
     graph::{
-        AnySource, AnySubscriber, Observer, ReactiveNode, ReactiveNodeState,
-        Source, SourceSet, Subscriber, SubscriberSet, WithObserver,
+        AnySource, AnySubscriber, Observer, ReactiveNode, ReactiveNodeState, Source, SourceSet,
+        Subscriber, SubscriberSet, WithObserver,
     },
     owner::{Owner, Storage, StorageAccess},
 };
@@ -80,9 +80,7 @@ where
                     lock.state = ReactiveNodeState::Check;
                 }
             }
-            for sub in
-                (&reactivity.read().or_poisoned().subscribers).into_iter()
-            {
+            for sub in (&reactivity.read().or_poisoned().subscribers).into_iter() {
                 sub.mark_check();
             }
         }
@@ -106,13 +104,10 @@ where
             match state {
                 ReactiveNodeState::Clean => false,
                 ReactiveNodeState::Dirty => true,
-                ReactiveNodeState::Check => {
-                    (&sources).into_iter().any(|source| {
-                        source.update_if_necessary()
-                            || reactivity.read().or_poisoned().state
-                                == ReactiveNodeState::Dirty
-                    })
-                }
+                ReactiveNodeState::Check => (&sources).into_iter().any(|source| {
+                    source.update_if_necessary()
+                        || reactivity.read().or_poisoned().state == ReactiveNodeState::Dirty
+                }),
             }
         }
 
@@ -121,20 +116,15 @@ where
             let value = self.value.write().or_poisoned().take();
 
             /// codegen optimisation:
-            fn inner_1(
-                reactivity: &RwLock<MemoInnerReactivity>,
-            ) -> AnySubscriber {
-                let any_subscriber =
-                    reactivity.read().or_poisoned().any_subscriber.clone();
+            fn inner_1(reactivity: &RwLock<MemoInnerReactivity>) -> AnySubscriber {
+                let any_subscriber = reactivity.read().or_poisoned().any_subscriber.clone();
                 any_subscriber.clear_sources(&any_subscriber);
                 any_subscriber
             }
             let any_subscriber = inner_1(&self.reactivity);
 
             let (new_value, changed) = self.owner.with_cleanup(|| {
-                any_subscriber.with_observer(|| {
-                    (self.fun)(value.map(StorageAccess::into_taken))
-                })
+                any_subscriber.with_observer(|| (self.fun)(value.map(StorageAccess::into_taken)))
             });
 
             // Two locks are acquired, so order matters.

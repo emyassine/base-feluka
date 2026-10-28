@@ -71,10 +71,7 @@ where
 {
     type Output<SomeNewAttr: Attribute> = OwnedView<T::Output<SomeNewAttr>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -105,13 +102,8 @@ where
         extra_attrs: Vec<AnyAttribute>,
     ) {
         self.owner.with(|| {
-            self.view.to_html_with_buf(
-                buf,
-                position,
-                escape,
-                mark_branches,
-                extra_attrs,
-            )
+            self.view
+                .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs)
         });
     }
 
@@ -153,16 +145,10 @@ where
         OwnedViewState::new(state, self.owner)
     }
 
-    async fn hydrate_async(
-        self,
-        cursor: &Cursor,
-        position: &PositionState,
-    ) -> Self::State {
+    async fn hydrate_async(self, cursor: &Cursor, position: &PositionState) -> Self::State {
         let state = self
             .owner
-            .with(|| {
-                ScopedFuture::new(self.view.hydrate_async(cursor, position))
-            })
+            .with(|| ScopedFuture::new(self.view.hydrate_async(cursor, position)))
             .await;
         OwnedViewState::new(state, self.owner)
     }

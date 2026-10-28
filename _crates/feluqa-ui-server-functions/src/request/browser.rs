@@ -12,10 +12,7 @@ use send_wrapper::SendWrapper;
 use std::ops::{Deref, DerefMut};
 use wasm_bindgen::JsValue;
 use wasm_streams::ReadableStream;
-use web_sys::{
-    AbortController, AbortSignal, FormData, Headers, RequestInit,
-    UrlSearchParams,
-};
+use web_sys::{AbortController, AbortSignal, FormData, Headers, RequestInit, UrlSearchParams};
 
 /// A `fetch` request made in the browser.
 #[derive(Debug)]
@@ -109,9 +106,7 @@ where
     ) -> Result<Self, E> {
         let (abort_ctrl, abort_signal) = abort_signal();
         let server_url = get_server_url();
-        let mut url = String::with_capacity(
-            server_url.len() + path.len() + 1 + query.len(),
-        );
+        let mut url = String::with_capacity(server_url.len() + path.len() + 1 + query.len());
         url.push_str(server_url);
         url.push_str(path);
         url.push('?');
@@ -125,9 +120,7 @@ where
                 Method::PATCH => Request::patch(&url),
                 m => {
                     return Err(E::from_server_fn_error(
-                        ServerFnErrorErr::UnsupportedRequestMethod(
-                            m.to_string(),
-                        ),
+                        ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                     ))
                 }
             }
@@ -135,11 +128,7 @@ where
             .header("Accept", accepts)
             .abort_signal(abort_signal.as_ref())
             .build()
-            .map_err(|e| {
-                E::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?,
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?,
             abort_ctrl,
         })))
     }
@@ -163,9 +152,7 @@ where
                 Method::PUT => Request::put(&url),
                 m => {
                     return Err(E::from_server_fn_error(
-                        ServerFnErrorErr::UnsupportedRequestMethod(
-                            m.to_string(),
-                        ),
+                        ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                     ))
                 }
             }
@@ -173,11 +160,7 @@ where
             .header("Accept", accepts)
             .abort_signal(abort_signal.as_ref())
             .body(body)
-            .map_err(|e| {
-                E::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?,
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?,
             abort_ctrl,
         })))
     }
@@ -203,9 +186,7 @@ where
                 Method::PUT => Request::put(&url),
                 m => {
                     return Err(E::from_server_fn_error(
-                        ServerFnErrorErr::UnsupportedRequestMethod(
-                            m.to_string(),
-                        ),
+                        ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                     ))
                 }
             }
@@ -213,11 +194,7 @@ where
             .header("Accept", accepts)
             .abort_signal(abort_signal.as_ref())
             .body(body)
-            .map_err(|e| {
-                E::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?,
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?,
             abort_ctrl,
         })))
     }
@@ -240,20 +217,14 @@ where
                 Method::PUT => Request::put(&url),
                 m => {
                     return Err(E::from_server_fn_error(
-                        ServerFnErrorErr::UnsupportedRequestMethod(
-                            m.to_string(),
-                        ),
+                        ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                     ))
                 }
             }
             .header("Accept", accepts)
             .abort_signal(abort_signal.as_ref())
             .body(body.0.take())
-            .map_err(|e| {
-                E::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?,
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?,
             abort_ctrl,
         })))
     }
@@ -268,15 +239,13 @@ where
         let (abort_ctrl, abort_signal) = abort_signal();
         let form_data = body.0.take();
         let url_params =
-            UrlSearchParams::new_with_str_sequence_sequence(&form_data)
-                .map_err(|e| {
-                    E::from_server_fn_error(ServerFnErrorErr::Serialization(
-                        e.as_string().unwrap_or_else(|| {
-                            "Could not serialize FormData to URLSearchParams"
-                                .to_string()
-                        }),
-                    ))
-                })?;
+            UrlSearchParams::new_with_str_sequence_sequence(&form_data).map_err(|e| {
+                E::from_server_fn_error(ServerFnErrorErr::Serialization(
+                    e.as_string().unwrap_or_else(|| {
+                        "Could not serialize FormData to URLSearchParams".to_string()
+                    }),
+                ))
+            })?;
         Ok(Self(SendWrapper::new(RequestInner {
             request: match method {
                 Method::POST => Request::post(path),
@@ -284,9 +253,7 @@ where
                 Method::PATCH => Request::patch(path),
                 m => {
                     return Err(E::from_server_fn_error(
-                        ServerFnErrorErr::UnsupportedRequestMethod(
-                            m.to_string(),
-                        ),
+                        ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                     ))
                 }
             }
@@ -294,11 +261,7 @@ where
             .header("Accept", accepts)
             .abort_signal(abort_signal.as_ref())
             .body(url_params)
-            .map_err(|e| {
-                E::from_server_fn_error(ServerFnErrorErr::Request(
-                    e.to_string(),
-                ))
-            })?,
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string())))?,
             abort_ctrl,
         })))
     }
@@ -320,13 +283,8 @@ where
             }
         }
         // TODO abort signal
-        let (request, abort_ctrl) =
-            streaming_request(path, accepts, content_type, body, method)
-                .map_err(|e| {
-                    E::from_server_fn_error(ServerFnErrorErr::Request(format!(
-                        "{e:?}"
-                    )))
-                })?;
+        let (request, abort_ctrl) = streaming_request(path, accepts, content_type, body, method)
+            .map_err(|e| E::from_server_fn_error(ServerFnErrorErr::Request(format!("{e:?}"))))?;
         Ok(Self(SendWrapper::new(RequestInner {
             request,
             abort_ctrl,

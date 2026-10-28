@@ -1,7 +1,14 @@
 use crate::{children::Children, component, prelude::*, IntoView};
+use feluqa_ui_dom_renderer::{
+    either::Either,
+    feluqa_ui_reactivity::node_ref::NodeRef,
+    html::{
+        element::{form, Form},
+        event::submit,
+    },
+};
 use feluqa_ui_runtime_dom::helpers::window;
 use feluqa_ui_runtime_server::{ServerAction, ServerMultiAction};
-use serde::de::DeserializeOwned;
 use feluqa_ui_server_functions::{
     client::Client,
     codec::PostUrl,
@@ -9,20 +16,10 @@ use feluqa_ui_server_functions::{
     request::ClientReq,
     Http, ServerFn,
 };
-use feluqa_ui_dom_renderer::{
-    either::Either,
-    html::{
-        element::{form, Form},
-        event::submit,
-    },
-    feluqa_ui_reactivity::node_ref::NodeRef,
-};
+use serde::de::DeserializeOwned;
 use thiserror::Error;
 use wasm_bindgen::{JsCast, JsValue, UnwrapThrowExt};
-use web_sys::{
-    Event, FormData, HtmlButtonElement, HtmlFormElement, HtmlInputElement,
-    SubmitEvent,
-};
+use web_sys::{Event, FormData, HtmlButtonElement, HtmlFormElement, HtmlInputElement, SubmitEvent};
 
 /// Automatically turns a server [Action](feluqa_ui_runtime_server::Action) into an HTML
 /// [`form`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form)
@@ -91,9 +88,8 @@ where
         + Send
         + Sync
         + 'static,
-    <<ServFn::Client as Client<ServFn::Error>>::Request as ClientReq<
-        ServFn::Error,
-    >>::FormData: From<FormData>,
+    <<ServFn::Client as Client<ServFn::Error>>::Request as ClientReq<ServFn::Error>>::FormData:
+        From<FormData>,
     ServFn: Send + Sync + 'static,
     ServFn::Output: Send + Sync + 'static,
     ServFn::Error: Send + Sync + 'static,
@@ -126,10 +122,9 @@ where
                         "Error converting form field into server function \
                          arguments: {err:?}"
                     );
-                    value.set(Some(Err(ServerFnErrorErr::Serialization(
-                        err.to_string(),
-                    )
-                    .into_app_error())));
+                    value.set(Some(Err(
+                        ServerFnErrorErr::Serialization(err.to_string()).into_app_error()
+                    )));
                     version.update(|n| *n += 1);
                 }
             }
@@ -169,9 +164,8 @@ where
         + ServerFn<Protocol = Http<PostUrl, OutputProtocol>>
         + 'static,
     ServFn::Output: Send + Sync + 'static,
-    <<ServFn::Client as Client<ServFn::Error>>::Request as ClientReq<
-        ServFn::Error,
-    >>::FormData: From<FormData>,
+    <<ServFn::Client as Client<ServFn::Error>>::Request as ClientReq<ServFn::Error>>::FormData:
+        From<FormData>,
     ServFn::Error: Send + Sync + 'static,
     <ServFn as ServerFn>::Client: Client<<ServFn as ServerFn>::Error>,
 {
@@ -194,10 +188,9 @@ where
                 action.dispatch(new_input);
             }
             Err(err) => {
-                action.dispatch_sync(Err(ServerFnErrorErr::Serialization(
-                    err.to_string(),
-                )
-                .into_app_error()));
+                action.dispatch_sync(Err(
+                    ServerFnErrorErr::Serialization(err.to_string()).into_app_error()
+                ));
             }
         }
     };
@@ -250,9 +243,7 @@ where
     fn from_event(ev: &web_sys::Event) -> Result<Self, FromFormDataError>;
 
     /// Tries to deserialize the data, given the actual form data.
-    fn from_form_data(
-        form_data: &web_sys::FormData,
-    ) -> Result<Self, serde_qs::Error>;
+    fn from_form_data(form_data: &web_sys::FormData) -> Result<Self, serde_qs::Error>;
 }
 
 /// Errors that can arise when converting from an HTML event or form into a Rust data type.
@@ -276,24 +267,18 @@ where
     fn from_event(ev: &Event) -> Result<Self, FromFormDataError> {
         let submit_ev = ev.unchecked_ref();
         let form_data = form_data_from_event(submit_ev)?;
-        Self::from_form_data(&form_data)
-            .map_err(FromFormDataError::Deserialization)
+        Self::from_form_data(&form_data).map_err(FromFormDataError::Deserialization)
     }
 
-    fn from_form_data(
-        form_data: &web_sys::FormData,
-    ) -> Result<Self, serde_qs::Error> {
+    fn from_form_data(form_data: &web_sys::FormData) -> Result<Self, serde_qs::Error> {
         let data =
-            web_sys::UrlSearchParams::new_with_str_sequence_sequence(form_data)
-                .unwrap_throw();
+            web_sys::UrlSearchParams::new_with_str_sequence_sequence(form_data).unwrap_throw();
         let data = data.to_string().as_string().unwrap_or_default();
         serde_qs::Config::new(5, false).deserialize_str::<Self>(&data)
     }
 }
 
-fn form_data_from_event(
-    ev: &SubmitEvent,
-) -> Result<FormData, FromFormDataError> {
+fn form_data_from_event(ev: &SubmitEvent) -> Result<FormData, FromFormDataError> {
     let submitter = ev.submitter();
     let mut submitter_name_value = None;
     let opt_form = match &submitter {

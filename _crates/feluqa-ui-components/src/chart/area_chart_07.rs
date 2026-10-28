@@ -2,7 +2,9 @@ use crate::icons::{ChartArea, TrendingUp};
 use crate::runtime::prelude::*;
 use crate::serde::Serialize;
 
-use crate::component::card::{Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle};
+use crate::component::card::{
+    Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
+};
 use crate::component::charts::AreaChart;
 
 /*
@@ -18,12 +20,42 @@ struct ChartDataPoint {
 }
 
 const CHART_DATA: &[ChartDataPoint] = &[
-    ChartDataPoint { month: "Jan", series1: 30, series2: 40, series3: 30 },
-    ChartDataPoint { month: "Feb", series1: 35, series2: 50, series3: 25 },
-    ChartDataPoint { month: "Mar", series1: 25, series2: 45, series3: 35 },
-    ChartDataPoint { month: "Apr", series1: 40, series2: 55, series3: 20 },
-    ChartDataPoint { month: "May", series1: 35, series2: 40, series3: 30 },
-    ChartDataPoint { month: "Jun", series1: 30, series2: 45, series3: 35 },
+    ChartDataPoint {
+        month: "Jan",
+        series1: 30,
+        series2: 40,
+        series3: 30,
+    },
+    ChartDataPoint {
+        month: "Feb",
+        series1: 35,
+        series2: 50,
+        series3: 25,
+    },
+    ChartDataPoint {
+        month: "Mar",
+        series1: 25,
+        series2: 45,
+        series3: 35,
+    },
+    ChartDataPoint {
+        month: "Apr",
+        series1: 40,
+        series2: 55,
+        series3: 20,
+    },
+    ChartDataPoint {
+        month: "May",
+        series1: 35,
+        series2: 40,
+        series3: 30,
+    },
+    ChartDataPoint {
+        month: "Jun",
+        series1: 30,
+        series2: 45,
+        series3: 35,
+    },
 ];
 
 #[component]

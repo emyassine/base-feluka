@@ -25,8 +25,7 @@ use std::{
 ///
 /// Implements [`Deref`](std::ops::Deref) to access the inner value. This should not be held longer
 /// than it is needed, as it prevents updates to the inner value.
-pub type AsyncDerivedGuard<T> =
-    ReadGuard<T, Mapped<AsyncPlain<SendOption<T>>, T>>;
+pub type AsyncDerivedGuard<T> = ReadGuard<T, Mapped<AsyncPlain<SendOption<T>>, T>>;
 
 /// A [`Future`] that is ready when an [`ArcAsyncDerived`] is finished loading or reloading,
 /// but does not contain its value.
@@ -143,9 +142,7 @@ where
                 Poll::Pending
             }
             (_, Poll::Pending) => Poll::Pending,
-            (_, Poll::Ready(guard)) => {
-                Poll::Ready(guard.as_ref().unwrap().clone())
-            }
+            (_, Poll::Ready(guard)) => Poll::Ready(guard.as_ref().unwrap().clone()),
         }
     }
 }
@@ -209,11 +206,10 @@ where
                 Poll::Pending
             }
             (_, Poll::Pending) => Poll::Pending,
-            (_, Poll::Ready(guard)) => Poll::Ready(ReadGuard::new(
-                Mapped::new_with_guard(AsyncPlain { guard }, |guard| {
-                    guard.as_ref().unwrap()
-                }),
-            )),
+            (_, Poll::Ready(guard)) => Poll::Ready(ReadGuard::new(Mapped::new_with_guard(
+                AsyncPlain { guard },
+                |guard| guard.as_ref().unwrap(),
+            ))),
         }
     }
 }

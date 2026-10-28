@@ -1,7 +1,7 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::ChevronDown;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
 use crate::hook::use_random::use_random_id;
 mod components {
@@ -22,7 +22,10 @@ pub use components::*;
 /* ========================================================== */
 
 #[component]
-pub fn AccordionContent(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {
+pub fn AccordionContent(
+    #[prop(into, optional)] class: String,
+    children: Children,
+) -> impl IntoView {
     let merged_class = class_merge!("p-3 pt-0", class);
 
     view! {

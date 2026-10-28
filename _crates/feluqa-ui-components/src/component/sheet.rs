@@ -1,12 +1,12 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::X;
 use crate::runtime::context::Provider;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
 use super::button::ButtonSize;
-use crate::hook::use_random::use_random_id_for;
 use crate::component::button::{Button, ButtonVariant};
+use crate::hook::use_random::use_random_id_for;
 
 mod components {
     use super::*;
@@ -38,7 +38,9 @@ pub type SheetSize = ButtonSize;
 #[component]
 pub fn Sheet(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
     let sheet_target_id = use_random_id_for("sheet");
-    let ctx = SheetContext { target_id: sheet_target_id };
+    let ctx = SheetContext {
+        target_id: sheet_target_id,
+    };
 
     let merged_class = class_merge!("", class);
 

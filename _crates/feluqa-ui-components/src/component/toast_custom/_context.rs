@@ -20,7 +20,9 @@ struct ToasterStats {
 
 impl ToasterContext {
     pub fn toast(&self, builder: ToastBuilder) {
-        let Ok(mut stats) = self.stats.lock() else { return };
+        let Ok(mut stats) = self.stats.lock() else {
+            return;
+        };
         let stats = &mut *stats;
         let toast = builder.build(stats.total + 1);
 
@@ -89,6 +91,9 @@ impl ToasterContext {
 
 impl Default for ToasterContext {
     fn default() -> Self {
-        ToasterContext { stats: Arc::new(Mutex::new(ToasterStats::default())), queue_signal: RwSignal::new(Vec::new()) }
+        ToasterContext {
+            stats: Arc::new(Mutex::new(ToasterStats::default())),
+            queue_signal: RwSignal::new(Vec::new()),
+        }
     }
 }

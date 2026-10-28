@@ -20,11 +20,19 @@ impl DateUtils {
 
     /// Get the next month and year, handling December -> January rollover
     pub fn next_month_year(month: Month, year: i32) -> (Month, i32) {
-        if month == Month::December { (Month::January, year + 1) } else { (month.next(), year) }
+        if month == Month::December {
+            (Month::January, year + 1)
+        } else {
+            (month.next(), year)
+        }
     }
 
     /// Get the previous month and year, handling January -> December rollover
     pub fn prev_month_year(month: Month, year: i32) -> (Month, i32) {
-        if month == Month::January { (Month::December, year - 1) } else { (month.previous(), year) }
+        if month == Month::January {
+            (Month::December, year - 1)
+        } else {
+            (month.previous(), year)
+        }
     }
 }

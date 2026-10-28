@@ -1,6 +1,6 @@
-use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::class_merge;
+use crate::feluqa_ui_component_macros::clx;
+use crate::runtime::prelude::*;
 
 /* ========================================================== */
 /*                       Enums                                */
@@ -69,7 +69,10 @@ pub fn Avatar(
 
 #[component]
 pub fn AvatarImage(#[prop(into, optional)] class: String) -> impl IntoView {
-    let merged_class = class_merge!("absolute inset-0 aspect-square size-full z-10 rounded-full object-cover", class);
+    let merged_class = class_merge!(
+        "absolute inset-0 aspect-square size-full z-10 rounded-full object-cover",
+        class
+    );
     let node_ref = NodeRef::<crate::runtime::html::Img>::new();
 
     view! {

@@ -1,11 +1,11 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::X;
 use crate::runtime::context::Provider;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
-use crate::hook::use_random::use_random_id_for;
 use crate::component::button::{Button, ButtonSize, ButtonVariant};
+use crate::hook::use_random::use_random_id_for;
 
 mod components {
     use super::*;
@@ -37,7 +37,9 @@ pub fn use_dialog_trigger_id() -> Option<String> {
 pub fn Dialog(children: Children, #[prop(optional, into)] class: String) -> impl IntoView {
     let dialog_target_id = use_random_id_for("dialog");
 
-    let ctx = DialogContext { target_id: dialog_target_id };
+    let ctx = DialogContext {
+        target_id: dialog_target_id,
+    };
 
     let merged_class = class_merge!("w-fit", class);
 
@@ -96,7 +98,11 @@ pub fn DialogContent(
     let backdrop_id = crate::std::format!("{}_backdrop", ctx.target_id);
     let target_id_for_script = ctx.target_id.clone();
     let backdrop_id_for_script = backdrop_id.clone();
-    let backdrop_behavior = if close_on_backdrop_click { "auto" } else { "manual" };
+    let backdrop_behavior = if close_on_backdrop_click {
+        "auto"
+    } else {
+        "manual"
+    };
 
     view! {
         <div

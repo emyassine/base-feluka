@@ -3,10 +3,19 @@ use crate::{
     error::ErrorBoundarySuspendedChildren,
     IntoView,
 };
-use futures::{channel::oneshot, select, FutureExt};
-use hydration_context::SerializedDataId;
-use feluqa_ui_runtime_macros::component;
-use or_poisoned::OrPoisoned;
+use feluqa_ui_dom_renderer::{
+    either::Either,
+    feluqa_ui_reactivity::{OwnedView, OwnedViewState},
+    html::attribute::{any_attribute::AnyAttribute, Attribute},
+    hydration::Cursor,
+    ssr::StreamBuilder,
+    view::{
+        add_attr::AddAnyAttr,
+        either::{EitherKeepAlive, EitherKeepAliveState},
+        Mountable, Position, PositionState, Render, RenderHtml,
+    },
+};
+use feluqa_ui_errors::ErrorHookFuture;
 use feluqa_ui_reactivity::{
     computed::{
         suspense::{LocalResourceNotifier, SuspenseContext},
@@ -17,21 +26,12 @@ use feluqa_ui_reactivity::{
     signal::ArcRwSignal,
     traits::{Dispose, Get, Read, ReadUntracked, Track, With, WriteValue},
 };
+use feluqa_ui_runtime_macros::component;
+use futures::{channel::oneshot, select, FutureExt};
+use hydration_context::SerializedDataId;
+use or_poisoned::OrPoisoned;
 use slotmap::{DefaultKey, SlotMap};
 use std::sync::{Arc, Mutex};
-use feluqa_ui_dom_renderer::{
-    either::Either,
-    html::attribute::{any_attribute::AnyAttribute, Attribute},
-    hydration::Cursor,
-    feluqa_ui_reactivity::{OwnedView, OwnedViewState},
-    ssr::StreamBuilder,
-    view::{
-        add_attr::AddAnyAttr,
-        either::{EitherKeepAlive, EitherKeepAliveState},
-        Mountable, Position, PositionState, Render, RenderHtml,
-    },
-};
-use feluqa_ui_errors::ErrorHookFuture;
 
 /// If any [`Resource`](crate::prelude::Resource) is read in the `children` of this
 /// component, it will show the `fallback` while they are loading. Once all are resolved,
@@ -158,15 +158,12 @@ pub(crate) struct SuspenseBoundary<const TRANSITION: bool, Fal, Chil> {
     pub error_boundary_parent: Option<ErrorBoundarySuspendedChildren>,
 }
 
-impl<const TRANSITION: bool, Fal, Chil> Render
-    for SuspenseBoundary<TRANSITION, Fal, Chil>
+impl<const TRANSITION: bool, Fal, Chil> Render for SuspenseBoundary<TRANSITION, Fal, Chil>
 where
     Fal: Render + Send + 'static,
     Chil: Render + Send + 'static,
 {
-    type State = RenderEffect<
-        OwnedViewState<EitherKeepAliveState<Chil::State, Fal::State>>,
-    >;
+    type State = RenderEffect<OwnedViewState<EitherKeepAliveState<Chil::State, Fal::State>>>;
 
     fn build(self) -> Self::State {
         let mut children = Some(self.children);
@@ -209,22 +206,15 @@ where
     }
 }
 
-impl<const TRANSITION: bool, Fal, Chil> AddAnyAttr
-    for SuspenseBoundary<TRANSITION, Fal, Chil>
+impl<const TRANSITION: bool, Fal, Chil> AddAnyAttr for SuspenseBoundary<TRANSITION, Fal, Chil>
 where
     Fal: RenderHtml + Send + 'static,
     Chil: RenderHtml + Send + 'static,
 {
-    type Output<SomeNewAttr: Attribute> = SuspenseBoundary<
-        TRANSITION,
-        Fal,
-        Chil::Output<SomeNewAttr::CloneableOwned>,
-    >;
+    type Output<SomeNewAttr: Attribute> =
+        SuspenseBoundary<TRANSITION, Fal, Chil::Output<SomeNewAttr::CloneableOwned>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -246,8 +236,7 @@ where
     }
 }
 
-impl<const TRANSITION: bool, Fal, Chil> RenderHtml
-    for SuspenseBoundary<TRANSITION, Fal, Chil>
+impl<const TRANSITION: bool, Fal, Chil> RenderHtml for SuspenseBoundary<TRANSITION, Fal, Chil>
 where
     Fal: RenderHtml + Send + 'static,
     Chil: RenderHtml + Send + 'static,
@@ -273,13 +262,8 @@ where
         mark_branches: bool,
         extra_attrs: Vec<AnyAttribute>,
     ) {
-        self.fallback.to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        self.fallback
+            .to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
     }
 
     fn to_html_async_with_buf<const OUT_OF_ORDER: bool>(
@@ -296,12 +280,11 @@ where
         let suspense_context = use_context::<SuspenseContext>().unwrap();
         let owner = Owner::current().unwrap();
 
-        let mut notify_error_boundary =
-            self.error_boundary_parent.map(|children| {
-                let (tx, rx) = oneshot::channel();
-                children.write_value().push(rx);
-                tx
-            });
+        let mut notify_error_boundary = self.error_boundary_parent.map(|children| {
+            let (tx, rx) = oneshot::channel();
+            children.write_value().push(rx);
+            tx
+        });
 
         // we need to wait for one of two things: either
         // 1. all tasks are finished loading, or
@@ -309,14 +292,12 @@ where
 
         // first, create listener for tasks
         let tasks = suspense_context.tasks.clone();
-        let (tasks_tx, mut tasks_rx) =
-            futures::channel::oneshot::channel::<()>();
+        let (tasks_tx, mut tasks_rx) = futures::channel::oneshot::channel::<()>();
 
         let mut tasks_tx = Some(tasks_tx);
 
         // now, create listener for local resources
-        let (local_tx, mut local_rx) =
-            futures::channel::oneshot::channel::<()>();
+        let (local_tx, mut local_rx) = futures::channel::oneshot::channel::<()>();
         provide_context(LocalResourceNotifier::from(local_tx));
 
         // walk over the tree of children once to make sure that all resource loads are registered
@@ -351,17 +332,11 @@ where
                             drop(curr_tasks);
                             // check the children for additional pending tasks
                             // the will catch additional resource reads nested inside a conditional depending on initial resource reads
-                            if let Some(children) =
-                                children.lock().or_poisoned().as_mut()
-                            {
+                            if let Some(children) = children.lock().or_poisoned().as_mut() {
                                 children.dry_resolve();
                             }
 
-                            if tasks
-                                .try_read()
-                                .map(|n| n.is_empty())
-                                .unwrap_or(false)
-                            {
+                            if tasks.try_read().map(|n| n.is_empty()).unwrap_or(false) {
                                 // there are no additional pending tasks, and we can simply return
                                 if let Some(tx) = tasks_tx.take() {
                                     // If the receiver has dropped, it means the ScopedFuture has already
@@ -384,79 +359,75 @@ where
             }
         });
 
-        let mut fut = Box::pin(ScopedFuture::new(ErrorHookFuture::new(
-            async move {
-                // race the local resource notifier against the set of tasks
-                //
-                // if there are local resources, we just return the fallback immediately
-                //
-                // otherwise, we want to wait for resources to load before trying to resolve the body
-                //
-                // this is *less efficient* than just resolving the body
-                // however, it means that you can use reactive accesses to resources/async derived
-                // inside component props, at any level, and have those picked up by Suspense, and
-                // that it will wait for those to resolve
-                select! {
-                    // if there are local resources, bail
-                    // this will only have fired by this point for local resources accessed
-                    // *synchronously*
-                    _ = local_rx => {
-                        let sc = Owner::current_shared_context().expect("no shared context");
-                        sc.set_incomplete_chunk(self.id);
-                        None
-                    }
-                    _ = tasks_rx => {
-                        let children = {
-                            let mut children_lock = children.lock().or_poisoned();
-                            children_lock.take().expect("children should not be removed until we render here")
-                        };
+        let mut fut = Box::pin(ScopedFuture::new(ErrorHookFuture::new(async move {
+            // race the local resource notifier against the set of tasks
+            //
+            // if there are local resources, we just return the fallback immediately
+            //
+            // otherwise, we want to wait for resources to load before trying to resolve the body
+            //
+            // this is *less efficient* than just resolving the body
+            // however, it means that you can use reactive accesses to resources/async derived
+            // inside component props, at any level, and have those picked up by Suspense, and
+            // that it will wait for those to resolve
+            select! {
+                // if there are local resources, bail
+                // this will only have fired by this point for local resources accessed
+                // *synchronously*
+                _ = local_rx => {
+                    let sc = Owner::current_shared_context().expect("no shared context");
+                    sc.set_incomplete_chunk(self.id);
+                    None
+                }
+                _ = tasks_rx => {
+                    let children = {
+                        let mut children_lock = children.lock().or_poisoned();
+                        children_lock.take().expect("children should not be removed until we render here")
+                    };
 
-                        // if we ran this earlier, reactive reads would always be registered as None
-                        // this is fine in the case where we want to use Suspend and .await on some future
-                        // but in situations like a <For each=|| some_resource.snapshot()/> we actually
-                        // want to be able to 1) synchronously read a resource's value, but still 2) wait
-                        // for it to load before we render everything
-                        let mut children = Box::pin(children.resolve().fuse());
+                    // if we ran this earlier, reactive reads would always be registered as None
+                    // this is fine in the case where we want to use Suspend and .await on some future
+                    // but in situations like a <For each=|| some_resource.snapshot()/> we actually
+                    // want to be able to 1) synchronously read a resource's value, but still 2) wait
+                    // for it to load before we render everything
+                    let mut children = Box::pin(children.resolve().fuse());
 
-                        // we continue racing the children against the "do we have any local
-                        // resources?" Future
-                        select! {
-                            _ = local_rx => {
-                                let sc = Owner::current_shared_context().expect("no shared context");
-                                sc.set_incomplete_chunk(self.id);
-                                None
-                            }
-                            children = children => {
-                                // clean up the (now useless) effect
-                                eff.dispose();
+                    // we continue racing the children against the "do we have any local
+                    // resources?" Future
+                    select! {
+                        _ = local_rx => {
+                            let sc = Owner::current_shared_context().expect("no shared context");
+                            sc.set_incomplete_chunk(self.id);
+                            None
+                        }
+                        children = children => {
+                            // clean up the (now useless) effect
+                            eff.dispose();
 
-                                Some(OwnedView::new_with_owner(children, owner))
-                            }
+                            Some(OwnedView::new_with_owner(children, owner))
                         }
                     }
                 }
-            },
-        )));
+            }
+        })));
         match fut.as_mut().now_or_never() {
             Some(Some(resolved)) => {
-                Either::<Fal, _>::Right(resolved)
-                    .to_html_async_with_buf::<OUT_OF_ORDER>(
-                        buf,
-                        position,
-                        escape,
-                        mark_branches,
-                        extra_attrs,
-                    );
+                Either::<Fal, _>::Right(resolved).to_html_async_with_buf::<OUT_OF_ORDER>(
+                    buf,
+                    position,
+                    escape,
+                    mark_branches,
+                    extra_attrs,
+                );
             }
             Some(None) => {
-                Either::<_, Chil>::Left(self.fallback)
-                    .to_html_async_with_buf::<OUT_OF_ORDER>(
-                        buf,
-                        position,
-                        escape,
-                        mark_branches,
-                        extra_attrs,
-                    );
+                Either::<_, Chil>::Left(self.fallback).to_html_async_with_buf::<OUT_OF_ORDER>(
+                    buf,
+                    position,
+                    escape,
+                    mark_branches,
+                    extra_attrs,
+                );
             }
             None => {
                 let id = buf.clone_id();
@@ -583,13 +554,9 @@ impl<T> AddAnyAttr for Unsuspend<T>
 where
     T: AddAnyAttr + 'static,
 {
-    type Output<SomeNewAttr: Attribute> =
-        Unsuspend<T::Output<SomeNewAttr::CloneableOwned>>;
+    type Output<SomeNewAttr: Attribute> = Unsuspend<T::Output<SomeNewAttr::CloneableOwned>>;
 
-    fn add_any_attr<NewAttr: Attribute>(
-        self,
-        attr: NewAttr,
-    ) -> Self::Output<NewAttr>
+    fn add_any_attr<NewAttr: Attribute>(self, attr: NewAttr) -> Self::Output<NewAttr>
     where
         Self::Output<NewAttr>: RenderHtml,
     {
@@ -621,13 +588,7 @@ where
         mark_branches: bool,
         extra_attrs: Vec<AnyAttribute>,
     ) {
-        (self.0)().to_html_with_buf(
-            buf,
-            position,
-            escape,
-            mark_branches,
-            extra_attrs,
-        );
+        (self.0)().to_html_with_buf(buf, position, escape, mark_branches, extra_attrs);
     }
 
     fn to_html_async_with_buf<const OUT_OF_ORDER: bool>(

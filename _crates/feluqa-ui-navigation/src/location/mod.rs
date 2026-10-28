@@ -1,18 +1,18 @@
 #![allow(missing_docs)]
 
-use feluqa_ui_task_runtime::Executor;
 use core::fmt::Debug;
-use js_sys::Reflect;
-use feluqa_ui_runtime::server::ServerActionError;
+use feluqa_ui_dom_renderer::dom::window;
 use feluqa_ui_reactivity::{
     computed::Memo,
     owner::provide_context,
     signal::{ArcRwSignal, ReadSignal},
     traits::With,
 };
+use feluqa_ui_runtime::server::ServerActionError;
+use feluqa_ui_task_runtime::Executor;
+use js_sys::Reflect;
 use send_wrapper::SendWrapper;
 use std::{borrow::Cow, future::Future};
-use feluqa_ui_dom_renderer::dom::window;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{Event, HtmlAnchorElement, MouseEvent};
 
@@ -106,11 +106,7 @@ impl Url {
         }
         #[cfg(feature = "ssr")]
         {
-            percent_encoding::utf8_percent_encode(
-                s,
-                percent_encoding::NON_ALPHANUMERIC,
-            )
-            .to_string()
+            percent_encoding::utf8_percent_encode(s, percent_encoding::NON_ALPHANUMERIC).to_string()
         }
     }
 
@@ -174,8 +170,7 @@ impl Location {
         let pathname = Memo::new(move |_| url.with(|url| url.path.clone()));
         let search = Memo::new(move |_| url.with(|url| url.search.clone()));
         let hash = Memo::new(move |_| url.with(|url| url.hash.clone()));
-        let query =
-            Memo::new(move |_| url.with(|url| url.search_params.clone()));
+        let query = Memo::new(move |_| url.with(|url| url.search_params.clone()));
         Location {
             pathname,
             search,
@@ -260,8 +255,7 @@ impl State {
 
 impl PartialEq for State {
     fn eq(&self, other: &Self) -> bool {
-        self.0.as_ref().map(|n| n.as_ref())
-            == other.0.as_ref().map(|n| n.as_ref())
+        self.0.as_ref().map(|n| n.as_ref()) == other.0.as_ref().map(|n| n.as_ref())
     }
 }
 
@@ -301,8 +295,7 @@ where
         let composed_path = ev.composed_path();
         let mut a: Option<HtmlAnchorElement> = None;
         for i in 0..composed_path.length() {
-            if let Ok(el) = composed_path.get(i).dyn_into::<HtmlAnchorElement>()
-            {
+            if let Ok(el) = composed_path.get(i).dyn_into::<HtmlAnchorElement>() {
                 a = Some(el);
             }
         }
@@ -313,9 +306,7 @@ where
             // let browser handle this event if link has target,
             // or if it doesn't have href or state
             // TODO "state" is set as a prop, not an attribute
-            if !target.is_empty()
-                || (href.is_empty() && !a.has_attribute("state"))
-            {
+            if !target.is_empty() || (href.is_empty() && !a.has_attribute("state")) {
                 return Ok(());
             }
 
@@ -367,8 +358,7 @@ where
             let change = LocationChange {
                 value: to,
                 replace,
-                scroll: !a.has_attribute("noscroll")
-                    && !a.has_attribute("data-noscroll"),
+                scroll: !a.has_attribute("noscroll") && !a.has_attribute("data-noscroll"),
                 state: State::new(state),
             };
 

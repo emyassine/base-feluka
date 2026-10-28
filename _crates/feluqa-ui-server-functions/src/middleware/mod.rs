@@ -30,10 +30,7 @@ impl<Req, Res> BoxedService<Req, Res> {
     }
 
     /// Converts a request into a response by running the inner service.
-    pub fn run(
-        &mut self,
-        req: Req,
-    ) -> Pin<Box<dyn Future<Output = Res> + Send>> {
+    pub fn run(&mut self, req: Req) -> Pin<Box<dyn Future<Output = Res> + Send>> {
         self.service.run(req, self.ser)
     }
 }
@@ -76,26 +73,18 @@ mod axum {
                     //  require a breaking change in order to get the correct encoding from the
                     //  error's `FromServerFnError::Encoder::CONTENT_TYPE` impl.
                     //  Note: This only applies to middleware errors.
-                    let err =
-                        ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
+                    let err = ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
                     Response::<Body>::error_response(&path, err)
                 })
             })
         }
     }
 
-    impl tower::Service<Request<Body>>
-        for BoxedService<Request<Body>, Response<Body>>
-    {
+    impl tower::Service<Request<Body>> for BoxedService<Request<Body>, Response<Body>> {
         type Response = Response<Body>;
         type Error = ServerFnError;
-        type Future = Pin<
-            Box<
-                dyn std::future::Future<
-                        Output = Result<Self::Response, Self::Error>,
-                    > + Send,
-            >,
-        >;
+        type Future =
+            Pin<Box<dyn std::future::Future<Output = Result<Self::Response, Self::Error>> + Send>>;
 
         fn poll_ready(
             &mut self,
@@ -112,10 +101,7 @@ mod axum {
 
     impl<L> super::Layer<Request<Body>, Response<Body>> for L
     where
-        L: tower_layer::Layer<BoxedService<Request<Body>, Response<Body>>>
-            + Sync
-            + Send
-            + 'static,
+        L: tower_layer::Layer<BoxedService<Request<Body>, Response<Body>>> + Sync + Send + 'static,
         L::Service: Service<Request<Body>, Response<Body>> + Send + 'static,
     {
         fn layer(
@@ -157,8 +143,7 @@ mod actix {
                     //  require a breaking change in order to get the correct encoding from the
                     //  error's `FromServerFnError::Encoder::CONTENT_TYPE` impl.
                     //  Note: This only applies to middleware errors.
-                    let err =
-                        ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
+                    let err = ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
                     ActixResponse::error_response(&path, err).take()
                 })
             })
@@ -180,8 +165,7 @@ mod actix {
             let inner = self.call(req.0.take().0);
             Box::pin(async move {
                 ActixResponse::from(inner.await.unwrap_or_else(|e| {
-                    let err =
-                        ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
+                    let err = ser(ServerFnErrorErr::MiddlewareError(e.to_string()));
                     ActixResponse::error_response(&path, err).take()
                 }))
             })

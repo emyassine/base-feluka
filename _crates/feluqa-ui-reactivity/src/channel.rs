@@ -58,10 +58,7 @@ impl Sender {
 impl Stream for Receiver {
     type Item = ();
 
-    fn poll_next(
-        self: Pin<&mut Self>,
-        cx: &mut Context<'_>,
-    ) -> Poll<Option<Self::Item>> {
+    fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
         if let Some(inner) = self.0.upgrade() {
             inner.waker.register(cx.waker());
 

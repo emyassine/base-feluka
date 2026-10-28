@@ -9,8 +9,8 @@ extern crate core;
 extern crate feluqa_ui_autoform;
 extern crate feluqa_ui_classnames;
 extern crate feluqa_ui_component_macros;
-extern crate feluqa_ui_runtime;
 extern crate feluqa_ui_navigation;
+extern crate feluqa_ui_runtime;
 extern crate heck;
 extern crate js_sys;
 extern crate serde;
@@ -23,10 +23,10 @@ extern crate wasm_bindgen;
 extern crate wasm_bindgen_futures;
 extern crate web_sys;
 
-/// Feluqa's UI rendering runtime.
-pub use crate::feluqa_ui_runtime as runtime;
 /// Feluqa's UI navigation primitives.
 pub use crate::feluqa_ui_navigation as navigation;
+/// Feluqa's UI rendering runtime.
+pub use crate::feluqa_ui_runtime as runtime;
 
 /// Layout blocks maintained by Feluqa.
 pub mod block;

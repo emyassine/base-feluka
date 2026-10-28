@@ -26,9 +26,7 @@ where
     #[track_caller]
     pub fn new() -> Self {
         Self {
-            inner: ArcMultiAction::new(|input: &S| {
-                S::run_on_client(input.clone())
-            }),
+            inner: ArcMultiAction::new(|input: &S| S::run_on_client(input.clone())),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
@@ -100,8 +98,7 @@ where
     defined_at: &'static Location<'static>,
 }
 
-impl<S> From<ServerMultiAction<S>>
-    for MultiAction<S, Result<S::Output, S::Error>>
+impl<S> From<ServerMultiAction<S>> for MultiAction<S, Result<S::Output, S::Error>>
 where
     S: ServerFn + 'static,
     S::Output: 'static,
@@ -120,9 +117,7 @@ where
     /// Creates a new [`MultiAction`] which, when dispatched, will call the server function `S`.
     pub fn new() -> Self {
         Self {
-            inner: MultiAction::new(|input: &S| {
-                S::run_on_client(input.clone())
-            }),
+            inner: MultiAction::new(|input: &S| S::run_on_client(input.clone())),
             #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }

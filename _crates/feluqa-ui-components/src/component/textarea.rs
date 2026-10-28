@@ -1,6 +1,6 @@
+use crate::feluqa_ui_classnames::class_merge;
 use crate::runtime::html;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_classnames::class_merge;
 
 #[component]
 pub fn Textarea(

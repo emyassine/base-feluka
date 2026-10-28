@@ -1,10 +1,7 @@
 use super::{guards::WriteGuard, ArcWriteSignal};
 use crate::{
     owner::{ArenaItem, FromLocal, LocalStorage, Storage, SyncStorage},
-    traits::{
-        DefinedAt, Dispose, IntoInner, IsDisposed, Notify, UntrackableGuard,
-        Write,
-    },
+    traits::{DefinedAt, Dispose, IntoInner, IsDisposed, Notify, UntrackableGuard, Write},
 };
 use core::fmt::Debug;
 use guardian::ArcRwLockWriteGuardian;
@@ -177,15 +174,13 @@ where
     type Value = T;
 
     fn try_write(&self) -> Option<impl UntrackableGuard<Target = Self::Value>> {
-        let guard = self.inner.try_with_value(|n| {
-            ArcRwLockWriteGuardian::take(Arc::clone(&n.value)).ok()
-        })??;
+        let guard = self
+            .inner
+            .try_with_value(|n| ArcRwLockWriteGuardian::take(Arc::clone(&n.value)).ok())??;
         Some(WriteGuard::new(*self, guard))
     }
 
-    fn try_write_untracked(
-        &self,
-    ) -> Option<impl DerefMut<Target = Self::Value>> {
+    fn try_write_untracked(&self) -> Option<impl DerefMut<Target = Self::Value>> {
         self.inner
             .try_with_value(|n| n.try_write_untracked())
             .flatten()

@@ -2,8 +2,8 @@ use super::{MatchInterface, MatchNestedRoutes, PathSegment, RouteMatchId};
 use crate::{ChooseView, GeneratedRouteData, MatchParams};
 use core::iter;
 use either_of::*;
-use std::borrow::Cow;
 use feluqa_ui_dom_renderer::view::iterators::StaticVec;
+use std::borrow::Cow;
 
 impl MatchParams for () {
     fn to_params(&self) -> Vec<(Cow<'static, str>, String)> {
@@ -35,16 +35,11 @@ impl MatchNestedRoutes for () {
         false
     }
 
-    fn match_nested<'a>(
-        &self,
-        path: &'a str,
-    ) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
+    fn match_nested<'a>(&self, path: &'a str) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
         (Some((RouteMatchId(0), ())), path)
     }
 
-    fn generate_routes(
-        &self,
-    ) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
+    fn generate_routes(&self) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
         iter::once(GeneratedRouteData {
             segments: vec![PathSegment::Unit],
             ..Default::default()
@@ -87,16 +82,11 @@ where
     type Data = A::Data;
     type Match = A::Match;
 
-    fn match_nested<'a>(
-        &'a self,
-        path: &'a str,
-    ) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
+    fn match_nested<'a>(&'a self, path: &'a str) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
         self.0.match_nested(path)
     }
 
-    fn generate_routes(
-        &self,
-    ) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
+    fn generate_routes(&self) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
         self.0.generate_routes()
     }
 
@@ -161,10 +151,7 @@ where
     type Data = (A::Data, B::Data);
     type Match = Either<A::Match, B::Match>;
 
-    fn match_nested<'a>(
-        &'a self,
-        path: &'a str,
-    ) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
+    fn match_nested<'a>(&'a self, path: &'a str) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
         #[allow(non_snake_case)]
         let (A, B) = &self;
         if let (Some((id, matched)), remaining) = A.match_nested(path) {
@@ -176,9 +163,7 @@ where
         (None, path)
     }
 
-    fn generate_routes(
-        &self,
-    ) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
+    fn generate_routes(&self) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
         #![allow(non_snake_case)]
 
         let (A, B) = &self;
@@ -201,10 +186,7 @@ where
     type Data = Vec<T::Data>;
     type Match = T::Match;
 
-    fn match_nested<'a>(
-        &'a self,
-        path: &'a str,
-    ) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
+    fn match_nested<'a>(&'a self, path: &'a str) -> (Option<(RouteMatchId, Self::Match)>, &'a str) {
         for item in self.iter() {
             if let (Some((id, matched)), remaining) = item.match_nested(path) {
                 return (Some((id, matched)), remaining);
@@ -213,9 +195,7 @@ where
         (None, path)
     }
 
-    fn generate_routes(
-        &self,
-    ) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
+    fn generate_routes(&self) -> impl IntoIterator<Item = GeneratedRouteData> + '_ {
         self.iter().flat_map(T::generate_routes)
     }
 

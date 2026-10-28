@@ -1,8 +1,8 @@
+use crate::feluqa_ui_classnames::*;
+use crate::feluqa_ui_component_macros::clx;
 use crate::icons::Check;
 use crate::runtime::portal::Portal;
 use crate::runtime::prelude::*;
-use crate::feluqa_ui_component_macros::clx;
-use crate::feluqa_ui_classnames::*;
 
 use crate::component::button::{Button, ButtonVariant};
 
@@ -52,7 +52,10 @@ pub fn CommandDialogProvider(children: Children, #[prop(into)] id: String) -> im
 }
 
 #[component]
-pub fn CommandDialogTrigger(children: Children, #[prop(into, optional)] class: String) -> impl IntoView {
+pub fn CommandDialogTrigger(
+    children: Children,
+    #[prop(into, optional)] class: String,
+) -> impl IntoView {
     let context = expect_context::<CommandDialogContext>();
     let trigger_id = crate::std::format!("{TRIGGER_ID_QUALIFIER}__{}", context.dialog_id);
 
@@ -241,12 +244,14 @@ pub fn Command(
     #[prop(into, optional)] class: String,
     // When false, disables client-side filtering (use for server-side search).
     // Default: true (client-side filtering enabled).
-    #[prop(default = true)]
-    should_filter: bool,
+    #[prop(default = true)] should_filter: bool,
 ) -> impl IntoView {
     let dialog_context = use_context::<CommandDialogContext>();
     let search_query_signal = RwSignal::new(String::new());
-    let command_context = CommandContext { search_query_signal, should_filter };
+    let command_context = CommandContext {
+        search_query_signal,
+        should_filter,
+    };
 
     provide_context(command_context);
 
@@ -522,8 +527,7 @@ pub fn Command(
 pub fn CommandInput(
     #[prop(into, optional)] class: String,
     // Callback fired when search input changes. Use for server-side search.
-    #[prop(optional)]
-    on_search_change: Option<Callback<String>>,
+    #[prop(optional)] on_search_change: Option<Callback<String>>,
 ) -> impl IntoView {
     let command_context = expect_context::<CommandContext>();
     let merged_class = class_merge!(
@@ -581,8 +585,7 @@ pub fn CommandItem(
     #[prop(optional)] on_select: Option<Callback<()>>,
     #[prop(default = false.into(), into)] selected: Signal<bool>,
     // Reserve space for check icon even when not selected (for alignment)
-    #[prop(default = false)]
-    reserve_check_space: bool,
+    #[prop(default = false)] reserve_check_space: bool,
 ) -> impl IntoView {
     let command_context = expect_context::<CommandContext>();
     let value_for_filter = value;

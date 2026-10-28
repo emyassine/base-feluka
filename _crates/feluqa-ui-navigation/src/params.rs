@@ -37,11 +37,7 @@ impl ParamsMap {
     }
 
     /// Inserts a value into the map, replacing any existing value for that key.
-    pub fn replace(
-        &mut self,
-        key: impl Into<Cow<'static, str>>,
-        value: String,
-    ) {
+    pub fn replace(&mut self, key: impl Into<Cow<'static, str>>, value: String) {
         let value = Url::unescape(&value);
 
         let key = key.into();
@@ -140,9 +136,7 @@ impl IntoIterator for ParamsMap {
 
 /// An iterator over the keys and values of a [`ParamsMap`].
 #[derive(Debug)]
-pub struct ParamsMapIter(
-    <Vec<(Cow<'static, str>, String)> as IntoIterator>::IntoIter,
-);
+pub struct ParamsMapIter(<Vec<(Cow<'static, str>, String)> as IntoIterator>::IntoIter);
 
 impl Iterator for ParamsMapIter {
     type Item = (Cow<'static, str>, String);
@@ -176,8 +170,7 @@ where
     Self: Sized,
 {
     /// Converts the param.
-    fn into_param(value: Option<&str>, name: &str)
-        -> Result<Self, ParamsError>;
+    fn into_param(value: Option<&str>, name: &str) -> Result<Self, ParamsError>;
 }
 
 impl<T> IntoParam for Option<T>
@@ -185,10 +178,7 @@ where
     T: FromStr,
     <T as FromStr>::Err: std::error::Error + Send + Sync + 'static,
 {
-    fn into_param(
-        value: Option<&str>,
-        _name: &str,
-    ) -> Result<Self, ParamsError> {
+    fn into_param(value: Option<&str>, _name: &str) -> Result<Self, ParamsError> {
         match value {
             None => Ok(None),
             Some(value) => match T::from_str(value) {
@@ -213,12 +203,8 @@ mod option_param {
         T: FromStr + NotOption,
         <T as FromStr>::Err: std::error::Error + Send + Sync + 'static,
     {
-        fn into_param(
-            value: Option<&str>,
-            name: &str,
-        ) -> Result<Self, ParamsError> {
-            let value = value
-                .ok_or_else(|| ParamsError::MissingParam(name.to_string()))?;
+        fn into_param(value: Option<&str>, name: &str) -> Result<Self, ParamsError> {
+            let value = value.ok_or_else(|| ParamsError::MissingParam(name.to_string()))?;
             Self::from_str(value).map_err(|e| ParamsError::Params(Arc::new(e)))
         }
     }

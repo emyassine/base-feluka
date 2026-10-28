@@ -8,7 +8,11 @@ pub fn Pressable(children: Children, #[prop(into, optional)] class: String) -> i
 
     let wrapper_class = move || {
         let base = crate::std::format!("transition-transform {class}");
-        if is_pressed_signal.get() { crate::std::format!("{base} scale-[0.98]") } else { base }
+        if is_pressed_signal.get() {
+            crate::std::format!("{base} scale-[0.98]")
+        } else {
+            base
+        }
     };
 
     view! {

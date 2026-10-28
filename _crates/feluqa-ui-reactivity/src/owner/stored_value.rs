@@ -1,12 +1,7 @@
-use super::{
-    arc_stored_value::ArcStoredValue, ArenaItem, LocalStorage, Storage,
-    SyncStorage,
-};
+use super::{arc_stored_value::ArcStoredValue, ArenaItem, LocalStorage, Storage, SyncStorage};
 use crate::{
     signal::guards::{Plain, ReadGuard, UntrackedWriteGuard},
-    traits::{
-        DefinedAt, Dispose, IntoInner, IsDisposed, ReadValue, WriteValue,
-    },
+    traits::{DefinedAt, Dispose, IntoInner, IsDisposed, ReadValue, WriteValue},
     unwrap_signal,
 };
 use std::{

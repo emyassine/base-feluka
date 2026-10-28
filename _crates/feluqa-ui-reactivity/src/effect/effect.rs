@@ -1,10 +1,7 @@
 use crate::{
     channel::{channel, Receiver},
     effect::{inner::EffectInner, EffectFunction},
-    graph::{
-        AnySubscriber, ReactiveNode, SourceSet, Subscriber, ToAnySubscriber,
-        WithObserver,
-    },
+    graph::{AnySubscriber, ReactiveNode, SourceSet, Subscriber, ToAnySubscriber, WithObserver},
     owner::{ArenaItem, LocalStorage, Owner, Storage, SyncStorage},
     traits::Dispose,
 };
@@ -118,8 +115,7 @@ thread_local! {
 #[cfg(debug_assertions)]
 /// Returns whether the current thread is currently running an effect.
 pub fn in_effect_scope() -> bool {
-    EFFECT_SCOPE_ACTIVE
-        .with(|scope| scope.load(std::sync::atomic::Ordering::Relaxed))
+    EFFECT_SCOPE_ACTIVE.with(|scope| scope.load(std::sync::atomic::Ordering::Relaxed))
 }
 
 /// Set a static to true whilst running the given function.
@@ -128,13 +124,11 @@ fn run_in_effect_scope<T>(fun: impl FnOnce() -> T) -> T {
     #[cfg(debug_assertions)]
     {
         // For the theoretical nested case, set back to initial value rather than false:
-        let initial = EFFECT_SCOPE_ACTIVE.with(|scope| {
-            scope.swap(true, std::sync::atomic::Ordering::Relaxed)
-        });
+        let initial = EFFECT_SCOPE_ACTIVE
+            .with(|scope| scope.swap(true, std::sync::atomic::Ordering::Relaxed));
         let result = fun();
-        EFFECT_SCOPE_ACTIVE.with(|scope| {
-            scope.store(initial, std::sync::atomic::Ordering::Relaxed)
-        });
+        EFFECT_SCOPE_ACTIVE
+            .with(|scope| scope.store(initial, std::sync::atomic::Ordering::Relaxed));
         result
     }
     #[cfg(not(debug_assertions))]
@@ -181,19 +175,16 @@ impl Effect<LocalStorage> {
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && (subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            }) || first_run)
+                            && (subscriber.with_observer(|| subscriber.update_if_necessary())
+                                || first_run)
                         {
                             first_run = false;
                             subscriber.clear_sources(&subscriber);
 
-                            let old_value =
-                                mem::take(&mut *value.write().or_poisoned());
+                            let old_value = mem::take(&mut *value.write().or_poisoned());
                             let new_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(|| {
-                                    run_in_effect_scope(|| fun.run(old_value))
-                                })
+                                subscriber
+                                    .with_observer(|| run_in_effect_scope(|| fun.run(old_value)))
                             });
                             *value.write().or_poisoned() = Some(new_value);
                         }
@@ -333,22 +324,17 @@ impl Effect<LocalStorage> {
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && (subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            }) || first_run)
+                            && (subscriber.with_observer(|| subscriber.update_if_necessary())
+                                || first_run)
                         {
                             subscriber.clear_sources(&subscriber);
 
-                            let old_dep_value = mem::take(
-                                &mut *dep_value.write().or_poisoned(),
-                            );
-                            let new_dep_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(&mut dependency_fn)
-                            });
+                            let old_dep_value = mem::take(&mut *dep_value.write().or_poisoned());
+                            let new_dep_value =
+                                owner.with_cleanup(|| subscriber.with_observer(&mut dependency_fn));
 
-                            let old_watch_value = mem::take(
-                                &mut *watch_value.write().or_poisoned(),
-                            );
+                            let old_watch_value =
+                                mem::take(&mut *watch_value.write().or_poisoned());
 
                             if immediate || !first_run {
                                 let new_watch_value = handler(
@@ -357,12 +343,10 @@ impl Effect<LocalStorage> {
                                     old_watch_value,
                                 );
 
-                                *watch_value.write().or_poisoned() =
-                                    Some(new_watch_value);
+                                *watch_value.write().or_poisoned() = Some(new_watch_value);
                             }
 
-                            *dep_value.write().or_poisoned() =
-                                Some(new_dep_value);
+                            *dep_value.write().or_poisoned() = Some(new_dep_value);
 
                             first_run = false;
                         }
@@ -383,9 +367,7 @@ impl Effect<SyncStorage> {
     ///
     /// This spawns a task that can be run on any thread. For an effect that will be spawned on
     /// the current thread, use [`new`](Effect::new).
-    pub fn new_sync<T, M>(
-        fun: impl EffectFunction<T, M> + Send + Sync + 'static,
-    ) -> Self
+    pub fn new_sync<T, M>(fun: impl EffectFunction<T, M> + Send + Sync + 'static) -> Self
     where
         T: Send + Sync + 'static,
     {
@@ -400,9 +382,7 @@ impl Effect<SyncStorage> {
     /// that are read inside it change.
     ///
     /// This will run whether the `effects` feature is enabled or not.
-    pub fn new_isomorphic<T, M>(
-        mut fun: impl EffectFunction<T, M> + Send + Sync + 'static,
-    ) -> Self
+    pub fn new_isomorphic<T, M>(mut fun: impl EffectFunction<T, M> + Send + Sync + 'static) -> Self
     where
         T: Send + Sync + 'static,
     {
@@ -417,19 +397,15 @@ impl Effect<SyncStorage> {
             async move {
                 while rx.next().await.is_some() {
                     if !owner.paused()
-                        && (subscriber
-                            .with_observer(|| subscriber.update_if_necessary())
+                        && (subscriber.with_observer(|| subscriber.update_if_necessary())
                             || first_run)
                     {
                         first_run = false;
                         subscriber.clear_sources(&subscriber);
 
-                        let old_value =
-                            mem::take(&mut *value.write().or_poisoned());
+                        let old_value = mem::take(&mut *value.write().or_poisoned());
                         let new_value = owner.with_cleanup(|| {
-                            subscriber.with_observer(|| {
-                                run_in_effect_scope(|| fun.run(old_value))
-                            })
+                            subscriber.with_observer(|| run_in_effect_scope(|| fun.run(old_value)))
                         });
                         *value.write().or_poisoned() = Some(new_value);
                     }
@@ -447,10 +423,7 @@ impl Effect<SyncStorage> {
     /// This is to [`Effect::watch`] what [`Effect::new_sync`] is to [`Effect::new`].
     pub fn watch_sync<D, T>(
         mut dependency_fn: impl FnMut() -> D + Send + Sync + 'static,
-        mut handler: impl FnMut(&D, Option<&D>, Option<T>) -> T
-            + Send
-            + Sync
-            + 'static,
+        mut handler: impl FnMut(&D, Option<&D>, Option<T>) -> T + Send + Sync + 'static,
         immediate: bool,
     ) -> Self
     where
@@ -471,22 +444,17 @@ impl Effect<SyncStorage> {
                 async move {
                     while rx.next().await.is_some() {
                         if !owner.paused()
-                            && (subscriber.with_observer(|| {
-                                subscriber.update_if_necessary()
-                            }) || first_run)
+                            && (subscriber.with_observer(|| subscriber.update_if_necessary())
+                                || first_run)
                         {
                             subscriber.clear_sources(&subscriber);
 
-                            let old_dep_value = mem::take(
-                                &mut *dep_value.write().or_poisoned(),
-                            );
-                            let new_dep_value = owner.with_cleanup(|| {
-                                subscriber.with_observer(&mut dependency_fn)
-                            });
+                            let old_dep_value = mem::take(&mut *dep_value.write().or_poisoned());
+                            let new_dep_value =
+                                owner.with_cleanup(|| subscriber.with_observer(&mut dependency_fn));
 
-                            let old_watch_value = mem::take(
-                                &mut *watch_value.write().or_poisoned(),
-                            );
+                            let old_watch_value =
+                                mem::take(&mut *watch_value.write().or_poisoned());
 
                             if immediate || !first_run {
                                 let new_watch_value = handler(
@@ -495,12 +463,10 @@ impl Effect<SyncStorage> {
                                     old_watch_value,
                                 );
 
-                                *watch_value.write().or_poisoned() =
-                                    Some(new_watch_value);
+                                *watch_value.write().or_poisoned() = Some(new_watch_value);
                             }
 
-                            *dep_value.write().or_poisoned() =
-                                Some(new_dep_value);
+                            *dep_value.write().or_poisoned() = Some(new_dep_value);
 
                             first_run = false;
                         }
@@ -523,9 +489,7 @@ where
         self.inner
             .and_then(|inner| {
                 inner
-                    .try_with_value(|inner| {
-                        inner.as_ref().map(|inner| inner.to_any_subscriber())
-                    })
+                    .try_with_value(|inner| inner.as_ref().map(|inner| inner.to_any_subscriber()))
                     .flatten()
             })
             .expect("tried to set effect that has been stopped")
@@ -537,9 +501,7 @@ where
 #[track_caller]
 #[deprecated = "This function is being removed to conform to Rust idioms. \
                 Please use `Effect::new()` instead."]
-pub fn create_effect<T>(
-    fun: impl FnMut(Option<T>) -> T + 'static,
-) -> Effect<LocalStorage>
+pub fn create_effect<T>(fun: impl FnMut(Option<T>) -> T + 'static) -> Effect<LocalStorage>
 where
     T: 'static,
 {

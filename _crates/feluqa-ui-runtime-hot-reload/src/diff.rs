@@ -13,10 +13,7 @@ impl LNode {
         self.diff_at(other, &[], &old_children)
     }
 
-    fn to_replacement_node(
-        &self,
-        old_children: &OldChildren,
-    ) -> ReplacementNode {
+    fn to_replacement_node(&self, old_children: &OldChildren) -> ReplacementNode {
         match old_children.0.get(self) {
             // if the child already exists in the DOM, we can pluck it out
             // and move it around
@@ -40,9 +37,7 @@ impl LNode {
                     attrs: attrs
                         .iter()
                         .filter_map(|(name, value)| match value {
-                            LAttributeValue::Boolean => {
-                                Some((name.to_owned(), name.to_owned()))
-                            }
+                            LAttributeValue::Boolean => Some((name.to_owned(), name.to_owned())),
                             LAttributeValue::Static(value) => {
                                 Some((name.to_owned(), value.to_owned()))
                             }
@@ -54,9 +49,9 @@ impl LNode {
                         .map(|node| node.to_replacement_node(old_children))
                         .collect(),
                 },
-                LNode::Text(_)
-                | LNode::Component { .. }
-                | LNode::DynChild(_) => ReplacementNode::Html(self.to_html()),
+                LNode::Text(_) | LNode::Component { .. } | LNode::DynChild(_) => {
+                    ReplacementNode::Html(self.to_html())
+                }
             },
         }
     }
@@ -95,18 +90,11 @@ impl LNode {
         }
     }
 
-    fn diff_at(
-        &self,
-        other: &LNode,
-        path: &[usize],
-        orig_children: &OldChildren,
-    ) -> Vec<Patch> {
+    fn diff_at(&self, other: &LNode, path: &[usize], orig_children: &OldChildren) -> Vec<Patch> {
         if std::mem::discriminant(self) != std::mem::discriminant(other) {
             return vec![Patch {
                 path: path.to_owned(),
-                action: PatchAction::ReplaceWith(
-                    other.to_replacement_node(orig_children),
-                ),
+                action: PatchAction::ReplaceWith(other.to_replacement_node(orig_children)),
             }];
         }
         match (self, other) {
@@ -139,12 +127,8 @@ impl LNode {
 
                 let attrs_patch = LNode::diff_attrs(path, old_attrs, new_attrs);
 
-                let children_patch = LNode::diff_children(
-                    path,
-                    old_children,
-                    new_children,
-                    orig_children,
-                );
+                let children_patch =
+                    LNode::diff_children(path, old_children, new_children, orig_children);
 
                 attrs_patch
                     .into_iter()
@@ -169,12 +153,7 @@ impl LNode {
                 let mut path = path.to_vec();
                 path.push(0);
                 path.push(0);
-                LNode::diff_children(
-                    &path,
-                    old_children,
-                    new_children,
-                    orig_children,
-                )
+                LNode::diff_children(&path, old_children, new_children, orig_children)
             }
             _ => vec![],
         }
@@ -196,12 +175,8 @@ impl LNode {
                 };
                 if replace {
                     match &new_value {
-                        LAttributeValue::Boolean => {
-                            Some((name.to_owned(), String::new()))
-                        }
-                        LAttributeValue::Static(s) => {
-                            Some((name.to_owned(), s.to_owned()))
-                        }
+                        LAttributeValue::Boolean => Some((name.to_owned(), String::new())),
+                        LAttributeValue::Static(s) => Some((name.to_owned(), s.to_owned())),
                         _ => None,
                     }
                 } else {
@@ -280,17 +255,10 @@ impl LNode {
                     j -= 1;
                 } else {
                     let current = mat[j * width + i];
-                    if i > 0
-                        && j > 0
-                        && mat[(j - 1) * width + i - 1] + 1 == current
-                    {
+                    if i > 0 && j > 0 && mat[(j - 1) * width + i - 1] + 1 == current {
                         let mut new_path = path.to_owned();
                         new_path.push(i - 1);
-                        let diffs = old[i - 1].diff_at(
-                            &new[j - 1],
-                            &new_path,
-                            old_children,
-                        );
+                        let diffs = old[i - 1].diff_at(&new[j - 1], &new_path, old_children);
                         patches.extend(&mut diffs.into_iter());
                         i -= 1;
                         j -= 1;
@@ -305,8 +273,7 @@ impl LNode {
                             path: path.to_owned(),
                             action: PatchAction::InsertChild {
                                 before: i,
-                                child: new[j - 1]
-                                    .to_replacement_node(old_children),
+                                child: new[j - 1].to_replacement_node(old_children),
                             },
                         });
                         j -= 1;
@@ -410,17 +377,11 @@ mod tests {
             vec![
                 Patch {
                     path: vec![],
-                    action: PatchAction::SetAttribute(
-                        "class".into(),
-                        "a b".into()
-                    )
+                    action: PatchAction::SetAttribute("class".into(), "a b".into())
                 },
                 Patch {
                     path: vec![],
-                    action: PatchAction::SetAttribute(
-                        "id".into(),
-                        "button".into()
-                    )
+                    action: PatchAction::SetAttribute("id".into(), "button".into())
                 },
                 Patch {
                     path: vec![],
@@ -435,18 +396,12 @@ mod tests {
         let a = LNode::Element {
             name: "button".into(),
             attrs: vec![],
-            children: vec![
-                LNode::Text("foo".into()),
-                LNode::Text("bar".into()),
-            ],
+            children: vec![LNode::Text("foo".into()), LNode::Text("bar".into())],
         };
         let b = LNode::Element {
             name: "button".into(),
             attrs: vec![],
-            children: vec![
-                LNode::Text("foo".into()),
-                LNode::Text("baz".into()),
-            ],
+            children: vec![LNode::Text("foo".into()), LNode::Text("baz".into())],
         };
         let delta = a.diff(&b);
         assert_eq!(

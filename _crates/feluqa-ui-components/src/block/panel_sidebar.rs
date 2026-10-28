@@ -1,4 +1,6 @@
-use crate::component::sidenav::{Sidenav, SidenavCollapsible, SidenavSide, SidenavVariant, SidenavWrapper};
+use crate::component::sidenav::{
+    Sidenav, SidenavCollapsible, SidenavSide, SidenavVariant, SidenavWrapper,
+};
 use crate::runtime::prelude::*;
 
 /// Shared responsive shell for Feluqa panel sidebars.

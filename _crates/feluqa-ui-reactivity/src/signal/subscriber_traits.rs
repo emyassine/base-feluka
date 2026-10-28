@@ -9,10 +9,7 @@
 //! these characteristics.
 
 use crate::{
-    graph::{
-        AnySource, AnySubscriber, ReactiveNode, Source, SubscriberSet,
-        ToAnySource,
-    },
+    graph::{AnySource, AnySubscriber, ReactiveNode, Source, SubscriberSet, ToAnySource},
     traits::{DefinedAt, IsDisposed},
     unwrap_signal,
 };
