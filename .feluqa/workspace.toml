@@ -1,3 +1,6 @@
 [workspace]
 products = "products"
 crates = "crates"
+version = "0.12.0"
+git = "https://github.com/emyassine/base-feluka.git"
+tree = "1.x.x"
