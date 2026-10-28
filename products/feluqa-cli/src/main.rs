@@ -17,7 +17,7 @@ pub const PROFILES: &[Profile] = &[
         binary_name: "feluqa",
         commands_directory: "profiles/feluqa/src",
         header: concat!(
-            "feluqa v",
+            "\nfeluqa v",
             env!("CARGO_PKG_VERSION"),
             " [Server Profile]\n",
             "High-availability backend, API, and ERP module engine.\n",

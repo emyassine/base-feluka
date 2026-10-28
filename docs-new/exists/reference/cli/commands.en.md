@@ -97,17 +97,19 @@ a missing required name; in scripts, missing names return usage guidance.
 
 ## Run from a source checkout
 
-Run `products/feluqa-cli/build-release.sh [target-triple]` to build the two
-profile binaries and package them for one Rust target. With no argument, it
-uses the current host target. It has no CI-provider dependency; any CI system
-or release machine can invoke it. Rust target support is determined by the
-installed Rust target and the platform linker/SDK available on that machine.
+Run `./build.sh [--release] [target-triple]` to build
+the `feluqa` and `nadim` binaries for one Rust target. It builds debug binaries
+by default in `target/debug/`; pass `--release` to build optimized binaries in
+`target/release/`. With a target triple, outputs go under
+`target/<triple>/<profile>/`. With no target argument, it uses the current host
+target. It has no CI-provider dependency; any CI system or release machine can
+invoke it. Rust target support is determined by the installed Rust target and
+the platform linker/SDK available on that machine.
 
 The initial release matrix is Linux x86-64 and ARM64, macOS Intel and ARM64,
 and Windows x86-64. Build each target on a compatible native runner, or
 configure a cross-linker and SDK where supported. One host cannot produce
 every operating system's executable without the appropriate toolchains.
-Archives are written to `products/feluqa-cli/dist/` and contain `feluqa` and `nadim` binaries for the selected target.
 
 From a valid app root, run the CLI product through the workspace manifest:
 
