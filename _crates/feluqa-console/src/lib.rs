@@ -1035,7 +1035,9 @@ fn run_in_context_with_notice(
     if interactive_requested && arguments.is_empty() {
         if !profile.header.is_empty() {
             terminal::echo(profile.header, terminal::OutputStyle::Plain);
-            terminal::blankline();
+            if notice.is_none() {
+                terminal::blankline();
+            }
         }
         print_startup_notice(notice);
     } else if !is_help {

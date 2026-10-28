@@ -1,5 +1,6 @@
 #![no_implicit_prelude]
 
+use crate::core::sync::atomic::{AtomicBool, Ordering};
 use crate::std::clone::Clone;
 use crate::std::cmp::Ord;
 use crate::std::convert::From;
@@ -13,6 +14,8 @@ use crate::std::result::Result::{Err, Ok};
 use crate::std::string::{String, ToString};
 use crate::std::vec::Vec;
 use crate::std::{eprint, matches, print, println, vec, write};
+
+static PREVIOUS_STATUS_BLOCK: AtomicBool = AtomicBool::new(false);
 
 /// ANSI style used by Feluqa Console output.
 #[derive(Clone, Copy)]
@@ -135,8 +138,25 @@ pub fn echo(message: &str, style: OutputStyle) {
         OutputStyle::Plain => None,
     };
     match label {
-        Some(_) => print!("{}", status_block(message, style)),
-        None => println!("{message}"),
+        Some(_) => emit_status(message, style, false),
+        None => {
+            PREVIOUS_STATUS_BLOCK.store(false, Ordering::Relaxed);
+            println!("{message}");
+        }
+    }
+}
+
+fn emit_status(message: &str, style: OutputStyle, stderr: bool) {
+    let block = status_block(message, style);
+    let rendered = if PREVIOUS_STATUS_BLOCK.swap(true, Ordering::Relaxed) {
+        block.strip_prefix('\n').unwrap_or(&block)
+    } else {
+        block.as_str()
+    };
+    if stderr {
+        eprint!("{rendered}");
+    } else {
+        print!("{rendered}");
     }
 }
 
@@ -228,17 +248,17 @@ pub fn success(message: &str) {
 
 /// Write a cyan informational line.
 pub fn info(message: &str) {
-    echo(message, OutputStyle::Info);
+    emit_status(message, OutputStyle::Info, false);
 }
 
 /// Write a yellow warning line to stderr.
 pub fn warning(message: &str) {
-    eprint!("{}", status_block(message, OutputStyle::Warning));
+    emit_status(message, OutputStyle::Warning, true);
 }
 
 /// Write a red error line to stderr.
 pub fn error(message: &str) {
-    eprint!("{}", status_block(message, OutputStyle::Error));
+    emit_status(message, OutputStyle::Error, true);
 }
 
 /// Display a titled callout using portable terminal formatting.
