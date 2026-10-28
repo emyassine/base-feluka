@@ -22,59 +22,42 @@ A source may represent one installable module or a composed module containing
 multiple business domains. Folder names are chosen by the developer and do
 not themselves define platform packaging or lifecycle boundaries.
 
-### One module
+### One module (target source layout)
 
 ```text
 products/customer-identity/
 ├── Cargo.toml
-├── feluqa-module.toml
-├── build.rs
-├── resources/views/
-├── public/
 ├── src/
-│   ├── lib.rs
-│   ├── provider.rs
-│   ├── panel.rs
-│   ├── resources/
-│   ├── pages/
-│   ├── features/
-│   ├── routes.rs
-│   ├── services.rs
-│   ├── policies.rs
-│   ├── migrations/{sqlite,postgresql}/
-│   └── seeders/
-└── tests/
+│   ├── main.rs
+│   ├── panels/
+│   └── modules/
+│       └── customer_identity/
+│           ├── permissions.rs
+│           ├── models/
+│           ├── services/
+│           └── resources/
+└── feluqa-module.toml # one-time tooling marker; generated metadata is under target/
 ```
 
-### Composed module
+### Composed product (target source layout)
 
 ```text
 products/business-platform/
 ├── Cargo.toml
-├── feluqa-module.toml
-├── build.rs
-├── resources/views/
-├── public/
 └── src/
-    ├── lib.rs
-    ├── provider.rs
-    ├── website/                 # optional public site/panel contribution
-    └── business/
+    ├── main.rs
+    ├── panels/
+    │   ├── back_office.rs
+    │   └── customer_portal.rs
+    └── modules/
         ├── crm/
-        │   ├── module.toml
-        │   ├── provider.rs
-        │   ├── resources/
-        │   ├── pages/
-        │   ├── features/
-        │   ├── routes.rs
-        │   ├── services.rs
-        │   ├── policies.rs
-        │   ├── migrations/{sqlite,postgresql}/
-        │   └── seeders/
+        │   ├── permissions.rs
+        │   ├── models/
+        │   ├── services/
+        │   └── resources/
         └── finance/
-            ├── module.toml
-            ├── provider.rs
-            └── migrations/{sqlite,postgresql}/
+            ├── permissions.rs
+            └── services/
 ```
 
 Child business domains may be bundled into one installable package or exposed
@@ -114,11 +97,11 @@ invoked by stable IDs; they are not executed by the schema migration runner.
 
 ## Composition and security
 
-The module provider declares services, routes and panel contributions. Route
-files stay with the website, panel or module that owns behavior; the process
-composition root combines providers and applies global middleware. Shared
-framework panel views/assets stay in Feluqa crates; module-specific views and
-assets stay with their module.
+The attribute scanner discovers panel and module declarations by source path.
+Generated route, permission, config and manifest tables are build outputs.
+Product code contains business behavior and panel/resource/page declarations;
+it does not maintain route or provider registries. See the
+[attribute-driven application contract](attribute-driven-applications.en.md).
 
 Every server action enforces authorization regardless of navigation
 visibility. Policies and services apply tenant, record and field scope in

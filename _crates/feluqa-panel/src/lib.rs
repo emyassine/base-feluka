@@ -1229,7 +1229,7 @@ impl ResourceRegistry {
 }
 
 /// Resource registry startup error.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ResourceRegistryError {
     /// A resource contract failed validation.
     InvalidResource(ResourceError),
@@ -2886,7 +2886,9 @@ mod tests {
         };
         assert_eq!(
             registry.register(route_collision),
-            Err(ResourceRegistryError::DuplicateRoute("/admin/customers"))
+            Err(ResourceRegistryError::DuplicateRoute(String::from(
+                "/admin/customers",
+            )))
         );
         let authorizer = PermissionSetAuthorizer;
         let mut name_reader = Principal::new("reader", None).expect("principal");

@@ -9,6 +9,7 @@ use feluqa::panel::{Panel, PanelCatalog, PanelCatalogError};
 pub mod business;
 pub mod pages;
 pub mod resources;
+pub mod runtime;
 pub mod web;
 
 /// The product's panel composition: platform controls plus business workspaces.
@@ -17,9 +18,4 @@ pub fn declaration(business: Panel) -> Result<PanelCatalog, PanelCatalogError> {
     panels.register_provider(&feluqa::system_panel::SystemPanelProvider)?;
     panels.register_panel(business)?;
     Ok(panels)
-}
-
-/// Application registration hooks that belong to the Numerimondes product.
-pub mod runtime {
-    pub use crate::modules::{enabled_migrations, lifecycle_runtime};
 }

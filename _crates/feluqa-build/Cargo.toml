@@ -1,0 +1,12 @@
+[package]
+name = "feluqa-build"
+version = "0.1.0"
+description = "Compile-time discovery and validation for Feluqa application declarations."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+syn.workspace = true

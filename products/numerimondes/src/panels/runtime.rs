@@ -13,14 +13,12 @@ use crate::std::net::SocketAddr;
 use crate::std::result::Result::{self, Err, Ok};
 use crate::std::str::FromStr;
 
-pub async fn run() -> Result<(), Box<dyn Error>> {
+pub async fn run(catalog: feluqa::panel::PanelCatalog) -> Result<(), Box<dyn Error>> {
     let Some(command) = crate::routes::console::run()? else {
         return Ok(());
     };
-    let business_panel = panel::business::declaration()?;
-    let catalog = panel::declaration(business_panel)?;
-    let config = config::AppConfig::load_default()?;
-    let mut module_runtime = modules::lifecycle_runtime(&config.modules.enabled)?;
+    let config = crate::config::AppConfig::load_default()?;
+    let mut module_runtime = crate::modules::lifecycle_runtime(&config.modules.enabled)?;
     if matches!(&command, crate::routes::console::RuntimeCommand::Seed(_))
         && !config
             .modules
@@ -51,12 +49,12 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
             &feluqa::core::MIGRATIONS,
         )
         .await?;
-        println!("Applied {} Feluqa Core migration(s)", core_migrations.len());
-        for module in modules::enabled_migrations(&config.modules.enabled) {
+        crate::std::println!("Applied {} Feluqa Core migration(s)", core_migrations.len());
+        for module in crate::modules::enabled_migrations(&config.modules.enabled) {
             for (connection, applied) in
                 feluqa::database::MigrationRunner::run_declared(&databases, module).await?
             {
-                println!(
+                crate::std::println!(
                     "Applied {} migration(s) for {} on {}",
                     applied.len(),
                     module.module,
@@ -70,7 +68,7 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
     }
     if let crate::routes::console::RuntimeCommand::Seed(id) = &command {
         crate::modules::crm::seeders::run(&databases, id).await?;
-        println!("Completed registered seeder `{id}`");
+        crate::std::println!("Completed registered seeder `{id}`");
         return Ok(());
     }
     module_runtime.start()?;
@@ -86,11 +84,11 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
     )
     .with_active_modules(active_modules);
     let address = SocketAddr::from_str(&format!("{}:{}", config.app.host, config.app.port))?;
-    let router = crate::panel::web::router(panel_state);
-    let serve_result = feluqa::web::serve(router, address, &config.app.name, &config.app.profile).await;
+    let router = crate::panels::web::router(panel_state);
+    let serve_result =
+        feluqa::web::serve(router, address, &config.app.name, &config.app.profile).await;
     let shutdown_result = module_runtime.shutdown();
     serve_result?;
     shutdown_result?;
     Ok(())
 }
-

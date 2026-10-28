@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
     "feluqa",
+    "feluqa-build",
     "feluqa-model-derive",
     "feluqa-console",
     "feluqa-console-macros",

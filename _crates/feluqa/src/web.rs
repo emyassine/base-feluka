@@ -28,7 +28,7 @@ use alloc::collections::BTreeMap;
 use alloc::format;
 use alloc::string::{String, ToString};
 use axum::Router;
-use axum::extract::{Path, Request, State};
+use axum::extract::{Path, State};
 use axum::handler::Handler;
 use axum::http::header::COOKIE;
 use axum::http::{HeaderMap, StatusCode};

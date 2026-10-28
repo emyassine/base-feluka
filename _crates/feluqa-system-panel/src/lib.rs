@@ -12,6 +12,7 @@ extern crate feluqa_auth;
 extern crate feluqa_panel as panel;
 extern crate feluqa_ui;
 
+use alloc::collections::BTreeMap;
 use alloc::string::String;
 use alloc::vec;
 use alloc::vec::Vec;
@@ -163,6 +164,7 @@ pub fn panel_with_pages(pages: Vec<PanelPage>) -> Panel {
         widgets: Vec::new(),
         widget_columns: 2,
         resources: Vec::new(),
+        resource_slugs: BTreeMap::new(),
         options: PanelOptions::default(),
     }
 }

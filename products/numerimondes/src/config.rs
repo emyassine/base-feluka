@@ -56,7 +56,6 @@ pub struct AppSettings {
     pub profile: String,
     pub host: String,
     pub port: u16,
-    pub service_provider: String,
 }
 
 impl AppConfig {
@@ -89,9 +88,6 @@ impl AppConfig {
             }
         }
         let mut config = document.try_into::<Self>()?;
-        if config.app.service_provider != env!("FELUQA_SERVICE_PROVIDER") {
-            return Err("compiled service provider does not match feluqa.toml".into());
-        }
         config.runtime.environment = environment;
         if let Ok(environment) = env::var("FELUQA_ENV") {
             config.runtime.environment = environment;

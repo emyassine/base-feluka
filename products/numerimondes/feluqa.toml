@@ -3,7 +3,6 @@ name = "Numerimondes"
 profile = "web"
 host = "127.0.0.1"
 port = 38127
-service_provider = "src/service_provider.rs"
 
 [runtime]
 environment = "development"

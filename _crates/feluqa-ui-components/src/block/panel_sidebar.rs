@@ -9,7 +9,7 @@ use crate::runtime::prelude::*;
 /// platform, application, module, or product navigation.
 #[component]
 pub fn PanelSidebar(
-    sidebar: View,
+    sidebar: AnyView,
     children: Children,
     #[prop(optional, into)] class: String,
     #[prop(default = true)] default_open: bool,

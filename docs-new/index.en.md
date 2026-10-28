@@ -11,6 +11,7 @@ Choose your audience:
 - [For module developers](exists/for-developers/index.en.md): build a module,
   add panels/resources, store data, authorize actions, write views and test.
 - [Knowledge and product intent](knowledge/index.en.md)
+- [Attribute-driven application target](knowledge/architecture/attribute-driven-applications.en.md)
 - [Current implementation](exists/index.en.md)
 - [Planned work](_todo/index.en.md)
 

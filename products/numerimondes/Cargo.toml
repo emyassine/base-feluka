@@ -21,7 +21,7 @@ feluqa = { version = "0.2.0", path = "../../_crates/feluqa", features = ["ui-com
 
 [build-dependencies]
 feluqa = { path = "../../_crates/feluqa", features = ["view-compiler"] }
-toml.workspace = true
+feluqa-build = { path = "../../_crates/feluqa-build" }
 
 [dev-dependencies]
 tower = { version = "0.5", features = ["util"] }

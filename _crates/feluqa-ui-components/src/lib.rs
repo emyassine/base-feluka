@@ -8,9 +8,9 @@
 extern crate core;
 extern crate feluqa_ui_autoform;
 extern crate feluqa_ui_classnames;
-extern crate feluqa_ui_component_macros;
-extern crate feluqa_ui_navigation;
-extern crate feluqa_ui_runtime;
+pub extern crate feluqa_ui_component_macros;
+pub extern crate feluqa_ui_navigation;
+pub extern crate feluqa_ui_runtime;
 extern crate heck;
 extern crate js_sys;
 extern crate serde;
