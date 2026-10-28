@@ -17,7 +17,7 @@ impl MultiSpan for Vec<Span> {
     fn into_spans(self) -> Vec<Span> { self }
 }
 
-impl<'a> MultiSpan for &'a [Span] {
+impl MultiSpan for &[Span] {
     fn into_spans(self) -> Vec<Span> {
         self.to_vec()
     }
@@ -160,12 +160,8 @@ impl Diagnostic {
         if item {
             error.to_compile_error()
         } else {
-            let compile_error_calls = error.into_iter().map(|e| {
-                let compile_error = e.to_compile_error();
-                quote::quote_spanned!(e.span() => #compile_error;)
-            });
-
-            quote::quote!({ #(#compile_error_calls)* })
+            let compile_error_calls = error.into_iter().map(|e| e.to_compile_error());
+            quote::quote!(::core::concat! { #(#compile_error_calls),* })
         }
     }
 
@@ -178,7 +174,7 @@ impl Diagnostic {
     /// Emit the diagnostic as tokens.
     #[cfg(nightly_diagnostics)]
     fn emit_as_tokens(self, item: bool, default: TokenStream) -> TokenStream {
-        if !crate::nightly_works() {
+        if !proc_macro::is_available() {
             return self.stable_emit_as_tokens(item);
         }
 
@@ -186,30 +182,30 @@ impl Diagnostic {
         default
     }
 
-    /// Emit tokens, suitable for item contexts, to generate a comple-time
-    /// diagnostic corresponding to `self`. On nightly, this directly emits the
-    /// error and returns an empty token stream.
+    /// Emit tokens, suitable for item contexts, to generate a compile-time
+    /// diagnostic corresponding to `self`. On nightly with the `nightly` feature
+    /// enabled, this directly emits the diagnostic and returns an empty token stream.
     pub fn emit_as_item_tokens(self) -> TokenStream {
         self.emit_as_tokens(true, TokenStream::new())
     }
 
-    /// Emit tokens, suitable for item contexts, to generate a comple-time
-    /// diagnostic corresponding to `self`. On nightly, this directly emits the
-    /// error and returns `default`.
+    /// Emit tokens, suitable for item contexts, to generate a compile-time
+    /// diagnostic corresponding to `self`. On nightly with the `nightly` feature
+    /// enabled, this directly emits the diagnostic and returns `default`.
     pub fn emit_as_item_tokens_or(self, default: TokenStream) -> TokenStream {
         self.emit_as_tokens(true, default)
     }
 
-    /// Emit tokens, suitable for expression contexts, to generate a comple-time
-    /// diagnostic corresponding to `self`. On nightly, this directly emits the
-    /// error and returns a `()` token stream.
+    /// Emit tokens, suitable for expression contexts, to generate a compile-time
+    /// diagnostic corresponding to `self`. On nightly with the `nightly` feature
+    /// enabled, this directly emits the diagnostic and returns a `()` token stream.
     pub fn emit_as_expr_tokens(self) -> TokenStream {
         self.emit_as_tokens(false, quote::quote!({}))
     }
 
-    /// Emit tokens, suitable for expressioon contexts, to generate a
-    /// comple-time diagnostic corresponding to `self`. On nightly, this
-    /// directly emits the error and returns `default`.
+    /// Emit tokens, suitable for expression contexts, to generate a compile-time
+    /// diagnostic corresponding to `self`. On nightly with the `nightly` feature
+    /// enabled, this directly emits the diagnostic and returns `default`.
     pub fn emit_as_expr_tokens_or(self, default: TokenStream) -> TokenStream {
         self.emit_as_tokens(false, default)
     }
@@ -231,7 +227,7 @@ impl From<Diagnostic> for syn::parse::Error {
         }
 
         fn diag_to_span(diag: &Diagnostic) -> Span {
-            diag.spans.get(0).cloned().unwrap_or_else(|| Span::call_site())
+            diag.spans.first().copied().unwrap_or_else(Span::call_site)
         }
 
         let mut msg = diag_to_msg(&diag);

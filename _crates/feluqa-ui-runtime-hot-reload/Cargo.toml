@@ -56,7 +56,9 @@ default-features = true
 version = "1.0"
 default-features = true
 
-[dependencies.rstml]
+[dependencies.feluqa_ui_markup_parser]
+path = "../feluqa-ui-markup-parser"
+package = "feluqa-ui-markup-parser"
 version = "0.13.1"
 default-features = true
 

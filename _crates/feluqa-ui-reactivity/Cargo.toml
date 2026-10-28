@@ -36,18 +36,62 @@ rustdoc-args = [
 denylist = ["tracing"]
 max_combination_size = 2
 
-[dependencies.hydration_context]
-version = "0.3.0"
+[dependencies.tracing]
+version = "0.1"
 optional = true
 
 [dependencies.serde]
 version = "1"
+features = ["derive", "rc"]
 optional = true
-features = ["derive"]
+
+[dependencies.hydration_context]
+version = "0.3.0"
+optional = true
+
+[dependencies.feluqa_ui_task_runtime]
+package = "feluqa-ui-task-runtime"
+path = "../feluqa-ui-task-runtime"
+version = "0.3.0"
+
+[dependencies.futures]
+version = "0.3"
+
+[dependencies.or_poisoned]
+version = "0.1"
+
+[dependencies.pin-project-lite]
+version = "0.2"
+
+[dependencies.rustc-hash]
+version = "2"
+
+[dependencies.slotmap]
+version = "1"
+
+[dependencies.thiserror]
+version = "2"
+
+[dependencies.guardian]
+version = "1"
+
+[dependencies.async-lock]
+version = "3"
+
+[dependencies.send_wrapper]
+version = "0.6"
+features = ["futures"]
+
+[dependencies.indexmap]
+version = "2"
+
+[dependencies.paste]
+version = "1"
 
 [features]
 effects = []
-hydration = []
+tracing = ["dep:tracing"]
+hydration = ["dep:hydration_context"]
 nightly = []
 sandboxed-arenas = []
 serde = ["dep:serde"]

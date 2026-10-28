@@ -16,7 +16,7 @@ pub use components::*;
 /* ========================================================== */
 
 /// Outer wrapper. Sets up drag event delegation on `document` via `Effect::new`,
-/// which runs after Feluqa UI WASM hydration — so listeners are never stripped by
+/// which runs after FeluqaUi WASM hydration — so listeners are never stripped by
 /// node replacement the way vanilla JS attached-at-parse-time listeners are.
 #[component]
 pub fn Draggable(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {

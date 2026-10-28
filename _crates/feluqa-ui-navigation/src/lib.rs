@@ -1,14 +1,14 @@
-//! # Feluqa UI Router
+//! # FeluqaUi Router
 //!
-//! Feluqa UI Router is a router and state management tool for web applications
-//! written in Rust using the Feluqa UI web framework.
+//! FeluqaUi Router is a router and state management tool for web applications
+//! written in Rust using the FeluqaUi web framework.
 //! It is ”isomorphic”, i.e., it can be used for client-side applications/single-page
 //! apps (SPAs), server-side rendering/multi-page apps (MPAs), or to synchronize
 //! state between the two.
 //!
 //! ## Philosophy
 //!
-//! Feluqa UI Router is built on a few simple principles:
+//! FeluqaUi Router is built on a few simple principles:
 //! 1. **URL drives state.** For web applications, the URL should be the ultimate
 //!    source of truth for most of your app’s state. (It’s called a **Universal
 //!    Resource Locator** for a reason!)
@@ -116,7 +116,7 @@
 //! - `nightly`: On `nightly` Rust, enables the function-call syntax for signal getters and setters.
 //! - `tracing`: Enables support for the `tracing` crate.
 //!
-//! [`Feluqa UI`]: <https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime>
+//! [`FeluqaUi`]: <https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime>
 //! [`router`]: <https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/blob/main/examples/router/src/lib.rs>
 
 #![forbid(unsafe_code)]

@@ -105,7 +105,7 @@ where
                 AnySource(
                     Arc::as_ptr(subs) as usize,
                     Arc::downgrade(subs) as Weak<dyn Source + Send + Sync>,
-                    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                     self.defined_at().expect("no DefinedAt in debug mode"),
                 )
             })

@@ -5,7 +5,7 @@ use feluqa_ui_markup_parser::node::{Node, NodeAttribute};
 use serde::{Deserialize, Serialize};
 
 // A lightweight virtual DOM structure we can use to hold
-// the state of a Feluqa UI view macro template. This is because
+// the state of a FeluqaUi view macro template. This is because
 // `syn` types are `!Send` so we can't store them as we might like.
 // This is only used to diff view macros for hot reloading so it's very minimal
 // and ignores many of the data types.

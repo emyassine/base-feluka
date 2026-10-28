@@ -374,7 +374,7 @@ pub fn VirtualizedGridBody(children: Children, #[prop(optional, into)] class: St
 ///
 /// NOTE: The inner `<For>` is keyed by the item's key (not by index) to ensure
 /// rows re-render when data changes. This fixes issues where deleting rows
-/// would not update the UI because Feluqa UI reuses views with matching keys.
+/// would not update the UI because FeluqaUi reuses views with matching keys.
 #[component]
 pub fn VirtualFor<T, K, KF, CF, CV>(#[prop(into)] data: Signal<Vec<T>>, key: KF, children: CF) -> impl IntoView
 where
@@ -413,7 +413,7 @@ where
 
 /// Grid row with absolute positioning for virtual scrolling.
 /// NOTE: `index` must be a Signal to ensure translateY updates when rows are reordered
-/// (e.g., during sorting). With keyed `<For>` loops, Feluqa UI reuses DOM elements,
+/// (e.g., during sorting). With keyed `<For>` loops, FeluqaUi reuses DOM elements,
 /// so static index values would cause rows to stay in their original visual positions.
 #[component]
 pub fn GridRow(

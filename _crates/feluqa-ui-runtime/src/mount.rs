@@ -72,7 +72,7 @@ where
     {
         if !cfg!(feature = "hydrate") && FIRST_CALL.get() {
             logging::warn!(
-                "It seems like you're trying to use Feluqa UI in hydration mode, \
+                "It seems like you're trying to use FeluqaUi in hydration mode, \
                  but the `hydrate` feature is not enabled on the `feluqa_ui_runtime` \
                  crate. Add `features = [\"hydrate\"]` to your Cargo.toml for \
                  the crate to work properly.\n\nNote that hydration and \
@@ -124,7 +124,7 @@ where
     {
         if !cfg!(feature = "hydrate") && FIRST_CALL.get() {
             logging::warn!(
-                "It seems like you're trying to use Feluqa UI in hydration mode, \
+                "It seems like you're trying to use FeluqaUi in hydration mode, \
                  but the `hydrate` feature is not enabled on the `feluqa_ui_runtime` \
                  crate. Add `features = [\"hydrate\"]` to your Cargo.toml for \
                  the crate to work properly.\n\nNote that hydration and \
@@ -186,7 +186,7 @@ where
     {
         if !cfg!(feature = "csr") && FIRST_CALL.get() {
             logging::warn!(
-                "It seems like you're trying to use Feluqa UI in client-side \
+                "It seems like you're trying to use FeluqaUi in client-side \
                  rendering mode, but the `csr` feature is not enabled on the \
                  `feluqa_ui_runtime` crate. Add `features = [\"csr\"]` to your \
                  Cargo.toml for the crate to work properly.\n\nNote that \

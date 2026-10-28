@@ -7,7 +7,7 @@ description = "Internalized Tailwind class merge and variant macros."
 
 [dependencies]
 nom = "7"
-feluqa_ui_classnames_macros = { workspace = true, optional = true , path = "../feluqa-ui-classnames-macros"}
+feluqa_ui_classnames_macros = { workspace = true, optional = true}
 
 [features]
 variant = ["dep:feluqa_ui_classnames_macros"]

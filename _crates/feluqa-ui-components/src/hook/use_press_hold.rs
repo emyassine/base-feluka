@@ -40,7 +40,7 @@ impl UsePressHold {
         let on_complete = self.on_complete;
 
         // Using get_untracked() because this JS interval callback runs outside
-        // Feluqa UI's reactive system - we just need the current value, not reactivity.
+        // FeluqaUi's reactive system - we just need the current value, not reactivity.
         let callback = crate::wasm_bindgen::closure::Closure::<dyn Fn()>::new(move || {
             if !is_holding_signal.get_untracked() {
                 return;
@@ -92,7 +92,7 @@ impl UsePressHold {
         let duration = self.duration;
 
         // Using get_untracked() because this JS interval callback runs outside
-        // Feluqa UI's reactive system - we just need the current value, not reactivity.
+        // FeluqaUi's reactive system - we just need the current value, not reactivity.
         let callback = crate::wasm_bindgen::closure::Closure::<dyn Fn()>::new(move || {
             if is_holding_signal.get_untracked() {
                 return;

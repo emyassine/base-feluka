@@ -46,7 +46,7 @@ where
     S::Output: 'static,
 {
     inner: ArcAction<S, Result<S::Output, S::Error>>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -69,7 +69,7 @@ where
             inner: ArcAction::new_with_value(err, |input: &S| {
                 S::run_on_client(input.clone())
             }),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -95,7 +95,7 @@ where
     fn clone(&self) -> Self {
         Self {
             inner: self.inner.clone(),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
         }
     }
@@ -118,11 +118,11 @@ where
     S::Output: 'static,
 {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -136,7 +136,7 @@ where
     S::Output: 'static,
 {
     inner: Action<S, Result<S::Output, S::Error>>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -157,7 +157,7 @@ where
             inner: Action::new_with_value(err, |input: &S| {
                 S::run_on_client(input.clone())
             }),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -220,11 +220,11 @@ where
     S::Output: 'static,
 {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }

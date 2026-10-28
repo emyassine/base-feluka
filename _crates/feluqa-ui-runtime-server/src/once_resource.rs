@@ -60,7 +60,7 @@ pub struct ArcOnceResource<T, Ser = JsonSerdeCodec> {
     suspenses: Arc<RwLock<Vec<SuspenseContext>>>,
     loading: Arc<AtomicBool>,
     ser: PhantomData<fn() -> Ser>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -73,7 +73,7 @@ impl<T, Ser> Clone for ArcOnceResource<T, Ser> {
             suspenses: self.suspenses.clone(),
             loading: self.loading.clone(),
             ser: self.ser,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
         }
     }
@@ -140,7 +140,7 @@ where
             wakers,
             suspenses,
             ser: PhantomData,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         };
 
@@ -218,11 +218,11 @@ impl<T, Ser> ArcOnceResource<T, Ser> {
 
 impl<T, Ser> DefinedAt for ArcOnceResource<T, Ser> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
@@ -313,7 +313,7 @@ where
 
     #[track_caller]
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let _guard = SpecialNonReactiveZone::enter();
         let waker = cx.waker();
         self.source.track();
@@ -536,7 +536,7 @@ where
 #[derive(Debug)]
 pub struct OnceResource<T, Ser = JsonSerdeCodec> {
     inner: ArenaItem<ArcOnceResource<T, Ser>>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -569,13 +569,13 @@ where
         fut: impl Future<Output = T> + Send + 'static,
         blocking: bool,
     ) -> Self {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let defined_at = Location::caller();
         Self {
             inner: ArenaItem::new(ArcOnceResource::new_with_options(
                 fut, blocking,
             )),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at,
         }
     }
@@ -627,11 +627,11 @@ where
 
 impl<T, Ser> DefinedAt for OnceResource<T, Ser> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }

@@ -44,7 +44,9 @@ tracing = ["dep:tracing"]
 name = "feluqa_ui_navigation"
 path = "src/lib.rs"
 
-[dependencies.any_spawner]
+[dependencies.feluqa_ui_task_runtime]
+path = "../feluqa-ui-task-runtime"
+package = "feluqa-ui-task-runtime"
 version = "0.3.0"
 
 [dependencies.either_of]
@@ -63,10 +65,11 @@ version = "0.3.77"
 default-features = true
 
 [dependencies.feluqa_ui]
+package = "feluqa-ui-runtime"
 version = "0.8.3"
 
 [dependencies.feluqa_ui_router_macro]
-package = "feluqa-ui-router-macro"
+package = "feluqa-ui-navigation-macros"
 version = "0.8.3"
 
 [dependencies.or_poisoned]
@@ -77,16 +80,20 @@ version = "2.3.1"
 optional = true
 default-features = true
 
-[dependencies.reactive_graph]
+[dependencies.feluqa_ui_reactivity]
+path = "../feluqa-ui-reactivity"
+package = "feluqa-ui-reactivity"
 version = "0.2.0"
 
 [dependencies.send_wrapper]
 version = "0.6.0"
 default-features = true
 
-[dependencies.tachys]
+[dependencies.feluqa_ui_dom_renderer]
+path = "../feluqa-ui-dom-renderer"
+package = "feluqa-ui-dom-renderer"
 version = "0.2.0"
-features = ["reactive_graph"]
+features = ["feluqa_ui_reactivity"]
 
 [dependencies.thiserror]
 version = "2.0.12"

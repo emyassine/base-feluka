@@ -1,4 +1,4 @@
-#[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+#[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
 use crate::hydration::set_currently_hydrating;
 #[cfg(erase_components)]
 use crate::view::any_view::AnyView;
@@ -29,13 +29,13 @@ pub use custom::*;
 pub use element_ext::*;
 pub use elements::*;
 pub use inner_html::*;
-#[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+#[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
 use std::panic::Location;
 
 /// The typed representation of an HTML element.
 #[derive(Debug, PartialEq, Eq)]
 pub struct HtmlElement<E, At, Ch> {
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     pub(crate) defined_at: &'static Location<'static>,
     pub(crate) tag: E,
     pub(crate) attributes: At,
@@ -45,7 +45,7 @@ pub struct HtmlElement<E, At, Ch> {
 impl<E: Clone, At: Clone, Ch: Clone> Clone for HtmlElement<E, At, Ch> {
     fn clone(&self) -> Self {
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             tag: self.tag.clone(),
             attributes: self.attributes.clone(),
@@ -89,7 +89,7 @@ where
 
     fn child(self, child: NewChild) -> Self::Output {
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             tag: self.tag,
             attributes: self.attributes,
@@ -114,7 +114,7 @@ where
         use crate::view::any_view::IntoAny;
 
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             tag: self.tag,
             attributes: self.attributes,
@@ -245,14 +245,14 @@ where
         attr: NewAttr,
     ) -> Self::Output<NewAttr> {
         let HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at,
             tag,
             attributes,
             children,
         } = self;
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at,
             tag,
             attributes: attributes.add_any_attr(attr),
@@ -398,7 +398,7 @@ where
         let (attributes, children) =
             join(self.attributes.resolve(), self.children.resolve()).await;
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             tag: self.tag,
             attributes,
@@ -523,10 +523,10 @@ where
             cursor: &Cursor,
             position: &PositionState,
             tag_name: &str,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: &'static std::panic::Location<'static>,
         ) -> crate::renderer::types::Element {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 set_currently_hydrating(Some(defined_at));
             }
@@ -546,7 +546,7 @@ where
             cursor,
             position,
             E::TAG,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             self.defined_at,
         );
 
@@ -594,10 +594,10 @@ where
             cursor: &Cursor,
             position: &PositionState,
             tag_name: &str,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: &'static std::panic::Location<'static>,
         ) -> crate::renderer::types::Element {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 set_currently_hydrating(Some(defined_at));
             }
@@ -617,7 +617,7 @@ where
             cursor,
             position,
             E::TAG,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             self.defined_at,
         );
 
@@ -657,7 +657,7 @@ where
 
     fn into_owned(self) -> Self::Owned {
         HtmlElement {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             tag: self.tag,
             attributes: self.attributes.into_cloneable_owned(),

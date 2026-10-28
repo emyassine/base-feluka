@@ -1,8 +1,8 @@
 #![deny(missing_docs)]
 
-//! # About Feluqa UI
+//! # About FeluqaUi
 //!
-//! Feluqa UI is a full-stack framework for building web applications in Rust. You can use it to build
+//! FeluqaUi is a full-stack framework for building web applications in Rust. You can use it to build
 //! - single-page apps (SPAs) rendered entirely in the browser, using client-side routing and loading
 //!   or mutating data via async requests to the server.
 //! - multi-page apps (MPAs) rendered on the server, managing navigation, data, and mutations via
@@ -10,20 +10,20 @@
 //! - progressively-enhanced single-page apps that are rendered on the server and then hydrated on the client,
 //!   enhancing your `<a>` and `<form>` navigations and mutations seamlessly when WASM is available.
 //!
-//! And you can do all three of these **using the same Feluqa UI code**.
+//! And you can do all three of these **using the same FeluqaUi code**.
 //!
-//! Take a look at the [Feluqa UI Book](https://feluqa.dev/docs/ui/) for a walkthrough of the framework.
+//! Take a look at the [FeluqaUi Book](https://feluqa.dev/docs/ui/) for a walkthrough of the framework.
 //! Join us on our [Discord Channel](https://discord.gg/v38Eef6sWG) to see what the community is building.
-//! Explore our [Examples](https://feluqa.dev/tree/main/examples) to see Feluqa UI in action.
+//! Explore our [Examples](https://feluqa.dev/tree/main/examples) to see FeluqaUi in action.
 //!
 //! # Learning by Example
 //!
-//! If you want to see what Feluqa UI is capable of, check out
+//! If you want to see what FeluqaUi is capable of, check out
 //! the [examples](https://feluqa.dev/tree/main/examples):
 //!
 //! - **[`counter`]** is the classic counter example, showing the basics of client-side rendering and reactive DOM updates.
 //! - **[`counter_without_macros`]** adapts the counter example to use the builder pattern for the UI and avoids other macros,
-//!   instead showing the code that Feluqa UI generates.
+//!   instead showing the code that FeluqaUi generates.
 //! - **[`counters`]** introduces parent-child communication via contexts, and the [`<For/>`](feluqa_ui_runtime::prelude::For) component
 //!   for efficient keyed list updates.
 //! - **[`error_boundary`]** shows how to use [`Result`] types to handle errors.
@@ -31,7 +31,7 @@
 //!   context, and more.
 //! - **[`fetch`]** introduces [`Resource`](feluqa_ui_runtime::prelude::Resource)s, which allow you to integrate arbitrary `async` code like an
 //!   HTTP request within your reactive code.
-//! - **[`router`]** shows how to use Feluqa UI’s nested router to enable client-side navigation and route-specific, reactive data loading.
+//! - **[`router`]** shows how to use FeluqaUi’s nested router to enable client-side navigation and route-specific, reactive data loading.
 //! - **[`slots`]** shows how to use slots on components.
 //! - **[`spread`]** shows how the spread syntax can be used to spread data and/or event handlers onto elements.
 //! - **[`counter_isomorphic`]** shows different methods of interaction with a stateful server, including server functions,
@@ -90,7 +90,7 @@
 //! - **`ssr`** Server-side rendering: Generate an HTML string (typically on the server).
 //! - **`islands`** Activates “islands mode,” in which components are not made interactive on the
 //!   client unless they use the `#[island]` macro.
-//! - **`hydrate`** Hydration: use this to add interactivity to an SSRed Feluqa UI app.
+//! - **`hydrate`** Hydration: use this to add interactivity to an SSRed FeluqaUi app.
 //! - **`nonce`** Adds support for nonces to be added as part of a Content Security Policy.
 //! - **`rkyv`** In SSR/hydrate mode, enables using [`rkyv`](https://docs.rs/rkyv/latest/rkyv/) to serialize resources.
 //! - **`tracing`** Adds support for [`tracing`](https://docs.rs/tracing/latest/tracing/).
@@ -101,7 +101,7 @@
 //!   events.)
 //! - **`rustls`** Use `rustls` for server functions.
 //!
-//! **Important Note:** You must enable one of `csr`, `hydrate`, or `ssr` to tell Feluqa UI
+//! **Important Note:** You must enable one of `csr`, `hydrate`, or `ssr` to tell FeluqaUi
 //! which mode your app is operating in. You should only enable one of these per build target,
 //! i.e., you should not have both `hydrate` and `ssr` enabled for your server binary, only `ssr`.
 //!
@@ -132,7 +132,7 @@
 //! }
 //! ```
 //!
-//! Feluqa UI is easy to use with [Trunk](https://trunkrs.dev/) (or with a simple wasm-bindgen setup):
+//! FeluqaUi is easy to use with [Trunk](https://trunkrs.dev/) (or with a simple wasm-bindgen setup):
 //!
 //! ```rust
 //! use feluqa_ui_runtime::{mount::mount_to_body, prelude::*};

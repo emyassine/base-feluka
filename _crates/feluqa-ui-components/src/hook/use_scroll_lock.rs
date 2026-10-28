@@ -12,7 +12,7 @@
 //! inline scripts.
 //!
 //! The Rust API ([`lock`], [`unlock`], [`is_locked`]) can also be called
-//! directly from Feluqa UI components without JS interop.
+//! directly from FeluqaUi components without JS interop.
 
 use crate::std::cell::RefCell;
 

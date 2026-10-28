@@ -44,14 +44,16 @@ rkyv = ["codee/rkyv"]
 serde-lite = ["codee/serde_lite"]
 serde-wasm-bindgen = ["codee/json_serde_wasm"]
 ssr = []
-tachys = ["dep:tachys"]
+feluqa_ui_dom_renderer = ["dep:feluqa_ui_dom_renderer"]
 tracing = ["dep:tracing"]
 
 [lib]
 name = "feluqa_ui_runtime_server"
 path = "src/lib.rs"
 
-[dependencies.any_spawner]
+[dependencies.feluqa_ui_task_runtime]
+path = "../feluqa-ui-task-runtime"
+package = "feluqa-ui-task-runtime"
 version = "0.3.0"
 
 [dependencies.base64]
@@ -78,7 +80,9 @@ default-features = true
 [dependencies.or_poisoned]
 version = "0.1.0"
 
-[dependencies.reactive_graph]
+[dependencies.feluqa_ui_reactivity]
+path = "../feluqa-ui-reactivity"
+package = "feluqa-ui-reactivity"
 version = "0.2.13"
 features = ["hydration"]
 
@@ -94,12 +98,15 @@ default-features = true
 version = "1.0"
 default-features = true
 
-[dependencies.server_fn]
+[dependencies.feluqa_ui_server_functions]
+package = "feluqa-ui-server-functions"
 version = "0.8.10"
 
-[dependencies.tachys]
+[dependencies.feluqa_ui_dom_renderer]
+path = "../feluqa-ui-dom-renderer"
+package = "feluqa-ui-dom-renderer"
 version = "0.2.12"
-features = ["reactive_graph"]
+features = ["feluqa_ui_reactivity"]
 optional = true
 
 [dependencies.tracing]

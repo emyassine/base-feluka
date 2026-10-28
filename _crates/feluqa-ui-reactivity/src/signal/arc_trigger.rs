@@ -13,7 +13,7 @@ use std::{
 ///
 /// This can be useful for when using external data not stored in signals, for example.
 pub struct ArcTrigger {
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     pub(crate) defined_at: &'static Location<'static>,
     pub(crate) inner: Arc<RwLock<SubscriberSet>>,
 }
@@ -23,7 +23,7 @@ impl ArcTrigger {
     #[track_caller]
     pub fn new() -> Self {
         Self {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: Default::default(),
         }
@@ -40,7 +40,7 @@ impl Clone for ArcTrigger {
     #[track_caller]
     fn clone(&self) -> Self {
         Self {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             inner: Arc::clone(&self.inner),
         }
@@ -88,11 +88,11 @@ impl Track for Vec<ArcTrigger> {
 impl DefinedAt for ArcTrigger {
     #[inline(always)]
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }

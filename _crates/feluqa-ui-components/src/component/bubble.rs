@@ -103,7 +103,7 @@ pub fn Bubble(
 pub fn BubbleContent(
     // TODO PORT: shadcn uses BubbleContent asChild (Radix Slot) to swap element type
     // (e.g. <BubbleContent asChild><button onClick={...}>...</button></BubbleContent>).
-    // Feluqa UI has no asChild. We split into href (→ <a>) and on_click (→ <button>),
+    // FeluqaUi has no asChild. We split into href (→ <a>) and on_click (→ <button>),
     // with <div> as the default. Matches shadcn behavior for all 3 cases.
     #[prop(optional, into)] href: Option<String>,
     #[prop(optional)] on_click: Option<Callback<ev::MouseEvent>>,

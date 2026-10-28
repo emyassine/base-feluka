@@ -25,7 +25,7 @@ macro_rules! svg_elements {
                 where
                 {
                     HtmlElement {
-                        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                         defined_at: std::panic::Location::caller(),
                         tag: [<$tag:camel>],
                         attributes: (),
@@ -55,7 +55,7 @@ macro_rules! svg_elements {
                             <At as $crate::html::attribute::NextAttribute<Attr<$crate::html::attribute::[<$attr:camel>], V>>>::Output: Attribute,
                         {
                             let HtmlElement { tag, children, attributes,
-                                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                                 defined_at
                             } = self;
                             HtmlElement {
@@ -63,7 +63,7 @@ macro_rules! svg_elements {
 
                                 children,
                                 attributes: attributes.add_any_attr($crate::html::attribute::$attr(value)),
-                                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                                 defined_at
                             }
                         }
@@ -164,7 +164,7 @@ svg_elements![
 pub fn r#use() -> HtmlElement<Use, (), ()>
 where {
     HtmlElement {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: std::panic::Location::caller(),
         tag: Use,
         attributes: (),

@@ -9,7 +9,7 @@ pub use feluqa_ui_classnames;
 /// - A main class struct with FeluqaClass derive for class_merge integration
 /// - Variant enums with FeluqaVariant derive and proper Default implementations
 /// - Size enums with FeluqaVariant derive and proper Default implementations
-/// - Optional Feluqa UI component function with standard props
+/// - Optional FeluqaUi component function with standard props
 /// - First variant/size automatically becomes the default
 ///
 /// # Usage

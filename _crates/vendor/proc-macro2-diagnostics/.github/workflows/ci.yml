@@ -7,7 +7,7 @@ env:
 
 jobs:
   test:
-    name: "${{ matrix.os.name }} ${{ matrix.test.name }} (${{ matrix.toolchain }})"
+    name: "${{ matrix.os.name }} (${{ matrix.toolchain }})"
     continue-on-error: false
     runs-on: ${{ matrix.os.distro }}
 
@@ -22,16 +22,15 @@ jobs:
 
     steps:
       - name: Checkout Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.toolchain }}
-          override: true
 
       - name: Run Tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
+        run: cargo test
+
+      - name: Run Tests (--features nightly)
+        run: cargo test --features nightly

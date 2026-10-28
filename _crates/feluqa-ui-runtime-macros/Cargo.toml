@@ -66,14 +66,14 @@ rustdoc-args = ["--generate-link-to-definition"]
 
 [features]
 __internal_erase_components = []
-actix = ["server_fn_macro/actix"]
-axum = ["server_fn_macro/axum"]
+actix = ["feluqa_ui_server_functions_macros/actix"]
+axum = ["feluqa_ui_server_functions_macros/axum"]
 csr = []
-generic = ["server_fn_macro/generic"]
+generic = ["feluqa_ui_server_functions_macros/generic"]
 hydrate = []
 islands = []
-nightly = ["server_fn_macro/nightly"]
-ssr = ["server_fn_macro/ssr"]
+nightly = ["feluqa_ui_server_functions_macros/nightly"]
+ssr = ["feluqa_ui_server_functions_macros/ssr"]
 trace-component-props = []
 trace-components = []
 tracing = ["dep:tracing"]
@@ -132,8 +132,9 @@ default-features = true
 version = "0.14"
 default-features = true
 
-[dependencies.feluqa_ui_hot_reload]
-package = "feluqa-ui-hot-reload"
+[dependencies.feluqa_ui_runtime_hot_reload]
+path = "../feluqa-ui-runtime-hot-reload"
+package = "feluqa-ui-runtime-hot-reload"
 version = "0.8.7"
 
 [dependencies.prettyplease]
@@ -148,11 +149,14 @@ default-features = true
 version = "1.0"
 default-features = true
 
-[dependencies.rstml]
+[dependencies.feluqa_ui_markup_parser]
+path = "../feluqa-ui-markup-parser"
+package = "feluqa-ui-markup-parser"
 version = "0.13.1"
 default-features = true
 
-[dependencies.server_fn_macro]
+[dependencies.feluqa_ui_server_functions_macros]
+package = "feluqa-ui-server-functions-macros"
 version = "=0.8.12"
 
 [dependencies.syn]

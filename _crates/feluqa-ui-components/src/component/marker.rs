@@ -52,7 +52,7 @@ pub fn Marker(
     #[prop(optional)] variant: MarkerVariant,
     #[prop(optional, into)] class: String,
     // TODO PORT: shadcn uses a `render` prop (e.g. `render={<a href="..." />}`) to swap
-    // the root element polymorphically (Radix asChild pattern). Feluqa UI has no asChild, so
+    // the root element polymorphically (Radix asChild pattern). FeluqaUi has no asChild, so
     // we split into two explicit props: `href` (→ <a>) and `on_click` (→ <button>).
     // If neither is set, renders a plain <div>. Matches shadcn behavior for all 3 cases.
     /// Renders the marker as an <a> element

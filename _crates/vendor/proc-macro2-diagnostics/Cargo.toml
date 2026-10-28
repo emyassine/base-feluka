@@ -12,14 +12,31 @@
 [package]
 edition = "2018"
 name = "proc-macro2-diagnostics"
-version = "0.10.1"
+version = "0.11.0"
 authors = ["Sergio Benitez <sb@sergio.bz>"]
+build = "build.rs"
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Diagnostics for proc-macro2."
-homepage = "https://github.com/SergioBenitez/proc-macro2-diagnostics"
 documentation = "https://docs.rs/proc-macro2-diagnostics"
 readme = "README.md"
 license = "MIT/Apache-2.0"
 repository = "https://github.com/SergioBenitez/proc-macro2-diagnostics"
+resolver = "2"
+
+[features]
+nightly = ["dep:version_check"]
+
+[lib]
+name = "proc_macro2_diagnostics"
+path = "src/lib.rs"
+
+[[test]]
+name = "main"
+path = "tests/main.rs"
 
 [dependencies.proc-macro2]
 version = "1.0"
@@ -28,18 +45,19 @@ version = "1.0"
 version = "1.0"
 
 [dependencies.syn]
-version = "2.0"
-
-[dependencies.yansi]
-version = "1.0.0-rc"
-optional = true
+version = "3"
+features = [
+    "parsing",
+    "printing",
+]
+default-features = false
 
 [dev-dependencies.trybuild]
 version = "1.0"
 
-[build-dependencies.version_check]
+[dev-dependencies.version_check]
 version = "0.9.4"
 
-[features]
-colors = ["yansi"]
-default = ["colors"]
+[build-dependencies.version_check]
+version = "0.9.4"
+optional = true

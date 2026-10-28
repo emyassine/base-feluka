@@ -24,7 +24,7 @@ macro_rules! html_element_inner {
 
             {
                 HtmlElement {
-                    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                     defined_at: std::panic::Location::caller(),
                     tag: $struct_name,
                     attributes: (),
@@ -56,14 +56,14 @@ macro_rules! html_element_inner {
                         <At as NextAttribute>::Output<Attr<$crate::html::attribute::[<$attr:camel>], V>>: Attribute,
                     {
                         let HtmlElement {
-                            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                             defined_at,
                             tag,
                             children,
                             attributes
                         } = self;
                         HtmlElement {
-                            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                             defined_at,
                             tag,
                             children,
@@ -131,7 +131,7 @@ macro_rules! html_self_closing_elements {
 
                 {
                     HtmlElement {
-                        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                         defined_at: std::panic::Location::caller(),
                         attributes: (),
                         children: (),
@@ -161,14 +161,14 @@ macro_rules! html_self_closing_elements {
                             <At as NextAttribute>::Output<Attr<$crate::html::attribute::[<$attr:camel>], V>>: Attribute,
                         {
                             let HtmlElement {
-                                 #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                                 #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                                  defined_at,
                                 tag,
                                 children,
                                 attributes,
                             } = self;
                             HtmlElement {
-                                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                                 defined_at,
                                 tag,
                                 children,

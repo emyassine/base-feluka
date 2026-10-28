@@ -358,14 +358,17 @@ default-features = true
 version = "0.15"
 default-features = true
 
-[dependencies.server_fn_macro_default]
+[dependencies.feluqa_ui_server_functions_macros_default]
+package = "feluqa-ui-server-functions-macros-default"
 version = "0.8.5"
 
 [dependencies.thiserror]
 version = "2.0"
 default-features = true
 
-[dependencies.throw_error]
+[dependencies.feluqa_ui_errors]
+path = "../feluqa-ui-errors"
+package = "feluqa-ui-errors"
 version = "0.3.1"
 
 [dependencies.tokio]

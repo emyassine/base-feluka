@@ -1,7 +1,7 @@
 #![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
-//! DOM helpers for Feluqa UI.
+//! DOM helpers for FeluqaUi.
 
 pub mod helpers;
 #[doc(hidden)]

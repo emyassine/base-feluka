@@ -2,7 +2,7 @@ use crate::static_routes::StaticRoute;
 
 /// Indicates which rendering mode should be used for this route during server-side rendering.
 ///
-/// Feluqa UI supports the following ways of rendering HTML that contains `async` data loaded
+/// FeluqaUi supports the following ways of rendering HTML that contains `async` data loaded
 /// under `<Suspense/>`.
 /// 1. **Synchronous** (use any mode except `Async`, don't depend on any resource): Serve an HTML shell that includes `fallback` for any `Suspense`. Load data on the client (using `create_local_resource`), replacing `fallback` once they're loaded.
 ///     - *Pros*: App shell appears very quickly: great TTFB (time to first byte).

@@ -1,7 +1,7 @@
 #![allow(clippy::needless_lifetimes)]
 
 use crate::{prelude::*, WasmSplitManifest};
-use feluqa_ui_runtime_config::Feluqa UIOptions;
+use feluqa_ui_runtime_config::FeluqaUiOptions;
 use feluqa_ui_runtime_macros::{component, view};
 use std::{path::PathBuf, sync::OnceLock};
 
@@ -14,7 +14,7 @@ pub fn AutoReload(
     #[prop(optional)]
     disable_watch: bool,
     /// Configuration options for this project.
-    options: Feluqa UIOptions,
+    options: FeluqaUiOptions,
 ) -> impl IntoView {
     (!disable_watch && std::env::var("FELUQA_UI_WATCH").is_ok()).then(|| {
         #[cfg(feature = "nonce")]
@@ -47,7 +47,7 @@ pub fn AutoReload(
 #[component]
 pub fn HydrationScripts(
     /// Configuration options for this project.
-    options: Feluqa UIOptions,
+    options: FeluqaUiOptions,
     /// Should be `true` to hydrate in `islands` mode.
     #[prop(optional)]
     islands: bool,

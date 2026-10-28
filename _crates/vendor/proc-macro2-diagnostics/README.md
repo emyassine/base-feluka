@@ -13,7 +13,7 @@ Diagnostics for stable and nightly proc-macros!
 
 ```toml
 [dependencies]
-proc_macro2_diagnostics = "0.10"
+proc-macro2-diagnostics = "0.11"
 ```
 
 2. Import `SpanDiagnosticExt` and use its methods on a `proc_macro2::Span` to
@@ -44,23 +44,29 @@ pub fn real_macro(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
 This does the right thing on nightly _or_ stable.
 
-### Caveats
+### Caveats and Nightly
 
-On stable, due to limitations, any top-level, non-error diagnostics are
-emitted as errors. This will abort compilation. To avoid this, you may want
-to `cfg`-gate emitting non-error diagnostics to nightly.
+By default, diagnostics use stable APIs irrespective of the running compiler.
+Due to limitations with stable APIs, any top-level, non-error diagnostic is
+emitted as an error, which will immediately abort compilation. On a stable
+compiler, this cannot be avoided: you may want to `cfg`-gate emitting non-error
+diagnostics to nightly. On nightly, you can opt-in to using nightly APIs by
+enabling the `nightly` feature:
+
+```toml
+proc-macro2-diagnostics = { version = "0.11", features = ["nightly"] }
+```
+
+Aside from supporting non-error top-level diagnostics, nightly APIs allow for
+more precise error attribution, at the cost of using unstable compiler APIs,
+which may change or break future compilation. Enabling the feature on stable has
+no effect.
 
 ### Colors
 
-By default, error messages are colored on stable. To disable, disable
-default features:
-
-```toml
-[dependencies]
-proc_macro2_diagnostics = { version = "0.10", default-features = false }
-```
-
-The compiler always colors diagnostics on nightly.
+The compiler controls diagnostic coloring on both stable and nightly. Use
+Cargo's `--color=always` or `--color=never` to override automatic coloring. When
+stable APIs are in use, `note`, `help`, and `warning` labels are never colored.
 
 ## License
 

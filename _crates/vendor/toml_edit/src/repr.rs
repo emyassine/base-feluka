@@ -63,7 +63,7 @@ where
 
     /// The location within the original document
     ///
-    /// This generally requires an [`ImDocument`][crate::ImDocument].
+    /// This generally requires a [`Document`][crate::Document].
     pub fn span(&self) -> Option<std::ops::Range<usize>> {
         self.repr.as_ref().and_then(|r| r.span())
     }
@@ -143,7 +143,7 @@ pub struct Repr {
 
 impl Repr {
     pub(crate) fn new_unchecked(raw: impl Into<RawString>) -> Self {
-        Repr {
+        Self {
             raw_value: raw.into(),
         }
     }
@@ -155,7 +155,7 @@ impl Repr {
 
     /// The location within the original document
     ///
-    /// This generally requires an [`ImDocument`][crate::ImDocument].
+    /// This generally requires a [`Document`][crate::Document].
     pub fn span(&self) -> Option<std::ops::Range<usize>> {
         self.raw_value.span()
     }

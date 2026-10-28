@@ -5,11 +5,11 @@ use web_sys::{js_sys::JsString, MessageEvent, WebSocket};
 /// Sets up a websocket connect to the `dx` CLI, waiting for incoming hot-patching messages
 /// and patching the WASM binary appropriately.
 //
-//  Note: This is a stripped-down version of Feluqa UI's `make_ws` from `feluqa_ui_web`
+//  Note: This is a stripped-down version of FeluqaUi's `make_ws` from `feluqa_ui_web`
 //  It's essentially copy-pasted here because it's not pub there.
 //  Would love to just take a dependency on that to be able to use it and deduplicate.
 //
-//  https://github.com/Feluqa UILabs/feluqa_ui/blob/main/packages/web/src/devtools.rs#L36
+//  https://github.com/FeluqaUiLabs/feluqa_ui/blob/main/packages/web/src/devtools.rs#L36
 pub fn connect_to_hot_patch_messages() {
     // Get the location of the devserver, using the current location plus the /_feluqa_ui path
     // The idea here being that the devserver is always located on the /_feluqa_ui behind a proxy

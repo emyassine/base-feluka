@@ -98,7 +98,7 @@ impl<T> UnwrapOrDebug for Result<T, JsValue> {
 
     #[track_caller]
     fn or_debug(self, el: &Node, name: &'static str) {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             if let Err(err) = self {
                 let location = std::panic::Location::caller();
@@ -112,7 +112,7 @@ impl<T> UnwrapOrDebug for Result<T, JsValue> {
                 );
             }
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             _ = self;
         }
@@ -124,7 +124,7 @@ impl<T> UnwrapOrDebug for Result<T, JsValue> {
         el: &Node,
         name: &'static str,
     ) -> Option<Self::Output> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             if let Err(err) = &self {
                 let location = std::panic::Location::caller();
@@ -139,7 +139,7 @@ impl<T> UnwrapOrDebug for Result<T, JsValue> {
             }
             self.ok()
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             self.ok()
         }
@@ -150,7 +150,7 @@ impl<T> UnwrapOrDebug for Result<T, JsValue> {
 #[macro_export]
 macro_rules! or_debug {
     ($action:expr, $el:expr, $label:literal) => {
-        if cfg!(any(debug_assertions, feluqa_ui_runtime_debuginfo)) {
+        if cfg!(any(debug_assertions, feluqa_ui_debuginfo)) {
             $crate::UnwrapOrDebug::or_debug($action, $el, $label);
         } else {
             _ = $action;
@@ -162,7 +162,7 @@ macro_rules! or_debug {
 #[macro_export]
 macro_rules! ok_or_debug {
     ($action:expr, $el:expr, $label:literal) => {
-        if cfg!(any(debug_assertions, feluqa_ui_runtime_debuginfo)) {
+        if cfg!(any(debug_assertions, feluqa_ui_debuginfo)) {
             $crate::UnwrapOrDebug::ok_or_debug($action, $el, $label)
         } else {
             $action.ok()

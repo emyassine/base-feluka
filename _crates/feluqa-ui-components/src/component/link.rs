@@ -18,7 +18,7 @@ pub enum PathMatchType {
 pub fn Link(
     children: Children,
     #[prop(into)] href: String,
-    #[prop(into, default = true)] scroll: bool, // Default to true in Feluqa UI.
+    #[prop(into, default = true)] scroll: bool, // Default to true in FeluqaUi.
     #[prop(into, default = PathMatchType::default())] match_type: PathMatchType,
     #[prop(into, default = false)] force_reload: bool,
     #[prop(optional, into)] class: String,

@@ -268,7 +268,7 @@ pub fn ContextMenuContent(
                             document.removeEventListener('click', handleClickOutside);
                             document.removeEventListener('contextmenu', handleContextOutside);
 
-                            // Dispatch custom event for Feluqa UI to listen to
+                            // Dispatch custom event for FeluqaUi to listen to
                             menu.dispatchEvent(new CustomEvent('contextmenuclose', {{ bubbles: false }}));
 
                             if (window.ScrollLock) {{

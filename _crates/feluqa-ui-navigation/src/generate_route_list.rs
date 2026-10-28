@@ -123,7 +123,7 @@ impl RouteListing {
         /// to render should be passed in the `params` argument.
         pub async fn build_static<IV>(
             &self,
-            options: &Feluqa UIOptions,
+            options: &FeluqaUiOptions,
             app_fn: impl Fn() -> IV + Send + 'static + Clone,
             additional_context: impl Fn() + Send + 'static + Clone,
             params: &StaticParamsMap,

@@ -57,14 +57,14 @@ islands = [
     "dep:serde_json",
 ]
 mark_branches = []
-nightly = ["reactive_graph/nightly"]
+nightly = ["feluqa_ui_reactivity/nightly"]
 oco = ["dep:oco_ref"]
-reactive_graph = [
-    "dep:reactive_graph",
-    "dep:any_spawner",
+feluqa_ui_reactivity = [
+    "dep:feluqa_ui_reactivity",
+    "dep:feluqa_ui_task_runtime",
 ]
 reactive_stores = [
-    "reactive_graph",
+    "feluqa_ui_reactivity",
     "dep:reactive_stores",
 ]
 sledgehammer = [
@@ -79,7 +79,9 @@ tracing = ["dep:tracing"]
 name = "feluqa_ui_dom_renderer"
 path = "src/lib.rs"
 
-[dependencies.any_spawner]
+[dependencies.feluqa_ui_task_runtime]
+path = "../feluqa-ui-task-runtime"
+package = "feluqa-ui-task-runtime"
 version = "0.3.0"
 optional = true
 
@@ -135,7 +137,9 @@ version = "0.1.0"
 version = "1.0"
 default-features = true
 
-[dependencies.reactive_graph]
+[dependencies.feluqa_ui_reactivity]
+path = "../feluqa-ui-reactivity"
+package = "feluqa-ui-reactivity"
 version = "0.2.13"
 optional = true
 
@@ -177,7 +181,9 @@ version = "1.1"
 optional = true
 default-features = true
 
-[dependencies.throw_error]
+[dependencies.feluqa_ui_errors]
+path = "../feluqa-ui-errors"
+package = "feluqa-ui-errors"
 version = "0.3.1"
 
 [dependencies.tracing]

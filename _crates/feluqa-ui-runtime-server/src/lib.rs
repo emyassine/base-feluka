@@ -1,4 +1,4 @@
-//! Utilities for communicating between the server and the client with Feluqa UI.
+//! Utilities for communicating between the server and the client with FeluqaUi.
 
 #![deny(missing_docs)]
 #![forbid(unsafe_code)]

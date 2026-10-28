@@ -6,7 +6,7 @@ use crate::icons::common::icon_type::IconType;
 
 /// Single optimized Icon component that renders any icon via registry lookup
 #[component]
-pub fn Feluqa UIIcon(icon: IconType, #[prop(into, optional)] class: String) -> impl IntoView {
+pub fn FeluqaUiIcon(icon: IconType, #[prop(into, optional)] class: String) -> impl IntoView {
     // Get elements from static registry, zero allocation
     let elements = get_icon_elements(icon).unwrap_or(&[]);
 

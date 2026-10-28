@@ -28,7 +28,7 @@ use std::{
 pub struct ArcLocalResource<T> {
     data: ArcAsyncDerived<T>,
     refetch: ArcRwSignal<usize>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -37,7 +37,7 @@ impl<T> Clone for ArcLocalResource<T> {
         Self {
             data: self.data.clone(),
             refetch: self.refetch.clone(),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
         }
     }
@@ -94,7 +94,7 @@ impl<T> ArcLocalResource<T> {
                 })
             },
             refetch,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -156,11 +156,11 @@ where
 
 impl<T> DefinedAt for ArcLocalResource<T> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -273,7 +273,7 @@ impl<T> Subscriber for ArcLocalResource<T> {
 pub struct LocalResource<T> {
     data: AsyncDerived<T>,
     refetch: RwSignal<usize>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -335,7 +335,7 @@ impl<T> LocalResource<T> {
                 })
             },
             refetch,
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -397,11 +397,11 @@ where
 
 impl<T> DefinedAt for LocalResource<T> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -529,7 +529,7 @@ impl<T: 'static> From<ArcLocalResource<T>> for LocalResource<T> {
         Self {
             data: arc.data.into(),
             refetch: arc.refetch.into(),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: arc.defined_at,
         }
     }
@@ -540,7 +540,7 @@ impl<T: 'static> From<LocalResource<T>> for ArcLocalResource<T> {
         Self {
             data: local.data.into(),
             refetch: local.refetch.into(),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: local.defined_at,
         }
     }

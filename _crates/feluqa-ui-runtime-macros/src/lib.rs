@@ -1,4 +1,4 @@
-//! Macros for use with the Feluqa UI framework.
+//! Macros for use with the FeluqaUi framework.
 
 #![forbid(unsafe_code)]
 // to prevent warnings from popping up when a nightly feature is stabilized
@@ -68,7 +68,7 @@ mod slot;
 /// ```
 ///
 /// 4. Dynamic content can be wrapped in curly braces (`{ }`) to insert text nodes, elements, or set attributes.
-///    If you insert a signal here, Feluqa UI will create an effect to update the DOM whenever the value changes.
+///    If you insert a signal here, FeluqaUi will create an effect to update the DOM whenever the value changes.
 ///    *(“Signal” here means `Fn() -> T` where `T` is the appropriate type for that node: a `String` in case
 ///    of text nodes, a `bool` for `class:` attributes, etc.)*
 ///
@@ -87,7 +87,7 @@ mod slot;
 /// view! {
 ///   // ❌ not like this: `count.get()` returns an `i32`, not a function
 ///   <p>{count.get()}</p>
-///   // ✅ this is good: Feluqa UI sees the function and knows it's a dynamic value
+///   // ✅ this is good: FeluqaUi sees the function and knows it's a dynamic value
 ///   <p>{move || count.get()}</p>
 ///   // 🔥 with the `nightly` feature, `count` is a function, so `count` itself can be passed directly into the view
 ///   <p>{count}</p>
@@ -125,7 +125,7 @@ mod slot;
 ///     name="user_name"
 ///     value={move || name.get()} // this only sets the default value!
 ///     prop:value={move || name.get()} // here's how you update values. Sorry, I didn’t invent the DOM.
-///     on:click=move |ev| set_name.set(event_target_value(&ev)) // `event_target_value` is a useful little Feluqa UI helper
+///     on:click=move |ev| set_name.set(event_target_value(&ev)) // `event_target_value` is a useful little FeluqaUi helper
 ///   />
 /// }
 /// # }
@@ -417,10 +417,10 @@ fn include_view_impl(
     view_macro_impl(tokens.into(), false)
 }
 
-/// Annotates a function so that it can be used with your template as a Feluqa UI `<Component/>`.
+/// Annotates a function so that it can be used with your template as a FeluqaUi `<Component/>`.
 ///
 /// The `#[component]` macro allows you to annotate plain Rust functions as components
-/// and use them within your Feluqa UI [view](crate::view!) as if they were custom HTML elements. The
+/// and use them within your FeluqaUi [view](crate::view!) as if they were custom HTML elements. The
 /// component function takes any number of other arguments. When you use the component somewhere else,
 /// the names of its arguments are the names of the properties you use in the [view](crate::view!) macro.
 ///
@@ -429,7 +429,7 @@ fn include_view_impl(
 /// You can add Rust doc comments to component function arguments and the macro will use them to
 /// generate documentation for the component.
 ///
-/// Here’s how you would define and use a simple Feluqa UI component which can accept custom properties for a name and age:
+/// Here’s how you would define and use a simple FeluqaUi component which can accept custom properties for a name and age:
 ///
 /// ```rust
 /// # use feluqa_ui_runtime::prelude::*;
@@ -467,7 +467,7 @@ fn include_view_impl(
 /// }
 /// ```
 ///
-/// Here are some important details about how Feluqa UI components work within the framework:
+/// Here are some important details about how FeluqaUi components work within the framework:
 ///
 /// * **The component function only runs once.** Your component function is not a “render” function
 ///   that re-runs whenever changes happen in the state. It’s a “setup” function that runs once to
@@ -614,7 +614,7 @@ fn component_impl(
 }
 
 /// Defines a component as an interactive island when you are using the
-/// `islands` feature of Feluqa UI. Apart from the macro name,
+/// `islands` feature of FeluqaUi. Apart from the macro name,
 /// the API is the same as the [`component`](macro@component) macro.
 ///
 /// When you activate the `islands` feature, every `#[component]`
@@ -765,11 +765,11 @@ fn component_macro(
 /// Annotates a struct so that it can be used with your Component as a `slot`.
 ///
 /// The `#[slot]` macro allows you to annotate plain Rust struct as component slots and use them
-/// within your Feluqa UI [`component`](macro@crate::component) properties. The struct can contain any number
+/// within your FeluqaUi [`component`](macro@crate::component) properties. The struct can contain any number
 /// of fields. When you use the component somewhere else, the names of the slot fields are the
 /// names of the properties you use in the [view](crate::view!) macro.
 ///
-/// Here’s how you would define and use a simple Feluqa UI component which can accept a custom slot:
+/// Here’s how you would define and use a simple FeluqaUi component which can accept a custom slot:
 /// ```rust
 /// # use feluqa_ui_runtime::prelude::*;
 /// use std::time::Duration;

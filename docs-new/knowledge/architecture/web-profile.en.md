@@ -10,7 +10,7 @@ view compilation and browser delivery remain behind the `feluqa::...` facade.
 Other target profiles share schemas and application contracts where useful,
 but do not inherit the Web runtime.
 
-The panel UI is migrating from Filament-derived assets to Feluqa-owned Leptos
+The panel UI is migrating from Filament-derived assets to Feluqa-owned
 components, adapted from the Rust UI registry. The target API is
 `feluqa::ui::component`; the schema API at `feluqa::ui` remains `no_std`.
 See the [Feluqa UI architecture](feluqa-ui.en.md).

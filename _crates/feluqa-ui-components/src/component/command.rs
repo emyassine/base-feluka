@@ -196,7 +196,7 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
     }
 }
 
-// Renders backdrop and dialog using Feluqa UI Portal to body
+// Renders backdrop and dialog using FeluqaUi Portal to body
 #[component]
 fn CommandDialogPortal(
     children: ChildrenFn,
@@ -536,7 +536,7 @@ pub fn CommandInput(
             data-name="CommandInput"
             class=merged_class
             autocomplete="off"
-            // TODO. Feluqa UI does not seem to have autocorrect in keys.rs
+            // TODO. FeluqaUi does not seem to have autocorrect in keys.rs
             // autocorrect="off"
             spellcheck="false"
             aria-autocomplete="list"

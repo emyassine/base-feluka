@@ -67,10 +67,10 @@ use std::{
 #[macro_export]
 macro_rules! unwrap_signal {
     ($signal:ident) => {{
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let location = std::panic::Location::caller();
         || {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 panic!(
                     "{}",
@@ -80,7 +80,7 @@ macro_rules! unwrap_signal {
                     )
                 );
             }
-            #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+            #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
             {
                 panic!(
                     "Tried to access a reactive value that has already been \
@@ -547,7 +547,7 @@ where
     fn set(&self, value: Self::Value) {
         let failed = self.try_update(|n| *n = value).is_none();
 
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         if failed && !self.is_disposed() {
             let called_at = Location::caller();
             let ty = std::any::type_name::<Self::Value>();

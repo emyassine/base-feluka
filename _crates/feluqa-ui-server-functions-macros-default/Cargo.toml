@@ -20,7 +20,7 @@ autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = "The default implementation of the server_fn macro without a context"
+description = "The default implementation of the feluqa_ui_server_functions macro without a context"
 readme = false
 license = "MIT"
 
@@ -29,17 +29,18 @@ max_combination_size = 2
 skip_feature_sets = [["nightly"]]
 
 [features]
-actix = ["server_fn_macro/actix"]
-axum = ["server_fn_macro/axum"]
-nightly = ["server_fn_macro/nightly"]
-ssr = ["server_fn_macro/ssr"]
+actix = ["feluqa_ui_server_functions_macros/actix"]
+axum = ["feluqa_ui_server_functions_macros/axum"]
+nightly = ["feluqa_ui_server_functions_macros/nightly"]
+ssr = ["feluqa_ui_server_functions_macros/ssr"]
 
 [lib]
 name = "feluqa_ui_server_functions_macros_default"
 path = "src/lib.rs"
 proc-macro = true
 
-[dependencies.server_fn_macro]
+[dependencies.feluqa_ui_server_functions_macros]
+package = "feluqa-ui-server-functions-macros"
 version = "=0.8.12"
 
 [dependencies.syn]

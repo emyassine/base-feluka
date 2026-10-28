@@ -4,7 +4,7 @@ use crate::icons::common::icon_registry_getter::{get_animated_icon_elements, get
 use crate::icons::common::icon_type::IconTypeAnimated;
 use crate::icons::icon::svg_icon::SvgIcon;
 
-/// Feluqa UI component for rendering animated SVG icons. Zero-allocation O(1) lookup.
+/// FeluqaUi component for rendering animated SVG icons. Zero-allocation O(1) lookup.
 #[component]
 pub fn AnimatedIcon(icon: IconTypeAnimated, #[prop(into, optional)] class: String) -> impl IntoView {
     let elements = get_animated_icon_elements(icon).unwrap_or(&[]);

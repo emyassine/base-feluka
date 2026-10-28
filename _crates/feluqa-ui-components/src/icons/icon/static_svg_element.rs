@@ -3,7 +3,7 @@ use crate::runtime::prelude::*;
 use crate::icons::common::static_svg_element::StaticSvgElement;
 
 impl StaticSvgElement {
-    /// Convert StaticSvgElement to Feluqa UI view with zero allocations
+    /// Convert StaticSvgElement to FeluqaUi view with zero allocations
     ///
     /// All data is already static, so no runtime processing or allocation needed.
     pub fn to_feluqa_ui_runtime_view(&self) -> AnyView {

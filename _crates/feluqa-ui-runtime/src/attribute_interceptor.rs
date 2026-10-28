@@ -9,7 +9,7 @@ type ChildBuilder<T> = dyn Fn(AnyAttribute) -> T + Send + Sync + 'static;
 
 /// Intercepts attributes passed to your component, allowing passing them to any element.
 ///
-/// By default, Feluqa UI passes any attributes passed to your component (e.g. `<MyComponent
+/// By default, FeluqaUi passes any attributes passed to your component (e.g. `<MyComponent
 /// attr:class="some-class"/>`) to the top-level element in the view returned by your component.
 /// [`AttributeInterceptor`] allows you to intercept this behavior and pass it onto any element in
 /// your component instead.

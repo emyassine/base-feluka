@@ -122,7 +122,7 @@ pub mod read {
     where
         S: Storage<T>,
     {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: &'static Location<'static>,
         inner: SignalTypes<T, S>,
     }
@@ -133,7 +133,7 @@ pub mod read {
     {
         fn clone(&self) -> Self {
             Self {
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: self.defined_at,
                 inner: self.inner.clone(),
             }
@@ -147,7 +147,7 @@ pub mod read {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             let mut s = f.debug_struct("ArcSignal");
             s.field("inner", &self.inner);
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             s.field("defined_at", &self.defined_at);
             s.finish()
         }
@@ -203,7 +203,7 @@ pub mod read {
 
             Self {
                 inner: SignalTypes::DerivedSignal(Arc::new(derived_signal)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -213,7 +213,7 @@ pub mod read {
         pub fn stored(value: T) -> Self {
             Self {
                 inner: SignalTypes::Stored(ArcStoredValue::new(value)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -251,7 +251,7 @@ pub mod read {
         fn from(value: ArcReadSignal<T>) -> Self {
             Self {
                 inner: SignalTypes::ReadSignal(value),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -265,7 +265,7 @@ pub mod read {
         fn from(value: ReadSignal<T, S>) -> Self {
             Self {
                 inner: SignalTypes::ReadSignal(value.into()),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -276,7 +276,7 @@ pub mod read {
         fn from(value: ArcRwSignal<T>) -> Self {
             Self {
                 inner: SignalTypes::ReadSignal(value.read_only()),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -290,7 +290,7 @@ pub mod read {
         fn from(value: RwSignal<T, S>) -> Self {
             Self {
                 inner: SignalTypes::ReadSignal(value.read_only().into()),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -304,7 +304,7 @@ pub mod read {
         fn from(value: ArcMemo<T, S>) -> Self {
             Self {
                 inner: SignalTypes::Memo(value),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -318,7 +318,7 @@ pub mod read {
         fn from(value: Memo<T, S>) -> Self {
             Self {
                 inner: SignalTypes::Memo(value.into()),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -334,7 +334,7 @@ pub mod read {
                 inner: SignalTypes::Stored(ArcStoredValue::new(
                     value.to_string(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -345,11 +345,11 @@ pub mod read {
         S: Storage<T>,
     {
         fn defined_at(&self) -> Option<&'static Location<'static>> {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 Some(self.defined_at)
             }
-            #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+            #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
             {
                 None
             }
@@ -453,7 +453,7 @@ pub mod read {
     where
         S: Storage<T>,
     {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: &'static Location<'static>,
         inner: ArenaItem<SignalTypes<T, S>, S>,
     }
@@ -485,7 +485,7 @@ pub mod read {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             let mut s = f.debug_struct("Signal");
             s.field("inner", &self.inner);
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             s.field("defined_at", &self.defined_at);
             s.finish()
         }
@@ -507,11 +507,11 @@ pub mod read {
         S: Storage<T>,
     {
         fn defined_at(&self) -> Option<&'static Location<'static>> {
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 Some(self.defined_at)
             }
-            #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+            #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
             {
                 None
             }
@@ -644,7 +644,7 @@ pub mod read {
                 inner: ArenaItem::new_with_storage(SignalTypes::DerivedSignal(
                     Arc::new(derived_signal),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -656,7 +656,7 @@ pub mod read {
                 inner: ArenaItem::new_with_storage(SignalTypes::Stored(
                     ArcStoredValue::new(value),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -683,7 +683,7 @@ pub mod read {
                 inner: ArenaItem::new_local(SignalTypes::DerivedSignal(
                     Arc::new(derived_signal),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -696,7 +696,7 @@ pub mod read {
                 inner: ArenaItem::new_local(SignalTypes::Stored(
                     ArcStoredValue::new(value),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -754,7 +754,7 @@ pub mod read {
         #[track_caller]
         fn from(value: ArcSignal<T, SyncStorage>) -> Self {
             Signal {
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: Location::caller(),
                 inner: ArenaItem::new(value.inner),
             }
@@ -768,7 +768,7 @@ pub mod read {
         #[track_caller]
         fn from_local(value: ArcSignal<T, LocalStorage>) -> Self {
             Signal {
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: Location::caller(),
                 inner: ArenaItem::new_local(value.inner),
             }
@@ -782,7 +782,7 @@ pub mod read {
         #[track_caller]
         fn from(value: Signal<T, S>) -> Self {
             ArcSignal {
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: Location::caller(),
                 inner: value
                     .inner
@@ -800,7 +800,7 @@ pub mod read {
         fn from(value: ReadSignal<T>) -> Self {
             Self {
                 inner: ArenaItem::new(SignalTypes::ReadSignal(value.into())),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -816,7 +816,7 @@ pub mod read {
                 inner: ArenaItem::new_local(SignalTypes::ReadSignal(
                     value.into(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -830,7 +830,7 @@ pub mod read {
         fn from(value: ArcReadSignal<T>) -> Self {
             Self {
                 inner: ArenaItem::new(SignalTypes::ReadSignal(value)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -844,7 +844,7 @@ pub mod read {
         fn from(value: ArcReadSignal<T>) -> Self {
             Self {
                 inner: ArenaItem::new_local(SignalTypes::ReadSignal(value)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -860,7 +860,7 @@ pub mod read {
                 inner: ArenaItem::new(SignalTypes::ReadSignal(
                     value.read_only().into(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -886,7 +886,7 @@ pub mod read {
                 inner: ArenaItem::new_local(SignalTypes::ReadSignal(
                     value.read_only().into(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -902,7 +902,7 @@ pub mod read {
                 inner: ArenaItem::new(SignalTypes::ReadSignal(
                     value.read_only(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -928,7 +928,7 @@ pub mod read {
                 inner: ArenaItem::new_local(SignalTypes::ReadSignal(
                     value.read_only(),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -942,7 +942,7 @@ pub mod read {
         fn from(value: Memo<T>) -> Self {
             Self {
                 inner: ArenaItem::new(SignalTypes::Memo(value.into())),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -956,7 +956,7 @@ pub mod read {
         fn from(value: Memo<T, LocalStorage>) -> Self {
             Self {
                 inner: ArenaItem::new_local(SignalTypes::Memo(value.into())),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -970,7 +970,7 @@ pub mod read {
         fn from(value: ArcMemo<T>) -> Self {
             Self {
                 inner: ArenaItem::new(SignalTypes::Memo(value)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -984,7 +984,7 @@ pub mod read {
         fn from(value: ArcMemo<T, LocalStorage>) -> Self {
             Self {
                 inner: ArenaItem::new_local(SignalTypes::Memo(value)),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -2184,7 +2184,7 @@ pub mod write {
         T: 'static,
     {
         inner: SignalSetterTypes<T, S>,
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: &'static std::panic::Location<'static>,
     }
 
@@ -2199,7 +2199,7 @@ pub mod write {
         fn default() -> Self {
             Self {
                 inner: SignalSetterTypes::Default,
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -2252,7 +2252,7 @@ pub mod write {
                 inner: SignalSetterTypes::Mapped(ArenaItem::new_with_storage(
                     Box::new(mapped_setter),
                 )),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -2263,7 +2263,7 @@ pub mod write {
         fn from(value: WriteSignal<T, S>) -> Self {
             Self {
                 inner: SignalSetterTypes::Write(value),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }
@@ -2278,7 +2278,7 @@ pub mod write {
         fn from(value: RwSignal<T, S>) -> Self {
             Self {
                 inner: SignalSetterTypes::Write(value.write_only()),
-                #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+                #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                 defined_at: std::panic::Location::caller(),
             }
         }

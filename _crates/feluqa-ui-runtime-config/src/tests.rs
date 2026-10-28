@@ -1,6 +1,6 @@
 use crate::{
     env_from_str, env_w_default, env_wo_default, ws_from_str, Env,
-    Feluqa UIOptions, ReloadWSProtocol,
+    FeluqaUiOptions, ReloadWSProtocol,
 };
 use std::{net::SocketAddr, path::Ancestors, str::FromStr};
 
@@ -73,7 +73,7 @@ fn try_from_env_test() {
             ("FELUQA_UI_ENV", Some("PROD")),
             ("FELUQA_UI_RELOAD_WS_PROTOCOL", Some("WSS")),
         ],
-        || Feluqa UIOptions::try_from_env().unwrap(),
+        || FeluqaUiOptions::try_from_env().unwrap(),
     );
 
     assert_eq!(config.output_name.as_ref(), "app_test");
@@ -98,14 +98,14 @@ fn feluqa_ui_runtime_options_css_file_path() {
             .map(|s| s.to_str())
             .flatten()
     }
-    let options = Feluqa UIOptions::builder().output_name("test").build();
+    let options = FeluqaUiOptions::builder().output_name("test").build();
     let path = options.css_file_path();
     let mut ancestors = path.ancestors();
     assert_eq!(next_file_name(&mut ancestors), Some("test.css"));
     assert_eq!(next_file_name(&mut ancestors), Some("pkg"));
     assert_eq!(next_file_name(&mut ancestors), None);
 
-    let options = Feluqa UIOptions::builder()
+    let options = FeluqaUiOptions::builder()
         .output_name("test")
         .site_pkg_dir("")
         .build();
@@ -114,7 +114,7 @@ fn feluqa_ui_runtime_options_css_file_path() {
     assert_eq!(next_file_name(&mut ancestors), Some("test.css"));
     assert_eq!(next_file_name(&mut ancestors), None);
 
-    let options = Feluqa UIOptions::builder()
+    let options = FeluqaUiOptions::builder()
         .output_name("test")
         .site_pkg_dir("my_pkg")
         .site_root("my_site")
@@ -129,22 +129,22 @@ fn feluqa_ui_runtime_options_css_file_path() {
 
 #[test]
 fn feluqa_ui_runtime_options_css_path() {
-    let options = Feluqa UIOptions::builder().output_name("test").build();
+    let options = FeluqaUiOptions::builder().output_name("test").build();
     assert_eq!(options.css_path(), "/pkg/test.css");
 
-    let options = Feluqa UIOptions::builder()
+    let options = FeluqaUiOptions::builder()
         .output_name("test.css")
         .site_pkg_dir("my/pkg")
         .build();
     assert_eq!(options.css_path(), "/my/pkg/test.css.css");
 
-    let options = Feluqa UIOptions::builder()
+    let options = FeluqaUiOptions::builder()
         .output_name("test")
         .site_pkg_dir("/pkg/")
         .build();
     assert_eq!(options.css_path(), "/pkg/test.css");
 
-    let options = Feluqa UIOptions::builder()
+    let options = FeluqaUiOptions::builder()
         .output_name("test")
         .site_pkg_dir("")
         .build();

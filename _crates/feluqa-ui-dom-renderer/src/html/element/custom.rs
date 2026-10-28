@@ -9,7 +9,7 @@ where
     E: AsRef<str>,
 {
     HtmlElement {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: std::panic::Location::caller(),
         tag: Custom(tag),
         attributes: (),

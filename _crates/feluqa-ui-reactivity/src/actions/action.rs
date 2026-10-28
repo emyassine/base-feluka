@@ -106,7 +106,7 @@ pub struct ArcAction<I, O> {
     action_fn: Arc<
         dyn Fn(&I) -> Pin<Box<dyn Future<Output = O> + Send>> + Send + Sync,
     >,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -119,7 +119,7 @@ impl<I, O> Clone for ArcAction<I, O> {
             version: self.version.clone(),
             dispatched: self.dispatched.clone(),
             action_fn: self.action_fn.clone(),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
         }
     }
@@ -217,7 +217,7 @@ where
                     None => Box::pin(ScopedFuture::new_untracked(fut)),
                 }
             }),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -400,7 +400,7 @@ where
                     )),
                 }
             }),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -544,11 +544,11 @@ where
     O: 'static,
 {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -634,7 +634,7 @@ where
 /// ```
 pub struct Action<I, O> {
     inner: ArenaItem<ArcAction<I, O>>,
-    #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -698,7 +698,7 @@ where
     {
         Self {
             inner: ArenaItem::new(ArcAction::new(action_fn)),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -723,7 +723,7 @@ where
     {
         Self {
             inner: ArenaItem::new(ArcAction::new_with_value(value, action_fn)),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -760,7 +760,7 @@ where
     {
         Self {
             inner: ArenaItem::new(ArcAction::new_unsync(action_fn)),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -778,7 +778,7 @@ where
             inner: ArenaItem::new(ArcAction::new_unsync_with_value(
                 value, action_fn,
             )),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -1014,7 +1014,7 @@ where
             inner: ArenaItem::new_with_storage(ArcAction::new_unsync(
                 action_fn,
             )),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -1033,7 +1033,7 @@ where
             inner: ArenaItem::new_with_storage(
                 ArcAction::new_unsync_with_value(value, action_fn),
             ),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -1059,7 +1059,7 @@ where
             inner: ArenaItem::new_with_storage(ArcAction::new_unsync(
                 action_fn,
             )),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -1083,7 +1083,7 @@ where
             inner: ArenaItem::new_with_storage(
                 ArcAction::new_unsync_with_value(value, action_fn),
             ),
-            #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -1091,11 +1091,11 @@ where
 
 impl<I, O> DefinedAt for Action<I, O> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, feluqa_ui_runtime_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, feluqa_ui_runtime_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
