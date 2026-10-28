@@ -56,10 +56,12 @@ proposed `feluqa support:ide view-highlight --ide=<name>` interface and
 editor-neutral Tree-sitter target.
 
 The CLI does not use the installed binary's build path to find an app and does
-not scan workspaces after detecting an app. `update` is not implemented yet;
-see the [update and release policy](../../../knowledge/policy/updates.en.md)
-for its distribution and activation requirements. An explicit app target is
-accepted only at the workspace root; arbitrary filesystem paths are rejected.
+not scan workspaces after detecting an app. `update cli` checks or updates a
+Cargo-managed CLI installation; `update platform` is currently unavailable.
+See the [update and release policy](../../../knowledge/policy/updates.en.md)
+for distribution and versioned platform installation requirements. An explicit
+app target is accepted only at the workspace root; arbitrary filesystem paths
+are rejected.
 
 ## Commands
 
@@ -73,6 +75,8 @@ accepted only at the workspace root; arbitrary filesystem paths are rejected.
 | `feluqa migrate` | Applies the app's registered migrations for its configured profile and connections. At workspace root, `feluqa migrate <app>` selects an app in that workspace. |
 | `feluqa seed <id>` | Executes one explicitly registered seeder by stable ID. It does not run migrations. Workspace form: `feluqa seed <app> <id>`. |
 | `feluqa make <thing> <name>` | Dispatches to the generator for `migration`, `seeder`, `model`, `controller`, `resource`, `service`, `panel` or `module`. |
+| `feluqa update cli [--check]` | Checks the private registry for `feluqa-cli`; without `--check`, asks Cargo to update the current Cargo-managed installation. The package must be published first. |
+| `feluqa update platform` | Reports that platform release installation and orchestration are not implemented. |
 | `feluqa help` / `feluqa --version` | Shows help or the executable version in any context. |
 
 `dev` and `production` are deployment environments, not project types. A new

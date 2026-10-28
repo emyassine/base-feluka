@@ -9,24 +9,42 @@ Cargo needs to resolve private dependencies.
 ## Current status
 
 `RemoteLink::PrivateCrateRegistry` identifies the configured private Cargo
-registry. `RemoteLink::CliUpdate` identifies the registry metadata endpoint
-reserved for the `feluqa-cli` package, but the CLI package is not published and
-the CLI `update` command is not implemented. `RemoteLink::PlatformUpdate` has
-no URL configured. There is no automatic update check, installation, or
-activation in the current product. A remote link alone does not mean a feed,
-release artifact, signature, or update service is available.
+registry. `RemoteLink::CliUpdate` identifies the private registry source for
+the `feluqa-cli` package. `feluqa update cli` and
+`feluqa update cli --check` use Cargo to check or install that package, but the
+CLI package is not published yet. The update command refuses to replace a
+binary unless Cargo tracks it as the `feluqa-cli` installation. It uses Cargo's
+registry transport and package checksum verification; it does not implement a
+separate release-signature verifier. `feluqa update platform` is deliberately
+unavailable because `RemoteLink::PlatformUpdate` and the platform manager are
+not configured. A remote link alone does not mean a feed, release artifact,
+signature, or update service is available. No update checks run automatically.
 
 ## CLI updates
 
-The CLI may check for updates on a throttled schedule and report availability.
-Checks must never block normal CLI startup or silently replace the executable.
-Automatic installation is opt-in and controlled by an explicit update policy.
-Before installation, the client must verify signed release metadata and the
-artifact digest, confirm the operating system and architecture, and reject
-expired or rolled-back metadata. It must stage the new executable beside the
-current one, verify it can start, then atomically activate it while retaining
-the previous version for recovery. Any failed check, download, verification,
-or activation leaves the current CLI usable.
+CLI update checks run only when requested; they never block ordinary CLI
+startup. `feluqa update cli` targets a Cargo-managed Feluqa installation and
+uses Cargo's checksum validation for the package. Manually installed and
+system-package binaries must be updated through their owning installer. The
+CLI package must be published to the private registry before this command can
+complete an update. Background checking or silent activation is not enabled.
+Independent signed release metadata remains a requirement if CLI distribution
+moves outside the private Cargo registry.
+
+## Versioned platform installations
+
+A host should support multiple side-by-side platform releases. Each service
+instance pins one release, configuration and module set; an update targets a
+named installation and never changes every instance on the host by default.
+Separate OS users may own separate installations, while an operator-managed
+instance may be shared by its authorized applications. Module metadata must
+declare the platform API range it supports before installation is enabled.
+This allows applications to move between platform releases independently.
+
+The default install may recommend the current stable release, but there is no
+host-wide mutable "current" version that upgrades all running instances.
+Install and service-management support for these versioned instances is not
+implemented yet.
 
 ## Platform and application updates
 
@@ -51,10 +69,12 @@ Data migrations need their own recovery plan.
 
 ## Release acceptance
 
-Update activation is not complete until release engineering demonstrates
-signature and digest rejection, interrupted-download recovery, failed-health
-rollback, concurrent old/new process compatibility, session behavior, and the
-documented single-instance interruption behavior. Automatic activation remains
-off unless an operator explicitly enables a policy with a channel, maintenance
-window, and health thresholds. These are release requirements, not claims that
-the current CLI or platform already implements them.
+Platform update activation is not complete until release engineering
+demonstrates signature and digest rejection, interrupted-download recovery,
+failed-health rollback, concurrent old/new process compatibility, session
+behavior, and the documented single-instance interruption behavior. CLI update
+acceptance must verify Cargo package checksum failure and preserve its current
+binary when registry lookup or installation fails. Automatic activation
+remains off unless an operator explicitly enables a policy with a channel,
+maintenance window, and health thresholds. Platform guarantees are release
+requirements, not claims that the current platform manager implements them.
