@@ -9,7 +9,6 @@ members = [
     "tools/*",
     "products/feluqa-cli",
 ]
-exclude = ["shells"]
 
 [workspace.package]
 version = "0.2.0"
