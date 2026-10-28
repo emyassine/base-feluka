@@ -1,10 +1,10 @@
 # Feluqa — instructions for contributors and coding agents
 
-Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read the [documentation index](docs-new/index.en.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs-new and update this summary when the contract changes.
+Scope: this monorepo, excluding preserved historical evidence when a rule would alter recorded results. Read the [documentation index](docs/00.index.en.md) first. This file summarizes the project's contracts; the linked documents contain their details. User instructions take precedence. Record new decisions in docs/decisions/ and update this summary when the contract changes. Follow [documentation maintenance rules](docs/DOCS_GUIDELINES.md). The [current baseline](docs/01.introduction/01.platform-overview.en.md) and [pending conflicts](docs/decisions/01.pending-decisions.en.md) qualify retained proposals; migration does not approve their conflicting choices. Planned crate work is in [the crate change plan](docs/roadmap/08.crates-change-plan.en.md).
 
 ## Goal and honest status
 
-Feluqa is a proprietary platform and unified namespace for web, standalone workstation, mobile, games, APIs and real-time systems. A target product goal is that one business module (for example, a bookstore) can be composed into a hosted web application or a standalone workstation product, with optional authorized access from other devices. The desktop runtime, local storage model, network topology, synchronization, offline writes and conflict policy are not implemented or selected; track them in `docs-new/_todo/cross-platform/web-and-workstation-modules.en.md`. Operators can install Feluqa on servers; developers build installable modules such as HRM or CRM. The built-in System panel has been removed. The generic panel catalogue remains available for products and modules; runtime module installation, license enforcement and domain-scoped activation are still unimplemented. Share tooling, schemas and libraries; retain separate runtime profiles. Web delivery is the first product priority. Enterprise quality requires verified operational and security capabilities, not directory structure or a published crate.
+Feluqa is a proprietary platform and unified namespace for web, standalone workstation, mobile, games, APIs and real-time systems. A target product goal is that one business module (for example, a bookstore) can be composed into a hosted web application or a standalone workstation product, with optional authorized access from other devices. The desktop runtime, local storage model, network topology, synchronization, offline writes and conflict policy are not implemented or selected; track them in `docs/roadmap/05.web-and-workstation-modules.en.md`. Operators can install Feluqa on servers; developers build installable modules such as HRM or CRM. The built-in System panel has been removed. The generic panel catalogue remains available for products and modules; runtime module installation, license enforcement and domain-scoped activation are still unimplemented. Share tooling, schemas and libraries; retain separate runtime profiles. Web delivery is the first product priority. Enterprise quality requires verified operational and security capabilities, not directory structure or a published crate.
 
 Current implementation: the `feluqa` facade with opt-in target features; `feluqa-definitions` context roots and portable path ownership; Console current_context guards for in_dev, platform and anywhere; no_std authz/UI-schema/panel/resource-registry/module-lifecycle contracts; the generic `feluqa-panel` catalogue; signed typed Live action dispatch; the build-time `.view.rs` compiler/runtime; selected legacy panel implementation-derived browser assets; and `feluqa-imagery` with 7,681 Lucide, Simple Icons and Heroicons SVGs plus notices. `feluqa-definitions` is an initial context/path contract, not dynamic module installation or a globally injected runtime context. **The legacy panel implementation theme system and component catalog are not fully imported.** Selected CSS/JS bundles and adapted components do not provide the complete theme API or Blade component behavior. App composition roots use statically compiled Rust selected in `feluqa.toml`. Cross-struct binary-app tests live under `tests/support/`; direct `tests/*.rs` remain independent Cargo integration crates. `feluqa-database` uses SeaORM 1.1.20, SQLite/PostgreSQL, named pools and embedded dialect SQL migrations/checksums. `feluqa-core` provides identity/session/audit/tenant migrations, Argon2id login, server-side sessions, CSRF, logout, tenant-bound principals and role grants/delegation. Current app-level work includes Core account/role and tenant operations, migration/audit pages and tenant-scoped business CRUD. Missing capabilities include complete legacy panel implementation-compatible panel APIs, generic CRUD actions, dynamic module installation, browser Live reconciliation/shared replay, full ERP workflows, standalone generated-app build outside the checkout, deployment/restore and enterprise release qualification. Never describe those gaps as implemented.
 
@@ -12,20 +12,20 @@ Current implementation: the `feluqa` facade with opt-in target features; `feluqa
 
 | Read for | Canonical document |
 |---|---|
-| Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs-new/_todo/enterprise-delivery.en.md) |
-| `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs-new/exists/reference/views/view-language.en.md) |
-| Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs-new/exists/for-developers/panels-resources-and-pages.en.md) |
-| legacy panel implementation/Webkernel behavior port inventory and parity status | [legacy panel implementation port status](docs-new/exists/reference/../for-developers/panels-resources-and-pages.en.md) |
-| Web MVC, ERP modules, named databases, dialect migrations | [Web profile architecture](docs-new/knowledge/architecture/web-profile.en.md) |
-| Product/workspace directory ownership and provider composition | [Project layout](docs-new/knowledge/architecture/platform-module-layout.en.md) |
-| Platform/product distinction, context ownership, portable paths and productivity goals | [Platform context and productivity](docs-new/knowledge/architecture/platform-context-and-productivity.en.md) |
-| Zed extension, Tree-sitter and language tooling | [Zed product](docs-new/exists/reference/editor/zed-editor.en.md) |
-| Mandatory Rust rules | [Coding standard](docs-new/exists/reference/rust/rust-coding-standard.en.md) |
-| Current CLI and planned commands | [CLI](docs-new/exists/reference/cli/commands.en.md) |
-| Ecosystem decisions and target profiles | [Decisions](docs-new/knowledge/architecture/platform-vision-decisions.en.md) |
-| Deferred questions | [Later decisions](docs-new/_todo/open-decisions.en.md) |
-| Proprietary distribution and registry | [Licensing](docs-new/knowledge/policy/proprietary.en.md) and [LICENSE](LICENSE) |
-| Measured language comparison, limits and evidence | [M0 results](docs-new/exists/reference/research/m0-results.en.md) |
+| Immediate work, dependencies, estimates and acceptance | [Enterprise delivery plan](docs/roadmap/02.enterprise-delivery.en.md) |
+| `.view.rs`, directives, includes, layouts, escaping and compilation | [View language](docs/05.reference/05.view-language.en.md) |
+| Core/system and business panels, components, SDUI, Live, lifecycle | [Panels and components](docs/03.for-developers/03.panels-resources-and-pages.en.md) |
+| legacy panel implementation/Webkernel behavior port inventory and parity status | [legacy panel implementation port status](docs/03.for-developers/03.panels-resources-and-pages.en.md) |
+| Web MVC, ERP modules, named databases, dialect migrations | [Web profile architecture](docs/02.architecture/07.web-profile.en.md) |
+| Product/workspace directory ownership and provider composition | [Project layout](docs/02.architecture/06.platform-module-layout.en.md) |
+| Platform/product distinction, context ownership, portable paths and productivity goals | [Platform context and productivity](docs/02.architecture/08.platform-context-and-productivity.en.md) |
+| Zed extension, Tree-sitter and language tooling | [Zed product](docs/05.reference/02.zed-editor.en.md) |
+| Mandatory Rust rules | [Coding standard](docs/05.reference/03.rust-coding-standard.en.md) |
+| Current CLI and planned commands | [CLI](docs/05.reference/01.cli-commands.en.md) |
+| Ecosystem decisions and target profiles | [Decisions](docs/decisions/02.platform-vision-record.en.md) |
+| Deferred questions | [Later decisions](docs/decisions/03.open-architecture.en.md) |
+| Proprietary distribution and registry | [Licensing](docs/06.governance-and-policy/02.proprietary.en.md) and [LICENSE](LICENSE) |
+| Measured language comparison, limits and evidence | [M0 results](docs/07.research-and-notes/05.m0-results.en.md) |
 
 The delivery plan and domain contracts define current sequencing. Basic views/components/SDUI precede the Core panel; historical milestone M4 is not permission to delay these prerequisites. Historical measurements are evidence, not general production guarantees.
 
@@ -34,11 +34,11 @@ The delivery plan and domain contracts define current sequencing. Basic views/co
 - `_crates/`: Cargo workspace root, lockfile and reusable libraries, including `feluqa-definitions`; facade APIs under `feluqa::...`.
 - `products/`: CLI/editor products and Feluqa module sources, including the current statically composed development consumer.
 - Routes are declared by the owning site, panel or module; `src/routes/web.rs` only composes route providers and applies global middleware. Don't add product paths to the composition root.
-- `docs-new/`: canonical documentation, organized into `_todo/`, `exists/`, and `knowledge/`.
+- `docs/`: canonical numbered documentation, with `roadmap/` for delivery work and `decisions/` for unresolved choices and decision records. Read `docs/DOCS_GUIDELINES.md`; retained source proposals do not override accepted contracts.
 - `target/`: generated build/package output, ignored by Git. `.cargo/config.toml` selects this location.
 - No Cargo manifest/lockfile or rustup toolchain pin at repository root. Product manifests point explicitly to `../../_crates` when members of this workspace.
 - `products/__M0/`: retained benchmark source and evidence. Preserve raw reports, snapshots and hashes; update navigational docs without rewriting measurements.
-- Recommended module layouts follow domain ownership; generic `src/app/` and `src/modules/` buckets are allowed when they suit the developer, but are not the default recommendation. See [Project layout](docs-new/knowledge/architecture/platform-module-layout.en.md).
+- Recommended module layouts follow domain ownership; generic `src/app/` and `src/modules/` buckets are allowed when they suit the developer, but are not the default recommendation. See [Project layout](docs/02.architecture/06.platform-module-layout.en.md).
 - Do not create empty crates to simulate progress. Add a crate with its first useful contract and integration.
 
 ## Rust and dependencies
@@ -74,7 +74,7 @@ Keep handler elapsed time, whole server request duration and client-observed lat
 ## Workflow and acceptance
 
 Compilation scalability and built-in BI requirements are recorded in
-[Compilation](README_Compilation.en.md). Measure before partitioning generated
+[Compilation](docs/02.architecture/02.compilation-and-targets.en.md). Measure before partitioning generated
 code, preserve deterministic cache invalidation, budget workstation resources,
 and keep BI data changes outside compilation. Generated-crate orchestration and
 the integrated BI catalogue remain planned, not verified capabilities.

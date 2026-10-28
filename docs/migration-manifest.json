@@ -1,0 +1,432 @@
+{
+  "date": "2026-10-28",
+  "records": [
+    {
+      "source": "docs-new/index.en.md",
+      "destination": "docs/01.introduction/04.previous-navigation.en.md",
+      "source_sha256": "19f912a4e8832f566a5cf987ab9af56808cd616976116cb696415c7ff644bec4",
+      "source_bytes": 1281,
+      "migrated_body_sha256": "7d1f41aad2a145864d248e8d7977e037019ca17e02aa6d6682c103809a74f39d"
+    },
+    {
+      "source": "README_Product_Document_Intent.en.md",
+      "destination": "docs/01.introduction/02.intent.en.md",
+      "source_sha256": "b11361c146de09e3682a56feb705d69d2f995984349566e6fd5ddd2b93cc0b17",
+      "source_bytes": 12632,
+      "migrated_body_sha256": "55e85dea35fb9d0ccf2140de6a49d1d240c2ada952940e3b65ba446a3135f47c"
+    },
+    {
+      "source": "README_Monorepo_Arch.en.md",
+      "destination": "docs/02.architecture/01.monorepo-architecture.en.md",
+      "source_sha256": "730e9291a48670bbaff92467b9a2a7d1ff1f24a4503ff8a9d17bc0af9aa9e8d2",
+      "source_bytes": 25171,
+      "migrated_body_sha256": "63eff10173aee4ec1c01e90008fe60e9ef29712fd9790e1c4d1818bc73e255e8"
+    },
+    {
+      "source": "README_Compilation.en.md",
+      "destination": "docs/02.architecture/02.compilation-and-targets.en.md",
+      "source_sha256": "333d82e057c9b5dfb7bb2e4f0da3e82244f79bf7c95a800d88a2eeab1481be7d",
+      "source_bytes": 10941,
+      "migrated_body_sha256": "551d3f7408f201b77ad2ef1112b36882705e5a0755166edc8f926bb03a1f860e"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/attribute-driven-applications.en.md",
+      "destination": "docs/02.architecture/03.attribute-driven-applications.en.md",
+      "source_sha256": "207f33b69b4a4f45292505a1e2831a274f3c0e151d9aee9b78491074ad7299d7",
+      "source_bytes": 5872,
+      "migrated_body_sha256": "207f33b69b4a4f45292505a1e2831a274f3c0e151d9aee9b78491074ad7299d7"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/console-runtime-model.en.md",
+      "destination": "docs/02.architecture/04.console-runtime-model.en.md",
+      "source_sha256": "53c533491632757758dee58bbad59df4cdb40a73a60b6b57b45e0f8deb0f08ed",
+      "source_bytes": 3025,
+      "migrated_body_sha256": "53c533491632757758dee58bbad59df4cdb40a73a60b6b57b45e0f8deb0f08ed"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/feluqa-ui.en.md",
+      "destination": "docs/02.architecture/05.feluqa-ui-headless-and-shells.en.md",
+      "source_sha256": "8acddab293aff3995e1709272b5fc15b6d5edbd13fe441ab8fcdcb742a464eeb",
+      "source_bytes": 3726,
+      "migrated_body_sha256": "8acddab293aff3995e1709272b5fc15b6d5edbd13fe441ab8fcdcb742a464eeb"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-module-layout.en.md",
+      "destination": "docs/02.architecture/06.platform-module-layout.en.md",
+      "source_sha256": "be6f7444c67637125a0ac816ad6b88fc3d7bca5cc40a13e65a0484f080cf8677",
+      "source_bytes": 5114,
+      "migrated_body_sha256": "75b41c6ffb6cc38c9de3f50db5e9848e9e8e3048d867c9be4750bd2b922eb7f3"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/web-profile.en.md",
+      "destination": "docs/02.architecture/07.web-profile.en.md",
+      "source_sha256": "4158ac0011b1a64074a74908d53859477e1a7290455976f92cfc918a619009da",
+      "source_bytes": 3203,
+      "migrated_body_sha256": "558c91ddc9bbe66e202dffd2907a14071ee1a35fa363a4c9e15b1810f55dcb57"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-context-and-productivity.en.md",
+      "destination": "docs/02.architecture/08.platform-context-and-productivity.en.md",
+      "source_sha256": "09a9c73fae19e5c2475506c1d429586ee98a599ef91de2c9d57fd802d8855796",
+      "source_bytes": 6555,
+      "migrated_body_sha256": "09a9c73fae19e5c2475506c1d429586ee98a599ef91de2c9d57fd802d8855796"
+    },
+    {
+      "source": "docs-new/exists/for-developers/index.en.md",
+      "destination": "docs/03.for-developers/01.getting-started.en.md",
+      "source_sha256": "35045ccd8730159915b55fd4958076b79926173981b6dc884a75ef36eec199f7",
+      "source_bytes": 1001,
+      "migrated_body_sha256": "e526fdbde31b618b8f5a6c3680d6483f24bee36e00fb5028aa42db04b8ff1a8c"
+    },
+    {
+      "source": "docs-new/exists/for-developers/develop-a-module.en.md",
+      "destination": "docs/03.for-developers/02.develop-a-module.en.md",
+      "source_sha256": "9f6b3abc31ffb4044b11a5d1d86376a2f9d6be9fabf2ae5fd10c7c6a7206e26b",
+      "source_bytes": 1516,
+      "migrated_body_sha256": "dc700e177d6e70bb6fd36be6a4677c53ad1a38f6f05818c1ede03ca23bfea931"
+    },
+    {
+      "source": "docs-new/exists/for-developers/panels-resources-and-pages.en.md",
+      "destination": "docs/03.for-developers/03.panels-resources-and-pages.en.md",
+      "source_sha256": "1db7bb46a97452b3c2de60d397227ed0985432d410df8cd348a7078a74e20dc4",
+      "source_bytes": 2456,
+      "migrated_body_sha256": "05a6833b8bdb8106c44047cc76a678e7f44a73d126b3c0a76833842eea0b58d0"
+    },
+    {
+      "source": "docs-new/exists/for-developers/views-and-components.en.md",
+      "destination": "docs/03.for-developers/04.views-and-components.en.md",
+      "source_sha256": "9cdf83885f4d75a4d8e59f3836f1e304988cd612cd3347837cc302856dea6f7a",
+      "source_bytes": 945,
+      "migrated_body_sha256": "a38970486236329cf38c1975f5bf095471e32b71ea025aa845b447ab4c2ae2d9"
+    },
+    {
+      "source": "docs-new/exists/for-developers/custom-routes.en.md",
+      "destination": "docs/03.for-developers/05.custom-routes.en.md",
+      "source_sha256": "b15a9214ee4b9dd04afb51f71130c7ad55aed135202a7fd8eafb947c3c42d5bc",
+      "source_bytes": 1159,
+      "migrated_body_sha256": "d6c27674c1945262446b264ef6dedc3fc311d22f0f39427f0710a79fef456a77"
+    },
+    {
+      "source": "docs-new/exists/for-developers/data-and-migrations.en.md",
+      "destination": "docs/03.for-developers/06.data-and-migrations.en.md",
+      "source_sha256": "cc305923d97d02919eef8fd69b2c584a9cfb036d36dba49c842bb0d1c9cf2a82",
+      "source_bytes": 1349,
+      "migrated_body_sha256": "74b12cfc6e960386ba7cc0fe5c2aa4b2694ff531ae43ff11ca90a38339c82d82"
+    },
+    {
+      "source": "docs-new/exists/for-developers/authorization.en.md",
+      "destination": "docs/03.for-developers/07.authorization.en.md",
+      "source_sha256": "e1f2f9777fe9edb2ab6c369f1e9d6f0173a10d463db4306755f71517f98524c6",
+      "source_bytes": 1468,
+      "migrated_body_sha256": "e1f2f9777fe9edb2ab6c369f1e9d6f0173a10d463db4306755f71517f98524c6"
+    },
+    {
+      "source": "docs-new/exists/for-developers/testing-and-release.en.md",
+      "destination": "docs/03.for-developers/08.testing-and-release.en.md",
+      "source_sha256": "17dc5dd43af7e713e0e914866ca38eb608c666a5705b12f28645ea5e2273c650",
+      "source_bytes": 1183,
+      "migrated_body_sha256": "629f6aeeb23ea2d196fcbde756c68dc702e8f92854fb525aa5c155a1908628cd"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/platform-overview.en.md",
+      "destination": "docs/04.for-organizations/01.platform-overview.en.md",
+      "source_sha256": "aa6152eef3c5b5f93081d56cca0d85ec3dc7e53ee1e730adecd195e099eec069",
+      "source_bytes": 1924,
+      "migrated_body_sha256": "9c5fc1d61d5f197f8979bf4697f7f22bc1afb83a30c36d07375d29bd708441f6"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/modules-domains-and-licensing.en.md",
+      "destination": "docs/04.for-organizations/02.modules-domains-and-licensing.en.md",
+      "source_sha256": "71cf399fe5ed69a9b2a10ff485cce2d59bbf3e258fcd31cdad5ea59d88e2a0a7",
+      "source_bytes": 1673,
+      "migrated_body_sha256": "4f4d5c41466b92b00663507a5bbc255be753ab10f4d9d7efdd2dd765741924bd"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/data-and-security.en.md",
+      "destination": "docs/04.for-organizations/03.data-and-security.en.md",
+      "source_sha256": "c1629fcf536bd8a6bba57910408366fef2ff2c7808c2aa36f61a9b3651c66435",
+      "source_bytes": 1600,
+      "migrated_body_sha256": "03d53b4742b80c94c020845885b200982ffb91eaf1d7fd2967bbe0046ec6987e"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/index.en.md",
+      "destination": "docs/04.for-organizations/04.index.en.md",
+      "source_sha256": "46434e12271352cb766aa94711a14b76f9430c340f3394df5e573e978f017291",
+      "source_bytes": 555,
+      "migrated_body_sha256": "1c3e51146c2e6c951bc5787a85b6df0f5a158065dc9f0baf4e67e8f0ca286e9e"
+    },
+    {
+      "source": "docs-new/exists/reference/cli/commands.en.md",
+      "destination": "docs/05.reference/01.cli-commands.en.md",
+      "source_sha256": "72c624f13234bc1ef21a8b416be8f48a0be17177296fab272acea2ed12dda117",
+      "source_bytes": 11451,
+      "migrated_body_sha256": "250691bab2a0cdce9cccaed6cb20595f15e0ba88617fe4bdf56d6a2a5bd19214"
+    },
+    {
+      "source": "docs-new/exists/reference/editor/zed-editor.en.md",
+      "destination": "docs/05.reference/02.zed-editor.en.md",
+      "source_sha256": "a3fb8e173f7ee2855361c9be0b4d1bac87ab41bcf69d31a4cb30aac769093967",
+      "source_bytes": 4252,
+      "migrated_body_sha256": "52b9a5b03b57196ac9427c6456adcd8d438b6ad68f3d23156ca7c26a4b92ac39"
+    },
+    {
+      "source": "docs-new/exists/reference/rust/rust-coding-standard.en.md",
+      "destination": "docs/05.reference/03.rust-coding-standard.en.md",
+      "source_sha256": "8c726cfd731d03c3d250568d8409ad823f1c2c4f8960358ef4d6ae3a395d0520",
+      "source_bytes": 9922,
+      "migrated_body_sha256": "9f1392026de72fffc1c04f0ee64709347e54456f81240eee6103c523bd1e0604"
+    },
+    {
+      "source": "docs-new/exists/reference/testing/panel-visual-qa.en.md",
+      "destination": "docs/05.reference/04.panel-visual-qa.en.md",
+      "source_sha256": "a99c6f1a0a9e399c38f1901c4fbf65e724d5233c459dcd677148889b1c8cd7f7",
+      "source_bytes": 1069,
+      "migrated_body_sha256": "a99c6f1a0a9e399c38f1901c4fbf65e724d5233c459dcd677148889b1c8cd7f7"
+    },
+    {
+      "source": "docs-new/exists/reference/views/view-language.en.md",
+      "destination": "docs/05.reference/05.view-language.en.md",
+      "source_sha256": "be883cc02b73db347a257f1dfc71aa32624b709c75137a476a86ef5f5b0f9b13",
+      "source_bytes": 5958,
+      "migrated_body_sha256": "058bf2f7918ed0404d64ab42b0c44a1da44901cf3498e9a649ef4e53d789342a"
+    },
+    {
+      "source": "docs-new/exists/reference/index.en.md",
+      "destination": "docs/05.reference/06.index.en.md",
+      "source_sha256": "a8fff6c652c80077564dcd802a85a83d9ea70b966ecf66b20434e3d1ab6840c7",
+      "source_bytes": 618,
+      "migrated_body_sha256": "515b61c447055abc6de8d9d87735219e0a97c2dfd8fc8f75505edd30a81dd1b7"
+    },
+    {
+      "source": "docs-new/knowledge/policy/dependencies.en.md",
+      "destination": "docs/06.governance-and-policy/01.dependencies.en.md",
+      "source_sha256": "29bc84285ca372007194624425eb323a62112a5f3d481fa22097f2d0925b8408",
+      "source_bytes": 2513,
+      "migrated_body_sha256": "4769cef623a68324e3ba079c60ceb0939f3505bae940120fc9c4e0d570ec30b8"
+    },
+    {
+      "source": "docs-new/knowledge/policy/proprietary.en.md",
+      "destination": "docs/06.governance-and-policy/02.proprietary.en.md",
+      "source_sha256": "bb5f6e9bb64d7acb4e849f2a00bd5d1feab074fa84deadef2dd1c1f37df84cef",
+      "source_bytes": 806,
+      "migrated_body_sha256": "4249f7455c15209b9ef2d269e12494ff9ec5cc7d989bff749eafd0b96605ca59"
+    },
+    {
+      "source": "docs-new/knowledge/policy/updates.en.md",
+      "destination": "docs/06.governance-and-policy/03.updates.en.md",
+      "source_sha256": "621c33ac45ebd2deea0f7eb950069079945218d6f197cddcd2740ea690a78b66",
+      "source_bytes": 4532,
+      "migrated_body_sha256": "621c33ac45ebd2deea0f7eb950069079945218d6f197cddcd2740ea690a78b66"
+    },
+    {
+      "source": "docs-new/knowledge/policy/proprietary.fr.md",
+      "destination": "docs/06.governance-and-policy/02.proprietary.fr.md",
+      "source_sha256": "cb0185e015b8ab02688dea98e1ad847de9a3fc4cfc92b511bbfe86686317c61e",
+      "source_bytes": 1290,
+      "migrated_body_sha256": "cb0185e015b8ab02688dea98e1ad847de9a3fc4cfc92b511bbfe86686317c61e"
+    },
+    {
+      "source": "docs-new/knowledge/notes/ai-docs.en.md",
+      "destination": "docs/07.research-and-notes/01.ai-docs.en.md",
+      "source_sha256": "3384066f38429127f5fca4fb3c18872a627851b2f73251cfc9e2bec3a61dc39e",
+      "source_bytes": 174,
+      "migrated_body_sha256": "3384066f38429127f5fca4fb3c18872a627851b2f73251cfc9e2bec3a61dc39e"
+    },
+    {
+      "source": "docs-new/knowledge/notes/desktop-web-mobile.en.md",
+      "destination": "docs/07.research-and-notes/02.desktop-web-mobile.en.md",
+      "source_sha256": "a02b9e4eae61a552c63cc8e38d3e0966fbdb12733b9af87d797ce6ff55ac0dbe",
+      "source_bytes": 299,
+      "migrated_body_sha256": "a02b9e4eae61a552c63cc8e38d3e0966fbdb12733b9af87d797ce6ff55ac0dbe"
+    },
+    {
+      "source": "docs-new/knowledge/notes/internationalization.en.md",
+      "destination": "docs/07.research-and-notes/03.internationalization.en.md",
+      "source_sha256": "37a4a9f07771ad65c0a0199273142245ddea4ecb0454cfbe5b786acab4517117",
+      "source_bytes": 328,
+      "migrated_body_sha256": "37a4a9f07771ad65c0a0199273142245ddea4ecb0454cfbe5b786acab4517117"
+    },
+    {
+      "source": "docs-new/knowledge/notes/internalize-dependencies.en.md",
+      "destination": "docs/07.research-and-notes/04.internalize-dependencies.en.md",
+      "source_sha256": "50fa5947549a92dcd8e9092fcd31ff1ee4146be605b6fffa0f2cf168af05d933",
+      "source_bytes": 286,
+      "migrated_body_sha256": "50fa5947549a92dcd8e9092fcd31ff1ee4146be605b6fffa0f2cf168af05d933"
+    },
+    {
+      "source": "docs-new/exists/reference/research/m0-results.en.md",
+      "destination": "docs/07.research-and-notes/05.m0-results.en.md",
+      "source_sha256": "b7d00dc8dc37eb1e46d59435faf4ed0d8efc9a32ce8b81d0ad1854cd2df5ca25",
+      "source_bytes": 21294,
+      "migrated_body_sha256": "67cf7b9f4b662779068f2790d9c86f2fc7938ca698ab4f8f1f421600b268ffae"
+    },
+    {
+      "source": "docs-new/knowledge/notes/basic-libraries.fr.md",
+      "destination": "docs/07.research-and-notes/06.basic-libraries.fr.md",
+      "source_sha256": "97b223d631057d185b5a74c2b3810def2187ed2f32dfecc2465cf3c4377b2e69",
+      "source_bytes": 5291,
+      "migrated_body_sha256": "97b223d631057d185b5a74c2b3810def2187ed2f32dfecc2465cf3c4377b2e69"
+    },
+    {
+      "source": "docs-new/knowledge/notes/cli.en.md",
+      "destination": "docs/07.research-and-notes/07.cli.en.md",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_bytes": 0,
+      "migrated_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "docs-new/__prompts/panels_priv_roles_etc.en.md",
+      "destination": "docs/07.research-and-notes/08.panel-privileges-source.en.md",
+      "source_sha256": "b643305577eaf24d99f4a404c0dc7f462b0b9017add0f486ed23e3742e3a9e11",
+      "source_bytes": 32168,
+      "migrated_body_sha256": "b643305577eaf24d99f4a404c0dc7f462b0b9017add0f486ed23e3742e3a9e11"
+    },
+    {
+      "source": "docs-new/_todo/testing/browser-testing-research.en.md",
+      "destination": "docs/07.research-and-notes/09.browser-testing.en.md",
+      "source_sha256": "6dbf1659f359a3815610d762d122307cdf25cb0a7f88c202dbb9cd12d9a3eb67",
+      "source_bytes": 4208,
+      "migrated_body_sha256": "6dbf1659f359a3815610d762d122307cdf25cb0a7f88c202dbb9cd12d9a3eb67"
+    },
+    {
+      "source": "docs-new/_todo/telemetry_logs_exports/idea_about_telem_legs_exp.en.md",
+      "destination": "docs/07.research-and-notes/10.telemetry-logs-exports.en.md",
+      "source_sha256": "dffa2f69243b356ace3807778317a69b0eec02af886de05a73c98741fc318f65",
+      "source_bytes": 333,
+      "migrated_body_sha256": "dffa2f69243b356ace3807778317a69b0eec02af886de05a73c98741fc318f65"
+    },
+    {
+      "source": "_ToRead_later.en.md",
+      "destination": "docs/07.research-and-notes/11.reading-notes.en.md",
+      "source_sha256": "490861a7162e5eee0fc3a58bfbf0ed52f9d7e781846756e3b95b357bf0071445",
+      "source_bytes": 326,
+      "migrated_body_sha256": "490861a7162e5eee0fc3a58bfbf0ed52f9d7e781846756e3b95b357bf0071445"
+    },
+    {
+      "source": "docs-new/knowledge/intent.en.md",
+      "destination": "docs/01.introduction/05.previous-intent.en.md",
+      "source_sha256": "3779f79f803364df0fe2a945fa3c0a5cdee44d02eb57d655d23fdb8d25b211a6",
+      "source_bytes": 1361,
+      "migrated_body_sha256": "5d7a01fb9354258519bc8f1b36c8add92681e419b4e810967f70770472cf5b4c"
+    },
+    {
+      "source": "docs-new/knowledge/index.en.md",
+      "destination": "docs/02.architecture/09.knowledge-index.en.md",
+      "source_sha256": "87dcd985f9316bd0f5719f1c0cffb478d90db20c4f4fa321bdd9e4e2df778946",
+      "source_bytes": 968,
+      "migrated_body_sha256": "b827aa8807a796b67ca6a342e89ef00c2f53b33223f89c263c1ee7b6f77b2e47"
+    },
+    {
+      "source": "docs-new/knowledge/index.fr.md",
+      "destination": "docs/02.architecture/09.knowledge-index.fr.md",
+      "source_sha256": "21266434ecf2c87419e83224c3861099f95bcbef85f8a12c3adaf5cbeaac2d6e",
+      "source_bytes": 537,
+      "migrated_body_sha256": "12da6023f820620b0535430984d39380044e77ea7a44de6a4d059067de78f6b6"
+    },
+    {
+      "source": "docs-new/exists/index.en.md",
+      "destination": "docs/03.for-developers/09.implementation-index.en.md",
+      "source_sha256": "21c2a8963717b2dc2f8e917251be5a30e9cba0c3c6519e69f8dd7525abc3189d",
+      "source_bytes": 1284,
+      "migrated_body_sha256": "c42b0ea5e9a76301f5d5659db83ff14bcbb6ebc77f79cf0892f695d1d540bc58"
+    },
+    {
+      "source": "docs-new/exists/products/index.en.md",
+      "destination": "docs/03.for-developers/10.product-implementations.en.md",
+      "source_sha256": "62c766842f7c68f623d639ae191605309bae3bf3934db1ea3cb4af5651fbf951",
+      "source_bytes": 238,
+      "migrated_body_sha256": "2011c51bf9aeeb4df720fe22efbba2e41a858923d362abe33e7c6a7604e690fd"
+    },
+    {
+      "source": "docs-new/exists/products/numerimondes.en.md",
+      "destination": "docs/03.for-developers/11.numerimondes.en.md",
+      "source_sha256": "5801e4cec0eb8b2cc9de72e5aa62dce6debaa98a543bf950475f56dde2593884",
+      "source_bytes": 4248,
+      "migrated_body_sha256": "07f47bb2bdd908c99d5514e673cdbca57a13d102521a80da098d9049ff039622"
+    },
+    {
+      "source": "docs-new/_todo/index.en.md",
+      "destination": "docs/roadmap/01.index.en.md",
+      "source_sha256": "9c965302a4d456f856a096dd6d158eb4db49142e2ebae5d5375dccaa1a0ef673",
+      "source_bytes": 1022,
+      "migrated_body_sha256": "9eafa126fbda29d70a56912ea28859989d983976fc9d1688ca3521f2aae541b8"
+    },
+    {
+      "source": "docs-new/_todo/index.fr.md",
+      "destination": "docs/roadmap/01.index.fr.md",
+      "source_sha256": "1541256e1a50fdbfbf0a6f10ec373277b3b83cefd82382ce2e80b91c451118b2",
+      "source_bytes": 754,
+      "migrated_body_sha256": "64e65940fe6da1c9a25a087c3dac56deab22305ca64042acb62cc5bd634b0904"
+    },
+    {
+      "source": "docs-new/_todo/enterprise-delivery.en.md",
+      "destination": "docs/roadmap/02.enterprise-delivery.en.md",
+      "source_sha256": "899e791c7ba47860570347017c805831d240e0ffe03ca4b36410021ed4a900a6",
+      "source_bytes": 6892,
+      "migrated_body_sha256": "9fb235eb82d40c695b7e7606e072ee8c7ef256030e3e0083c3e756b719a49b0f"
+    },
+    {
+      "source": "docs-new/_todo/enterprise-delivery.fr.md",
+      "destination": "docs/roadmap/02.enterprise-delivery.fr.md",
+      "source_sha256": "bf08396c3ca3abb8bc49bb4f0380d1f659c645e453803ab44b9db226c17918be",
+      "source_bytes": 25756,
+      "migrated_body_sha256": "4f87bf6dbed40b2e447f4dcdce710f5dc02b1bfed3a876c3b50b67c78acbdb43"
+    },
+    {
+      "source": "docs-new/_todo/roadmap.fr.md",
+      "destination": "docs/roadmap/03.initial-roadmap.fr.md",
+      "source_sha256": "1b63eb22db1457f5ece083ab418a26ee45996540d94de5780042569ab9617f48",
+      "source_bytes": 16718,
+      "migrated_body_sha256": "2c5808f6b941834edae9c9e6222eb6bfc4daaa8da82c2d95b32b00cd92976dd4"
+    },
+    {
+      "source": "docs-new/_todo/console/console.en.md",
+      "destination": "docs/roadmap/04.console.en.md",
+      "source_sha256": "7bea40f240bd0d20448103ef292378d6d01aa8b95e4fa50afc2755c8939af8c9",
+      "source_bytes": 21466,
+      "migrated_body_sha256": "3484361eb22cf07bdaa4115b0bc4120df49be9795e8f0fc175f7eea99a78da00"
+    },
+    {
+      "source": "docs-new/_todo/cross-platform/web-and-workstation-modules.en.md",
+      "destination": "docs/roadmap/05.web-and-workstation-modules.en.md",
+      "source_sha256": "9f1019311854d83e7568a27e2e1b51bbf7822ca8ee1434b87af2bf42d6e001ad",
+      "source_bytes": 5072,
+      "migrated_body_sha256": "79ac09234d45e63ba00036a394b37f97ff265a4ff4e5bdeec5f968e888173da9"
+    },
+    {
+      "source": "docs-new/_todo/editor/ide-support-commands.en.md",
+      "destination": "docs/roadmap/06.ide-support-commands.en.md",
+      "source_sha256": "968d90c608346d06adcd7ad61e36cf2eaf698c180d116bb98d2e56911e391a1e",
+      "source_bytes": 5968,
+      "migrated_body_sha256": "968d90c608346d06adcd7ad61e36cf2eaf698c180d116bb98d2e56911e391a1e"
+    },
+    {
+      "source": "docs-new/_todo/views/webkernel-view-compatibility.en.md",
+      "destination": "docs/roadmap/07.webkernel-view-compatibility.en.md",
+      "source_sha256": "1f62d61273e88b3dae67f774465e941981716e8fd010dc9716c375f447084abb",
+      "source_bytes": 5604,
+      "migrated_body_sha256": "1f62d61273e88b3dae67f774465e941981716e8fd010dc9716c375f447084abb"
+    },
+    {
+      "source": "docs-new/_todo/open-decisions.en.md",
+      "destination": "docs/decisions/03.open-architecture.en.md",
+      "source_sha256": "9f1b09edb550921ff52a57845f78362682926b6eaecd004e54c97f5105653030",
+      "source_bytes": 1288,
+      "migrated_body_sha256": "6dbffb701802aa4b59bbd1e85d51a69de096a343707bc16bac813271c1d43eb5"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-vision-decisions.en.md",
+      "destination": "docs/decisions/02.platform-vision-record.en.md",
+      "source_sha256": "e01f2912864426ca54dc204c2acf309d9d94011738495f7fcb3357c3c4a7085e",
+      "source_bytes": 61886,
+      "migrated_body_sha256": "0b0aacb883f0470e0941f4670c869eb72b00e6b9c2ac1cb961fe19b7709e0e5a"
+    },
+    {
+      "source": "docs-new/questions.en.md",
+      "destination": "docs/decisions/04.compile-time-licensing-proposal.en.md",
+      "source_sha256": "972aa2f3d4dbdbef59b5fd3130f2de07103ae16b9b4f6c1a03a350b1249dbad9",
+      "source_bytes": 6272,
+      "migrated_body_sha256": "972aa2f3d4dbdbef59b5fd3130f2de07103ae16b9b4f6c1a03a350b1249dbad9"
+    }
+  ]
+}

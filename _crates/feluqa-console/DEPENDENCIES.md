@@ -49,4 +49,4 @@ reproducibility test is claimed here. Update this record whenever versions,
 features or the runtime boundary change.
 
 For the policy all first-party packages follow, see
-[dependency review policy](../../docs-new/knowledge/policy/dependencies.en.md).
+[dependency review policy](../../docs/06.governance-and-policy/01.dependencies.en.md).

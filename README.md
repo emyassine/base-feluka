@@ -7,7 +7,7 @@ targets. Web delivery is the current priority.
 
 ## Start here
 
-- [Documentation](docs-new/index.en.md): organization guides, module developer
+- [Documentation](docs/00.index.en.md): organization guides, module developer
   guides, technical references, architecture intent and remaining work.
 - [Contributor instructions](AGENTS.md): repository boundaries, Rust rules
   and validation commands.
@@ -20,7 +20,7 @@ cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- help
 ```
 
 Product-specific run/build instructions belong in the corresponding guide
-under `docs-new/exists/products/`.
+in `docs/03.for-developers/10.product-implementations.en.md`.
 
 ## Workspace
 
@@ -39,4 +39,4 @@ assets alone do not establish feature parity with any PHP framework.
 The platform remains in active development. Dynamic module installation,
 domain license enforcement, complete legacy panel implementation-compatible panels, production
 Live reconciliation, deployment/restore qualification and enterprise release
-gates are not complete. See the [delivery plan](docs-new/_todo/index.en.md).
+gates are not complete. See the [delivery plan](docs/roadmap/01.index.en.md).

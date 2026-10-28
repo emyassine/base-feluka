@@ -1,1 +1,0 @@
-we should think about logging telemetry and exports and cryptography (backups etc especially if a hacker encrypts somewhere the feluqa app is how to prevent such things and auto backups and security of backups etc (see the idea i have about some things like licencing in /home/yassine/Projects/Rust/feluqa/docs-new/questions.en.md))
