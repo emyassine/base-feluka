@@ -1,0 +1,62 @@
+# Console runtime model
+
+Status: accepted direction; async command dispatch is not implemented.
+
+## Decision
+
+`feluqa::console` is synchronous by default and must be capable of hosting
+asynchronous commands through an explicit runtime adapter. A product chooses
+whether it needs that adapter. The console must not create a runtime
+implicitly, and synchronous-only consumers must not acquire Tokio.
+
+This keeps short commands, terminal prompts, build tools and small products
+simple while leaving room for long-running commands that need concurrent
+network I/O. Async support is a capability, not the default execution model.
+
+## Intended API boundary
+
+The command descriptor and profile registry remain runtime-neutral. A future
+async-enabled product may register a future-returning handler, then select a
+runner at its composition root. The first adapter may use Tokio, which is
+already the selected async runtime for Feluqa's web profile. The product owns
+the runtime lifetime and starts one runtime per process, not one per command.
+
+The synchronous runner continues to call synchronous handlers directly. A
+future command registry must make handler kind explicit and reject an async
+command when invoked through a synchronous-only runner; it must not silently
+block on an executor or nest a runtime.
+
+## Signals, cancellation and blocking work
+
+The synchronous terminal selector needs to restore raw terminal mode when it
+receives Ctrl+C, SIGINT or SIGTERM. Its current Crossterm event loop and
+signal-hook flag handler provide that behavior without starting Tokio.
+
+When the async runner owns Tokio, it should use Tokio's signal API and deliver
+cancellation through the command context. Signal handling belongs to the
+active runner; Console should avoid installing competing process-global signal
+handlers. Long operations must observe cancellation, bound concurrency, and
+move blocking filesystem, CPU-heavy or child-process work away from async
+executor workers.
+
+## Dependency policy
+
+- `feluqa-console`'s ordinary `std` feature may depend on terminal I/O crates,
+  but not Tokio.
+- A future async feature or adapter may introduce an optional Tokio dependency
+  with the smallest reviewed feature set. Async-only dependency features must
+  not leak to `no_std`, game or real-time profiles.
+- Keep Cargo lockfiles for deployable products and verify feature trees with
+  `cargo tree -e features` when runtime features change.
+- Async support does not make synchronous prompts or filesystem operations
+  asynchronous automatically.
+
+## Delivery gates
+
+Before shipping the async runner, add contract tests for mixed sync/async
+dispatch, cancellation, shutdown, signal handling, runtime reuse, and rejection
+of async handlers on the sync-only runner. Check `--no-default-features`,
+default Console, async Console, and relevant product feature combinations.
+Benchmark representative sync command startup separately from async I/O
+throughput; do not add a runtime to the sync startup path merely to simplify
+implementation.

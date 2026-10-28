@@ -494,6 +494,7 @@ dependencies = [
  "crossterm",
  "feluqa-console-macros",
  "inventory",
+ "signal-hook",
  "syn 2.0.119",
 ]
 

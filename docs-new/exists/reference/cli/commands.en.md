@@ -11,19 +11,24 @@ profiles listed in its `#[feluqa::command(profiles = [...])]` declaration.
 There is no implicit sharing; listing another profile is the explicit import.
 Feluqa filters commands by detected location and explains the active command
 scope in its help. In interactive terminals, it offers command choices and
-prompts for required generator names; piped and scripted runs receive usage
-errors instead of blocking prompts.
+prompts for missing required generator names; piped and scripted runs receive
+usage errors instead of blocking prompts. Running `feluqa` without arguments
+prints help and never waits for input. Start the chooser explicitly with
+`feluqa -i`, `feluqa -int`, `feluqa --interactive` or `feluqa --interactif`.
+`help` remains non-interactive even when a terminal is attached.
 
 The command grammar, metadata, discovery, context filtering, aliases, colored
 help and interactive prompt behavior are described in the
 [console design](../../../_todo/console/console.en.md).
 
 Interactive choices move with the arrow keys and confirm with Enter. Multi-
-selection uses Space to toggle options. Escape or `q` cancels. Console status
-messages use background-colored `INFO`, `SUCCESS`, `WARNING` and `ERROR` badges;
-set `NO_COLOR` to disable ANSI styling. The CLI prints the active profile and
-detected-location notice before running a command, so users know which command
-surface is available and when to switch between `feluqa` and `nadim`.
+selection uses Space to toggle options. Escape, `q` or Ctrl+D cancels; Ctrl+C
+and SIGINT return status 130, while SIGTERM returns status 143. Both signals
+restore terminal mode before exiting the prompt.
+Console status messages use background-colored `INFO`, `SUCCESS`, `WARNING` and
+`ERROR` badges; set `NO_COLOR` to disable ANSI styling. The active profile is
+shown in generated help. A product host may provide a context notice; Console
+does not define product-specific location messages, and a profile can opt out.
 
 ## Context detection
 

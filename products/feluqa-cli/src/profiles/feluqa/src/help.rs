@@ -21,12 +21,13 @@ pub(crate) fn run(
         ::core::option::Option::Some(topic.as_str())
     };
     registry
-        .print_help_in_context(
+        .print_help_in_context_with_notice(
             context.profile(),
             "feluqa",
             topic,
             false,
             context.command_context(),
+            context.context_notice(),
         )
         .map_err(|error| error.to_string())
 }

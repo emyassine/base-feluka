@@ -11,6 +11,7 @@ use std::format;
 use std::fs;
 use std::iter::Iterator;
 use std::option::Option;
+use std::option::Option::None;
 use std::option::Option::Some;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
@@ -105,6 +106,23 @@ impl crate::feluqa::console::ConsoleHost for CliHost {
             Context::App(_) => "app",
             Context::Workspace(_) => "workspace",
             Context::Global => "global",
+        }
+    }
+
+    fn context_notice(&self, profile: &str) -> Option<&'static str> {
+        if profile == "nadim" {
+            return None;
+        }
+        match &self.context {
+            Context::App(_) => Some(
+                "Application detected. This help lists application and global commands; workspace commands appear at the workspace root.",
+            ),
+            Context::Workspace(_) => Some(
+                "Feluqa workspace detected. Application commands appear when you run Feluqa inside an application.",
+            ),
+            Context::Global => Some(
+                "No application or workspace detected. Enter one to see its context-specific commands.",
+            ),
         }
     }
 }

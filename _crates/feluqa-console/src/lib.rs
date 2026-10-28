@@ -16,6 +16,8 @@ extern crate crossterm;
 extern crate feluqa_console_macros;
 pub extern crate inventory;
 #[cfg(feature = "std")]
+extern crate signal_hook;
+#[cfg(feature = "std")]
 extern crate std;
 #[cfg(feature = "build")]
 extern crate syn;
@@ -123,12 +125,25 @@ macro_rules! register_host {
                 }
             }
 
+            fn context_notice(
+                host: &dyn ::core::any::Any,
+                profile: &str,
+            ) -> ::core::option::Option<&'static str> {
+                match host.downcast_ref::<$host>() {
+                    ::core::option::Option::Some(host) => {
+                        <$host as $crate::ConsoleHost>::context_notice(host, profile)
+                    }
+                    ::core::option::Option::None => ::core::option::Option::None,
+                }
+            }
+
             $crate::inventory::submit! {
                 $crate::ConsoleHostDescriptor {
                     profiles: $profiles,
                     create,
                     exit_code,
                     command_context,
+                    context_notice,
                 }
             }
         }
@@ -159,6 +174,7 @@ pub type CommandResult = Result<(), String>;
 pub struct CommandContext<'a> {
     profile: &'a str,
     command_context: &'a str,
+    context_notice: Option<&'static str>,
     arguments: &'a [String],
     host: &'a mut dyn Any,
 }
@@ -176,9 +192,21 @@ impl<'a> CommandContext<'a> {
         arguments: &'a [String],
         host: &'a mut dyn Any,
     ) -> Self {
+        Self::new_in_context_with_notice(profile, command_context, None, arguments, host)
+    }
+
+    /// Create a command context with product-defined context information.
+    pub fn new_in_context_with_notice(
+        profile: &'a str,
+        command_context: &'a str,
+        context_notice: Option<&'static str>,
+        arguments: &'a [String],
+        host: &'a mut dyn Any,
+    ) -> Self {
         Self {
             profile,
             command_context,
+            context_notice,
             arguments,
             host,
         }
@@ -192,6 +220,11 @@ impl<'a> CommandContext<'a> {
     /// Product-defined context label, such as `global`, `workspace` or `app`.
     pub fn command_context(&self) -> &str {
         self.command_context
+    }
+
+    /// Product-defined notice for this profile and context, when configured.
+    pub fn context_notice(&self) -> Option<&'static str> {
+        self.context_notice
     }
 
     /// Positional arguments and options after the command path.
@@ -212,6 +245,9 @@ impl<'a> CommandContext<'a> {
             return Ok(value.clone());
         }
         if terminal::interactive() {
+            terminal::warning(&alloc::format!(
+                "Missing {label}. Enter it now, or rerun the command with the value provided."
+            ));
             terminal::text(label, placeholder, None, true)
         } else {
             Err(String::from(usage))
@@ -423,6 +459,27 @@ impl CommandRegistry {
         include_hidden: bool,
         context: &str,
     ) -> Result<(), RegistryError> {
+        self.print_help_in_context_with_notice(
+            profile,
+            product,
+            topic,
+            include_hidden,
+            context,
+            None,
+        )
+    }
+
+    /// Print context-filtered help with a notice supplied by the product host.
+    #[cfg(feature = "std")]
+    pub fn print_help_in_context_with_notice(
+        &self,
+        profile: &str,
+        product: &str,
+        topic: Option<&str>,
+        include_hidden: bool,
+        context: &str,
+        notice: Option<&str>,
+    ) -> Result<(), RegistryError> {
         use std::io::{self, Write};
         let mut output = io::stdout().lock();
         if let Some(topic) = topic {
@@ -495,17 +552,14 @@ impl CommandRegistry {
             )
         )
         .map_err(io_error)?;
-        if let Some(notice) = profile_notice(profile) {
-            writeln!(output, "{}\n", terminal::info_line(notice)).map_err(io_error)?;
-        }
-        if let Some(notice) = context_notice(context) {
+        if let Some(notice) = notice {
             writeln!(output, "{}\n", terminal::info_line(notice)).map_err(io_error)?;
         }
         writeln!(
             output,
             "{}\n",
             terminal::paint(
-                &alloc::format!("Usage: {product} <command> [arguments]"),
+                &alloc::format!("Usage: {product} [-i|--interactive] <command> [arguments]"),
                 terminal::Color::Muted
             )
         )
@@ -526,7 +580,12 @@ impl CommandRegistry {
             )
             .map_err(io_error)?;
         }
-        writeln!(output, "\nRun `{} help <command>` for details.", product).map_err(io_error)?;
+        writeln!(
+            output,
+            "\nUse `{} --interactive` to open the command chooser. Run `{} help <command>` for details.",
+            product, product
+        )
+        .map_err(io_error)?;
         Ok(())
     }
 
@@ -550,6 +609,25 @@ impl CommandRegistry {
         include_hidden: bool,
         context: &str,
     ) -> Result<(), RegistryError> {
+        self.print_profile_help_in_context_with_notice(
+            profile,
+            topic,
+            include_hidden,
+            context,
+            None,
+        )
+    }
+
+    /// Print profile help with a notice supplied by the product host.
+    #[cfg(feature = "std")]
+    pub fn print_profile_help_in_context_with_notice(
+        &self,
+        profile: &Profile,
+        topic: Option<&str>,
+        include_hidden: bool,
+        context: &str,
+        notice: Option<&str>,
+    ) -> Result<(), RegistryError> {
         use std::io::{self, Write};
         if !profile.header.is_empty() {
             let mut output = io::stdout().lock();
@@ -560,12 +638,13 @@ impl CommandRegistry {
             )
             .map_err(io_error)?;
         }
-        self.print_help_in_context(
+        self.print_help_in_context_with_notice(
             profile.id,
             profile.binary_name,
             topic,
             include_hidden,
             context,
+            notice,
         )
     }
 }
@@ -575,35 +654,6 @@ fn context_matches(required: &str, active: &str) -> bool {
         || active == "any"
         || required == active
         || (required == "app-or-workspace" && matches!(active, "app" | "workspace"))
-}
-
-#[cfg(feature = "std")]
-fn context_notice(context: &str) -> Option<&'static str> {
-    match context {
-        "global" => Some(
-            "No application or workspace detected. Enter one to see its context-specific commands.",
-        ),
-        "workspace" => Some(
-            "Feluqa workspace detected. Application commands appear when you run Feluqa inside an application.",
-        ),
-        "app" => Some(
-            "Application detected. This help lists application and global commands; workspace commands appear at the workspace root.",
-        ),
-        _ => None,
-    }
-}
-
-#[cfg(feature = "std")]
-fn profile_notice(profile: &str) -> Option<&'static str> {
-    match profile {
-        "feluqa" => Some(
-            "Feluqa provides platform and application commands. Use `nadim` for your personal command line.",
-        ),
-        "nadim" => Some(
-            "Nadim is your personal command line. Use `feluqa` for platform and application commands.",
-        ),
-        _ => None,
-    }
 }
 
 /// Parse a command path by selecting the longest registered path prefix.
@@ -702,6 +752,11 @@ pub trait ConsoleHost: Any {
     fn command_context(&self) -> &'static str {
         "any"
     }
+
+    /// Optional product-defined startup/help notice for the selected profile.
+    fn context_notice(&self, _profile: &str) -> Option<&'static str> {
+        None
+    }
 }
 
 /// Erased host factory submitted by a product for selected profiles.
@@ -715,6 +770,8 @@ pub struct ConsoleHostDescriptor {
     pub exit_code: fn(&dyn Any) -> std::process::ExitCode,
     /// Read the product-defined command context from a host instance.
     pub command_context: fn(&dyn Any) -> &'static str,
+    /// Product-defined notice for the profile and detected host context.
+    pub context_notice: fn(&dyn Any, &str) -> Option<&'static str>,
 }
 
 #[cfg(feature = "std")]
@@ -767,7 +824,7 @@ impl MakeConsole {
                 return ExitCode::FAILURE;
             }
         };
-        let (requested, _) = match selected_profile(&arguments) {
+        let (requested, _, _) = match selected_profile(&arguments) {
             Ok(selected) => selected,
             Err(error) => {
                 terminal::error(&std::format!("{binary_name}: {error}"));
@@ -814,20 +871,20 @@ impl MakeConsole {
         let active_context = host_factory
             .map(|provider| (provider.command_context)(&*host))
             .unwrap_or("any");
-        match run_in_context(
+        let notice =
+            host_factory.and_then(|provider| (provider.context_notice)(&*host, profile.id));
+        match run_in_context_with_notice(
             self.profiles,
             binary_name,
             &arguments,
             &mut *host,
             active_context,
+            notice,
         ) {
             Ok(()) => host_factory
                 .map(|provider| (provider.exit_code)(&*host))
                 .unwrap_or(ExitCode::SUCCESS),
-            Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
-                ExitCode::FAILURE
-            }
+            Err(error) => finish_console_error(binary_name, &error),
         }
     }
 
@@ -890,10 +947,31 @@ impl MakeConsole {
         };
         match run(self.profiles, binary_name, &arguments, &mut host) {
             Ok(()) => exit_code(&host),
-            Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
-                ExitCode::FAILURE
-            }
+            Err(error) => finish_console_error(binary_name, &error),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+fn finish_console_error(binary_name: &str, error: &str) -> std::process::ExitCode {
+    use std::process::ExitCode;
+
+    match error {
+        "selection cancelled" => {
+            terminal::warning(&std::format!("{binary_name}: selection cancelled"));
+            ExitCode::SUCCESS
+        }
+        "interrupted" => {
+            terminal::warning(&std::format!("{binary_name}: interrupted"));
+            ExitCode::from(130)
+        }
+        "terminated" => {
+            terminal::warning(&std::format!("{binary_name}: terminated"));
+            ExitCode::from(143)
+        }
+        _ => {
+            terminal::error(&std::format!("{binary_name}: {error}"));
+            ExitCode::FAILURE
         }
     }
 }
@@ -920,14 +998,35 @@ pub fn run_in_context(
     host: &mut dyn Any,
     command_context: &str,
 ) -> Result<(), String> {
+    run_in_context_with_notice(
+        profiles,
+        binary_name,
+        arguments,
+        host,
+        command_context,
+        None,
+    )
+}
+
+#[cfg(feature = "std")]
+fn run_in_context_with_notice(
+    profiles: &'static [Profile],
+    binary_name: &str,
+    arguments: &[String],
+    host: &mut dyn Any,
+    command_context: &str,
+    notice: Option<&'static str>,
+) -> Result<(), String> {
     let profiles = Profiles::new(profiles).map_err(|error| error.to_string())?;
-    let (requested, arguments) = selected_profile(arguments)?;
+    let (requested, interactive_requested, arguments) = selected_profile(arguments)?;
     let profile = profiles
         .select(requested.as_deref(), Some(binary_name))
         .map_err(|error| error.to_string())?;
     let registry = CommandRegistry::discover().map_err(|error| error.to_string())?;
-    if arguments.is_empty() && terminal::interactive() {
-        print_startup_notices(profile.id, command_context);
+    if interactive_requested && !terminal::interactive() {
+        return Err(String::from(
+            "interactive mode requires a terminal; pass all command arguments for CI or automation",
+        ));
     }
     let is_help = arguments.is_empty()
         || arguments
@@ -936,10 +1035,16 @@ pub fn run_in_context(
         || arguments
             .iter()
             .any(|word| matches!(word.as_str(), "--help" | "-h"));
-    if !is_help {
-        print_startup_notices(profile.id, command_context);
+    if interactive_requested && arguments.is_empty() {
+        if !profile.header.is_empty() {
+            terminal::echo(profile.header, terminal::OutputStyle::Plain);
+            terminal::blankline();
+        }
+        print_startup_notice(notice);
+    } else if !is_help {
+        print_startup_notice(notice);
     }
-    let parsed = if arguments.is_empty() && terminal::interactive() {
+    let parsed = if interactive_requested && arguments.is_empty() {
         let commands = registry.commands_in_context(profile.id, false, command_context);
         let selected = choose_command(&commands, "What would you like to do?")?;
         ParsedCommand {
@@ -950,11 +1055,12 @@ pub fn run_in_context(
         || matches!(arguments.first().map(String::as_str), Some("--help" | "-h"))
     {
         registry
-            .print_profile_help_in_context(
+            .print_profile_help_in_context_with_notice(
                 profile,
                 None,
                 arguments.iter().any(|word| word == "--all"),
                 command_context,
+                notice,
             )
             .map_err(|error| error.to_string())?;
         return Ok(());
@@ -973,11 +1079,12 @@ pub fn run_in_context(
             Some(topic.as_str())
         };
         registry
-            .print_profile_help_in_context(
+            .print_profile_help_in_context_with_notice(
                 profile,
                 topic,
                 arguments.iter().any(|word| word == "--all"),
                 command_context,
+                notice,
             )
             .map_err(|error| error.to_string())?;
         return Ok(());
@@ -996,7 +1103,13 @@ pub fn run_in_context(
             Some(topic.as_str())
         };
         registry
-            .print_profile_help_in_context(profile, topic, false, command_context)
+            .print_profile_help_in_context_with_notice(
+                profile,
+                topic,
+                false,
+                command_context,
+                notice,
+            )
             .map_err(|error| error.to_string())?;
         return Ok(());
     } else {
@@ -1015,7 +1128,7 @@ pub fn run_in_context(
                 if commands.is_empty() {
                     return Err(RegistryError::UnknownCommand(prefix).to_string());
                 }
-                if terminal::interactive() {
+                if interactive_requested {
                     let selected = choose_command(&commands, "Choose a command:")?;
                     ParsedCommand {
                         descriptor: commands[selected],
@@ -1040,18 +1153,19 @@ pub fn run_in_context(
             Err(error) => return Err(error.to_string()),
         }
     };
-    let mut context =
-        CommandContext::new_in_context(profile.id, command_context, parsed.arguments, host);
+    let mut context = CommandContext::new_in_context_with_notice(
+        profile.id,
+        command_context,
+        notice,
+        parsed.arguments,
+        host,
+    );
     (parsed.descriptor.handler)(&mut context).map_err(|error| error.to_string())
 }
 
 #[cfg(feature = "std")]
-fn print_startup_notices(profile: &str, context: &str) {
-    if let Some(notice) = profile_notice(profile) {
-        terminal::info(notice);
-        terminal::blankline();
-    }
-    if let Some(notice) = context_notice(context) {
+fn print_startup_notice(notice: Option<&str>) {
+    if let Some(notice) = notice {
         terminal::info(notice);
         terminal::blankline();
     }
@@ -1071,9 +1185,10 @@ fn choose_command(commands: &[&'static CommandDescriptor], prompt: &str) -> Resu
 }
 
 #[cfg(feature = "std")]
-fn selected_profile(arguments: &[String]) -> Result<(Option<String>, &[String]), String> {
+fn selected_profile(arguments: &[String]) -> Result<(Option<String>, bool, &[String]), String> {
     let mut index = 0;
     let mut selected = None;
+    let mut interactive = false;
     while let Some(argument) = arguments.get(index) {
         if let Some(value) = argument.strip_prefix("--profile=") {
             if value.is_empty() {
@@ -1087,11 +1202,17 @@ fn selected_profile(arguments: &[String]) -> Result<(Option<String>, &[String]),
                 .ok_or_else(|| String::from("`--profile` needs a profile name"))?;
             selected = Some(value.clone());
             index += 2;
+        } else if matches!(
+            argument.as_str(),
+            "-i" | "-int" | "--interactive" | "--interactif"
+        ) {
+            interactive = true;
+            index += 1;
         } else {
             break;
         }
     }
-    Ok((selected, &arguments[index..]))
+    Ok((selected, interactive, &arguments[index..]))
 }
 
 impl Profiles {

@@ -9,6 +9,28 @@ The API is available when the `console` feature is enabled.
 
 **Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile and context filtering, aliases, hidden-command handling, longest-path parsing, generated help, colored status badges, arrow-key single/multiple selection, text and confirmation prompts, a monotonic timer, and built-in file/template operations. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Products own their template data and choose which files to generate; `feluqa::console::generator` provides the cross-platform operations for safe relative paths, directory creation, non-overwriting file writes, placeholder replacement and module registration. Only deliberately reused command bodies belong in a shared-commands directory. Search/autocomplete, form backtracking, progress/task widgets, shell completions and process supervision remain planned.
 
+## Sync-first and optional asynchronous execution
+
+The default command contract remains synchronous. Most commands perform short
+argument parsing, prompts, filesystem operations or invoke a child process, and
+must not need an async runtime. The core console must remain usable by small
+products and by target profiles that do not include Tokio.
+
+Console should also support asynchronous command handlers for commands that
+benefit from concurrent network or other asynchronous I/O. This will be an
+opt-in capability behind a runtime adapter, with Tokio as the first adapter
+when a real Feluqa command needs it. An async-enabled product creates one
+runtime at its composition root and dispatches both handler kinds through the
+same registry. It must not create a runtime per command. Cancellation and
+shutdown are passed through the runner; blocking filesystem, CPU-heavy and
+child-process work must not stall Tokio workers.
+
+This is a design decision for future work, not an implemented async API. Tokio
+must not enter the normal `feluqa-console` dependency tree. Synchronous
+prompts continue using terminal event and signal integration; an async runner
+uses its runtime's signal support while it owns that runtime. See the
+[console runtime model](../../knowledge/architecture/console-runtime-model.en.md).
+
 ## Command names
 
 The canonical command shape is:
@@ -137,7 +159,9 @@ list: only list another profile when its users should receive that command.
 `MakeConsole` owns profile selection, context-filtered help, interactive choices,
 argument prompts, parsing, command discovery and dispatch. The
 profile's `context.rs` registers its host factory
-and resolves application/workspace context. File-writing, module-registration,
+and resolves application/workspace context. The host may also provide a
+profile-specific context notice; the Console crate only displays supplied
+text and owns no product-specific notice strings. File-writing, module-registration,
 naming and embedded web-scaffold templates are built into
 `feluqa::console::generator`. Products keep template data beside their own
 commands and pass the selected templates and placeholder values to the
@@ -201,8 +225,12 @@ terminal. `NO_COLOR`, `CLICOLOR=0`, redirected output and dumb terminals disable
 ANSI styling. `blankline()` and `blank_line()` are aliases.
 
 Single and multiple choice prompts use the arrow keys, Enter, and (for multiple
-choice) Space. Escape or `q` cancels. Non-interactive single-choice calls accept
-a number on stdin; multiple choice refuses to block a non-interactive process.
+choice) Space. Escape, `q` or Ctrl+D cancels; Ctrl+C and SIGINT exit with code
+130, while SIGTERM exits with code 143 after restoring terminal mode. Terminal
+resize events redraw the active selection. The CLI opens its command chooser only when requested with `-i`,
+`-int`, `--interactive` or `--interactif`; help and no-argument automation are
+non-interactive. Non-interactive single-choice calls accept a number on stdin;
+multiple choice refuses to block a non-interactive process.
 
 ```rust
 let environment = feluqa::console::select(

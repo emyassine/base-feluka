@@ -4,6 +4,8 @@
 - [Platform/module source layouts](architecture/platform-module-layout.en.md)
 - [Web profile and ERP data design](architecture/web-profile.en.md)
 - [Platform vision and accepted decisions](architecture/platform-vision-decisions.en.md)
+- [Console runtime model](architecture/console-runtime-model.en.md)
+- [Dependency review policy](policy/dependencies.en.md)
 - [Proprietary software and registry policy](policy/proprietary.en.md)
 - [Research and working notes](notes/)
 

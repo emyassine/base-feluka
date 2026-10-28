@@ -89,7 +89,9 @@ Follow [the `.view.rs` language contract](../views/view-language.en.md) and keep
 
 - Prefer established crates with compatible permissive licenses, active maintenance, clear security practices and target support. Tokio, Axum, Tower, Serde and tracing are candidates, not blanket approvals.
 - Every direct dependency has a concrete owner/use. Avoid duplicate crates that solve the same problem.
+- Every package with direct dependencies keeps an English `DEPENDENCIES.md` beside its `Cargo.toml`. Record purpose, owner, selected features, upstream/maturity evidence, license, MSRV/targets, transitive-cost review, checks actually run, and known gaps. Do not claim an advisory scan unless it was run.
 - Pin and audit updates; commit lockfiles for deployable applications. Record licenses and mirror/vendor dependencies according to Feluqa's dependency-independence decision.
+- Keep synchronous APIs usable without an async runtime. Async execution is an opt-in capability; add a runtime only to products/profiles that use it. Prefer runtime-native signals inside an async runner and a small signal integration for synchronous terminal control.
 - Do not use build scripts to execute network access or fetch mutable remote code. Builds must work from the declared, locked dependency set.
 - Review unsafe usage and transitive dependencies for code shipped in the server or embedded profiles.
 

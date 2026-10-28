@@ -1,5 +1,6 @@
 #![no_implicit_prelude]
 
+use crate::std::clone::Clone;
 use crate::std::cmp::Ord;
 use crate::std::convert::From;
 use crate::std::io::{self, IsTerminal, Write};
@@ -12,7 +13,7 @@ use crate::std::result::Result::{Err, Ok};
 use crate::std::string::{String, ToString};
 use crate::std::sync::OnceLock;
 use crate::std::vec::Vec;
-use crate::std::{eprintln, matches, print, println, vec, write, writeln};
+use crate::std::{eprintln, matches, print, println, vec, write};
 
 /// ANSI style used by Feluqa Console output.
 #[derive(Clone, Copy)]
@@ -426,26 +427,57 @@ fn interactive_choices(
     multiple: bool,
 ) -> Result<usize, String> {
     use crate::crossterm::ExecutableCommand;
-    use crate::crossterm::cursor::MoveUp;
+    use crate::crossterm::cursor::{MoveToColumn, MoveUp};
     use crate::crossterm::event::{self, Event, KeyCode, KeyEventKind, KeyModifiers};
     use crate::crossterm::terminal::{Clear, ClearType, enable_raw_mode};
     use crate::std::io::stdout;
+    use crate::std::sync::Arc;
+    use crate::std::sync::atomic::{AtomicUsize, Ordering};
+    use crate::std::time::Duration;
 
+    let mut signals = SignalGuard::new();
     enable_raw_mode().map_err(|error| error.to_string())?;
     let _raw_mode = RawMode;
+    let interrupted = Arc::new(AtomicUsize::new(0));
+    signals.register(crate::signal_hook::consts::SIGINT, &interrupted, 130)?;
+    signals.register(crate::signal_hook::consts::SIGTERM, &interrupted, 143)?;
     let mut output = stdout();
-    draw_choices(
-        &mut output,
-        label,
-        options,
-        cursor,
-        selected,
-        multiple,
-        false,
-    )
-    .map_err(|error| error.to_string())?;
+    draw_choices(&mut output, label, options, cursor, selected, multiple)
+        .map_err(|error| error.to_string())?;
     loop {
-        match event::read().map_err(|error| error.to_string())? {
+        let exit_status = interrupted.load(Ordering::SeqCst);
+        if exit_status != 0 {
+            finish_choices(&mut output).map_err(|error| error.to_string())?;
+            return Err(if exit_status == 130 {
+                String::from("interrupted")
+            } else {
+                String::from("terminated")
+            });
+        }
+        if !event::poll(Duration::from_millis(100)).map_err(|error| {
+            if error.kind() == crate::std::io::ErrorKind::Interrupted {
+                if interrupted.load(Ordering::SeqCst) == 143 {
+                    String::from("terminated")
+                } else {
+                    String::from("interrupted")
+                }
+            } else {
+                error.to_string()
+            }
+        })? {
+            continue;
+        }
+        match event::read().map_err(|error| {
+            if error.kind() == crate::std::io::ErrorKind::Interrupted {
+                if interrupted.load(Ordering::SeqCst) == 143 {
+                    String::from("terminated")
+                } else {
+                    String::from("interrupted")
+                }
+            } else {
+                error.to_string()
+            }
+        })? {
             Event::Key(key) if matches!(key.kind, KeyEventKind::Press | KeyEventKind::Repeat) => {
                 match key.code {
                     KeyCode::Up => cursor = cursor.saturating_sub(1),
@@ -454,6 +486,7 @@ fn interactive_choices(
                     KeyCode::End => cursor = options.len() - 1,
                     KeyCode::Char(' ') if multiple => selected[cursor] = !selected[cursor],
                     KeyCode::Enter => {
+                        finish_choices(&mut output).map_err(|error| error.to_string())?;
                         if multiple {
                             return Ok(cursor);
                         }
@@ -462,49 +495,42 @@ fn interactive_choices(
                         return Ok(cursor);
                     }
                     KeyCode::Esc | KeyCode::Char('q') => {
+                        finish_choices(&mut output).map_err(|error| error.to_string())?;
                         return Err(String::from("selection cancelled"));
                     }
                     KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
+                        finish_choices(&mut output).map_err(|error| error.to_string())?;
+                        return Err(String::from("interrupted"));
+                    }
+                    KeyCode::Char('d') if key.modifiers.contains(KeyModifiers::CONTROL) => {
+                        finish_choices(&mut output).map_err(|error| error.to_string())?;
                         return Err(String::from("selection cancelled"));
                     }
                     KeyCode::Char(value) if !multiple && value.is_ascii_digit() => {
                         let index = value.to_digit(10).unwrap_or(0) as usize;
                         if index > 0 && index <= options.len() {
+                            finish_choices(&mut output).map_err(|error| error.to_string())?;
                             return Ok(index - 1);
                         }
                     }
                     _ => {}
                 }
                 output
-                    .execute(MoveUp((options.len() + 2) as u16))
+                    .execute(MoveToColumn(0))
+                    .and_then(|stream| stream.execute(MoveUp((options.len() + 2) as u16)))
                     .and_then(|stream| stream.execute(Clear(ClearType::FromCursorDown)))
                     .map_err(|error| error.to_string())?;
-                draw_choices(
-                    &mut output,
-                    label,
-                    options,
-                    cursor,
-                    selected,
-                    multiple,
-                    true,
-                )
-                .map_err(|error| error.to_string())?;
+                draw_choices(&mut output, label, options, cursor, selected, multiple)
+                    .map_err(|error| error.to_string())?;
             }
             Event::Resize(_, _) => {
                 output
-                    .execute(MoveUp((options.len() + 2) as u16))
+                    .execute(MoveToColumn(0))
+                    .and_then(|stream| stream.execute(MoveUp((options.len() + 2) as u16)))
                     .and_then(|stream| stream.execute(Clear(ClearType::FromCursorDown)))
                     .map_err(|error| error.to_string())?;
-                draw_choices(
-                    &mut output,
-                    label,
-                    options,
-                    cursor,
-                    selected,
-                    multiple,
-                    true,
-                )
-                .map_err(|error| error.to_string())?;
+                draw_choices(&mut output, label, options, cursor, selected, multiple)
+                    .map_err(|error| error.to_string())?;
             }
             _ => {}
         }
@@ -518,15 +544,10 @@ fn draw_choices<W: Write>(
     cursor: usize,
     selected: &[bool],
     multiple: bool,
-    redraw: bool,
 ) -> crate::std::io::Result<()> {
-    if redraw {
-        write!(output, "{}", paint(label, Color::Accent))?;
-        output.write_all(b"\r\n")?;
-    } else {
-        writeln!(output, "{}", paint(label, Color::Accent))?;
-    }
+    write!(output, "{}\r\n", paint(label, Color::Accent))?;
     for (index, option) in options.iter().enumerate() {
+        let option = truncate(option, columns().saturating_sub(10).max(24));
         let marker = if index == cursor {
             paint("›", Color::Green)
         } else {
@@ -545,9 +566,9 @@ fn draw_choices<W: Write>(
         }
         output.write_all(b"\r\n")?;
     }
-    writeln!(
+    write!(
         output,
-        "{}",
+        "{}\r\n",
         paint(
             if multiple {
                 "↑/↓ move · space toggle · enter done · q cancel"
@@ -560,12 +581,29 @@ fn draw_choices<W: Write>(
     output.flush()
 }
 
+fn finish_choices<W: Write>(output: &mut W) -> crate::std::io::Result<()> {
+    output.write_all(b"\r\n")?;
+    output.flush()
+}
+
 fn reverse_video(value: &str) -> String {
     if colors_enabled() {
         crate::std::format!("\u{1b}[7m{value}\u{1b}[0m")
     } else {
-        crate::std::format!("› {value}")
+        String::from(value)
     }
+}
+
+fn truncate(value: &str, maximum: usize) -> String {
+    if value.chars().count() <= maximum {
+        return String::from(value);
+    }
+    let mut shortened = value
+        .chars()
+        .take(maximum.saturating_sub(1))
+        .collect::<String>();
+    shortened.push('…');
+    shortened
 }
 
 struct RawMode;
@@ -573,6 +611,40 @@ struct RawMode;
 impl Drop for RawMode {
     fn drop(&mut self) {
         let _ = crate::crossterm::terminal::disable_raw_mode();
+    }
+}
+
+struct SignalGuard(Vec<crate::signal_hook::SigId>);
+
+impl SignalGuard {
+    fn new() -> Self {
+        Self(Vec::new())
+    }
+
+    fn register(
+        &mut self,
+        signal: crate::std::os::raw::c_int,
+        interrupted: &crate::std::sync::Arc<crate::std::sync::atomic::AtomicUsize>,
+        exit_status: usize,
+    ) -> Result<(), String> {
+        let id = crate::signal_hook::flag::register_usize(
+            signal,
+            crate::std::sync::Arc::clone(interrupted),
+            exit_status,
+        )
+        .map_err(|error| {
+            crate::std::format!("could not register terminal signal handler: {error}")
+        })?;
+        self.0.push(id);
+        Ok(())
+    }
+}
+
+impl Drop for SignalGuard {
+    fn drop(&mut self) {
+        for signal in self.0.drain(..) {
+            let _ = crate::signal_hook::low_level::unregister(signal);
+        }
     }
 }
 
