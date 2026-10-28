@@ -17,7 +17,7 @@ use std::{
     },
     task::{Context, Poll},
 };
-use throw_error::{Error, ErrorId};
+use feluqa_ui_errors::{Error, ErrorId};
 
 type AsyncDataBuf = Arc<RwLock<Vec<(SerializedDataId, PinnedFuture<String>)>>>;
 type ErrorBuf = Arc<RwLock<Vec<(SerializedDataId, ErrorId, Error)>>>;

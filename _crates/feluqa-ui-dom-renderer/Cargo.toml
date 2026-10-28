@@ -63,10 +63,6 @@ feluqa_ui_reactivity = [
     "dep:feluqa_ui_reactivity",
     "dep:feluqa_ui_task_runtime",
 ]
-reactive_stores = [
-    "feluqa_ui_reactivity",
-    "dep:reactive_stores",
-]
 sledgehammer = [
     "dep:sledgehammer_bindgen",
     "dep:sledgehammer_utils",

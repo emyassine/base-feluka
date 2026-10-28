@@ -12,7 +12,7 @@ use std::{
     fmt::Display,
     sync::atomic::{AtomicBool, AtomicUsize, Ordering},
 };
-use throw_error::{Error, ErrorId};
+use feluqa_ui_errors::{Error, ErrorId};
 use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
 
 #[wasm_bindgen]

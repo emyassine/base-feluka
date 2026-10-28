@@ -283,7 +283,6 @@ package = "feluqa-ui-dom-renderer"
 version = "0.2.11"
 features = [
     "feluqa_ui_reactivity",
-    "reactive_stores",
     "oco",
 ]
 

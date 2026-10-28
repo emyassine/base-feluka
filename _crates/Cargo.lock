@@ -2514,13 +2514,13 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8714ae4adeaa846d838f380fbd72f049197de629948f91bf045329e0cf0a283"
 dependencies = [
+ "feluqa-ui-errors",
  "futures",
  "js-sys",
  "once_cell",
  "or_poisoned",
  "pin-project-lite",
  "serde",
- "throw_error",
  "wasm-bindgen",
 ]
 
@@ -5065,15 +5065,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
-]
-
-[[package]]
-name = "throw_error"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41e42a6afdde94f3e656fae18f837cb9bbe500a5ac5de325b09f3ec05b9c28e3"
-dependencies = [
- "pin-project-lite",
 ]
 
 [[package]]
