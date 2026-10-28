@@ -142,13 +142,25 @@ struct DevTarget {
 }
 
 fn watch(application: &Application) -> Result<ExitCode, String> {
+    feluqa::console::info(&format!(
+        "Preparing {} for development (checking the Rust project)...",
+        application.display_name
+    ));
     let target = resolve_target(application)?;
+    feluqa::console::info(&format!(
+        "Building {} for development...",
+        application.display_name
+    ));
     let status = build(application)?;
     if !status.success() {
         return Ok(exit_code(status));
     }
 
     let mut snapshot = fingerprint(&target.watch_roots)?;
+    feluqa::console::info(&format!(
+        "Starting {} development server...",
+        application.display_name
+    ));
     let mut server = start_server(&target.executable, application)?;
     println!("Development server ready. Press Ctrl+C to stop.");
 

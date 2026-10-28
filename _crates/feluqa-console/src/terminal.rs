@@ -155,8 +155,10 @@ fn emit_status(message: &str, style: OutputStyle, stderr: bool) {
     };
     if stderr {
         eprint!("{rendered}");
+        let _ = io::stderr().flush();
     } else {
         print!("{rendered}");
+        let _ = io::stdout().flush();
     }
 }
 
