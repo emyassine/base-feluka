@@ -42,11 +42,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.parameters("system::pages.core_setup", "csrf_token: &str, notice: &str")?;
     compiler.parameters(
         "system::pages.core_dashboard",
-        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
+        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str, widgets: crate::feluqa::view::TrustedHtml",
     )?;
     compiler.parameters(
         "business::pages.business_dashboard",
-        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
+        "display_name: &str, email: &str, csrf_token: &str, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str, widgets: crate::feluqa::view::TrustedHtml",
     )?;
     compiler.parameters(
         "system::pages.core_users",
@@ -126,6 +126,24 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.component(
         "feluqa-panel::section",
         "feluqa-panel::components.section",
+        &["default"],
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.button",
+        "color: &str, disabled: bool",
+    )?;
+    compiler.component(
+        "feluqa::button",
+        "feluqa-panel::components.button",
+        &["default"],
+    )?;
+    compiler.parameters(
+        "feluqa-panel::components.field",
+        "id: &str, label: &str, required: bool",
+    )?;
+    compiler.component(
+        "feluqa::field",
+        "feluqa-panel::components.field",
         &["default"],
     )?;
     compiler.parameters(

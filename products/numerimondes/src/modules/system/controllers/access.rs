@@ -134,6 +134,25 @@ pub(crate) async fn registered_panel_navigation(
     Ok((feluqa::web::trusted_navigation_html(navigation), brand_name))
 }
 
+pub(crate) async fn registered_panel_widgets(
+    state: &PanelState,
+    identity: &SessionIdentity,
+    panel_id: &str,
+) -> Result<feluqa::view::TrustedHtml, StatusCode> {
+    let grants = state
+        .core
+        .permissions_for(identity.user_id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let principal = principal_for_user(identity.user_id, Some(identity.tenant_id), &grants)
+        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+    let widgets = state
+        .catalog
+        .render_widgets(panel_id, &principal, &PermissionSetAuthorizer)
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(feluqa::web::trusted_widgets_html(widgets))
+}
+
 pub(super) async fn protected_resource_page<'a>(
     state: &PanelState,
     headers: &'a HeaderMap,

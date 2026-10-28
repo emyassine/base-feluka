@@ -13,6 +13,22 @@
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
   const languageSelector = document.querySelector('[data-feluqa-language-selector]');
 
+  const readBoolean = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? null : value === 'true';
+    } catch {
+      return null;
+    }
+  };
+  const writeValue = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Keep the selected state for this page when storage is unavailable.
+    }
+  };
+
   if (languageSelector) {
     const localeCookie = document.cookie.split(';').map((value) => value.trim()).find((value) => value.startsWith('feluqa_locale='));
     const supported = ['en', 'fr', 'ar', 'es', 'de', 'pt'];
@@ -64,7 +80,7 @@
     if (currentTheme === 'system') applyTheme('system', false);
   });
 
-  const setOpen = (open) => {
+  const setOpen = (open, persist = true) => {
     sidebar.dataset.sidebarOpen = String(open);
     sidebar.classList.toggle('fi-sidebar-open', open);
     toggles.forEach((button) => button.setAttribute('aria-expanded', String(open)));
@@ -75,6 +91,10 @@
     });
     sidebar.querySelectorAll('.fi-sidebar-open-collapse-sidebar-btn').forEach((button) => button.toggleAttribute('hidden', open || mobile.matches));
     sidebar.querySelectorAll('.fi-sidebar-close-collapse-sidebar-btn').forEach((button) => button.toggleAttribute('hidden', !open || mobile.matches));
+    if (persist) {
+      writeValue('platform:sidebar:open', String(open));
+      if (!mobile.matches) writeValue('platform:sidebar:desktop_open', String(open));
+    }
   };
 
   toggles.forEach((button) => button.addEventListener('click', () => {
@@ -93,33 +113,39 @@
       search?.focus();
     }
   });
-  mobile.addEventListener('change', (event) => setOpen(!event.matches));
+  mobile.addEventListener('change', (event) => {
+    const open = event.matches
+      ? (readBoolean('platform:sidebar:open') ?? false)
+      : (readBoolean('platform:sidebar:desktop_open') ?? true);
+    setOpen(open, false);
+  });
 
+  let collapsedGroups = [];
+  try {
+    const storedGroups = JSON.parse(localStorage.getItem('platform:sidebar:collapsed_groups') || '[]');
+    if (Array.isArray(storedGroups)) collapsedGroups = storedGroups.filter((group) => typeof group === 'string');
+  } catch {
+    collapsedGroups = [];
+  }
   sidebar.querySelectorAll('[data-feluqa-group-toggle]').forEach((button) => {
     const label = button.dataset.groupLabel;
     const group = button.closest('.fi-sidebar-group');
     const items = group?.querySelector('[data-feluqa-group-items]');
     if (!items || !label) return;
-    const storageKey = `feluqa:sidebar:collapsed:${label}`;
-    let collapsed = false;
-    try {
-      collapsed = localStorage.getItem(storageKey) === 'true';
-    } catch {
-      collapsed = false;
-    }
-    const setCollapsed = (value) => {
-      collapsed = value;
+    const applyCollapsed = (collapsed) => {
       group.classList.toggle('fi-collapsed', collapsed);
       items.hidden = collapsed;
       button.setAttribute('aria-expanded', String(!collapsed));
-      try {
-        localStorage.setItem(storageKey, String(collapsed));
-      } catch {
-        // Storage can be unavailable in private or restricted browser contexts.
-      }
     };
-    setCollapsed(collapsed);
-    button.addEventListener('click', () => setCollapsed(!collapsed));
+    const setCollapsed = (collapsed) => {
+      collapsedGroups = collapsed
+        ? [...new Set([...collapsedGroups, label])]
+        : collapsedGroups.filter((entry) => entry !== label);
+      writeValue('platform:sidebar:collapsed_groups', JSON.stringify(collapsedGroups));
+      applyCollapsed(collapsed);
+    };
+    applyCollapsed(collapsedGroups.includes(label));
+    button.addEventListener('click', () => setCollapsed(!collapsedGroups.includes(label)));
   });
 
   search?.addEventListener('input', () => {
@@ -156,5 +182,8 @@
     avatar.textContent = initials.toLocaleUpperCase();
   });
 
-  setOpen(!mobile.matches);
+  const initialOpen = mobile.matches
+    ? (readBoolean('platform:sidebar:open') ?? false)
+    : (readBoolean('platform:sidebar:desktop_open') ?? true);
+  setOpen(initialOpen, false);
 })();

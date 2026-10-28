@@ -8,10 +8,25 @@
 
 extern crate alloc;
 extern crate core;
+#[cfg(feature = "components")]
+extern crate feluqa_ui_components;
 extern crate serde;
 extern crate serde_json;
 #[cfg(test)]
 extern crate std;
+
+/// Feluqa-owned Leptos components, available with the `components` feature.
+#[cfg(feature = "components")]
+pub mod component {
+    /// Components adapted from the Rust UI Leptos registry.
+    pub use crate::feluqa_ui_components::component::Button;
+    /// Button dimensions.
+    pub use crate::feluqa_ui_components::component::ButtonSize;
+    /// Button visual variants.
+    pub use crate::feluqa_ui_components::component::ButtonVariant;
+    /// Conditional class composition helper.
+    pub use crate::feluqa_ui_components::component::clx;
+}
 
 use alloc::collections::BTreeSet;
 use alloc::format;
@@ -555,6 +570,7 @@ fn render_form(
     output.push_str("\"><input type=\"hidden\" name=\"csrf_token\" value=\"");
     push_escaped(output, csrf);
     output.push_str("\">");
+    output.push_str("<div class=\"fi-grid\" style=\"--cols-default: repeat(1, minmax(0, 1fr))\">");
     if let Some(record_id) = record_id {
         output.push_str("<input type=\"hidden\" name=\"id\" value=\"");
         core::write!(output, "{record_id}")
@@ -580,8 +596,9 @@ fn render_form(
             render_input(props, output)?;
         }
     }
-    output
-        .push_str("<button type=\"submit\" class=\"fi-btn fi-btn-size-md fi-btn-color-primary\">");
+    output.push_str(
+        "</div><button type=\"submit\" class=\"fi-btn fi-size-md fi-color fi-color-primary\">",
+    );
     push_escaped(output, submit);
     output.push_str("</button></form>");
     Ok(())
@@ -633,15 +650,14 @@ fn render_input(
     if !valid_html_id(&id) {
         return Err(RenderError::InvalidPropertyValue("id"));
     }
-    output.push_str("<div class=\"fi-fo-field-wrp\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
+    output.push_str("<div class=\"fi-fo-field\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
     push_escaped(output, &id);
     output.push_str("\"><span class=\"fi-fo-field-label-content\">");
     push_escaped(output, label);
-    output.push_str("</span>");
     if required {
         output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
     }
-    output.push_str("</label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\">");
+    output.push_str("</span></label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\">");
     if input_type == "textarea" {
         output.push_str("<textarea class=\"fi-textarea\" id=\"");
         push_escaped(output, &id);
@@ -726,15 +742,14 @@ fn render_select(
         }
     }
 
-    output.push_str("<div class=\"fi-fo-field-wrp\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
+    output.push_str("<div class=\"fi-fo-field\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
     push_escaped(output, id);
     output.push_str("\"><span class=\"fi-fo-field-label-content\">");
     push_escaped(output, label);
-    output.push_str("</span>");
     if required {
         output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
     }
-    output.push_str("</label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\"><select class=\"fi-select-input\" id=\"");
+    output.push_str("</span></label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\"><select class=\"fi-select-input\" id=\"");
     push_escaped(output, id);
     output.push_str("\" name=\"");
     push_escaped(output, name);
@@ -1145,7 +1160,7 @@ mod render_tests {
             )],
         };
         let output = render(&document).expect("render valid select");
-        assert!(output.as_str().contains("class=\"fi-fo-field-wrp\""));
+        assert!(output.as_str().contains("class=\"fi-fo-field\""));
         assert!(output.as_str().contains(
             "<select class=\"fi-select-input\" id=\"role-id\" name=\"role_id\" required>"
         ));
@@ -1194,7 +1209,7 @@ mod render_tests {
             )],
         };
         let html = render(&document).expect("render safe form");
-        assert!(html.as_str().contains("class=\"fi-fo-field-wrp\""));
+        assert!(html.as_str().contains("class=\"fi-fo-field\""));
         assert!(html.as_str().contains("Customer &lt;name&gt;"));
         assert!(
             html.as_str()
@@ -1202,7 +1217,7 @@ mod render_tests {
         );
         assert!(
             html.as_str()
-                .contains("class=\"fi-btn fi-btn-size-md fi-btn-color-primary\"")
+                .contains("class=\"fi-btn fi-size-md fi-color fi-color-primary\"")
         );
     }
 

@@ -1,0 +1,563 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   §2  COLOR + FONT STACK TOKENS
+════════════════════════════════════════════════════════════════════════════ */
+:root {
+    --prose-color:         var(--color-gray-700, var(--gray-700, #374151));
+    --prose-heading-color: var(--color-gray-950, var(--gray-950, #030712));
+
+    /* Per-script families (reorder via :lang() — do not collapse to DM Sans only). */
+    --wts-font-latin:  "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    --wts-font-arabic: "IBM Plex Sans Arabic", "Rubik", "Noto Naskh Arabic", ui-sans-serif, sans-serif;
+    --wts-font-hebrew: "Noto Sans Hebrew", "David Libre", ui-sans-serif, sans-serif;
+    --wts-font-cjk:    "Noto Sans JP", "Noto Sans SC", "Noto Sans KR", "Hiragino Sans", "PingFang SC", sans-serif;
+    --wts-font-urdu:   "Noto Nastaliq Urdu", "IBM Plex Sans Arabic", ui-sans-serif, sans-serif;
+    --wts-font-mono:   "Lilex", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /*
+     * Default cascade: Latin first for UI chrome, then other scripts so the
+     * browser can fall through per glyph when content is mixed (en + ar, etc.).
+     */
+    --wts-font-stack:
+        var(--wts-font-latin),
+        var(--wts-font-arabic),
+        var(--wts-font-hebrew),
+        var(--wts-font-cjk),
+        sans-serif;
+
+    /*
+     * Kill Platform default Inter Variable.
+     * base.blade.php sets --font-family: 'Inter Variable' — we override it here
+     * (STYLES_AFTER) so every fi-* component using var(--font-family) gets WTS.
+     */
+    --font-family: var(--wts-font-stack) !important;
+    --mono-font-family: var(--wts-font-mono) !important;
+
+    /* Paragraph scales (see $bigger_on_rtl / $bigger_on_rtl_by in Blade). */
+    --wts-p-scale: 1.07;
+    --wts-p-scale-rtl: 1.1556;
+    --wts-p-scale-ar: 1.1342;
+    --wts-p-scale-he: 1.1235;
+    --wts-p-scale-fa: 1.1355;
+    --wts-p-scale-ur: 1.1573;
+    /*
+     * Content-only RTL boost (never on <html> — breaks Floating UI / dropdowns).
+     * Topbar + language selector stay 1em; main + sidebar content scale.
+     */
+    --wts-content-scale-rtl: 1.07;
+}
+.dark,
+[data-theme="dark"],
+.fi-body.dark,
+:where(.dark, .dark *) {
+    --prose-color:         var(--color-gray-300, var(--gray-300, #d1d5db));
+    --prose-heading-color: var(--color-white, #fff);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §3  GLOBAL MULTI-SCRIPT FONT-FAMILY
+   Prefer CSS variables Platform already uses (--font-family), not Inter.
+════════════════════════════════════════════════════════════════════════════ */
+html,
+html.fi,
+body,
+.fi-body {
+    font-family: var(--font-family, var(--wts-font-stack));
+    font-optical-sizing: auto;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+code, kbd, pre, samp,
+.fi-mono,
+.font-mono {
+    font-family: var(--mono-font-family, var(--wts-font-mono));
+}
+
+.fi-header-subheading {
+    margin-top: calc(var(--spacing) * 1) !important;
+    font-size: calc(var(--text-lg) / 1.08);
+}
+
+/* Platform page title — keep normal weight (no bold H1) */
+.fi-header-heading,
+.fi-section-header-heading {
+    font-weight: var(--font-weight-normal, 400) !important;
+    font-style:  normal;
+    font-family: var(--font-family, var(--wts-font-stack));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §4  HEADING / PARAGRAPH METRICS
+   Two selector groups per element:
+     A) bare tag, excluding fi-* chrome  → content areas only
+     B) .md-* hooks                      → MD-parser output, always wins
+════════════════════════════════════════════════════════════════════════════ */
+/* — h1 — */
+h1:not([class*='fi-']) {
+    font-size: calc(var(--text-3xl) * 1.5);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h1,
+h1.md-h1,
+.md-heading.md-h1{
+    font-size: calc(var(--text-3xl) * 1.5) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.025em !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — h2 — */
+h2:not([class*='fi-']) {
+    font-size: var(--text-2xl);
+    line-height: 1.33333;
+    letter-spacing: -0.025em;
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h2,
+h2.md-h2,
+.md-heading.md-h2{
+    font-size: var(--text-2xl) !important;
+    line-height: 1.33333 !important;
+    letter-spacing: -0.025em !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — h3 — */
+h3:not([class*='fi-']) {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h3,
+h3.md-h3,
+.md-heading.md-h3{
+    font-size: var(--text-xl) !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — h4 — */
+h4:not([class*='fi-']) {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h4,
+h4.md-h4,
+.md-heading.md-h4{
+    font-size: var(--text-lg) !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — h5 — */
+h5:not([class*='fi-']) {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h5,
+h5.md-h5,
+.md-heading.md-h5{
+    font-size: var(--text-base) !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — h6 — */
+h6:not([class*='fi-']) {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-normal, 400);
+    color: var(--prose-heading-color);
+}
+.md-h6,
+h6.md-h6,
+.md-heading.md-h6{
+    font-size: var(--text-sm) !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+    color: var(--prose-heading-color) !important;
+}
+/* — p — */
+p:not([class*='fi-']) {
+    font-size: calc(var(--text-sm) * 1.07) !important;
+    color: var(--prose-color);
+    font-weight: var(--font-weight-normal, 400);
+}
+.md-p{
+    font-size: calc(var(--text-sm) * 1.07) !important !important;
+    color: var(--prose-color) !important;
+    font-weight: var(--font-weight-normal, 400) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §5  PER-SCRIPT / RTL TYPOGRAPHY
+   ─────────────────────────────────────────────────────────────────────────
+   Prefer document language (html[lang], :lang()) to reorder the stack.
+   Glyph fallback still works from --wts-font-stack when lang is wrong/missing.
+════════════════════════════════════════════════════════════════════════════ */
+
+/* — Base RTL — */
+[dir="rtl"],
+:lang(ar),
+:lang(fa),
+:lang(ur),
+:lang(he) {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+[dir="rtl"],
+:lang(ar),
+:lang(fa),
+:lang(ur),
+:lang(he) {
+    direction: rtl;
+    text-align: start; /* logical — respects dir */
+}
+
+/*
+ * RTL content scale — NOT on <html>/<body>/topbar.
+ * Root rem scale breaks Floating UI (language selector opens upward / stuck).
+ * Scope: main content + sidebar nav only.
+ */
+html[lang|="ar"] .fi-main,
+html[lang|="ar"] .fi-page,
+html[lang|="ar"] .fi-simple-main,
+html[lang|="ar"] .fi-sidebar-nav,
+html[lang|="fa"] .fi-main,
+html[lang|="fa"] .fi-page,
+html[lang|="fa"] .fi-simple-main,
+html[lang|="fa"] .fi-sidebar-nav,
+html[lang|="he"] .fi-main,
+html[lang|="he"] .fi-page,
+html[lang|="he"] .fi-simple-main,
+html[lang|="he"] .fi-sidebar-nav,
+html[lang|="ur"] .fi-main,
+html[lang|="ur"] .fi-page,
+html[lang|="ur"] .fi-simple-main,
+html[lang|="ur"] .fi-sidebar-nav,
+html[dir="rtl"] .fi-main,
+html[dir="rtl"] .fi-page,
+html[dir="rtl"] .fi-simple-main,
+html[dir="rtl"] .fi-sidebar-nav {
+    font-size: calc(1em * var(--wts-content-scale-rtl, 1));
+}
+
+/* Teleported dropdowns live under <body> — force normal size (not root-scaled). */
+.fi-dropdown-panel {
+    font-size: 1rem;
+}
+
+/* — Arabic / Farsi (UI first: IBM Plex Sans Arabic) — */
+:lang(ar),
+:lang(fa),
+html[lang|="ar"],
+html[lang|="fa"],
+[dir="rtl"]:lang(ar),
+[dir="rtl"]:lang(fa) {
+    --wts-font-stack:
+        var(--wts-font-arabic),
+        var(--wts-font-latin),
+        var(--wts-font-hebrew),
+        var(--wts-font-cjk),
+        sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    letter-spacing: 0; /* never track cursive script */
+}
+
+/* — Generic RTL body boost ([dir=rtl] without a more specific :lang rule) — */
+[dir="rtl"] p:not([class*='fi-']),
+[dir="rtl"] .md-p {
+    font-size: calc(var(--text-sm) * var(--wts-p-scale-rtl)) !important;
+}
+
+/* — Arabic body optical compensation (+ optional $bigger_on_rtl) — */
+:lang(ar) p:not([class*='fi-']),
+:lang(ar) .md-p,
+html[lang|="ar"] p:not([class*='fi-']) {
+    font-family: "Rubik", "IBM Plex Sans Arabic", var(--wts-font-latin);
+    font-size:   calc(var(--text-sm) * var(--wts-p-scale-ar)) !important;
+    line-height: 1.9;
+    letter-spacing: 0;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+/* — Farsi body — */
+:lang(fa) p:not([class*='fi-']),
+:lang(fa) .md-p,
+html[lang|="fa"] p:not([class*='fi-']) {
+    font-family: "Rubik", "IBM Plex Sans Arabic", var(--wts-font-latin);
+    font-size:   calc(var(--text-sm) * var(--wts-p-scale-fa)) !important;
+    line-height: 1.9;
+    letter-spacing: 0;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+/* — Arabic / Farsi headings (normal weight, Arabic UI face) — */
+:lang(ar) :is(h1, h2, h3, h4, h5, h6):not([class*='fi-']),
+:lang(ar) :is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6),
+:lang(fa) :is(h1, h2, h3, h4, h5, h6):not([class*='fi-']),
+:lang(fa) :is(.md-h1, .md-h2, .md-h3, .md-h4, .md-h5, .md-h6),
+html[lang|="ar"] :is(h1, h2, h3, h4, h5, h6):not([class*='fi-']),
+html[lang|="fa"] :is(h1, h2, h3, h4, h5, h6):not([class*='fi-']) {
+    font-family: "IBM Plex Sans Arabic", var(--wts-font-latin);
+    letter-spacing: 0;
+    line-height: 1.4;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+/* — Qur'an / formal Arabic prose — */
+.ar-quran,
+.ar-formal {
+    font-family: "Amiri Quran", "IBM Plex Sans Arabic", serif;
+    font-size:   1.15em;
+    line-height: 2.2;
+    letter-spacing: 0;
+    direction:   rtl;
+    text-align:  start;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+/* — Hebrew — */
+:lang(he),
+html[lang|="he"] {
+    --wts-font-stack:
+        var(--wts-font-hebrew),
+        var(--wts-font-latin),
+        var(--wts-font-arabic),
+        var(--wts-font-cjk),
+        sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    letter-spacing: 0;
+}
+:lang(he) p:not([class*='fi-']),
+:lang(he) .md-p,
+html[lang|="he"] p:not([class*='fi-']) {
+    font-family: var(--wts-font-hebrew);
+    font-size: calc(var(--text-sm) * var(--wts-p-scale-he)) !important;
+    line-height: 1.85;
+    letter-spacing: 0;
+    font-weight: var(--font-weight-normal, 400);
+}
+
+/* — Japanese — */
+:lang(ja),
+html[lang|="ja"] {
+    --wts-font-stack:
+        "Noto Sans JP",
+        var(--wts-font-latin),
+        var(--wts-font-cjk),
+        sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+}
+
+/* — Chinese (Simplified) — */
+:lang(zh),
+:lang(zh-CN),
+:lang(zh-Hans),
+html[lang|="zh"] {
+    --wts-font-stack:
+        "Noto Sans SC",
+        var(--wts-font-latin),
+        var(--wts-font-cjk),
+        sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    letter-spacing: 0;
+    line-height: 1.75;
+}
+
+/* — Korean — */
+:lang(ko),
+html[lang|="ko"] {
+    --wts-font-stack:
+        "Noto Sans KR",
+        var(--wts-font-latin),
+        var(--wts-font-cjk),
+        sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    letter-spacing: 0;
+    line-height: 1.7;
+}
+
+/* — Urdu (nastaliq) — */
+:lang(ur),
+html[lang|="ur"],
+.ur-nastaliq {
+    --wts-font-stack: var(--wts-font-urdu), var(--wts-font-arabic), var(--wts-font-latin), sans-serif;
+    --font-family: var(--wts-font-stack) !important;
+    font-family: var(--font-family);
+    line-height: 2.4;
+    letter-spacing: 0;
+    direction: rtl;
+    text-align: start;
+}
+:lang(ur) p:not([class*='fi-']),
+:lang(ur) .md-p,
+html[lang|="ur"] p:not([class*='fi-']) {
+    font-size: calc(var(--text-sm) * var(--wts-p-scale-ur)) !important;
+}
+
+/* — Latin runs inside Arabic/Hebrew: restore DM Sans for nested :lang(en) — */
+:lang(ar) :lang(en),
+:lang(fa) :lang(en),
+:lang(he) :lang(en) {
+    font-family: var(--wts-font-latin);
+    letter-spacing: normal;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §6  SPACING SYSTEM
+   Mirrors Platform .fi-prose — but margin lives on the element itself so it
+   works outside .fi-prose (tables, callouts, .fi-not-prose, …).
+════════════════════════════════════════════════════════════════════════════ */
+
+/* — Zero out block margin on all prose elements — */
+:is(
+    h1:not([class*='fi-']), h2:not([class*='fi-']), h3:not([class*='fi-']),
+    h4:not([class*='fi-']), h5:not([class*='fi-']), h6:not([class*='fi-']),
+    p:not([class*='fi-']),
+    .md-h1, .md-h2, .md-h3,
+    .md-h4, .md-h5, .md-h6,
+    .md-p
+) {
+    margin-block: 0;
+}
+
+/* — Space AFTER every heading (before body, tables, callouts, …) — */
+:is(
+    h1:not([class*='fi-']), h2:not([class*='fi-']), h3:not([class*='fi-']),
+    h4:not([class*='fi-']), h5:not([class*='fi-']), h6:not([class*='fi-']),
+    .md-h1, .md-h2, .md-h3,
+    .md-h4, .md-h5, .md-h6
+) {
+    margin-bottom: calc(var(--spacing, 0.25rem) * 4);
+}
+
+/* — Space BEFORE section headings (h2+) — */
+:is(
+    h2:not([class*='fi-']), h3:not([class*='fi-']), h4:not([class*='fi-']),
+    h5:not([class*='fi-']), h6:not([class*='fi-']),
+    .md-h2, .md-h3, .md-h4,
+    .md-h5, .md-h6
+) {
+    margin-top: calc(var(--spacing, 0.25rem) * 8);
+}
+
+/* — p + p gap — */
+:is(p:not([class*='fi-']), .md-p)
+  + :is(p:not([class*='fi-']), .md-p) {
+    margin-top: calc(var(--spacing, 0.25rem) * 4);
+}
+
+/* — heading → p: heading already has margin-bottom, skip double gap — */
+:is(
+    h1:not([class*='fi-']), h2:not([class*='fi-']), h3:not([class*='fi-']),
+    h4:not([class*='fi-']), h5:not([class*='fi-']), h6:not([class*='fi-']),
+    .md-h1, .md-h2, .md-h3,
+    .md-h4, .md-h5, .md-h6
+)
+  + :is(p:not([class*='fi-']), .md-p) {
+    margin-top: 0;
+}
+
+/* — hr → h2: explicit section break spacing — */
+hr + h2:not([class*='fi-']),
+hr + .md-h2,
+.md-hr + h2:not([class*='fi-']),
+.md-hr + .md-h2 {
+    margin-top: calc(var(--spacing, 0.25rem) * 8);
+}
+
+/* ─── Lists ─────────────────────────────────────────────────────────────── */
+:is(
+    ul:not([class*='fi-']), ol:not([class*='fi-']),
+    .md-list
+) {
+    margin-top:          calc(var(--spacing, 0.25rem) * 4);
+    margin-bottom:       calc(var(--spacing, 0.25rem) * 4);
+    padding-inline-start: calc(var(--spacing, 0.25rem) * 6);
+}
+
+ul:not([class*='fi-']),
+.md-list.md-list-unordered {
+    list-style-type: disc;
+}
+
+ol:not([class*='fi-']),
+.md-list.md-list-ordered {
+    list-style-type: decimal;
+}
+
+:is(
+    h1:not([class*='fi-']), h2:not([class*='fi-']), h3:not([class*='fi-']),
+    h4:not([class*='fi-']), h5:not([class*='fi-']), h6:not([class*='fi-']),
+    .md-h1, .md-h2, .md-h3,
+    .md-h4, .md-h5, .md-h6
+)
+  + :is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list) {
+    margin-top: 0;
+}
+
+:is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list)
+  + :is(p:not([class*='fi-']), .md-p) {
+    margin-top: 0;
+}
+
+:is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list)
+  > :is(li:not([class*='fi-']), .md-list-item) {
+    margin-top:           0;
+    margin-bottom:        0;
+    padding-inline-start: calc(var(--spacing, 0.25rem) * 1);
+}
+:is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list)
+  > :is(li:not([class*='fi-']), .md-list-item)
+  + :is(li:not([class*='fi-']), .md-list-item) {
+    margin-top: calc(var(--spacing, 0.25rem) * 2);
+}
+
+:is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list)
+  :is(ul:not([class*='fi-']), ol:not([class*='fi-']), .md-list) {
+    margin-top:    calc(var(--spacing, 0.25rem) * 2);
+    margin-bottom: calc(var(--spacing, 0.25rem) * 2);
+}
+
+.fi-prose > :first-child,
+.md-prose > :first-child,
+.md-root  > :first-child,
+.fi-prose > .md-root > :first-child {
+    margin-top: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §7  SCROLL-MARGIN (sticky header clearance)
+════════════════════════════════════════════════════════════════════════════ */
+:is(
+    h2:not([class*='fi-']), h3:not([class*='fi-']), h4:not([class*='fi-']),
+    h5:not([class*='fi-']), h6:not([class*='fi-']),
+    .md-h2, .md-h3, .md-h4,
+    .md-h5, .md-h6
+) {
+    scroll-margin-top: calc(var(--spacing, 0.25rem) * 32);
+}
+
+@media(min-width: 64rem) {
+    :is(
+        h2:not([class*='fi-']), h3:not([class*='fi-']), h4:not([class*='fi-']),
+        h5:not([class*='fi-']), h6:not([class*='fi-']),
+        .md-h2, .md-h3, .md-h4,
+        .md-h5, .md-h6
+    ) {
+        scroll-margin-top: calc(var(--spacing, 0.25rem) * 18);
+    }
+}

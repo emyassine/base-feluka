@@ -52,6 +52,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.component("feluqa-panel::theme-switcher", "feluqa-panel::components.theme.switcher", &[])?;
     compiler.parameters("feluqa-panel::components.section", "heading: &str, description: &str")?;
     compiler.component("feluqa-panel::section", "feluqa-panel::components.section", &["default"])?;
+    compiler.parameters("feluqa-panel::components.button", "color: &str, disabled: bool")?;
+    compiler.component("feluqa::button", "feluqa-panel::components.button", &["default"])?;
+    compiler.parameters("feluqa-panel::components.field", "id: &str, label: &str, required: bool")?;
+    compiler.component("feluqa::field", "feluqa-panel::components.field", &["default"])?;
     compiler.parameters("feluqa-panel::components.language-selector", "csrf_token: &str, active: &str")?;
     compiler.component("feluqa-panel::language-selector", "feluqa-panel::components.language-selector", &[])?;
     compiler.parameters("app::pages.home", "title: &str")?;

@@ -3,6 +3,90 @@
     --sidebar-width: 21rem;
     --collapsed-sidebar-width: 4.5rem;
     --topbar-height: 4rem;
+    /* Default palettes from Webkernel Platform ColorManager::DEFAULT_COLORS. */
+    --danger-50: oklch(0.971 0.013 17.38);
+    --danger-100: oklch(0.936 0.032 17.717);
+    --danger-200: oklch(0.885 0.062 18.334);
+    --danger-300: oklch(0.808 0.114 19.571);
+    --danger-400: oklch(0.704 0.191 22.216);
+    --danger-500: oklch(0.637 0.237 25.331);
+    --danger-600: oklch(0.577 0.245 27.325);
+    --danger-700: oklch(0.505 0.213 27.518);
+    --danger-800: oklch(0.444 0.177 26.899);
+    --danger-900: oklch(0.396 0.141 25.723);
+    --danger-950: oklch(0.258 0.092 26.042);
+    --gray-50: oklch(0.985 0 0);
+    --gray-100: oklch(0.967 0.001 286.375);
+    --gray-200: oklch(0.92 0.004 286.32);
+    --gray-300: oklch(0.871 0.006 286.286);
+    --gray-400: oklch(0.705 0.015 286.067);
+    --gray-500: oklch(0.552 0.016 285.938);
+    --gray-600: oklch(0.442 0.017 285.786);
+    --gray-700: oklch(0.37 0.013 285.805);
+    --gray-800: oklch(0.274 0.006 286.033);
+    --gray-900: oklch(0.21 0.006 285.885);
+    --gray-950: oklch(0.141 0.005 285.823);
+    --info-50: oklch(0.97 0.014 254.604);
+    --info-100: oklch(0.932 0.032 255.585);
+    --info-200: oklch(0.882 0.059 254.128);
+    --info-300: oklch(0.809 0.105 251.813);
+    --info-400: oklch(0.707 0.165 254.624);
+    --info-500: oklch(0.623 0.214 259.815);
+    --info-600: oklch(0.546 0.245 262.881);
+    --info-700: oklch(0.488 0.243 264.376);
+    --info-800: oklch(0.424 0.199 265.638);
+    --info-900: oklch(0.379 0.146 265.522);
+    --info-950: oklch(0.282 0.091 267.935);
+    --primary-50: oklch(0.987 0.022 95.277);
+    --primary-100: oklch(0.962 0.059 95.617);
+    --primary-200: oklch(0.924 0.12 95.746);
+    --primary-300: oklch(0.879 0.169 91.605);
+    --primary-400: oklch(0.828 0.189 84.429);
+    --primary-500: oklch(0.769 0.188 70.08);
+    --primary-600: oklch(0.666 0.179 58.318);
+    --primary-700: oklch(0.555 0.163 48.998);
+    --primary-800: oklch(0.473 0.137 46.201);
+    --primary-900: oklch(0.414 0.112 45.904);
+    --primary-950: oklch(0.279 0.077 45.635);
+    --success-50: oklch(0.982 0.018 155.826);
+    --success-100: oklch(0.962 0.044 156.743);
+    --success-200: oklch(0.925 0.084 155.995);
+    --success-300: oklch(0.871 0.15 154.449);
+    --success-400: oklch(0.792 0.209 151.711);
+    --success-500: oklch(0.723 0.219 149.579);
+    --success-600: oklch(0.627 0.194 149.214);
+    --success-700: oklch(0.527 0.154 150.069);
+    --success-800: oklch(0.448 0.119 151.328);
+    --success-900: oklch(0.393 0.095 152.535);
+    --success-950: oklch(0.266 0.065 152.934);
+    --warning-50: var(--primary-50);
+    --warning-100: var(--primary-100);
+    --warning-200: var(--primary-200);
+    --warning-300: var(--primary-300);
+    --warning-400: var(--primary-400);
+    --warning-500: var(--primary-500);
+    --warning-600: var(--primary-600);
+    --warning-700: var(--primary-700);
+    --warning-800: var(--primary-800);
+    --warning-900: var(--primary-900);
+    --warning-950: var(--primary-950);
+}
+
+/* Webkernel's app imports Tailwind preflight; this isolated panel provides the same form reset. */
+button,
+input,
+optgroup,
+select,
+textarea,
+::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
 }
 
 .fi-body .fi-main-ctn {
@@ -72,10 +156,29 @@
     white-space: nowrap;
 }
 
-.w-lang {
-    position: relative;
-    flex-shrink: 0;
+.fi-sidebar {
+    border-inline-end: 1px solid color-mix(in oklab, var(--gray-950) 8%, transparent);
 }
+
+.dark .fi-sidebar {
+    border-inline-end-color: color-mix(in oklab, var(--color-white) 8%, transparent);
+}
+
+.fi-sidebar-header-controls::after {
+    border-color: color-mix(in oklab, var(--gray-950) 5%, transparent);
+}
+
+.dark .fi-sidebar-header-controls::after {
+    border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+}
+
+.fi-input-wrp .fi-input,
+.fi-input-wrp .fi-select-input,
+.fi-input-wrp .fi-textarea {
+    background-color: transparent;
+}
+
+.w-lang { min-width: 0; }
 
 .w-lang-trigger {
     display: inline-flex;
@@ -91,10 +194,6 @@
     font: inherit;
     cursor: pointer;
     list-style: none;
-}
-
-.w-lang-trigger::-webkit-details-marker {
-    display: none;
 }
 
 .w-lang-trigger svg {
@@ -129,70 +228,7 @@
     object-fit: cover;
 }
 
-.w-lang .fi-dropdown-panel {
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + .25rem);
-    z-index: 90;
-    display: grid;
-    min-width: 13rem;
-    padding: .375rem;
-    border: 1px solid var(--gray-200, #e5e7eb);
-    border-radius: .5rem;
-    background: var(--color-white, #fff);
-    box-shadow: 0 12px 24px rgb(0 0 0 / .12);
-}
-
-.w-lang details:not([open]) > .fi-dropdown-panel {
-    display: none;
-}
-
-.w-lang .fi-dropdown-header {
-    padding: .5rem .625rem;
-    color: var(--gray-500, #6b7280);
-    font-size: .75rem;
-    font-weight: 600;
-}
-
-.w-lang-form {
-    margin: 0;
-}
-
-.w-lang .fi-dropdown-list-item {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: .625rem;
-    padding: .5rem .625rem;
-    border: 0;
-    border-radius: .375rem;
-    background: transparent;
-    color: var(--gray-700, #374151);
-    font: inherit;
-    text-align: start;
-    cursor: pointer;
-}
-
-.w-lang .fi-dropdown-list-item:hover,
-.w-lang .fi-dropdown-list-item[aria-current="true"] {
-    background: var(--gray-100, #f3f4f6);
-    color: var(--primary-600, #2563eb);
-}
-
-.dark .w-lang .fi-dropdown-panel {
-    border-color: #303036;
-    background: #1f1f23;
-}
-
-.dark .w-lang .fi-dropdown-list-item {
-    color: #d1d5db;
-}
-
-.dark .w-lang .fi-dropdown-list-item:hover,
-.dark .w-lang .fi-dropdown-list-item[aria-current="true"] {
-    background: #303036;
-    color: #60a5fa;
-}
+.w-lang-form { margin: 0; }
 
 .fi-topbar-open-sidebar-btn svg,
 .fi-topbar-close-sidebar-btn svg,
@@ -287,7 +323,7 @@
     font-size: .6875rem;
 }
 
-.fi-user-menu[open] .fi-dropdown-panel {
+.fi-user-menu[open] > .fi-dropdown-panel {
     position: absolute;
     bottom: calc(100% + .5rem);
     left: 0;
@@ -300,7 +336,7 @@
     box-shadow: 0 12px 24px rgb(0 0 0 / .1);
 }
 
-.fi-user-menu[open] .fi-dropdown-panel form {
+.fi-user-menu[open] > .fi-dropdown-panel > form {
     margin-top: .75rem;
 }
 
@@ -368,7 +404,7 @@
     color: var(--gray-200, #e5e7eb);
 }
 
-.dark .fi-user-menu[open] .fi-dropdown-panel {
+.dark .fi-user-menu[open] > .fi-dropdown-panel {
     border-color: var(--gray-700, #374151);
     background: var(--gray-900, #111827);
 }

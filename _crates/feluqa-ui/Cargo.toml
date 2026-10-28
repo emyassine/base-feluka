@@ -11,3 +11,8 @@ publish = ["feluqa"]
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true
+feluqa-ui-components = { version = "0.1.0", registry = "feluqa", path = "../feluqa-ui-components", optional = true }
+
+[features]
+default = []
+components = ["dep:feluqa-ui-components"]

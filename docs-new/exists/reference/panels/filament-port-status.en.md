@@ -1,5 +1,11 @@
 # Filament/Webkernel panel port status
 
+> Historical inventory only. On 2026-10-28 the product direction changed to
+> migrate panel UI to Feluqa-owned Leptos components adapted from the Rust UI
+> registry. This records the outgoing implementation and its remaining
+> Filament parity; it is no longer the acceptance target. See the
+> [Leptos UI migration contract](../../../knowledge/architecture/leptos-ui.en.md).
+
 Source of truth for the port is `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/`.
 Counts below were enumerated from each package's `src/**/*.php` and `resources/views/**/*.view.php` on
 2026-10-27: Filament 279/67, schemas 122/2, tables 199/8, forms 152/3, actions 125/3, widgets 30/6,
@@ -9,14 +15,35 @@ A copied asset bundle is not feature parity. Each row below tracks an independen
 
 | Capability | Rust location | Current state | Still required for parity |
 |---|---|---|---|
-| Panel configuration/provider | `_crates/feluqa-panel` | Typed builder for branding, auth-flow flags, sidebar/topbar placement, widths, groups, and permission-filtered navigation. Core and the CLI render links from registered providers. | Render the remaining appearance options in the panel shell; auth pages and registration/reset/verification handlers; middleware ordering; tenant selection/registration; panel events, hooks, plugins, themes, SPA mode and global search. |
-| Theme system and visual assets | `_crates/feluqa-panel/assets` | Selected compiled Filament/Webkernel CSS and browser runtime assets are bundled and served by Feluqa, with a small Feluqa adapter and light/dark switch. | **Filament theming is not fully imported.** Theme providers/configuration, theme compilation/customization, all theme assets/tokens and dark-mode behavior parity remain. Bundling a compiled CSS file is not the Filament theme API. |
-| Panel shell and Blade-style views | `_crates/feluqa-panel/resources/views`, `_crates/feluqa-panel/assets` | Framework-owned `.view.rs` templates own the document and expose partial input-wrapper, section, shell, theme-switcher and Webkernel-style language-selector components. The shell includes local nav search, grouped navigation, icons, active route, mobile drawer, avatar/user menu and CSRF-protected sign out. Six language flags are bundled and served by Feluqa. | **The Filament component catalog is not fully imported.** The input wrapper lacks prefix/suffix actions, complete icon/loading/validation/disabled state; sections lack full collapse/persist/header/footer behavior; tables, schemas, notifications, actions, widgets, modals, navigation and pages remain partial. Search only filters sidebar links, not a server-backed global search. Browser captures are visual evidence, not parity. |
+| Panel configuration/provider | `_crates/feluqa-panel` | Typed builder for branding, auth-flow flags, sidebar/topbar placement, widths, groups, permission-filtered navigation, and dashboard widget declarations. Core and the CLI render links from registered providers. | Render remaining appearance options; complete auth flows and middleware ordering; tenant selection/registration; widget composition into page slots; panel events, hooks, plugins, themes, SPA mode and global search. |
+| Theme system and visual assets | `_crates/feluqa-panel/assets` | The compiled Filament/Webkernel theme served by the real Webkernel `/test/login` response is byte-identical to `filament-theme.css` (SHA-256 `8dd3833a1af0be2769816d47ba066e85f2e025f6dbe7cbdc2128dc4018ba7e04`). Its light/dark CSS is retained unchanged. Feluqa also serves the CSS rendered from Webkernel's `webkernel-panel-typography` style block, including its dark prose colors and multi-script font stack, followed by Feluqa's shell adapter. | **Filament theming is not fully imported.** Theme providers/configuration, theme compilation/customization, the full theme asset catalog and browser-verified dark-mode behavior parity remain. Bundling a compiled CSS file does not provide the Filament theme API. The authenticated `/test` dashboard still needs visual comparison; its real login response redirects unauthenticated requests. |
+| Panel shell and Blade-style views | `_crates/feluqa-panel/resources/views`, `_crates/feluqa-panel/assets` | Framework-owned `.view.rs` templates own the document and expose partial input-wrapper, button, field, section, shell, theme-switcher and Webkernel-style language-selector components. `feluqa::button` and `feluqa::field` are registered by the app view build script; their current markup uses the bundled theme's `fi-btn`, `fi-fo-field`, and input wrapper classes. The shell includes local nav search, grouped navigation, icons, active route, mobile drawer, avatar/user menu and CSRF-protected sign out. Six language flags are bundled and served by Feluqa. | **The Filament component catalog is not fully imported.** Buttons and fields cover only static submit/basic field behavior; there is no full component state API. The input wrapper lacks prefix/suffix actions, complete icon/loading/validation/disabled state; sections lack full collapse/persist/header/footer behavior; tables, schemas, notifications, actions, widgets, modals, navigation and pages remain partial. Search only filters sidebar links, not a server-backed global search. Browser captures are visual evidence, not parity. |
 | Notifications | `_crates/feluqa-notifications` | Typed toast payload, status/duration/action validation, bounded mailbox, batch selection, camelCase JSON, escaped HTML renderer and shared browser dismissal/action client. | Session-bound persistent mailbox adapter; flush/pull middleware; database notifications, read/unread, pagination, broadcast delivery, server-side action execution, safe custom-view registry and end-to-end panel integration. |
 | Schemas/forms | `_crates/feluqa-ui`, `_crates/feluqa-panel/resources/views/components/input` | Versioned closed SDUI tree and safe HTML renderer; basic resource fields render with Filament field-wrapper, input-wrapper, input/select/textarea and button classes. | The wrapper is only the first static slice of Filament's component; prefix/suffix actions and icons, loading targets, dynamic validity/disabled states, form component state, nested schema, validation, layout schemas (grid/fieldset/tabs/wizard/repeater), upload, model hydration and operation hooks remain. |
-| Panels, resources, pages and clusters | `_crates/feluqa-panel`, `_crates/feluqa-ui` | Typed `.pages()` / `.resources()` registration, resource access checks, basic generated forms and escaped table markup. | Full resource CRUD lifecycle, built-in operation pages, custom typed pages, optional resource clusters, widgets per page/resource, query adapters, pagination/search/sort/filters/bulk actions/column manager/summaries/empty states/exports/relation managers/record actions remain. Public websites are not yet first-class panel providers. |
+| Panels, resources, pages and clusters | `_crates/feluqa-panel`, `_crates/feluqa-ui` | Typed `.pages()` / `.resources()` / `.widgets()` registration, resource access checks, schema-backed panel dashboard widgets with permission filtering, deterministic sort, and fixed grid layout, basic generated forms and escaped table markup. | Full resource CRUD lifecycle, built-in operation pages, custom typed pages, optional resource clusters, widget composition in page header/footer/resource slots, responsive per-widget placements, query adapters, pagination/search/sort/filters/bulk actions/column manager/summaries/empty states/exports/relation managers/record actions remain. Public websites are not yet first-class panel providers. |
 | Actions/widgets/LiveView | `_crates/feluqa-panel`, `_crates/feluqa-live`, public alias `feluqa::liveview` | Live actions are signed, CSRF checked, permission checked, and replay protected over HTTP. The panel's health action completed in the browser-facing HTTP integration test. | This is not yet Livewire-style LiveView: there is no persistent component session, event transport, state diff/morph lifecycle, reconnect, or streaming. `axum-wire` is currently version 0.0.6; Shelly's Axum adapter is version 0.6.0 and its published history starts in May 2026. Neither has enough production history to make it Feluqa's core contract. Keep the signed Feluqa action contract and choose a transport behind it only after protocol/security and browser acceptance tests. Full action/group lifecycle, modal forms, confirmation, notifications, transactions, widgets/stats/charts and grid layout also remain. |
 | CLI and app ownership | `products/feluqa-cli` | Scaffold compiles framework panel views/assets from crate roots rather than generating copies into the app. A generated application compiles with the Core panel and permission-filtered menu. | Feature generators and integration tests for every provider, resource/page/widget/action type; standalone published-crate packaging. |
+
+## Verified `/test` component comparison
+
+The reference fixture is the checked-in `App\\Providers\\TestPanel` in
+`/home/yassine/Projects/Php/framework/__work/webkernel`. It registers the
+Filament Dashboard page and exactly two widgets: `AccountWidget` and
+`PlatformInfoWidget`. Their source views are
+`platform/filament/resources/views/widgets/account-widget.view.php` and
+`platform/filament/resources/views/widgets/platform-info-widget.view.php`.
+The account widget renders the authenticated user's avatar, welcome text, name
+and CSRF-protected logout form. The platform information widget renders the
+Webkernel Platform label, installed version and external documentation link.
+
+Feluqa now has a typed panel-level widget contract and permission-aware
+renderer, but it is not yet wired into the page's dashboard/header/footer
+composition lifecycle, and the application-specific Webkernel widget views are
+not ported. Its Core dashboard is still a page view with a Live connection
+status card. That card is not equivalent to either source widget. Therefore
+the reference widgets' rendering and account actions remain open.
+No authenticated `/test` dashboard screenshot was captured: direct requests
+redirect to `/test/login`, and a connected browser session was unavailable.
 
 ## Port rule
 

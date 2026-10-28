@@ -535,6 +535,9 @@ mod panel_http_tests {
         .await?;
         assert_eq!(users.status(), StatusCode::OK);
         let users_html = body_text(users).await?;
+        if let Some(capture_path) = crate::std::env::var_os("FELUQA_UI_USERS_CAPTURE") {
+            crate::std::fs::write(capture_path, &users_html)?;
+        }
         assert!(users_html.contains("<table class=\"fi-ta-table\">"));
         assert!(users_html.contains(">Name</span>"));
         assert!(users_html.contains(">Email</span>"));
@@ -547,6 +550,10 @@ mod panel_http_tests {
         assert!(users_html.contains("Choose a value"));
         assert!(users_html.contains("action=\"/system/users/update\""));
         assert!(users_html.contains("Change role and revoke sessions"));
+        assert!(users_html.contains("fi-bg-color-400"));
+        assert!(users_html.contains("x-data=\"platformDropdown({ isMenu: true })\""));
+        assert!(users_html.contains("x-float.placement.top-end.flip"));
+        assert!(users_html.contains("role=\"menuitem\""));
         assert!(users_html.contains("selected"));
         assert!(!users_html.contains("<pre>"));
         let roles = send(

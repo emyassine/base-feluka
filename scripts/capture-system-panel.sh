@@ -5,6 +5,8 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 output_path="${1:-/tmp/feluqa-system-panel.png}"
 mobile_output_path="${output_path%.*}.mobile.png"
 dark_output_path="${output_path%.*}.dark.png"
+users_output_path="${output_path%.*}.users.png"
+users_dark_output_path="${output_path%.*}.users.dark.png"
 temporary_dir="$(mktemp -d "${TMPDIR:-/tmp}/feluqa-panel-capture.XXXXXX")"
 server_pid=""
 
@@ -21,6 +23,7 @@ mkdir -p "$(dirname "$output_path")" "$temporary_dir/site/assets/feluqa"
 (
     cd "$repo_root/_crates"
     FELUQA_UI_CAPTURE="$temporary_dir/site/index.html" \
+        FELUQA_UI_USERS_CAPTURE="$temporary_dir/site/users.html" \
         cargo test -p numerimondes --bin numerimondes \
         core_setup_login_csrf_panels_and_logout_work_over_http
 )
@@ -31,7 +34,7 @@ cp "$repo_root/_crates/feluqa-panel/assets/filament.js" "$temporary_dir/site/ass
 cp "$repo_root/_crates/feluqa-panel/assets/feluqa-shell.js" "$temporary_dir/site/assets/feluqa/shell.js"
 cp "$repo_root/_crates/feluqa-panel/assets/feluqa-notifications.js" "$temporary_dir/site/assets/feluqa/notifications.js"
 cp "$repo_root/_crates/feluqa-panel/assets/feluqa-live.js" "$temporary_dir/site/assets/feluqa-live.js"
-python3 - "$temporary_dir/site/index.html" "$temporary_dir/site/mobile.html" "$temporary_dir/site/dark.html" <<'PY'
+python3 - "$temporary_dir/site/index.html" "$temporary_dir/site/mobile.html" "$temporary_dir/site/dark.html" "$temporary_dir/site/users.html" "$temporary_dir/site/users-dark.html" <<'PY'
 from pathlib import Path
 import sys
 
@@ -42,6 +45,8 @@ mobile = mobile.replace("</head>", mobile_css + "</head>", 1)
 mobile = mobile.replace('id="fi-main-sidebar" class="fi-sidebar fi-main-sidebar"', 'id="fi-main-sidebar" class="fi-sidebar fi-main-sidebar fi-sidebar-open" data-sidebar-open="true"', 1)
 Path(sys.argv[2]).write_text(mobile)
 Path(sys.argv[3]).write_text(source.replace("<head>", "<head><script>localStorage.setItem('feluqa:theme', 'dark');</script>", 1))
+users = Path(sys.argv[4]).read_text()
+Path(sys.argv[5]).write_text(users.replace("<head>", "<head><script>localStorage.setItem('feluqa:theme', 'dark');</script>", 1))
 PY
 
 python3 -u -m http.server 0 --bind 127.0.0.1 --directory "$temporary_dir/site" \
@@ -68,3 +73,9 @@ printf 'Dark panel screenshot: %s\n' "$dark_output_path"
 firefox --headless --screenshot "$mobile_output_path" --window-size 390,844 \
     "http://127.0.0.1:$port/mobile.html"
 printf 'Mobile drawer screenshot: %s\n' "$mobile_output_path"
+firefox --headless --screenshot "$users_output_path" --window-size 1600,1000 \
+    "http://127.0.0.1:$port/users.html"
+printf 'Users screenshot: %s\n' "$users_output_path"
+firefox --headless --screenshot "$users_dark_output_path" --window-size 1600,1000 \
+    "http://127.0.0.1:$port/users-dark.html"
+printf 'Dark users screenshot: %s\n' "$users_dark_output_path"

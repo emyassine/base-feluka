@@ -1,0 +1,12 @@
+[package]
+name = "feluqa-ui-components"
+version = "0.1.0"
+description = "Feluqa-owned Leptos component API adapted from the Rust UI registry."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version = "1.88"
+publish = ["feluqa"]
+
+[dependencies]
+leptos = { version = "=0.8.15", default-features = false }

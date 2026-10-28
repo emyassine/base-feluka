@@ -396,6 +396,7 @@ impl Parser<'_> {
         }
         if ![
             "id",
+            "for",
             "class",
             "title",
             "alt",

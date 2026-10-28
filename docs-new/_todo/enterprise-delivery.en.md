@@ -18,6 +18,7 @@ change calendar time. `exists/` describes what has actually been verified.
 | F5. Live actions | 10–18 days | Signed typed dispatch exists; add shared replay protection, client reconciliation/focus handling and failure/reconnect tests. |
 | F6. Sites, CLI and deployment | 8–14 days | Local scaffold/watcher exist; validate standalone builds, a second independent site, production deployment and rollback. |
 | F7. Installable module lifecycle | 12–20 days | Static lifecycle exists; implement artifact compatibility/signatures, licensing, domain activation, staging, recovery and safe uninstall/data retention. |
+| F8. Leptos panel UI migration | Unestimated pending build spike | Replace Filament-derived panel UI with Feluqa-owned Leptos components behind `feluqa::ui::component`; integrate SSR and hydration with Axum, migrate all panel pages/interactions, verify light/dark and responsive behavior, then remove unused Filament assets. Acceptance and sequencing are in [the Leptos UI migration contract](../knowledge/architecture/leptos-ui.en.md). |
 
 These tracks have dependencies and some can run in parallel. Do not sum the
 ranges as a committed schedule; re-estimate after each acceptance gate exposes
@@ -35,9 +36,10 @@ not implemented yet.
   and explicit data-retention behavior.
 - **Module developer experience:** concise providers, panels, resources, pages,
   clusters, widgets, CRUD adapters, migrations, seeders and standalone builds.
-- **Enterprise panels:** complete Filament-compatible theme/component system,
-  accessible forms/tables/actions/notifications and first-class public-site
-  panel composition.
+- **Enterprise panels:** complete Feluqa Leptos theme/component system,
+  accessible forms/tables/actions/notifications, responsive Core panel and
+  first-class public-site panel composition; see F8. Filament parity is no
+  longer the target.
 - **Security and data:** server-side authorization on every action,
   tenant/record isolation, PostgreSQL HTTP coverage, audit and a verified
   restore drill.

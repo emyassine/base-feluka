@@ -15,6 +15,8 @@ pub const LIVE_CLIENT_PATH: &str = "/assets/feluqa-live.js";
 pub const LIVE_CLIENT_JS: &str = include_str!("../assets/feluqa-live.js");
 /// Filament-derived panel theme CSS from the Webkernel Filament adaptation.
 pub const FILAMENT_THEME_CSS: &str = include_str!("../assets/filament-theme.css");
+/// Rendered Webkernel panel typography rules from the authenticated `/test` panel.
+pub const WEBKERNEL_TYPOGRAPHY_CSS: &str = include_str!("../assets/webkernel-typography.css");
 /// Filament-derived panel browser runtime from the Webkernel Filament adaptation.
 pub const FILAMENT_CLIENT_JS: &str = include_str!("../assets/filament.js");
 /// Filament Echo integration bundle from the Webkernel Filament adaptation.
@@ -103,6 +105,61 @@ pub struct PanelPage {
     pub permission: Permission,
     /// Versioned UI schema rendered by the shared component catalogue.
     pub document: UiDocument,
+}
+
+/// A schema-backed panel widget with explicit visibility and dashboard placement.
+#[derive(Clone, Debug, PartialEq)]
+pub struct PanelWidget {
+    /// Stable lowercase widget identifier, unique within its panel.
+    pub id: String,
+    /// Optional permission required to show the widget.
+    pub permission: Option<Permission>,
+    /// Sort order; lower values appear first and declaration order breaks ties.
+    pub sort: i32,
+    /// Number of dashboard columns occupied by this widget.
+    pub column_span: u8,
+    /// One-based dashboard column where this widget starts, when set.
+    pub column_start: Option<u8>,
+    /// Versioned, data-only UI rendered by the shared component catalogue.
+    pub document: UiDocument,
+}
+
+impl PanelWidget {
+    /// Declare a widget from its ID and versioned component schema.
+    pub fn new(id: impl Into<String>, document: UiDocument) -> Self {
+        Self {
+            id: id.into(),
+            permission: None,
+            sort: -1,
+            column_span: 1,
+            column_start: None,
+            document,
+        }
+    }
+
+    /// Require a permission before this widget is included in rendered output.
+    pub fn permission(mut self, permission: Permission) -> Self {
+        self.permission = Some(permission);
+        self
+    }
+
+    /// Set ordering relative to the other widgets in this panel.
+    pub fn sort(mut self, sort: i32) -> Self {
+        self.sort = sort;
+        self
+    }
+
+    /// Set the number of dashboard columns occupied by this widget.
+    pub fn column_span(mut self, span: u8) -> Self {
+        self.column_span = span;
+        self
+    }
+
+    /// Set the one-based dashboard column where this widget starts.
+    pub fn column_start(mut self, start: u8) -> Self {
+        self.column_start = Some(start);
+        self
+    }
 }
 
 /// Navigation placement supported by a panel shell.
@@ -313,6 +370,19 @@ pub struct RenderedNavigation {
 
 impl RenderedNavigation {
     /// Borrow the safe navigation markup for a compiled view.
+    pub fn as_str(&self) -> &str {
+        &self.html
+    }
+}
+
+/// Escaped, fixed-structure widget HTML produced from registered panel declarations.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RenderedWidgets {
+    html: String,
+}
+
+impl RenderedWidgets {
+    /// Borrow the rendered widget markup for a compiled view.
     pub fn as_str(&self) -> &str {
         &self.html
     }
@@ -1200,6 +1270,10 @@ pub struct Panel {
     pub kind: PanelKind,
     /// Registered pages owned by this panel.
     pub pages: Vec<PanelPage>,
+    /// Widgets rendered in the panel dashboard, in configured sort order.
+    pub widgets: Vec<PanelWidget>,
+    /// Number of columns in the desktop dashboard widget grid.
+    pub widget_columns: u8,
     /// Resources owned by this panel, discovered by the shared startup catalogue.
     pub resources: Vec<Resource>,
     /// Authentication, appearance, and navigation settings used by the shared shell.
@@ -1231,6 +1305,8 @@ impl PanelBuilder {
             prefix: prefix.into(),
             kind,
             pages: Vec::new(),
+            widgets: Vec::new(),
+            widget_columns: 2,
             resources: Vec::new(),
             options: PanelOptions::default(),
         };
@@ -1354,6 +1430,24 @@ impl PanelBuilder {
         self
     }
 
+    /// Add one schema-backed widget to the panel dashboard.
+    pub fn widget(mut self, widget: PanelWidget) -> Self {
+        self.panel.widgets.push(widget);
+        self
+    }
+
+    /// Add widgets declared by one module to the panel dashboard.
+    pub fn widgets(mut self, widgets: impl IntoIterator<Item = PanelWidget>) -> Self {
+        self.panel.widgets.extend(widgets);
+        self
+    }
+
+    /// Set the number of desktop columns in the dashboard widget grid.
+    pub fn widget_columns(mut self, columns: u8) -> Self {
+        self.panel.widget_columns = columns;
+        self
+    }
+
     /// Add one resource contract owned by this panel.
     pub fn resource(mut self, resource: Resource) -> Self {
         self.panel.resources.push(resource);
@@ -1412,6 +1506,8 @@ impl Panel {
                     }],
                 },
             }],
+            widgets: Vec::new(),
+            widget_columns: 2,
             resources: Vec::new(),
             options: PanelOptions {
                 appearance: PanelAppearance {
@@ -1619,6 +1715,62 @@ impl PanelCatalog {
             .map_err(PanelRenderError::Render)
     }
 
+    /// Render the registered dashboard widgets allowed for this principal.
+    ///
+    /// Widget documents are schema-validated during registration. A widget permission is checked
+    /// here on every render; visibility in the DOM is not treated as authorization for its actions.
+    pub fn render_widgets(
+        &self,
+        panel_id: &str,
+        principal: &Principal,
+        authorizer: &impl Authorizer,
+    ) -> Result<RenderedWidgets, PanelRenderError> {
+        let panel = self.panels.panels.get(panel_id).ok_or_else(|| {
+            PanelRenderError::Access(PanelError::NotFound(String::from(panel_id)))
+        })?;
+        let mut ordered = panel.widgets.iter().enumerate().collect::<Vec<_>>();
+        ordered.sort_by_key(|(declaration_order, widget)| (widget.sort, *declaration_order));
+
+        let mut html = String::from(
+            "<div class=\"fi-wi fi-grid lg:fi-grid-cols\" style=\"--cols-default: repeat(1, minmax(0, 1fr)); --cols-lg: repeat(",
+        );
+        write!(html, "{}", panel.widget_columns)
+            .map_err(|_| PanelRenderError::Access(PanelError::RegistryCorrupt))?;
+        html.push_str(", minmax(0, 1fr))\">");
+        for (_, widget) in ordered {
+            if widget
+                .permission
+                .as_ref()
+                .is_some_and(|permission| authorizer.authorize(principal, permission).is_err())
+            {
+                continue;
+            }
+            html.push_str("<div class=\"fi-grid-col lg:fi-grid-col-span fi-wi-widget");
+            if widget.column_start.is_some() {
+                html.push_str(" lg:fi-grid-col-start");
+            }
+            html.push_str("\" style=\"--col-span-lg: span ");
+            write!(html, "{}", widget.column_span)
+                .map_err(|_| PanelRenderError::Access(PanelError::RegistryCorrupt))?;
+            html.push_str(" / span ");
+            write!(html, "{}", widget.column_span)
+                .map_err(|_| PanelRenderError::Access(PanelError::RegistryCorrupt))?;
+            if let Some(start) = widget.column_start {
+                html.push_str("; --col-start-lg: ");
+                write!(html, "{start}")
+                    .map_err(|_| PanelRenderError::Access(PanelError::RegistryCorrupt))?;
+            }
+            html.push_str("\" data-widget-id=\"");
+            html.push_str(&escape_html(&widget.id));
+            html.push_str("\">");
+            let rendered = feluqa_ui::render(&widget.document).map_err(PanelRenderError::Render)?;
+            html.push_str(rendered.as_str());
+            html.push_str("</div>");
+        }
+        html.push_str("</div>");
+        Ok(RenderedWidgets { html })
+    }
+
     /// Look up a module-owned resource by stable ID.
     pub fn resource(&self, id: &str) -> Option<&Resource> {
         self.resources.get(id)
@@ -1710,6 +1862,9 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
     if prefix == "/" {
         return Err(PanelError::InvalidPrefix);
     }
+    if !(1..=12).contains(&panel.widget_columns) {
+        return Err(PanelError::InvalidWidget);
+    }
     for asset in [
         panel.options.appearance.brand_logo.as_deref(),
         panel.options.appearance.dark_brand_logo.as_deref(),
@@ -1745,6 +1900,35 @@ fn validate_panel(panel: &Panel) -> Result<(), PanelError> {
         PanelKind::System => "system",
         PanelKind::Business => "business",
     };
+    let mut widget_ids = BTreeMap::new();
+    for widget in &panel.widgets {
+        if !valid_resource_id(&widget.id)
+            || widget_ids.insert(widget.id.as_str(), ()).is_some()
+            || widget.column_span == 0
+            || widget.column_span > panel.widget_columns
+            || widget.column_start.is_some_and(|start| {
+                start == 0
+                    || start
+                        .checked_add(widget.column_span)
+                        .is_none_or(|end| end > panel.widget_columns + 1)
+            })
+        {
+            return Err(PanelError::InvalidWidget);
+        }
+        if let Some(permission) = &widget.permission {
+            if permission.namespace() != expected_namespace {
+                return Err(PanelError::WrongPermissionNamespace {
+                    panel: panel.id.clone(),
+                    expected: String::from(expected_namespace),
+                });
+            }
+        }
+        widget
+            .document
+            .validate()
+            .map_err(PanelError::InvalidSchema)?;
+        validate_action_namespaces(&widget.document.root, expected_namespace, &panel.id)?;
+    }
     let mut navigation_paths = BTreeMap::new();
     for group in &panel.options.navigation {
         if group.items.is_empty()
@@ -1903,6 +2087,8 @@ pub enum PanelError {
     InvalidPath(String),
     /// A panel has no pages.
     EmptyPanel,
+    /// Widget IDs or dashboard grid placement are invalid.
+    InvalidWidget,
     /// Navigation or branding contains an invalid path, label, icon, or permission.
     InvalidNavigation,
     /// A resource declaration failed validation or falls outside this panel's path/kind.
@@ -1948,6 +2134,9 @@ impl fmt::Display for PanelError {
             Self::InvalidPrefix => formatter.write_str("panel prefix cannot be the site root"),
             Self::InvalidPath(path) => write!(formatter, "invalid panel path `{path}`"),
             Self::EmptyPanel => formatter.write_str("panel must register at least one page"),
+            Self::InvalidWidget => {
+                formatter.write_str("panel widget declaration or grid placement is invalid")
+            }
             Self::InvalidNavigation => {
                 formatter.write_str("panel navigation or branding configuration is invalid")
             }
@@ -2004,9 +2193,10 @@ mod tests {
     use super::{
         ContentWidth, NavigationGroup, NavigationItem, Panel, PanelBuilder, PanelCatalog,
         PanelCatalogError, PanelError, PanelKind, PanelOptions, PanelPage, PanelRegistry,
-        PanelRenderError, Resource, ResourceAction, ResourceAuthorizationError, ResourceField,
-        ResourceInput, ResourceInputKind, ResourceOperation, ResourceOption, ResourceRecordScope,
-        ResourceRegistry, ResourceRegistryError, ResourceTableError, ResourceTableRow,
+        PanelRenderError, PanelWidget, Resource, ResourceAction, ResourceAuthorizationError,
+        ResourceField, ResourceInput, ResourceInputKind, ResourceOperation, ResourceOption,
+        ResourceRecordScope, ResourceRegistry, ResourceRegistryError, ResourceTableError,
+        ResourceTableRow,
     };
     use crate::alloc::vec::Vec;
     use crate::core::clone::Clone;
@@ -2183,6 +2373,8 @@ mod tests {
                     }],
                 },
             }],
+            widgets: Vec::new(),
+            widget_columns: 2,
             resources: Vec::new(),
             options: PanelOptions::default(),
         }
@@ -2264,6 +2456,96 @@ mod tests {
 
         let denied = principal(&[]);
         assert!(built.options.visible_navigation(&denied, &auth).is_empty());
+    }
+
+    #[test]
+    fn widgets_are_sorted_and_checked_against_their_permission() {
+        let mut catalog = PanelCatalog::default();
+        let dashboard = PanelBuilder::new("system", "System", "/system", PanelKind::System)
+            .page(PanelPage {
+                path: String::from("/"),
+                permission: Permission::new(String::from("system.dashboard.read"))
+                    .expect("dashboard permission"),
+                document: UiDocument {
+                    schema_version: SCHEMA_VERSION,
+                    root: vec![],
+                },
+            })
+            .widgets([
+                PanelWidget::new(
+                    "system.later",
+                    UiDocument {
+                        schema_version: SCHEMA_VERSION,
+                        root: vec![UiNode::Text {
+                            value: String::from("Later widget"),
+                        }],
+                    },
+                )
+                .sort(10),
+                PanelWidget::new(
+                    "system.restricted",
+                    UiDocument {
+                        schema_version: SCHEMA_VERSION,
+                        root: vec![UiNode::Text {
+                            value: String::from("Restricted widget"),
+                        }],
+                    },
+                )
+                .permission(
+                    Permission::new(String::from("system.widgets.private.read"))
+                        .expect("widget permission"),
+                ),
+                PanelWidget::new(
+                    "system.first",
+                    UiDocument {
+                        schema_version: SCHEMA_VERSION,
+                        root: vec![UiNode::Text {
+                            value: String::from("First widget"),
+                        }],
+                    },
+                )
+                .sort(-5)
+                .column_span(2)
+                .column_start(2),
+            ])
+            .widget_columns(3)
+            .build()
+            .expect("valid widget panel");
+        catalog
+            .register_panel(dashboard)
+            .expect("register widget panel");
+
+        let denied = principal(&[]);
+        let denied_html = catalog
+            .render_widgets("system", &denied, &PermissionSetAuthorizer)
+            .expect("render public widgets");
+        assert!(!denied_html.as_str().contains("Restricted widget"));
+        assert!(denied_html.as_str().contains("First widget"));
+
+        let allowed = principal(&["system.widgets.private.read"]);
+        let allowed_html = catalog
+            .render_widgets("system", &allowed, &PermissionSetAuthorizer)
+            .expect("render authorized widgets");
+        assert!(allowed_html.as_str().contains("Restricted widget"));
+        let first = allowed_html
+            .as_str()
+            .find("First widget")
+            .expect("first widget output");
+        let later = allowed_html
+            .as_str()
+            .find("Later widget")
+            .expect("later widget output");
+        assert!(first < later);
+        assert!(
+            allowed_html
+                .as_str()
+                .contains("--cols-lg: repeat(3, minmax(0, 1fr))")
+        );
+        assert!(
+            allowed_html
+                .as_str()
+                .contains("--col-span-lg: span 2 / span 2; --col-start-lg: 2")
+        );
     }
 
     #[test]

@@ -67,6 +67,11 @@ pub fn trusted_navigation_html(
     crate::view::TrustedHtml::from_trusted(rendered.as_str().to_string())
 }
 
+/// Mark permission-filtered registered widget markup as safe for a compiled panel view.
+pub fn trusted_widgets_html(rendered: crate::panel::RenderedWidgets) -> crate::view::TrustedHtml {
+    crate::view::TrustedHtml::from_trusted(rendered.as_str().to_string())
+}
+
 /// Render one validated notification with Feluqa's fixed-tag panel markup.
 pub fn notification_html(
     notification: &crate::notifications::Notification,
@@ -88,6 +93,14 @@ pub fn live_client() -> Response {
 /// Serve the shared Filament-derived panel stylesheet.
 pub fn panel_stylesheet() -> Response {
     asset_response(crate::panel::FILAMENT_THEME_CSS, "text/css; charset=utf-8")
+}
+
+/// Serve the rendered Webkernel typography rules used by its Filament panel.
+pub fn panel_typography_stylesheet() -> Response {
+    asset_response(
+        crate::panel::WEBKERNEL_TYPOGRAPHY_CSS,
+        "text/css; charset=utf-8",
+    )
 }
 
 /// Serve Feluqa's small layout rules for the shared Filament panel structure.
@@ -134,6 +147,7 @@ pub fn shell_client() -> Response {
 pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, StatusCode> {
     match asset.as_str() {
         "theme.css" => Ok(panel_stylesheet()),
+        "typography.css" => Ok(panel_typography_stylesheet()),
         "panel.css" => Ok(panel_adapter_stylesheet()),
         "panel.js" => Ok(panel_client()),
         "echo.js" => Ok(panel_echo_client()),

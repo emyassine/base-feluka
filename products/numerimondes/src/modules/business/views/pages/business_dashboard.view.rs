@@ -1,4 +1,5 @@
 <x-feluqa-panel::document panel="business" active="/admin" title="Business - Numerimondes" :navigation="navigation" :brand_name="brand_name" :csrf_token="csrf_token" :display_name="display_name" :email="email"><div class="fi-panel-page-content">
+{!! widgets !!}
 				<header>
 					<p class="eyebrow">Numerimondes · Business</p>
 					<h1>Business workspace</h1>

@@ -180,6 +180,10 @@ pub(crate) async fn render_dashboard(
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
+    let widgets = match registered_panel_widgets(state, identity, panel_id).await {
+        Ok(widgets) => widgets,
+        Err(status) => return status.into_response(),
+    };
     let html = if system {
         views::generated_views::core_dashboard(
             &identity.display_name,
@@ -187,6 +191,7 @@ pub(crate) async fn render_dashboard(
             csrf_token,
             navigation,
             &brand_name,
+            widgets,
         )
     } else {
         views::generated_views::business_dashboard(
@@ -195,6 +200,7 @@ pub(crate) async fn render_dashboard(
             csrf_token,
             navigation,
             &brand_name,
+            widgets,
         )
     };
     match html {
