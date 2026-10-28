@@ -101,6 +101,7 @@ default-features = true
 [dependencies.feluqa_ui_server_functions]
 package = "feluqa-ui-server-functions"
 version = "0.8.10"
+path = "../feluqa-ui-server-functions"
 
 [dependencies.feluqa_ui_dom_renderer]
 path = "../feluqa-ui-dom-renderer"

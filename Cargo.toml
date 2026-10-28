@@ -16,6 +16,9 @@ edition = "2024"
 license-file = "LICENSE"
 rust-version = "1.85"
 
+[profile.dev.package.feluqa-ui-components]
+debug = 0
+
 [patch.crates-io]
 feluqa-ui-runtime = { path = "crates/ui/feluqa-ui-runtime" }
 feluqa-ui-runtime-config = { path = "crates/ui/feluqa-ui-runtime-config" }
@@ -33,6 +36,3 @@ feluqa-ui-server-functions-macros-default = { path = "crates/macros/feluqa-ui-se
 feluqa-ui-dom-renderer = { path = "crates/ui/feluqa-ui-dom-renderer" }
 feluqa-ui-errors = { path = "crates/ui/feluqa-ui-errors" }
 feluqa-ui-task-runtime = { path = "crates/ui/feluqa-ui-task-runtime" }
-
-[profile.dev.package.feluqa-ui-components]
-debug = 0

@@ -67,10 +67,12 @@ default-features = true
 [dependencies.feluqa_ui_runtime]
 package = "feluqa-ui-runtime"
 version = "0.8.3"
+path = "../feluqa-ui-runtime"
 
 [dependencies.feluqa_ui_navigation_macros]
 package = "feluqa-ui-navigation-macros"
 version = "0.8.3"
+path = "../../macros/feluqa-ui-navigation-macros"
 
 [dependencies.or_poisoned]
 version = "0.1.0"

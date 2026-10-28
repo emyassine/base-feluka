@@ -158,6 +158,7 @@ default-features = true
 [dependencies.feluqa_ui_server_functions_macros]
 package = "feluqa-ui-server-functions-macros"
 version = "=0.8.12"
+path = "../feluqa-ui-server-functions-macros"
 
 [dependencies.syn]
 version = "3.0"
