@@ -494,7 +494,12 @@ impl CommandRegistry {
                         )
                     )
                     .map_err(io_error)?;
-                    writeln!(output, "\n{}", command.description).map_err(io_error)?;
+                    writeln!(
+                        output,
+                        "\n{}",
+                        terminal::paint(command.description, terminal::Color::Muted)
+                    )
+                    .map_err(io_error)?;
                     if !command.aliases.is_empty() {
                         writeln!(
                             output,
@@ -545,7 +550,7 @@ impl CommandRegistry {
         }
         writeln!(
             output,
-            "{}\n",
+            "{}",
             terminal::paint(
                 &alloc::format!("{product} · profile {profile}"),
                 terminal::Color::Accent
@@ -553,7 +558,14 @@ impl CommandRegistry {
         )
         .map_err(io_error)?;
         if let Some(notice) = notice {
-            writeln!(output, "{}\n", terminal::info_line(notice)).map_err(io_error)?;
+            write!(
+                output,
+                "{}",
+                terminal::status_block(notice, terminal::OutputStyle::Info)
+            )
+            .map_err(io_error)?;
+        } else {
+            writeln!(output).map_err(io_error)?;
         }
         writeln!(
             output,
@@ -582,8 +594,13 @@ impl CommandRegistry {
         }
         writeln!(
             output,
-            "\nUse `{} --interactive` to open the command chooser. Run `{} help <command>` for details.",
-            product, product
+            "\n{}",
+            terminal::paint(
+                &alloc::format!(
+                    "Use `{product} --interactive` to open the command chooser. Run `{product} help <command>` for details."
+                ),
+                terminal::Color::Muted
+            )
         )
         .map_err(io_error)?;
         Ok(())
@@ -1167,7 +1184,6 @@ fn run_in_context_with_notice(
 fn print_startup_notice(notice: Option<&str>) {
     if let Some(notice) = notice {
         terminal::info(notice);
-        terminal::blankline();
     }
 }
 

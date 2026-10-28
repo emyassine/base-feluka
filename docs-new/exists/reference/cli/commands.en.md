@@ -8,6 +8,8 @@ resource APIs and data conventions are covered by the corresponding
 The product builds two executables: `feluqa` for platform and application
 work, and `nadim` for personal commands. Each command is visible only to the
 profiles listed in its `#[feluqa::command(profiles = [...])]` declaration.
+Both executables display the same Feluqa release version from the workspace
+package version.
 There is no implicit sharing; listing another profile is the explicit import.
 Feluqa filters commands by detected location and explains the active command
 scope in its help. In interactive terminals, it offers command choices and
@@ -26,9 +28,12 @@ selection uses Space to toggle options. Escape, `q` or Ctrl+D cancels; Ctrl+C
 and SIGINT return status 130, while SIGTERM returns status 143. Both signals
 restore terminal mode before exiting the prompt.
 Console status messages use background-colored `INFO`, `SUCCESS`, `WARNING` and
-`ERROR` badges; set `NO_COLOR` to disable ANSI styling. The active profile is
-shown in generated help. A product host may provide a context notice; Console
-does not define product-specific location messages, and a profile can opt out.
+`ERROR` badges with a blank line before and after; set `NO_COLOR` to disable
+ANSI styling. Help descriptions and its usage footer are muted. Command help
+uses the current terminal width, including after a terminal resize. The active
+profile is shown in generated help. A product host may provide a context
+notice; Console does not define product-specific location messages, and a
+profile can opt out.
 
 ## Context detection
 

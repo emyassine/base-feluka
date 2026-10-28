@@ -1,6 +1,6 @@
 [package]
 name = "numerimondes"
-version = "0.1.0"
+version.workspace = true
 workspace = "../../_crates"
 edition.workspace = true
 license-file.workspace = true

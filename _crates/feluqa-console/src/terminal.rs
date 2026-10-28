@@ -11,9 +11,8 @@ use crate::std::option::Option::{None, Some};
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::{String, ToString};
-use crate::std::sync::OnceLock;
 use crate::std::vec::Vec;
-use crate::std::{eprintln, matches, print, println, vec, write};
+use crate::std::{eprint, matches, print, println, vec, write};
 
 /// ANSI style used by Feluqa Console output.
 #[derive(Clone, Copy)]
@@ -99,9 +98,16 @@ pub fn paint(value: &str, color: Color) -> String {
     crate::std::format!("\u{1b}[{code}m{value}\u{1b}[0m")
 }
 
-/// Format a cyan informational notice.
-pub fn info_line(message: &str) -> String {
-    crate::std::format!("{}  {message}", badge("INFO", OutputStyle::Info))
+/// Format a status message with a blank line before and after it.
+pub fn status_block(message: &str, style: OutputStyle) -> String {
+    let label = match style {
+        OutputStyle::Info => "INFO",
+        OutputStyle::Success => "SUCCESS",
+        OutputStyle::Warning => "WARNING",
+        OutputStyle::Error => "ERROR",
+        OutputStyle::Plain => return crate::std::format!("{message}\n"),
+    };
+    crate::std::format!("\n{}  {message}\n\n", badge(label, style))
 }
 
 /// Return a colored label with a contrasting background.
@@ -129,7 +135,7 @@ pub fn echo(message: &str, style: OutputStyle) {
         OutputStyle::Plain => None,
     };
     match label {
-        Some(label) => println!("{}  {message}", badge(label, style)),
+        Some(_) => print!("{}", status_block(message, style)),
         None => println!("{message}"),
     }
 }
@@ -160,67 +166,36 @@ pub fn command_entry(name: &str, description: &str) -> String {
             "  {} {} {}",
             paint(name, Color::Cyan),
             paint(&".".repeat(dots), Color::Muted),
-            description
+            paint(description, Color::Muted)
         );
     }
 
-    let wrapped = wrap(description, width.saturating_sub(6).max(24));
+    let wrapped = wrap(description, width.saturating_sub(6).max(10));
     let mut lines = Vec::with_capacity(wrapped.len() + 1);
     lines.push(crate::std::format!("  {}", paint(name, Color::Cyan)));
     lines.extend(
         wrapped
             .into_iter()
-            .map(|line| crate::std::format!("      {line}")),
+            .map(|line| crate::std::format!("      {}", paint(&line, Color::Muted))),
     );
     lines.join("\n")
 }
 
 /// Current terminal width, honoring the conventional `COLUMNS` setting.
 pub fn columns() -> usize {
-    static WIDTH: OnceLock<usize> = OnceLock::new();
-    *WIDTH.get_or_init(detect_columns)
-}
-
-fn detect_columns() -> usize {
-    let configured = crate::std::env::var("COLUMNS")
+    crate::crossterm::terminal::size()
         .ok()
-        .and_then(|value| value.parse::<usize>().ok())
-        .filter(|width| *width >= 40 && *width <= 300);
-    configured
-        .or_else(unix_terminal_columns)
-        .or_else(windows_terminal_columns)
+        .map(|(_, width)| usize::from(width))
+        .filter(|width| (20..=500).contains(width))
+        .or_else(configured_columns)
         .unwrap_or(80)
 }
 
-fn unix_terminal_columns() -> Option<usize> {
-    let output = crate::std::process::Command::new("stty")
-        .arg("size")
-        .output()
-        .ok()?;
-    let dimensions = String::from_utf8(output.stdout).ok()?;
-    let mut values = dimensions.split_whitespace();
-    values.next()?;
-    values
-        .next()?
-        .parse::<usize>()
+fn configured_columns() -> Option<usize> {
+    crate::std::env::var("COLUMNS")
         .ok()
-        .filter(|width| *width >= 40 && *width <= 300)
-}
-
-fn windows_terminal_columns() -> Option<usize> {
-    let output = crate::std::process::Command::new("cmd.exe")
-        .args(["/C", "mode", "con"])
-        .output()
-        .ok()?;
-    let mode = String::from_utf8(output.stdout).ok()?;
-    mode.lines().find_map(|line| {
-        let (_, value) = line.split_once(':')?;
-        value
-            .trim()
-            .parse::<usize>()
-            .ok()
-            .filter(|width| *width >= 40 && *width <= 300)
-    })
+        .and_then(|value| value.parse::<usize>().ok())
+        .filter(|width| (20..=500).contains(width))
 }
 
 fn wrap(value: &str, width: usize) -> Vec<String> {
@@ -255,20 +230,12 @@ pub fn info(message: &str) {
 
 /// Write a yellow warning line to stderr.
 pub fn warning(message: &str) {
-    if colors_enabled() {
-        eprintln!("{}  {message}", badge("WARNING", OutputStyle::Warning));
-    } else {
-        eprintln!("WARNING  {message}");
-    }
+    eprint!("{}", status_block(message, OutputStyle::Warning));
 }
 
 /// Write a red error line to stderr.
 pub fn error(message: &str) {
-    if colors_enabled() {
-        eprintln!("{}  {message}", badge("ERROR", OutputStyle::Error));
-    } else {
-        eprintln!("ERROR  {message}");
-    }
+    eprint!("{}", status_block(message, OutputStyle::Error));
 }
 
 /// Display a titled callout using portable terminal formatting.
@@ -547,7 +514,7 @@ fn draw_choices<W: Write>(
 ) -> crate::std::io::Result<()> {
     write!(output, "{}\r\n", paint(label, Color::Accent))?;
     for (index, option) in options.iter().enumerate() {
-        let option = truncate(option, columns().saturating_sub(10).max(24));
+        let option = truncate(option, columns().saturating_sub(10).max(10));
         let marker = if index == cursor {
             paint("›", Color::Green)
         } else {

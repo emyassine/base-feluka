@@ -16,3 +16,11 @@ license enforcement and domain-scoped activation remain target capabilities,
 not delivered guarantees. The detailed architecture is in
 [platform/module layout](architecture/platform-module-layout.en.md); current
 behavior is documented in [Exists](../exists/index.en.md).
+
+## Release identity
+
+First-party Feluqa products currently take their release version from the
+workspace package version so their CLI profiles and platform product display a
+consistent version. The release codename is reserved for the 1.0.0 major line;
+the 1.0.0 codename is **Feluqa Waterfall**. Do not display that codename before
+the 1.0.0 release.

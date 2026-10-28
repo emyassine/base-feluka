@@ -1,6 +1,6 @@
 [package]
 name = "feluqa"
-version = "0.2.0"
+version.workspace = true
 description = "Proprietary public facade for the Feluqa application framework."
 authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
 edition.workspace = true

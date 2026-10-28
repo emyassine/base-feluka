@@ -9,6 +9,12 @@ The API is available when the `console` feature is enabled.
 
 **Implementation status:** the shared crate now contains a compiled-command registry, command metadata macro, profile and context filtering, aliases, hidden-command handling, longest-path parsing, generated help, colored status badges, arrow-key single/multiple selection, text and confirmation prompts, a monotonic timer, and built-in file/template operations. The `feluqa-cli` product declares its profiles once and recursively compiles each profile's `commands_directory`. Only Rust files annotated with `#[feluqa::command(...)]` become commands. Products own their template data and choose which files to generate; `feluqa::console::generator` provides the cross-platform operations for safe relative paths, directory creation, non-overwriting file writes, placeholder replacement and module registration. Only deliberately reused command bodies belong in a shared-commands directory. Search/autocomplete, form backtracking, progress/task widgets, shell completions and process supervision remain planned.
 
+Status output automatically adds spacing around its badge. Help descriptions and
+the help footer are muted, and layout measures the current terminal width on
+each render so it can follow a resize. Both CLI profile headers use the shared
+workspace version; the Feluqa profile also advertises its Rust web stack and
+API reference.
+
 ## Sync-first and optional asynchronous execution
 
 The default command contract remains synchronous. Most commands perform short

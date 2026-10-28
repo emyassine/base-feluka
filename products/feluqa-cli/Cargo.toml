@@ -1,6 +1,6 @@
 [package]
 name = "feluqa-cli"
-version = "0.1.0"
+version.workspace = true
 workspace = "../../_crates"
 description = "Command line product for the Feluqa application platform."
 authors = ["El Moumen Yassine <yassine@numerimondes.com>"]

@@ -16,7 +16,13 @@ pub const PROFILES: &[Profile] = &[
         name: "Feluqa platform",
         binary_name: "feluqa",
         commands_directory: "profiles/feluqa/src",
-        header: "FELUQA\nSovereign application platform",
+        header: concat!(
+            "FELUQA v",
+            env!("CARGO_PKG_VERSION"),
+            "\nSovereign application platform",
+            "\nRust · Tokio · Axum · SeaORM",
+            "\nAPI reference: crates.feluqa.numerimondes.com/api/docs/"
+        ),
         launch_aliases: &[],
     },
     Profile {
@@ -24,7 +30,10 @@ pub const PROFILES: &[Profile] = &[
         name: "Nadim",
         binary_name: "nadim",
         commands_directory: "profiles/nadim",
-        header: "NADIM\nPersonal command profile",
+        header: concat!(
+            "NADIM\nPersonal command profile\nFeluqa v",
+            env!("CARGO_PKG_VERSION")
+        ),
         launch_aliases: &[],
     },
 ];

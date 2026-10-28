@@ -7,6 +7,7 @@ use crate::std::process::ExitCode;
 #[feluqa::command(
     name = "version",
     description = "Print the Feluqa CLI version",
+    aliases = ["v", "--version", "-V"],
     profiles = ["feluqa", "nadim"],
     context = "any",
 )]
@@ -19,6 +20,6 @@ pub(crate) fn run(
 }
 
 fn version() -> ExitCode {
-    println!("feluqa {}", env!("CARGO_PKG_VERSION"));
+    println!("feluqa v{}", crate::feluqa::VERSION);
     ExitCode::SUCCESS
 }
