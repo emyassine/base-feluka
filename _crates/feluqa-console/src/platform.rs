@@ -21,6 +21,7 @@ use std::vec::Vec;
 
 /// Check whether the current working directory matches a platform context.
 ///
+/// `in_app` means this directory belongs to an application product;
 /// `in_dev` means this directory belongs to a product or development workspace;
 /// `platform` means it belongs to an installed platform root; `anywhere` is
 /// always true. Unknown context names return false.
@@ -37,6 +38,7 @@ pub fn current_context(expected: &str) -> bool {
         Err(_) => return false,
     };
     match expected {
+        "in_app" => context.product_root().is_some(),
         "in_dev" => context.workspace_root().is_some() || context.product_root().is_some(),
         "platform" => context.platform_root().is_some(),
         "module" => context.module_root().is_some(),
@@ -109,7 +111,8 @@ impl ConsoleHost for FeluqaHost {
     }
     fn command_context(&self) -> &'static str {
         match &self.context {
-            Context::App(_) | Context::Workspace(_) => "in_dev",
+            Context::App(_) => "in_app",
+            Context::Workspace(_) => "in_dev",
             Context::Platform(_) => "platform",
             Context::Global => "outside",
         }

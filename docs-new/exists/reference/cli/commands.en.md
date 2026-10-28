@@ -45,7 +45,7 @@ context takes precedence, including when the app is a workspace member.
 | Context | Available commands |
 |---|---|
 | Valid app root | App-scoped `dev`, `build`, `check`, `test`, `migrate`, `seed`, `make`; global `help`, `--version`, `new`. `feluqa dev` needs no app name or manifest path. |
-| Feluqa workspace root | Global `help`, `--version`, `new`, `list`; explicit-target `migrate <app>` and `seed <app> <seeder-id>`, resolved only within that workspace. |
+| Feluqa workspace root | Workspace commands such as `list` and explicit-target `migrate <app>` / `seed <app> <seeder-id>`. App generators (`make`) are hidden and unavailable until an application is detected. |
 | Unrelated directory | Global `help`, `--version`, `new`. App commands fail with a context error before invoking Cargo or mutating files. |
 
 IDE support commands are planned as a context-independent global namespace.

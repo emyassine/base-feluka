@@ -20,7 +20,7 @@ use crate::std::string::String;
     name = "make panel",
     description = "Generate a panel provider",
     usage = "feluqa make panel <arguments>",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,

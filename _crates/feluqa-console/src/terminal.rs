@@ -182,7 +182,9 @@ pub fn blank_line() {
 
 /// Format a command and description with terminal-width-aware dotted leaders.
 pub fn command_entry(name: &str, description: &str) -> String {
-    let width = columns();
+    // Keep the same breathing room on the right that the two-space indent
+    // creates on the left.
+    let width = columns().saturating_sub(2);
     let name_width = name.chars().count() + 2;
     let description_width = description.chars().count();
     let dots = width.saturating_sub(name_width + description_width + 2);

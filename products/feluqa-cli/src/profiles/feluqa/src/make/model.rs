@@ -16,7 +16,7 @@ use crate::std::string::String;
     name = "make model",
     description = "Generate a model",
     usage = "feluqa make model <arguments>",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,

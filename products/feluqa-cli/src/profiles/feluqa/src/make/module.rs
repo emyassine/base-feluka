@@ -17,7 +17,7 @@ use crate::std::string::String;
     name = "make module",
     description = "Generate a Feluqa module source",
     usage = "feluqa make module <arguments>",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,

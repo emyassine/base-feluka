@@ -16,7 +16,7 @@ use crate::std::string::String;
     name = "make service",
     description = "Generate a business service",
     usage = "feluqa make service <arguments>",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,

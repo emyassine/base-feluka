@@ -19,7 +19,7 @@ use crate::std::string::String;
     name = "make resource",
     description = "Generate a permission-aware CRUD resource",
     usage = "feluqa make resource <arguments>",
-    context = "in_dev",
+    context = "in_app",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
