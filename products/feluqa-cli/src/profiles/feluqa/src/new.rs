@@ -7,12 +7,12 @@ use crate::std::format;
 use crate::std::fs;
 use crate::std::option::Option;
 use crate::std::option::Option::{None, Some};
-use crate::std::path::Path;
+use crate::std::path::{Path, PathBuf};
 use crate::std::println;
-use crate::std::process::ExitCode;
+use crate::std::process::{Command, ExitCode};
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
-use crate::std::string::String;
+use crate::std::string::{String, ToString};
 
 #[feluqa::command(
     name = "new",
@@ -33,13 +33,14 @@ pub(crate) fn run(
         )?;
         arguments.push(OsString::from(value));
     }
+    let interactive = feluqa::console::terminal::interactive();
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
     let result = match &host.context {
         crate::__feluqa_profile_feluqa::context::Context::Global => {
-            create_app(&arguments, &host.current, None)
+            create_app(interactive, &arguments, &host.current, None)
         }
         crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => {
-            create_app(&arguments, workspace, Some(workspace))
+            create_app(interactive, &arguments, workspace, Some(workspace))
         }
         crate::__feluqa_profile_feluqa::context::Context::App(_) => {
             Err(String::from(
@@ -52,6 +53,7 @@ pub(crate) fn run(
 
 
 fn create_app(
+    interactive: bool,
     arguments: &[OsString],
     current: &Path,
     workspace: Option<&Path>,
@@ -64,11 +66,61 @@ fn create_app(
     }
     let slug = feluqa::console::generator::project_slugify(raw_name)?;
     let display_name = feluqa::console::generator::project_display_name(&slug);
-    let parent = match workspace {
+    let default_parent = match workspace {
         Some(workspace) => workspace.join("products"),
         None => current.to_path_buf(),
     };
+    match workspace {
+        Some(_) => feluqa::console::info(&format!(
+            "The default project path is {}/{} because this checkout keeps application consumers in products/ and resolves Feluqa from local workspace crates. You can choose another parent directory.",
+            default_parent.display(), slug
+        )),
+        None => feluqa::console::info(&format!(
+            "The default project path is {}/{} because this is not a detected Feluqa workspace. You can choose another parent directory.",
+            default_parent.display(), slug
+        )),
+    }
+    let parent = if interactive {
+        let default_text = default_parent.display().to_string();
+        let selected = feluqa::console::terminal::text(
+            "Parent directory for the application",
+            Some("press Enter to keep the default"),
+            Some(&default_text),
+            true,
+        )?;
+        let selected = PathBuf::from(selected);
+        if selected.is_absolute() {
+            selected
+        } else {
+            current.join(selected)
+        }
+    } else {
+        default_parent
+    };
     let target = parent.join(&slug);
+    let uses_workspace_crates = workspace
+        .map(|workspace| parent == workspace.join("products"))
+        .unwrap_or(false);
+    if uses_workspace_crates {
+        feluqa::console::info(&format!(
+            "The application will be created at {} and will use this checkout's local Feluqa crates.",
+            target.display()
+        ));
+    } else {
+        feluqa::console::info(&format!(
+            "The application will be created at {} and will use Feluqa from the configured private registry.",
+            target.display()
+        ));
+    }
+    if interactive
+        && !feluqa::console::terminal::confirm(
+            "Create the application at this location?",
+            true,
+        )?
+    {
+        feluqa::console::info("Creation cancelled; no application files were written.");
+        return Ok(ExitCode::SUCCESS);
+    }
     fs::create_dir_all(&parent)
         .map_err(|error| format!("could not create `{}`: {error}", parent.display()))?;
     fs::create_dir(&target).map_err(|error| {
@@ -78,12 +130,13 @@ fn create_app(
         )
     })?;
 
-    let dependency = match workspace {
-        Some(_) => (
+    let dependency = if uses_workspace_crates {
+        (
             String::from("{ path = \"../../_crates/feluqa\" }"),
             String::from("path = \"../../_crates/feluqa\""),
-        ),
-        None => (
+        )
+    } else {
+        (
             format!(
                 "{{ version = \"{}\", registry = \"feluqa\" }}",
                 crate::feluqa::VERSION
@@ -92,18 +145,19 @@ fn create_app(
                 "version = \"{}\", registry = \"feluqa\"",
                 crate::feluqa::VERSION
             ),
-        ),
+        )
     };
     let result = (|| {
-        feluqa::console::generator::write_templates(
+        let replacements = [
+            ("@@SLUG@@", slug.as_str()),
+            ("@@NAME@@", display_name.as_str()),
+            ("@@FELUQA_DEPENDENCY@@", dependency.0.as_str()),
+            ("@@FELUQA_DEPENDENCY_FIELDS@@", dependency.1.as_str()),
+        ];
+        feluqa::console::generator::write_templates_quiet(
             &target,
             WEB_TEMPLATES,
-            &[
-                ("@@SLUG@@", slug.as_str()),
-                ("@@NAME@@", display_name.as_str()),
-                ("@@FELUQA_DEPENDENCY@@", dependency.0.as_str()),
-                ("@@FELUQA_DEPENDENCY_FIELDS@@", dependency.1.as_str()),
-            ],
+            &replacements,
         )?;
         feluqa::console::generator::create_directories(
             &target,
@@ -118,11 +172,24 @@ fn create_app(
         return Err(error);
     }
     println!("Created {display_name} at {}", target.display());
-    if workspace.is_none() {
-        println!(
-            "This standalone app requires Feluqa {} from the private registry before it can compile.",
+    if !uses_workspace_crates {
+        feluqa::console::warning(&format!(
+            "This app uses Feluqa {} from the private registry and cannot compile until that version is available there.",
             crate::feluqa::VERSION
-        );
+        ));
+    }
+    if interactive {
+        feluqa::console::info("The scaffold is ready. `feluqa dev` compiles the app, applies its development setup and starts the local server with file watching.");
+        if feluqa::console::terminal::confirm("Start `feluqa dev` now?", false)? {
+            let executable = crate::std::env::current_exe()
+                .map_err(|error| format!("could not locate the Feluqa executable: {error}"))?;
+            let status = Command::new(executable)
+                .arg("dev")
+                .current_dir(&target)
+                .status()
+                .map_err(|error| format!("could not start `feluqa dev`: {error}"))?;
+            return Ok(ExitCode::from(status.code().unwrap_or(1) as u8));
+        }
     }
     println!("Next: cd {} && feluqa dev", target.display());
     Ok(ExitCode::SUCCESS)

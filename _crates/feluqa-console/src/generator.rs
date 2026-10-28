@@ -106,6 +106,15 @@ pub fn project_display_name(slug: &str) -> String {
 
 /// Create a file without overwriting an existing file, creating its parents first.
 pub fn write_file(root: &Path, relative: impl AsRef<Path>, contents: &str) -> Result<(), String> {
+    write_file_with_report(root, relative, contents, true)
+}
+
+fn write_file_with_report(
+    root: &Path,
+    relative: impl AsRef<Path>,
+    contents: &str,
+    report: bool,
+) -> Result<(), String> {
     let relative = relative.as_ref();
     validate_relative_path(relative)?;
     let path = root.join(relative);
@@ -126,10 +135,12 @@ pub fn write_file(root: &Path, relative: impl AsRef<Path>, contents: &str) -> Re
         })?;
     file.write_all(contents.as_bytes())
         .map_err(|error| format!("could not write `{}`: {error}", path.display()))?;
-    println!(
-        "Created {}",
-        path.strip_prefix(root).unwrap_or(&path).display()
-    );
+    if report {
+        println!(
+            "Created {}",
+            path.strip_prefix(root).unwrap_or(&path).display()
+        );
+    }
     Ok(())
 }
 
@@ -187,12 +198,30 @@ pub fn write_templates(
     templates: &[Template<'_>],
     replacements: &[(&str, &str)],
 ) -> Result<(), String> {
+    write_templates_with_report(root, templates, replacements, true)
+}
+
+/// Write supplied templates without printing one line for every generated file.
+pub fn write_templates_quiet(
+    root: &Path,
+    templates: &[Template<'_>],
+    replacements: &[(&str, &str)],
+) -> Result<(), String> {
+    write_templates_with_report(root, templates, replacements, false)
+}
+
+fn write_templates_with_report(
+    root: &Path,
+    templates: &[Template<'_>],
+    replacements: &[(&str, &str)],
+    report: bool,
+) -> Result<(), String> {
     for template in templates {
         let mut contents = template.contents.to_string();
         for (placeholder, value) in replacements {
             contents = contents.replace(placeholder, value);
         }
-        write_file(root, template.path, &contents)?;
+        write_file_with_report(root, template.path, &contents, report)?;
     }
     Ok(())
 }

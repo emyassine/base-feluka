@@ -160,6 +160,11 @@ fn emit_status(message: &str, style: OutputStyle, stderr: bool) {
     }
 }
 
+/// Start a new status-message spacing sequence after output outside this module.
+pub fn reset_status_spacing() {
+    PREVIOUS_STATUS_BLOCK.store(false, Ordering::Relaxed);
+}
+
 /// Write a message using a built-in style name (`info`, `success`, `warning`, `error`, `plain`).
 pub fn echo_kind(message: &str, style: &str) {
     echo(message, OutputStyle::from(style));
@@ -281,6 +286,7 @@ pub fn text(
     default: Option<&str>,
     required: bool,
 ) -> Result<String, String> {
+    reset_status_spacing();
     let hint = placeholder.unwrap_or("");
     let fallback = default.unwrap_or("");
     print!(

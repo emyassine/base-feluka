@@ -64,7 +64,7 @@ accepted only at the workspace root; arbitrary filesystem paths are rejected.
 
 | Command | Behavior |
 |---|---|
-| `feluqa new <name> [--profile web]` | Generates a web application. From the monorepo root it creates the project under `products/`; elsewhere it creates it in the current directory. Existing paths are never overwritten. |
+| `feluqa new <name> [--profile web]` | Shows the default parent directory and why it was selected, then lets interactive users choose another location and confirm before writing files. The monorepo `products/` default uses local workspace crates; other locations use the configured private registry. Existing paths are never overwritten. After generation, it asks whether to start `feluqa dev`; scripts use the default location and print the next command. |
 | `feluqa list` | Lists applications found from the workspace root. |
 | `feluqa dev` | Builds and starts the app's development console command. Polls Rust, `.view.rs`, configuration, module/migration inputs and local `_crates` sources. It builds while the previous server remains available, replaces it after success and keeps it after a failed build. |
 | `feluqa build` | Builds the app in release mode without starting it. |
