@@ -494,6 +494,7 @@ version = "0.1.1"
 dependencies = [
  "crossterm",
  "feluqa-console-macros",
+ "feluqa-definitions",
  "inventory",
  "signal-hook",
  "syn 2.0.119",
@@ -539,6 +540,10 @@ dependencies = [
 [[package]]
 name = "feluqa-definitions"
 version = "0.1.0"
+dependencies = [
+ "serde",
+ "toml",
+]
 
 [[package]]
 name = "feluqa-imagery"

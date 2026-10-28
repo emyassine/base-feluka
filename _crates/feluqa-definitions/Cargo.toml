@@ -9,3 +9,5 @@ rust-version.workspace = true
 publish = ["feluqa"]
 
 [dependencies]
+serde.workspace = true
+toml.workspace = true

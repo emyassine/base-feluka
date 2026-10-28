@@ -2,9 +2,11 @@
 
 use crate::PortablePath;
 use crate::PortablePathError;
+use crate::serde::Deserialize;
 use crate::std::convert::AsRef;
 use crate::std::env;
 use crate::std::fmt;
+use crate::std::fs;
 use crate::std::iter::Iterator;
 use crate::std::ops::Fn;
 use crate::std::option::Option;
@@ -13,7 +15,9 @@ use crate::std::path::{Path, PathBuf};
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
+use crate::std::string::ToString;
 use crate::std::write;
+use crate::toml;
 
 /// The nearest active Feluqa ownership context.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -59,13 +63,25 @@ pub struct FeluqaContext {
     module_root: Option<PathBuf>,
     crate_root: Option<PathBuf>,
     module_id: Option<String>,
+    workspace_products: Option<PortablePath>,
+    workspace_crates: Option<PortablePath>,
+}
+
+#[derive(Deserialize)]
+struct WorkspaceDocument {
+    workspace: WorkspacePaths,
+}
+#[derive(Deserialize)]
+struct WorkspacePaths {
+    products: String,
+    crates: String,
 }
 
 impl FeluqaContext {
     /// Discover Feluqa roots from a current directory and its ancestors.
     ///
     /// Products have `feluqa.toml`, `Cargo.toml` and `src/main.rs`. A workspace
-    /// has `_crates/Cargo.toml` or `.feluqa/workspace.toml`; a platform install
+    /// has `.feluqa/workspace.toml`; a platform install
     /// has `.feluqa/platform.toml`. A module source has `feluqa-module.toml`
     /// or `module.toml`. The nearest `Cargo.toml` identifies the Rust crate.
     pub fn discover(current_directory: impl AsRef<Path>) -> Result<Self, crate::std::io::Error> {
@@ -81,9 +97,34 @@ impl FeluqaContext {
                 && directory.join("src/main.rs").is_file()
         });
         let workspace_root = nearest_ancestor(&current_directory, |directory| {
-            directory.join("_crates/Cargo.toml").is_file()
-                || directory.join(".feluqa/workspace.toml").is_file()
+            directory.join(".feluqa/workspace.toml").is_file()
         });
+        let (workspace_products, workspace_crates) = match workspace_root.as_deref() {
+            Some(root) => {
+                let source = fs::read_to_string(root.join(".feluqa/workspace.toml"))?;
+                let config: WorkspaceDocument = toml::from_str(&source).map_err(|error| {
+                    crate::std::io::Error::new(
+                        crate::std::io::ErrorKind::InvalidData,
+                        error.to_string(),
+                    )
+                })?;
+                let products =
+                    PortablePath::parse(&config.workspace.products).map_err(|error| {
+                        crate::std::io::Error::new(
+                            crate::std::io::ErrorKind::InvalidData,
+                            error.to_string(),
+                        )
+                    })?;
+                let crates = PortablePath::parse(&config.workspace.crates).map_err(|error| {
+                    crate::std::io::Error::new(
+                        crate::std::io::ErrorKind::InvalidData,
+                        error.to_string(),
+                    )
+                })?;
+                (Some(products), Some(crates))
+            }
+            None => (None, None),
+        };
         let platform_root = nearest_ancestor(&current_directory, |directory| {
             directory.join(".feluqa/platform.toml").is_file()
         });
@@ -103,6 +144,8 @@ impl FeluqaContext {
             module_root,
             crate_root,
             module_id: None,
+            workspace_products,
+            workspace_crates,
         })
     }
 
@@ -163,13 +206,29 @@ impl FeluqaContext {
         self.crate_root.as_deref()
     }
 
-    /// Return the conventional `products/` directory in a Feluqa workspace.
+    /// Return the configured product source directory in a Feluqa workspace.
     pub fn workspace_products_root(&self) -> Result<PathBuf, ContextError> {
         let workspace = self
             .workspace_root
             .as_deref()
             .ok_or(ContextError::MissingRoot(PathScope::Workspace))?;
-        let relative = PortablePath::parse("products").map_err(ContextError::PortablePath)?;
+        let relative = self
+            .workspace_products
+            .as_ref()
+            .ok_or(ContextError::MissingRoot(PathScope::Workspace))?;
+        Ok(relative.resolve_under(workspace))
+    }
+
+    /// Return the configured reusable crate source directory in a workspace.
+    pub fn workspace_crates_root(&self) -> Result<PathBuf, ContextError> {
+        let workspace = self
+            .workspace_root
+            .as_deref()
+            .ok_or(ContextError::MissingRoot(PathScope::Workspace))?;
+        let relative = self
+            .workspace_crates
+            .as_ref()
+            .ok_or(ContextError::MissingRoot(PathScope::Workspace))?;
         Ok(relative.resolve_under(workspace))
     }
 

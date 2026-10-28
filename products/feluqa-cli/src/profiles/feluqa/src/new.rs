@@ -93,9 +93,10 @@ fn create_app(
         default_parent
     };
     let target = parent.join(&slug);
-    let uses_workspace_crates = workspace
-        .map(|workspace| parent == workspace.join("products"))
-        .unwrap_or(false);
+    let configured_products = workspace
+        .map(crate::__feluqa_profile_feluqa::context::workspace_products_root)
+        .transpose()?;
+    let uses_workspace_crates = configured_products.as_deref() == Some(parent.as_path());
     let confirmation = if uses_workspace_crates {
         format!("Create {} using local Feluqa crates?", target.display())
     } else {
@@ -115,9 +116,18 @@ fn create_app(
     })?;
 
     let dependency = if uses_workspace_crates {
+        let workspace = workspace.ok_or_else(|| String::from("workspace context disappeared"))?;
+        let context = feluqa::definitions::FeluqaContext::discover(workspace)
+            .map_err(|error| format!("could not discover workspace layout: {error}"))?;
+        let framework = context.workspace_crates_root()
+            .map_err(|error| error.to_string())?
+            .join("feluqa");
+        let relative = feluqa::definitions::relative_path(&target, &framework)
+            .map_err(|error| error.to_string())?;
+        let path = relative.to_string_lossy().replace('\\', "/");
         (
-            String::from("{ path = \"../../_crates/feluqa\" }"),
-            String::from("path = \"../../_crates/feluqa\""),
+            format!("{{ path = \"{path}\" }}"),
+            format!("path = \"{path}\""),
         )
     } else {
         (

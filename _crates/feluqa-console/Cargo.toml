@@ -12,6 +12,7 @@ publish = ["feluqa"]
 default = ["std"]
 std = ["dep:crossterm", "dep:signal-hook"]
 build = ["std", "dep:syn"]
+platform = ["std", "dep:feluqa-definitions"]
 
 [dependencies]
 inventory.workspace = true
@@ -19,3 +20,4 @@ crossterm = { workspace = true, optional = true }
 signal-hook = { workspace = true, optional = true }
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros" }
 syn = { workspace = true, optional = true }
+feluqa-definitions = { version = "0.1.0", registry = "feluqa", path = "../feluqa-definitions", optional = true }
