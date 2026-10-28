@@ -67,6 +67,14 @@ product to repeat ancestor walking and marker checks. The CLI uses the shared
 context to detect its workspace and product roots; it still parses its own
 application manifest and Cargo package because those are CLI/product concerns.
 
+Console command handlers can use the boolean guard
+`feluqa::console::current_context("in_dev")` before running development-only
+work. `"in_dev"` matches a configured Feluqa workspace, `"platform"` matches
+an installed platform root, and `"anywhere"` always matches. Unknown names
+return `false`. This keeps command availability checks readable at the point
+where a command runs and uses shared definitions instead of repeating
+filesystem marker checks.
+
 ## Paths follow their owner
 
 Feluqa stores paths in two forms:

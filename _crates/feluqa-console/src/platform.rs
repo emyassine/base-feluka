@@ -19,10 +19,42 @@ use std::result::Result::{Err, Ok};
 use std::string::{String, ToString};
 use std::vec::Vec;
 
+/// Check whether the current working directory matches a platform context.
+///
+/// `in_dev` means this directory belongs to a configured Feluqa workspace;
+/// `platform` means it belongs to an installed platform root; `anywhere` is
+/// always true. Unknown context names return false.
+pub fn current_context(expected: &str) -> bool {
+    if expected == "anywhere" {
+        return true;
+    }
+    let current = match std::env::current_dir() {
+        Ok(current) => current,
+        Err(_) => return false,
+    };
+    let context = match FeluqaContext::discover(current) {
+        Ok(context) => context,
+        Err(_) => return false,
+    };
+    match expected {
+        "in_dev" => context.workspace_root().is_some(),
+        "platform" => context.platform_root().is_some(),
+        "module" => context.module_root().is_some(),
+        _ => false,
+    }
+}
+
 pub use feluqa_definitions::FeluqaProduct as Application;
-pub use feluqa_definitions::{
-    read_product as read_application, workspace_product as workspace_application,
-};
+
+/// Read a product definition and format failures for command output.
+pub fn read_application(directory: &Path) -> Result<FeluqaProduct, String> {
+    feluqa_definitions::read_product(directory).map_err(|error| error.to_string())
+}
+
+/// Find a workspace product by its display or package name.
+pub fn workspace_application(workspace: &Path, name: &str) -> Result<FeluqaProduct, String> {
+    feluqa_definitions::workspace_product(workspace, name).map_err(|error| error.to_string())
+}
 
 /// Platform location classified for CLI command requirements.
 pub enum Context {
