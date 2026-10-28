@@ -35,11 +35,7 @@ extern crate std;
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    if !crate::feluqa::console::current_context("in_dev") {
-        return crate::std::result::Result::Err(crate::std::string::String::from(
-            "this command is available inside the Feluqa development workspace",
-        ));
-    }
+    crate::feluqa::console::ensure_context("in_dev")?;
 
     let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
     let host = crate::__feluqa_profile_feluqa::context::host(context)?;
