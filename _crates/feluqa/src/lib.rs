@@ -44,6 +44,9 @@ pub extern crate feluqa_core as core;
 /// Named database pools and dialect-specific migrations.
 #[cfg(feature = "database")]
 pub extern crate feluqa_database as database;
+/// Platform contexts, ownership roots and portable filesystem paths.
+#[cfg(feature = "definitions")]
+pub extern crate feluqa_definitions as definitions;
 /// Self-hosted SVG icon collections and safe asset-path helpers.
 #[cfg(feature = "imagery")]
 pub extern crate feluqa_imagery as imagery;

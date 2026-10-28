@@ -5,6 +5,7 @@ members = [
     "feluqa-model-derive",
     "feluqa-console",
     "feluqa-console-macros",
+    "feluqa-definitions",
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-panel",

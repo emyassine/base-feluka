@@ -17,7 +17,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::result::Result;
 use std::result::Result::{Err, Ok};
-use std::string::String;
+use std::string::{String, ToString};
 use std::vec::Vec;
 
 /// Validated application descriptor resolved from Cargo and Feluqa manifests.
@@ -150,22 +150,29 @@ struct FeluqaApp {
 
 /// Detect the nearest valid app first, then a containing workspace.
 pub(crate) fn detect(current: &Path) -> Result<Context, String> {
-    for directory in current.ancestors() {
-        if directory.join("feluqa.toml").is_file() {
-            return read_application(directory).map(Context::App);
-        }
+    let context = crate::feluqa::definitions::FeluqaContext::discover(current)
+        .map_err(|error| format!("could not discover Feluqa context: {error}"))?;
+    if let Some(product) = context.product_root() {
+        return read_application(product).map(Context::App);
     }
-    if let Some(workspace) = find_workspace(current) {
-        return Ok(Context::Workspace(workspace));
+    if let Some(workspace) = context.workspace_root() {
+        return Ok(Context::Workspace(workspace.to_path_buf()));
     }
     Ok(Context::Global)
 }
 
 pub(crate) fn find_workspace(current: &Path) -> Option<PathBuf> {
-    current
-        .ancestors()
-        .find(|directory| directory.join("_crates/Cargo.toml").is_file())
+    crate::feluqa::definitions::FeluqaContext::discover(current)
+        .ok()?
+        .workspace_root()
         .map(Path::to_path_buf)
+}
+
+pub(crate) fn workspace_products_root(workspace: &Path) -> Result<PathBuf, String> {
+    crate::feluqa::definitions::FeluqaContext::discover(workspace)
+        .map_err(|error| format!("could not discover Feluqa workspace: {error}"))?
+        .workspace_products_root()
+        .map_err(|error| error.to_string())
 }
 
 pub(crate) fn read_application(directory: &Path) -> Result<Application, String> {

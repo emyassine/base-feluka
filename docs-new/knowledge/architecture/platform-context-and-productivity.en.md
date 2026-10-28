@@ -1,0 +1,119 @@
+# Platform context, products and filesystem ownership
+
+## Platform and products are different things
+
+The **Feluqa platform** is the installed host: its runtime, security boundary,
+shared services, built-in System panel, module lifecycle and platform-owned
+state. An operator installs and operates a platform instance.
+
+A **product** is something built for, with or on Feluqa. Products include
+developer-facing tools such as `feluqa-cli`, a Feluqa application, and a
+module package that contributes a capability to an installed platform. A
+product source is not itself the platform runtime. The repository's `products/`
+directory is a workspace convention for these consumers; it does not define a
+runtime package boundary by itself.
+
+A **Rust crate** is a compilation and reuse boundary. It can be a platform
+implementation crate, a product crate, or a dependency shared by several
+products. A crate's source directory does not automatically own application
+data. A **Feluqa module** is a platform-level capability and data owner; a Rust
+`mod` declaration is only a language namespace.
+
+```text
+Feluqa platform installation
+├── platform runtime and System panel
+├── application/product instances
+│   ├── application-owned storage
+│   └── active module instances
+│       └── module-owned storage
+└── shared Rust crates (code reuse; no implicit runtime data ownership)
+
+Feluqa development workspace
+├── _crates/      # framework and shared contract crates
+└── products/     # CLI, editor tools, and application consumers
+```
+
+The platform/product distinction supports Feluqa's productivity goal: a
+developer can create and run an application with a short workflow, while
+Feluqa retains explicit ownership of runtime, security, modules and persistent
+data. `feluqa new` and `feluqa dev` are product tools that use platform
+definitions; their convenience does not make an application a platform
+installation.
+
+## Context is platform knowledge
+
+Context describes the physical and logical place where code is being used. It
+is broader than the CLI's command filtering. A context may contain several
+related roots at once: a working directory can be inside a module source tree,
+inside a product, and inside a development workspace. The nearest applicable
+owner determines a path's meaning; the repository's location alone does not
+make a crate the data owner.
+
+The first `feluqa-definitions` contract identifies these scopes:
+
+- **Platform:** an explicitly marked installation root.
+- **Workspace:** a Feluqa development root that contains `_crates/Cargo.toml`
+  or `.feluqa/workspace.toml`.
+- **Product:** a Feluqa source root with `feluqa.toml`, `Cargo.toml` and
+  `src/main.rs`.
+- **Module:** a module source root with `feluqa-module.toml` or `module.toml`;
+  the active module ID is supplied by its loader.
+- **Crate:** the nearest Rust `Cargo.toml`, used to locate code rather than
+  infer runtime data ownership.
+- **Global:** a location outside the known Feluqa roots.
+
+`FeluqaContext` keeps discovered roots together instead of forcing each
+product to repeat ancestor walking and marker checks. The CLI uses the shared
+context to detect its workspace and product roots; it still parses its own
+application manifest and Cargo package because those are CLI/product concerns.
+
+## Paths follow their owner
+
+Feluqa stores paths in two forms:
+
+1. **Portable logical paths** use `/` separators and relative components, such
+   as `products/inventory` or `storage/modules/inventory.crm`. They reject
+   absolute paths, `.`/`..`, empty segments, Windows device names and path
+   characters that would make a path invalid on Windows.
+2. **Native paths** use `Path`/`PathBuf` and are resolved under an explicit
+   context root. Rust handles the host separator and path representation.
+
+The initial ownership rules are:
+
+| Scope | Root/path meaning |
+|---|---|
+| Platform | Platform configuration, assets and platform-owned `storage/` |
+| Workspace | Developer workspace roots; scratch state under `.feluqa/storage/` |
+| Product | Product configuration, source, `public/` and product-owned `storage/` |
+| Module | Module source plus a per-module storage directory under its product or platform owner |
+| Crate | Source/build identity only; a reusable crate does not get separate runtime storage |
+
+An active module receives a module ID from the module loader. Its storage path
+is resolved as `<product-or-platform>/storage/modules/<module-id>`. A call from
+a crate without a product or active module owner returns an error instead of
+guessing a shared directory. The `FeluqaContext::storage_path()` method
+implements these initial rules. A future `feluqa::storage_path()` facade can
+delegate to the active runtime context once module lifecycle and application
+context injection are wired; there is intentionally no process-global
+directory guess today.
+
+Portable paths prevent lexical traversal. Filesystem code that writes beneath
+an untrusted root must still handle symlinks and verify containment at the
+write boundary. User-selected absolute locations, such as the destination
+prompt in `feluqa new`, remain native `PathBuf` values and are not serialized as
+portable relative paths.
+
+## Current implementation and limits
+
+`feluqa-definitions` provides context root discovery, portable relative paths,
+context-root resolution and storage ownership rules. `feluqa-cli` uses this
+crate through `feluqa::definitions` for workspace/product detection and the
+default `products/` path.
+
+The platform marker and workspace/product markers are conventions for source
+and development contexts. The platform does not yet dynamically install
+modules, inject a running module's identity, or configure per-instance storage
+through the System panel. The new definitions crate does not claim those
+runtime capabilities. POSIX-to-Windows handling is defined for logical paths;
+filesystem permissions, symlinks and writable-storage policy remain operating
+system boundary responsibilities.

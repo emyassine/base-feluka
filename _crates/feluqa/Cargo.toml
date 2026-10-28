@@ -10,9 +10,10 @@ publish = ["feluqa"]
 
 [features]
 default = ["web"]
-web = ["console", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde"]
+web = ["console", "definitions", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde"]
 console = ["dep:feluqa-console", "dep:feluqa-console-macros"]
 console-build = ["console", "feluqa-console/build"]
+definitions = ["dep:feluqa-definitions"]
 view = ["dep:feluqa-view"]
 view-compiler = ["view", "feluqa-view/compiler"]
 auth = ["dep:feluqa-auth"]
@@ -44,6 +45,7 @@ feluqa-system-panel = { version = "0.1.0", registry = "feluqa", path = "../feluq
 feluqa-imagery = { version = "0.1.0", registry = "feluqa", path = "../feluqa-imagery", optional = true}
 feluqa-console = { version = "0.1.1", registry = "feluqa", path = "../feluqa-console", optional = true}
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros", optional = true}
+feluqa-definitions = { version = "0.1.0", registry = "feluqa", path = "../feluqa-definitions", optional = true}
 feluqa-view = { version = "0.2.0", registry = "feluqa", path = "../feluqa-view", optional = true}
 axum = { workspace = true, optional = true }
 serde = { workspace = true, optional = true }

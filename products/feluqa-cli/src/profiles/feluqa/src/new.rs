@@ -66,7 +66,9 @@ fn create_app(
     let slug = feluqa::console::generator::project_slugify(raw_name)?;
     let display_name = feluqa::console::generator::project_display_name(&slug);
     let default_parent = match workspace {
-        Some(workspace) => workspace.join("products"),
+        Some(workspace) => {
+            crate::__feluqa_profile_feluqa::context::workspace_products_root(workspace)?
+        }
         None => current.to_path_buf(),
     };
     match workspace {

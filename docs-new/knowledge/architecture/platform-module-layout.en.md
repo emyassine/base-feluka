@@ -81,6 +81,10 @@ Child business domains may be bundled into one installable package or exposed
 as separate modules, according to the product's packaging decision. The
 directory name `business/` is a convention, not a required runtime location.
 
+The distinction between platform, product, module and crate ownership, along
+with context-aware filesystem rules and the productivity goals, is described
+in [platform context and product ownership](platform-context-and-productivity.en.md).
+
 ## Vocabulary
 
 - **Feluqa platform:** installed host and framework services, including the

@@ -459,6 +459,7 @@ dependencies = [
  "feluqa-console-macros",
  "feluqa-core",
  "feluqa-database",
+ "feluqa-definitions",
  "feluqa-imagery",
  "feluqa-live",
  "feluqa-module",
@@ -534,6 +535,10 @@ dependencies = [
  "tokio",
  "toml",
 ]
+
+[[package]]
+name = "feluqa-definitions"
+version = "0.1.0"
 
 [[package]]
 name = "feluqa-imagery"
