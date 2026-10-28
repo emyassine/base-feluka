@@ -192,6 +192,11 @@ pub fn panel_adapter_stylesheet() -> Response {
     )
 }
 
+/// Serve Feluqa component styles used by shared panel navigation.
+pub fn panel_components_stylesheet() -> Response {
+    asset_response(crate::panel::COMPONENTS_CSS, "text/css; charset=utf-8")
+}
+
 /// Serve the shared Filament-derived panel browser runtime.
 pub fn panel_client() -> Response {
     asset_response(
@@ -230,6 +235,7 @@ pub async fn serve_panel_asset(Path(asset): Path<String>) -> Result<Response, St
         "theme.css" => Ok(panel_stylesheet()),
         "typography.css" => Ok(panel_typography_stylesheet()),
         "panel.css" => Ok(panel_adapter_stylesheet()),
+        "components.css" => Ok(panel_components_stylesheet()),
         "panel.js" => Ok(panel_client()),
         "echo.js" => Ok(panel_echo_client()),
         "notifications.js" => Ok(notifications_client()),

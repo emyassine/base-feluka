@@ -8,7 +8,11 @@
 
 extern crate alloc;
 extern crate core;
-#[cfg(any(feature = "components", feature = "components-card"))]
+#[cfg(any(
+    feature = "components",
+    feature = "components-card",
+    feature = "panel-shell"
+))]
 extern crate feluqa_ui_components;
 extern crate serde;
 extern crate serde_json;
@@ -22,7 +26,11 @@ pub use crate::feluqa_ui_components::block;
 #[cfg(feature = "components")]
 pub use crate::feluqa_ui_components::chart;
 /// Feluqa UI components, available with the `components` feature.
-#[cfg(any(feature = "components", feature = "components-card"))]
+#[cfg(any(
+    feature = "components",
+    feature = "components-card",
+    feature = "panel-shell"
+))]
 pub use crate::feluqa_ui_components::component;
 /// Feluqa UI hooks, available with the `components` feature.
 #[cfg(feature = "components")]

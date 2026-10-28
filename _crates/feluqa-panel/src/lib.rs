@@ -27,6 +27,8 @@ pub const FILAMENT_ADAPTER_CSS: &str = include_str!("../assets/filament-panel.cs
 pub const NOTIFICATIONS_CLIENT_JS: &str = include_str!("../assets/feluqa-notifications.js");
 /// Feluqa-owned responsive sidebar and keyboard interactions.
 pub const PANEL_SHELL_CLIENT_JS: &str = include_str!("../assets/feluqa-shell.js");
+/// Feluqa component styles used by server-rendered panel components.
+pub const COMPONENTS_CSS: &str = include_str!("../assets/components.css");
 
 /// Webkernel language selector flags bundled with the framework panel.
 pub fn language_flag_svg(locale: &str) -> Option<&'static str> {

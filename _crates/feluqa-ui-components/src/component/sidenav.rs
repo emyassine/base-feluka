@@ -1,4 +1,5 @@
 use crate::feluqa_ui_component_macros::{clx, variants, void};
+use crate::feluqa_ui_classnames::IntoTailwindClass;
 use crate::std::clone::Clone;
 use crate::std::convert::{AsRef, From, Into};
 use crate::std::default::Default;
@@ -178,6 +179,32 @@ variants! {
             support_href: true,
             support_aria_current: true
         }
+    }
+}
+
+/// Navigation link styled with the shared sidebar menu button classes.
+#[component]
+pub fn SidenavNavigationLink(
+    /// Link text and optional icon.
+    children: Children,
+    /// Absolute destination route.
+    #[prop(into)] href: String,
+    /// Whether this link represents the current route.
+    #[prop(default = false)] active: bool,
+    /// Additional classes for the link.
+    #[prop(optional, into)] class: String,
+) -> impl IntoView {
+    let class = SidenavMenuButtonClass {
+        variant: SidenavMenuButtonVariant::Default,
+        size: SidenavMenuButtonSize::Default,
+    }
+    .with_class(class);
+    let aria_current = if active { "page" } else { "false" };
+
+    view! {
+        <a data-name="SidenavNavigationLink" class=class href=href aria-current=aria_current>
+            {children()}
+        </a>
     }
 }
 

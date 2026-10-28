@@ -1,6 +1,6 @@
 use crate::component::sidenav::{
-    Sidenav, SidenavCollapsible, SidenavContent, SidenavGroup, SidenavGroupLabel, SidenavHeader,
-    SidenavMenu, SidenavMenuButton, SidenavMenuItem, SidenavSide, SidenavVariant, SidenavWrapper,
+    Sidenav, SidenavCollapsible, SidenavGroup, SidenavGroupLabel, SidenavMenu, SidenavMenuItem,
+    SidenavNavigationLink, SidenavSide, SidenavVariant, SidenavWrapper,
 };
 use crate::runtime::prelude::Owner;
 use crate::runtime::prelude::*;
@@ -38,42 +38,30 @@ pub fn render_panel_navigation(groups: Vec<PanelNavigationGroup>, active_path: S
     let owner = Owner::new();
     owner.with(move || {
         view! {
-            <SidenavWrapper default_open=true class="feluqa-panel-sidenav-wrapper">
-                <Sidenav
-                    data_collapsible=SidenavCollapsible::None
-                    data_side=SidenavSide::Left
-                    variant=SidenavVariant::default()
-                    class="feluqa-panel-sidenav"
-                >
-                    <SidenavHeader>
-                        <div class="feluqa-panel-sidenav-brand">"Feluqa"</div>
-                    </SidenavHeader>
-                    <SidenavContent>
-                        {groups.into_iter().map(|group| {
-                            let active_path = active_path.clone();
-                            let items = group.items.into_iter().map(|item| {
-                                let current = if item.path == active_path { "page" } else { "false" };
-                                let icon = item.icon.as_deref().and_then(crate::feluqa_imagery::panel_heroicon).map(String::from);
-                                view! {
-                                    <SidenavMenuItem>
-                                        <SidenavMenuButton href=item.path attr:aria-current=current>
-                                            {icon.map(|svg| view! { <span class="feluqa-panel-sidenav-icon" inner_html=svg></span> }.into_any()).unwrap_or_else(|| ().into_any())}
-                                            <span>{item.label}</span>
-                                        </SidenavMenuButton>
-                                    </SidenavMenuItem>
-                                }.into_any()
-                            }).collect_view();
-                            let label = group.label.unwrap_or_else(String::new);
-                            view! {
-                                <SidenavGroup>
-                                    <SidenavGroupLabel>{label}</SidenavGroupLabel>
-                                    <SidenavMenu>{items}</SidenavMenu>
-                                </SidenavGroup>
-                            }.into_any()
-                        }).collect_view()}
-                    </SidenavContent>
-                </Sidenav>
-            </SidenavWrapper>
+            <nav class="feluqa-panel-nav" aria-label="Panel navigation">
+                {groups.into_iter().map(|group| {
+                    let active_path = active_path.clone();
+                    let items = group.items.into_iter().map(|item| {
+                        let active = item.path == active_path;
+                        let icon = item.icon.as_deref().and_then(crate::feluqa_imagery::panel_heroicon).map(String::from);
+                        view! {
+                            <SidenavMenuItem>
+                                <SidenavNavigationLink href=item.path active=active>
+                                    {icon.map(|svg| view! { <span class="feluqa-panel-nav-icon" inner_html=svg></span> }.into_any()).unwrap_or_else(|| ().into_any())}
+                                    <span>{item.label}</span>
+                                </SidenavNavigationLink>
+                            </SidenavMenuItem>
+                        }.into_any()
+                    }).collect_view();
+                    let label = group.label.unwrap_or_else(String::new);
+                    view! {
+                        <SidenavGroup>
+                            <SidenavGroupLabel>{label}</SidenavGroupLabel>
+                            <SidenavMenu>{items}</SidenavMenu>
+                        </SidenavGroup>
+                    }.into_any()
+                }).collect_view()}
+            </nav>
         }
         .to_html()
     })
