@@ -7,12 +7,12 @@ assets. A module registers its resources and pages with Feluqa panel instances;
 it does not ship a separate panel framework. A module can contribute an
 administration panel, a public website panel, or both.
 
-The shared view catalog includes `x-feluqa::button` and `x-feluqa::field`.
-Register these framework views in the application's view build script before
-using them. The button currently renders static submit buttons and the field
-wraps a label and its input slot using the shared Filament theme classes.
-They are small shared components, not a claim of full Filament component
-parity.
+The existing `.view.rs` catalog includes `x-feluqa::button` and
+`x-feluqa::field`. They are legacy server-rendered components and still use
+Filament-derived classes; they are not the target component API. New panel UI
+work follows the [Feluqa UI component contract](../../knowledge/architecture/feluqa-ui.en.md),
+which is still being implemented. Do not treat the source move as a completed
+panel migration.
 
 ## Resources
 
@@ -33,7 +33,7 @@ Schema-backed dashboard widgets can be registered with
 `PanelBuilder::widget` / `widgets`. Each `PanelWidget` has a stable ID, an
 optional permission, sort order, column span/start and a versioned `UiDocument`.
 `PanelCatalog::render_widgets` filters by permission and returns escaped HTML
-using the Filament grid classes and variables found in Webkernel's renderer.
+using the current panel grid contract adapted from Webkernel's renderer.
 The current Feluqa Core and Numerimondes dashboard controllers render the
 registered panel widget collection into their dashboard slot after page access
 and widget permissions are checked. Other panel hosts must authorize the page

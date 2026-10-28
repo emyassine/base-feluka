@@ -1,10 +1,10 @@
 # Filament/Webkernel panel port status
 
 > Historical inventory only. On 2026-10-28 the product direction changed to
-> migrate panel UI to Feluqa-owned Leptos components adapted from the Rust UI
+> migrate panel UI to Feluqa-owned Feluqa-owned server-rendered components adapted from the Rust UI
 > registry. This records the outgoing implementation and its remaining
 > Filament parity; it is no longer the acceptance target. See the
-> [Leptos UI migration contract](../../../knowledge/architecture/leptos-ui.en.md).
+> [Feluqa UI architecture](../../../knowledge/architecture/feluqa-ui.en.md).
 
 Source of truth for the port is `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/`.
 Counts below were enumerated from each package's `src/**/*.php` and `resources/views/**/*.view.php` on

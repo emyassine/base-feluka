@@ -13,7 +13,7 @@ but do not inherit the Web runtime.
 The panel UI is migrating from Filament-derived assets to Feluqa-owned Leptos
 components, adapted from the Rust UI registry. The target API is
 `feluqa::ui::component`; the schema API at `feluqa::ui` remains `no_std`.
-See the [Leptos UI decision and migration contract](leptos-ui.en.md).
+See the [Feluqa UI architecture](feluqa-ui.en.md).
 
 ## Application composition
 

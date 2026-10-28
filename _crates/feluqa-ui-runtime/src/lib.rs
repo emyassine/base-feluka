@@ -1,0 +1,405 @@
+#![deny(missing_docs)]
+
+//! # About Feluqa UI
+//!
+//! Feluqa UI is a full-stack framework for building web applications in Rust. You can use it to build
+//! - single-page apps (SPAs) rendered entirely in the browser, using client-side routing and loading
+//!   or mutating data via async requests to the server.
+//! - multi-page apps (MPAs) rendered on the server, managing navigation, data, and mutations via
+//!   web-standard `<a>` and `<form>` tags.
+//! - progressively-enhanced single-page apps that are rendered on the server and then hydrated on the client,
+//!   enhancing your `<a>` and `<form>` navigations and mutations seamlessly when WASM is available.
+//!
+//! And you can do all three of these **using the same Feluqa UI code**.
+//!
+//! Take a look at the [Feluqa UI Book](https://feluqa.dev/docs/ui/) for a walkthrough of the framework.
+//! Join us on our [Discord Channel](https://discord.gg/v38Eef6sWG) to see what the community is building.
+//! Explore our [Examples](https://feluqa.dev/tree/main/examples) to see Feluqa UI in action.
+//!
+//! # Learning by Example
+//!
+//! If you want to see what Feluqa UI is capable of, check out
+//! the [examples](https://feluqa.dev/tree/main/examples):
+//!
+//! - **[`counter`]** is the classic counter example, showing the basics of client-side rendering and reactive DOM updates.
+//! - **[`counter_without_macros`]** adapts the counter example to use the builder pattern for the UI and avoids other macros,
+//!   instead showing the code that Feluqa UI generates.
+//! - **[`counters`]** introduces parent-child communication via contexts, and the [`<For/>`](feluqa_ui_runtime::prelude::For) component
+//!   for efficient keyed list updates.
+//! - **[`error_boundary`]** shows how to use [`Result`] types to handle errors.
+//! - **[`parent_child`]** shows four different ways a parent component can communicate with a child, including passing a closure,
+//!   context, and more.
+//! - **[`fetch`]** introduces [`Resource`](feluqa_ui_runtime::prelude::Resource)s, which allow you to integrate arbitrary `async` code like an
+//!   HTTP request within your reactive code.
+//! - **[`router`]** shows how to use Feluqa UI’s nested router to enable client-side navigation and route-specific, reactive data loading.
+//! - **[`slots`]** shows how to use slots on components.
+//! - **[`spread`]** shows how the spread syntax can be used to spread data and/or event handlers onto elements.
+//! - **[`counter_isomorphic`]** shows different methods of interaction with a stateful server, including server functions,
+//!   server actions, forms, and server-sent events (SSE).
+//! - **[`todomvc`]** shows the basics of building an isomorphic web app. Both the server and the client import the same app code.
+//!   The server renders the app directly to an HTML string, and the client hydrates that HTML to make it interactive.
+//!   You might also want to see how we use [`Effect::new`](feluqa_ui_runtime::prelude::Effect) to
+//!   [serialize JSON to `localStorage`](https://feluqa.dev/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L191-L209)
+//!   and [reactively call DOM methods](https://feluqa.dev/blob/16f084a71268ac325fbc4a5e50c260df185eadb6/examples/todomvc/src/lib.rs#L292-L296)
+//!   on [references to elements](https://feluqa.dev/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L228).
+//! - **[`hackernews`]** and **[`hackernews_axum`]** integrate calls to a real external REST API, routing, server-side rendering and
+//!   hydration to create a fully-functional application that works as intended even before WASM has loaded and begun to run.
+//! - **[`todo_app_sqlite`]** and **[`todo_app_sqlite_axum`]** show how to build a full-stack app using server functions and
+//!   database connections.
+//! - **[`tailwind`]** shows how to integrate TailwindCSS with `trunk` for CSR.
+//!
+//! [`counter`]: https://feluqa.dev/tree/main/examples/counter
+//! [`counter_without_macros`]: https://feluqa.dev/tree/main/examples/counter_without_macros
+//! [`counters`]: https://feluqa.dev/tree/main/examples/counters
+//! [`error_boundary`]: https://feluqa.dev/tree/main/examples/error_boundary
+//! [`parent_child`]: https://feluqa.dev/tree/main/examples/parent_child
+//! [`fetch`]: https://feluqa.dev/tree/main/examples/fetch
+//! [`router`]: https://feluqa.dev/tree/main/examples/router
+//! [`slots`]: https://feluqa.dev/tree/main/examples/slots
+//! [`spread`]: https://feluqa.dev/tree/main/examples/spread
+//! [`counter_isomorphic`]: https://feluqa.dev/tree/main/examples/counter_isomorphic
+//! [`todomvc`]: https://feluqa.dev/tree/main/examples/todomvc
+//! [`hackernews`]: https://feluqa.dev/tree/main/examples/hackernews
+//! [`hackernews_axum`]: https://feluqa.dev/tree/main/examples/hackernews_axum
+//! [`todo_app_sqlite`]: https://feluqa.dev/tree/main/examples/todo_app_sqlite
+//! [`todo_app_sqlite_axum`]: https://feluqa.dev/tree/main/examples/todo_app_sqlite_axum
+//! [`tailwind`]: https://feluqa.dev/tree/main/examples/tailwind_csr
+//!
+//! Details on how to run each example can be found in its README.
+//!
+//! # Quick Links
+//!
+//! Here are links to the most important sections of the docs:
+//! - **Reactivity**: the [`feluqa_ui_reactivity`] overview, and more details in
+//!   + signals: [`signal`](feluqa_ui_runtime::prelude::signal), [`ReadSignal`](feluqa_ui_runtime::prelude::ReadSignal),
+//!     [`WriteSignal`](feluqa_ui_runtime::prelude::WriteSignal) and [`RwSignal`](feluqa_ui_runtime::prelude::RwSignal).
+//!   + computations: [`Memo`](feluqa_ui_runtime::prelude::Memo).
+//!   + `async` interop: [`Resource`](feluqa_ui_runtime::prelude::Resource) for loading data using `async` functions
+//!     and [`Action`](feluqa_ui_runtime::prelude::Action) to mutate data or imperatively call `async` functions.
+//!   + reactions: [`Effect`](feluqa_ui_runtime::prelude::Effect) and [`RenderEffect`](feluqa_ui_runtime::prelude::RenderEffect).
+//! - **Templating/Views**: the [`view`] macro and [`IntoView`] trait.
+//! - **Routing**: the [`feluqa_ui_navigation`](https://docs.rs/feluqa_ui_navigation/latest/feluqa_ui_navigation/) crate
+//! - **Server Functions**: the [`server`](macro@feluqa_ui_runtime::prelude::server) macro and [`ServerAction`](feluqa_ui_runtime::prelude::ServerAction).
+//!
+//! # Feature Flags
+//!
+//! - **`nightly`**: On `nightly` Rust, enables the function-call syntax for signal getters and setters.
+//!   Also enables some experimental optimizations that improve the handling of static strings and
+//!   the performance of the `template! {}` macro.
+//! - **`csr`** Client-side rendering: Generate DOM nodes in the browser.
+//! - **`ssr`** Server-side rendering: Generate an HTML string (typically on the server).
+//! - **`islands`** Activates “islands mode,” in which components are not made interactive on the
+//!   client unless they use the `#[island]` macro.
+//! - **`hydrate`** Hydration: use this to add interactivity to an SSRed Feluqa UI app.
+//! - **`nonce`** Adds support for nonces to be added as part of a Content Security Policy.
+//! - **`rkyv`** In SSR/hydrate mode, enables using [`rkyv`](https://docs.rs/rkyv/latest/rkyv/) to serialize resources.
+//! - **`tracing`** Adds support for [`tracing`](https://docs.rs/tracing/latest/tracing/).
+//! - **`trace-component-props`** Adds `tracing` support for component props.
+//! - **`delegation`** Uses event delegation rather than the browser’s native event handling
+//!   system. (This improves the performance of creating large numbers of elements simultaneously,
+//!   in exchange for occasional edge cases in which events behave differently from native browser
+//!   events.)
+//! - **`rustls`** Use `rustls` for server functions.
+//!
+//! **Important Note:** You must enable one of `csr`, `hydrate`, or `ssr` to tell Feluqa UI
+//! which mode your app is operating in. You should only enable one of these per build target,
+//! i.e., you should not have both `hydrate` and `ssr` enabled for your server binary, only `ssr`.
+//!
+//! # A Simple Counter
+//!
+//! ```rust
+//! use feluqa_ui_runtime::prelude::*;
+//!
+//! #[component]
+//! pub fn SimpleCounter(initial_value: i32) -> impl IntoView {
+//!     // create a reactive signal with the initial value
+//!     let (value, set_value) = signal(initial_value);
+//!
+//!     // create event handlers for our buttons
+//!     // note that `value` and `set_value` are `Copy`, so it's super easy to move them into closures
+//!     let clear = move |_| set_value.set(0);
+//!     let decrement = move |_| *set_value.write() -= 1;
+//!     let increment = move |_| *set_value.write() += 1;
+//!
+//!     view! {
+//!         <div>
+//!             <button on:click=clear>"Clear"</button>
+//!             <button on:click=decrement>"-1"</button>
+//!             <span>"Value: " {value} "!"</span>
+//!             <button on:click=increment>"+1"</button>
+//!         </div>
+//!     }
+//! }
+//! ```
+//!
+//! Feluqa UI is easy to use with [Trunk](https://trunkrs.dev/) (or with a simple wasm-bindgen setup):
+//!
+//! ```rust
+//! use feluqa_ui_runtime::{mount::mount_to_body, prelude::*};
+//!
+//! #[component]
+//! fn SimpleCounter(initial_value: i32) -> impl IntoView {
+//!     // ...
+//!     # _ = initial_value;
+//! }
+//!
+//! pub fn main() {
+//! # if false { // can't run in doctest
+//!     mount_to_body(|| view! { <SimpleCounter initial_value=3 /> })
+//! # }
+//! }
+//! ```
+
+#![cfg_attr(all(feature = "nightly", rustc_nightly), feature(fn_traits))]
+#![cfg_attr(all(feature = "nightly", rustc_nightly), feature(unboxed_closures))]
+
+extern crate self as feluqa_ui_runtime;
+
+/// Exports all the core types of the library.
+pub mod prelude {
+    // Traits
+    // These should always be exported from the prelude
+    pub use feluqa_ui_reactivity::prelude::*;
+    pub use feluqa_ui_dom_renderer::prelude::*;
+
+    // Structs
+    // In the future, maybe we should remove this blanket export
+    // However, it is definitely useful relative to looking up every struct etc.
+    mod export_types {
+        #[cfg(feature = "nonce")]
+        pub use crate::nonce::*;
+        pub use crate::{
+            callback::*, children::*, component::*, control_flow::*, error::*,
+            form::*, hydration::*, into_view::*, mount::*, suspense::*,
+            text_prop::*,
+        };
+        pub use feluqa_ui_runtime_config::*;
+        pub use feluqa_ui_runtime_dom::helpers::*;
+        pub use feluqa_ui_runtime_macros::*;
+        pub use feluqa_ui_runtime_server::*;
+        pub use oco_ref::*;
+        pub use feluqa_ui_reactivity::{
+            actions::*,
+            computed::*,
+            effect::*,
+            graph::untrack,
+            owner::*,
+            signal::*,
+            wrappers::{read::*, write::*},
+        };
+        pub use feluqa_ui_server_functions::{
+            self,
+            error::{FromServerFnError, ServerFnError, ServerFnErrorErr},
+        };
+        pub use feluqa_ui_dom_renderer::{
+            feluqa_ui_reactivity::{bind::BindAttribute, node_ref::*, Suspend},
+            view::{fragment::Fragment, template::ViewTemplate},
+        };
+    }
+    pub use export_types::*;
+}
+
+/// Components used for working with HTML forms, like `<ActionForm>`.
+pub mod form;
+
+/// A standard way to wrap functions and closures to pass them to components.
+pub use feluqa_ui_reactivity::callback;
+
+/// Types that can be passed as the `children` prop of a component.
+pub mod children;
+
+/// Wrapper for intercepting component attributes.
+pub mod attribute_interceptor;
+
+#[doc(hidden)]
+/// Traits used to implement component constructors.
+pub mod component;
+mod error_boundary;
+
+/// Tools for handling errors.
+pub mod error {
+    pub use crate::error_boundary::*;
+    pub use feluqa_ui_errors::*;
+}
+
+/// Control-flow components like `<Show>`, `<For>`, and `<Await>`.
+pub mod control_flow {
+    pub use crate::{
+        animated_show::*, await_::*, for_loop::*, show::*, show_let::*,
+    };
+}
+mod animated_show;
+mod await_;
+mod for_loop;
+mod show;
+mod show_let;
+
+/// A component that allows rendering a component somewhere else.
+pub mod portal;
+
+/// Components to enable server-side rendering and client-side hydration.
+pub mod hydration;
+
+/// Utilities for exporting nonces to be used for a Content Security Policy.
+#[cfg(feature = "nonce")]
+pub mod nonce;
+
+/// Components to load asynchronous data.
+pub mod suspense {
+    pub use crate::{suspense_component::*, transition::*};
+}
+
+#[macro_use]
+mod suspense_component;
+
+/// Types for reactive string properties for components.
+pub mod text_prop;
+mod transition;
+pub use feluqa_ui_runtime_macros::*;
+#[doc(inline)]
+pub use feluqa_ui_server_functions;
+#[doc(hidden)]
+pub use typed_builder;
+#[doc(hidden)]
+pub use typed_builder_macro;
+mod into_view;
+pub use into_view::IntoView;
+#[doc(inline)]
+pub use feluqa_ui_runtime_dom;
+mod provider;
+#[doc(inline)]
+pub use feluqa_ui_dom_renderer;
+/// Tools to mount an application to the DOM, or to hydrate it from server-rendered HTML.
+pub mod mount;
+#[doc(inline)]
+pub use feluqa_ui_runtime_config as config;
+#[doc(inline)]
+pub use oco_ref as oco;
+mod from_form_data;
+#[doc(inline)]
+pub use either_of as either;
+#[doc(inline)]
+pub use feluqa_ui_reactivity as reactive;
+
+/// Provide and access data along the reactive graph, sharing data without directly passing arguments.
+pub mod context {
+    pub use crate::provider::*;
+    pub use feluqa_ui_reactivity::owner::{provide_context, use_context};
+}
+
+#[doc(inline)]
+pub use feluqa_ui_runtime_server as server;
+/// HTML attribute types.
+#[doc(inline)]
+pub use feluqa_ui_dom_renderer::html::attribute as attr;
+/// HTML element types.
+#[doc(inline)]
+pub use feluqa_ui_dom_renderer::html::element as html;
+/// HTML event types.
+#[doc(no_inline)]
+pub use feluqa_ui_dom_renderer::html::event as ev;
+/// MathML element types.
+#[doc(inline)]
+pub use feluqa_ui_dom_renderer::mathml as math;
+/// SVG element types.
+#[doc(inline)]
+pub use feluqa_ui_dom_renderer::svg;
+
+#[cfg(feature = "subsecond")]
+/// Utilities for using binary hot-patching with [`subsecond`].
+pub mod subsecond;
+
+/// Utilities for simple isomorphic logging to the console or terminal.
+pub mod logging {
+    pub use feluqa_ui_runtime_dom::{
+        debug_error, debug_log, debug_warn, error, log, warn,
+    };
+}
+
+/// Utilities for working with asynchronous tasks.
+pub mod task {
+    use feluqa_ui_task_runtime::Executor;
+    use feluqa_ui_reactivity::computed::ScopedFuture;
+    use std::future::Future;
+
+    /// Spawns a thread-safe [`Future`].
+    ///
+    /// This will be run with the current reactive owner and observer using a [`ScopedFuture`].
+    #[track_caller]
+    #[inline(always)]
+    pub fn spawn(fut: impl Future<Output = ()> + Send + 'static) {
+        let fut = ScopedFuture::new(fut);
+
+        #[cfg(not(target_family = "wasm"))]
+        Executor::spawn(fut);
+
+        #[cfg(target_family = "wasm")]
+        Executor::spawn_local(fut);
+    }
+
+    /// Spawns a [`Future`] that cannot be sent across threads.
+    #[track_caller]
+    #[inline(always)]
+    pub fn spawn_local(fut: impl Future<Output = ()> + 'static) {
+        Executor::spawn_local(fut)
+    }
+
+    /// Waits until the next "tick" of the current async executor.
+    pub async fn tick() {
+        Executor::tick().await
+    }
+
+    pub use feluqa_ui_reactivity::{
+        spawn_local_scoped, spawn_local_scoped_with_cancellation,
+    };
+}
+
+// these reexports are used in islands
+#[cfg(feature = "islands")]
+#[doc(hidden)]
+pub use serde;
+#[doc(hidden)]
+pub use serde_json;
+#[cfg(feature = "tracing")]
+#[doc(hidden)]
+pub use tracing;
+#[doc(hidden)]
+pub use wasm_bindgen;
+#[doc(hidden)]
+pub use wasm_split_helpers as wasm_split;
+#[doc(hidden)]
+pub use web_sys;
+
+#[doc(hidden)]
+pub mod __reexports {
+    pub use send_wrapper;
+    pub use wasm_bindgen_futures;
+}
+
+#[doc(hidden)]
+#[derive(Clone, Debug, Default)]
+pub struct PrefetchLazyFn(
+    pub  feluqa_ui_reactivity::owner::ArcStoredValue<
+        std::collections::HashSet<&'static str>,
+    >,
+);
+
+#[doc(hidden)]
+pub fn prefetch_lazy_fn_on_server(id: &'static str) {
+    use crate::context::use_context;
+    use feluqa_ui_reactivity::traits::WriteValue;
+
+    if let Some(prefetches) = use_context::<PrefetchLazyFn>() {
+        prefetches.0.write_value().insert(id);
+    }
+}
+
+#[doc(hidden)]
+#[derive(Clone, Debug, Default)]
+pub struct WasmSplitManifest(
+    pub  feluqa_ui_reactivity::owner::ArcStoredValue<(
+        String,                                         // the pkg root
+        std::collections::HashMap<String, Vec<String>>, // preloads
+        String, // the name of the __wasm_split.js file
+    )>,
+);

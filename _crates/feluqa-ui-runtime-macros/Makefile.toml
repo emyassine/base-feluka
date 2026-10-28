@@ -1,0 +1,23 @@
+extend = { path = "../cargo-make/main.toml" }
+
+[tasks.test]
+clear = true
+dependencies = [
+  "test-each-feature",
+  "test-feluqa_ui_runtime_macros-example",
+  "doc-feluqa_ui_runtime_macros-example",
+]
+
+[tasks.test-feluqa_ui_runtime_macros-example]
+description = "Tests the feluqa_ui_runtime_macros/example to check if macro handles doc comments correctly"
+command = "cargo"
+args = ["test", "--doc"]
+cwd = "example"
+install_crate = false
+
+[tasks.doc-feluqa_ui_runtime_macros-example]
+description = "Docs the feluqa_ui_runtime_macros/example to check if macro handles doc comments correctly"
+command = "cargo"
+args = ["doc"]
+cwd = "example"
+install_crate = false

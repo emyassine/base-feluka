@@ -18,7 +18,9 @@ change calendar time. `exists/` describes what has actually been verified.
 | F5. Live actions | 10–18 days | Signed typed dispatch exists; add shared replay protection, client reconciliation/focus handling and failure/reconnect tests. |
 | F6. Sites, CLI and deployment | 8–14 days | Local scaffold/watcher exist; validate standalone builds, a second independent site, production deployment and rollback. |
 | F7. Installable module lifecycle | 12–20 days | Static lifecycle exists; implement artifact compatibility/signatures, licensing, domain activation, staging, recovery and safe uninstall/data retention. |
-| F8. Leptos panel UI migration | Unestimated pending build spike | Replace Filament-derived panel UI with Feluqa-owned Leptos components behind `feluqa::ui::component`; integrate SSR and hydration with Axum, migrate all panel pages/interactions, verify light/dark and responsive behavior, then remove unused Filament assets. Acceptance and sequencing are in [the Leptos UI migration contract](../knowledge/architecture/leptos-ui.en.md). |
+| F8. Feluqa UI and panel migration | Unestimated pending build spike | Internalize the component source as first-party Feluqa packages and namespaces, integrate rendering/hydration with Axum, migrate all panel pages/interactions, verify light/dark and responsive behavior, then remove unused legacy assets. Acceptance is in [the Feluqa UI architecture](../knowledge/architecture/feluqa-ui.en.md). |
+| F10. Feluqa-owned UI runtime | Unestimated | Replace the remaining external rendering-runtime dependency with a first-party maintained runtime under Feluqa namespaces, or implement the required compiler/runtime surface directly. Preserve web SSR/hydration, workstation/mobile outputs and the no_std boundary. Do not call the current component-source copy a complete runtime internalization. |
+| F9. One module, web and workstation products | Unestimated architecture and prototype | Make one business module deployable as a hosted web application or a standalone workstation application. Define shared domain/application logic and separate web, desktop, storage and connection adapters. For the bookstore scenario, the same books, sales, stock and student-facing behavior must support a public website with business administration and a local-only workstation installation. Then design optional multi-device sessions over a local peer network or a routed connection, with explicit identity, authorization, synchronization, conflict handling, offline behavior, backup and recovery. No desktop framework, synchronization protocol, or database topology is selected yet. See [the web and workstation module plan](cross-platform/web-and-workstation-modules.en.md). |
 
 These tracks have dependencies and some can run in parallel. Do not sum the
 ranges as a committed schedule; re-estimate after each acceptance gate exposes
@@ -36,7 +38,7 @@ not implemented yet.
   and explicit data-retention behavior.
 - **Module developer experience:** concise providers, panels, resources, pages,
   clusters, widgets, CRUD adapters, migrations, seeders and standalone builds.
-- **Enterprise panels:** complete Feluqa Leptos theme/component system,
+- **Enterprise panels:** complete Feluqa theme/component system,
   accessible forms/tables/actions/notifications, responsive Core panel and
   first-class public-site panel composition; see F8. Filament parity is no
   longer the target.
@@ -45,6 +47,10 @@ not implemented yet.
   restore drill.
 - **Operations:** production deployment, graceful shutdown, observability,
   backup/restore runbooks and security/documentation review.
+- **Cross-surface delivery:** a representative module builds for hosted web and
+  standalone workstation from one module codebase. Multi-device access is
+  enabled only after its trust, sync, offline, conflict and recovery model has
+  end-to-end evidence.
 
 Do not call the platform enterprise-ready until each applicable gate has an
 end-to-end application test and operational evidence.

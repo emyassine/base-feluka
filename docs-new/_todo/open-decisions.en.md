@@ -1,2 +1,25 @@
-list of installables (node js or dependencies for crossplatform etc) as jsons !
-/home/yassine/Projects/Php/framework/__work/
+# Open architecture decisions
+
+## Web and workstation product delivery
+
+The target is one business module codebase that can be composed into either a
+hosted web application or a standalone workstation product, with optional
+access from additional computers and mobile devices. The delivery plan and
+acceptance work are in [the web and workstation module plan](cross-platform/web-and-workstation-modules.en.md).
+
+Still undecided: desktop runtime, local database engine and storage layout,
+whether multi-device mode is client/server or peer-to-peer, device enrollment,
+network discovery/routing, synchronization protocol, offline writes and
+conflict resolution. Resolve these with an architecture spike and a bookstore
+workflow; do not infer a production topology from the product goal.
+
+## Installable runtime inventory
+
+Define a versioned machine-readable inventory (JSON) of installable runtime
+requirements and optional dependencies. Decide its schema, platform selectors,
+version constraints, acquisition sources, signature/provenance fields and
+whether the CLI may install them. Keep this separate from the desktop/web
+module delivery decision until the trust and update model is specified.
+
+Historical note from the original question:
+`/home/yassine/Projects/Php/framework/__work/`.

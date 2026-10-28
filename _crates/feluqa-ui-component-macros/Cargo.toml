@@ -1,0 +1,15 @@
+[package]
+name = "feluqa-ui-component-macros"
+version = "0.3.22"
+edition = "2024"
+license = "MIT"
+description = "Internalized Rust UI Feluqa UI component macros."
+
+[dependencies]
+feluqa_ui_runtime.workspace = true
+feluqa_ui_classnames.workspace = true
+paste = "1"
+
+[lib]
+name = "feluqa_ui_component_macros"
+path = "src/lib.rs"

@@ -15,18 +15,33 @@ extern crate serde_json;
 #[cfg(test)]
 extern crate std;
 
-/// Feluqa-owned Leptos components, available with the `components` feature.
+/// Feluqa UI components, available with the `components` feature.
 #[cfg(feature = "components")]
-pub mod component {
-    /// Components adapted from the Rust UI Leptos registry.
-    pub use crate::feluqa_ui_components::component::Button;
-    /// Button dimensions.
-    pub use crate::feluqa_ui_components::component::ButtonSize;
-    /// Button visual variants.
-    pub use crate::feluqa_ui_components::component::ButtonVariant;
-    /// Conditional class composition helper.
-    pub use crate::feluqa_ui_components::component::clx;
-}
+pub use crate::feluqa_ui_components::component;
+/// Feluqa layout blocks, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::block;
+/// Feluqa chart components, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::chart;
+/// Feluqa UI hooks, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::hook;
+/// Feluqa icons, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::icons;
+/// Common rendering types and traits, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::prelude;
+/// Component view macro, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::view;
+/// Rendering runtime, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::runtime;
+/// UI navigation primitives, available with the `components` feature.
+#[cfg(feature = "components")]
+pub use crate::feluqa_ui_components::navigation;
 
 use alloc::collections::BTreeSet;
 use alloc::format;

@@ -1,11 +1,13 @@
 # Rust UI source notice
 
-Button styling and class composition are adapted from the Rust UI Leptos
-registry at commit `9cb8e9f251a254bea19c5d00318e296bb13dca05`:
+The Feluqa UI component registry, blocks, hooks, charts, icons, helpers and
+class-composition source in the Feluqa UI crates was copied and adapted from
+the local Rust UI checkout at commit
+`9331b462af8677b4554d85acdc3a97a640f1e18a`.
 
-https://github.com/rust-ui/ui/tree/9cb8e9f251a254bea19c5d00318e296bb13dca05/leptos-ui/app_crates/registry/src/ui/button.rs
+Source project: https://github.com/rust-ui/ui
 
-Copyright (c) 2026 Max Wells. Distributed under the MIT License. The upstream
-license is available at:
-
-https://github.com/rust-ui/ui/blob/9cb8e9f251a254bea19c5d00318e296bb13dca05/leptos-ui/LICENSE
+The copied source is distributed under its upstream MIT license. The license
+texts are retained with the relevant first-party source crates. Feluqa's
+adaptations use Feluqa package names and namespaces; this notice preserves
+provenance and is not a package dependency declaration.

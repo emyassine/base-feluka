@@ -409,14 +409,14 @@ Exhibit 3b | What each candidate covers, with existing frameworks to reuse (lice
 | --- | --- | --- |
 | Server and APIs | axum, hyper, tonic (gRPC), sqlx, rusqlite, utoipa, async-graphql (MIT or Apache-2.0) | net/http, chi, gRPC-go, connect-go, sqlc: the strongest, most complete server ecosystem |
 | Backend and admin core | Nothing equivalent to PocketBase. Port candidate: PocketBase (MIT), validated by black-box tests | PocketBase directly (MIT) |
-| Web UI and SPAs | Leptos (server rendering and hydration), Dioxus, Yew (MIT or Apache-2.0); output is WebAssembly | templ with htmx for server-driven UI; Go compiled to WebAssembly gives large bundles |
-| Desktop | Tauri 2 (MIT or Apache-2.0), Dioxus desktop, egui, iced. **Slint is GPLv3 or commercial: license trap** | Wails (MIT), Fyne (BSD-3), Gio |
-| Mobile | Tauri 2 mobile, Dioxus mobile (young), or a Rust core with native UI through UniFFI (MPL-2.0) | gomobile, Fyne: weak |
+| Web UI and SPAs | Feluqa-owned server rendering and hydration; output is WebAssembly | templ with htmx for server-driven UI; Go compiled to WebAssembly gives large bundles |
+| Desktop | Tauri 2 (MIT or Apache-2.0), egui, iced. **Slint is GPLv3 or commercial: license trap** | Wails (MIT), Fyne (BSD-3), Gio |
+| Mobile | Tauri 2 mobile or a Rust core with native UI through UniFFI (MPL-2.0) | gomobile, Fyne: weak |
 | Games | Bevy (ECS, MIT or Apache-2.0; breaking changes before 1.0), Fyrox, wgpu, winit, rapier | Ebitengine (2D, Apache-2.0); 3D is weak |
 | Real-time and embedded | Embassy, RTIC, Tock, Hubris, heapless, embedded-hal, rust-mavlink; Ferrocene is a qualified Rust toolchain (check which standards and domains its qualification covers) | TinyGo (subset); GC is unsuitable for hard deadlines |
 | Ground station and simulation | Tauri or egui or Bevy with wgpu; MAVLink through rust-mavlink | Possible on the ground side only |
 
-**Critique.** Rust's gap is the backend; Go's gap is everything else. Rust has strong frameworks for every client and embedded target and thin server products. Go has the best server and infrastructure ecosystem and weak coverage of mobile, games, WebAssembly front ends and any code without a garbage collector. Bevy and Dioxus change their APIs often before 1.0, so pin versions and vendor them.
+**Critique.** Rust's gap is the backend; Go's gap is everything else. Rust has strong frameworks for every client and embedded target and thin server products. Go has the best server and infrastructure ecosystem and weak coverage of mobile, games, WebAssembly front ends and any code without a garbage collector. Bevy changes its API often before 1.0, so pin versions and vendor it.
 
 ### Your four questions
 
@@ -615,7 +615,7 @@ Exhibit 4 | Go/no-go gates; a gate passes only if every listed ID passes
 * **D-0029 — Real-time and defense boundaries.** Proposed. Ground-side software only in release 1; kernel crates stay `no_std`-capable; legal review before any defense positioning (decision 2).
 * **D-0030 — Port protocol.** Proposed. Library ports follow the black-box test protocol in Part B.
 * **D-0031 — Web database layer and migrations.** Accepted for the Web profile: SeaORM 1.1.20 with Tokio and SQLite/PostgreSQL drivers, preserving workspace MSRV Rust 1.85. Feluqa modules embed SQL files from `migrations/{sqlite,postgresql}`; each declares supported dialects and supplies exactly one migration variant per declared backend. Named connections are explicit; SQLite is the default. SeaORM 2.x / SQLx 0.9 are deferred while they require Rust 1.94.
-* **D-0032 — Web panel component stack.** Accepted by the owner on 2026-10-28: replace the Filament-derived panel theme and component implementation with Feluqa-owned Leptos components, using the Rust UI registry as MIT-licensed source material. Expose components through `feluqa::ui::component`; keep `feluqa::ui` schema contracts `no_std` and Leptos in the web profile. Leptos SSR/hydration build integration and the explicit Rust 1.88 minimum for the web UI feature are prerequisites. Remove Filament-derived runtime assets after all panel routes and behaviors migrate and pass the evidence in `leptos-ui.en.md`.
+* **D-0032 — Web panel component stack.** Accepted by the owner on 2026-10-28: replace the Filament-derived panel theme and component implementation with Feluqa-owned Feluqa-owned server-rendered components, using the Rust UI registry as MIT-licensed source material. Expose components through `feluqa::ui::component`; keep `feluqa::ui` schema contracts `no_std` and Leptos in the web profile. Leptos SSR/hydration build integration and the explicit Rust 1.88 minimum for the web UI feature are prerequisites. Remove Filament-derived runtime assets after all panel routes and behaviors migrate and pass the evidence in `feluqa-ui.en.md`.
 
 ### C3. Sources
 
@@ -623,4 +623,4 @@ From earlier revisions: Go `net/http`; Go modules and workspaces; Cargo workspac
 
 Added (to verify before adoption): pocketbase.io; caddyserver.com and CertMagic; templ.guide; sqlc.dev; cel.dev; cedarpolicy.com; casbin.org; extism.org; litestream.io; data-star.dev; github.com/bigskysoftware/idiomorph; phoenixframework.org and ash-hq.org; github.com/cloudflare/pingora; theupdateframework.io; sigstore.dev; OrchardCore documentation.
 
-Added for the expanded scope (to verify before adoption): tauri.app; dioxus.dev; leptos.dev; bevyengine.org; embassy.dev; rtic.rs; tockos.org; ferrocene.dev; github.com/mozilla/uniffi-rs; github.com/mavlink/rust-mavlink; px4.io; ardupilot.org; wails.io; ebitengine.org; eur-lex.europa.eu (Regulation 2021/821 on dual-use items).
+Added for the expanded scope (to verify before adoption): tauri.app; bevyengine.org; embassy.dev; rtic.rs; tockos.org; ferrocene.dev; github.com/mozilla/uniffi-rs; github.com/mavlink/rust-mavlink; px4.io; ardupilot.org; wails.io; ebitengine.org; eur-lex.europa.eu (Regulation 2021/821 on dual-use items).

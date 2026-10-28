@@ -1,0 +1,4 @@
+extend = { path = "../../cargo-make/main.toml" }
+
+[tasks.check-format]
+env = { FELUQA_UI_PROJECT_DIRECTORY = "../../" }

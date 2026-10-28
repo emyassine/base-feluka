@@ -1,0 +1,13 @@
+use crate::runtime::prelude::*;
+use crate::feluqa_ui_component_macros::void;
+
+const PULSE_ANIMATION: &str = "animate-pulse";
+
+// TODO UI. Skeleton should be able to receive children (or not).
+
+mod components {
+    use super::*;
+    void! {Skeleton, div, PULSE_ANIMATION, "rounded-md bg-muted"}
+}
+
+pub use components::*;

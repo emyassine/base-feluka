@@ -1,0 +1,15 @@
+[package]
+name = "feluqa-ui-classnames-macros"
+version = "0.1.9"
+edition = "2024"
+license = "MIT"
+description = "Internalized Rust UI Tailwind variant macros."
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2", features = ["full"] }
+quote = "1"
+proc-macro2 = "1"
+darling = "0.20"

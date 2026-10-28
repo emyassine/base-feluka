@@ -9,6 +9,26 @@ members = [
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-ui-components",
+    "feluqa-ui-runtime",
+    "feluqa-ui-runtime-config",
+    "feluqa-ui-runtime-dom",
+    "feluqa-ui-runtime-hot-reload",
+    "feluqa-ui-runtime-macros",
+    "feluqa-ui-runtime-server",
+    "feluqa-ui-navigation",
+    "feluqa-ui-navigation-macros",
+    "feluqa-ui-reactivity",
+    "feluqa-ui-markup-parser",
+    "feluqa-ui-server-functions",
+    "feluqa-ui-server-functions-macros",
+    "feluqa-ui-server-functions-macros-default",
+    "feluqa-ui-dom-renderer",
+    "feluqa-ui-errors",
+    "feluqa-ui-task-runtime",
+    "feluqa-ui-component-macros",
+    "feluqa-ui-autoform",
+    "feluqa-ui-classnames",
+    "feluqa-ui-classnames-macros",
     "feluqa-panel",
     "feluqa-notifications",
     "feluqa-system-panel",
@@ -49,3 +69,35 @@ toml = "0.8"
 tower-http = { version = "0.6", features = ["fs"] }
 crossterm = { version = "0.29", default-features = false, features = ["events", "windows"] }
 signal-hook = "0.3"
+feluqa_ui_runtime = { package = "feluqa-ui-runtime", path = "feluqa-ui-runtime", version = "0.8.15", features = ["nightly", "ssr"] }
+feluqa_ui_navigation = { package = "feluqa-ui-navigation", path = "feluqa-ui-navigation", version = "0.8.3", features = ["nightly", "ssr"] }
+feluqa_ui_autoform = { package = "feluqa-ui-autoform", path = "feluqa-ui-autoform", version = "0.1.1" }
+feluqa_ui_component_macros = { package = "feluqa-ui-component-macros", path = "feluqa-ui-component-macros", version = "0.3.22" }
+feluqa_ui_classnames = { package = "feluqa-ui-classnames", path = "feluqa-ui-classnames", version = "0.1.21", features = ["variant"] }
+feluqa_ui_classnames_macros = { package = "feluqa-ui-classnames-macros", path = "feluqa-ui-classnames-macros", version = "0.1.9" }
+strum = { version = "0.28", features = ["derive"] }
+time = { version = "0.3", features = ["serde", "wasm-bindgen"] }
+validator = { version = "0.20", features = ["derive"] }
+js-sys = "0.3"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", default-features = false, features = ["Clipboard", "console", "CssStyleDeclaration", "Document", "DomRect", "DomTokenList", "DragEvent", "Element", "Event", "EventTarget", "Headers", "HtmlElement", "HtmlInputElement", "InputEvent", "KeyboardEvent", "Location", "MediaQueryList", "MouseEvent", "MutationObserver", "MutationObserverInit", "MutationRecord", "Navigator", "Node", "NodeList", "Request", "RequestInit", "RequestMode", "Response", "Storage", "Window"] }
+heck = "0.5"
+
+[patch.crates-io]
+feluqa-ui-runtime = { path = "feluqa-ui-runtime" }
+feluqa-ui-runtime-config = { path = "feluqa-ui-runtime-config" }
+feluqa-ui-runtime-dom = { path = "feluqa-ui-runtime-dom" }
+feluqa-ui-runtime-hot-reload = { path = "feluqa-ui-runtime-hot-reload" }
+feluqa-ui-runtime-macros = { path = "feluqa-ui-runtime-macros" }
+feluqa-ui-navigation = { path = "feluqa-ui-navigation" }
+feluqa-ui-navigation-macros = { path = "feluqa-ui-navigation-macros" }
+feluqa-ui-runtime-server = { path = "feluqa-ui-runtime-server" }
+feluqa-ui-reactivity = { path = "feluqa-ui-reactivity" }
+feluqa-ui-markup-parser = { path = "feluqa-ui-markup-parser" }
+feluqa-ui-server-functions = { path = "feluqa-ui-server-functions" }
+feluqa-ui-server-functions-macros = { path = "feluqa-ui-server-functions-macros" }
+feluqa-ui-server-functions-macros-default = { path = "feluqa-ui-server-functions-macros-default" }
+feluqa-ui-dom-renderer = { path = "feluqa-ui-dom-renderer" }
+feluqa-ui-errors = { path = "feluqa-ui-errors" }
+feluqa-ui-task-runtime = { path = "feluqa-ui-task-runtime" }
