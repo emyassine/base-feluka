@@ -15,9 +15,9 @@ build = ["std", "dep:syn"]
 platform = ["std", "dep:feluqa-definitions"]
 
 [dependencies]
-inventory.workspace = true
-crossterm = { workspace = true, optional = true }
-signal-hook = { workspace = true, optional = true }
+inventory = "0.3"
+crossterm = { version = "0.29", default-features = false, features = ["events", "windows"], optional = true }
+signal-hook = { version = "0.3", optional = true }
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../../macros/feluqa-console-macros" }
-syn = { workspace = true, optional = true }
+syn = { version = "2", features = ["full"], optional = true }
 feluqa-definitions = { version = "0.1.0", registry = "feluqa", path = "../../core/feluqa-definitions", optional = true }

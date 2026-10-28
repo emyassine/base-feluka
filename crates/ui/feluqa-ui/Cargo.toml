@@ -9,8 +9,8 @@ rust-version.workspace = true
 publish = ["feluqa"]
 
 [dependencies]
-serde.workspace = true
-serde_json.workspace = true
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
 feluqa-ui-components = { version = "0.1.0", registry = "feluqa", path = "../feluqa-ui-components", optional = true }
 
 [features]

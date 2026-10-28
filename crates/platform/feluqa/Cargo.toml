@@ -47,13 +47,13 @@ feluqa-console = { version = "0.1.1", registry = "feluqa", path = "../feluqa-con
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../../macros/feluqa-console-macros", optional = true}
 feluqa-definitions = { version = "0.1.0", registry = "feluqa", path = "../../core/feluqa-definitions", optional = true}
 feluqa-view = { version = "0.2.0", registry = "feluqa", path = "../../ui/feluqa-view", optional = true}
-axum = { workspace = true, optional = true }
-serde = { workspace = true, optional = true }
-tokio = { workspace = true, optional = true }
-tower-http = { workspace = true, optional = true }
-toml = { workspace = true, optional = true }
-subtle.workspace = true
+axum = { version = "0.8", optional = true }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"], optional = true }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"], optional = true }
+tower-http = { version = "0.6", features = ["fs"], optional = true }
+toml = { version = "0.8", optional = true }
+subtle = "2"
 
 [dev-dependencies]
-tokio.workspace = true
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
 tower = { version = "0.5", features = ["util"] }

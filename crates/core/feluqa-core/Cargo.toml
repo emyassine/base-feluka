@@ -11,13 +11,13 @@ publish = ["feluqa"]
 [dependencies]
 feluqa-database = { version = "0.1.0", registry = "feluqa", path = "../../services/feluqa-database" }
 feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../../services/feluqa-auth" }
-sea-orm.workspace = true
-argon2.workspace = true
-rand_core = { workspace = true, features = ["getrandom"] }
-sha2.workspace = true
-subtle.workspace = true
-thiserror.workspace = true
-tokio.workspace = true
+sea-orm = { version = "=1.1.20", default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlx-sqlite", "sqlx-postgres", "with-json"] }
+argon2 = "=0.5.3"
+rand_core = { version = "0.6", features = ["getrandom"] }
+sha2 = "0.10"
+subtle = "2"
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
 
 [dev-dependencies]
-tokio.workspace = true
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }

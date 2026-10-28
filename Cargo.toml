@@ -16,39 +16,6 @@ edition = "2024"
 license-file = "LICENSE"
 rust-version = "1.85"
 
-[workspace.dependencies]
-axum = "0.8"
-serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
-proc-macro2 = "1"
-quote = "1"
-syn = { version = "2", features = ["full"] }
-inventory = "0.3"
-serde_json = { version = "1", default-features = false, features = ["alloc"] }
-hmac = "0.12"
-sha2 = "0.10"
-zeroize = "1"
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }
-sea-orm = { version = "=1.1.20", default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlx-sqlite", "sqlx-postgres", "with-json"] }
-argon2 = "=0.5.3"
-rand_core = "0.6"
-subtle = "2"
-thiserror = "2"
-toml = "0.8"
-tower-http = { version = "0.6", features = ["fs"] }
-crossterm = { version = "0.29", default-features = false, features = ["events", "windows"] }
-signal-hook = "0.3"
-feluqa_ui_runtime = { package = "feluqa-ui-runtime", path = "crates/ui/feluqa-ui-runtime", version = "0.8.15", features = ["nightly", "ssr"] }
-feluqa_ui_navigation = { package = "feluqa-ui-navigation", path = "crates/ui/feluqa-ui-navigation", version = "0.8.3", features = ["nightly", "ssr"] }
-feluqa_ui_autoform = { package = "feluqa-ui-autoform", path = "crates/ui/feluqa-ui-autoform", version = "0.1.1" }
-feluqa_ui_component_macros = { package = "feluqa-ui-component-macros", path = "crates/macros/feluqa-ui-component-macros", version = "0.3.22" }
-feluqa_ui_classnames = { package = "feluqa-ui-classnames", path = "crates/ui/feluqa-ui-classnames", version = "0.1.21", features = ["variant"] }
-feluqa_ui_classnames_macros = { package = "feluqa-ui-classnames-macros", path = "crates/macros/feluqa-ui-classnames-macros", version = "0.1.9" }
-js-sys = "0.3"
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-web-sys = { version = "0.3", default-features = false, features = ["Clipboard", "console", "CssStyleDeclaration", "Document", "DomRect", "DomTokenList", "DragEvent", "Element", "Event", "EventTarget", "Headers", "HtmlElement", "HtmlInputElement", "InputEvent", "KeyboardEvent", "Location", "MediaQueryList", "MouseEvent", "MutationObserver", "MutationObserverInit", "MutationRecord", "Navigator", "Node", "NodeList", "Request", "RequestInit", "RequestMode", "Response", "Storage", "Window"] }
-heck = "0.5"
-
 [patch.crates-io]
 feluqa-ui-runtime = { path = "crates/ui/feluqa-ui-runtime" }
 feluqa-ui-runtime-config = { path = "crates/ui/feluqa-ui-runtime-config" }

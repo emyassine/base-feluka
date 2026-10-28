@@ -82,9 +82,9 @@ Snapshot reviewed on 2026-10-28 after removing Numerimondes. Commands used: `car
 
 The following direct dependency table covers every dependency declaration of the 40 workspace packages, including optional, build, dev and target-specific declarations. “Default off” means the manifest disables that dependency’s default features. The lockfile inventory below lists every exact package/version record.
 
-## Root dependency catalog and patches
+## Workspace settings and local patches
 
-The virtual workspace root has no compiled library of its own. Its `[workspace.dependencies]` table centralizes versions and feature choices for members; a catalog entry alone does not cause Cargo to compile a package. `[patch.crates-io]` redirects matching requested packages to these local paths; it also does not activate an otherwise unused dependency.
+The root manifest no longer has a `[workspace.dependencies]` catalog. Each crate declares the dependencies, versions and feature choices it uses in its own manifest. `[workspace.package]` still shares package metadata such as edition and license. `[patch.crates-io]` redirects upstream packages to Feluqa’s local copies; these entries are source overrides, not dependencies activated for every crate.
 
 | Workspace alias | Package / version / source | Default features and selected features |
 |---|---|---|

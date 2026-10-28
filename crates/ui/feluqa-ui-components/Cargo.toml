@@ -14,21 +14,21 @@ panel-shell = []
 full-catalog = ["card"]
 
 [dependencies]
-feluqa_ui_runtime.workspace = true
-feluqa_ui_navigation.workspace = true
-feluqa_ui_component_macros.workspace = true
-feluqa_ui_autoform.workspace = true
-feluqa_ui_classnames.workspace = true
-serde.workspace = true
-serde_json.workspace = true
+feluqa_ui_runtime = { package = "feluqa-ui-runtime", path = "../feluqa-ui-runtime", version = "0.8.15", features = ["nightly", "ssr"] }
+feluqa_ui_navigation = { package = "feluqa-ui-navigation", path = "../feluqa-ui-navigation", version = "0.8.3", features = ["nightly", "ssr"] }
+feluqa_ui_component_macros = { package = "feluqa-ui-component-macros", path = "../../macros/feluqa-ui-component-macros", version = "0.3.22" }
+feluqa_ui_autoform = { package = "feluqa-ui-autoform", path = "../feluqa-ui-autoform", version = "0.1.1" }
+feluqa_ui_classnames = { package = "feluqa-ui-classnames", path = "../feluqa-ui-classnames", version = "0.1.21", features = ["variant"] }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
 strum = { version = "0.28", features = ["derive"] }
 time = { version = "0.3", features = ["serde", "wasm-bindgen"] }
 validator = { version = "0.20", features = ["derive"] }
-js-sys.workspace = true
-wasm-bindgen.workspace = true
-wasm-bindgen-futures.workspace = true
-web-sys.workspace = true
-heck.workspace = true
+js-sys = "0.3"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", default-features = false, features = ["Clipboard", "console", "CssStyleDeclaration", "Document", "DomRect", "DomTokenList", "DragEvent", "Element", "Event", "EventTarget", "Headers", "HtmlElement", "HtmlInputElement", "InputEvent", "KeyboardEvent", "Location", "MediaQueryList", "MouseEvent", "MutationObserver", "MutationObserverInit", "MutationRecord", "Navigator", "Node", "NodeList", "Request", "RequestInit", "RequestMode", "Response", "Storage", "Window"] }
+heck = "0.5"
 feluqa-imagery = { version = "0.1.0", registry = "feluqa", path = "../../services/feluqa-imagery" }
 feluqa-ui-card = { path = "../feluqa-ui-card", optional = true }
 feluqa-ui-card-elements = { path = "../feluqa-ui-card-elements", optional = true }

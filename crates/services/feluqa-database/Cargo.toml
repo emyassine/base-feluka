@@ -10,11 +10,11 @@ publish = ["feluqa"]
 
 [dependencies]
 feluqa-model-derive = { path = "../../macros/feluqa-model-derive", version = "0.1.0" }
-sea-orm.workspace = true
-serde.workspace = true
-sha2.workspace = true
+sea-orm = { version = "=1.1.20", default-features = false, features = ["macros", "runtime-tokio-rustls", "sqlx-sqlite", "sqlx-postgres", "with-json"] }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+sha2 = "0.10"
 thiserror = "2"
-toml.workspace = true
+toml = "0.8"
 
 [dev-dependencies]
-tokio.workspace = true
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal"] }

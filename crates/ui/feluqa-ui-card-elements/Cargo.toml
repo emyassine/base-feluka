@@ -8,8 +8,8 @@ rust-version.workspace = true
 publish = ["feluqa"]
 
 [dependencies]
-feluqa_ui_component_macros.workspace = true
-feluqa_ui_runtime.workspace = true
+feluqa_ui_component_macros = { package = "feluqa-ui-component-macros", path = "../../macros/feluqa-ui-component-macros", version = "0.3.22" }
+feluqa_ui_runtime = { package = "feluqa-ui-runtime", path = "../feluqa-ui-runtime", version = "0.8.15", features = ["nightly", "ssr"] }
 
 [lib]
 name = "feluqa_ui_card_elements"

@@ -10,8 +10,8 @@ publish = ["feluqa"]
 
 [dependencies]
 feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../feluqa-auth" }
-serde.workspace = true
-serde_json.workspace = true
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
 
