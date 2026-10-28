@@ -47,7 +47,7 @@ fi
 
 build_arguments=(
     build
-    --manifest-path "$repository_root/_crates/Cargo.toml"
+    --manifest-path "$repository_root/Cargo.toml"
     --package feluqa-cli
     --bins
     --locked

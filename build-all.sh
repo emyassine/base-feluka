@@ -9,7 +9,7 @@ if ! command -v cargo >/dev/null 2>&1; then
 fi
 
 cargo build \
-    --manifest-path "$ROOT_DIR/_crates/Cargo.toml" \
+    --manifest-path "$ROOT_DIR/Cargo.toml" \
     --workspace \
     --all-targets \
     "$@"

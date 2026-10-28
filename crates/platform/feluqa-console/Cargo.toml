@@ -1,0 +1,23 @@
+[package]
+name = "feluqa-console"
+version = "0.1.1"
+description = "Proprietary console command contracts for the Feluqa application framework."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[features]
+default = ["std"]
+std = ["dep:crossterm", "dep:signal-hook"]
+build = ["std", "dep:syn"]
+platform = ["std", "dep:feluqa-definitions"]
+
+[dependencies]
+inventory.workspace = true
+crossterm = { workspace = true, optional = true }
+signal-hook = { workspace = true, optional = true }
+feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../../macros/feluqa-console-macros" }
+syn = { workspace = true, optional = true }
+feluqa-definitions = { version = "0.1.0", registry = "feluqa", path = "../../core/feluqa-definitions", optional = true }

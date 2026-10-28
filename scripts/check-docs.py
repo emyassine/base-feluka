@@ -51,7 +51,7 @@ def main():
     args = parser.parse_args()
     errors = []
     pages = sorted(DOCS.rglob('*.md'))
-    consumers = [ROOT / 'README.md', ROOT / 'AGENTS.md', ROOT / '_crates/feluqa-console/DEPENDENCIES.md']
+    consumers = [ROOT / 'README.md', ROOT / 'AGENTS.md', ROOT / 'crates/platform/feluqa-console/DEPENDENCIES.md']
     graph = {}
     checked = 0
     for page in pages + consumers:

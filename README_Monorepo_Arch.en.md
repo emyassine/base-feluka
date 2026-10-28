@@ -54,11 +54,12 @@ feluqa/
 ├── rust-toolchain.toml           # pinned toolchain + targets
 ├── deny.toml                     # cargo-deny policy (licenses, advisories, bans)
 ├── AGENTS.md                     # conventions & commands for coding agents
-├── docs/
-│   ├── architecture/             # design docs
-│   ├── adr/                      # architecture decision records
-│   ├── exists/                   # authority on delivered behavior
-│   └── product/                  # product document
+├── docs-new/
+│   ├── 01.welcome/               # framework overview
+│   ├── 02.getting-started/      # app developer tutorial
+│   ├── 03.core-concepts/        # framework concepts
+│   ├── 04.guides/               # task guides
+│   └── 999-roadmap/             # active incomplete work
 │
 ├── crates/
 │   ├── core/
@@ -302,20 +303,20 @@ Aligned with the product stance (minimal, audited, pinned, vendorable).
 - `cargo vet` for audited-dependency tracking — [docs](https://mozilla.github.io/cargo-vet/).
 - `cargo vendor` for hermetic/offline builds when required.
 - Target [SLSA](https://slsa.dev) provenance and reproducible builds for release artifacts; sign modules and binaries.
-- New dependency requires an ADR note: why, alternatives, maintenance status, `unsafe` footprint.
+- Review each new dependency for purpose, ownership, license, MSRV, target support, maintenance and `unsafe` usage. Record the review beside the crate.
 - Prefer spec-first small internal implementations when a dependency would pull a large transitive tree for a tiny feature — but never for cryptography, TLS, or protocol parsers with security surface.
 
 ---
 
 ## 9. Evolvability rules
 
-1. **Contracts are versioned.** `feluqa-definitions`, WIT interfaces, UniFFI APIs and module manifests follow [SemVer](https://semver.org); breaking changes need an ADR and a migration note.
+1. **Contracts are versioned.** `feluqa-definitions`, WIT interfaces, UniFFI APIs and module manifests follow [SemVer](https://semver.org); document breaking changes in the affected guide and include a migration path.
 2. **Additive first.** New targets add a shell + bridge + capability set; they must not require core changes.
 3. **Capability negotiation** over version sniffing (§4.4).
 4. **Feature flags are additive** (§5).
 5. **Deprecation window.** Mark with `#[deprecated]` and keep for at least one minor series before removal.
-6. **ADRs** in `docs/adr/` record every cross-cutting decision (layout, bridges, module format, sync model).
-7. **Docs authority.** `docs/exists/` states delivered behavior; any `[Target]` text elsewhere must not contradict it.
+6. Keep framework rules in this architecture guide and the relevant product or developer guide. Keep implementation work in `docs-new/999-roadmap/`.
+7. **Docs authority.** The developer guides describe current usage. Keep target architecture and delivery status clear in those guides.
 8. **Target matrix in CI** grows with the product; a new target is "supported" only when it has a green CI lane.
 
 ---
@@ -392,7 +393,7 @@ Module authors interact only with `feluqa-definitions` and `feluqa-module`.
 | Built-in auth and sync | `feluqa-auth`, `feluqa-live`, `feluqa-database` behind replaceable traits |
 | AI-native | `feluqa-agent` (MCP, approvals, audit), `AGENTS.md`, `--json`, evals, schema-first design |
 | Native feel everywhere | headless core + SwiftUI / Compose / GTK / Qt / WinUI shells with capability negotiation |
-| Evolvability | versioned contracts, additive features, ADRs, target matrix in CI |
+| Evolvability | versioned contracts, additive features, target matrix in CI |
 
 ---
 
@@ -425,6 +426,6 @@ Module authors interact only with `feluqa-definitions` and `feluqa-module`.
 | WebTransport | https://www.w3.org/TR/webtransport/ |
 | CRDTs: Automerge / Yjs | https://automerge.org ; https://yjs.dev |
 | cargo-deny / cargo-vet / SLSA | https://embarkstudios.github.io/cargo-deny/ ; https://mozilla.github.io/cargo-vet/ ; https://slsa.dev |
-| SemVer / ADR | https://semver.org ; https://adr.github.io |
+| SemVer | https://semver.org |
 
 > Source hygiene for agents: these links are entry points. Versions, flags and OS-specific features (UniFFI CLI, Liquid Glass availability, Cargo resolver 3, Component Model status) change quickly; verify against current official docs before depending on them.

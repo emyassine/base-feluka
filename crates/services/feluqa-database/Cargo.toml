@@ -1,0 +1,20 @@
+[package]
+name = "feluqa-database"
+version = "0.1.0"
+description = "Named database connections and dialect migrations for Feluqa applications."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-model-derive = { path = "../../macros/feluqa-model-derive", version = "0.1.0" }
+sea-orm.workspace = true
+serde.workspace = true
+sha2.workspace = true
+thiserror = "2"
+toml.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true

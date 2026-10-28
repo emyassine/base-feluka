@@ -122,6 +122,7 @@ fn create_app(
             .map_err(|error| format!("could not discover workspace layout: {error}"))?;
         let framework = context.workspace_crates_root()
             .map_err(|error| error.to_string())?
+            .join("platform")
             .join("feluqa");
         let relative = feluqa::definitions::relative_path(&target, &framework)
             .map_err(|error| error.to_string())?;

@@ -1,0 +1,15 @@
+[package]
+name = "feluqa-panel"
+version = "0.1.0"
+description = "Validated system and business panel registry for Feluqa applications."
+authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa-auth = { version = "0.1.0", registry = "feluqa", path = "../../services/feluqa-auth" }
+feluqa-imagery = { version = "0.1.0", registry = "feluqa", path = "../../services/feluqa-imagery" }
+feluqa-ui = { version = "0.1.0", registry = "feluqa", path = "../../ui/feluqa-ui", features = ["panel-shell"] }
+serde_json.workspace = true

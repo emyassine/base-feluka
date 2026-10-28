@@ -80,7 +80,7 @@ fn dev_keeps_last_server_after_failed_build_and_restarts_after_repair() -> Resul
     let view_path = root.join("resources/views/home.view.rs");
     let marker = root.join("storage/instance.txt");
     let log_path = root.join("dev.log");
-    let view_crate = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../_crates/feluqa-view");
+    let view_crate = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../crates/ui/feluqa-view");
     fs::write(
         root.join("Cargo.toml"),
         format!(

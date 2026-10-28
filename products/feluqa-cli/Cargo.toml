@@ -1,7 +1,7 @@
 [package]
 name = "feluqa-cli"
 version.workspace = true
-workspace = "../../_crates"
+workspace = "../.."
 description = "Command line product for the Feluqa application platform."
 authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
 edition.workspace = true
@@ -10,13 +10,13 @@ rust-version.workspace = true
 publish = ["feluqa"]
 
 [dependencies]
-feluqa = { version = "0.2.0", registry = "feluqa", path = "../../_crates/feluqa", default-features = false, features = ["console", "definitions"] }
+feluqa = { version = "0.2.0", registry = "feluqa", path = "../../crates/platform/feluqa", default-features = false, features = ["console", "definitions"] }
 serde.workspace = true
 serde_json.workspace = true
 toml.workspace = true
 
 [build-dependencies]
-feluqa = { version = "0.2.0", registry = "feluqa", path = "../../_crates/feluqa", default-features = false, features = ["console-build"] }
+feluqa = { version = "0.2.0", registry = "feluqa", path = "../../crates/platform/feluqa", default-features = false, features = ["console-build"] }
 
 [[bin]]
 name = "feluqa"

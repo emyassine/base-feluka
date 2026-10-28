@@ -269,10 +269,10 @@ fn resolve_target(application: &Application) -> Result<DevTarget, String> {
         if directory == application.directory {
             continue;
         }
-        if !directory
-            .ancestors()
-            .any(|ancestor| ancestor.file_name().is_some_and(|name| name == "_crates"))
-        {
+        let workspace_root = metadata.workspace_root.as_std_path();
+        let in_framework_tree = directory.starts_with(workspace_root.join("crates"))
+            || directory.starts_with(workspace_root.join("tools"));
+        if !in_framework_tree {
             continue;
         }
         add_watch_roots(&mut watch_roots, directory, false);
@@ -498,11 +498,11 @@ mod tests {
                 .contains(&app_directory.join("resources/views"))
         );
         let framework_source = app_directory
-            .join("../../_crates/feluqa-view/src")
+            .join("../../crates/ui/feluqa-view/src")
             .canonicalize()
             .map_err(|error| error.to_string())?;
         let workspace_manifest = app_directory
-            .join("../../_crates/Cargo.toml")
+            .join("../../Cargo.toml")
             .canonicalize()
             .map_err(|error| error.to_string())?;
         assert!(target.watch_roots.contains(&framework_source));

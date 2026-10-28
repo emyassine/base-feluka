@@ -7,8 +7,8 @@ targets. Web delivery is the current priority.
 
 ## Start here
 
-- [Documentation](docs/00.index.en.md): organization guides, module developer
-  guides, technical references, architecture intent and remaining work.
+- [Documentation](docs-new/00.index.en.md): developer guides for the Feluqa framework,
+  from app creation to deployment and the current roadmap.
 - [Contributor instructions](AGENTS.md): repository boundaries, Rust rules
   and validation commands.
 
@@ -16,16 +16,14 @@ The CLI product is `products/feluqa-cli/` and its binary is `feluqa`. From this
 checkout, inspect its help with:
 
 ```sh
-cargo run --manifest-path _crates/Cargo.toml -p feluqa-cli -- help
+cargo run -p feluqa-cli -- help
 ```
 
-Product-specific run/build instructions belong in the corresponding guide
-in `docs/03.for-developers/10.product-implementations.en.md`.
+Product-specific run/build instructions belong in each product guide. Crate APIs and setup instructions belong beside their crate.
 
 ## Workspace
 
-The Cargo workspace and lockfile live under `_crates/`; product sources live
-under `products/`. The `feluqa` facade exposes target profiles. The web profile
+The root Cargo workspace contains domain-grouped framework crates under `crates/`, tools under `tools/`, and product consumers under `products/`. The `feluqa` facade exposes target profiles. The web profile
 uses Tokio, Axum, Tower, Serde and SeaORM. Shared contracts such as auth,
 versioned UI schemas, panel registration and module lifecycle are kept behind
 Feluqa namespaces; a non-web target does not inherit the server runtime by
@@ -39,4 +37,4 @@ assets alone do not establish feature parity with any PHP framework.
 The platform remains in active development. Dynamic module installation,
 domain license enforcement, complete legacy panel implementation-compatible panels, production
 Live reconciliation, deployment/restore qualification and enterprise release
-gates are not complete. See the [delivery plan](docs/roadmap/01.index.en.md).
+gates are not complete. See the [active roadmap](docs-new/999-roadmap/01.index.en.md).

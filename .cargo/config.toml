@@ -9,4 +9,4 @@ target-dir = "target"
 replace-with = "vendored-sources"
 
 [source.vendored-sources]
-directory = "_crates/vendor"
+directory = "vendor"
