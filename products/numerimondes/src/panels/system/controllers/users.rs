@@ -39,7 +39,7 @@ pub async fn system_users(State(state): State<PanelState>, headers: HeaderMap) -
             feluqa::panel::ResourceTableRow { values }
         })
         .collect::<Vec<_>>();
-    let table = match crate::modules::system::resource::USERS.render_table(
+    let table = match crate::panels::system::resource::USERS.render_table(
         &access,
         "Feluqa Core users",
         &rows,
@@ -57,7 +57,7 @@ pub async fn system_users(State(state): State<PanelState>, headers: HeaderMap) -
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
-    match views::generated_views::core_users(
+    match views::core_users(
         &identity.display_name,
         &identity.email,
         csrf,

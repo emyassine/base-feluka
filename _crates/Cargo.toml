@@ -10,6 +10,8 @@ members = [
     "feluqa-auth",
     "feluqa-ui",
     "feluqa-ui-components",
+    "feluqa-ui-card",
+    "feluqa-ui-card-elements",
     "feluqa-ui-runtime",
     "feluqa-ui-runtime-config",
     "feluqa-ui-runtime-dom",

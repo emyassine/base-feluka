@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 #![deny(unsafe_code)]
 
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::extract::OriginalUri;
 use crate::feluqa;
 use crate::std::convert::From;
@@ -18,7 +18,7 @@ use crate::std::string::ToString;
 use crate::std::time::{SystemTime, UNIX_EPOCH};
 use crate::std::vec::Vec;
 use crate::subtle::ConstantTimeEq;
-use crate::views;
+use crate::panels::runtime::generated_views as views;
 use feluqa::auth::{Permission, PermissionSetAuthorizer, Principal};
 use feluqa::core::entities::audit_event;
 use feluqa::core::service::SessionIdentity;
@@ -27,33 +27,45 @@ use feluqa::database::MigrationRunner;
 use feluqa::database::orm::{ColumnTrait, EntityTrait, QueryFilter, QueryOrder, QuerySelect};
 use feluqa::prelude::*;
 
+#[path = "controllers/authentication.rs"]
 mod authentication;
 pub use self::authentication::*;
+#[path = "controllers/dashboard.rs"]
 mod dashboard;
 pub use self::dashboard::*;
+#[path = "controllers/live.rs"]
 mod live;
 pub use self::live::*;
+#[path = "controllers/localization.rs"]
 mod localization;
 pub use self::localization::*;
+#[path = "controllers/users.rs"]
 mod users;
 pub use self::users::*;
+#[path = "controllers/roles.rs"]
 mod roles;
 pub use self::roles::*;
+#[path = "controllers/operations.rs"]
 mod operations;
 pub use self::operations::*;
+#[path = "controllers/ui_components.rs"]
 mod ui_components;
 pub(crate) use self::ui_components::*;
 
+#[path = "controllers/live_support.rs"]
 mod live_support;
 use self::live_support::*;
+#[path = "controllers/rendering.rs"]
 mod rendering;
 pub(crate) use self::rendering::render_dashboard;
 use self::rendering::*;
+#[path = "controllers/access.rs"]
 mod access;
 pub(crate) use self::access::protected_customer_page;
 pub(crate) use self::access::protected_registered_page;
 pub(crate) use self::access::registered_panel_navigation;
 use self::access::*;
+#[path = "controllers/security.rs"]
 mod security;
 pub(crate) use self::security::session_csrf_valid;
 use self::security::*;

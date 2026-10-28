@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 
-use crate::app::controllers::site;
-use crate::app::services::panel::PanelState;
+use crate::panels::site::site;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::Router;
 use crate::feluqa::web::Route;
 

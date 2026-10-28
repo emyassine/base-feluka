@@ -23,10 +23,10 @@ impl feluqa::module::ServiceProvider<feluqa::module::ModuleRuntime> for CrmServi
         "numerimondes.crm"
     }
     fn register(&self, runtime: &mut feluqa::module::ModuleRuntime) -> Result<(), Self::Error> {
-        runtime.register(crate::modules::CompiledModule::new(
+        runtime.register(crate::panels::runtime::CompiledModule::new(
             "numerimondes.crm",
             vec![String::from("feluqa.core")],
-            &crate::generated_migrations::crm::MIGRATIONS,
+            &crate::panels::runtime::generated_migrations::crm::MIGRATIONS,
         ))
     }
 }

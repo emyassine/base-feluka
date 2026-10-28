@@ -3,6 +3,7 @@
 use crate::feluqa;
 use crate::feluqa::console::platform::Application;
 use crate::std::collections::BTreeMap;
+use crate::std::cmp::Ord;
 use crate::std::clone::Clone;
 use crate::std::convert::From;
 use crate::std::eprintln;
@@ -306,7 +307,11 @@ fn add_watch_roots(roots: &mut Vec<PathBuf>, directory: &Path, include_app_files
 
 fn build(application: &Application) -> Result<ExitStatus, String> {
     let mut cargo = Command::new("cargo");
-    cargo.arg("build").arg("--manifest-path").arg(&application.manifest)
+    let jobs = thread::available_parallelism()
+        .map(|parallelism| parallelism.get().saturating_sub(2).max(1))
+        .unwrap_or(1)
+        .to_string();
+    cargo.arg("build").arg("--jobs").arg(jobs).arg("--manifest-path").arg(&application.manifest)
         .arg("--package").arg(&application.package_name)
         .current_dir(&application.directory)
         .env("FELUQA_ENV", "development");

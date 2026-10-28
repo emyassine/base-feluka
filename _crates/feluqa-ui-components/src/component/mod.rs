@@ -35,7 +35,14 @@ pub mod button_group;
 #[cfg(feature = "full-catalog")]
 pub mod callout;
 #[cfg(any(feature = "full-catalog", feature = "card"))]
-pub mod card;
+/// Card container and composition components.
+pub mod card {
+    pub use crate::feluqa_ui_card::{Card, CardSize};
+    pub use crate::feluqa_ui_card_elements::{
+        CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardItem, CardList,
+        CardTitle,
+    };
+}
 #[cfg(feature = "full-catalog")]
 pub mod card_carousel;
 #[cfg(feature = "full-catalog")]

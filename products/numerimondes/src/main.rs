@@ -14,21 +14,18 @@ extern crate tokio;
 extern crate tower;
 extern crate tower_http;
 
-mod app;
-mod generated_migrations {
-    include!(concat!(env!("OUT_DIR"), "/migrations.rs"));
-}
-mod modules;
 mod panels {
     #[path = "business/panel_business.rs"]
     pub mod business;
+    #[path = "system/panel_system.rs"]
+    pub mod system;
+    #[path = "site/panel_site.rs"]
+    pub mod site;
     #[path = "runtime.rs"]
     pub mod runtime;
     #[path = "web.rs"]
     pub mod web;
 }
-mod routes;
-mod views;
 
 use std::boxed::Box;
 use std::error::Error;

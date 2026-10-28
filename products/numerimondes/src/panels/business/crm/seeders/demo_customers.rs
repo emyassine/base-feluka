@@ -2,7 +2,7 @@
 #![deny(unsafe_code)]
 
 use crate::feluqa;
-use crate::modules::crm::model::Entity;
+use crate::panels::business::crm::model::Entity;
 use crate::std::boxed::Box;
 use crate::std::convert::From;
 use crate::std::default::Default;
@@ -27,13 +27,13 @@ pub async fn run(database: &DatabaseConnection) -> Result<(), Box<dyn Error>> {
         ("Mistral Services", "mistral@example.test"),
     ] {
         let existing = Entity::find()
-            .filter(crate::modules::crm::model::Column::Email.eq(email))
+            .filter(crate::panels::business::crm::model::Column::Email.eq(email))
             .one(&transaction)
             .await?;
         if existing.is_some() {
             continue;
         }
-        crate::modules::crm::model::ActiveModel {
+        crate::panels::business::crm::model::ActiveModel {
             tenant_id: Set(1),
             name: Set(String::from(name)),
             email: Set(String::from(email)),

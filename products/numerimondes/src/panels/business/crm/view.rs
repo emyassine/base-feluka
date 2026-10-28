@@ -2,8 +2,8 @@
 #![deny(unsafe_code)]
 
 use crate::feluqa;
-use crate::modules::crm::model;
-use crate::modules::crm::resource;
+use crate::panels::business::crm::model;
+use crate::panels::business::crm::resource;
 use crate::std::clone::Clone;
 use crate::std::collections::BTreeMap;
 use crate::std::convert::From;

@@ -85,7 +85,7 @@ mod tests {
 
     #[test]
     fn crm_resource_descriptor_is_valid() {
-        crate::modules::crm::resource::CUSTOMERS
+        crate::panels::business::crm::resource::CUSTOMERS
             .validate()
             .expect("valid shared customer resource contract");
     }

@@ -15,7 +15,7 @@ pub(super) async fn render_user_forms(
             feluqa::view::TrustedHtml::from_trusted(String::new()),
         ));
     }
-    let resource = crate::modules::system::resource::USERS;
+    let resource = crate::panels::system::resource::USERS;
     let options = roles
         .iter()
         .map(|role| feluqa::panel::ResourceOption {
@@ -99,7 +99,7 @@ pub(super) async fn role_forms(
     )
     .await?;
     let create_form = match create_access {
-        Some(access) => crate::modules::system::resource::ROLES
+        Some(access) => crate::panels::system::resource::ROLES
             .render_form(
                 &access,
                 csrf,
@@ -124,7 +124,7 @@ pub(super) async fn role_forms(
         for role in roles.iter().filter(|role| !role.is_system) {
             let mut values = crate::std::collections::BTreeMap::new();
             values.insert(String::from("permissions"), role.permissions.join(",\n"));
-            let form = crate::modules::system::resource::ROLES
+            let form = crate::panels::system::resource::ROLES
                 .render_form(&access, csrf, Some(role.id), "Update role grants", &values)
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
             edit_html.push_str("<section class=\"role-editor\"><h3>Role #");
@@ -146,9 +146,9 @@ pub(super) fn render_anonymous_form(state: &PanelState, setup: bool, notice: &st
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
     let html = if setup {
-        views::generated_views::core_setup(&token, notice)
+        views::core_setup(&token, notice)
     } else {
-        views::generated_views::core_login(&token, notice)
+        views::core_login(&token, notice)
     };
     let html = match html {
         Ok(html) => html,
@@ -185,7 +185,7 @@ pub(crate) async fn render_dashboard(
         Err(status) => return status.into_response(),
     };
     let html = if system {
-        views::generated_views::core_dashboard(
+        views::core_dashboard(
             &identity.display_name,
             &identity.email,
             csrf_token,
@@ -194,7 +194,7 @@ pub(crate) async fn render_dashboard(
             widgets,
         )
     } else {
-        views::generated_views::business_dashboard(
+        views::business_dashboard(
             &identity.display_name,
             &identity.email,
             csrf_token,
@@ -229,7 +229,7 @@ pub(super) async fn render_core_resource(
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
-    match views::generated_views::core_resource(
+    match views::core_resource(
         &identity.display_name,
         &identity.email,
         title,

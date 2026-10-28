@@ -105,6 +105,11 @@ impl TrustedHtml {
     pub fn from_trusted(value: String) -> Self {
         Self(value)
     }
+
+    /// Borrow the HTML string without changing its trusted status.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
 }
 
 struct EscapedWriter<'a>(&'a mut String);

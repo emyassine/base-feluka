@@ -8,7 +8,7 @@
 
 extern crate alloc;
 extern crate core;
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 extern crate feluqa_ui_components;
 extern crate serde;
 extern crate serde_json;
@@ -22,7 +22,7 @@ pub use crate::feluqa_ui_components::block;
 #[cfg(feature = "components")]
 pub use crate::feluqa_ui_components::chart;
 /// Feluqa UI components, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 pub use crate::feluqa_ui_components::component;
 /// Feluqa UI hooks, available with the `components` feature.
 #[cfg(feature = "components")]
@@ -31,16 +31,16 @@ pub use crate::feluqa_ui_components::hook;
 #[cfg(feature = "components")]
 pub use crate::feluqa_ui_components::icons;
 /// UI navigation primitives, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 pub use crate::feluqa_ui_components::navigation;
 /// Common rendering types and traits, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 pub use crate::feluqa_ui_components::prelude;
 /// Rendering runtime, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 pub use crate::feluqa_ui_components::runtime;
 /// Component view macro, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "components-card"))]
 pub use crate::feluqa_ui_components::view;
 
 use alloc::collections::BTreeSet;

@@ -1,0 +1,17 @@
+[package]
+name = "feluqa-ui-card"
+version = "0.1.0"
+description = "Feluqa card surface component."
+edition.workspace = true
+license-file.workspace = true
+rust-version.workspace = true
+publish = ["feluqa"]
+
+[dependencies]
+feluqa_ui_classnames.workspace = true
+feluqa_ui_component_macros.workspace = true
+feluqa_ui_runtime.workspace = true
+
+[lib]
+name = "feluqa_ui_card"
+path = "src/lib.rs"

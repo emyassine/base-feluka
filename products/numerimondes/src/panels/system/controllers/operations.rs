@@ -20,7 +20,7 @@ pub async fn system_modules(State(state): State<PanelState>, headers: HeaderMap)
     let rows = ["feluqa.core"]
         .into_iter()
         .chain(
-            crate::generated_migrations::ALL
+            crate::panels::runtime::generated_migrations::ALL
                 .iter()
                 .map(|module| module.module),
         )
@@ -54,7 +54,7 @@ pub async fn system_modules(State(state): State<PanelState>, headers: HeaderMap)
         })
         .count();
     let table = match core_resource_table(
-        &crate::modules::system::resource::MODULES,
+        &crate::panels::system::resource::MODULES,
         &access,
         "Feluqa Core modules",
         &rows,
@@ -96,7 +96,7 @@ pub async fn system_connections(State(state): State<PanelState>, headers: Header
         })
         .collect::<Vec<_>>();
     let table = match core_resource_table(
-        &crate::modules::system::resource::CONNECTIONS,
+        &crate::panels::system::resource::CONNECTIONS,
         &access,
         "Configured database connections",
         &rows,
@@ -134,7 +134,7 @@ pub async fn system_migrations(State(state): State<PanelState>, headers: HeaderM
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
     let table = match core_resource_table(
-        &crate::modules::system::resource::MIGRATIONS,
+        &crate::panels::system::resource::MIGRATIONS,
         &access,
         "Registered module migrations",
         &rows,
@@ -183,7 +183,7 @@ pub async fn system_migrations(State(state): State<PanelState>, headers: HeaderM
         Ok(navigation) => navigation,
         Err(status) => return status.into_response(),
     };
-    match views::generated_views::core_migrations(
+    match views::core_migrations(
         &identity.display_name,
         &identity.email,
         table,
@@ -255,7 +255,7 @@ pub async fn run_system_migrations(
 fn migration_modules() -> impl Iterator<Item = &'static feluqa::database::ModuleMigrations> {
     [&feluqa::core::MIGRATIONS]
         .into_iter()
-        .chain(crate::generated_migrations::ALL.iter().copied())
+        .chain(crate::panels::runtime::generated_migrations::ALL.iter().copied())
 }
 
 #[derive(Deserialize)]
@@ -317,7 +317,7 @@ pub async fn system_audit(State(state): State<PanelState>, headers: HeaderMap) -
         })
         .collect::<Vec<_>>();
     let table = match core_resource_table(
-        &crate::modules::system::resource::AUDIT,
+        &crate::panels::system::resource::AUDIT,
         &access,
         "Latest 100 audit events",
         &rows,
@@ -377,7 +377,7 @@ pub async fn system_tenants(State(state): State<PanelState>, headers: HeaderMap)
         })
         .collect::<Vec<_>>();
     let table = match core_resource_table(
-        &crate::modules::system::resource::TENANTS,
+        &crate::panels::system::resource::TENANTS,
         &access,
         "Application tenants",
         &rows,
@@ -428,7 +428,7 @@ pub async fn system_tenants(State(state): State<PanelState>, headers: HeaderMap)
     )
     .await
     {
-        Ok(Some(create_access)) => match crate::modules::system::resource::TENANTS
+        Ok(Some(create_access)) => match crate::panels::system::resource::TENANTS
             .render_form(
                 &create_access,
                 csrf,
@@ -449,7 +449,7 @@ pub async fn system_tenants(State(state): State<PanelState>, headers: HeaderMap)
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
-    match views::generated_views::core_tenants(
+    match views::core_tenants(
         &identity.display_name,
         &identity.email,
         table,

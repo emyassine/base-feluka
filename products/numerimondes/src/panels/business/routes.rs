@@ -1,10 +1,10 @@
 #![no_implicit_prelude]
 
 use super::controllers;
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::Router;
 use crate::feluqa::web::Route;
-use crate::modules::system::controllers as system_controllers;
+use crate::panels::system::controllers as system_controllers;
 
 /// Routes owned by Numerimondes' business panel.
 pub fn routes() -> Router<PanelState> {

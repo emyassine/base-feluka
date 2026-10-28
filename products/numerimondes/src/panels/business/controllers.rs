@@ -1,10 +1,10 @@
 #![no_implicit_prelude]
 
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::extract::State;
 use crate::axum::http::HeaderMap;
 use crate::axum::response::{IntoResponse, Redirect, Response};
-use crate::modules::system::controllers::{protected_registered_page, render_dashboard};
+use crate::panels::system::controllers::{protected_registered_page, render_dashboard};
 use crate::std::option::Option::{None, Some};
 use crate::std::result::Result::{Err, Ok};
 

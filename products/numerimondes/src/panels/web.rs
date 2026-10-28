@@ -1,22 +1,24 @@
 #![no_implicit_prelude]
 
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::Router;
 use crate::feluqa;
+use crate::std::convert::From;
+use crate::std::iter::Iterator;
 use crate::std::path::PathBuf;
 
 /// Build the composed Numerimondes panel and site application.
 pub fn router(state: PanelState) -> Router {
-    let panels = crate::app::routes::routes()
-        .merge(crate::modules::system::routes::routes())
-        .merge(crate::modules::business::routes::routes())
-        .merge(crate::modules::live::routes(&state));
+    let panels = crate::panels::site::routes::routes()
+        .merge(crate::panels::system::routes::routes())
+        .merge(crate::panels::business::routes::routes())
+        .merge(crate::panels::system::live::routes(&state));
     let panels = if state
         .active_modules
         .iter()
         .any(|module| module == "numerimondes.crm")
     {
-        panels.merge(crate::modules::crm::routes::routes())
+        panels.merge(crate::panels::business::crm::routes::routes())
     } else {
         panels
     };

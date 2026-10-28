@@ -10,6 +10,7 @@ use crate::std::result::Result::Err;
 use crate::std::result::Result::Ok;
 use feluqa::database::DatabasePools;
 
+#[path = "seeders/demo_customers.rs"]
 pub mod demo_customers;
 
 /// Run an explicitly registered CRM seeder by stable identifier.
@@ -17,7 +18,7 @@ pub async fn run(pools: &DatabasePools, id: &str) -> Result<(), Box<dyn Error>> 
     run_on_connections(
         pools,
         id,
-        crate::generated_migrations::crm::MIGRATIONS.connections,
+        crate::panels::runtime::generated_migrations::crm::MIGRATIONS.connections,
     )
     .await
 }

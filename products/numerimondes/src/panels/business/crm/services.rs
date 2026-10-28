@@ -2,8 +2,8 @@
 #![deny(unsafe_code)]
 
 use crate::feluqa;
-use crate::modules::crm::model;
-use crate::modules::crm::policies::CustomerScope;
+use crate::panels::business::crm::model;
+use crate::panels::business::crm::policies::CustomerScope;
 use crate::std::convert::From;
 use crate::std::default::Default;
 use crate::std::format;
@@ -213,7 +213,7 @@ async fn append_audit(
 mod tests {
     use super::{CUSTOMER_PAGE_SIZE, list_customers_page};
     use crate::feluqa;
-    use crate::modules::crm::policies::CustomerScope;
+    use crate::panels::business::crm::policies::CustomerScope;
     use crate::std::assert_eq;
     use crate::std::boxed::Box;
     use crate::std::convert::From;
@@ -242,7 +242,7 @@ mod tests {
         MigrationRunner::run_module(
             &databases,
             "default",
-            &crate::generated_migrations::crm::MIGRATIONS,
+            &crate::panels::runtime::generated_migrations::crm::MIGRATIONS,
         )
         .await?;
         let database = databases.default_connection()?;

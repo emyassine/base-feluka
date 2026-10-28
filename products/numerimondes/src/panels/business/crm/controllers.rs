@@ -1,12 +1,12 @@
 #![no_implicit_prelude]
 
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::feluqa;
-use crate::modules::crm::validation::{valid_customer, valid_customer_email, valid_customer_name};
-use crate::modules::system::controllers::{
+use crate::panels::business::crm::validation::{valid_customer, valid_customer_email, valid_customer_name};
+use crate::panels::system::controllers::{
     protected_customer_page, registered_panel_navigation, session_csrf_valid,
 };
-use crate::views;
+use crate::panels::runtime::generated_views as views;
 use feluqa::prelude::*;
 
 #[derive(Deserialize)]
@@ -39,8 +39,8 @@ pub(crate) struct DeleteCustomerForm {
 pub(crate) struct CustomerPageAccess<'a> {
     pub(crate) identity: feluqa::core::service::SessionIdentity,
     pub(crate) csrf: &'a str,
-    pub(crate) scope: crate::modules::crm::policies::CustomerScope,
-    pub(crate) fields: crate::modules::crm::policies::CustomerFields,
+    pub(crate) scope: crate::panels::business::crm::policies::CustomerScope,
+    pub(crate) fields: crate::panels::business::crm::policies::CustomerFields,
     pub(crate) can_create: bool,
     pub(crate) can_delete: bool,
     pub(crate) resource: feluqa::panel::ResourceAccess,
@@ -57,7 +57,7 @@ pub async fn crm_customers(
     let access = match protected_customer_page(
         &state,
         &headers,
-        crate::modules::crm::policies::CustomerAction::Read,
+        crate::panels::business::crm::policies::CustomerAction::Read,
     )
     .await
     {
@@ -65,7 +65,7 @@ pub async fn crm_customers(
         Ok(None) => return Redirect::to("/system/login").into_response(),
         Err(status) => return status.into_response(),
     };
-    let customer_page = match crate::modules::crm::services::list_customers_page(
+    let customer_page = match crate::panels::business::crm::services::list_customers_page(
         &state.database,
         access.scope,
         query.page.unwrap_or(1),
@@ -76,7 +76,7 @@ pub async fn crm_customers(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
     let table =
-        match crate::modules::crm::view::customer_table(&customer_page.customers, &access.resource)
+        match crate::panels::business::crm::view::customer_table(&customer_page.customers, &access.resource)
         {
             Ok(table) => table,
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -85,7 +85,7 @@ pub async fn crm_customers(
     for customer in &customer_page.customers {
         let edit_form = match access.update_resource.as_ref() {
             Some(update_access) if !update_access.fields.writable.is_empty() => {
-                match crate::modules::crm::view::customer_form(
+                match crate::panels::business::crm::view::customer_form(
                     update_access,
                     access.csrf,
                     Some(customer),
@@ -95,16 +95,16 @@ pub async fn crm_customers(
                     Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
                 }
             }
-            _ => crate::modules::crm::view::empty_panel_html(),
+            _ => crate::panels::business::crm::view::empty_panel_html(),
         };
-        customers.push(crate::modules::crm::view::CustomerRow::with_form(
+        customers.push(crate::panels::business::crm::view::CustomerRow::with_form(
             customer.id,
             edit_form,
         ));
     }
     let create_form = match access.create_resource.as_ref() {
         Some(create_access) if access.can_create => {
-            match crate::modules::crm::view::customer_form(
+            match crate::panels::business::crm::view::customer_form(
                 create_access,
                 access.csrf,
                 None,
@@ -114,9 +114,9 @@ pub async fn crm_customers(
                 Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
             }
         }
-        _ => crate::modules::crm::view::empty_panel_html(),
+        _ => crate::panels::business::crm::view::empty_panel_html(),
     };
-    let panel = crate::modules::crm::view::CustomerPanel {
+    let panel = crate::panels::business::crm::view::CustomerPanel {
         table,
         create_form,
         customers,
@@ -132,7 +132,7 @@ pub async fn crm_customers(
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
-    match views::generated_views::crm_customers(
+    match views::crm_customers(
         &access.identity.display_name,
         &access.identity.email,
         access.csrf,
@@ -154,7 +154,7 @@ pub async fn create_customer(
     let access = match protected_customer_page(
         &state,
         &headers,
-        crate::modules::crm::policies::CustomerAction::Create,
+        crate::panels::business::crm::policies::CustomerAction::Create,
     )
     .await
     {
@@ -171,7 +171,7 @@ pub async fn create_customer(
     if !valid_customer(&form.name, &form.email) {
         return StatusCode::BAD_REQUEST.into_response();
     }
-    let created = crate::modules::crm::services::create_customer(
+    let created = crate::panels::business::crm::services::create_customer(
         &state.database,
         access.identity.user_id,
         access.identity.tenant_id,
@@ -194,7 +194,7 @@ pub async fn update_customer(
     let access = match protected_customer_page(
         &state,
         &headers,
-        crate::modules::crm::policies::CustomerAction::Update,
+        crate::panels::business::crm::policies::CustomerAction::Update,
     )
     .await
     {
@@ -222,7 +222,7 @@ pub async fn update_customer(
     {
         return StatusCode::FORBIDDEN.into_response();
     }
-    match crate::modules::crm::services::update_customer(
+    match crate::panels::business::crm::services::update_customer(
         &state.database,
         access.identity.user_id,
         form.id,
@@ -247,7 +247,7 @@ pub async fn delete_customer(
     let access = match protected_customer_page(
         &state,
         &headers,
-        crate::modules::crm::policies::CustomerAction::Delete,
+        crate::panels::business::crm::policies::CustomerAction::Delete,
     )
     .await
     {
@@ -258,7 +258,7 @@ pub async fn delete_customer(
     if !session_csrf_valid(&state, &headers, &form.csrf_token).await {
         return StatusCode::FORBIDDEN.into_response();
     }
-    match crate::modules::crm::services::delete_customer(
+    match crate::panels::business::crm::services::delete_customer(
         &state.database,
         access.identity.user_id,
         form.id,

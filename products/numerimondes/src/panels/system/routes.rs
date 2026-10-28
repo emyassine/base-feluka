@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 
 use super::controllers as panels;
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::Router;
 use crate::feluqa::web::{Route, on_get};
 

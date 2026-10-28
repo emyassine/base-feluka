@@ -46,7 +46,7 @@ pub(super) async fn migration_status_rows(
     let mut rows = Vec::new();
     for module in [&feluqa::core::MIGRATIONS]
         .into_iter()
-        .chain(crate::generated_migrations::ALL.iter().copied())
+        .chain(crate::panels::runtime::generated_migrations::ALL.iter().copied())
     {
         for connection in module.connections {
             let dialect = state.pools.dialect(connection).ok_or_else(|| {
@@ -223,8 +223,8 @@ pub(super) async fn registered_page_access<'a>(
 pub(crate) async fn protected_customer_page<'a>(
     state: &PanelState,
     headers: &'a HeaderMap,
-    action: crate::modules::crm::policies::CustomerAction,
-) -> Result<Option<crate::modules::crm::controllers::CustomerPageAccess<'a>>, StatusCode> {
+    action: crate::panels::business::crm::policies::CustomerAction,
+) -> Result<Option<crate::panels::business::crm::controllers::CustomerPageAccess<'a>>, StatusCode> {
     let identity = match authenticated_identity(state, headers).await {
         Ok(Some(identity)) => identity,
         Ok(None) => return Ok(None),
@@ -256,16 +256,16 @@ pub(crate) async fn protected_customer_page<'a>(
         .map_err(resource_access_status)?;
     let scope = match access.records {
         feluqa::panel::ResourceRecordScope::All => {
-            crate::modules::crm::policies::CustomerScope::AllInTenant(identity.tenant_id)
+            crate::panels::business::crm::policies::CustomerScope::AllInTenant(identity.tenant_id)
         }
         feluqa::panel::ResourceRecordScope::OwnedBy(user_id) => {
-            crate::modules::crm::policies::CustomerScope::OwnedBy {
+            crate::panels::business::crm::policies::CustomerScope::OwnedBy {
                 tenant_id: identity.tenant_id,
                 user_id,
             }
         }
     };
-    let fields = crate::modules::crm::policies::CustomerFields::from_access(&access.fields);
+    let fields = crate::panels::business::crm::policies::CustomerFields::from_access(&access.fields);
     let create_resource = state
         .catalog
         .authorize_resource(
@@ -300,7 +300,7 @@ pub(crate) async fn protected_customer_page<'a>(
         )
         .is_ok();
     let csrf = cookie(headers, CSRF_COOKIE).ok_or(StatusCode::FORBIDDEN)?;
-    Ok(Some(crate::modules::crm::controllers::CustomerPageAccess {
+    Ok(Some(crate::panels::business::crm::controllers::CustomerPageAccess {
         identity,
         csrf,
         scope,

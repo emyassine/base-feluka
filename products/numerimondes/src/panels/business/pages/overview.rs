@@ -3,6 +3,7 @@
 use crate::feluqa;
 use crate::std::convert::From;
 use crate::std::result::Result;
+use crate::std::result::Result::Ok;
 use crate::std::string::String;
 use crate::std::vec;
 use feluqa::auth::Permission;

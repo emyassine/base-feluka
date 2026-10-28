@@ -1,10 +1,10 @@
 #![no_implicit_prelude]
 #![deny(unsafe_code)]
 
-use crate::app::services::panel::PanelState;
+use crate::panels::runtime::state::PanelState;
 use crate::axum::Router;
 use crate::feluqa;
-use crate::modules::system::controllers as panels;
+use crate::panels::system::controllers as panels;
 use crate::std::clone::Clone;
 use crate::std::convert::From;
 use crate::std::default::Default;

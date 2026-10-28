@@ -6,6 +6,10 @@
 //! Feluqa's first-party user interface component system.
 
 extern crate core;
+#[cfg(feature = "card")]
+extern crate feluqa_ui_card;
+#[cfg(feature = "card")]
+extern crate feluqa_ui_card_elements;
 extern crate feluqa_ui_autoform;
 extern crate feluqa_ui_classnames;
 pub extern crate feluqa_ui_component_macros;

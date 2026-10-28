@@ -32,7 +32,7 @@ pub async fn system_roles(State(state): State<PanelState>, headers: HeaderMap) -
             feluqa::panel::ResourceTableRow { values }
         })
         .collect::<Vec<_>>();
-    let table = match crate::modules::system::resource::ROLES.render_table(
+    let table = match crate::panels::system::resource::ROLES.render_table(
         &access,
         "Feluqa Core roles",
         &rows,
@@ -49,7 +49,7 @@ pub async fn system_roles(State(state): State<PanelState>, headers: HeaderMap) -
             Ok(navigation) => navigation,
             Err(status) => return status.into_response(),
         };
-    match views::generated_views::core_roles(
+    match views::core_roles(
         &identity.display_name,
         &identity.email,
         csrf,

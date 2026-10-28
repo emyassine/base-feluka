@@ -9,8 +9,8 @@ rust-version = "1.88"
 publish = ["feluqa"]
 
 [features]
-card = []
-full-catalog = []
+card = ["dep:feluqa-ui-card", "dep:feluqa-ui-card-elements"]
+full-catalog = ["card"]
 
 [dependencies]
 feluqa_ui_runtime.workspace = true
@@ -28,6 +28,8 @@ wasm-bindgen.workspace = true
 wasm-bindgen-futures.workspace = true
 web-sys.workspace = true
 heck.workspace = true
+feluqa-ui-card = { path = "../feluqa-ui-card", optional = true }
+feluqa-ui-card-elements = { path = "../feluqa-ui-card-elements", optional = true }
 
 [lib]
 name = "feluqa_ui_components"

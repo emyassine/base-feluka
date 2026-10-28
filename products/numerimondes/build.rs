@@ -27,15 +27,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     compiler.add_root("app", &project.join("resources/views"))?;
     compiler.add_root("system", Path::new(feluqa::system_panel::VIEW_ROOT))?;
     compiler.add_root("feluqa-panel", Path::new(feluqa::panel::VIEW_ROOT))?;
-    compiler.add_root("business", &project.join("src/modules/business/views"))?;
-    compiler.add_root("crm", &project.join("src/modules/crm/views"))?;
+    compiler.add_root("business", &project.join("src/panels/business/views"))?;
+    compiler.add_root("crm", &project.join("src/panels/business/crm/views"))?;
     for view in [
         "app::pages.home",
         "app::pages.about",
         "app::layouts.main",
         "app::partials.header",
     ] {
-        compiler.parameters(view, "page: &crate::views::Page")?;
+        compiler.parameters(view, "page: &crate::panels::site::site_page::SitePage")?;
     }
     compiler.parameters("system::pages.core_login", "csrf_token: &str, notice: &str")?;
     compiler.parameters("system::pages.core_setup", "csrf_token: &str, notice: &str")?;
@@ -57,7 +57,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     compiler.parameters(
         "crm::pages.crm_customers",
-        "display_name: &str, email: &str, csrf_token: &str, panel: &crate::modules::crm::view::CustomerPanel, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
+        "display_name: &str, email: &str, csrf_token: &str, panel: &crate::panels::business::crm::view::CustomerPanel, navigation: crate::feluqa::view::TrustedHtml, brand_name: &str",
     )?;
     compiler.parameters(
         "system::pages.core_resource",
