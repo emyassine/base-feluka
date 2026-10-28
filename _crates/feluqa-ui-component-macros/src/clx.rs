@@ -76,6 +76,7 @@ macro_rules! void {
     ($name:ident, $element:ident, $($base_class:expr),+ $(,)?) => {
         #[component]
         pub fn $name(
+            /// Additional classes merged with this component's defaults.
             #[prop(into, optional)] class: String,
         ) -> impl IntoView {
             let merged_classes = $crate::feluqa_ui_classnames::class_merge!($crate::feluqa_ui_classnames::class_join!($($base_class),+), class);

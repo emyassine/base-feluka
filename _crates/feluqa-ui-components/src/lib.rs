@@ -16,6 +16,7 @@ pub extern crate feluqa_ui_component_macros;
 pub extern crate feluqa_ui_navigation;
 pub extern crate feluqa_ui_runtime;
 extern crate heck;
+extern crate feluqa_imagery;
 extern crate js_sys;
 extern crate serde;
 extern crate serde_json;
@@ -33,7 +34,7 @@ pub use crate::feluqa_ui_navigation as navigation;
 pub use crate::feluqa_ui_runtime as runtime;
 
 /// Layout blocks maintained by Feluqa.
-#[cfg(feature = "full-catalog")]
+#[cfg(any(feature = "full-catalog", feature = "panel-shell"))]
 pub mod block;
 /// Chart components maintained by Feluqa.
 #[cfg(feature = "full-catalog")]

@@ -155,7 +155,8 @@ pub mod separator;
 pub mod sheet;
 #[cfg(feature = "full-catalog")]
 pub mod shimmer;
-#[cfg(feature = "full-catalog")]
+#[cfg(any(feature = "full-catalog", feature = "panel-shell"))]
+/// Responsive navigation sidebar and its composition primitives.
 pub mod sidenav;
 #[cfg(feature = "full-catalog")]
 pub mod skeleton;

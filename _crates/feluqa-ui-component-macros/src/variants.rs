@@ -97,17 +97,23 @@ macro_rules! variants {
             /// Generate the main FeluqaClass struct
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
+            #[doc = concat!(stringify!($component), " component class settings.")]
             pub struct [<$component Class>] {
+                /// Selected visual variant.
                 pub variant: [<$component Variant>],
+                /// Selected component size.
                 pub size: [<$component Size>],
             }
 
             /// Generate variant enum
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " visual variants.")]
             pub enum [<$component Variant>] {
+                #[doc = "Default component appearance."]
                 #[feluqa(default, class = $first_variant_class)]
                 $first_variant,
                 $(
+                    #[doc = "Additional component appearance."]
                     #[feluqa(class = $variant_class)]
                     $variant_key,
                 )*
@@ -115,10 +121,13 @@ macro_rules! variants {
 
             /// Generate size enum
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " size variants.")]
             pub enum [<$component Size>] {
+                #[doc = "Default component size."]
                 #[feluqa(default, class = $first_size_class)]
                 $first_size,
                 $(
+                    #[doc = "Additional component size."]
                     #[feluqa(class = $size_class)]
                     $size_key,
                 )*
@@ -179,32 +188,54 @@ macro_rules! variants {
 
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
+            #[doc = concat!(stringify!($component), " component class settings.")]
             pub struct [<$component Class>] {
+                /// Selected visual variant.
                 pub variant: [<$component Variant>],
+                /// Selected component size.
                 pub size: [<$component Size>],
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " visual variants.")]
             pub enum [<$component Variant>] {
+                #[doc = "Default component appearance."]
                 #[feluqa(default, class = $first_variant_class)]
                 $first_variant,
-                $(#[feluqa(class = $variant_class)] $variant_key,)*
+                $(
+                    #[doc = "Additional component appearance."]
+                    #[feluqa(class = $variant_class)]
+                    $variant_key,
+                )*
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " size variants.")]
             pub enum [<$component Size>] {
+                #[doc = "Default component size."]
                 #[feluqa(default, class = $first_size_class)]
                 $first_size,
-                $(#[feluqa(class = $size_class)] $size_key,)*
+                $(
+                    #[doc = "Additional component size."]
+                    #[feluqa(class = $size_class)]
+                    $size_key,
+                )*
             }
 
+            /// Render a link or element with the selected component styles.
             #[::feluqa_ui_runtime::component]
             pub fn $component(
+                /// Select the component appearance.
                 #[prop(into, optional)] variant: ::feluqa_ui_runtime::prelude::Signal<[<$component Variant>]>,
+                /// Select the component size.
                 #[prop(into, optional)] size: ::feluqa_ui_runtime::prelude::Signal<[<$component Size>]>,
+                /// Add classes to the generated element.
                 #[prop(into, optional)] class: ::feluqa_ui_runtime::prelude::Signal<String>,
+                /// Override the generated element's component name.
                 #[prop(into, optional)] data_name: Option<String>,
+                /// Render an anchor when a destination is provided.
                 #[prop(into, optional)] href: Option<String>,
+                /// Child content rendered inside the element.
                 children: ::feluqa_ui_runtime::prelude::Children,
             ) -> impl ::feluqa_ui_runtime::prelude::IntoView {
                 use ::feluqa_ui_runtime::prelude::*;
@@ -274,23 +305,38 @@ macro_rules! variants {
 
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
+            #[doc = concat!(stringify!($component), " component class settings.")]
             pub struct [<$component Class>] {
+                /// Selected visual variant.
                 pub variant: [<$component Variant>],
+                /// Selected component size.
                 pub size: [<$component Size>],
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " visual variants.")]
             pub enum [<$component Variant>] {
+                #[doc = "Default component appearance."]
                 #[feluqa(default, class = $first_variant_class)]
                 $first_variant,
-                $(#[feluqa(class = $variant_class)] $variant_key,)*
+                $(
+                    #[doc = "Additional component appearance."]
+                    #[feluqa(class = $variant_class)]
+                    $variant_key,
+                )*
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " size variants.")]
             pub enum [<$component Size>] {
+                #[doc = "Default component size."]
                 #[feluqa(default, class = $first_size_class)]
                 $first_size,
-                $(#[feluqa(class = $size_class)] $size_key,)*
+                $(
+                    #[doc = "Additional component size."]
+                    #[feluqa(class = $size_class)]
+                    $size_key,
+                )*
             }
 
             #[::feluqa_ui_runtime::component]
@@ -354,17 +400,23 @@ macro_rules! variants {
             /// Generate the main FeluqaClass struct
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
+            #[doc = concat!(stringify!($component), " component class settings.")]
             pub struct [<$component Class>] {
+                /// Selected visual variant.
                 pub variant: [<$component Variant>],
+                /// Selected component size.
                 pub size: [<$component Size>],
             }
 
             /// Generate variant enum - inline expansion, no nested macros
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " visual variants.")]
             pub enum [<$component Variant>] {
+                #[doc = "Default component appearance."]
                 #[feluqa(default, class = $first_variant_class)]
                 $first_variant,
                 $(
+                    #[doc = "Additional component appearance."]
                     #[feluqa(class = $variant_class)]
                     $variant_key,
                 )*
@@ -372,10 +424,13 @@ macro_rules! variants {
 
             /// Generate size enum - inline expansion, no nested macros
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " size variants.")]
             pub enum [<$component Size>] {
+                #[doc = "Default component size."]
                 #[feluqa(default, class = $first_size_class)]
                 $first_size,
                 $(
+                    #[doc = "Additional component size."]
                     #[feluqa(class = $size_class)]
                     $size_key,
                 )*
@@ -402,15 +457,20 @@ macro_rules! variants {
 
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
+            #[doc = concat!(stringify!($component), " component class settings.")]
             pub struct [<$component Class>] {
+                /// Selected visual variant.
                 pub variant: [<$component Variant>],
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " visual variants.")]
             pub enum [<$component Variant>] {
+                #[doc = "Default component appearance."]
                 #[feluqa(default, class = $first_variant_class)]
                 $first_variant,
                 $(
+                    #[doc = "Additional component appearance."]
                     #[feluqa(class = $variant_class)]
                     $variant_key,
                 )*
@@ -438,14 +498,18 @@ macro_rules! variants {
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
             pub struct [<$component Class>] {
+                /// Selected component size.
                 pub size: [<$component Size>],
             }
 
             #[derive(FeluqaVariant)]
+            #[doc = concat!(stringify!($component), " size variants.")]
             pub enum [<$component Size>] {
+                #[doc = "Default component size."]
                 #[feluqa(default, class = $first_size_class)]
                 $first_size,
                 $(
+                    #[doc = "Additional component size."]
                     #[feluqa(class = $size_class)]
                     $size_key,
                 )*

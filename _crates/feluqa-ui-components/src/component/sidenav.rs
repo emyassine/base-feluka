@@ -1,5 +1,12 @@
 use crate::feluqa_ui_component_macros::{clx, variants, void};
+use crate::std::clone::Clone;
+use crate::std::convert::{AsRef, From, Into};
+use crate::std::default::Default;
+use crate::std::marker::Copy;
 use crate::navigation::hooks::use_location;
+use crate::std::option::Option;
+use crate::std::option::Option::Some;
+use crate::std::string::{String, ToString};
 use crate::runtime::ev;
 use crate::runtime::prelude::*;
 use crate::runtime::wasm_bindgen::JsCast;
@@ -45,11 +52,14 @@ pub use components::*;
 /// Reactive context for controlling the Sidenav open/closed state.
 /// Provided automatically by `SidenavWrapper`.
 #[derive(Clone, Copy)]
+/// Reactive open state shared by one sidebar and its descendants.
 pub struct SidenavContext {
+    /// Current expanded/collapsed state.
     pub open: RwSignal<bool>,
 }
 
 impl SidenavContext {
+    /// Toggle the sidebar's expanded state.
     pub fn toggle(self) {
         self.open.update(|v| *v = !*v);
     }
@@ -67,8 +77,11 @@ impl SidenavContext {
 /// Use `default_open` to set the initial state (default: `true` = expanded).
 #[component]
 pub fn SidenavWrapper(
+    /// Classes added to the outer sidebar layout.
     #[prop(into, optional)] class: String,
+    /// Whether the sidebar starts expanded.
     #[prop(default = true)] default_open: bool,
+    /// Sidebar and page content.
     children: Children,
 ) -> impl IntoView {
     let open = RwSignal::new(default_open);
@@ -116,8 +129,11 @@ pub fn SidenavWrapper(
 
 #[component]
 pub fn SidenavLink(
+    /// Link text and optional icon.
     children: Children,
+    /// Absolute route for this navigation item.
     #[prop(into)] href: String,
+    /// Additional link classes.
     #[prop(optional, into)] class: String,
 ) -> impl IntoView {
     let merged_class = class_merge!(
@@ -169,38 +185,55 @@ variants! {
 /*                     ✨ FUNCTIONS ✨                        */
 /* ========================================================== */
 
+/// Visual frame applied to the sidebar surface.
 #[derive(
     Clone, Copy, PartialEq, Eq, Default, crate::strum::Display, crate::strum::IntoStaticStr,
 )]
 pub enum SidenavVariant {
+    /// Standard fixed sidebar.
     #[default]
     Sidenav,
+    /// Floating sidebar with a raised surface.
     Floating,
+    /// Sidebar inset from the page edge.
     Inset,
 }
 
+/// Side of the viewport where the sidebar is attached.
 #[derive(Clone, Copy, PartialEq, Eq, Default, crate::strum::Display)]
 pub enum SidenavSide {
+    /// Attach to the left edge.
     #[default]
     Left,
+    /// Attach to the right edge.
     Right,
 }
 
+/// Sidebar behavior when collapsed.
 #[derive(Default, Clone, Copy, PartialEq, Eq, crate::strum::Display)]
 pub enum SidenavCollapsible {
+    /// Slide the sidebar off-canvas.
     #[default]
     Offcanvas,
+    /// Keep the sidebar expanded and fixed.
     None,
+    /// Show only the sidebar icons.
     Icon,
 }
 
 #[component]
 pub fn Sidenav(
+    /// Additional sidebar classes.
     #[prop(into, optional)] class: String,
+    /// Sidebar visual frame.
     #[prop(default = SidenavVariant::default())] variant: SidenavVariant,
+    /// Initial sidebar state.
     #[prop(default = SidenavState::default())] data_state: SidenavState,
+    /// Sidebar screen edge.
     #[prop(default = SidenavSide::default())] data_side: SidenavSide,
+    /// Collapsing behavior.
     #[prop(default = SidenavCollapsible::default())] data_collapsible: SidenavCollapsible,
+    /// Sidebar navigation and auxiliary content.
     children: Children,
 ) -> impl IntoView {
     let ctx = use_context::<SidenavContext>();
@@ -278,10 +311,13 @@ pub fn Sidenav(
 /*                     ✨ FUNCTIONS ✨                        */
 /* ========================================================== */
 
+/// Initial sidebar visibility state.
 #[derive(Clone, Copy, PartialEq, Eq, Default, crate::strum::Display)]
 pub enum SidenavState {
+    /// Sidebar is expanded.
     #[default]
     Expanded,
+    /// Sidebar is collapsed.
     Collapsed,
 }
 
@@ -292,7 +328,10 @@ const ONCLICK_TRIGGER: &str = "document.querySelector('[data-name=\"Sidenav\"]')
 /// Keyboard shortcuts require an ancestor [`SidenavWrapper`]. The inline
 /// fallback preserves click behavior for standalone Sidenavs without context.
 #[component]
-pub fn SidenavTrigger(children: Children) -> impl IntoView {
+pub fn SidenavTrigger(
+    /// Trigger contents.
+    children: Children,
+) -> impl IntoView {
     let ctx = use_context::<SidenavContext>();
 
     view! {
@@ -339,8 +378,11 @@ fn SidenavToggleRail() -> impl IntoView {
 /// Renders an `<a>` with active-state detection via `aria-current`.
 #[component]
 pub fn SidenavMenuSubButton(
+    /// Link text and optional icon.
     children: Children,
+    /// Absolute route for this navigation item.
     #[prop(into)] href: String,
+    /// Additional link classes.
     #[prop(optional, into)] class: String,
 ) -> impl IntoView {
     let merged_class = class_merge!(
@@ -367,8 +409,11 @@ pub fn SidenavMenuSubButton(
 /// Set `show_on_hover=true` to hide it until the menu item is hovered/focused.
 #[component]
 pub fn SidenavMenuAction(
+    /// Action contents.
     children: Children,
+    /// Whether the action appears on hover and focus.
     #[prop(optional)] show_on_hover: bool,
+    /// Additional action classes.
     #[prop(optional, into)] class: String,
 ) -> impl IntoView {
     let merged_class = class_merge!(

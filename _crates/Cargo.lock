@@ -1634,6 +1634,7 @@ dependencies = [
 name = "feluqa-ui-components"
 version = "0.1.0"
 dependencies = [
+ "feluqa-imagery",
  "feluqa-ui-autoform",
  "feluqa-ui-card",
  "feluqa-ui-card-elements",

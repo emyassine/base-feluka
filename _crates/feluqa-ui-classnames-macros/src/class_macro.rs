@@ -40,10 +40,14 @@ pub fn class_impl(input: TokenStream) -> TokenStream {
     let builder_struct = {
         let builder_fields = fields.iter().map(|field| {
             let FeluqaClassField { ident, ty, .. } = field;
-            quote! { #ident: Option<#ty> }
+            quote! {
+                #[doc = "Optional value for this component class setting."]
+                #ident: Option<#ty>
+            }
         });
 
         quote! {
+            /// Builder for a component's merged utility classes.
             #[derive(Copy, Clone, Default)]
             pub struct #builder_ident {
                 #(#builder_fields,)*
@@ -60,6 +64,7 @@ pub fn class_impl(input: TokenStream) -> TokenStream {
         let builder_set_methods = fields.iter().map(|field| {
             let FeluqaClassField { ident, ty, .. } = field;
             quote! {
+                #[doc = "Set this class variant."]
                 pub fn #ident(mut self, value: #ty) -> Self {
                     self.#ident = Some(value);
                     self
@@ -71,6 +76,7 @@ pub fn class_impl(input: TokenStream) -> TokenStream {
             impl #builder_ident {
                 #(#builder_set_methods)*
 
+                /// Build the component class settings.
                 pub fn build(self) -> #struct_ident {
                     #struct_ident {
                         #(#field_idents: self.#field_idents.unwrap_or_default(),)*

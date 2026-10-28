@@ -16,7 +16,7 @@ extern crate serde_json;
 extern crate std;
 
 /// Feluqa layout blocks, available with the `components` feature.
-#[cfg(feature = "components")]
+#[cfg(any(feature = "components", feature = "panel-shell"))]
 pub use crate::feluqa_ui_components::block;
 /// Feluqa chart components, available with the `components` feature.
 #[cfg(feature = "components")]

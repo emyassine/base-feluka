@@ -16,5 +16,6 @@ feluqa-ui-components = { version = "0.1.0", registry = "feluqa", path = "../felu
 [features]
 default = []
 component-runtime = ["dep:feluqa-ui-components"]
+panel-shell = ["component-runtime", "feluqa-ui-components/panel-shell"]
 components = ["component-runtime", "feluqa-ui-components/full-catalog"]
 components-card = ["component-runtime", "feluqa-ui-components/card"]
