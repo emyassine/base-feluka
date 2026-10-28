@@ -30,8 +30,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/playXE/alloca-rs"
-
 [profile.release]
 lto = "fat"
 

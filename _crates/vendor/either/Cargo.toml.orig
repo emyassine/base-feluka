@@ -5,7 +5,6 @@ edition = "2021"
 rust-version = "1.63.0"
 
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rayon-rs/either"
 documentation = "https://docs.rs/either/1/"
 
 description = """

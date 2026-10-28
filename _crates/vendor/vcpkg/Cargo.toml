@@ -20,8 +20,6 @@ readme = "README.md"
 keywords = ["build-dependencies", "windows", "macos", "linux"]
 categories = ["development-tools::build-utils"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/mcgoo/vcpkg-rs"
-
 [dependencies]
 [dev-dependencies.lazy_static]
 version = "1"

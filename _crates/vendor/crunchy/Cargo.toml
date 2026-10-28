@@ -24,8 +24,6 @@ description = "Crunchy unroller: deterministically unroll constant loops"
 homepage = "https://github.com/eira-fransham/crunchy"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/eira-fransham/crunchy"
-
 [features]
 default = ["limit_128"]
 limit_1024 = []

@@ -3,8 +3,8 @@ use crate::feluqa_ui_component_macros::clx;
 use crate::time::Date;
 use crate::feluqa_ui_classnames::*;
 
-// TODO UI.
-// use crate::icons::{chevron_left::ChevronLeft, chevron_right::ChevronRight};
+/// TODO UI.
+/// use crate::icons::{chevron_left::ChevronLeft, chevron_right::ChevronRight};
 
 mod components {
     use super::*;
@@ -57,7 +57,7 @@ pub fn DatePickerCell(
 
     let cell_class = move || {
         let base = merged_class.clone();
-        if is_selected() { format!("{} bg-accent rounded-none", base) } else { base }
+        if is_selected() { crate::std::format!("{} bg-accent rounded-none", base) } else { base }
     };
 
     let handle_click = move |_| {

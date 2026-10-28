@@ -10,7 +10,6 @@ authors = [
 description = "libm in pure Rust"
 categories = ["no-std"]
 keywords = ["libm", "math"]
-repository = "https://github.com/rust-lang/compiler-builtins"
 license = "MIT"
 edition = "2021"
 rust-version = "1.63"

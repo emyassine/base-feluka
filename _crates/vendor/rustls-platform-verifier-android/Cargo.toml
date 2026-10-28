@@ -21,6 +21,4 @@ include = [
 ]
 description = "The internal JVM support component of the rustls-platform-verifier crate. You shouldn't depend on this directly."
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rustls/rustls-platform-verifier"
-
 [dependencies]

@@ -154,10 +154,10 @@ impl<C> RawText<C> {
             .unwrap_or_else(|| self.to_token_stream_string())
     }
 
-    // Returns text recovered using recover_space_hack.
-    // If feature "rawtext-stable-hack-module" wasn't activated returns None.
-    //
-    // Recovered text, tries to save whitespaces if possible.
+    /// Returns text recovered using recover_space_hack.
+    /// If feature "rawtext-stable-hack-module" wasn't activated returns None.
+    ///
+    /// Recovered text, tries to save whitespaces if possible.
     #[must_use]
     pub fn to_source_text_hack(&self) -> Option<String> {
         #[cfg(feature = "rawtext-stable-hack-module")]
@@ -187,7 +187,7 @@ impl RawText {
     #[must_use]
     pub fn is_source_text_available() -> bool {
         // TODO: Add feature join_spans check.
-        cfg!(feluqa_ui_markup_parser_signal_nightly)
+        cfg!(rstml_signal_nightly)
     }
 }
 

@@ -4,7 +4,6 @@ version = "0.5.9"
 authors = ["Jacob Pratt <jacob@jhpratt.dev>"]
 edition = "2024"
 rust-version = "1.85.0"
-repository = "https://github.com/jhpratt/deranged"
 keywords = ["integer", "int", "range"]
 readme = "../README.md"
 license = "MIT OR Apache-2.0"

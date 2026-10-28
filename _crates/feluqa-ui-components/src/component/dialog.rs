@@ -58,7 +58,7 @@ pub fn DialogTrigger(
     #[prop(default = ButtonSize::Default)] size: ButtonSize,
 ) -> impl IntoView {
     let ctx = expect_context::<DialogContext>();
-    let trigger_id = format!("trigger_{}", ctx.target_id);
+    let trigger_id = crate::std::format!("trigger_{}", ctx.target_id);
 
     view! {
         <Button
@@ -89,11 +89,11 @@ pub fn DialogContent(
         class
     );
 
-    let backdrop_data_name = format!("{}Backdrop", data_name_prefix);
-    let content_data_name = format!("{}Content", data_name_prefix);
+    let backdrop_data_name = crate::std::format!("{}Backdrop", data_name_prefix);
+    let content_data_name = crate::std::format!("{}Content", data_name_prefix);
 
     let target_id_clone = ctx.target_id.clone();
-    let backdrop_id = format!("{}_backdrop", ctx.target_id);
+    let backdrop_id = crate::std::format!("{}_backdrop", ctx.target_id);
     let target_id_for_script = ctx.target_id.clone();
     let backdrop_id_for_script = backdrop_id.clone();
     let backdrop_behavior = if close_on_backdrop_click { "auto" } else { "manual" };
@@ -117,7 +117,7 @@ pub fn DialogContent(
         >
             <button
                 type="button"
-                class=format!(
+                class=crate::std::format!(
                     "absolute top-4 right-4 p-1 rounded-sm focus:ring-2 focus:ring-offset-2 focus:outline-none [&_svg:not([class*='size-'])]:size-4 focus:ring-ring{}",
                     if show_close_button { "" } else { " hidden" },
                 )
@@ -132,7 +132,7 @@ pub fn DialogContent(
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupDialog = () => {{
@@ -173,7 +173,7 @@ pub fn DialogContent(
                         // Open dialog when trigger is clicked
                         trigger.addEventListener('click', openDialog);
 
-                        // Close buttons
+                        /// Close buttons
                         const closeButtons = dialog.querySelectorAll('[data-dialog-close]');
                         closeButtons.forEach(btn => {{
                             btn.addEventListener('click', closeDialog);

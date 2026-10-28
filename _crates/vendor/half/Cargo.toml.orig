@@ -4,7 +4,6 @@ name = "half"
 version = "2.4.1"
 authors = ["Kathryn Long <squeeself@gmail.com>"]
 description = "Half-precision floating point f16 and bf16 types for Rust implementing the IEEE 754-2008 standard binary16 and bfloat16 types."
-repository = "https://github.com/starkat99/half-rs"
 readme = "README.md"
 keywords = ["f16", "bfloat16", "no_std"]
 license = "MIT OR Apache-2.0"

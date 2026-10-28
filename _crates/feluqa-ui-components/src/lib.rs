@@ -31,12 +31,14 @@ pub use crate::feluqa_ui_navigation as navigation;
 /// Layout blocks maintained by Feluqa.
 pub mod block;
 /// Chart components maintained by Feluqa.
+#[cfg(feature = "full-catalog")]
 pub mod chart;
 /// UI components maintained by Feluqa.
 pub mod component;
 /// Shared component constants.
 pub mod constants;
 /// UI hooks maintained by Feluqa.
+#[cfg(feature = "full-catalog")]
 pub mod hook;
 /// Shared UI utilities.
 pub mod utils;

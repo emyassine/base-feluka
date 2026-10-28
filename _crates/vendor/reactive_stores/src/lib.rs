@@ -83,7 +83,7 @@
 //! }
 //!
 //! pub mod user {
-//!   use leptos::prelude::*;
+//!   use feluqa_ui::prelude::*;
 //!   use reactive_stores::Field;
 //!   // Using FooStore fields here.
 //!   use crate::foo::{ Foo, FooStoreFields };
@@ -518,7 +518,7 @@ impl KeyMap {
 /// This adds a getter method for each field to `Store<T>`, which allow accessing reactive versions
 /// of each individual field of the struct.
 pub struct ArcStore<T> {
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
     pub(crate) value: Arc<RwLock<T>>,
     signals: Arc<RwLock<TriggerMap>>,
@@ -529,7 +529,7 @@ impl<T> ArcStore<T> {
     /// Creates a new store from the initial value.
     pub fn new(value: T) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             value: Arc::new(RwLock::new(value)),
             signals: Default::default(),
@@ -547,7 +547,7 @@ impl<T: Default> Default for ArcStore<T> {
 impl<T: Debug> Debug for ArcStore<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = f.debug_struct("ArcStore");
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let f = f.field("defined_at", &self.defined_at);
         f.field("value", &self.value)
             .field("signals", &self.signals)
@@ -558,7 +558,7 @@ impl<T: Debug> Debug for ArcStore<T> {
 impl<T> Clone for ArcStore<T> {
     fn clone(&self) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             value: Arc::clone(&self.value),
             signals: Arc::clone(&self.signals),
@@ -569,11 +569,11 @@ impl<T> Clone for ArcStore<T> {
 
 impl<T> DefinedAt for ArcStore<T> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -642,7 +642,7 @@ impl<T: 'static> Notify for ArcStore<T> {
 /// This follows the same ownership rules as arena-allocated types like
 /// [`RwSignal`](reactive_graph::signal::RwSignal).
 pub struct Store<T, S = SyncStorage> {
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
     inner: ArenaItem<ArcStore<T>, S>,
 }
@@ -654,7 +654,7 @@ where
     /// Creates a new store with the initial value.
     pub fn new(value: T) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(ArcStore::new(value)),
         }
@@ -678,7 +678,7 @@ where
     /// This pins the value to the current thread. Accessing it from any other thread will panic.
     pub fn new_local(value: T) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(ArcStore::new(value)),
         }
@@ -709,7 +709,7 @@ where
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = f.debug_struct("Store");
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let f = f.field("defined_at", &self.defined_at);
         f.field("inner", &self.inner).finish()
     }
@@ -725,11 +725,11 @@ impl<T, S> Copy for Store<T, S> {}
 
 impl<T, S> DefinedAt for Store<T, S> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -820,7 +820,7 @@ where
 {
     fn from(value: ArcStore<T>) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: value.defined_at,
             inner: ArenaItem::new_with_storage(value),
         }
@@ -1182,7 +1182,7 @@ mod tests {
         assert_eq!(combined_count.load(Ordering::Relaxed), 3);
     }
 
-    // regression test for https://github.com/leptos-rs/leptos/issues/3523
+    // regression test for https://github.com/feluqa_ui-rs/feluqa_ui/issues/3523
     #[tokio::test]
     async fn notifying_all_descendants() {
         use reactive_graph::traits::*;

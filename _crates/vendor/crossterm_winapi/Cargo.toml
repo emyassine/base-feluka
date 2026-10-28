@@ -29,8 +29,6 @@ keywords = [
     "screen_buffer",
 ]
 license = "MIT"
-repository = "https://github.com/crossterm-rs/crossterm-winapi"
-
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
 

@@ -50,8 +50,6 @@ categories = [
     "network-programming",
 ]
 license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
-repository = "https://github.com/bytecodealliance/rustix"
-
 [package.metadata.docs.rs]
 features = ["all-apis"]
 targets = [

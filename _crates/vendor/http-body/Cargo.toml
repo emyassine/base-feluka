@@ -33,8 +33,6 @@ readme = "README.md"
 keywords = ["http"]
 categories = ["web-programming"]
 license = "MIT"
-repository = "https://github.com/hyperium/http-body"
-
 [lib]
 name = "http_body"
 path = "src/lib.rs"

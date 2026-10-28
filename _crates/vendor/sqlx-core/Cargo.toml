@@ -21,8 +21,6 @@ authors = [
 ]
 description = "Core of SQLx, the rust SQL toolkit. Not intended to be used directly."
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/launchbadge/sqlx"
-
 [package.metadata.docs.rs]
 features = ["offline"]
 

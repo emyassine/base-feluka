@@ -35,8 +35,6 @@ categories = [
     "no-std::no-alloc",
 ]
 license = "Apache-2.0 OR BSL-1.0"
-repository = "https://github.com/dtolnay/ryu"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [

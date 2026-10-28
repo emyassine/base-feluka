@@ -90,7 +90,7 @@ fn try_from_env_test() {
 }
 
 #[test]
-fn feluqa_ui_runtime_options_css_file_path() {
+fn feluqa_ui_options_css_file_path() {
     fn next_file_name<'a>(a: &'a mut Ancestors) -> Option<&'a str> {
         a.next()
             .map(|p| p.file_name())
@@ -128,7 +128,7 @@ fn feluqa_ui_runtime_options_css_file_path() {
 }
 
 #[test]
-fn feluqa_ui_runtime_options_css_path() {
+fn feluqa_ui_options_css_path() {
     let options = FeluqaUiOptions::builder().output_name("test").build();
     assert_eq!(options.css_path(), "/pkg/test.css");
 

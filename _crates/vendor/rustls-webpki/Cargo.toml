@@ -57,8 +57,6 @@ categories = [
     "no-std",
 ]
 license = "ISC"
-repository = "https://github.com/rustls/webpki"
-
 [package.metadata.docs.rs]
 features = [
     "aws-lc-rs",

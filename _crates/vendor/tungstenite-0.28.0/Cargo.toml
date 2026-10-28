@@ -46,8 +46,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/snapview/tungstenite-rs"
-
 [package.metadata.docs.rs]
 all-features = true
 

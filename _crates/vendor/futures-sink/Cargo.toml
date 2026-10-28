@@ -26,8 +26,6 @@ The asynchronous `Sink` trait for the futures-rs library.
 homepage = "https://rust-lang.github.io/futures-rs"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-
 [package.metadata.docs.rs]
 all-features = true
 

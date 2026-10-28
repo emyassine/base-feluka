@@ -33,8 +33,6 @@ keywords = [
 ]
 categories = ["algorithms"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/smol-rs/fastrand"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

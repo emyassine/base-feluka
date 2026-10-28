@@ -8,7 +8,6 @@ Provides extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for
 """
 documentation = "https://docs.rs/memchr/"
 homepage = "https://github.com/BurntSushi/memchr"
-repository = "https://github.com/BurntSushi/memchr"
 readme = "README.md"
 keywords = ["memchr", "memmem", "substring", "find", "search"]
 license = "Unlicense OR MIT"

@@ -28,8 +28,6 @@ keywords = [
     "console",
 ]
 license = "Unlicense OR MIT"
-repository = "https://github.com/BurntSushi/termcolor"
-
 [lib]
 name = "termcolor"
 bench = false

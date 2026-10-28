@@ -32,8 +32,6 @@ description = "Rust friendly bindings to *nix APIs"
 readme = "README.md"
 categories = ["os::unix-apis"]
 license = "MIT"
-repository = "https://github.com/nix-rust/nix"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

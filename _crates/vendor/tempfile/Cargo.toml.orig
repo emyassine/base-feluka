@@ -13,7 +13,6 @@ rust-version = "1.63"
 homepage = "https://stebalien.com/projects/tempfile-rs/"
 keywords = ["tempfile", "tmpfile", "filesystem"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Stebalien/tempfile"
 description = "A library for managing temporary files and directories."
 
 include = ["CHANGELOG.md", "Cargo.toml", "LICENSE-*", "README.md", "src/**/*.rs", "tests/**/*.rs"]

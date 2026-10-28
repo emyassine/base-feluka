@@ -16,8 +16,6 @@ version = "0.48.5"
 authors = ["Microsoft"]
 description = "Import lib for Windows"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/microsoft/windows-rs"
-
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
 targets = []

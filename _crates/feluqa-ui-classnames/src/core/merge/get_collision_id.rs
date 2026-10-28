@@ -948,7 +948,7 @@ pub fn get_collision_id(classes: &[&str], arbitrary: &str) -> Result<&'static st
 }
 
 fn valid_blend(mode: &[&str]) -> bool {
-    matches!(
+    crate::std::matches!(
         mode,
         ["normal"]
             | ["multiply"]
@@ -990,10 +990,10 @@ fn valid_top_right_bottom_left(mode: &str) -> bool {
 }
 
 fn valid_break_after(mode: &str) -> bool {
-    matches!(mode, "auto" | "avoid" | "all" | "avoid-page" | "page" | "left" | "right" | "column")
+    crate::std::matches!(mode, "auto" | "avoid" | "all" | "avoid-page" | "page" | "left" | "right" | "column")
 }
 
-// Need starts_with for this https://tailwindcss.com/docs/font-size#setting-the-line-height
+/// Need starts_with for this https://tailwindcss.com/docs/font-size#setting-the-line-height
 fn valid_text_size(mode: &str) -> bool {
     mode == "base"
         || mode.starts_with("xs")

@@ -9,7 +9,6 @@ authors = ["Mattias Buelens <mattias@buelens.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/MattiasBuelens/wasm-streams/"
 description = """
 Bridging between web streams and Rust streams using WebAssembly
 """

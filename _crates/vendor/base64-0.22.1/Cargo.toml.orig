@@ -3,7 +3,6 @@ name = "base64"
 version = "0.22.1"
 authors = ["Marshall Pierce <marshall@mpierce.org>"]
 description = "encodes and decodes base64 as bytes or utf8"
-repository = "https://github.com/marshallpierce/rust-base64"
 documentation = "https://docs.rs/base64"
 readme = "README.md"
 keywords = ["base64", "utf8", "encode", "decode", "no_std"]

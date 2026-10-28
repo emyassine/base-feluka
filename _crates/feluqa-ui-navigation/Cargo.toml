@@ -64,11 +64,11 @@ default-features = true
 version = "0.3.77"
 default-features = true
 
-[dependencies.feluqa_ui]
+[dependencies.feluqa_ui_runtime]
 package = "feluqa-ui-runtime"
 version = "0.8.3"
 
-[dependencies.feluqa_ui_router_macro]
+[dependencies.feluqa_ui_navigation_macros]
 package = "feluqa-ui-navigation-macros"
 version = "0.8.3"
 

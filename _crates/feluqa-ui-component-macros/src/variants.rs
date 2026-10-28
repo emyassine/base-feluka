@@ -94,7 +94,7 @@ macro_rules! variants {
         $crate::paste::paste! {
             use $crate::feluqa_ui_classnames::*;
 
-            // Generate the main FeluqaClass struct
+            /// Generate the main FeluqaClass struct
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
             pub struct [<$component Class>] {
@@ -102,7 +102,7 @@ macro_rules! variants {
                 pub size: [<$component Size>],
             }
 
-            // Generate variant enum
+            /// Generate variant enum
             #[derive(FeluqaVariant)]
             pub enum [<$component Variant>] {
                 #[feluqa(default, class = $first_variant_class)]
@@ -113,7 +113,7 @@ macro_rules! variants {
                 )*
             }
 
-            // Generate size enum
+            /// Generate size enum
             #[derive(FeluqaVariant)]
             pub enum [<$component Size>] {
                 #[feluqa(default, class = $first_size_class)]
@@ -124,7 +124,7 @@ macro_rules! variants {
                 )*
             }
 
-            // Generate the component function
+            /// Generate the component function
             #[::feluqa_ui_runtime::component]
             pub fn $component(
                 #[prop(into, optional)] variant: ::feluqa_ui_runtime::prelude::Signal<[<$component Variant>]>,
@@ -226,7 +226,7 @@ macro_rules! variants {
                     let is_active = move || {
                         href_clone.as_ref().map_or(false, |h| {
                             let path = location.pathname.try_get().unwrap_or_default();
-                            path == *h || path.starts_with(&format!("{}/", h))
+                            path == *h || path.starts_with(&crate::std::format!("{}/", h))
                         })
                     };
                     let aria_current = move || if is_active() { "page" } else { "false" };
@@ -351,7 +351,7 @@ macro_rules! variants {
         $crate::paste::paste! {
             use $crate::feluqa_ui_classnames::*;
 
-            // Generate the main FeluqaClass struct
+            /// Generate the main FeluqaClass struct
             #[derive(FeluqaClass, Clone, Copy)]
             #[feluqa(class = $base_class)]
             pub struct [<$component Class>] {
@@ -359,7 +359,7 @@ macro_rules! variants {
                 pub size: [<$component Size>],
             }
 
-            // Generate variant enum - inline expansion, no nested macros
+            /// Generate variant enum - inline expansion, no nested macros
             #[derive(FeluqaVariant)]
             pub enum [<$component Variant>] {
                 #[feluqa(default, class = $first_variant_class)]
@@ -370,7 +370,7 @@ macro_rules! variants {
                 )*
             }
 
-            // Generate size enum - inline expansion, no nested macros
+            /// Generate size enum - inline expansion, no nested macros
             #[derive(FeluqaVariant)]
             pub enum [<$component Size>] {
                 #[feluqa(default, class = $first_size_class)]

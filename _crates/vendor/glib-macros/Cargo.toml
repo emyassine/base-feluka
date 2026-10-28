@@ -33,8 +33,6 @@ keywords = [
     "GUI",
 ]
 license = "MIT"
-repository = "https://github.com/gtk-rs/gtk-rs-core"
-
 [lib]
 name = "glib_macros"
 path = "src/lib.rs"

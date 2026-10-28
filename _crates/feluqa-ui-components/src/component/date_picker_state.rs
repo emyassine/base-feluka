@@ -58,14 +58,14 @@ impl DatePickerState {
 
     /// Gets calendar days for the given month, including leading/trailing days from adjacent months
     pub fn get_calendar_days(year: i32, month: Month) -> Vec<DatePickerDay> {
-        let Some(first_day) = Date::from_calendar_date(year, month, 1).ok() else { return vec![] };
+        let Some(first_day) = Date::from_calendar_date(year, month, 1).ok() else { return crate::std::vec![] };
         let first_weekday = first_day.weekday().number_from_monday() as usize - 1;
 
         let (prev_month, prev_year) = DateUtils::prev_month_year(month, year);
         let days_in_prev_month = prev_month.length(prev_year);
         let days_in_month = month.length(year);
 
-        let mut days = vec![];
+        let mut days = crate::std::vec![];
 
         // Leading days from previous month
         for i in 0..first_weekday {

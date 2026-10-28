@@ -9,7 +9,7 @@ pub fn Progress(
 ) -> impl IntoView {
     let style = move || {
         let pct = (value.get() / max * 100.0).clamp(0.0, 100.0);
-        format!("transform: translateX(-{}%)", 100.0 - pct)
+        crate::std::format!("transform: translateX(-{}%)", 100.0 - pct)
     };
 
     let merged_class = class_merge!("relative h-2 w-full overflow-hidden rounded-full bg-secondary", class);

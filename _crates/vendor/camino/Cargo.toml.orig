@@ -10,7 +10,6 @@ readme = "README.md"
 rust-version = "1.61.0"
 keywords = ["paths", "utf8", "unicode", "filesystem"]
 categories = ["development-tools", "filesystem", "os"]
-repository = "https://github.com/camino-rs/camino"
 documentation = "https://docs.rs/camino"
 authors = [
     "Without Boats <saoirse@without.boats>",

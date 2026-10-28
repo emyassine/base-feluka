@@ -41,8 +41,6 @@ categories = [
     "parser-implementations",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustCrypto/formats/tree/master/der"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

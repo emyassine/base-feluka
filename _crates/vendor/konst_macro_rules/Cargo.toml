@@ -24,8 +24,6 @@ documentation = "https://docs.rs/konst/"
 keywords = []
 categories = []
 license = "Zlib"
-repository = "https://github.com/rodrimati1992/konst/"
-
 [dependencies]
 
 [features]

@@ -9,7 +9,6 @@ description = """Typenum is a Rust library for type-level numbers evaluated at
     implementation is incomplete."""
 documentation = "https://docs.rs/typenum"
 readme = "README.md"
-repository = "https://github.com/paholg/typenum"
 license = "MIT OR Apache-2.0"
 categories = ["no-std"]
 exclude = [

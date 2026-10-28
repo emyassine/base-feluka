@@ -22,8 +22,6 @@ keywords = [
     "extension",
 ]
 license = "MIT"
-repository = "https://github.com/abonander/mime_guess"
-
 [[example]]
 name = "rev_map"
 required-features = ["rev-mappings"]

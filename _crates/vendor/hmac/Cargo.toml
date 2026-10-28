@@ -20,7 +20,6 @@ readme = "README.md"
 keywords = ["crypto", "mac", "hmac", "digest"]
 categories = ["cryptography", "no-std"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/RustCrypto/MACs"
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]

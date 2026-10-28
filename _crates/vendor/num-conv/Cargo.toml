@@ -38,8 +38,6 @@ categories = [
     "rust-patterns",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/jhpratt/num-conv"
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
 

@@ -42,8 +42,6 @@ categories = [
     "development-tools::build-utils",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/LukasKalbertodt/litrs"
-
 [package.metadata.docs.rs]
 features = ["proc-macro2"]
 

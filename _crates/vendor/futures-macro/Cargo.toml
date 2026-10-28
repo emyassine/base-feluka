@@ -26,8 +26,6 @@ The futures-rs procedural macro implementations.
 homepage = "https://rust-lang.github.io/futures-rs"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/futures-rs"
-
 [features]
 
 [lib]

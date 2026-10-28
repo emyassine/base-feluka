@@ -9,7 +9,6 @@ edition = "2021"
 exclude = ["build.rs", "screenshots/*"]
 keywords = ["macros", "testing", "dev-dependencies"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/trybuild"
 rust-version = "1.76"
 
 [features]

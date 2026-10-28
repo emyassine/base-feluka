@@ -39,8 +39,6 @@ categories = [
     "rust-patterns",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/taiki-e/pin-project-lite"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 

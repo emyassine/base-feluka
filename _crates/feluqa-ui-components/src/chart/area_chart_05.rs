@@ -31,11 +31,11 @@ pub fn AreaChart05() -> impl IntoView {
     let mobile_data: Vec<i32> = CHART_DATA.iter().map(|d| d.mobile).collect();
     let labels: Vec<&str> = CHART_DATA.iter().map(|d| d.month).collect();
 
-    let chart_data = vec![desktop_data, mobile_data];
+    let chart_data = crate::std::vec![desktop_data, mobile_data];
     let json_values = crate::serde_json::to_string(&chart_data).unwrap_or_default();
     let json_labels = crate::serde_json::to_string(&labels).unwrap_or_default();
 
-    let series_names = vec!["Desktop", "Mobile"];
+    let series_names = crate::std::vec!["Desktop", "Mobile"];
     let series_names_json = crate::serde_json::to_string(&series_names).unwrap_or_default();
 
     view! {

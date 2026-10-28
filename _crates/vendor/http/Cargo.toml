@@ -33,8 +33,6 @@ readme = "README.md"
 keywords = ["http"]
 categories = ["web-programming"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/hyperium/http"
-
 [features]
 default = ["std"]
 std = []

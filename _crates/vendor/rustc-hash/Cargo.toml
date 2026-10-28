@@ -30,8 +30,6 @@ keywords = [
     "rustc",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/rust-lang/rustc-hash"
-
 [features]
 default = ["std"]
 nightly = []

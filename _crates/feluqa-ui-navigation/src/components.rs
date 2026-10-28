@@ -554,12 +554,12 @@ define_protected_parent_route!(NestedRoute<Segments, Children, (), impl Fn() -> 
 /// an absolute path, prefix it with `/`).
 ///
 /// **Note**: Support for server-side redirects is provided by the server framework
-/// integrations ([`feluqa_ui_runtime_actix`] and [`feluqa_ui_runtime_axum`]. If you’re not using one of those
+/// integrations ([`feluqa_ui_actix`] and [`feluqa_ui_axum`]. If you’re not using one of those
 /// integrations, you should manually provide a way of redirecting on the server
 /// using [`provide_server_redirect`].
 ///
-/// [`feluqa_ui_runtime_actix`]: <https://docs.rs/feluqa_ui_runtime_actix/>
-/// [`feluqa_ui_runtime_axum`]: <https://docs.rs/feluqa_ui_runtime_axum/>
+/// [`feluqa_ui_actix`]: <https://docs.rs/feluqa_ui_actix/>
+/// [`feluqa_ui_axum`]: <https://docs.rs/feluqa_ui_axum/>
 #[component(transparent)]
 pub fn Redirect<P>(
     /// The relative path to which the user should be redirected.

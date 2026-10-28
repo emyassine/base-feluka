@@ -29,8 +29,6 @@ keywords = [
     "async",
 ]
 license = "MIT"
-repository = "https://github.com/seanmonstar/want"
-
 [lib]
 name = "want"
 path = "src/lib.rs"

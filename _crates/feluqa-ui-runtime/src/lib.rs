@@ -12,14 +12,14 @@
 //!
 //! And you can do all three of these **using the same FeluqaUi code**.
 //!
-//! Take a look at the [FeluqaUi Book](https://feluqa.dev/docs/ui/) for a walkthrough of the framework.
+//! Take a look at the [FeluqaUi Book](https://feluqa_ui_runtime-rs.github.io/feluqa_ui_runtime/) for a walkthrough of the framework.
 //! Join us on our [Discord Channel](https://discord.gg/v38Eef6sWG) to see what the community is building.
-//! Explore our [Examples](https://feluqa.dev/tree/main/examples) to see FeluqaUi in action.
+//! Explore our [Examples](https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples) to see FeluqaUi in action.
 //!
 //! # Learning by Example
 //!
 //! If you want to see what FeluqaUi is capable of, check out
-//! the [examples](https://feluqa.dev/tree/main/examples):
+//! the [examples](https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples):
 //!
 //! - **[`counter`]** is the classic counter example, showing the basics of client-side rendering and reactive DOM updates.
 //! - **[`counter_without_macros`]** adapts the counter example to use the builder pattern for the UI and avoids other macros,
@@ -39,31 +39,31 @@
 //! - **[`todomvc`]** shows the basics of building an isomorphic web app. Both the server and the client import the same app code.
 //!   The server renders the app directly to an HTML string, and the client hydrates that HTML to make it interactive.
 //!   You might also want to see how we use [`Effect::new`](feluqa_ui_runtime::prelude::Effect) to
-//!   [serialize JSON to `localStorage`](https://feluqa.dev/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L191-L209)
-//!   and [reactively call DOM methods](https://feluqa.dev/blob/16f084a71268ac325fbc4a5e50c260df185eadb6/examples/todomvc/src/lib.rs#L292-L296)
-//!   on [references to elements](https://feluqa.dev/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L228).
+//!   [serialize JSON to `localStorage`](https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L191-L209)
+//!   and [reactively call DOM methods](https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/blob/16f084a71268ac325fbc4a5e50c260df185eadb6/examples/todomvc/src/lib.rs#L292-L296)
+//!   on [references to elements](https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/blob/20af4928b2fffe017408d3f4e7330db22cf68277/examples/todomvc/src/lib.rs#L228).
 //! - **[`hackernews`]** and **[`hackernews_axum`]** integrate calls to a real external REST API, routing, server-side rendering and
 //!   hydration to create a fully-functional application that works as intended even before WASM has loaded and begun to run.
 //! - **[`todo_app_sqlite`]** and **[`todo_app_sqlite_axum`]** show how to build a full-stack app using server functions and
 //!   database connections.
 //! - **[`tailwind`]** shows how to integrate TailwindCSS with `trunk` for CSR.
 //!
-//! [`counter`]: https://feluqa.dev/tree/main/examples/counter
-//! [`counter_without_macros`]: https://feluqa.dev/tree/main/examples/counter_without_macros
-//! [`counters`]: https://feluqa.dev/tree/main/examples/counters
-//! [`error_boundary`]: https://feluqa.dev/tree/main/examples/error_boundary
-//! [`parent_child`]: https://feluqa.dev/tree/main/examples/parent_child
-//! [`fetch`]: https://feluqa.dev/tree/main/examples/fetch
-//! [`router`]: https://feluqa.dev/tree/main/examples/router
-//! [`slots`]: https://feluqa.dev/tree/main/examples/slots
-//! [`spread`]: https://feluqa.dev/tree/main/examples/spread
-//! [`counter_isomorphic`]: https://feluqa.dev/tree/main/examples/counter_isomorphic
-//! [`todomvc`]: https://feluqa.dev/tree/main/examples/todomvc
-//! [`hackernews`]: https://feluqa.dev/tree/main/examples/hackernews
-//! [`hackernews_axum`]: https://feluqa.dev/tree/main/examples/hackernews_axum
-//! [`todo_app_sqlite`]: https://feluqa.dev/tree/main/examples/todo_app_sqlite
-//! [`todo_app_sqlite_axum`]: https://feluqa.dev/tree/main/examples/todo_app_sqlite_axum
-//! [`tailwind`]: https://feluqa.dev/tree/main/examples/tailwind_csr
+//! [`counter`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/counter
+//! [`counter_without_macros`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/counter_without_macros
+//! [`counters`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/counters
+//! [`error_boundary`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/error_boundary
+//! [`parent_child`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/parent_child
+//! [`fetch`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/fetch
+//! [`router`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/router
+//! [`slots`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/slots
+//! [`spread`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/spread
+//! [`counter_isomorphic`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/counter_isomorphic
+//! [`todomvc`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/todomvc
+//! [`hackernews`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/hackernews
+//! [`hackernews_axum`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/hackernews_axum
+//! [`todo_app_sqlite`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/todo_app_sqlite
+//! [`todo_app_sqlite_axum`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/todo_app_sqlite_axum
+//! [`tailwind`]: https://github.com/feluqa_ui_runtime-rs/feluqa_ui_runtime/tree/main/examples/tailwind_csr
 //!
 //! Details on how to run each example can be found in its README.
 //!
@@ -162,9 +162,9 @@ pub mod prelude {
     pub use feluqa_ui_reactivity::prelude::*;
     pub use feluqa_ui_dom_renderer::prelude::*;
 
-    // Structs
-    // In the future, maybe we should remove this blanket export
-    // However, it is definitely useful relative to looking up every struct etc.
+    /// Structs
+    /// In the future, maybe we should remove this blanket export
+    /// However, it is definitely useful relative to looking up every struct etc.
     mod export_types {
         #[cfg(feature = "nonce")]
         pub use crate::nonce::*;

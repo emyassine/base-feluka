@@ -55,8 +55,6 @@ categories = [
     "compression",
 ]
 license = "BSD-3-Clause"
-repository = "https://github.com/gyscos/zstd-rs"
-
 [package.metadata.docs.rs]
 features = ["experimental"]
 

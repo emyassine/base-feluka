@@ -35,8 +35,6 @@ keywords = [
     "nostd",
 ]
 license = "BSD-3-Clause/MIT"
-repository = "https://github.com/dropbox/rust-brotli-decompressor"
-
 [features]
 benchmark = []
 default = ["std"]

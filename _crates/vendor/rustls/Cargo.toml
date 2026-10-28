@@ -32,8 +32,6 @@ categories = [
     "cryptography",
 ]
 license = "Apache-2.0 OR ISC OR MIT"
-repository = "https://github.com/rustls/rustls"
-
 [package.metadata.docs.rs]
 features = [
     "read_buf",

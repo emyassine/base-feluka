@@ -13,7 +13,6 @@ authors = [
     "Sean McArthur <sean@seanmonstar.com>",
 ]
 description = "Types and traits for working with bytes"
-repository = "https://github.com/tokio-rs/bytes"
 readme = "README.md"
 keywords = ["buffers", "zero-copy", "io"]
 categories = ["network-programming", "data-structures"]

@@ -270,7 +270,7 @@ impl Owner {
 
     /// Runs the given function with this as the current `Owner`.
     pub fn with<T>(&self, fun: impl FnOnce() -> T) -> T {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner_1(self_: &Owner) -> Option<WeakOwner> {
             let prev = OWNER.with_borrow_mut(|o| o.replace(self_.downgrade()));
             #[cfg(feature = "sandboxed-arenas")]
@@ -281,7 +281,7 @@ impl Owner {
 
         let val = fun();
 
-        // monomorphisation optimisation:
+        /// monomorphisation optimisation:
         fn inner_2(prev: Option<WeakOwner>) {
             OWNER.with_borrow_mut(|o| *o = prev);
         }

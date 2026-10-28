@@ -29,8 +29,6 @@ documentation = "https://docs.rs/eyre"
 readme = "README.md"
 categories = ["rust-patterns"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/eyre-rs/eyre"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [

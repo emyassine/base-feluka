@@ -43,8 +43,6 @@ keywords = [
 ]
 categories = ["asynchronous"]
 license = "MIT"
-repository = "https://github.com/tokio-rs/mio"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

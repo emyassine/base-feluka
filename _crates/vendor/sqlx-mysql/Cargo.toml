@@ -22,8 +22,6 @@ authors = [
 description = "MySQL driver implementation for SQLx. Not for direct use; see the `sqlx` crate for details."
 documentation = "https://docs.rs/sqlx"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/launchbadge/sqlx"
-
 [dependencies.atoi]
 version = "2.0"
 

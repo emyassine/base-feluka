@@ -32,8 +32,6 @@ homepage = "https://wasm-bindgen.github.io/wasm-bindgen/web-sys/index.html"
 documentation = "https://wasm-bindgen.github.io/wasm-bindgen/api/web_sys/"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/web-sys"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg=web_sys_unstable_apis"]

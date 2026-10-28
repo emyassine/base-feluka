@@ -925,7 +925,7 @@ fn slot_impl(
 ///   output = Json
 ///   impl_from = true
 /// )]
-/// pub async fn my_wacky_feluqa_ui_server_functions(input: Vec<String>) -> Result<usize, ServerFnError> {
+/// pub async fn my_wacky_server_fn(input: Vec<String>) -> Result<usize, ServerFnError> {
 ///   todo!()
 /// }
 /// ```
@@ -984,8 +984,8 @@ fn slot_impl(
 /// - **Context comes from the server.** Server functions are provided access to the HTTP request and other relevant
 ///   server data via the server integrations, but they do *not* have access to reactive state that exists in the client.
 /// - Your server must be ready to handle the server functions at the API prefix you list. The easiest way to do this
-///   is to use the `handle_feluqa_ui_server_functionss` function from [`feluqa_ui_runtime_actix`](https://docs.rs/feluqa_ui_runtime_actix/latest/feluqa_ui_runtime_actix/fn.handle_feluqa_ui_server_functionss.html)
-///   or [`feluqa_ui_runtime_axum`](https://docs.rs/feluqa_ui_runtime_axum/latest/feluqa_ui_runtime_axum/fn.handle_feluqa_ui_server_functionss.html).
+///   is to use the `handle_server_fns` function from [`feluqa_ui_actix`](https://docs.rs/feluqa_ui_actix/latest/feluqa_ui_actix/fn.handle_server_fns.html)
+///   or [`feluqa_ui_axum`](https://docs.rs/feluqa_ui_axum/latest/feluqa_ui_axum/fn.handle_server_fns.html).
 /// - **Server functions must have unique paths**. Unique paths are automatically generated for each
 ///   server function. If you choose to specify a path in the fourth argument, you must ensure that these
 ///   are unique. You cannot define two server functions with the same URL prefix and endpoint path,

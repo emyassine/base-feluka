@@ -35,8 +35,6 @@ keywords = [
     "config",
 ]
 license = "MIT"
-repository = "https://github.com/allan2/dotenvy"
-
 [[bin]]
 name = "dotenvy"
 required-features = ["cli"]

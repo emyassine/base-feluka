@@ -125,7 +125,7 @@ pub fn SidenavLink(
     let href_clone = href.clone();
     let is_active = move || {
         let path = location.pathname.get();
-        path == href_clone || path.starts_with(&format!("{}/", href_clone))
+        path == href_clone || path.starts_with(&crate::std::format!("{}/", href_clone))
     };
 
     let aria_current = move || if is_active() { "page" } else { "false" };
@@ -343,7 +343,7 @@ pub fn SidenavMenuSubButton(
     let href_clone = href.clone();
     let is_active = move || {
         let path = location.pathname.get();
-        path == href_clone || path.starts_with(&format!("{}/", href_clone))
+        path == href_clone || path.starts_with(&crate::std::format!("{}/", href_clone))
     };
     let aria_current = move || if is_active() { "page" } else { "false" };
 

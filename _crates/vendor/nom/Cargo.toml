@@ -39,8 +39,6 @@ keywords = [
 ]
 categories = ["parsing"]
 license = "MIT"
-repository = "https://github.com/Geal/nom"
-
 [package.metadata.docs.rs]
 features = [
     "alloc",
@@ -158,11 +156,9 @@ std = [
 
 [badges.coveralls]
 branch = "main"
-repository = "Geal/nom"
 service = "github"
 
 [badges.maintenance]
 status = "actively-developed"
 
 [badges.travis-ci]
-repository = "Geal/nom"

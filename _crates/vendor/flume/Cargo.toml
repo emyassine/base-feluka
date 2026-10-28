@@ -33,8 +33,6 @@ categories = [
     "data-structures",
 ]
 license = "Apache-2.0/MIT"
-repository = "https://github.com/zesterer/flume"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -7,8 +7,6 @@ description = "Provides owned mutex guards for refcounted mutexes."
 authors = ["Jon Gjengset <jon@thesquareplanet.com>"]
 
 homepage = "https://github.com/jonhoo/guardian"
-repository = "https://github.com/jonhoo/guardian.git"
-
 keywords = ["locks","mutex","synchronization","rc"]
 categories = ["concurrency"]
 

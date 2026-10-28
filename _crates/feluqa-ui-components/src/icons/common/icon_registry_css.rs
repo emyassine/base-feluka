@@ -1,4 +1,4 @@
-// * This file was was generated automatically. Please DO NOT edit manually.
+/// * This file was was generated automatically. Please DO NOT edit manually.
 
 /// Static CSS for AArrowDownAnimate animation
 pub static AARROWDOWN_CSS: &str = r#"/* Letter "A" animation - targeting specific paths */

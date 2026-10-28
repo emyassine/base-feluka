@@ -31,8 +31,6 @@ keywords = [
 ]
 categories = ["filesystem"]
 license = "Unlicense/MIT"
-repository = "https://github.com/BurntSushi/walkdir"
-
 [dependencies.same-file]
 version = "1.0.1"
 
@@ -43,7 +41,4 @@ version = "0.3"
 version = "0.1.1"
 
 [badges.appveyor]
-repository = "BurntSushi/walkdir"
-
 [badges.travis-ci]
-repository = "BurntSushi/walkdir"

@@ -29,8 +29,6 @@ keywords = [
     "check",
 ]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/SergioBenitez/version_check"
-
 [lib]
 name = "version_check"
 path = "src/lib.rs"

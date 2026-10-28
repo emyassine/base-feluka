@@ -20,8 +20,6 @@ documentation = "https://docs.rs/serde_urlencoded/0.7.1/serde_urlencoded/"
 keywords = ["serde", "serialization", "urlencoded"]
 categories = ["encoding", "web-programming"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/nox/serde_urlencoded"
-
 [lib]
 test = false
 [dependencies.form_urlencoded]
@@ -38,4 +36,3 @@ version = "1.0.69"
 [dev-dependencies.serde_derive]
 version = "1"
 [badges.travis-ci]
-repository = "nox/serde_urlencoded"

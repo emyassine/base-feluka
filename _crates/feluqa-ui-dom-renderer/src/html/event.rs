@@ -273,7 +273,7 @@ where
 {
     const MIN_LENGTH: usize = 0;
     type AsyncOutput = Self;
-    // a function that can be called once to remove the event listener
+    /// a function that can be called once to remove the event listener
     type State = (
         crate::renderer::types::Element,
         Option<RemoveEventHandler<crate::renderer::types::Element>>,

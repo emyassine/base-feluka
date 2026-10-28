@@ -13,7 +13,6 @@ authors = [
 ]
 description = "An HTTP/2 client and server"
 documentation = "https://docs.rs/h2"
-repository = "https://github.com/hyperium/h2"
 readme = "README.md"
 keywords = ["http", "async", "non-blocking"]
 categories = ["asynchronous", "web-programming", "network-programming"]

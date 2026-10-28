@@ -26,8 +26,6 @@ autobenches = false
 description = "Attribute macro for the proc-macro-error2 crate"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/GnomedDev/proc-macro-error-2"
-
 [lib]
 name = "proc_macro_error_attr2"
 path = "src/lib.rs"

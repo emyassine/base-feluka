@@ -33,8 +33,6 @@ keywords = [
     "GUI",
 ]
 license = "MIT"
-repository = "https://github.com/gtk-rs/gtk-rs-core"
-
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = [

@@ -39,8 +39,6 @@ keywords = [
 ]
 categories = ["command-line-interface"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-cli/anstyle.git"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--generate-link-to-definition"]

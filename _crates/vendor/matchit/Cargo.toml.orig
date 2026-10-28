@@ -7,7 +7,6 @@ edition = "2021"
 description = "A high performance, zero-copy URL router."
 categories = ["network-programming", "algorithms"]
 keywords = ["router", "path", "tree", "match", "url"]
-repository = "https://github.com/ibraheemdev/matchit"
 readme = "README.md"
 
 [dependencies]

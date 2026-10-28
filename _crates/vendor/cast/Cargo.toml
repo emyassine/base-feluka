@@ -19,7 +19,6 @@ description = "Ergonomic, checked cast functions for primitive types"
 documentation = "https://docs.rs/cast"
 keywords = ["checked", "cast", "primitive", "integer", "float"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/japaric/cast.rs"
 [dev-dependencies.quickcheck]
 version = "1.0.3"
 

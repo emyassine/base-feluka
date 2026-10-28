@@ -7,5 +7,5 @@ A build tool that supports this approach (like `wasm-split-cli` in `wasm_split_c
 This crate was adapted from an original prototype, which you can find [here](https://github.com/jbms/wasm-split-prototype), with an in-depth description of the approach [here](https://github.com/rustwasm/wasm-bindgen/issues/3939).
 
 This functionality is used:
-- in Leptos to support the `#[lazy]` and `#[lazy_route]` macros.
+- in Feluqa to support the `#[lazy]` and `#[lazy_route]` macros.
 - in Yew to support the `Lazy` component

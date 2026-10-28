@@ -41,8 +41,6 @@ categories = [
     "web-programming::http-server",
 ]
 license = "MIT"
-repository = "https://github.com/hyperium/hyper"
-
 [package.metadata.docs.rs]
 features = [
     "ffi",

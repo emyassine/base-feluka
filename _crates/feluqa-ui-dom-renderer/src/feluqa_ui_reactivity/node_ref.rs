@@ -168,11 +168,12 @@ where
     }
 }
 
-/// Create a [NodeRef].
+// Create a [NodeRef].
 #[inline(always)]
 #[track_caller]
 #[deprecated = "This function is being removed to conform to Rust idioms. \
                 Please use `NodeRef::new()` instead."]
+/// Creates a node reference for an element type.
 pub fn create_node_ref<E>() -> NodeRef<E>
 where
     E: ElementType,

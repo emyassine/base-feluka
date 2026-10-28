@@ -23,8 +23,6 @@ autobenches = false
 description = "proc macros for async-stream crate"
 readme = false
 license = "MIT"
-repository = "https://github.com/tokio-rs/async-stream"
-
 [lib]
 name = "async_stream_impl"
 path = "src/lib.rs"

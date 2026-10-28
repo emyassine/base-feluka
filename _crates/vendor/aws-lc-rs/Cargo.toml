@@ -40,8 +40,6 @@ keywords = [
     "security",
 ]
 license = "ISC AND (Apache-2.0 OR ISC)"
-repository = "https://github.com/aws/aws-lc-rs"
-
 [package.metadata.docs.rs]
 rustdoc-args = [
     "--cfg",

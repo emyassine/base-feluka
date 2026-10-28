@@ -8,7 +8,6 @@ authors = ["Denis Kurilenko <webdesus@gmail.com>"]
 keywords = ["filesystem", "recursion", "copy", "dir", "file"]
 homepage = "https://github.com/webdesus/fs_extra"
 documentation = "https://docs.rs/fs_extra"
-repository = "https://github.com/webdesus/fs_extra"
 include = [
     "**/*.rs",
     "Cargo.toml",

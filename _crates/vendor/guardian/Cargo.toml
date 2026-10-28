@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["concurrency"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/jonhoo/guardian.git"
-
 [lib]
 name = "guardian"
 path = "src/lib.rs"

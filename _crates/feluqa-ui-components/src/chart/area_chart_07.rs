@@ -33,7 +33,7 @@ pub fn AreaChart07() -> impl IntoView {
     let series3_data: Vec<i32> = CHART_DATA.iter().map(|d| d.series3).collect();
     let labels: Vec<&str> = CHART_DATA.iter().map(|d| d.month).collect();
 
-    let chart_data = vec![series1_data, series2_data, series3_data];
+    let chart_data = crate::std::vec![series1_data, series2_data, series3_data];
     let json_values = crate::serde_json::to_string(&chart_data).unwrap_or_default();
     let json_labels = crate::serde_json::to_string(&labels).unwrap_or_default();
     let stack_type = "100%".to_string();

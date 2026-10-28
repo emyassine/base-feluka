@@ -4,12 +4,12 @@ use crate::navigation::hooks::use_location;
 
 const LAST_SEGMENT_INDEX: usize = 1;
 
-// Custom hook for breadcrumb navigation starting from a specific segment (inclusive)
+/// Custom hook for breadcrumb navigation starting from a specific segment (inclusive)
 pub fn use_breadcrumb_from_segment(start_segment: &str) -> Memo<Vec<(String, String, bool)>> {
     build_breadcrumb_items(start_segment, true)
 }
 
-// Custom hook for breadcrumb navigation starting after a specific segment (exclusive)
+/// Custom hook for breadcrumb navigation starting after a specific segment (exclusive)
 pub fn use_breadcrumb_after_segment(start_segment: &str) -> Memo<Vec<(String, String, bool)>> {
     build_breadcrumb_items(start_segment, false)
 }
@@ -42,7 +42,7 @@ fn build_breadcrumb_items(start_segment: &str, inclusive: bool) -> Memo<Vec<(Str
                     .skip(actual_start_idx)
                     .map(|(i, segment)| {
                         let path = segments.get(..=i).map(|s| s.join("/")).unwrap_or_default();
-                        (segment.to_title_case(), format!("/{path}"), i == segments.len() - LAST_SEGMENT_INDEX)
+                        (segment.to_title_case(), crate::std::format!("/{path}"), i == segments.len() - LAST_SEGMENT_INDEX)
                     })
                     .collect()
             })

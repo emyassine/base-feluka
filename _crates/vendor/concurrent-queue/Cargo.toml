@@ -31,8 +31,6 @@ keywords = [
 ]
 categories = ["concurrency"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/smol-rs/concurrent-queue"
-
 [lib]
 bench = false
 

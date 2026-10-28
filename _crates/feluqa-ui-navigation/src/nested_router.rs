@@ -77,7 +77,7 @@ where
     FalFn: FnOnce() -> Fal,
     Fal: Render + 'static,
 {
-    // TODO support fallback while loading
+    /// TODO support fallback while loading
     type State = NestedRouteViewState<Fal>;
 
     fn build(self) -> Self::State {

@@ -43,8 +43,6 @@ categories = [
     "no-std",
 ]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/akubera/bigdecimal-rs"
-
 [features]
 default = ["std"]
 serde-json = [

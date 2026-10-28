@@ -11,8 +11,6 @@ categories = ["development-tools", "development-tools::build-utils"]
 documentation = "https://docs.rs/cfg_aliases"
 readme = "README.md"
 homepage = "https://github.com/katharostech/cfg_aliases"
-repository = "https://github.com/katharostech/cfg_aliases"
-
 exclude = ["modoc.config", "release.toml"]
 
 [badges]

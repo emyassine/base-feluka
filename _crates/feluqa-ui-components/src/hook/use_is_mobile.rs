@@ -22,5 +22,5 @@ pub const MOBILE_BREAKPOINT: u32 = 768;
 /// }
 /// ```
 pub fn use_is_mobile() -> Signal<bool> {
-    use_media_query(&format!("(max-width: {}px)", MOBILE_BREAKPOINT - 1))
+    use_media_query(&crate::std::format!("(max-width: {}px)", MOBILE_BREAKPOINT - 1))
 }

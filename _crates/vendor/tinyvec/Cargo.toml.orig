@@ -7,7 +7,6 @@ edition = "2018"
 license = "Zlib OR Apache-2.0 OR MIT"
 keywords = ["vec", "no_std", "no-std"]
 categories = ["data-structures", "no-std"]
-repository = "https://github.com/Lokathor/tinyvec"
 exclude = ["/.github", "/*.py", "/*.sh", "/src-backup"]
 
 [dependencies]

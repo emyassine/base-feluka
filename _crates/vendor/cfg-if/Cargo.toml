@@ -28,8 +28,6 @@ item that gets emitted.
 """
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/cfg-if"
-
 [features]
 rustc-dep-of-std = ["core"]
 

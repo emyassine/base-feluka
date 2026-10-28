@@ -38,8 +38,6 @@ categories = [
     "no-std",
 ]
 license = "Zlib"
-repository = "https://github.com/orlp/foldhash"
-
 [features]
 default = ["std"]
 std = []

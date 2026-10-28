@@ -185,7 +185,7 @@ pub fn ContextMenuContent(
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupContextMenu = () => {{
@@ -231,7 +231,7 @@ pub fn ContextMenuContent(
                         const openMenu = (x, y) => {{
                             isOpen = true;
 
-                            // Close any other open context menus
+                            /// Close any other open context menus
                             const allMenus = document.querySelectorAll('[data-target="target__context"]');
                             allMenus.forEach(m => {{
                                 if (m !== menu && m.getAttribute('data-state') === 'open') {{
@@ -299,7 +299,7 @@ pub fn ContextMenuContent(
                             openMenu(e.clientX, e.clientY);
                         }});
 
-                        // Close when action is clicked
+                        /// Close when action is clicked
                         const actions = menu.querySelectorAll('[data-context-close]');
                         actions.forEach(action => {{
                             action.addEventListener('click', () => {{

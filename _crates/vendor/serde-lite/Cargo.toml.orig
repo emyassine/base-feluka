@@ -5,7 +5,6 @@ authors = ["Ondrej Perutka <perutka.ondrej@gmail.com>"]
 license = "MIT"
 description = "A general-purpose serialization/de-serialization library"
 documentation = "https://docs.rs/serde-lite/"
-repository = "https://github.com/operutka/serde-lite"
 keywords = ["api", "serde", "serialization"]
 categories = ["encoding"]
 readme = "README.md"

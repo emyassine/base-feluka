@@ -30,9 +30,9 @@ struct HoverCardContext {
 #[component]
 pub fn HoverCard(children: Children, #[prop(default = HoverCardSide::default())] side: HoverCardSide) -> impl IntoView {
     let id = use_random_id();
-    let anchor_name = format!("--hc_anchor_{}", id);
-    let trigger_id = format!("hc_trigger_{}", id);
-    let content_id = format!("hc_content_{}", id);
+    let anchor_name = crate::std::format!("--hc_anchor_{}", id);
+    let trigger_id = crate::std::format!("hc_trigger_{}", id);
+    let content_id = crate::std::format!("hc_content_{}", id);
 
     let (position_styles, transform_origin) = match side {
         HoverCardSide::Bottom => ("position-area: block-end; margin-top: 8px;".to_string(), "center top".to_string()),
@@ -54,7 +54,7 @@ pub fn HoverCard(children: Children, #[prop(default = HoverCardSide::default())]
     view! {
         <crate::runtime::context::Provider value=ctx>
             <style>
-                {format!(
+                {crate::std::format!(
                     "
                     #{content_id} {{
                         position-anchor: {anchor_name};
@@ -90,7 +90,7 @@ pub fn HoverCard(children: Children, #[prop(default = HoverCardSide::default())]
             </style>
             {children()}
             <script>
-                {format!(
+                {crate::std::format!(
                     r#"
                     (function() {{
                         const setup = () => {{
@@ -130,7 +130,7 @@ pub fn HoverCardTrigger(children: Children, #[prop(optional, into)] class: Strin
         <span
             id=ctx.trigger_id
             class=class_merge!("inline-block", class)
-            style=format!("anchor-name: {}", ctx.anchor_name)
+            style=crate::std::format!("anchor-name: {}", ctx.anchor_name)
         >
             {children()}
         </span>

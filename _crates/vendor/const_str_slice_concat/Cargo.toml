@@ -18,6 +18,4 @@ authors = ["Greg Johnston"]
 description = "Utilities for const concatenation of string slices."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [dependencies]

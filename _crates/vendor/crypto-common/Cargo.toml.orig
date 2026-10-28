@@ -7,7 +7,6 @@ license = "MIT OR Apache-2.0"
 readme = "README.md"
 edition = "2018"
 documentation = "https://docs.rs/crypto-common"
-repository = "https://github.com/RustCrypto/traits"
 keywords = ["crypto", "traits"]
 categories = ["cryptography", "no-std"]
 

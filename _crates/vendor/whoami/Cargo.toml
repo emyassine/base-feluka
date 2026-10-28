@@ -46,8 +46,6 @@ categories = [
     "value-formatting",
 ]
 license = "Apache-2.0 OR BSL-1.0 OR MIT"
-repository = "https://github.com/ardaku/whoami"
-
 [features]
 default = ["web"]
 web = ["web-sys"]

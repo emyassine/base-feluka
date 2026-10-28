@@ -33,8 +33,6 @@ readme = "README.md"
 keywords = ["http"]
 categories = ["web-programming"]
 license = "MIT"
-repository = "https://github.com/hyperium/http-body"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -23,8 +23,6 @@ keywords = [
     "no_std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/kyren/hashlink"
-
 [dependencies.hashbrown]
 version = "0.15"
 features = [
@@ -49,4 +47,3 @@ serde_impl = ["serde"]
 
 [badges.circle-ci]
 branch = "master"
-repository = "kyren/hashlink"

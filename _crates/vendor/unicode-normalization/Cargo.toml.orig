@@ -8,7 +8,6 @@ authors = [
 ]
 
 homepage = "https://github.com/unicode-rs/unicode-normalization"
-repository = "https://github.com/unicode-rs/unicode-normalization"
 documentation = "https://docs.rs/unicode-normalization/"
 
 license = "(MIT OR Apache-2.0) AND Unicode-3.0"

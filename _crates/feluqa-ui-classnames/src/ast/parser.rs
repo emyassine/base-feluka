@@ -63,7 +63,7 @@ fn parse_elements<'a>(prefix: &'a str, input: &'a str) -> IResult<&'a str, AstEl
     fn parse_head(input: &str) -> IResult<&str, &str> {
         let stop = |c: char| -> bool {
             // space, and ! for v4 important suffix
-            matches!(c, ' ' | '\n' | '\r' | '-' | '[' | ']' | '(' | ')' | '!')
+            crate::std::matches!(c, ' ' | '\n' | '\r' | '-' | '[' | ']' | '(' | ')' | '!')
         };
         take_till1(stop)(input)
     }
@@ -74,7 +74,7 @@ fn parse_elements<'a>(prefix: &'a str, input: &'a str) -> IResult<&'a str, AstEl
     }
 
     let (rest, (_, first, other)) = tuple((tag(prefix), parse_head, many0(parse_rest)))(input)?;
-    let mut out = vec![first];
+    let mut out = crate::std::vec![first];
     out.extend(other);
     Ok((rest, AstElements { elements: out }))
 }
@@ -87,7 +87,7 @@ pub fn parse_variant<'a>(separator: &'a str, input: &'a str) -> IResult<&'a str,
     Ok((rest, v))
 }
 
-// https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants
+/// https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants
 #[inline]
 fn parse_normal_variant(input: &str) -> IResult<&str, ASTVariant<'_>> {
     // Include '/' for named group variants like group-hover/dropdown, peer-checked/label
@@ -99,8 +99,8 @@ fn parse_normal_variant(input: &str) -> IResult<&str, ASTVariant<'_>> {
     Ok((rest, ASTVariant::Normal(result)))
 }
 
-// https://tailwindcss.com/docs/hover-focus-and-other-states#data-attributes
-// https://tailwindcss.com/docs/hover-focus-and-other-states#supports-rules
+/// https://tailwindcss.com/docs/hover-focus-and-other-states#data-attributes
+/// https://tailwindcss.com/docs/hover-focus-and-other-states#supports-rules
 #[inline]
 pub fn parse_data_attribute_variant(input: &str) -> IResult<&str, ASTVariant<'_>> {
     let tag_prefix = alt((tag("data-"), tag("supports-")));
@@ -110,7 +110,7 @@ pub fn parse_data_attribute_variant(input: &str) -> IResult<&str, ASTVariant<'_>
     Ok((rest, ASTVariant::DataAttribute(entire_variant)))
 }
 
-// https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants
+/// https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants
 #[inline]
 pub fn parse_arbitrary_attribute_variant(input: &str) -> IResult<&str, ASTVariant<'_>> {
     let mut parser = delimited(tag("["), take_until_unbalanced('[', ']'), tag("]"));
@@ -126,7 +126,7 @@ fn parse_arbitrary(input: &str) -> IResult<&str, &str> {
     Ok((rest, arbitrary))
 }
 
-// https://stackoverflow.com/questions/70630556/parse-allowing-nested-parentheses-in-nom
+/// https://stackoverflow.com/questions/70630556/parse-allowing-nested-parentheses-in-nom
 pub fn take_until_unbalanced(opening_bracket: char, closing_bracket: char) -> impl Fn(&str) -> IResult<&str, &str> {
     move |i: &str| {
         let mut index = 0;

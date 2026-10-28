@@ -2,7 +2,6 @@
 name = "yansi"
 version = "1.0.1"
 authors = ["Sergio Benitez <sb@sergio.bz>"]
-repository = "https://github.com/SergioBenitez/yansi"
 documentation = "https://docs.rs/yansi"
 description = "A dead simple ANSI terminal color painting library."
 keywords = ["ansi", "terminal", "color", "format", "paint"]

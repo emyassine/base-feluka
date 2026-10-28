@@ -32,8 +32,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/cryptocorrosion/cryptocorrosion"
-
 [lib]
 name = "ppv_lite86"
 path = "src/lib.rs"
@@ -49,4 +47,3 @@ simd = []
 std = []
 
 [badges.travis-ci]
-repository = "cryptocorrosion/cryptocorrosion"

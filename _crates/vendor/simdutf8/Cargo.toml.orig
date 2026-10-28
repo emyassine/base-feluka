@@ -6,7 +6,6 @@ edition = "2018"
 description = "SIMD-accelerated UTF-8 validation."
 documentation = "https://docs.rs/simdutf8/"
 homepage = "https://github.com/rusticstuff/simdutf8"
-repository = "https://github.com/rusticstuff/simdutf8"
 readme = "README.md"
 keywords = ["utf-8", "unicode", "string", "validation", "simd"]
 categories = ["encoding", "algorithms", "no-std"]

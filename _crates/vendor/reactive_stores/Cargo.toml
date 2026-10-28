@@ -24,8 +24,6 @@ autobenches = false
 description = "Stores for holding deeply-nested reactive state while maintaining fine-grained reactive tracking."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [lib]
 name = "reactive_stores"
 path = "src/lib.rs"
@@ -89,4 +87,4 @@ default-features = true
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
-check-cfg = ["cfg(leptos_debuginfo)"]
+check-cfg = ["cfg(feluqa_ui_debuginfo)"]

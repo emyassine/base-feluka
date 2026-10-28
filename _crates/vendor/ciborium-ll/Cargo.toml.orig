@@ -6,7 +6,6 @@ license = "Apache-2.0"
 edition = "2021"
 rust-version = "1.58"
 homepage = "https://github.com/enarx/ciborium"
-repository = "https://github.com/enarx/ciborium"
 description = "Low-level CBOR codec primitives"
 readme = "README.md"
 keywords = ["cbor"]

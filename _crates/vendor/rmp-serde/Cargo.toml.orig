@@ -4,7 +4,6 @@ version = "1.3.0"
 authors = ["Evgeny Safronov <division494@gmail.com>"]
 license = "MIT"
 description = "Serde bindings for RMP"
-repository = "https://github.com/3Hren/msgpack-rust"
 documentation = "https://docs.rs/rmp-serde"
 readme = "README.md"
 keywords = ["msgpack", "MessagePack", "serde", "serialization"]

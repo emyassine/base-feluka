@@ -24,8 +24,6 @@ autobenches = false
 description = "Redox stable ABI"
 readme = false
 license = "MIT"
-repository = "https://gitlab.redox-os.org/redox-os/libredox.git"
-
 [features]
 base = ["libc"]
 call = ["base"]

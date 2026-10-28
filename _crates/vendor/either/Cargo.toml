@@ -34,8 +34,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rayon-rs/either"
-
 [package.metadata.release]
 allow-branch = ["main"]
 sign-tag = true

@@ -11,7 +11,6 @@ representing fixed values). Particularly useful for proc macros, but can also
 be used outside of a proc-macro context.
 """
 documentation = "https://docs.rs/litrs"
-repository = "https://github.com/LukasKalbertodt/litrs"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 

@@ -13,7 +13,6 @@ keywords = ["derive", "macro"]
 license = "MIT OR Apache-2.0"
 name = "derive-where"
 readme = "README.md"
-repository = "https://github.com/ModProg/derive-where"
 rust-version = "1.57"
 version = "1.7.0"
 

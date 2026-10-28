@@ -6,7 +6,6 @@ description = "Convenience crate for common `web_sys` features"
 authors = ["Rust and WebAssembly Working Group"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/rustwasm/gloo/tree/master/crates/utils"
 homepage = "https://github.com/rustwasm/gloo"
 categories = ["api-bindings", "wasm"]
 rust-version = "1.64"

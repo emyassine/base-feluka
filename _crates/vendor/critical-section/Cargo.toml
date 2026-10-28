@@ -27,8 +27,6 @@ categories = [
     "concurrency",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-embedded/critical-section"
-
 [lib]
 name = "critical_section"
 path = "src/lib.rs"

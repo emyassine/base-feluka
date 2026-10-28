@@ -153,7 +153,7 @@ pub fn AreaChart01() -> impl IntoView {
         let data = filtered_data();
         let desktop_data: Vec<i32> = data.iter().map(|d| d.desktop).collect();
         let mobile_data: Vec<i32> = data.iter().map(|d| d.mobile).collect();
-        let chart_data = vec![desktop_data, mobile_data];
+        let chart_data = crate::std::vec![desktop_data, mobile_data];
         crate::serde_json::to_string(&chart_data).unwrap_or_default()
     });
 
@@ -163,7 +163,7 @@ pub fn AreaChart01() -> impl IntoView {
         crate::serde_json::to_string(&labels).unwrap_or_default()
     });
 
-    let series_names = vec!["Desktop", "Mobile"];
+    let series_names = crate::std::vec!["Desktop", "Mobile"];
     let series_names_json = crate::serde_json::to_string(&series_names).unwrap_or_default();
 
     view! {

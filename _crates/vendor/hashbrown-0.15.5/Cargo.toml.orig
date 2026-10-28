@@ -4,7 +4,6 @@ version = "0.15.5"
 authors = ["Amanieu d'Antras <amanieu@gmail.com>"]
 description = "A Rust port of Google's SwissTable hash map"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/hashbrown"
 readme = "README.md"
 keywords = ["hash", "no_std", "hashmap", "swisstable"]
 categories = ["data-structures", "no-std"]

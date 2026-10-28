@@ -9,7 +9,6 @@ categories = ["development-tools::procedural-macro-helpers"]
 license = "MIT"
 name = "sea-bae"
 readme = "README.md"
-repository = "https://github.com/SeaQL/sea-bae.git"
 version = "0.2.2"
 
 [dependencies]

@@ -35,8 +35,6 @@ keywords = [
 ]
 categories = ["database"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/SeaQL/sea-query"
-
 [lib]
 name = "sea_query_binder"
 path = "src/lib.rs"

@@ -43,8 +43,6 @@ categories = [
     "text-processing",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/servo/unicode-bidi"
-
 [lib]
 name = "unicode_bidi"
 path = "src/lib.rs"
@@ -87,4 +85,3 @@ unstable = []
 with_serde = ["serde"]
 
 [badges.appveyor]
-repository = "servo/unicode-bidi"

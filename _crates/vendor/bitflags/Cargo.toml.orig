@@ -8,7 +8,6 @@ authors = ["The Rust Project Developers"]
 license = "MIT OR Apache-2.0"
 keywords = ["bit", "bitmask", "bitflags", "flags"]
 readme = "README.md"
-repository = "https://github.com/bitflags/bitflags"
 homepage = "https://github.com/bitflags/bitflags"
 documentation = "https://docs.rs/bitflags"
 categories = ["no-std"]

@@ -26,7 +26,6 @@ categories = [
 ]
 keywords = ["cast", "convert", "transmute", "transmutation", "type-punning"]
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
-repository = "https://github.com/google/zerocopy"
 rust-version = "1.56.0"
 
 exclude = [".*"]

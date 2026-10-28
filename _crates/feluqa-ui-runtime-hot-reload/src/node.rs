@@ -4,11 +4,11 @@ use quote::ToTokens;
 use feluqa_ui_markup_parser::node::{Node, NodeAttribute};
 use serde::{Deserialize, Serialize};
 
-// A lightweight virtual DOM structure we can use to hold
-// the state of a FeluqaUi view macro template. This is because
-// `syn` types are `!Send` so we can't store them as we might like.
-// This is only used to diff view macros for hot reloading so it's very minimal
-// and ignores many of the data types.
+/// A lightweight virtual DOM structure we can use to hold
+/// the state of a FeluqaUi view macro template. This is because
+/// `syn` types are `!Send` so we can't store them as we might like.
+/// This is only used to diff view macros for hot reloading so it's very minimal
+/// and ignores many of the data types.
 #[allow(clippy::module_name_repetitions)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum LNode {

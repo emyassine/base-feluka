@@ -39,8 +39,6 @@ categories = [
     "memory-management",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/matklad/once_cell"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--generate-link-to-definition"]

@@ -50,7 +50,7 @@ where
     type Cloneable = Style<S::Cloneable>;
     type CloneableOwned = Style<S::CloneableOwned>;
 
-    // TODO
+    /// TODO
     #[inline(always)]
     fn html_len(&self) -> usize {
         0

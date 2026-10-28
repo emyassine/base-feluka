@@ -25,8 +25,6 @@ homepage = "https://github.com/zakarumych/allocator-api2"
 documentation = "https://docs.rs/allocator-api2"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/zakarumych/allocator-api2"
-
 [lib]
 name = "allocator_api2"
 path = "src/lib.rs"

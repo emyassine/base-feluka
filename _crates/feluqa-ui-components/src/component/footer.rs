@@ -1,7 +1,7 @@
 use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::clx;
 
-// TODO. max-w-5xl should be set only once by the Wrapper.
+/// TODO. max-w-5xl should be set only once by the Wrapper.
 
 mod components {
     use super::*;

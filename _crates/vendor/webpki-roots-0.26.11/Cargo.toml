@@ -23,8 +23,6 @@ description = "Mozilla's CA root certificates for use with webpki"
 homepage = "https://github.com/rustls/webpki-roots"
 readme = "README.md"
 license = "CDLA-Permissive-2.0"
-repository = "https://github.com/rustls/webpki-roots"
-
 [lib]
 name = "webpki_roots"
 path = "src/lib.rs"

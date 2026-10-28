@@ -18,6 +18,4 @@ authors = ["Greg Johnston"]
 description = "Unwrap std lock guards in a semantic way."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [dependencies]

@@ -37,7 +37,7 @@ pub type ChildrenFnMut = Box<dyn FnMut() -> AnyView + Send>;
 /// passed to this component.
 pub type ChildrenFragmentMut = Box<dyn FnMut() -> Fragment + Send>;
 
-// This is to still support components that accept `Box<dyn Fn() -> AnyView>` as a children.
+/// This is to still support components that accept `Box<dyn Fn() -> AnyView>` as a children.
 type BoxedChildrenFn = Box<dyn Fn() -> AnyView + Send>;
 
 /// This trait can be used when constructing a component that takes children without needing
@@ -399,7 +399,7 @@ impl<T> Debug for TypedChildrenFn<T> {
 }
 
 impl<T> Clone for TypedChildrenFn<T> {
-    // Manual implementation to avoid the `T: Clone` bound.
+    /// Manual implementation to avoid the `T: Clone` bound.
     fn clone(&self) -> Self {
         Self(self.0.clone())
     }

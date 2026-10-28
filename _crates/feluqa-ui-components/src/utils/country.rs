@@ -37,7 +37,7 @@ macro_rules! define_countries {
 
             /// Returns the dial code formatted with + prefix (e.g., "+1", "+33")
             pub fn dial_code_formatted(&self) -> String {
-                format!("+{}", self.dial_code())
+                crate::std::format!("+{}", self.dial_code())
             }
 
             pub fn from_alpha2(code: &str) -> Option<Self> {
@@ -271,7 +271,7 @@ impl Country {
     /// Converts variant name from PascalCase to readable format.
     /// For example `Country::UnitedStatesOfAmerica.name()` returns `"United States of America"`.
     pub fn name(&self) -> String {
-        let variant_name = format!("{self:?}");
+        let variant_name = crate::std::format!("{self:?}");
         let mut result = String::new();
         for (i, c) in variant_name.chars().enumerate() {
             if c.is_uppercase() && i > 0 {
@@ -321,7 +321,7 @@ impl Country {
     }
 
     // pub fn name(&self, language_identifier: &LanguageIdentifier) -> String {
-    //     TRANSLATIONS.lookup(language_identifier, &format!("country-{}", self.alpha2()))
+    //     TRANSLATIONS.lookup(language_identifier, &crate::std::format!("country-{}", self.alpha2()))
     // }
 }
 

@@ -22,7 +22,7 @@ impl<E: FromServerFnError> ClientRes<E> for Response {
     ) -> Result<impl Stream<Item = Result<Bytes, Bytes>> + Send + 'static, E>
     {
         Ok(self.bytes_stream().map_err(|e| {
-            E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Response(e.to_string()))
+            E::from_server_fn_error(ServerFnErrorErr::Response(e.to_string()))
                 .ser()
         }))
     }

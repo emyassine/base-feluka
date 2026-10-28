@@ -46,8 +46,6 @@ homepage = "https://github.com/rust-lang/regex/tree/master/regex-lite"
 documentation = "https://docs.rs/regex-lite"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/regex"
-
 [package.metadata.docs.rs]
 all-features = true
 

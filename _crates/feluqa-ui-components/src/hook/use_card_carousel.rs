@@ -9,7 +9,7 @@ const CAROUSEL_TRACK: &str = r#"[data-name="CardCarouselTrack"]"#;
 const CAROUSEL_NAV_BUTTON: &str = r#"[data-name="CardCarouselNavButton"]"#;
 const CAROUSEL_INDICATOR: &str = r#"[data-name="CardCarouselIndicator"]"#;
 
-thread_local! {
+crate::std::thread_local! {
     static LISTENERS: RefCell<Option<Listeners>> = const { RefCell::new(None) };
 }
 
@@ -35,7 +35,7 @@ fn document() -> Option<crate::web_sys::Document> {
     crate::web_sys::window().and_then(|w| w.document())
 }
 
-// ── Setup ─────────────────────────────────────────────────────────────────────
+/// ── Setup ─────────────────────────────────────────────────────────────────────
 
 fn setup_listeners() -> Option<Listeners> {
     let target: EventTarget = document()?.unchecked_into();
@@ -50,7 +50,7 @@ fn setup_listeners() -> Option<Listeners> {
     Some(Listeners { _click: click_cb, _scroll: scroll_cb })
 }
 
-// ── Click handler ─────────────────────────────────────────────────────────────
+/// ── Click handler ─────────────────────────────────────────────────────────────
 
 fn handle_click(event: Event) {
     let Some(target) = event.target() else { return };
@@ -73,7 +73,7 @@ fn handle_click(event: Event) {
     track.scroll_by_with_x_and_y(delta, 0.0);
 }
 
-// ── Scroll handler ────────────────────────────────────────────────────────────
+/// ── Scroll handler ────────────────────────────────────────────────────────────
 
 fn handle_scroll(event: Event) {
     let Some(target) = event.target() else { return };
@@ -104,7 +104,7 @@ fn handle_scroll(event: Event) {
     set_aria_disabled(buttons.item(1), count > 0 && index >= count - 1);
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+/// ── Helpers ───────────────────────────────────────────────────────────────────
 
 fn set_aria_disabled(node: Option<crate::web_sys::Node>, disabled: bool) {
     let Some(node) = node else { return };

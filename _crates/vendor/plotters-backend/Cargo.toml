@@ -23,8 +23,6 @@ description = "Plotters Backend API"
 homepage = "https://plotters-rs.github.io"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/plotters-rs/plotters"
-
 [lib]
 name = "plotters_backend"
 path = "src/lib.rs"

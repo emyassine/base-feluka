@@ -646,7 +646,7 @@ where
             match request_bytes {
                 Ok(request_bytes) => InputEncoding::decode(request_bytes)
                     .map_err(|e| {
-                        InputStreamError::from_feluqa_ui_server_functions_error(
+                        InputStreamError::from_server_fn_error(
                             ServerFnErrorErr::Deserialization(e.to_string()),
                         )
                     }),
@@ -667,7 +667,7 @@ where
         let output = output.stream.map(|output| {
             let result = match output {
                 Ok(output) => OutputEncoding::encode(&output).map_err(|e| {
-                    OutputStreamError::from_feluqa_ui_server_functions_error(
+                    OutputStreamError::from_server_fn_error(
                         ServerFnErrorErr::Serialization(e.to_string()),
                     )
                     .ser()
@@ -709,7 +709,7 @@ where
                     let result = match input {
                         Ok(input) => {
                             InputEncoding::encode(&input).map_err(|e| {
-                                InputStreamError::from_feluqa_ui_server_functions_error(
+                                InputStreamError::from_server_fn_error(
                                     ServerFnErrorErr::Serialization(
                                         e.to_string(),
                                     ),
@@ -734,7 +734,7 @@ where
                 match request_bytes {
                     Ok(request_bytes) => OutputEncoding::decode(request_bytes)
                         .map_err(|e| {
-                            OutputStreamError::from_feluqa_ui_server_functions_error(
+                            OutputStreamError::from_server_fn_error(
                                 ServerFnErrorErr::Deserialization(
                                     e.to_string(),
                                 ),
@@ -756,10 +756,10 @@ where
     }
 }
 
-// Serializes a Result<Bytes, Bytes> into a single Bytes instance.
-// Format: [tag: u8][content: Bytes]
-// - Tag 0: Ok variant
-// - Tag 1: Err variant
+/// Serializes a Result<Bytes, Bytes> into a single Bytes instance.
+/// Format: [tag: u8][content: Bytes]
+/// - Tag 0: Ok variant
+/// - Tag 1: Err variant
 fn serialize_result(result: Result<Bytes, Bytes>) -> Bytes {
     match result {
         Ok(bytes) => {
@@ -777,12 +777,12 @@ fn serialize_result(result: Result<Bytes, Bytes>) -> Bytes {
     }
 }
 
-// Deserializes a Bytes instance back into a Result<Bytes, Bytes>.
+/// Deserializes a Bytes instance back into a Result<Bytes, Bytes>.
 fn deserialize_result<E: FromServerFnError>(
     bytes: Bytes,
 ) -> Result<Bytes, Bytes> {
     if bytes.is_empty() {
-        return Err(E::from_feluqa_ui_server_functions_error(
+        return Err(E::from_server_fn_error(
             ServerFnErrorErr::Deserialization("Data is empty".into()),
         )
         .ser());
@@ -794,7 +794,7 @@ fn deserialize_result<E: FromServerFnError>(
     match tag {
         0 => Ok(content),
         1 => Err(content),
-        _ => Err(E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+        _ => Err(E::from_server_fn_error(ServerFnErrorErr::Deserialization(
             "Invalid data tag".into(),
         ))
         .ser()), // Invalid tag
@@ -863,7 +863,7 @@ pub use inventory;
 
 /// Uses the `inventory` crate to initialize a map between paths and server functions.
 #[macro_export]
-macro_rules! initialize_feluqa_ui_server_functions_map {
+macro_rules! initialize_server_fn_map {
     ($req:ty, $res:ty) => {
         std::sync::LazyLock::new(|| {
             std::sync::RwLock::new(
@@ -922,7 +922,7 @@ impl<Req, Res> ServerFnTraitObj<Req, Res> {
             method: S::Protocol::METHOD,
             handler,
             middleware: S::middlewares,
-            ser: |e| S::Error::from_feluqa_ui_server_functions_error(e).ser(),
+            ser: |e| S::Error::from_server_fn_error(e).ser(),
         }
     }
 
@@ -1014,7 +1014,7 @@ pub mod axum {
     static REGISTERED_SERVER_FUNCTIONS: LazyServerFnMap<
         Request<Body>,
         Response<Body>,
-    > = initialize_feluqa_ui_server_functions_map!(Request<Body>, Response<Body>);
+    > = initialize_server_fn_map!(Request<Body>, Response<Body>);
 
     /// The axum server function backend
     pub struct AxumServerFnBackend;
@@ -1041,7 +1041,7 @@ pub mod axum {
             }
             #[cfg(not(feature = "axum"))]
             {
-                Err(Error::from_feluqa_ui_server_functions_error(
+                Err(Error::from_server_fn_error(
                     crate::error::ServerFnErrorErr::Request(
                         "No async runtime available. You need to either \
                          enable the full axum feature to pull in tokio, or \
@@ -1076,7 +1076,7 @@ pub mod axum {
     }
 
     /// The set of all registered server function paths.
-    pub fn feluqa_ui_server_functions_paths() -> impl Iterator<Item = (&'static str, Method)> {
+    pub fn server_fn_paths() -> impl Iterator<Item = (&'static str, Method)> {
         let paths: Vec<_> = REGISTERED_SERVER_FUNCTIONS
             .read()
             .unwrap()
@@ -1088,11 +1088,11 @@ pub mod axum {
     }
 
     /// An Axum handler that responds to a server function request.
-    pub async fn handle_feluqa_ui_server_functions(req: Request<Body>) -> Response<Body> {
+    pub async fn handle_server_fn(req: Request<Body>) -> Response<Body> {
         let path = req.uri().path();
 
         if let Some(mut service) =
-            get_feluqa_ui_server_functions_service(path, req.method().clone())
+            get_server_fn_service(path, req.method().clone())
         {
             service.run(req).await
         } else {
@@ -1113,7 +1113,7 @@ pub mod axum {
     }
 
     /// Returns the server function at the given path as a service that can be modified.
-    pub fn get_feluqa_ui_server_functions_service(
+    pub fn get_server_fn_service(
         path: &str,
         method: Method,
     ) -> Option<BoxedService<Request<Body>, Response<Body>>> {
@@ -1151,7 +1151,7 @@ pub mod actix {
     static REGISTERED_SERVER_FUNCTIONS: LazyServerFnMap<
         ActixRequest,
         ActixResponse,
-    > = initialize_feluqa_ui_server_functions_map!(ActixRequest, ActixResponse);
+    > = initialize_server_fn_map!(ActixRequest, ActixResponse);
 
     /// The actix server function backend
     pub struct ActixServerFnBackend;
@@ -1197,7 +1197,7 @@ pub mod actix {
     }
 
     /// The set of all registered server function paths.
-    pub fn feluqa_ui_server_functions_paths() -> impl Iterator<Item = (&'static str, Method)> {
+    pub fn server_fn_paths() -> impl Iterator<Item = (&'static str, Method)> {
         let paths: Vec<_> = REGISTERED_SERVER_FUNCTIONS
             .read()
             .unwrap()
@@ -1209,13 +1209,13 @@ pub mod actix {
     }
 
     /// An Actix handler that responds to a server function request.
-    pub async fn handle_feluqa_ui_server_functions(
+    pub async fn handle_server_fn(
         req: HttpRequest,
         payload: Payload,
     ) -> HttpResponse {
         let path = req.uri().path();
         let method = req.method();
-        if let Some(mut service) = get_feluqa_ui_server_functions_service(path, method) {
+        if let Some(mut service) = get_server_fn_service(path, method) {
             service
                 .run(ActixRequest::from((req, payload)))
                 .await
@@ -1236,7 +1236,7 @@ pub mod actix {
     }
 
     /// Returns the server function at the given path as a service that can be modified.
-    pub fn get_feluqa_ui_server_functions_service(
+    pub fn get_server_fn_service(
         path: &str,
         method: &actix_web::http::Method,
     ) -> Option<BoxedService<ActixRequest, ActixResponse>> {
@@ -1315,7 +1315,7 @@ mod tests {
     impl FromServerFnError for TestError {
         type Encoder = JsonEncoding;
 
-        fn from_feluqa_ui_server_functions_error(value: ServerFnErrorErr) -> Self {
+        fn from_server_fn_error(value: ServerFnErrorErr) -> Self {
             Self::ServerFnError(value)
         }
     }

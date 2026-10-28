@@ -161,7 +161,7 @@ where
         Some(Rndr::create_text_node(V))
     }
 
-    // This type is specified as static, so no rebuilding is done.
+    /// This type is specified as static, so no rebuilding is done.
     fn rebuild(self, _state: &mut Self::State) {}
 }
 
@@ -173,9 +173,9 @@ impl<const V: &'static str> RenderHtml for Static<V> {
 
     fn dry_resolve(&mut self) {}
 
-    // this won't actually compile because if a weird interaction because the const &'static str and
-    // the RPITIT, so we just refine it to a concrete future type; this will never change in any
-    // case
+    /// this won't actually compile because if a weird interaction because the const &'static str and
+    /// the RPITIT, so we just refine it to a concrete future type; this will never change in any
+    /// case
     #[allow(refining_impl_trait)]
     fn resolve(self) -> std::future::Ready<Self> {
         std::future::ready(self)
@@ -246,7 +246,7 @@ impl<const V: &'static str> AddAnyAttr for Static<V> {
     where
         Self::Output<NewAttr>: RenderHtml,
     {
-        // inline helper function to assist the compiler with type inference
+        /// inline helper function to assist the compiler with type inference
         #[inline(always)]
         const fn create_static<const S: &'static str, A: Attribute>(
         ) -> <Static<S> as AddAnyAttr>::Output<A> {

@@ -884,7 +884,7 @@ pub(crate) fn element_to_tokens(
     // check for duplicate attribute names and emit an error for all subsequent ones
     let mut names = HashSet::new();
 
-    // allow multiple class=(...) or style=(...) attributes
+    /// allow multiple class=(...) or style=(...) attributes
     fn allow_multiples(name: &str, attr: &KeyedAttribute) -> bool {
         (name == "class" || name == "style")
             && matches!(attr.value(), Some(Expr::Tuple(..)))
@@ -1777,7 +1777,7 @@ fn attribute_value(
     }
 }
 
-// Keep list alphabetized for binary search
+/// Keep list alphabetized for binary search
 const TYPED_EVENTS: [&str; 127] = [
     "DOMContentLoaded",
     "abort",

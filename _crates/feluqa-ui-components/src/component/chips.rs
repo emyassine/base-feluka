@@ -2,7 +2,7 @@ use crate::runtime::prelude::*;
 
 #[component]
 pub fn ChipItem(#[prop(into)] label: &'static str) -> impl IntoView {
-    // TODO. has-[:checked]:bg-warning does not work...
+    /// TODO. has-[:checked]:bg-warning does not work...
     const CHIP_LABEL_CLASS: &str = "flex overflow-hidden relative items-center w-auto cursor-pointer h-[6vmin] bg-muted rounded-[8vmin] py-[2vmin] pr-[2vmin] pl-[3vmin] text-[2vmin] text-muted-foreground m-[1vmin] shadow-[inset_0_0_0_1px_theme(colors.border)] has-[:checked]:shadow-[inset_0_0_0_2px_var(--warning)] has-[:checked]:text-[var(--warning)] has-[:checked]:bg-warning after:content-[''] after:w-0 after:h-0 after:ml-[1vmin] after:rounded-[8vmin] after:text-[0px] has-[:checked]:after:w-[2vmin] has-[:checked]:after:h-[2vmin] has-[:checked]:after:overflow-hidden has-[:checked]:after:text-[22px]";
 
     view! {

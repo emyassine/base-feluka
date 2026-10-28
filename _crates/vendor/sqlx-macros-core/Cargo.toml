@@ -21,8 +21,6 @@ authors = [
 ]
 description = "Macro support core for SQLx, the Rust SQL toolkit. Not intended to be used directly."
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/launchbadge/sqlx"
-
 [dependencies.async-std]
 version = "1.12"
 optional = true

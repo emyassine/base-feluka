@@ -33,8 +33,6 @@ keywords = [
 ]
 categories = ["development-tools::testing"]
 license = "Apache-2.0"
-repository = "https://github.com/mitsuhiko/insta"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -59,7 +59,7 @@ pub fn SheetTrigger(
     #[prop(default = ButtonSize::Default)] size: ButtonSize,
 ) -> impl IntoView {
     let ctx = expect_context::<SheetContext>();
-    let trigger_id = format!("trigger_{}", ctx.target_id);
+    let trigger_id = crate::std::format!("trigger_{}", ctx.target_id);
 
     view! {
         <Button class=class attr:id=trigger_id attr:data-sheet-trigger=ctx.target_id variant=variant size=size>
@@ -93,7 +93,7 @@ pub fn SheetContent(
 ) -> impl IntoView {
     let ctx = expect_context::<SheetContext>();
 
-    let backdrop_id = format!("{}_backdrop", ctx.target_id);
+    let backdrop_id = crate::std::format!("{}_backdrop", ctx.target_id);
     let target_id_for_script = ctx.target_id.clone();
     let backdrop_id_for_script = backdrop_id.clone();
 
@@ -122,7 +122,7 @@ pub fn SheetContent(
         >
             <button
                 type="button"
-                class=format!(
+                class=crate::std::format!(
                     "absolute top-4 right-4 p-1 rounded-sm focus:ring-2 focus:ring-offset-2 focus:outline-none [&_svg:not([class*='size-'])]:size-4 focus:ring-ring{}",
                     if show_close_button { "" } else { " hidden" },
                 )
@@ -137,7 +137,7 @@ pub fn SheetContent(
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupSheet = () => {{
@@ -164,7 +164,7 @@ pub fn SheetContent(
                             sheet.style.pointerEvents = 'auto';
                             backdrop.style.pointerEvents = 'auto';
 
-                            // Add open class for transform
+                            /// Add open class for transform
                             const direction = sheet.getAttribute('data-direction');
                             sheet.classList.remove('translate-x-full', '-translate-x-full', 'translate-y-full', '-translate-y-full');
                             sheet.classList.add('translate-x-0', 'translate-y-0');
@@ -176,7 +176,7 @@ pub fn SheetContent(
                             sheet.style.pointerEvents = 'none';
                             backdrop.style.pointerEvents = 'none';
 
-                            // Add closed class for transform
+                            /// Add closed class for transform
                             const direction = sheet.getAttribute('data-direction');
                             sheet.classList.remove('translate-x-0', 'translate-y-0');
                             if (direction === 'Right') sheet.classList.add('translate-x-full');
@@ -191,7 +191,7 @@ pub fn SheetContent(
                         // Open sheet when trigger is clicked
                         trigger.addEventListener('click', openSheet);
 
-                        // Close buttons
+                        /// Close buttons
                         const closeButtons = sheet.querySelectorAll('[data-sheet-close]');
                         closeButtons.forEach(btn => {{
                             btn.addEventListener('click', closeSheet);

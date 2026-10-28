@@ -162,7 +162,7 @@ where
     inner(href, target, exact, children, strict_trailing_slash, scroll)
 }
 
-// Test if `href` is active for `location`.  Assumes _both_ `href` and `location` begin with a `'/'`.
+/// Test if `href` is active for `location`.  Assumes _both_ `href` and `location` begin with a `'/'`.
 fn is_active_for(
     href: &str,
     location: &str,
@@ -189,7 +189,7 @@ fn is_active_for(
         }
 }
 
-// Resolve `".."` segments in the path. Assume path is either empty or starts with a `'/'``.
+/// Resolve `".."` segments in the path. Assume path is either empty or starts with a `'/'``.
 fn normalize_path(path: &str) -> String {
     // Return only on the only condition where leading slash
     // is allowed to be missing.

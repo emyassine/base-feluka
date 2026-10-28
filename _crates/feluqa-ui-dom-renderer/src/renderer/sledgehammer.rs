@@ -30,7 +30,7 @@ extern "C" {
 
 #[bindgen]
 mod js {
-    //#[extends(NodeInterpreter)]
+    ///#[extends(NodeInterpreter)]
     struct Channel;
 
     const JS: &str = r#"

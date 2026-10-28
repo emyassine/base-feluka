@@ -153,7 +153,7 @@ where
     }
 }
 
-// TODO this needs to be a method, not a const
+/// TODO this needs to be a method, not a const
 /// Defines a custom attribute key.
 pub trait CustomAttributeKey: Clone + AsRef<str> + Send + 'static {
     /// The attribute name.

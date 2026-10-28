@@ -48,8 +48,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/socket2"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -3,7 +3,6 @@ name = "foldhash"
 version = "0.1.5"
 authors = ["Orson Peters <orsonpeters@gmail.com>"]
 license = "Zlib"
-repository = "https://github.com/orlp/foldhash"
 readme = "README.md"
 keywords = ["hash", "hasher", "no-std"]
 categories = ["algorithms", "no-std"]

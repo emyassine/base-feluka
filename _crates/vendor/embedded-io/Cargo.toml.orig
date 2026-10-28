@@ -3,7 +3,6 @@ name = "embedded-io"
 version = "0.6.1"
 edition = "2021"
 description = "Embedded IO traits"
-repository = "https://github.com/rust-embedded/embedded-hal"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 categories = [

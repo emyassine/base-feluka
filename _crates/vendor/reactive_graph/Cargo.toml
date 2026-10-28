@@ -24,8 +24,6 @@ autobenches = false
 description = "A fine-grained reactive graph for building user interfaces."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [
@@ -181,6 +179,6 @@ default-features = false
 level = "warn"
 priority = 0
 check-cfg = [
-    "cfg(leptos_debuginfo)",
+    "cfg(feluqa_ui_debuginfo)",
     "cfg(rustc_nightly)",
 ]

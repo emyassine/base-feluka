@@ -38,8 +38,6 @@ categories = [
     "web-programming",
 ]
 license = "MIT"
-repository = "https://github.com/MarcusGrass/parse-range-headers"
-
 [package.metadata]
 msrv = "1.60.0"
 

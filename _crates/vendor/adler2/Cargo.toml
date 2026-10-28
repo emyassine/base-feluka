@@ -36,8 +36,6 @@ keywords = [
 ]
 categories = ["algorithms"]
 license = "0BSD OR MIT OR Apache-2.0"
-repository = "https://github.com/oyvindln/adler2"
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg=docsrs"]
 

@@ -252,8 +252,8 @@ where
     Fal: RenderHtml + Send + 'static,
     Chil: RenderHtml + Send + 'static,
 {
-    // i.e., if this is the child of another Suspense during SSR, don't wait for it: it will handle
-    // itself
+    /// i.e., if this is the child of another Suspense during SSR, don't wait for it: it will handle
+    /// itself
     type AsyncOutput = Self;
     type Owned = Self;
 

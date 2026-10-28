@@ -36,8 +36,6 @@ keywords = [
 ]
 categories = ["concurrency"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rayon-rs/rayon"
-
 [features]
 web_spin_lock = [
     "dep:wasm_sync",

@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["development-tools::procedural-macro-helpers"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/GnomedDev/proc-macro-error-2"
-
 [lib]
 name = "proc_macro_error2"
 path = "src/lib.rs"

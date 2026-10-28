@@ -32,8 +32,6 @@ categories = [
     "no-std",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/indexmap-rs/indexmap"
-
 [package.metadata.release]
 allow-branch = ["main"]
 sign-tag = true

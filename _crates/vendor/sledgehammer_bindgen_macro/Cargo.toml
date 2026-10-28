@@ -34,8 +34,6 @@ categories = [
     "api-bindings",
 ]
 license = "MIT"
-repository = "https://github.com/demonthos/sledgehammer_bindgen/"
-
 [features]
 default = []
 web = []

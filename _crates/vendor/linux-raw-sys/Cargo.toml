@@ -35,8 +35,6 @@ keywords = [
 ]
 categories = ["external-ffi-bindings"]
 license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
-repository = "https://github.com/sunfishcode/linux-raw-sys"
-
 [package.metadata.docs.rs]
 features = [
     "default",

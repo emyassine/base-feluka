@@ -32,8 +32,6 @@ keywords = [
     "daemon",
 ]
 license = "Apache-2.0/MIT"
-repository = "https://github.com/vorner/signal-hook"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -4,7 +4,6 @@ version = "0.2.1"
 authors = ["Jacob Pratt <jacob@jhpratt.dev>"]
 edition = "2021"
 rust-version = "1.79.0"
-repository = "https://github.com/jhpratt/powerfmt"
 keywords = ["display", "format", "fmt", "formatter", "extension"]
 categories = ["no-std", "no-std::no-alloc", "rust-patterns"]
 readme = "README.md"

@@ -4,7 +4,6 @@ version = "2.5.0"
 authors = ["Akhil Velagapudi <akhilvelagapudi@gmail.com>"]
 edition = "2018"
 description = "Catalog of CRC algorithms (generated from http://reveng.sourceforge.net/crc-catalogue) expressed as simple Rust structs."
-repository = "https://github.com/akhilles/crc-catalog.git"
 readme = "README.md"
 keywords = ["crc"]
 categories = ["no-std", "network-programming"]

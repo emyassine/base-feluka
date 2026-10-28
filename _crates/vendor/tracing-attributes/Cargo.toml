@@ -43,7 +43,6 @@ categories = [
     "asynchronous",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/tracing"
 resolver = "2"
 
 [badges.maintenance]

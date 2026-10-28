@@ -33,8 +33,6 @@ categories = [
     "api-bindings",
 ]
 license = "MIT"
-repository = "https://github.com/demonthos/sledgehammer_bindgen/"
-
 [lib]
 name = "sledgehammer_bindgen"
 path = "src/lib.rs"

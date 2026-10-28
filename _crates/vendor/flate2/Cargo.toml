@@ -45,8 +45,6 @@ categories = [
     "api-bindings",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/flate2-rs"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

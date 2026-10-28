@@ -5,7 +5,6 @@ authors = ["Alex Crichton <alex@alexcrichton.com>"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 keywords = ["build-dependencies"]
-repository = "https://github.com/rust-lang/cmake-rs"
 homepage = "https://github.com/rust-lang/cmake-rs"
 documentation = "https://docs.rs/cmake"
 description = """

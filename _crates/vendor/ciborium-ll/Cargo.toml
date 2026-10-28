@@ -21,7 +21,6 @@ readme = "README.md"
 keywords = ["cbor"]
 categories = ["data-structures", "embedded", "encoding", "no-std", "parsing"]
 license = "Apache-2.0"
-repository = "https://github.com/enarx/ciborium"
 [package.metadata.docs.rs]
 all-features = true
 [dependencies.ciborium-io]
@@ -37,14 +36,9 @@ version = "0.4"
 alloc = []
 std = ["alloc", "half/std"]
 [badges.github]
-repository = "enarx/ciborium"
 workflow = "test"
 
 [badges.is-it-maintained-issue-resolution]
-repository = "enarx/ciborium"
-
 [badges.is-it-maintained-open-issues]
-repository = "enarx/ciborium"
-
 [badges.maintenance]
 status = "actively-developed"

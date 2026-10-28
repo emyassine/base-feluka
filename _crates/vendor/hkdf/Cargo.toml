@@ -27,8 +27,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/RustCrypto/KDFs/"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

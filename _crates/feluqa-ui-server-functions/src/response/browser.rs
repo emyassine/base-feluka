@@ -66,7 +66,7 @@ impl<E: FromServerFnError> ClientRes<E> for BrowserResponse {
             .map(|data| match data {
                 Err(e) => {
                     web_sys::console::error_1(&e);
-                    Err(E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                    Err(E::from_server_fn_error(ServerFnErrorErr::Request(
                         format!("{e:?}"),
                     ))
                     .ser())

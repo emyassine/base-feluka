@@ -476,7 +476,7 @@ fn unsync_derived_signal_and_memo() {
 #[cfg(feature = "effects")]
 #[tokio::test]
 async fn test_memo_multiple_read_guards() {
-    // regression test for https://github.com/leptos-rs/leptos/issues/3158
+    // regression test for https://github.com/feluqa_ui-rs/feluqa_ui/issues/3158
     let owner = Owner::new();
     owner.set();
     use imports::*;
@@ -502,7 +502,7 @@ async fn test_memo_multiple_read_guards() {
 #[cfg(feature = "effects")]
 #[tokio::test]
 async fn test_memo_read_guard_held() {
-    // regression test for https://github.com/leptos-rs/leptos/issues/3252
+    // regression test for https://github.com/feluqa_ui-rs/feluqa_ui/issues/3252
     let owner = Owner::new();
     owner.set();
     use imports::*;
@@ -543,7 +543,7 @@ fn memo_updates_even_if_not_read_until_later() {
     let owner = Owner::new();
     owner.set();
 
-    // regression test for https://github.com/leptos-rs/leptos/issues/3339
+    // regression test for https://github.com/feluqa_ui-rs/feluqa_ui/issues/3339
 
     let input = RwSignal::new(0);
     let first_memo = Memo::new(move |_| input.get() == 1);

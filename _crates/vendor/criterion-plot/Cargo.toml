@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["visualization"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/criterion-rs/criterion.rs"
-
 [lib]
 name = "criterion_plot"
 path = "src/lib.rs"

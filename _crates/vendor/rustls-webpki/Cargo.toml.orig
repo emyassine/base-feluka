@@ -20,7 +20,6 @@ rust-version = "1.71"
 license = "ISC"
 name = "rustls-webpki"
 readme = "README.md"
-repository = "https://github.com/rustls/webpki"
 version = "0.103.16"
 
 include = [

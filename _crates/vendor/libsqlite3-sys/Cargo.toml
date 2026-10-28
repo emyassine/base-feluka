@@ -29,8 +29,6 @@ keywords = [
 ]
 categories = ["external-ffi-bindings"]
 license = "MIT"
-repository = "https://github.com/rusqlite/rusqlite"
-
 [lib]
 name = "libsqlite3_sys"
 path = "src/lib.rs"

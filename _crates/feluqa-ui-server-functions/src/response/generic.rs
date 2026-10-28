@@ -9,7 +9,7 @@
 //!
 //! # Users
 //!
-//! * `wasm32-wasip*` integration crate `feluqa_ui_runtime_wasi` is using this
+//! * `wasm32-wasip*` integration crate `feluqa_ui_wasi` is using this
 //!   crate under the hood.
 
 use super::{Res, TryRes};

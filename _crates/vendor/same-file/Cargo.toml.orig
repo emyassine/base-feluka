@@ -7,7 +7,6 @@ A simple crate for determining whether two file paths point to the same file.
 """
 documentation = "https://docs.rs/same-file"
 homepage = "https://github.com/BurntSushi/same-file"
-repository = "https://github.com/BurntSushi/same-file"
 readme = "README.md"
 keywords = ["same", "file", "equal", "inode"]
 license = "Unlicense/MIT"

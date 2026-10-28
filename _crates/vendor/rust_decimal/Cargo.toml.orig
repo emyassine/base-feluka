@@ -10,7 +10,6 @@ keywords = ["decimal", "financial", "fixed", "precision", "number"]
 license = "MIT"
 name = "rust_decimal"
 readme = "./README.md"
-repository = "https://github.com/paupino/rust-decimal"
 rust-version = "1.67.1"
 version = "1.43.0"
 

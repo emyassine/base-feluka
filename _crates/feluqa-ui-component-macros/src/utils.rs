@@ -12,11 +12,11 @@ impl Utils {
         let counter = COUNTER.fetch_add(1, Ordering::SeqCst);
         counter.hash(&mut hasher);
 
-        format!("_gen_id_{}", hasher.finish())
+        std::format!("_gen_id_{}", hasher.finish())
     }
 
     pub fn use_random_transition_name() -> String {
         let random_id = Utils::use_random_id();
-        format!("view-transition-name: {random_id}")
+        std::format!("view-transition-name: {random_id}")
     }
 }

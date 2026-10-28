@@ -35,8 +35,6 @@ categories = [
     "internationalization",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/hsivonen/idna_adapter"
-
 [features]
 compiled_data = [
     "icu_normalizer/compiled_data",

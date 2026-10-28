@@ -135,7 +135,7 @@ pub fn DropdownMenuAction(
                 if (window.location.pathname !== currentPath) {
                 currentPath = window.location.pathname;
                 
-                // Find and close the dropdown
+                /// Find and close the dropdown
                 const dropdown = link.closest('[data-target="target__dropdown"]');
                 if (dropdown) {
                 dropdown.setAttribute('data-state', 'closed');
@@ -237,8 +237,8 @@ pub fn DropdownMenu(
 pub fn DropdownMenuTrigger(
     children: Children,
     #[prop(optional, into)] class: String,
-    /// Render children directly instead of wrapping in a button.
-    /// Use when the child is already a button (e.g. InputGroupButton) to avoid nested buttons.
+    // Render children directly instead of wrapping in a button.
+    // Use when the child is already a button (e.g. InputGroupButton) to avoid nested buttons.
     #[prop(optional)]
     as_child: bool,
 ) -> impl IntoView {
@@ -326,7 +326,7 @@ pub fn DropdownMenuContent(
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupDropdown = () => {{
@@ -475,7 +475,7 @@ pub fn DropdownMenuContent(
                         trigger.addEventListener('click', (e) => {{
                             e.stopPropagation();
 
-                            // Check if any other dropdown is open
+                            /// Check if any other dropdown is open
                             const allDropdowns = document.querySelectorAll('[data-target=\"target__dropdown\"]');
                             let otherDropdownOpen = false;
                             allDropdowns.forEach(dd => {{
@@ -503,7 +503,7 @@ pub fn DropdownMenuContent(
                             }}
                         }});
 
-                        // Close when action is clicked
+                        /// Close when action is clicked
                         const actions = dropdown.querySelectorAll('[data-dropdown-close]');
                         actions.forEach(action => {{
                             action.addEventListener('click', () => {{

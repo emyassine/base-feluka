@@ -39,8 +39,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/mrhooray/crc-rs.git"
-
 [lib]
 name = "crc"
 path = "src/lib.rs"

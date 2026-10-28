@@ -24,8 +24,6 @@ description = "Linking for Windows"
 readme = "readme.md"
 categories = ["os::windows-apis"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/microsoft/windows-rs"
-
 [lib]
 name = "windows_link"
 path = "src/lib.rs"

@@ -30,8 +30,6 @@ categories = [
     "no-std",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/smol-rs/async-task"
-
 [dependencies.portable-atomic]
 version = "1"
 optional = true

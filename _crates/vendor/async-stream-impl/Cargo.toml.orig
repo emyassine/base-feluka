@@ -6,8 +6,6 @@ rust-version = "1.65"
 license = "MIT"
 authors = ["Carl Lerche <me@carllerche.com>"]
 description = "proc macros for async-stream crate"
-repository = "https://github.com/tokio-rs/async-stream"
-
 [lib]
 proc-macro = true
 

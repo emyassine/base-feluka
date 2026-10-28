@@ -41,8 +41,6 @@ keywords = [
     "xid",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/unicode-rs/unicode-xid"
-
 [lib]
 name = "unicode_xid"
 path = "src/lib.rs"

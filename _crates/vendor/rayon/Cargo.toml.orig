@@ -41,7 +41,6 @@ readme = "README.md"
 rust-version = "1.80"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rayon-rs/rayon"
 keywords = ["parallel", "thread", "concurrency", "join", "performance"]
 categories = ["concurrency"]
 

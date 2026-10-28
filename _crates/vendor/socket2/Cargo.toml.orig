@@ -7,7 +7,6 @@ authors       = [
 ]
 license       = "MIT OR Apache-2.0"
 readme        = "README.md"
-repository    = "https://github.com/rust-lang/socket2"
 homepage      = "https://github.com/rust-lang/socket2"
 documentation = "https://docs.rs/socket2"
 description = """

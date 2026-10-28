@@ -7,7 +7,6 @@ description = "Basic aliasable (non unique pointer) types"
 categories = ["no-std", "data-structures"]
 documentation = "https://docs.rs/aliasable"
 homepage = "https://github.com/avitex/rust-aliasable"
-repository = "https://github.com/avitex/rust-aliasable"
 license = "MIT"
 readme = "README.md"
 include = ["src/**/*", "README.md", "CHANGELOG.md", "LICENSE", "Cargo.toml"]

@@ -54,7 +54,7 @@ pub fn CommandDialogProvider(children: Children, #[prop(into)] id: String) -> im
 #[component]
 pub fn CommandDialogTrigger(children: Children, #[prop(into, optional)] class: String) -> impl IntoView {
     let context = expect_context::<CommandDialogContext>();
-    let trigger_id = format!("{TRIGGER_ID_QUALIFIER}__{}", context.dialog_id);
+    let trigger_id = crate::std::format!("{TRIGGER_ID_QUALIFIER}__{}", context.dialog_id);
 
     view! {
         <Button attr:data-name="CommandDialogTrigger" class=class variant=ButtonVariant::Outline attr:id=trigger_id>
@@ -72,10 +72,10 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
     );
 
     let dialog_id = context.dialog_id;
-    let backdrop_id = format!("{dialog_id}__{TRIGGER_ID_QUALIFIER}");
-    let trigger_id = format!("{TRIGGER_ID_QUALIFIER}__{dialog_id}");
+    let backdrop_id = crate::std::format!("{dialog_id}__{TRIGGER_ID_QUALIFIER}");
+    let trigger_id = crate::std::format!("{TRIGGER_ID_QUALIFIER}__{dialog_id}");
 
-    let script_content = format!(
+    let script_content = crate::std::format!(
         r#"
         (function() {{
             const KEY_HANDLER_KEY = '__commandDialog_{dialog_id}_keyHandler';
@@ -102,7 +102,7 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
                     document.removeEventListener('click', window[BACKDROP_HANDLER_KEY]);
                 }}
 
-                // Click handler using event delegation (works after SPA navigation)
+                /// Click handler using event delegation (works after SPA navigation)
                 const clickHandler = (e) => {{
                     const openBtn = e.target.closest('#{trigger_id}');
                     if (!openBtn) return;
@@ -118,7 +118,7 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
                     currentBackdrop.style.pointerEvents = 'auto';
                 }};
 
-                // Backdrop click handler using event delegation
+                /// Backdrop click handler using event delegation
                 const backdropHandler = (e) => {{
                     const clickedBackdrop = e.target.closest('#{backdrop_id}');
                     if (!clickedBackdrop) return;
@@ -134,7 +134,7 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
                     window.ScrollLock.unlock(100);
                 }};
 
-                // Global keyboard listener for Cmd+K, Ctrl+K, or /
+                /// Global keyboard listener for Cmd+K, Ctrl+K, or /
                 const keyHandler = (e) => {{
                     const currentDialog = document.querySelector('#{dialog_id}');
                     const currentBackdrop = document.querySelector('#{backdrop_id}');
@@ -196,7 +196,7 @@ pub fn CommandDialog(children: ChildrenFn, #[prop(into, optional)] class: String
     }
 }
 
-// Renders backdrop and dialog using FeluqaUi Portal to body
+/// Renders backdrop and dialog using FeluqaUi Portal to body
 #[component]
 fn CommandDialogPortal(
     children: ChildrenFn,
@@ -239,8 +239,8 @@ fn CommandDialogPortal(
 pub fn Command(
     children: Children,
     #[prop(into, optional)] class: String,
-    /// When false, disables client-side filtering (use for server-side search).
-    /// Default: true (client-side filtering enabled).
+    // When false, disables client-side filtering (use for server-side search).
+    // Default: true (client-side filtering enabled).
     #[prop(default = true)]
     should_filter: bool,
 ) -> impl IntoView {
@@ -258,8 +258,8 @@ pub fn Command(
     let script_content = if let Some(ctx) = dialog_context {
         // Dialog version with context
         let dialog_id = ctx.dialog_id;
-        let backdrop_id = format!("{dialog_id}__{TRIGGER_ID_QUALIFIER}");
-        format!(
+        let backdrop_id = crate::std::format!("{dialog_id}__{TRIGGER_ID_QUALIFIER}");
+        crate::std::format!(
             r#"
             (function() {{
                 const setupCommandKeyboard = () => {{
@@ -279,7 +279,7 @@ pub fn Command(
 
                     let index = FIRST_INDEX;
 
-                    // Get visible items only (also skip items inside a hidden group)
+                    /// Get visible items only (also skip items inside a hidden group)
                     const getVisibleItems = () => {{
                         return Array.from(command_items).filter(item => {{
                             if (item.style.display === 'none') return false;
@@ -299,7 +299,7 @@ pub fn Command(
                         }}
                     }};
 
-                    // Filter items based on search query
+                    /// Filter items based on search query
                     const filterItems = (query) => {{
                         const searchQuery = query.toLowerCase().trim();
 
@@ -329,10 +329,10 @@ pub fn Command(
                         filterItems(e.target.value);
                     }});
 
-                    // Close dialog function
-                    // NOTE: We DON'T handle body scroll restoration here.
-                    // That's handled by CommandDialog's closeDialog function.
-                    // We just trigger the dialog close, and the backdrop click handler will do the rest.
+                    /// Close dialog function
+                    /// NOTE: We DON'T handle body scroll restoration here.
+                    /// That's handled by CommandDialog's closeDialog function.
+                    /// We just trigger the dialog close, and the backdrop click handler will do the rest.
                     const closeDialog = () => {{
                         backdrop.click();
                     }};
@@ -364,7 +364,7 @@ pub fn Command(
                         }}
                     }});
 
-                    // Initialize selection only when dialog opens
+                    /// Initialize selection only when dialog opens
                     const observer = new MutationObserver((mutations) => {{
                         mutations.forEach((mutation) => {{
                             if (mutation.attributeName === 'data-state') {{
@@ -412,7 +412,7 @@ pub fn Command(
 
                 let index = FIRST_INDEX;
 
-                // Get visible items only
+                /// Get visible items only
                 const getVisibleItems = () => {
                     return Array.from(command_items).filter(item => item.style.display !== 'none');
                 };
@@ -428,7 +428,7 @@ pub fn Command(
                     }
                 };
 
-                // Filter items based on search query
+                /// Filter items based on search query
                 const filterItems = (query) => {
                     const searchQuery = query.toLowerCase().trim();
 
@@ -521,7 +521,7 @@ pub fn Command(
 #[component]
 pub fn CommandInput(
     #[prop(into, optional)] class: String,
-    /// Callback fired when search input changes. Use for server-side search.
+    // Callback fired when search input changes. Use for server-side search.
     #[prop(optional)]
     on_search_change: Option<Callback<String>>,
 ) -> impl IntoView {
@@ -580,7 +580,7 @@ pub fn CommandItem(
     #[prop(optional, into)] value: String,
     #[prop(optional)] on_select: Option<Callback<()>>,
     #[prop(default = false.into(), into)] selected: Signal<bool>,
-    /// Reserve space for check icon even when not selected (for alignment)
+    // Reserve space for check icon even when not selected (for alignment)
     #[prop(default = false)]
     reserve_check_space: bool,
 ) -> impl IntoView {

@@ -10,7 +10,6 @@ description = "Single assignment cells and lazy values."
 readme = "README.md"
 documentation = "https://docs.rs/once_cell"
 
-repository = "https://github.com/matklad/once_cell"
 keywords = ["lazy", "static"]
 categories = ["rust-patterns", "memory-management"]
 

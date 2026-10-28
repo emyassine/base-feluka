@@ -23,8 +23,6 @@ autobenches = false
 description = "Import libs for Windows"
 readme = "readme.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/microsoft/windows-rs"
-
 [lib]
 name = "windows_targets"
 path = "src/lib.rs"

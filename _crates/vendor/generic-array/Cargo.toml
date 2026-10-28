@@ -35,8 +35,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/fizyk20/generic-array.git"
-
 [package.metadata.docs.rs]
 features = [
     "serde",
@@ -72,4 +70,3 @@ version = "0.9"
 more_lengths = []
 
 [badges.travis-ci]
-repository = "fizyk20/generic-array"

@@ -22,8 +22,6 @@ autobenches = false
 description = "Spawn asynchronous tasks in an executor-independent way."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [package.metadata.cargo-all-features]
 denylist = ["tracing"]
 max_combination_size = 2

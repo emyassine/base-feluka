@@ -27,8 +27,6 @@ implementing custom derives. Use https://crates.io/crates/darling in your code.
 """
 readme = false
 license = "MIT"
-repository = "https://github.com/TedDriggs/darling"
-
 [lib]
 name = "darling_macro"
 path = "src/lib.rs"

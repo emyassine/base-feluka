@@ -9,7 +9,6 @@ edition = "2021"
 rust-version = "1.60"
 description = "Notify async tasks or threads"
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/smol-rs/event-listener"
 keywords = ["condvar", "eventcount", "wake", "blocking", "park"]
 categories = ["asynchronous", "concurrency"]
 exclude = ["/.*"]

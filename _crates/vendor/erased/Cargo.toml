@@ -30,8 +30,6 @@ keywords = [
     "arena",
 ]
 license = "MIT"
-repository = "https://github.com/JonathanBrouwer/erased"
-
 [lib]
 name = "erased"
 path = "src/lib.rs"

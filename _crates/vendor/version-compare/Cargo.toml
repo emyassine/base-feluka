@@ -43,8 +43,6 @@ categories = [
     "parsing",
 ]
 license = "MIT"
-repository = "https://gitlab.com/timvisee/version-compare"
-
 [lib]
 name = "version_compare"
 path = "src/lib.rs"

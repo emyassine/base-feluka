@@ -38,8 +38,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/tokio"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

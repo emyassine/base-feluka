@@ -26,7 +26,7 @@ pub struct ArcField<T>
 where
     T: 'static,
 {
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
     path: Arc<dyn Fn() -> StorePath + Send + Sync>,
     path_unkeyed: Arc<dyn Fn() -> StorePath + Send + Sync>,
@@ -47,7 +47,7 @@ where
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = f.debug_struct("ArcField");
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let f = f.field("defined_at", &self.defined_at);
         f.finish_non_exhaustive()
     }
@@ -139,7 +139,7 @@ where
     #[track_caller]
     fn from(value: Store<T, S>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new(move || value.path().into_iter().collect()),
             path_unkeyed: Arc::new(move || {
@@ -165,7 +165,7 @@ where
     #[track_caller]
     fn from(value: ArcStore<T>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new({
                 let value = value.clone();
@@ -217,7 +217,7 @@ where
     #[track_caller]
     fn from(value: Subfield<Inner, Prev, T>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new({
                 let value = value.clone();
@@ -268,7 +268,7 @@ where
     #[track_caller]
     fn from(value: DerefedField<Inner>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new({
                 let value = value.clone();
@@ -320,7 +320,7 @@ where
     #[track_caller]
     fn from(value: AtIndex<Inner, Prev>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new({
                 let value = value.clone();
@@ -376,7 +376,7 @@ where
     #[track_caller]
     fn from(value: AtKeyed<Inner, Prev, K, T>) -> Self {
         ArcField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             path: Arc::new({
                 let value = value.clone();
@@ -421,7 +421,7 @@ where
 impl<T> Clone for ArcField<T> {
     fn clone(&self) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             path: self.path.clone(),
             path_unkeyed: self.path_unkeyed.clone(),
@@ -438,11 +438,11 @@ impl<T> Clone for ArcField<T> {
 
 impl<T> DefinedAt for ArcField<T> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }

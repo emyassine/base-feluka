@@ -9,8 +9,6 @@ homepage = "https://github.com/tokio-rs/axum"
 keywords = ["http", "web", "routing"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/tokio-rs/axum"
-
 [features]
 default = [
     "form",

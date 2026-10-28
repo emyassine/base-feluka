@@ -4,7 +4,7 @@ use crate::feluqa_ui_classnames::*;
 
 use crate::component::mask::{Mask, MaskSide};
 
-// TODO UI. Separate the mask from the marquee.
+/// TODO UI. Separate the mask from the marquee.
 
 mod components {
     use super::*;

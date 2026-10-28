@@ -21,7 +21,6 @@ readme = "README.md"
 keywords = ["io", "read", "write"]
 categories = ["data-structures", "embedded", "no-std"]
 license = "Apache-2.0"
-repository = "https://github.com/enarx/ciborium"
 [package.metadata.docs.rs]
 all-features = true
 
@@ -29,14 +28,9 @@ all-features = true
 alloc = []
 std = ["alloc"]
 [badges.github]
-repository = "enarx/ciborium"
 workflow = "test"
 
 [badges.is-it-maintained-issue-resolution]
-repository = "enarx/ciborium"
-
 [badges.is-it-maintained-open-issues]
-repository = "enarx/ciborium"
-
 [badges.maintenance]
 status = "actively-developed"

@@ -29,8 +29,6 @@ keywords = [
 ]
 categories = ["text-processing"]
 license = "MIT"
-repository = "https://github.com/rutrum/convert-case"
-
 [lib]
 name = "convert_case"
 path = "src/lib.rs"

@@ -39,8 +39,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT"
-repository = "https://github.com/tower-rs/tower"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

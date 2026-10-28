@@ -6,7 +6,6 @@ license = "MIT OR Zlib OR Apache-2.0"
 readme = "Readme.md"
 keywords = ["zlib", "miniz", "deflate", "encoding"]
 categories = ["compression"]
-repository = "https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide"
 homepage = "https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide"
 documentation = "https://docs.rs/miniz_oxide"
 description = "DEFLATE compression and decompression library rewritten in Rust based on miniz"

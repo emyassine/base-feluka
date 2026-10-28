@@ -16,7 +16,7 @@ const OTP_CHAR_SELECTOR: &str = "[data-otp-char]";
 const OTP_CARET_SELECTOR: &str = "[data-otp-caret]";
 const OTP_KEY_ATTR: &str = "data-otp-key";
 
-thread_local! {
+crate::std::thread_local! {
     static MANAGER: RefCell<Option<OtpManager>> = const { RefCell::new(None) };
 }
 
@@ -112,7 +112,7 @@ impl OtpManager {
             return key;
         }
 
-        let key = format!("otp-{}", self.next_key);
+        let key = crate::std::format!("otp-{}", self.next_key);
         self.next_key += 1;
         let _ = root.set_attribute(OTP_KEY_ATTR, &key);
         key

@@ -7,7 +7,6 @@ authors = [
 ]
 description = "Codec utilities for working with framed protocols"
 keywords = ["network", "framework", "async", "futures"]
-repository = "https://github.com/actix/actix-net"
 categories = ["network-programming", "asynchronous"]
 license = "MIT OR Apache-2.0"
 edition.workspace = true

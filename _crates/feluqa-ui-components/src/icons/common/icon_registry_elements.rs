@@ -1,6 +1,6 @@
 use crate::icons::common::static_svg_element::StaticSvgElement;
 
-// * This file was was generated automatically. Please DO NOT edit manually.
+/// * This file was was generated automatically. Please DO NOT edit manually.
 
 /// Static elements for AArrowDown icon
 pub static AARROWDOWN_ELEMENTS: &[StaticSvgElement] = &[

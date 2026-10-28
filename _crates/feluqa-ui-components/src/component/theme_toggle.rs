@@ -51,7 +51,7 @@ pub fn ThemeToggle() -> impl IntoView {
             aria-label="Toggle theme"
             class=move || {
                 let base_class = "theme__toggle_transition";
-                if theme_mode.get() { format!("{base_class} switch") } else { base_class.to_string() }
+                if theme_mode.get() { crate::std::format!("{base_class} switch") } else { base_class.to_string() }
             }
             on:click=move |_| theme_mode.toggle()
         >

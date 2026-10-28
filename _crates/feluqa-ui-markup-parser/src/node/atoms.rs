@@ -31,23 +31,23 @@ pub(crate) mod tokens {
     // Dash between node-name
     custom_punctuation!(Dash, -);
 
-    // Later use custom punct, currently it is not compatible with quote;
+    /// Later use custom punct, currently it is not compatible with quote;
 
-    // // Start part of doctype tag
-    //     // `<!`
-    //     custom_punctuation!(DocStart, <!);
+    /// // Start part of doctype tag
+    ///     // `<!`
+    ///     custom_punctuation!(DocStart, <!);
 
-    //     // Start part of element's close tag.
-    //     // Its commonly used as separator
-    //     // `</`
-    //     custom_punctuation!(CloseTagStart, </);
+    ///     // Start part of element's close tag.
+    ///     // Its commonly used as separator
+    ///     // `</`
+    ///     custom_punctuation!(CloseTagStart, </);
 
-    //     custom_punctuation!(ComEnd, -->);
+    ///     custom_punctuation!(ComEnd, -->);
 
-    //     //
-    //     // Rest tokens is impossible to implement using custom_punctuation,
-    //     // because they have Option fields, or more than 3 elems
-    //     //
+    ///     //
+    ///     // Rest tokens is impossible to implement using custom_punctuation,
+    ///     // because they have Option fields, or more than 3 elems
+    ///     //
     /// Start part of doctype tag
     /// `<!`
     #[derive(Eq, PartialEq, Clone, Debug)]
@@ -311,7 +311,7 @@ mod test {
             ($mod_name:ident, $name: ident=> $($tts:tt)*) => {
                 mod $mod_name {
                     use super::*;
-                    // use super::tokens::*;
+                    /// use super::tokens::*;
                     #[test]
                     fn parse_quote() {
 

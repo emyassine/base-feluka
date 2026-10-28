@@ -32,8 +32,6 @@ categories = [
     "wasm",
 ]
 license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
-repository = "https://github.com/bytecodealliance/wasi-rs"
-
 [features]
 bitflags = ["wit-bindgen/bitflags"]
 default = [

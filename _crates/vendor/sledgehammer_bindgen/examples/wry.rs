@@ -8,10 +8,10 @@ use sledgehammer_bindgen::bindgen;
 use wry::http::Response;
 
 #[cfg(any(target_os = "android", target_os = "windows"))]
-const INDEX_PATH: &str = "http://dioxus.index.html";
+const INDEX_PATH: &str = "http://feluqa_ui.index.html";
 
 #[cfg(not(any(target_os = "android", target_os = "windows")))]
-const INDEX_PATH: &str = "dioxus://index.html";
+const INDEX_PATH: &str = "feluqa_ui://index.html";
 
 const TYPED_JS: &str = include_str!("./typed_elements.js");
 
@@ -380,7 +380,7 @@ fn main() -> wry::Result<()> {
     let _webview = WebViewBuilder::new(window)?
         .with_url(INDEX_PATH)
         .unwrap()
-        .with_asynchronous_custom_protocol("dioxus".into(), move |_, responder| {
+        .with_asynchronous_custom_protocol("feluqa_ui".into(), move |_, responder| {
             if first_request.get() {
                 first_request.set(false);
                 let html = format!(

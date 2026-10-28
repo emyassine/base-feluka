@@ -29,7 +29,7 @@ where
     ) -> Result<Self, E> {
         let url = format!("{}{}", get_server_url(), path);
         let mut url = Url::try_from(url.as_str()).map_err(|e| {
-            E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(e.to_string()))
+            E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string()))
         })?;
         url.set_query(Some(query));
         let req = match method {
@@ -40,7 +40,7 @@ where
             Method::PATCH => CLIENT.patch(url),
             Method::PUT => CLIENT.put(url),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -49,7 +49,7 @@ where
         .header(ACCEPT, accepts)
         .build()
         .map_err(|e| {
-            E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(e.to_string()))
+            E::from_server_fn_error(ServerFnErrorErr::Request(e.to_string()))
         })?;
         Ok(req)
     }
@@ -67,7 +67,7 @@ where
             Method::PUT => CLIENT.put(url),
             Method::PATCH => CLIENT.patch(url),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -92,7 +92,7 @@ where
             Method::PATCH => CLIENT.patch(url),
             Method::PUT => CLIENT.put(url),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -115,7 +115,7 @@ where
             Method::PUT => CLIENT.put(path),
             Method::PATCH => CLIENT.patch(path),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -138,7 +138,7 @@ where
             Method::PATCH => CLIENT.patch(path),
             Method::PUT => CLIENT.put(path),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -166,7 +166,7 @@ where
             Method::PUT => CLIENT.put(url),
             Method::PATCH => CLIENT.patch(url),
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }

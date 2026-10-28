@@ -19,8 +19,6 @@ readme = "README.md"
 keywords = ["template", "html"]
 categories = ["template-engine"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/bheisler/TinyTemplate"
-
 [[bench]]
 name = "benchmarks"
 harness = false
@@ -38,4 +36,3 @@ version = "1.0"
 status = "passively-maintained"
 
 [badges.travis-ci]
-repository = "bheisler/TinyTemplate"

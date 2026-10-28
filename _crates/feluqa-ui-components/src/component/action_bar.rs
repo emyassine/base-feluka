@@ -38,7 +38,7 @@ pub fn ActionBar(children: Children) -> impl IntoView {
     }
 }
 
-// TODO 🐛. Not working yet
+/// TODO 🐛. Not working yet
 #[component]
 pub fn ActionBarButton(children: Children, target: &'static str) -> impl IntoView {
     const CLASS_LABEL: &str = "flex relative justify-center items-center mx-1 bg-transparent border-0 duration-300 cursor-pointer outline-none action__bar__button px-[15px] py-[10px] before:inset-[-0.4rem] rounded-[50px] transition-[background-color,color] ease-[ease] has-[:checked]:hover:bg-[#fcebeb] has-[:checked]:focus:bg-[#fcebeb] before:content-[''] before:absolute hover:bg-[#f5f5f5] focus:bg-[#f5f5f5]";

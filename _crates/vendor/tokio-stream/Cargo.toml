@@ -28,8 +28,6 @@ homepage = "https://tokio.rs"
 readme = "README.md"
 categories = ["asynchronous"]
 license = "MIT"
-repository = "https://github.com/tokio-rs/tokio"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -5,7 +5,6 @@ version = "0.1.30"
 description = "Schannel bindings for rust, allowing SSL/TLS (e.g. https) without openssl"
 authors = [ "Steven Fackler <sfackler@gmail.com>", "Steffen Butzer <steffen.butzer@outlook.com>" ]
 documentation = "https://docs.rs/schannel/0.1.19/schannel/"
-repository = "https://github.com/steffengy/schannel-rs"
 readme = "README.md"
 keywords = ["windows", "schannel", "tls", "ssl", "https"]
 edition = "2018"

@@ -4,7 +4,6 @@ version = "0.5.18"
 description = "A Rust library to access raw Redox system calls"
 license = "MIT"
 authors = ["Jeremy Soller <jackpot51@gmail.com>"]
-repository = "https://gitlab.redox-os.org/redox-os/syscall"
 documentation = "https://docs.rs/redox_syscall"
 edition = "2021"
 

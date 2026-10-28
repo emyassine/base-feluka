@@ -22,8 +22,6 @@ description = "Routing and runtime macros for Actix Web"
 homepage = "https://actix.rs"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/actix/actix-web"
-
 [lib]
 proc-macro = true
 

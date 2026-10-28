@@ -25,8 +25,6 @@ description = "A memory-safe zlib implementation written in rust"
 homepage = "https://github.com/trifectatechfoundation/zlib-rs"
 readme = "README.md"
 license = "Zlib"
-repository = "https://github.com/trifectatechfoundation/zlib-rs"
-
 [features]
 ZLIB_DEBUG = []
 __internal-api = []

@@ -58,7 +58,7 @@ pub fn ToggleGroup(
 
     let is_vertical = orientation == ToggleGroupOrientation::Vertical;
 
-    let gap_style = if spacing == 0 { "gap: 0px".to_string() } else { format!("gap: {}rem", spacing as f64 * 0.25) };
+    let gap_style = if spacing == 0 { "gap: 0px".to_string() } else { crate::std::format!("gap: {}rem", spacing as f64 * 0.25) };
 
     let class = class_merge!(
         "flex items-center rounded-md group/toggle-group w-fit",

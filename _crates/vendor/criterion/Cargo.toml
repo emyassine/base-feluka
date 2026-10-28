@@ -34,8 +34,6 @@ keywords = [
 ]
 categories = ["development-tools::profiling"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/criterion-rs/criterion.rs"
-
 [package.metadata.docs.rs]
 features = [
     "async_futures",

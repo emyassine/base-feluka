@@ -9,7 +9,6 @@ description = "Async single assignment cells and lazy values."
 readme = "README.md"
 documentation = "https://docs.rs/async_once_cell"
 
-repository = "https://github.com/danieldg/async-once-cell"
 keywords = ["lazy", "static", "async"]
 categories = ["rust-patterns", "memory-management"]
 

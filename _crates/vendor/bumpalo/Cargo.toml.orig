@@ -9,7 +9,6 @@ exclude = ["/.github/*", "/benches", "/tests", "valgrind.supp", "bumpalo.png"]
 license = "MIT OR Apache-2.0"
 name = "bumpalo"
 readme = "README.md"
-repository = "https://github.com/fitzgen/bumpalo"
 rust-version = "1.71.1"
 version = "3.20.3"
 

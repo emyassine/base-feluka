@@ -25,8 +25,6 @@ description = "Derive macros for miniserde. Use the re-exports from the miniserd
 documentation = "https://docs.rs/miniserde"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/miniserde"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [

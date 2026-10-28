@@ -74,20 +74,27 @@
 
 use std::{fmt::Arguments, future::Future};
 
+/// Reactive actions.
 pub mod actions;
 pub(crate) mod channel;
+/// Computed reactive values.
 pub mod computed;
+/// Reactive system diagnostics.
 pub mod diagnostics;
+/// Reactive side effects.
 pub mod effect;
+/// Reactive graph primitives.
 pub mod graph;
 pub mod owner;
 pub mod send_wrapper_ext;
 #[cfg(feature = "serde")]
 mod serde;
+/// Reactive signal types.
 pub mod signal;
 mod trait_options;
 pub mod traits;
 pub mod transition;
+/// Convenience wrappers for reactive values.
 pub mod wrappers;
 
 mod into_reactive_value;
@@ -108,7 +115,7 @@ pub mod prelude {
     };
 }
 
-// TODO remove this, it's just useful while developing
+/// TODO remove this, it's just useful while developing
 #[allow(unused)]
 #[doc(hidden)]
 pub fn log_warning(text: Arguments) {

@@ -42,8 +42,6 @@ categories = [
     "encoding",
 ]
 license = "MIT"
-repository = "https://github.com/magiclen/html-escape"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

@@ -22,7 +22,7 @@ pub fn InputOTP(
     use_input_otp::init();
 
     let id = use_random_id();
-    let container_id = format!("otp_{}", id);
+    let container_id = crate::std::format!("otp_{}", id);
     let class = class_merge!("relative flex items-center gap-2 has-[:disabled]:opacity-50", class);
 
     view! {

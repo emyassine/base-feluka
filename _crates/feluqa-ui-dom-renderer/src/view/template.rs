@@ -38,7 +38,7 @@ where
 {
     type State = V::State;
 
-    // TODO try_build/try_rebuild()
+    /// TODO try_build/try_rebuild()
 
     fn build(self) -> Self::State {
         let tpl = Self::to_template();

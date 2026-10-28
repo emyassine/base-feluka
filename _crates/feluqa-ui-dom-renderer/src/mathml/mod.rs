@@ -44,7 +44,7 @@ macro_rules! mathml_elements {
 	($($tag:ident  [$($attr:ty),*]),* $(,)?) => {
         paste::paste! {
             $(
-                // `tag()` function
+                /// `tag()` function
                 /// A MathML element.
                 #[track_caller]
                 pub fn $tag() -> HtmlElement<[<$tag:camel>], (), ()>

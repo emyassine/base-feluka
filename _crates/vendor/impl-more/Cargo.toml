@@ -33,8 +33,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/robjtede/impl-more"
-
 [lib]
 name = "impl_more"
 path = "src/lib.rs"

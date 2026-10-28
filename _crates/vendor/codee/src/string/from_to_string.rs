@@ -9,8 +9,8 @@ use std::str::FromStr;
 ///
 /// ## Example
 /// ```ignore
-/// # use leptos::*;
-/// # use leptos_use::storage::{StorageType, use_local_storage, use_session_storage, use_storage, UseStorageOptions};
+/// # use feluqa_ui::*;
+/// # use feluqa_ui_use::storage::{StorageType, use_local_storage, use_session_storage, use_storage, UseStorageOptions};
 /// # use codee::string::FromToStringCodec;
 /// #
 /// # #[component]

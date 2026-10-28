@@ -29,8 +29,6 @@ categories = [
     "encoding",
 ]
 license = "MIT"
-repository = "https://github.com/RReverser/serde-wasm-bindgen"
-
 [package.metadata.docs.rs]
 targets = ["wasm32-unknown-unknown"]
 

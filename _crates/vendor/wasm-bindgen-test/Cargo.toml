@@ -28,8 +28,6 @@ autobenches = false
 description = "Internal testing crate for wasm-bindgen"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wasm-bindgen/wasm-bindgen"
-
 [features]
 default = ["std"]
 std = [

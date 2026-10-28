@@ -24,8 +24,6 @@ autobenches = false
 description = "pgvector support for Rust"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/pgvector/pgvector-rust"
-
 [package.metadata.docs.rs]
 features = ["halfvec"]
 

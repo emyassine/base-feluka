@@ -3,7 +3,6 @@ name = "pkg-config"
 version = "0.3.34"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/pkg-config-rs"
 documentation = "https://docs.rs/pkg-config"
 readme = "README.md"
 description = """

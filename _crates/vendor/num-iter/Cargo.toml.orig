@@ -6,7 +6,6 @@ homepage = "https://github.com/rust-num/num-iter"
 keywords = ["mathematics", "numerics"]
 categories = ["algorithms", "science", "no-std"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-num/num-iter"
 name = "num-iter"
 version = "0.1.46"
 readme = "README.md"

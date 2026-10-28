@@ -90,7 +90,7 @@ pin_project! {
     /// A [`Future`] wrapper that sets the [`Owner`] and [`Observer`] before polling the inner
     /// `Future`, output of [`ScopedFuture::new_untracked_with_diagnostics`].
     ///
-    /// In leptos 0.9 this will be replaced with `ScopedFuture` itself.
+    /// In feluqa_ui 0.9 this will be replaced with `ScopedFuture` itself.
     #[derive(Clone)]
     pub struct ScopedFutureUntrackedWithDiagnostics<Fut> {
         owner: Owner,

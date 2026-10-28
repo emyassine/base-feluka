@@ -4,7 +4,6 @@ version = "0.3.0"
 authors = ["Greg Johnston"]
 license = "MIT"
 readme = "../README.md"
-repository = "https://github.com/leptos-rs/leptos"
 description = "Utilities for sharing data between web servers and client-side web applications."
 rust-version.workspace = true
 edition.workspace = true
@@ -27,4 +26,4 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(leptos_debuginfo)'] }
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feluqa_ui_debuginfo)'] }

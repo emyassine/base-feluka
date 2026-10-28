@@ -10,7 +10,6 @@ version = "0.6.9"
 edition = "2021"
 rust-version = "1.70"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/SoftbearStudios/bitcode"
 description = "bitcode is a bitwise binary serializer"
 exclude = ["fuzz/"]
 

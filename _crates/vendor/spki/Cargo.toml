@@ -31,8 +31,6 @@ categories = [
     "no-std",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustCrypto/formats/tree/master/spki"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

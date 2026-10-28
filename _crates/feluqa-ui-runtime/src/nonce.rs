@@ -25,7 +25,7 @@ use feluqa_ui_dom_renderer::html::attribute::AttributeValue;
 ///     provide_meta_context;
 ///
 ///     view! {
-///         // use `feluqa_ui_runtime_meta` to insert a <meta> tag with the CSP
+///         // use `feluqa_ui_meta` to insert a <meta> tag with the CSP
 ///         <Meta
 ///             http_equiv="Content-Security-Policy"
 ///             content=move || {
@@ -42,7 +42,7 @@ use feluqa_ui_dom_renderer::html::attribute::AttributeValue;
 ///         />
 ///         // manually insert nonce during SSR on inline script
 ///         <script nonce=use_nonce()>"console.log('Hello, world!');"</script>
-///         // feluqa_ui_runtime_meta <Style/> and <Script/> automatically insert the nonce
+///         // feluqa_ui_meta <Style/> and <Script/> automatically insert the nonce
 ///         <Style>"body { color: blue; }"</Style>
 ///         <p>"Test"</p>
 ///     }
@@ -133,7 +133,7 @@ impl AttributeValue for Nonce {
 ///     provide_meta_context;
 ///
 ///     view! {
-///         // use `feluqa_ui_runtime_meta` to insert a <meta> tag with the CSP
+///         // use `feluqa_ui_meta` to insert a <meta> tag with the CSP
 ///         <Meta
 ///             http_equiv="Content-Security-Policy"
 ///             content=move || {
@@ -150,7 +150,7 @@ impl AttributeValue for Nonce {
 ///         />
 ///         // manually insert nonce during SSR on inline script
 ///         <script nonce=use_nonce()>"console.log('Hello, world!');"</script>
-///         // feluqa_ui_runtime_meta <Style/> and <Script/> automatically insert the nonce
+///         // feluqa_ui_meta <Style/> and <Script/> automatically insert the nonce
 ///         <Style>"body { color: blue; }"</Style>
 ///         <p>"Test"</p>
 ///     }

@@ -31,8 +31,6 @@ categories = [
     "web-programming",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/WorldSEnder/wasm-split-prototype"
-
 [lib]
 name = "wasm_split_helpers"
 path = "src/lib.rs"

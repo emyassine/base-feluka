@@ -6,7 +6,6 @@ authors = [
     "Josh Triplett <josh@joshtriplett.org>",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/gdesmott/system-deps"
 description = "Discover and configure system dependencies from declarative dependencies in Cargo.toml"
 keywords = [
     "pkg-config",

@@ -38,8 +38,6 @@ categories = [
     "rust-patterns",
 ]
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
-repository = "https://github.com/google/zerocopy"
-
 [package.metadata.build-rs]
 no-zerocopy-simd-x86-avx12-1-89-0 = "1.89.0"
 no-zerocopy-core-error-1-81-0 = "1.81.0"

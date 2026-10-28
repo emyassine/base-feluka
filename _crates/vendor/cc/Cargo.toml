@@ -36,8 +36,6 @@ readme = "README.md"
 keywords = ["build-dependencies"]
 categories = ["development-tools::build-utils"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/cc-rs"
-
 [package.metadata.docs.rs]
 all-features = true
 

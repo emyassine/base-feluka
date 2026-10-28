@@ -5,7 +5,6 @@ edition = "2021"
 authors = ["Evan Almloff <ealmlof1@stumail.jccc.edu>"]
 description = "Utilities for sledgehammer-bindgen"
 documentation = "https://docs.rs/sledgehammer_utils"
-repository = "https://github.com/demonthos/sledgehammer_utils/"
 license = "MIT"
 keywords = []
 categories = []

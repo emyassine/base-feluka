@@ -28,8 +28,6 @@ Used when compiling Rust programs to the component model.
 homepage = "https://github.com/bytecodealliance/wit-bindgen"
 readme = "README.md"
 license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
-repository = "https://github.com/bytecodealliance/wit-bindgen"
-
 [package.metadata.docs.rs]
 all-features = true
 

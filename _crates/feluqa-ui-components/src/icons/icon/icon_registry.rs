@@ -3,7 +3,7 @@ use crate::runtime::prelude::*;
 use super::icon_component::FeluqaUiIcon;
 use crate::icons::common::icon_type::IconType;
 
-// * 🧪 cargo check --features feluqa_ui_runtime
+/// * 🧪 cargo check --features feluqa_ui_runtime
 
 /// AArrowDown icon component
 #[component]

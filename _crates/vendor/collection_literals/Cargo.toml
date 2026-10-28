@@ -36,8 +36,6 @@ keywords = [
 ]
 categories = ["rust-patterns"]
 license = "MIT"
-repository = "https://github.com/staedoix/collection_literals"
-
 [badges.maintenance]
 status = "passively-maintained"
 

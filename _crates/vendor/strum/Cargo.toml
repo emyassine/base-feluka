@@ -36,8 +36,6 @@ categories = [
     "parsing",
 ]
 license = "MIT"
-repository = "https://github.com/Peternator7/strum"
-
 [package.metadata.docs.rs]
 features = ["derive"]
 rustdoc-args = [
@@ -46,8 +44,6 @@ rustdoc-args = [
 ]
 
 [badges.travis-ci]
-repository = "Peternator7/strum"
-
 [features]
 default = ["std"]
 derive = ["strum_macros"]

@@ -9,7 +9,6 @@ edition = "2021"
 exclude = ["*.png"]
 keywords = ["integer"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/itoa"
 rust-version = "1.68"
 
 [dependencies]

@@ -16,14 +16,14 @@ pub use crate::utils::Utils;
 /// clx! {Card, div, "rounded-lg p-4", "bg-sky-500"} // 🩵
 ///
 /// #[component]
-/// pub fn DemoCard() -> impl IntoView {
-///     view! {
-///         <Card>"Default: bg-sky-500 🩵"</Card>
-///         <Card class="bg-orange-500">"Override: bg-orange-500 🧡"</Card>
-///         // └──> 🤯 NO CLASS CONFLICT! Still using the SAME component.
-///     }
-/// }
-/// ```
+// pub fn DemoCard() -> impl IntoView {
+//     view! {
+//         <Card>"Default: bg-sky-500 🩵"</Card>
+//         <Card class="bg-orange-500">"Override: bg-orange-500 🧡"</Card>
+//         // └──> 🤯 NO CLASS CONFLICT! Still using the SAME component.
+//     }
+// }
+// ```
 #[macro_export]
 macro_rules! clx {
     ($name:ident, $element:ident, $($base_class:expr),+ $(,)?) => {
@@ -46,29 +46,29 @@ macro_rules! clx {
     };
 }
 
-/// A macro that creates self-closing components with tailwind class merging
-/// See: https://developer.mozilla.org/en-US/docs/Glossary/Void_element
-///
-/// # Example
-///
-/// ```
-/// use feluqa_ui_runtime::prelude::*;
-/// use feluqa_ui_component_macros::void;
-///
-/// // Define self-closing components
-/// void! {MyImage, img, "rounded-lg border"}
-/// void! {MyInput, input, "px-3 py-2 border rounded"}
-/// void! {MyDiv, div, "w-full h-4 bg-gray-200"}
-///
-/// #[component]
-/// pub fn Demo() -> impl IntoView {
-///     view! {
-///         <MyImage attr:src="test.jpg" class="w-32" />
-///         <MyInput prop:value=move || url().to_string() attr:readonly=true class="flex-1" />
-///         <MyDiv class="bg-sky-500" />
-///     }
-/// }
-/// ```
+// A macro that creates self-closing components with tailwind class merging
+// See: https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+//
+// # Example
+//
+// ```
+// use feluqa_ui_runtime::prelude::*;
+// use feluqa_ui_component_macros::void;
+//
+// // Define self-closing components
+// void! {MyImage, img, "rounded-lg border"}
+// void! {MyInput, input, "px-3 py-2 border rounded"}
+// void! {MyDiv, div, "w-full h-4 bg-gray-200"}
+//
+// #[component]
+// pub fn Demo() -> impl IntoView {
+//     view! {
+//         <MyImage attr:src="test.jpg" class="w-32" />
+//         <MyInput prop:value=move || url().to_string() attr:readonly=true class="flex-1" />
+//         <MyDiv class="bg-sky-500" />
+//     }
+// }
+// ```
 #[macro_export]
 macro_rules! void {
     ($name:ident, $element:ident, $($base_class:expr),+ $(,)?) => {

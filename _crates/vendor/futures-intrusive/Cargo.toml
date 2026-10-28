@@ -19,8 +19,6 @@ Futures based on intrusive data structures - for std and no-std environments.
 """
 homepage = "https://github.com/Matthias247/futures-intrusive"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Matthias247/futures-intrusive"
-
 [lib]
 name = "futures_intrusive"
 

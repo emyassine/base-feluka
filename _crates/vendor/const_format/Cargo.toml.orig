@@ -10,7 +10,6 @@ documentation = "https://docs.rs/const_format/"
 readme="../README.md"
 keywords = ["no-std", "format", "concat"]
 categories = ["no-std", "text-processing"]
-repository = "https://github.com/rodrimati1992/const_format_crates/"
 include = [
     "Cargo.toml", 
     "src/**/*.rs", 

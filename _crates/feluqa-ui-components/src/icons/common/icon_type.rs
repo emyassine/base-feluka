@@ -1,4 +1,4 @@
-use strum::{AsRefStr, Display, EnumIter, EnumString};
+use crate::strum::{AsRefStr, Display, EnumIter, EnumString};
 
 /*
  * This file was was generated automatically. Please DO NOT edit manually.

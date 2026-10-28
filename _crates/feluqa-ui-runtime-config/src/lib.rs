@@ -21,7 +21,7 @@ use typed_builder::TypedBuilder;
 #[serde(rename_all = "kebab-case")]
 #[non_exhaustive]
 pub struct ConfFile {
-    pub feluqa_ui_runtime_options: FeluqaUiOptions,
+    pub feluqa_ui_options: FeluqaUiOptions,
 }
 
 /// This struct serves as a convenient place to store details used for configuring FeluqaUi.
@@ -113,7 +113,7 @@ pub struct FeluqaUiOptions {
     /// needing to manually specify via `#[server(prefix = "...")]` on every server function.
     #[builder(default, setter(strip_option))]
     #[serde(default)]
-    pub feluqa_ui_server_functions_prefix: Option<String>,
+    pub server_fn_prefix: Option<String>,
     /// Whether to disable appending the server functions' hashes to the end of their API names.
     ///
     /// This is useful when an app's client side needs a stable server API. For example, shipping
@@ -130,7 +130,7 @@ pub struct FeluqaUiOptions {
     /// Actix will not.
     #[builder(default)]
     #[serde(default)]
-    pub disable_feluqa_ui_server_functions_hash: bool,
+    pub disable_server_fn_hash: bool,
     /// Include the module path of the server function in the API route. This is an alternative
     /// strategy to prevent duplicate server function API routes (the default strategy is to add
     /// a hash to the end of the route). Each element of the module path will be separated by a `/`.
@@ -139,7 +139,7 @@ pub struct FeluqaUiOptions {
     /// different prefix and a hash suffix depending on the values of the other server fn configs).
     #[builder(default)]
     #[serde(default)]
-    pub feluqa_ui_server_functions_mod_path: bool,
+    pub server_fn_mod_path: bool,
 }
 
 impl FeluqaUiOptions {
@@ -235,10 +235,10 @@ impl FeluqaUiOptions {
             hash_file: env_w_default("FELUQA_UI_HASH_FILE_NAME", "hash.txt")?
                 .into(),
             hash_files: env_w_default("FELUQA_UI_HASH_FILES", "false")?.parse()?,
-            feluqa_ui_server_functions_prefix: env_wo_default("SERVER_FN_PREFIX")?,
-            disable_feluqa_ui_server_functions_hash: env_wo_default("DISABLE_SERVER_FN_HASH")?
+            server_fn_prefix: env_wo_default("SERVER_FN_PREFIX")?,
+            disable_server_fn_hash: env_wo_default("DISABLE_SERVER_FN_HASH")?
                 .is_some(),
-            feluqa_ui_server_functions_mod_path: env_wo_default("SERVER_FN_MOD_PATH")?.is_some(),
+            server_fn_mod_path: env_wo_default("SERVER_FN_MOD_PATH")?.is_some(),
         })
     }
 }
@@ -528,8 +528,8 @@ pub fn get_config_from_file<P: AsRef<Path>>(
 ) -> Result<ConfFile, FeluqaUiConfigError> {
     let text = fs::read_to_string(path)
         .map_err(|_| FeluqaUiConfigError::ConfigNotFound)?;
-    let feluqa_ui_runtime_options = get_config_from_str(&text)?;
-    Ok(ConfFile { feluqa_ui_runtime_options })
+    let feluqa_ui_options = get_config_from_str(&text)?;
+    Ok(ConfFile { feluqa_ui_options })
 }
 
 /// Loads [`FeluqaUiOptions`] from environment variables or rely on the defaults.
@@ -539,7 +539,7 @@ pub fn get_config_from_file<P: AsRef<Path>>(
 /// This function will return an error if it failed to load or parse a relevant environment variable.
 pub fn get_config_from_env() -> Result<ConfFile, FeluqaUiConfigError> {
     Ok(ConfFile {
-        feluqa_ui_runtime_options: FeluqaUiOptions::try_from_env()?,
+        feluqa_ui_options: FeluqaUiOptions::try_from_env()?,
     })
 }
 

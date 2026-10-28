@@ -32,8 +32,6 @@ keywords = [
     "mio",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/vorner/signal-hook"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [
@@ -45,8 +43,6 @@ rustdoc-args = [
 status = "actively-developed"
 
 [badges.travis-ci]
-repository = "vorner/signal-hook"
-
 [features]
 support-v0_6 = [
     "mio-0_6",

@@ -81,7 +81,7 @@ impl DatePickerDualState {
 
     /// Calculates calendar data for the date picker
     pub fn calculate_calendar_data(year: i32, month: Month) -> Vec<(u8, Month, i32, bool, bool)> {
-        let Some(first_day) = Date::from_calendar_date(year, month, 1).ok() else { return vec![] };
+        let Some(first_day) = Date::from_calendar_date(year, month, 1).ok() else { return crate::std::vec![] };
         let first_weekday = first_day.weekday().number_from_sunday() as usize - 1;
 
         let (prev_month_val, prev_year_val) = DateUtils::prev_month_year(month, year);
@@ -90,7 +90,7 @@ impl DatePickerDualState {
         let days_in_prev_month = prev_month_val.length(prev_year_val);
         let days_in_month = month.length(year);
 
-        let mut days = vec![];
+        let mut days = crate::std::vec![];
 
         // Leading days from previous month
         for i in 0..first_weekday {

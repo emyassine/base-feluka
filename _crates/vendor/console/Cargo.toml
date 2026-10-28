@@ -40,8 +40,6 @@ keywords = [
     "ansi",
 ]
 license = "MIT"
-repository = "https://github.com/console-rs/console"
-
 [features]
 alloc = []
 ansi-parsing = []

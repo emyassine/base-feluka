@@ -27,8 +27,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0 OR Zlib"
-repository = "https://github.com/Ralith/lru-slab"
-
 [lib]
 name = "lru_slab"
 path = "src/lib.rs"

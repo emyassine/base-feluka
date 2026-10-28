@@ -4,8 +4,6 @@ version = "0.7.6"
 authors = ["Simon Sapin <simon.sapin@exyr.org>"]
 description = "Incremental, zero-copy UTF-8 decoding with error handling"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/SimonSapin/rust-utf8"
-
 [lib]
 name = "utf8"
 test = false

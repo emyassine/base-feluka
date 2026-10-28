@@ -29,8 +29,6 @@ readme = "README.md"
 keywords = ["rustfmt"]
 categories = ["development-tools"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/prettyplease"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [

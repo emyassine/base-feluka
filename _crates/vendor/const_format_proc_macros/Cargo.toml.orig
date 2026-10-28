@@ -8,7 +8,6 @@ license = "Zlib"
 description = "Implementation detail of the `const_format` crate"
 keywords = ["no-std", "format", "concat"]
 categories = ["no-std", "text-processing"]
-repository = "https://github.com/rodrimati1992/const_format_crates/"
 include = [
     "Cargo.toml", 
     "src/**/*.rs", 

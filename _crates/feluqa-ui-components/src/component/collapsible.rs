@@ -17,10 +17,10 @@ struct CollapsibleContext {
 
 #[component]
 pub fn Collapsible(
-    /// Controlled: pass an external RwSignal to drive open/closed from outside.
+    // Controlled: pass an external RwSignal to drive open/closed from outside.
     #[prop(optional)]
     open: Option<RwSignal<bool>>,
-    /// Initial open state when uncontrolled.
+    // Initial open state when uncontrolled.
     #[prop(default = false)]
     default_open: bool,
     children: Children,

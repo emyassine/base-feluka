@@ -12,7 +12,7 @@ pub fn FeluqaUiIcon(icon: IconType, #[prop(into, optional)] class: String) -> im
 
     view! {
         <SvgIcon class=class data_name=icon.to_string()>
-            <title>{format!("Rust/UI Icons - {icon}")}</title>
+            <title>{crate::std::format!("Rust/UI Icons - {icon}")}</title>
 
             {elements.iter().map(|element| { element.to_feluqa_ui_runtime_view() }).collect::<Vec<_>>()}
         </SvgIcon>

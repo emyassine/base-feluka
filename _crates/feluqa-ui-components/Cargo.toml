@@ -8,6 +8,9 @@ license-file.workspace = true
 rust-version = "1.88"
 publish = ["feluqa"]
 
+[features]
+full-catalog = []
+
 [dependencies]
 feluqa_ui_runtime.workspace = true
 feluqa_ui_navigation.workspace = true

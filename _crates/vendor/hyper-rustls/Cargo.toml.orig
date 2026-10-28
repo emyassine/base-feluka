@@ -7,7 +7,6 @@ license = "Apache-2.0 OR ISC OR MIT"
 readme = "README.md"
 description = "Rustls+hyper integration for pure rust HTTPS"
 homepage = "https://github.com/rustls/hyper-rustls"
-repository = "https://github.com/rustls/hyper-rustls"
 documentation = "https://docs.rs/hyper-rustls/"
 
 [features]

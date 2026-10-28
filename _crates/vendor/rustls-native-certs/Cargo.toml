@@ -37,8 +37,6 @@ categories = [
     "cryptography",
 ]
 license = "Apache-2.0 OR ISC OR MIT"
-repository = "https://github.com/rustls/rustls-native-certs"
-
 [package.metadata.docs.rs]
 rustdoc-args = [
     "--cfg",

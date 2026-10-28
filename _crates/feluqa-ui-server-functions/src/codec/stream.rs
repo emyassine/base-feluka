@@ -234,7 +234,7 @@ where
         let s = TextStream::new(data.map(|chunk| match chunk {
             Ok(bytes) => {
                 let de = String::from_utf8(bytes.to_vec()).map_err(|e| {
-                    E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                    E::from_server_fn_error(ServerFnErrorErr::Deserialization(
                         e.to_string(),
                     ))
                 })?;
@@ -270,7 +270,7 @@ where
         Ok(TextStream(Box::pin(stream.map(|chunk| match chunk {
             Ok(bytes) => {
                 let de = String::from_utf8(bytes.into()).map_err(|e| {
-                    E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                    E::from_server_fn_error(ServerFnErrorErr::Deserialization(
                         e.to_string(),
                     ))
                 })?;

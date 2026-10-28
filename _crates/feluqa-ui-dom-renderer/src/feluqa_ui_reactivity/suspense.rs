@@ -393,7 +393,7 @@ where
         }
     }
 
-    // TODO cancellation
+    /// TODO cancellation
     fn hydrate<const FROM_SERVER: bool>(
         self,
         cursor: &Cursor,

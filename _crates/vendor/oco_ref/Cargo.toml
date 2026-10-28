@@ -27,8 +27,6 @@ autobenches = false
 description = "A smart pointer for storing immutable values with relatively-cheap cloning. (Like a `Cow` meets an `Rc`!)"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [lib]
 name = "oco_ref"
 path = "src/lib.rs"

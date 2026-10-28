@@ -7,7 +7,6 @@ license = "MIT OR Apache-2.0"
 description = "Shared types for the rustls PKI ecosystem"
 documentation = "https://docs.rs/rustls-pki-types"
 homepage = "https://github.com/rustls/pki-types"
-repository = "https://github.com/rustls/pki-types"
 categories = ["network-programming", "data-structures", "cryptography"]
 include = ["Cargo.toml", "LICENSE-APACHE", "LICENSE-MIT", "src/**/*.rs", "README.md", "src/data/*.der"]
 

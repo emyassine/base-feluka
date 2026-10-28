@@ -25,8 +25,6 @@ keywords = [
 ]
 categories = ["encoding"]
 license = "MIT"
-repository = "https://github.com/3Hren/msgpack-rust"
-
 [package.metadata.release]
 tag-prefix = "{{crate_name}}/"
 

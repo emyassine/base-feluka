@@ -29,8 +29,6 @@ documentation = "https://docs.rs/glob"
 readme = "README.md"
 categories = ["filesystem"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/glob"
-
 [lib]
 name = "glob"
 path = "src/lib.rs"

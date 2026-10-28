@@ -32,8 +32,6 @@ categories = [
     "os",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/lambda-fairy/rust-errno"
-
 [features]
 default = ["std"]
 std = ["libc/std"]

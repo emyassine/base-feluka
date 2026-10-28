@@ -3,7 +3,6 @@ name = "autocfg"
 version = "1.5.1"
 authors = ["Josh Stone <cuviper@gmail.com>"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/cuviper/autocfg"
 documentation = "https://docs.rs/autocfg/"
 description = "Automatic cfg for Rust compiler features"
 readme = "README.md"

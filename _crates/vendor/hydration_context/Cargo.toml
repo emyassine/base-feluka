@@ -24,8 +24,6 @@ autobenches = false
 description = "Utilities for sharing data between web servers and client-side web applications."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [
@@ -74,4 +72,4 @@ optional = true
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
-check-cfg = ["cfg(leptos_debuginfo)"]
+check-cfg = ["cfg(feluqa_ui_debuginfo)"]

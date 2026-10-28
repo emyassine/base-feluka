@@ -6,8 +6,6 @@ edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "Proc macro for ouroboros crate."
 documentation = "https://docs.rs/ouroboros_macro"
-repository = "https://github.com/someguynamedjosh/ouroboros"
-
 [lib]
 proc-macro = true
 

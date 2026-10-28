@@ -35,8 +35,6 @@ keywords = [
 ]
 categories = ["cryptography"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/RustCrypto/RSA"
-
 [package.metadata.docs.rs]
 features = [
     "std",

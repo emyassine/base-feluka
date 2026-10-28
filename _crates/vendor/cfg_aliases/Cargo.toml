@@ -40,8 +40,6 @@ categories = [
     "development-tools::build-utils",
 ]
 license = "MIT"
-repository = "https://github.com/katharostech/cfg_aliases"
-
 [badges.maintenance]
 status = "passively-maintained"
 

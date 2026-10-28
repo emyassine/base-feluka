@@ -30,8 +30,6 @@ categories = [
     "no-std::no-alloc",
 ]
 license = "MIT"
-repository = "https://github.com/rkyv/ptr_meta"
-
 [lib]
 name = "ptr_meta_derive"
 path = "src/lib.rs"

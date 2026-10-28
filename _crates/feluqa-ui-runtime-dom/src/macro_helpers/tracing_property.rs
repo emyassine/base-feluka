@@ -32,8 +32,8 @@ macro_rules! tracing_props {
     };
 }
 
-// Implementation based on spez
-// see https://github.com/m-ou-se/spez
+/// Implementation based on spez
+/// see https://github.com/m-ou-se/spez
 
 pub struct Match<T> {
     pub name: &'static str,

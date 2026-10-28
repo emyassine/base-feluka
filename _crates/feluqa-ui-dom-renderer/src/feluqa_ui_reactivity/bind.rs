@@ -548,9 +548,11 @@ impl GetValue<bool> for web_sys::Element {
 /// Bool or a type. Needed to make the `group` attribute work. It is decided at runtime
 /// if the derived signal value is a bool or a type `T`.
 pub enum BoolOrT<T> {
-    /// We have definitely a boolean value for the `group` attribute
+    // We have definitely a boolean value for the `group` attribute
+    /// A boolean binding value.
     Bool(bool),
-    /// Standard case with some type `T`
+    // Standard case with some type `T`
+    /// A typed binding value.
     T(T),
 }
 

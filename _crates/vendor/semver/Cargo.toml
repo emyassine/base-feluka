@@ -31,8 +31,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/semver"
-
 [package.metadata.docs.rs]
 features = ["serde"]
 targets = ["x86_64-unknown-linux-gnu"]

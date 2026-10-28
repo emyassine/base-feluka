@@ -124,7 +124,7 @@ where
                 Method::PUT => Request::put(&url),
                 Method::PATCH => Request::patch(&url),
                 m => {
-                    return Err(E::from_feluqa_ui_server_functions_error(
+                    return Err(E::from_server_fn_error(
                         ServerFnErrorErr::UnsupportedRequestMethod(
                             m.to_string(),
                         ),
@@ -136,7 +136,7 @@ where
             .abort_signal(abort_signal.as_ref())
             .build()
             .map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                E::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?,
@@ -162,7 +162,7 @@ where
                 Method::PATCH => Request::patch(&url),
                 Method::PUT => Request::put(&url),
                 m => {
-                    return Err(E::from_feluqa_ui_server_functions_error(
+                    return Err(E::from_server_fn_error(
                         ServerFnErrorErr::UnsupportedRequestMethod(
                             m.to_string(),
                         ),
@@ -174,7 +174,7 @@ where
             .abort_signal(abort_signal.as_ref())
             .body(body)
             .map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                E::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?,
@@ -202,7 +202,7 @@ where
                 Method::PATCH => Request::patch(&url),
                 Method::PUT => Request::put(&url),
                 m => {
-                    return Err(E::from_feluqa_ui_server_functions_error(
+                    return Err(E::from_server_fn_error(
                         ServerFnErrorErr::UnsupportedRequestMethod(
                             m.to_string(),
                         ),
@@ -214,7 +214,7 @@ where
             .abort_signal(abort_signal.as_ref())
             .body(body)
             .map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                E::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?,
@@ -239,7 +239,7 @@ where
                 Method::PATCH => Request::patch(&url),
                 Method::PUT => Request::put(&url),
                 m => {
-                    return Err(E::from_feluqa_ui_server_functions_error(
+                    return Err(E::from_server_fn_error(
                         ServerFnErrorErr::UnsupportedRequestMethod(
                             m.to_string(),
                         ),
@@ -250,7 +250,7 @@ where
             .abort_signal(abort_signal.as_ref())
             .body(body.0.take())
             .map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                E::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?,
@@ -270,7 +270,7 @@ where
         let url_params =
             UrlSearchParams::new_with_str_sequence_sequence(&form_data)
                 .map_err(|e| {
-                    E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Serialization(
+                    E::from_server_fn_error(ServerFnErrorErr::Serialization(
                         e.as_string().unwrap_or_else(|| {
                             "Could not serialize FormData to URLSearchParams"
                                 .to_string()
@@ -283,7 +283,7 @@ where
                 Method::PUT => Request::put(path),
                 Method::PATCH => Request::patch(path),
                 m => {
-                    return Err(E::from_feluqa_ui_server_functions_error(
+                    return Err(E::from_server_fn_error(
                         ServerFnErrorErr::UnsupportedRequestMethod(
                             m.to_string(),
                         ),
@@ -295,7 +295,7 @@ where
             .abort_signal(abort_signal.as_ref())
             .body(url_params)
             .map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                E::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?,
@@ -314,7 +314,7 @@ where
         match method {
             Method::POST | Method::PATCH | Method::PUT => {}
             m => {
-                return Err(E::from_feluqa_ui_server_functions_error(
+                return Err(E::from_server_fn_error(
                     ServerFnErrorErr::UnsupportedRequestMethod(m.to_string()),
                 ))
             }
@@ -323,7 +323,7 @@ where
         let (request, abort_ctrl) =
             streaming_request(path, accepts, content_type, body, method)
                 .map_err(|e| {
-                    E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(format!(
+                    E::from_server_fn_error(ServerFnErrorErr::Request(format!(
                         "{e:?}"
                     )))
                 })?;

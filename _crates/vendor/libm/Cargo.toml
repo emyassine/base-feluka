@@ -34,8 +34,6 @@ keywords = [
 ]
 categories = ["no-std"]
 license = "MIT"
-repository = "https://github.com/rust-lang/compiler-builtins"
-
 [features]
 arch = []
 default = ["arch"]

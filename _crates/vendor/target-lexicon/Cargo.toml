@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["no-std"]
 license = "Apache-2.0 WITH LLVM-exception"
-repository = "https://github.com/bytecodealliance/target-lexicon"
-
 [lib]
 name = "target_lexicon"
 path = "src/lib.rs"

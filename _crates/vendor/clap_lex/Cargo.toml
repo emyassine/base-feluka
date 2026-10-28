@@ -39,8 +39,6 @@ keywords = [
 ]
 categories = ["command-line-interface"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/clap-rs/clap"
-
 [[package.metadata.release.pre-release-replacements]]
 file = "CHANGELOG.md"
 search = "Unreleased"

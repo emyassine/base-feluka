@@ -14,12 +14,12 @@ pub mod length {
         alt((tag("0"), number, functional_notation))(input)
     }
 
-    // Parser for numeric values
+    /// Parser for numeric values
     fn number(input: &str) -> IResult<&str, &str> {
         recognize(pair(pair(opt(char('-')), take_while1(|c: char| c.is_ascii_digit() || c == '.')), opt(unit)))(input)
     }
 
-    // Parser for units like px, em, rem, etc.
+    /// Parser for units like px, em, rem, etc.
     fn unit(input: &str) -> IResult<&str, &str> {
         let parser1 = alt((
             tag("%"),

@@ -5,7 +5,6 @@ authors = ["Bastian Köcher <git@kchr.de>"]
 edition = "2021"
 categories = ["development-tools::procedural-macro-helpers"]
 documentation = "https://docs.rs/proc-macro-crate"
-repository = "https://github.com/bkchr/proc-macro-crate"
 keywords = ["macro-rules", "crate", "macro", "proc-macro"]
 license = "MIT OR Apache-2.0"
 description = """

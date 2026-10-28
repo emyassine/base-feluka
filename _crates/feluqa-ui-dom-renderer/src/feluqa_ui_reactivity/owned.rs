@@ -90,7 +90,7 @@ impl<T> RenderHtml for OwnedView<T>
 where
     T: RenderHtml,
 {
-    // TODO
+    /// TODO
     type AsyncOutput = OwnedView<T::AsyncOutput>;
     type Owned = OwnedView<T::Owned>;
 

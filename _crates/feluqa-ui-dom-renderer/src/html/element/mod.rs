@@ -518,7 +518,7 @@ where
             panic!("Custom elements are not supported in ViewTemplate.");
         }
 
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner_1(
             cursor: &Cursor,
             position: &PositionState,
@@ -560,7 +560,7 @@ where
             Some(self.children.hydrate::<FROM_SERVER>(cursor, position))
         };
 
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner_2(
             cursor: &Cursor,
             position: &PositionState,
@@ -589,7 +589,7 @@ where
         cursor: &Cursor,
         position: &PositionState,
     ) -> Self::State {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner_1(
             cursor: &Cursor,
             position: &PositionState,
@@ -631,7 +631,7 @@ where
             Some(self.children.hydrate_async(cursor, position).await)
         };
 
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner_2(
             cursor: &Cursor,
             position: &PositionState,
@@ -740,7 +740,7 @@ impl<At, Ch> Mountable for ElementState<At, Ch> {
     }
 
     fn insert_before_this(&self, child: &mut dyn Mountable) -> bool {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner(
             element: &crate::renderer::types::Element,
             child: &mut dyn Mountable,
@@ -758,7 +758,7 @@ impl<At, Ch> Mountable for ElementState<At, Ch> {
     }
 
     fn elements(&self) -> Vec<crate::renderer::types::Element> {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn inner(
             element: &crate::renderer::types::Element,
         ) -> Vec<crate::renderer::types::Element> {

@@ -209,7 +209,7 @@ pub fn generate_grid_style<C: PinnableColumn + AsRef<str> + 'static>() -> String
     for (col, width) in C::pinnable_columns() {
         // Remove spaces for CSS-safe variable names (e.g., "Is Active" -> "IsActive")
         let name: String = col.as_ref().chars().filter(|c| *c != ' ').collect();
-        style.push_str(&format!("--header-{name}-size: {width}; --col-{name}-size: {width}; "));
+        style.push_str(&crate::std::format!("--header-{name}-size: {width}; --col-{name}-size: {width}; "));
     }
     style.push_str("max-height: calc(100vh - 16rem);");
     style
@@ -362,7 +362,7 @@ pub fn VirtualizedGridBody(children: Children, #[prop(optional, into)] class: St
             class=merged_class
             aria-label="Grid Body"
             tabindex="0"
-            style=move || format!("height: {}px;", virtual_scroll.total_height.get())
+            style=move || crate::std::format!("height: {}px;", virtual_scroll.total_height.get())
         >
             {children()}
         </div>
@@ -436,7 +436,7 @@ pub fn GridRow(
             // Performance: content-visibility:auto skips rendering for off-screen rows
             style=move || {
                 let translate_y = index.get() * 36;
-                format!(
+                crate::std::format!(
                     "height: 36px; transform: translateY({translate_y}px); content-visibility: auto; contain-intrinsic-size: auto 36px;",
                 )
             }
@@ -487,7 +487,7 @@ pub fn GridHeaderCell(
 ) -> impl IntoView {
     let merged_class = class_merge!("relative border-r opacity-100 bg-background data-[visible=false]:hidden", class);
 
-    let formatted_style = format!("width: calc(var(--header-{column}-size) * 1px);");
+    let formatted_style = crate::std::format!("width: calc(var(--header-{column}-size) * 1px);");
 
     // TODO. aria-sort.
 
@@ -531,7 +531,7 @@ pub fn GridCell(
         class
     );
 
-    let formatted_style = format!("width: calc(var(--col-{column}-size) * 1px);");
+    let formatted_style = crate::std::format!("width: calc(var(--col-{column}-size) * 1px);");
 
     view! {
         <div
@@ -584,7 +584,7 @@ pub fn GridSelectHeaderCell(children: Children) -> impl IntoView {
             data-slot="grid-header-cell"
             tabindex="-1"
             class="relative"
-            style=format!(
+            style=crate::std::format!(
                 "left: 0px; position: sticky; background: var(--background); width: calc(var(--header-Select-size) * 1px); z-index: {PINNED_Z_INDEX};",
             )
         >
@@ -606,7 +606,7 @@ pub fn GridSelectCell(children: Children) -> impl IntoView {
             aria-colindex="1"
             data-slot="grid-cell"
             tabindex="-1"
-            style=format!(
+            style=crate::std::format!(
                 "left: 0px; position: sticky; background: var(--background); width: calc(var(--col-Select-size) * 1px); z-index: {PINNED_Z_INDEX};",
             )
         >
@@ -628,7 +628,7 @@ pub fn GridPinnedHeaderCell(children: Children, left: i32, width: i32) -> impl I
             data-slot="grid-header-cell"
             tabindex="-1"
             class="relative"
-            style=format!(
+            style=crate::std::format!(
                 "left: {left}px; position: sticky; background: var(--background); width: {width}px; z-index: {PINNED_Z_INDEX};",
             )
         >
@@ -658,7 +658,7 @@ pub fn GridPinnedCell<C: DataGridColumn + 'static>(
             style=move || {
                 let left = pinned_columns_signal.with(|p| get_pinned_left_position(col, p));
                 let width = get_column_width(col);
-                format!(
+                crate::std::format!(
                     "left: {left}px; position: sticky; background: var(--background); width: {width}px; z-index: {PINNED_Z_INDEX};",
                 )
             }

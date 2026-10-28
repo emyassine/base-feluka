@@ -7,7 +7,6 @@ edition = "2021"
 rust-version = "1.81"
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/rkyv/rancor"
 keywords = ["error", "error-handling", "no_std"]
 categories = ["rust-patterns", "no-std"]
 documentation = "https://docs.rs/rancor"

@@ -4,7 +4,6 @@ version = "1.2.1"
 authors = ["repnop <repnop@repnop.dev>"]
 edition = "2018"
 description = "Cross-platform retrieval of a network interface MAC address."
-repository = "https://github.com/repnop/mac_address"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 exclude = ["/.github/"]

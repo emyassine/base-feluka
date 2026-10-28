@@ -46,8 +46,6 @@ keywords = [
     "search",
 ]
 license = "Unlicense OR MIT"
-repository = "https://github.com/BurntSushi/memchr"
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
 

@@ -39,7 +39,7 @@ where
     #[track_caller]
     fn deref_field(self) -> DerefedField<Self> {
         DerefedField {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: self,
         }
@@ -51,7 +51,7 @@ where
 #[derive(Debug, Copy, Clone)]
 pub struct DerefedField<S> {
     inner: S,
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -102,11 +102,11 @@ where
     <S::Value as Deref>::Target: Sized + 'static,
 {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }

@@ -74,8 +74,6 @@ autobenches = false
 description = "AWS-LC is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project."
 readme = "README.md"
 license = "ISC AND (Apache-2.0 OR ISC) AND Apache-2.0 AND MIT AND BSD-3-Clause AND (Apache-2.0 OR ISC OR MIT) AND (Apache-2.0 OR ISC OR MIT-0)"
-repository = "https://github.com/aws/aws-lc-rs"
-
 [package.metadata.aws-lc-sys]
 commit-hash = "fa9bc8d6f7cfb2cf849b247fb06bbbfc41ecc9d6"
 

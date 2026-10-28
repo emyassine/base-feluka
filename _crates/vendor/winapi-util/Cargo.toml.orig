@@ -5,7 +5,6 @@ authors = ["Andrew Gallant <jamslam@gmail.com>"]
 description = "A dumping ground for high level safe wrappers over windows-sys."
 documentation = "https://docs.rs/winapi-util"
 homepage = "https://github.com/BurntSushi/winapi-util"
-repository = "https://github.com/BurntSushi/winapi-util"
 readme = "README.md"
 keywords = ["windows", "windows-sys", "util", "win"]
 license = "Unlicense OR MIT"

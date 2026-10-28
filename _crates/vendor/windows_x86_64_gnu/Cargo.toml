@@ -23,8 +23,6 @@ autobenches = false
 description = "Import lib for Windows"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/microsoft/windows-rs"
-
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
 targets = []

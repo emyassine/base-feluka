@@ -24,8 +24,6 @@ autobenches = false
 description = "Utilities for wrapping, throwing, and catching errors."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [lib]
 name = "throw_error"
 path = "src/lib.rs"

@@ -23,8 +23,6 @@ autobenches = false
 description = "A trait to build and extend tuples."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [lib]
 name = "next_tuple"
 path = "src/lib.rs"

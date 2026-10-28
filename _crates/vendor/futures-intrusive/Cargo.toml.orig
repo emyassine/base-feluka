@@ -4,7 +4,6 @@ edition = "2018"
 version = "0.5.0"
 authors = ["Matthias Einwag <matthias.einwag@live.com>"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Matthias247/futures-intrusive"
 homepage = "https://github.com/Matthias247/futures-intrusive"
 description = """
 Futures based on intrusive data structures - for std and no-std environments.

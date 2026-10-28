@@ -4,7 +4,6 @@ version = "1.1.0"
 authors = ["The rust-url developers"]
 description = "IDNA (Internationalizing Domain Names in Applications) and Punycode."
 keywords = ["no-std", "web", "http"]
-repository = "https://github.com/servo/rust-url/"
 license = "MIT OR Apache-2.0"
 autotests = false
 edition = "2018"

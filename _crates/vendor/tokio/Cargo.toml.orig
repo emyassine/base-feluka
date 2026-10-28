@@ -12,7 +12,6 @@ rust-version = "1.85"
 authors = ["Tokio Contributors <team@tokio.rs>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/tokio-rs/tokio"
 homepage = "https://tokio.rs"
 description = """
 An event-driven, non-blocking I/O platform for writing asynchronous I/O

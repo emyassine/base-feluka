@@ -23,7 +23,7 @@ pub fn AreaChart(
     #[prop(optional, into)] gradient: Option<bool>,
     #[prop(optional, into)] show_yaxis: Option<bool>,
     #[prop(optional, into)] show_grid: Option<bool>,
-    /// JSON array of `{x: "YYYY-MM-DD", title: "..."}` for article publish markers.
+    // JSON array of `{x: "YYYY-MM-DD", title: "..."}` for article publish markers.
     #[prop(optional, into)]
     json_annotations: Option<String>,
 ) -> impl IntoView {

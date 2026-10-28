@@ -5,7 +5,6 @@ authors = ["Vincent Prouillet <hello@vincentprouillet.com"]
 license = "MIT"
 description = "Common validation functions (email, url, length, ...) and trait - to be used with `validator_derive`"
 homepage = "https://github.com/Keats/validator"
-repository = "https://github.com/Keats/validator"
 keywords = ["validation", "api", "validator"]
 edition = "2021"
 readme = "../README.md"

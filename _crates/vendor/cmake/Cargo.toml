@@ -30,8 +30,6 @@ readme = "README.md"
 keywords = ["build-dependencies"]
 categories = ["development-tools::build-utils"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/cmake-rs"
-
 [lib]
 name = "cmake"
 path = "src/lib.rs"

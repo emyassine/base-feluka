@@ -12,7 +12,6 @@ edition = "2018"
 rust-version = "1.51"
 license = "MIT"
 description = "Pre-allocated storage for a uniform data type"
-repository = "https://github.com/tokio-rs/slab"
 keywords = ["slab", "allocator", "no_std"]
 categories = ["memory-management", "data-structures", "no-std"]
 exclude = ["/.*"]

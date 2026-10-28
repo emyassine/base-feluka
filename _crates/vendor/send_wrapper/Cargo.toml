@@ -21,7 +21,6 @@ readme = "README.md"
 keywords = ["send", "wrapper", "thread_local"]
 categories = ["rust-patterns"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/thk1/send_wrapper"
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]

@@ -9,7 +9,7 @@
 //!
 //! # Users
 //!
-//! * `wasm32-wasip*` integration crate `feluqa_ui_runtime_wasi` is using this
+//! * `wasm32-wasip*` integration crate `feluqa_ui_wasi` is using this
 //!   crate under the hood.
 
 use crate::{
@@ -91,7 +91,7 @@ where
                 Self::WebsocketResponse,
             ),
             _,
-        >(Error::from_feluqa_ui_server_functions_error(
+        >(Error::from_server_fn_error(
             crate::ServerFnErrorErr::Response(
                 "Websockets are not supported on this platform.".to_string(),
             ),

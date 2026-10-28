@@ -52,7 +52,7 @@ use syn::__private::ToTokens;
 ///   input = Cbor,
 ///   output = Json
 /// )]
-/// pub async fn my_wacky_feluqa_ui_server_functions(input: Vec<String>) -> Result<usize, ServerFnError> {
+/// pub async fn my_wacky_server_fn(input: Vec<String>) -> Result<usize, ServerFnError> {
 ///   todo!()
 /// }
 ///

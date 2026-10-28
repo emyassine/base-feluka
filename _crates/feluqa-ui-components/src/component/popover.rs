@@ -39,8 +39,8 @@ pub fn Popover(
     #[prop(default = PopoverAlign::default())] align: PopoverAlign,
 ) -> impl IntoView {
     let popover_id = use_random_id();
-    let popover_anchor_name = anchor_name.unwrap_or_else(|| format!("--anchor_{}", popover_id));
-    let popover_target_id = format!("popover_{}", popover_id);
+    let popover_anchor_name = anchor_name.unwrap_or_else(|| crate::std::format!("--anchor_{}", popover_id));
+    let popover_target_id = crate::std::format!("popover_{}", popover_id);
 
     let (position_styles, transform_origin) = match align {
         PopoverAlign::Start => (
@@ -99,7 +99,7 @@ pub fn Popover(
     view! {
         <crate::runtime::context::Provider value=ctx>
             <style>
-                {format!(
+                {crate::std::format!(
                     "
                 #{popover_target_id} {{
                 position-anchor: {popover_anchor_name};
@@ -152,7 +152,7 @@ pub fn PopoverTrigger(children: Children, #[prop(optional, into)] class: String)
     view! {
         <button
             class=button_class
-            style=format!("anchor-name: {}", ctx.anchor_name)
+            style=crate::std::format!("anchor-name: {}", ctx.anchor_name)
             popovertarget=ctx.target_id
             tabindex="0"
             type="button"
@@ -178,7 +178,7 @@ pub fn PopoverContent(children: Children, #[prop(optional, into)] class: String)
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (() => {{
                     const p = document.getElementById('{target_id}');

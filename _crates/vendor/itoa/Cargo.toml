@@ -32,8 +32,6 @@ categories = [
     "no-std::no-alloc",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dtolnay/itoa"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [

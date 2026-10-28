@@ -6,7 +6,6 @@ version = "7.3.0"
 description = "Safe low-level bindings for the zstd compression library."
 keywords = ["zstd", "zstandard", "compression"]
 categories = ["api-bindings", "compression"]
-repository = "https://github.com/gyscos/zstd-rs"
 license = "BSD-3-Clause"
 readme = "Readme.md"
 edition = "2018"

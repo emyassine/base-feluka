@@ -43,7 +43,7 @@ pub fn MultiSelectValue(#[prop(optional, into)] placeholder: String) -> impl Int
                     placeholder.clone()
                 } else {
                     let count = values.len();
-                    if count == 1 { "1 selected".to_string() } else { format!("{} selected", count) }
+                    if count == 1 { "1 selected".to_string() } else { crate::std::format!("{} selected", count) }
                 }
             }}
         </span>
@@ -140,7 +140,7 @@ pub fn MultiSelectTrigger(
 ) -> impl IntoView {
     let multi_select_ctx = expect_context::<MultiSelectContext>();
 
-    let peer_class = if !id.is_empty() { format!("peer/{}", id) } else { String::new() };
+    let peer_class = if !id.is_empty() { crate::std::format!("peer/{}", id) } else { String::new() };
 
     let button_class = class_merge!(
         "w-full p-2 h-9 inline-flex items-center justify-between text-sm font-medium whitespace-nowrap rounded-md transition-colors focus:outline-none focus:ring-1 focus:ring-ring focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&_svg:not(:last-child)]:mr-2 [&_svg:not(:first-child)]:ml-2 [&_svg:not([class*='size-'])]:size-4  border bg-background border-input hover:bg-accent hover:text-accent-foreground",
@@ -148,7 +148,7 @@ pub fn MultiSelectTrigger(
         class
     );
 
-    let button_id = if !id.is_empty() { id } else { format!("trigger_{}", multi_select_ctx.target_id) };
+    let button_id = if !id.is_empty() { id } else { crate::std::format!("trigger_{}", multi_select_ctx.target_id) };
 
     view! {
         <button
@@ -224,7 +224,7 @@ pub fn MultiSelectContent(children: Children, #[prop(optional, into)] class: Str
         </div>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupMultiSelect = () => {{
@@ -252,7 +252,7 @@ pub fn MultiSelectContent(children: Children, #[prop(optional, into)] class: Str
                             multiSelect.setAttribute('data-state', 'open');
                             multiSelect.style.pointerEvents = 'auto';
 
-                            // Set min-width to match trigger
+                            /// Set min-width to match trigger
                             const triggerRect = trigger.getBoundingClientRect();
                             multiSelect.style.minWidth = `${{triggerRect.width}}px`;
 

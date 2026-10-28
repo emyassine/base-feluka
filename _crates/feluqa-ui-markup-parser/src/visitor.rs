@@ -29,7 +29,7 @@ pub enum RustCode<'a> {
 /// By default Visitor are abstract over `CustomNode`, but it is possible to
 /// implement a Visitor for concrete `CustomNode`.
 pub trait Visitor<Custom> {
-    // Visit node types
+    /// Visit node types
     fn visit_node(&mut self, _node: &mut Node<Custom>) -> bool {
         true
     }
@@ -58,7 +58,7 @@ pub trait Visitor<Custom> {
         true
     }
 
-    // Visit atoms
+    /// Visit atoms
     fn visit_rust_code(&mut self, _code: RustCode) -> bool {
         true
     }
@@ -75,7 +75,7 @@ pub trait Visitor<Custom> {
     fn visit_close_tag(&mut self, _closed_tag: &mut CloseTag) -> bool {
         true
     }
-    // Visit Attributes
+    /// Visit Attributes
     fn visit_attribute(&mut self, _attribute: &mut NodeAttribute) -> bool {
         true
     }

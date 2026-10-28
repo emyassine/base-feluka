@@ -58,7 +58,7 @@ pub fn AnimateGroupItem(
 
     let style = move || {
         let delay = delay_ms.get();
-        format!("animation-delay: {delay}ms; animation-fill-mode: {fill_mode};")
+        crate::std::format!("animation-delay: {delay}ms; animation-fill-mode: {fill_mode};")
     };
 
     view! {
@@ -72,7 +72,7 @@ pub fn AnimateGroupItem(
 /*                     ✨ FUNCTIONS ✨                        */
 /* ========================================================== */
 
-// TODO later.
+/// TODO later.
 
 #[derive(FeluqaVariant)]
 pub enum AnimateVariant {

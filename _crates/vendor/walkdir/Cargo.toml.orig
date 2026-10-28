@@ -5,7 +5,6 @@ authors = ["Andrew Gallant <jamslam@gmail.com>"]
 description = "Recursively walk a directory."
 documentation = "https://docs.rs/walkdir/"
 homepage = "https://github.com/BurntSushi/walkdir"
-repository = "https://github.com/BurntSushi/walkdir"
 readme = "README.md"
 keywords = ["directory", "recursive", "walk", "iterator"]
 categories = ["filesystem"]

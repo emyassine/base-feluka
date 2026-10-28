@@ -36,8 +36,6 @@ categories = [
     "parsing",
 ]
 license = "MIT"
-repository = "https://github.com/Peternator7/strum"
-
 [lib]
 name = "strum_macros"
 path = "src/lib.rs"

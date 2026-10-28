@@ -154,7 +154,7 @@ pub mod browser {
                     gloo_net::websocket::futures::WebSocket::open(&url)
                         .map_err(|err| {
                             web_sys::console::error_1(&err.to_string().into());
-                            Error::from_feluqa_ui_server_functions_error(
+                            Error::from_server_fn_error(
                                 ServerFnErrorErr::Request(err.to_string()),
                             )
                         })?;
@@ -167,7 +167,7 @@ pub mod browser {
                     }),
                     Err(err) => {
                         web_sys::console::error_1(&err.to_string().into());
-                        Err(OutputStreamError::from_feluqa_ui_server_functions_error(
+                        Err(OutputStreamError::from_server_fn_error(
                             ServerFnErrorErr::Request(err.to_string()),
                         )
                         .ser())
@@ -297,7 +297,7 @@ pub mod reqwest {
             let url = format!("{websocket_server_url}{path}");
             let (ws_stream, _) =
                 tokio_tungstenite::connect_async(url).await.map_err(|e| {
-                    Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                    Error::from_server_fn_error(ServerFnErrorErr::Request(
                         e.to_string(),
                     ))
                 })?;
@@ -307,7 +307,7 @@ pub mod reqwest {
             Ok((
                 read.map(|msg| match msg {
                     Ok(msg) => Ok(msg.into_data()),
-                    Err(e) => Err(OutputStreamError::from_feluqa_ui_server_functions_error(
+                    Err(e) => Err(OutputStreamError::from_server_fn_error(
                         ServerFnErrorErr::Request(e.to_string()),
                     )
                     .ser()),

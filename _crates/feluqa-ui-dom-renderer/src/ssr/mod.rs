@@ -103,7 +103,7 @@ impl StreamBuilder {
         self
     }
 
-    // Out-of-Order Streaming
+    /// Out-of-Order Streaming
     /// Pushes a fallback for out-of-order streaming.
     pub fn push_fallback<View>(
         &mut self,

@@ -30,8 +30,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT"
-repository = "https://github.com/tower-rs/tower"
-
 [lib]
 name = "tower_service"
 path = "src/lib.rs"

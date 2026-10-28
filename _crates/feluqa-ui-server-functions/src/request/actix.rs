@@ -88,12 +88,12 @@ where
             let mut payload = payload.into_inner();
             let bytes =
                 Bytes::from_request(&req, &mut payload).await.map_err(|e| {
-                    Error::from_feluqa_ui_server_functions_error(
+                    Error::from_server_fn_error(
                         ServerFnErrorErr::Deserialization(e.to_string()),
                     )
                 })?;
             String::from_utf8(bytes.into()).map_err(|e| {
-                Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(
                     e.to_string(),
                 ))
             })
@@ -106,7 +106,7 @@ where
         let payload = self.0.take().1;
         let stream = payload.map(|res| {
             res.map_err(|e| {
-                Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(
                     e.to_string(),
                 ))
                 .ser()
@@ -128,7 +128,7 @@ where
         let (request, payload) = self.0.take();
         let (response, mut session, mut msg_stream) =
             actix_ws::handle(&request, payload).map_err(|e| {
-                Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                Error::from_server_fn_error(ServerFnErrorErr::Request(
                     e.to_string(),
                 ))
             })?;
@@ -146,7 +146,7 @@ where
                             break;
                         };
                                 if let Err(err) = session.binary(incoming).await {
-                                    _ = response_stream_tx.start_send(Err(InputStreamError::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(err.to_string())).ser()));
+                                    _ = response_stream_tx.start_send(Err(InputStreamError::from_server_fn_error(ServerFnErrorErr::Request(err.to_string())).ser()));
                                 }
                     },
                     outgoing = msg_stream.next().fuse() => {
@@ -174,7 +174,7 @@ where
                             Ok(_other) => {
                             }
                             Err(e) => {
-                                _ = response_stream_tx.start_send(Err(InputStreamError::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Response(e.to_string())).ser()));
+                                _ = response_stream_tx.start_send(Err(InputStreamError::from_server_fn_error(ServerFnErrorErr::Response(e.to_string())).ser()));
                             }
                         }
                     }

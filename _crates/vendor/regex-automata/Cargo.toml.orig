@@ -5,7 +5,6 @@ authors = ["The Rust Project Developers", "Andrew Gallant <jamslam@gmail.com>"]
 description = "Automata construction and matching using regular expressions."
 documentation = "https://docs.rs/regex-automata"
 homepage = "https://github.com/rust-lang/regex/tree/master/regex-automata"
-repository = "https://github.com/rust-lang/regex"
 readme = "README.md"
 keywords = ["regex", "dfa", "automata", "automaton", "nfa"]
 license = "MIT OR Apache-2.0"

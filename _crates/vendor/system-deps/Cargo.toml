@@ -35,8 +35,6 @@ keywords = [
     "metadata",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/gdesmott/system-deps"
-
 [lib]
 name = "system_deps"
 path = "src/lib.rs"

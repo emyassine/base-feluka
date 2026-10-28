@@ -25,8 +25,6 @@ readme = false
 keywords = []
 categories = []
 license = "MIT"
-repository = "https://github.com/demonthos/sledgehammer_utils/"
-
 [lib]
 name = "sledgehammer_utils"
 path = "src/lib.rs"

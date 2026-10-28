@@ -292,7 +292,7 @@ pub fn wasm_split(args: TokenStream, input: TokenStream) -> TokenStream {
     // and `preload` surface a load failure as `Result<_, SplitLoaderError>`;
     // without it they keep their infallible signatures and a hard failure
     // panics, exactly as before. Keeping `preload` infallible by default is
-    // load-bearing: existing callers expect `async fn() -> ()` — e.g. leptos's
+    // load-bearing: existing callers expect `async fn() -> ()` — e.g. feluqa_ui's
     // `LazyRoute::preload` is typed `Output = ()` — and changing that
     // unconditionally would break them.
     let ensure_loaded = quote! {
@@ -307,7 +307,7 @@ pub fn wasm_split(args: TokenStream, input: TokenStream) -> TokenStream {
         // `Result<_, E>` where `E: From<SplitLoaderError>`. We do NOT synthesize
         // the return type. `#preload_name().await?` converts a load failure into
         // the user's `E` via `?`/`From`, so a use-site can fold it straight into
-        // a framework error (e.g. leptos surfacing it to `<ErrorBoundary>`).
+        // a framework error (e.g. feluqa_ui surfacing it to `<ErrorBoundary>`).
         (
             quote!(-> ::core::result::Result<(), #split_loader_error>),
             quote! { return #ensure_loaded; },

@@ -36,8 +36,6 @@ categories = [
     "web-programming::http-server",
 ]
 license = "MIT"
-repository = "https://github.com/hyperium/hyper-util"
-
 [package.metadata.docs.rs]
 features = ["full"]
 rustdoc-args = [

@@ -46,8 +46,6 @@ categories = [
     "embedded",
 ]
 license = "Unicode-3.0"
-repository = "https://github.com/unicode-org/icu4x"
-
 [features]
 alloc = [
     "serde_core?/alloc",

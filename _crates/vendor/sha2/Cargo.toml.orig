@@ -10,7 +10,6 @@ license = "MIT OR Apache-2.0"
 readme = "README.md"
 edition = "2018"
 documentation = "https://docs.rs/sha2"
-repository = "https://github.com/RustCrypto/hashes"
 keywords = ["crypto", "sha2", "hash", "digest"]
 categories = ["cryptography", "no-std"]
 

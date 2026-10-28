@@ -8,7 +8,6 @@ version = "0.5.3"
 authors = ["Tower Maintainers <team@tower-rs.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/tower-rs/tower"
 homepage = "https://github.com/tower-rs/tower"
 description = """
 Tower is a library of modular and reusable components for building robust

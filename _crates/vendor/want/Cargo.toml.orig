@@ -5,7 +5,6 @@ description = "Detect when another Future wants a result."
 keywords = ["futures", "channel", "async"]
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 license = "MIT"
-repository = "https://github.com/seanmonstar/want"
 documentation = "https://docs.rs/want"
 edition = "2018"
 

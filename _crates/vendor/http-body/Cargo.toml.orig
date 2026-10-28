@@ -16,7 +16,6 @@ authors = [
 edition = "2018"
 readme = "../README.md"
 documentation = "https://docs.rs/http-body"
-repository = "https://github.com/hyperium/http-body"
 license = "MIT"
 description = """
 Trait representing an asynchronous, streaming, HTTP request or response body.

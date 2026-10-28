@@ -35,8 +35,6 @@ keywords = [
 ]
 categories = ["parser-implementations"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/EmbarkStudios/cfg-expr"
-
 [features]
 default = []
 targets = ["target-lexicon"]

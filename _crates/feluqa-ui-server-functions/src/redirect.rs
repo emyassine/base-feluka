@@ -13,7 +13,7 @@ pub const REDIRECT_HEADER: &str = "serverfnredirect";
 /// or the [`REDIRECT_HEADER`].
 pub type RedirectHook = Box<dyn Fn(&str) + Send + Sync>;
 
-// allowed: not in a public API, and pretty straightforward
+/// allowed: not in a public API, and pretty straightforward
 #[allow(clippy::type_complexity)]
 pub(crate) static REDIRECT_HOOK: OnceLock<RedirectHook> = OnceLock::new();
 

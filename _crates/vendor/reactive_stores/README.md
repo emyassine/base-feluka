@@ -11,5 +11,5 @@ Using the `#[derive(Store)]` macro on a struct creates a series of getters that 
 can then be read as if they were signals. Changes to parents will notify their children, but changing one sibling field will  
 not notify any of the others, nor will it require diffing those sibling fields (unlike earlier solutions using memoized “slices”).
 
-This is published for use with the Leptos framework but can be used in any scenario where `reactive_graph` is being used 
+This is published for use with the Feluqa framework but can be used in any scenario where `reactive_graph` is being used 
 for reactivity.

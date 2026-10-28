@@ -28,8 +28,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/RustCrypto/hashes"
-
 [dependencies.digest]
 version = "0.10.3"
 features = ["mac"]

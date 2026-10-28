@@ -139,9 +139,9 @@ impl KeyedAttribute {
         })
     }
 
-    // Checks if error is about eof.
-    // This error is known to report Span::call_site.
-    // Correct them to point to ParseStream
+    /// Checks if error is about eof.
+    /// This error is known to report Span::call_site.
+    /// Correct them to point to ParseStream
     pub(crate) fn correct_expr_error_span(error: syn::Error, input: ParseStream) -> syn::Error {
         let error_str = error.to_string();
         if error_str.starts_with("unexpected end of input") {
@@ -165,7 +165,7 @@ pub struct FnBinding {
     pub inputs: Punctuated<Pat, Comma>,
 }
 
-// Copy - pasted from syn1 closure argument parsing
+/// Copy - pasted from syn1 closure argument parsing
 fn closure_arg(input: ParseStream) -> syn::Result<Pat> {
     let attrs = input.call(Attribute::parse_outer)?;
     let mut pat: Pat = Pat::parse_single(input)?;

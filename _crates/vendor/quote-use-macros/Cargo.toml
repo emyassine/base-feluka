@@ -34,8 +34,6 @@ categories = [
     "parsing",
 ]
 license = "MIT"
-repository = "https://github.com/ModProg/quote-use"
-
 [package.metadata.release]
 shared-version = true
 

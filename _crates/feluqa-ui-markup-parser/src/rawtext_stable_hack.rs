@@ -25,15 +25,15 @@ pub fn is_macro_args_recoverable() -> bool {
     Span::call_site().source_text().is_some()
 }
 
-// Inject default text to every raw node, just to avoid panics.
+/// Inject default text to every raw node, just to avoid panics.
 pub fn inject_raw_text_default<C: CustomNode>(source: &mut [Node<C>]) {
     for source in source.iter_mut() {
         replace_node_default(source);
     }
 }
 
-// Inject raw text to every raw node, recovered using proc-macro2 second
-// parsing;
+/// Inject raw text to every raw node, recovered using proc-macro2 second
+/// parsing;
 pub fn inject_raw_text<C: CustomNode + std::fmt::Debug>(
     source: &mut [Node<C>],
     hacked: &[Node<C>],
@@ -87,7 +87,7 @@ pub fn replace_node<C: CustomNode + std::fmt::Debug>(source: &mut Node<C>, hacke
     }
 }
 
-// TODO: Add possibility to check macro name.
+/// TODO: Add possibility to check macro name.
 #[derive(Debug, Clone)]
 pub enum TokenStreamOperations {
     SkipToken(usize),

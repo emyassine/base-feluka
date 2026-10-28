@@ -47,8 +47,6 @@ categories = [
     "rust-patterns",
 ]
 license = "MIT"
-repository = "https://github.com/JelteF/derive_more"
-
 [package.metadata.docs.rs]
 features = ["full"]
 rustdoc-args = [
@@ -63,7 +61,6 @@ features = [
 ]
 
 [badges.github]
-repository = "JelteF/derive_more"
 workflow = "CI"
 
 [features]

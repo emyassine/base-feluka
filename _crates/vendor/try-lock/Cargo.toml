@@ -26,6 +26,4 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/seanmonstar/try-lock"
-
 [dependencies]

@@ -245,7 +245,7 @@ pub trait Write: Sized + DefinedAt + Notify {
     /// Returns the guard, or `None` if the signal has already been disposed.
     fn try_write(&self) -> Option<impl UntrackableGuard<Target = Self::Value>>;
 
-    // Returns a guard that will not notify subscribers when dropped,
+    /// Returns a guard that will not notify subscribers when dropped,
     /// or `None` if the signal has already been disposed.
     fn try_write_untracked(
         &self,

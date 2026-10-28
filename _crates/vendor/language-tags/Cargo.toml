@@ -19,8 +19,6 @@ description = "Language tags for Rust"
 keywords = ["language", "i18n", "http", "html"]
 categories = ["parser-implementations"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/pyfisch/rust-language-tags"
-
 [[bench]]
 name = "language_tag"
 harness = false
@@ -33,4 +31,3 @@ version = "0.1"
 [dev-dependencies.serde_json]
 version = "1.0"
 [badges.travis-ci]
-repository = "pyfisch/rust-language-tags"

@@ -23,8 +23,6 @@ keywords = [
 ]
 categories = ["text-processing"]
 license = "MIT"
-repository = "https://github.com/rutrum/convert-case"
-
 [profile.release]
 lto = true
 codegen-units = 1

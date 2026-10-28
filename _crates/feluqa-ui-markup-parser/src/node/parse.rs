@@ -330,7 +330,7 @@ impl<C: CustomNode> ParseRecoverable for Node<C> {
     }
 }
 
-// This method couldn't be const generic until https://github.com/rust-lang/rust/issues/63569
+/// This method couldn't be const generic until https://github.com/rust-lang/rust/issues/63569
 /// Parse array of tokens with
 pub(super) fn parse_array_of2_tokens<T: Parse>(input: ParseStream) -> syn::Result<[T; 2]> {
     Ok([input.parse()?, input.parse()?])

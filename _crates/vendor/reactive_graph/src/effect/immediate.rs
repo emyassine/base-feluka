@@ -216,7 +216,7 @@ mod inner {
     ///   (A parent run will start before and end after a recursive child run.)
     /// - To handle parallelism with the last run, we only allow sources to be added by its thread.
     pub(super) struct EffectInner {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         defined_at: &'static Location<'static>,
         owner: Owner,
         state: ReactiveNodeState,
@@ -260,7 +260,7 @@ mod inner {
             fun: impl Fn() + Send + Sync + 'static,
         ) -> Arc<RwLock<EffectInner>> {
             let owner = Owner::new();
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             let defined_at = Location::caller();
 
             Arc::new_cyclic(|weak| {
@@ -270,7 +270,7 @@ mod inner {
                 );
 
                 RwLock::new(EffectInner {
-                    #[cfg(any(debug_assertions, leptos_debuginfo))]
+                    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
                     defined_at,
                     owner,
                     state: ReactiveNodeState::Dirty,
@@ -416,11 +416,11 @@ mod inner {
 
     impl DefinedAt for EffectInner {
         fn defined_at(&self) -> Option<&'static Location<'static>> {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             {
                 Some(self.defined_at)
             }
-            #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+            #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
             {
                 None
             }

@@ -5,7 +5,6 @@ documentation = "https://docs.rs/attribute-derive"
 include = ["src/**/*", "LICENSE", "README.md"]
 keywords = ["derive", "macro"]
 license = "MIT"
-repository = "https://github.com/ModProg/attribute-derive"
 version = "0.11.0"
 edition = "2021"
 name = "attribute-derive-macro"

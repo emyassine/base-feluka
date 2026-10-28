@@ -34,8 +34,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Amanieu/parking_lot"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

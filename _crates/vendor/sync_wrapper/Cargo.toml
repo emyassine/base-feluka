@@ -21,8 +21,6 @@ readme = "README.md"
 keywords = ["concurrency"]
 categories = ["concurrency"]
 license = "Apache-2.0"
-repository = "https://github.com/Actyx/sync_wrapper"
-
 [package.metadata.docs.rs]
 all-features = true
 

@@ -34,7 +34,7 @@ const SCROLLABLE_SELECTOR: &str = r#"[style*="overflow"],[class*="overflow"],[cl
 const FIXED_SELECTOR: &str =
     r#"[style*="fixed"],[class*="fixed"],header,nav,aside,[role="dialog"],[role="alertdialog"]"#;
 
-// ── State ──────────────────────────────────────────────────────────
+/// ── State ──────────────────────────────────────────────────────────
 
 struct BodyStyles {
     position: String,
@@ -79,11 +79,11 @@ impl State {
     }
 }
 
-thread_local! {
+crate::std::thread_local! {
     static STATE: RefCell<State> = const { RefCell::new(State::new()) };
 }
 
-// ── Helpers ────────────────────────────────────────────────────────
+/// ── Helpers ────────────────────────────────────────────────────────
 
 /// Check if an element (or any ancestor) is in the exclusion list.
 fn is_excluded(el: &crate::web_sys::Element) -> bool {
@@ -93,7 +93,7 @@ fn is_excluded(el: &crate::web_sys::Element) -> bool {
         return true;
     }
     for &name in EXCLUDED_DATA_NAMES {
-        let sel = format!(r#"[data-name="{name}"]"#);
+        let sel = crate::std::format!(r#"[data-name="{name}"]"#);
         if el.closest(&sel).ok().flatten().is_some() {
             return true;
         }
@@ -104,7 +104,7 @@ fn is_excluded(el: &crate::web_sys::Element) -> bool {
 /// Check if a fixed element is inside an excluded container.
 fn is_fixed_excluded(el: &crate::web_sys::Element) -> bool {
     for &name in FIXED_EXCLUDED {
-        let sel = format!(r#"[data-name="{name}"]"#);
+        let sel = crate::std::format!(r#"[data-name="{name}"]"#);
         if el.closest(&sel).ok().flatten().is_some() {
             return true;
         }
@@ -126,7 +126,7 @@ fn parse_px(s: &str) -> f64 {
     s.trim_end_matches("px").parse::<f64>().unwrap_or(0.0)
 }
 
-// ── Public API ─────────────────────────────────────────────────────
+/// ── Public API ─────────────────────────────────────────────────────
 
 /// Register `window.ScrollLock` for JS interop.
 ///
@@ -253,7 +253,7 @@ pub fn lock() {
             };
             let ov = cs.get_property_value("overflow").unwrap_or_default();
             let ovy = cs.get_property_value("overflow-y").unwrap_or_default();
-            let scrollable = matches!(ov.as_str(), "auto" | "scroll") || matches!(ovy.as_str(), "auto" | "scroll");
+            let scrollable = crate::std::matches!(ov.as_str(), "auto" | "scroll") || crate::std::matches!(ovy.as_str(), "auto" | "scroll");
 
             if !scrollable || element.scroll_height() <= element.client_height() {
                 continue;
@@ -279,7 +279,7 @@ pub fn lock() {
         }
     }
 
-    // Collect fixed elements (only when scrollbar is visible) ─
+    /// Collect fixed elements (only when scrollbar is visible) ─
 
     struct FRead {
         el: crate::web_sys::HtmlElement,
@@ -327,17 +327,17 @@ pub fn lock() {
 
     // Lock body
     let _ = body_style.set_property("position", "fixed");
-    let _ = body_style.set_property("top", &format!("-{window_scroll_y}px"));
+    let _ = body_style.set_property("top", &crate::std::format!("-{window_scroll_y}px"));
     let _ = body_style.set_property("width", "100%");
     let _ = body_style.set_property("overflow", "hidden");
 
     if scrollbar_width > 0.0 {
-        let _ = body_style.set_property("padding-right", &format!("{scrollbar_width}px"));
+        let _ = body_style.set_property("padding-right", &crate::std::format!("{scrollbar_width}px"));
 
         // Compensate fixed-position elements
         for fr in &f_reads {
             let np = fr.computed_padding + scrollbar_width;
-            let _ = fr.el.style().set_property("padding-right", &format!("{np}px"));
+            let _ = fr.el.style().set_property("padding-right", &crate::std::format!("{np}px"));
         }
     }
 
@@ -346,7 +346,7 @@ pub fn lock() {
         let _ = sr.el.style().set_property("overflow", "hidden");
         if sr.el_scrollbar > 0 {
             let np = sr.computed_padding + sr.el_scrollbar as f64;
-            let _ = sr.el.style().set_property("padding-right", &format!("{np}px"));
+            let _ = sr.el.style().set_property("padding-right", &crate::std::format!("{np}px"));
         }
     }
 
@@ -392,7 +392,7 @@ pub fn is_locked() -> bool {
     STATE.with(|s| s.borrow().locked)
 }
 
-// ── Internal ───────────────────────────────────────────────────────
+/// ── Internal ───────────────────────────────────────────────────────
 
 fn perform_unlock() {
     let Some(window) = crate::web_sys::window() else { return };

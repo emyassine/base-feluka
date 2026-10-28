@@ -14,7 +14,7 @@ pub fn class_merge_override(
 ) -> String {
     let styles: Vec<Result<AstStyle, &str>> = crate::ast::parse_tailwind(class, options.into());
 
-    let mut valid_styles: Vec<Result<AstStyle, &str>> = vec![];
+    let mut valid_styles: Vec<Result<AstStyle, &str>> = crate::std::vec![];
     let mut collision_styles: HashSet<Collision> = HashSet::new();
 
     for style in styles.into_iter().rev() {
@@ -113,6 +113,6 @@ fn check_arbitrary() {
 
     assert_eq!(
         Collision::check_arbitrary(style),
-        Some(Collision { important: false, variants: vec![], collision_id: "color" })
+        Some(Collision { important: false, variants: crate::std::vec![], collision_id: "color" })
     );
 }

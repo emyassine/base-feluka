@@ -26,7 +26,7 @@ pub struct Field<T, S = SyncStorage>
 where
     T: 'static,
 {
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
     inner: ArenaItem<ArcField<T>, S>,
 }
@@ -38,7 +38,7 @@ where
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = f.debug_struct("Field");
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         let f = f.field("defined_at", &self.defined_at);
         f.field("inner", &self.inner).finish()
     }
@@ -101,7 +101,7 @@ where
     #[track_caller]
     fn from(value: Store<T, S>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -116,7 +116,7 @@ where
     #[track_caller]
     fn from(value: ArcField<T>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value),
         }
@@ -131,7 +131,7 @@ where
     #[track_caller]
     fn from(value: ArcStore<T>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -149,7 +149,7 @@ where
     #[track_caller]
     fn from(value: Subfield<Inner, Prev, T>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -165,7 +165,7 @@ where
     #[track_caller]
     fn from(value: DerefedField<Inner>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -183,7 +183,7 @@ where
     #[track_caller]
     fn from(value: AtIndex<Inner, Prev>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -206,7 +206,7 @@ where
     #[track_caller]
     fn from(value: AtKeyed<Inner, Prev, K, T>) -> Self {
         Field {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             inner: ArenaItem::new_with_storage(value.into()),
         }
@@ -223,11 +223,11 @@ impl<T, S> Copy for Field<T, S> {}
 
 impl<T, S> DefinedAt for Field<T, S> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }

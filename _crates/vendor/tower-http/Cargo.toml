@@ -37,7 +37,6 @@ categories = [
     "web-programming",
 ]
 license = "MIT"
-repository = "https://github.com/tower-rs/tower-http"
 resolver = "2"
 
 [package.metadata.docs.rs]

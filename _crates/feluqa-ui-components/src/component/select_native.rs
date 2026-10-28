@@ -3,7 +3,7 @@ use crate::runtime::prelude::*;
 use crate::feluqa_ui_component_macros::clx;
 use crate::feluqa_ui_classnames::*;
 
-// TODO 💪: Use Label from label.rs.
+/// TODO 💪: Use Label from label.rs.
 
 #[component]
 pub fn SelectNative(

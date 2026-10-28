@@ -37,8 +37,6 @@ categories = [
     "wasm",
 ]
 license = "MIT"
-repository = "https://github.com/plotters-rs/plotters"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

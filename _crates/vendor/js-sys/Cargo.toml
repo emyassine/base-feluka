@@ -34,8 +34,6 @@ documentation = "https://docs.rs/js-sys"
 readme = "README.md"
 categories = ["wasm"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys"
-
 [features]
 default = [
     "std",

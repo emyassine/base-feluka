@@ -34,8 +34,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/serde-rs/json"
-
 [package.metadata.docs.rs]
 features = [
     "preserve_order",

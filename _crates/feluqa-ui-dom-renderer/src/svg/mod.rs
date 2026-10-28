@@ -18,7 +18,7 @@ macro_rules! svg_elements {
         paste::paste! {
             $(
                 /// An SVG element.
-                // `tag()` function
+                /// `tag()` function
                 #[allow(non_snake_case)]
                 #[track_caller]
                 pub fn $tag() -> HtmlElement<[<$tag:camel>], (), ()>

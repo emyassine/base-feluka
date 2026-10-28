@@ -7,7 +7,7 @@ pub fn AspectRatio(
     #[prop(into, optional)] class: String,
     children: Children,
 ) -> impl IntoView {
-    let style = format!("aspect-ratio: {ratio}");
+    let style = crate::std::format!("aspect-ratio: {ratio}");
 
     view! {
         <div data-name="AspectRatio" class=class_merge!("relative w-full overflow-hidden", class) style=style>

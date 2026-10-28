@@ -26,7 +26,6 @@ keywords = [
 ]
 license = "Apache-2.0 OR MIT"
 name = "uuid"
-repository = "https://github.com/uuid-rs/uuid"
 version = "1.26.1" # remember to update html_root_url in lib.rs
 rust-version = "1.85.0"
 
@@ -43,11 +42,7 @@ features = ["serde", "v1", "v3", "v4", "v5", "v6", "v7", "v8"]
 unexpected_cfgs = { level = "allow", check-cfg = ['cfg(uuid_unstable)'] }
 
 [badges.is-it-maintained-issue-resolution]
-repository = "uuid-rs/uuid"
-
 [badges.is-it-maintained-open-issues]
-repository = "uuid-rs/uuid"
-
 [badges.maintenance]
 status = "actively-developed"
 

@@ -15,7 +15,7 @@ pub fn AnimatedIcon(icon: IconTypeAnimated, #[prop(into, optional)] class: Strin
         {if let Some(css) = icon_css { view! { <style>{css}</style> }.into_any() } else { ().into_any() }}
 
         <SvgIcon class=class data_name=icon.as_ref().to_string()>
-            <title>{format!("Rust/UI Animated Icons - {}", icon.as_ref())}</title>
+            <title>{crate::std::format!("Rust/UI Animated Icons - {}", icon.as_ref())}</title>
 
             {elements.iter().map(|element| { element.to_feluqa_ui_runtime_view() }).collect::<Vec<_>>()}
         </SvgIcon>

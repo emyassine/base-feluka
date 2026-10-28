@@ -7,7 +7,6 @@ description = "A brotli decompressor that with an interface avoiding the rust st
 license = "BSD-3-Clause/MIT"
 documentation = "https://github.com/dropbox/rust-brotli-decompressor/blob/master/README.md"
 homepage = "https://github.com/dropbox/rust-brotli-decompressor"
-repository = "https://github.com/dropbox/rust-brotli-decompressor"
 keywords = ["brotli", "decompression", "lz77", "huffman", "nostd"]
 readme = "README.md"
 exclude = ["testdata/*"]

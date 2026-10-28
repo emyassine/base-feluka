@@ -27,8 +27,6 @@ keywords = [
     "relative",
 ]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/Manishearth/pathdiff"
-
 [package.metadata.docs.rs]
 all-features = true
 

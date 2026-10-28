@@ -18,7 +18,6 @@ description = "32-bit hashing machinery"
 keywords = ["32-bit", "hash", "fnv", "murmur3"]
 categories = ["no-std"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/japaric/hash32"
 [dependencies.byteorder]
 version = "1.2.2"
 default-features = false

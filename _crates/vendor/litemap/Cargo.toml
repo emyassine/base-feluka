@@ -43,8 +43,6 @@ keywords = [
     "map",
 ]
 license = "Unicode-3.0"
-repository = "https://github.com/unicode-org/icu4x"
-
 [package.metadata.workspaces]
 independent = true
 

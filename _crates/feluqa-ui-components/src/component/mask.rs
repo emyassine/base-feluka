@@ -1,7 +1,7 @@
 use crate::runtime::prelude::*;
 use crate::feluqa_ui_classnames::*;
 
-// TODO UI 🐛 : Fix MaskColor (-> demo)
+/// TODO UI 🐛 : Fix MaskColor (-> demo)
 
 #[component]
 pub fn MaskWrapper(#[prop(into, optional)] class: String, children: Children) -> impl IntoView {

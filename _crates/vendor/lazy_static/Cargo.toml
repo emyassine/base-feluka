@@ -34,8 +34,6 @@ categories = [
     "memory-management",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang-nursery/lazy-static.rs"
-
 [features]
 spin_no_std = ["spin"]
 

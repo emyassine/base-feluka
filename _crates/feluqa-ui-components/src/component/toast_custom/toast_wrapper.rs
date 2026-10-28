@@ -2,7 +2,7 @@ use super::_builder::ToastBuilder;
 use super::_data::{ToastLevel, ToastPosition};
 use super::toaster::expect_toaster;
 
-// TODO. The default poition is already BottomRight in the builder.
+/// TODO. The default poition is already BottomRight in the builder.
 const DEFAULT_POSITION: ToastPosition = ToastPosition::BottomRight;
 
 #[allow(dead_code)]

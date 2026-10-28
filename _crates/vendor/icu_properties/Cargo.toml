@@ -37,8 +37,6 @@ homepage = "https://icu4x.unicode.org"
 readme = "README.md"
 categories = ["internationalization"]
 license = "Unicode-3.0"
-repository = "https://github.com/unicode-org/icu4x"
-
 [package.metadata.docs.rs]
 all-features = true
 

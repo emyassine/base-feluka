@@ -35,8 +35,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/mcountryman/simd-adler32"
-
 [features]
 const-generics = []
 default = [

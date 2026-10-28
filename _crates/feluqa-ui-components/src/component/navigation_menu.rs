@@ -80,7 +80,7 @@ pub fn NavigationMenu(children: Children, #[prop(optional, into)] class: String)
 
             // Single JS coordinator for all hover interactions and directional animation
             <script>
-                {format!(
+                {crate::std::format!(
                     r#"
                     (function() {{
                         const setup = () => {{

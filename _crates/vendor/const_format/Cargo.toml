@@ -40,8 +40,6 @@ categories = [
     "text-processing",
 ]
 license = "Zlib"
-repository = "https://github.com/rodrimati1992/const_format_crates/"
-
 [package.metadata.docs.rs]
 features = [
     "all",

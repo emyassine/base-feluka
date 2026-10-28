@@ -55,13 +55,13 @@ pub fn Marker(
     // the root element polymorphically (Radix asChild pattern). FeluqaUi has no asChild, so
     // we split into two explicit props: `href` (→ <a>) and `on_click` (→ <button>).
     // If neither is set, renders a plain <div>. Matches shadcn behavior for all 3 cases.
-    /// Renders the marker as an <a> element
+    // Renders the marker as an <a> element
     #[prop(optional, into)]
     href: Option<String>,
-    /// Renders the marker as a <button> element
+    // Renders the marker as a <button> element
     #[prop(optional)]
     on_click: Option<Callback<ev::MouseEvent>>,
-    /// role attribute (e.g. "status" for streaming markers)
+    // role attribute (e.g. "status" for streaming markers)
     #[prop(optional, into)]
     role: Option<String>,
     children: Children,

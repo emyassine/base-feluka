@@ -38,8 +38,6 @@ categories = [
     "data-structures",
 ]
 license = "MIT"
-repository = "https://github.com/paupino/rust-decimal"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

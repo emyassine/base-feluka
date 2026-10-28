@@ -78,7 +78,7 @@ pub struct WrapError<T>(pub T);
     note = "Now feluqa_ui_server_functions can return any error type other than ServerFnError, \
             so the WrappedServerError variant will be removed in 0.9.0"
 )]
-macro_rules! feluqa_ui_server_functions_error {
+macro_rules! server_fn_error {
     () => {{
         use $crate::{ViaError, WrapError};
         (&&&&&WrapError(())).to_server_error()
@@ -113,13 +113,13 @@ impl<E: ServerFnErrorKind + std::error::Error + Clone> ViaError<E>
     }
 }
 
-// A type tag for ServerFnError so we can special case it
+/// A type tag for ServerFnError so we can special case it
 #[deprecated]
 pub(crate) trait ServerFnErrorKind {}
 
 impl ServerFnErrorKind for ServerFnError {}
 
-// This impl should catch passing () or nothing to feluqa_ui_server_functions_error
+// This impl should catch passing () or nothing to server_fn_error
 impl ViaError<NoCustomError> for &&&WrapError<()> {
     fn to_server_error(&self) -> ServerFnError {
         ServerFnError::WrappedServerError(NoCustomError)
@@ -148,7 +148,7 @@ impl<E> ViaError<E> for WrapError<E> {
     #[track_caller]
     fn to_server_error(&self) -> ServerFnError<E> {
         panic!(
-            "At {}, you call `to_server_error()` or use  `feluqa_ui_server_functions_error!` \
+            "At {}, you call `to_server_error()` or use  `server_fn_error!` \
              with a value that does not implement `Clone` and either `Error` \
              or `Display`.",
             std::panic::Location::caller()
@@ -353,7 +353,7 @@ where
 {
     type Encoder = ServerFnErrorEncoding;
 
-    fn from_feluqa_ui_server_functions_error(value: ServerFnErrorErr) -> Self {
+    fn from_server_fn_error(value: ServerFnErrorErr) -> Self {
         match value {
             ServerFnErrorErr::Registration(value) => {
                 ServerFnError::Registration(value)
@@ -547,7 +547,7 @@ impl<E: FromServerFnError> FromStr for ServerFnErrorWrapper<E> {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes =
             <E::Encoder as FormatType>::from_encoded_string(s).map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                E::from_server_fn_error(ServerFnErrorErr::Deserialization(
                     e.to_string(),
                 ))
             });
@@ -566,12 +566,12 @@ pub trait FromServerFnError: std::fmt::Debug + Sized + 'static {
     type Encoder: Encodes<Self> + Decodes<Self>;
 
     /// Converts a [`ServerFnErrorErr`] into the application-specific custom error type.
-    fn from_feluqa_ui_server_functions_error(value: ServerFnErrorErr) -> Self;
+    fn from_server_fn_error(value: ServerFnErrorErr) -> Self;
 
     /// Serializes the custom error type to bytes, according to the encoding given by `Self::Encoding`.
     fn ser(&self) -> Bytes {
         Self::Encoder::encode(self).unwrap_or_else(|e| {
-            Self::Encoder::encode(&Self::from_feluqa_ui_server_functions_error(
+            Self::Encoder::encode(&Self::from_server_fn_error(
                 ServerFnErrorErr::Serialization(e.to_string()),
             ))
             .expect(
@@ -600,7 +600,7 @@ where
     E: FromServerFnError,
 {
     fn into_app_error(self) -> E {
-        E::from_feluqa_ui_server_functions_error(self)
+        E::from_server_fn_error(self)
     }
 }
 
@@ -630,7 +630,7 @@ impl<T, E> ServerFnMustReturnResult for Result<T, E> {
 }
 
 #[test]
-fn assert_from_feluqa_ui_server_functions_error_impl() {
+fn assert_from_server_fn_error_impl() {
     fn assert_impl<T: FromServerFnError>() {}
 
     assert_impl::<ServerFnError>();

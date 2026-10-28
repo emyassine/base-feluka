@@ -35,11 +35,11 @@ pub type PinnedFuture<T> = Pin<Box<dyn Future<Output = T> + Send>>;
 /// A future that has been pinned.
 pub type PinnedLocalFuture<T> = Pin<Box<dyn Future<Output = T>>>;
 
-// Type alias for the spawn function pointer.
+/// Type alias for the spawn function pointer.
 type SpawnFn = fn(PinnedFuture<()>);
-// Type alias for the spawn_local function pointer.
+/// Type alias for the spawn_local function pointer.
 type SpawnLocalFn = fn(PinnedLocalFuture<()>);
-// Type alias for the poll_local function pointer.
+/// Type alias for the poll_local function pointer.
 type PollLocalFn = fn();
 
 /// Holds the function pointers for the current global executor.
@@ -50,10 +50,10 @@ struct ExecutorFns {
     poll_local: PollLocalFn,
 }
 
-// Use a single OnceLock to ensure atomic initialization of all functions.
+/// Use a single OnceLock to ensure atomic initialization of all functions.
 static EXECUTOR_FNS: OnceLock<ExecutorFns> = OnceLock::new();
 
-// No-op functions to use when an executor doesn't support a specific operation.
+/// No-op functions to use when an executor doesn't support a specific operation.
 #[cfg(any(feature = "tokio", feature = "wasm-bindgen", feature = "glib"))]
 #[cold]
 #[inline(never)]
@@ -71,7 +71,7 @@ fn no_op_spawn(_: PinnedFuture<()>) {
     );
 }
 
-// Wasm panics if you spawn without an executor
+/// Wasm panics if you spawn without an executor
 #[cfg(feature = "wasm-bindgen")]
 #[cold]
 #[inline(never)]
@@ -252,11 +252,11 @@ impl Executor {
         };
         use std::cell::RefCell;
 
-        // Keep the lazy-init ThreadPool and thread-local LocalPool for spawn_local impl
+        /// Keep the lazy-init ThreadPool and thread-local LocalPool for spawn_local impl
         static THREAD_POOL: OnceLock<ThreadPool> = OnceLock::new();
         thread_local! {
             static LOCAL_POOL: RefCell<LocalPool> = RefCell::new(LocalPool::new());
-            // SPAWNER is derived from LOCAL_POOL, keep it for efficiency inside the closure
+            /// SPAWNER is derived from LOCAL_POOL, keep it for efficiency inside the closure
             static SPAWNER: LocalSpawner = LOCAL_POOL.with(|pool| pool.borrow().spawner());
         }
 
@@ -309,7 +309,7 @@ impl Executor {
     pub fn init_async_executor() -> Result<(), ExecutorError> {
         use async_executor::{Executor as AsyncExecutor, LocalExecutor};
 
-        // Keep the lazy-init global Executor and thread-local LocalExecutor for spawn_local impl
+        /// Keep the lazy-init global Executor and thread-local LocalExecutor for spawn_local impl
         static ASYNC_EXECUTOR: OnceLock<AsyncExecutor<'static>> =
             OnceLock::new();
         thread_local! {
@@ -348,8 +348,8 @@ impl Executor {
     pub fn init_custom_executor(
         custom_executor: impl CustomExecutor + Send + Sync + 'static,
     ) -> Result<(), ExecutorError> {
-        // Store the custom executor instance itself to call its methods.
-        // Use Box for dynamic dispatch.
+        /// Store the custom executor instance itself to call its methods.
+        /// Use Box for dynamic dispatch.
         static CUSTOM_EXECUTOR_INSTANCE: OnceLock<
             Box<dyn CustomExecutor + Send + Sync>,
         > = OnceLock::new();
@@ -449,7 +449,7 @@ pub trait CustomExecutor {
     fn poll_local(&self);
 }
 
-// Ensure CustomExecutor is object-safe
+/// Ensure CustomExecutor is object-safe
 #[allow(dead_code)]
 fn test_object_safety(_: Box<dyn CustomExecutor + Send + Sync>) {} // Added Send + Sync constraint here for global usage
 

@@ -37,8 +37,6 @@ keywords = [
 ]
 categories = ["external-ffi-bindings"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/jni-rs/jni-sys"
-
 [lib]
 name = "jni_sys"
 path = "src/lib.rs"

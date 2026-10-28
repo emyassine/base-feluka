@@ -33,8 +33,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/Nugine/const-str"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

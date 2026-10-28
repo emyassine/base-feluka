@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["filesystem"]
 license = "CC0-1.0 OR MIT-0 OR Apache-2.0"
-repository = "https://gitlab.com/kornelski/dunce"
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--generate-link-to-definition"]
 targets = ["x86_64-unknown-linux-gnu"]
@@ -43,10 +41,6 @@ name = "dunce"
 path = "src/lib.rs"
 
 [badges.appveyor]
-repository = "pornel/dunce"
-
 [badges.gitlab]
-repository = "kornelski/dunce"
-
 [badges.maintenance]
 status = "passively-maintained"

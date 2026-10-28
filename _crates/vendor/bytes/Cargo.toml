@@ -46,8 +46,6 @@ categories = [
     "data-structures",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/bytes"
-
 [package.metadata.docs.rs]
 rustdoc-args = [
     "--cfg",

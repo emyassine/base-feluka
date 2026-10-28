@@ -40,8 +40,6 @@ keywords = [
     "https",
 ]
 license = "MIT"
-repository = "https://github.com/steffengy/schannel-rs"
-
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
 

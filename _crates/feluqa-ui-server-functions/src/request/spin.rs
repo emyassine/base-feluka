@@ -55,7 +55,7 @@ where
     {
         Ok(self.into_body().into_data_stream().map(|chunk| {
             chunk.map_err(|e| {
-                E::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                E::from_server_fn_error(ServerFnErrorErr::Deserialization(
                     e.to_string(),
                 ))
                 .ser()

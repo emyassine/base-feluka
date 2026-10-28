@@ -18,8 +18,6 @@ description = "Fowler–Noll–Vo hash function"
 documentation = "https://doc.servo.org/fnv/"
 readme = "README.md"
 license = "Apache-2.0 / MIT"
-repository = "https://github.com/servo/rust-fnv"
-
 [lib]
 name = "fnv"
 path = "lib.rs"

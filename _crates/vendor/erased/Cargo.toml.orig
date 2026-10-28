@@ -6,6 +6,4 @@ description = "Erase the type of a reference or box, retaining the lifetime."
 keywords = ["erase", "type", "arena"]
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/JonathanBrouwer/erased"
-
 [dependencies]

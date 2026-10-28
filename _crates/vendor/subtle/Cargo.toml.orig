@@ -11,7 +11,6 @@ authors = ["Isis Lovecruft <isis@patternsinthevoid.net>",
            "Henry de Valence <hdevalence@hdevalence.ca>"]
 readme = "README.md"
 license = "BSD-3-Clause"
-repository = "https://github.com/dalek-cryptography/subtle"
 homepage = "https://dalek.rs/"
 documentation = "https://docs.rs/subtle"
 categories = ["cryptography", "no-std"]

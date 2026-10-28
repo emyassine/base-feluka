@@ -30,8 +30,6 @@ keywords = [
     "interface",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/repnop/mac_address"
-
 [lib]
 name = "mac_address"
 path = "src/lib.rs"

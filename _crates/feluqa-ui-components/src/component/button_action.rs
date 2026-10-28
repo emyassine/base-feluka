@@ -23,7 +23,7 @@ pub fn ButtonAction(
 
     let progress_style = move || {
         let width_percent = press_hold.progress_signal.get() * 100.0;
-        format!(
+        crate::std::format!(
             "position: absolute; left: 0; top: 0; bottom: 0; width: {width_percent:.1}%; background: rgba(0, 0, 0, 0.25); pointer-events: none; border-radius: inherit;"
         )
     };

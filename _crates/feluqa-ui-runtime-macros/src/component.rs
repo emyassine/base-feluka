@@ -130,8 +130,8 @@ fn maybe_modify_return_type(ret: &mut ReturnType) {
     }
 }
 
-// implemented manually because Vec::drain_filter is nightly only
-// follows std recommended parallel
+/// implemented manually because Vec::drain_filter is nightly only
+/// follows std recommended parallel
 pub fn drain_filter<T>(
     vec: &mut Vec<T>,
     mut some_predicate: impl FnMut(&mut T) -> bool,
@@ -327,14 +327,14 @@ impl Model {
 
         let island_serialize_props = if is_island_with_other_props {
             quote! {
-                let _feluqa_ui_runtime_ser_props = ::feluqa_ui_runtime::serde_json::to_string(&props).expect("couldn't serialize island props");
+                let _feluqa_ui_ser_props = ::feluqa_ui_runtime::serde_json::to_string(&props).expect("couldn't serialize island props");
             }
         } else {
             quote! {}
         };
         let island_serialized_props = if is_island_with_other_props {
             quote! {
-                .with_props( _feluqa_ui_runtime_ser_props)
+                .with_props( _feluqa_ui_ser_props)
             }
         } else {
             quote! {}
@@ -854,7 +854,7 @@ impl Docs {
         let mut quotes = "```".to_string();
         let mut quote_ws = "".to_string();
         let mut view_code_fence_state = ViewCodeFenceState::Outside;
-        // todo fix docs stuff
+        /// todo fix docs stuff
         const RSX_START: &str = "# ::feluqa_ui_runtime::view! {";
         const RSX_END: &str = "# };";
 
@@ -1429,7 +1429,7 @@ fn convert_impl_trait_to_generic(sig: &mut Signature) {
         Ident::new(&format!("__ImplTrait{i}"), span)
     }
 
-    // First: visit all `impl Trait`s and replace them with new generic params.
+    /// First: visit all `impl Trait`s and replace them with new generic params.
     #[derive(Default)]
     struct RemoveImplTrait(Vec<TypeImplTrait>);
     impl VisitMut for RemoveImplTrait {
@@ -1451,7 +1451,7 @@ fn convert_impl_trait_to_generic(sig: &mut Signature) {
             }
         }
 
-        // Early exits.
+        /// Early exits.
         fn visit_attribute_mut(&mut self, _: &mut Attribute) {}
         fn visit_pat_mut(&mut self, _: &mut Pat) {}
     }

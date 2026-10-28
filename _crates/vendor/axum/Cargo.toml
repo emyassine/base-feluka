@@ -34,8 +34,6 @@ categories = [
     "web-programming::http-server",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/axum"
-
 [package.metadata.docs.rs]
 all-features = true
 

@@ -79,7 +79,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
             style:transition="transform 150ms ease-out, opacity 150ms ease-out"
             style:transition-delay="250ms, 0s"
             style:animation-name=animation_name_signal
-            style:animation-duration=format!("{}ms", ANIMATION_DURATION)
+            style:animation-duration=crate::std::format!("{}ms", ANIMATION_DURATION)
             style:animation-timing-function="linear"
             style:animation-fill-mode="forwards"
             on:click=handle_click
@@ -108,7 +108,7 @@ pub fn Toast(toast: ToastData) -> impl IntoView {
                     style:left="0"
                     style:transform-origin="left"
                     style:animation-name="toast_tracker"
-                    style:animation-duration=format!("{}ms", toast.expiry.unwrap_or(0))
+                    style:animation-duration=crate::std::format!("{}ms", toast.expiry.unwrap_or(0))
                     style:animation-timing-function="linear"
                     style:animation-fill-mode="forwards"
                 />

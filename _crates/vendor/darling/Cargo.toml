@@ -33,8 +33,6 @@ implementing custom derives.
 documentation = "https://docs.rs/darling/0.20.11"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/TedDriggs/darling"
-
 [lib]
 name = "darling"
 path = "src/lib.rs"

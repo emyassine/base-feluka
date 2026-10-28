@@ -38,8 +38,6 @@ categories = [
     "api-bindings",
 ]
 license = "MIT"
-repository = "https://github.com/gyscos/zstd-rs"
-
 [package.metadata.docs.rs]
 features = [
     "experimental",
@@ -49,8 +47,6 @@ features = [
 ]
 
 [badges.travis-ci]
-repository = "gyscos/zstd-rs"
-
 [features]
 arrays = ["zstd-safe/arrays"]
 bindgen = ["zstd-safe/bindgen"]

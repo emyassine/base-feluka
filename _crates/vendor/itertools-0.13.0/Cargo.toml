@@ -31,8 +31,6 @@ categories = [
     "no-std::no-alloc",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-itertools/itertools"
-
 [profile.bench]
 debug = 2
 

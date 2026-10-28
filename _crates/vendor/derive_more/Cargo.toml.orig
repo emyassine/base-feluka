@@ -6,7 +6,6 @@ rust-version = "1.81.0"
 description = "Adds #[derive(x)] macros for more traits"
 authors = ["Jelte Fennema <github-tech@jeltef.nl>"]
 license = "MIT"
-repository = "https://github.com/JelteF/derive_more"
 documentation = "https://docs.rs/derive_more"
 
 readme = "README.md"

@@ -4,7 +4,6 @@ description = "Rust friendly bindings to *nix APIs"
 edition     = "2021"
 version     = "0.31.3"
 rust-version = "1.69"
-repository  = "https://github.com/nix-rust/nix"
 license     = "MIT"
 categories  = ["os::unix-apis"]
 include = ["build.rs", "src/**/*", "test/**/*", "LICENSE", "README.md", "CHANGELOG.md"]

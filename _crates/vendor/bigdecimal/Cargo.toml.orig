@@ -5,7 +5,6 @@ authors = ["Andrew Kubera"]
 description = "Arbitrary precision decimal numbers"
 documentation = "https://docs.rs/bigdecimal"
 homepage = "https://github.com/akubera/bigdecimal-rs"
-repository = "https://github.com/akubera/bigdecimal-rs"
 keywords = [
     "numerics",
     "bignum",

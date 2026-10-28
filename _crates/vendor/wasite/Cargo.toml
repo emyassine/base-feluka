@@ -22,4 +22,3 @@ readme = "README.md"
 keywords = ["wasi", "terminal", "extension", "env", "interactive"]
 categories = ["api-bindings", "command-line-interface", "internationalization", "os", "wasm"]
 license = "Apache-2.0 OR BSL-1.0 OR MIT"
-repository = "https://github.com/ardaku/wasite"

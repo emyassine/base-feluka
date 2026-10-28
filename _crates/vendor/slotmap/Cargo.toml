@@ -36,8 +36,6 @@ categories = [
     "caching",
 ]
 license = "Zlib"
-repository = "https://github.com/orlp/slotmap"
-
 [features]
 default = ["std"]
 std = []

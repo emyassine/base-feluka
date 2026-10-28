@@ -4,7 +4,6 @@ version = "11.1.5"
 authors = ["Simon Heath <icefox@dreamquest.io>"]
 edition = "2018"
 description = "A tiny, robust PRNG implementation."
-repository = "https://hg.sr.ht/~icefox/oorandom"
 website = "https://sr.ht/~icefox/oorandom"
 readme = "README.md"
 keywords = ["rng", "prng", "random", "pcg",]

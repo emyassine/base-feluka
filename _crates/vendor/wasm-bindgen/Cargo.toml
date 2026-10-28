@@ -34,8 +34,6 @@ documentation = "https://docs.rs/wasm-bindgen"
 readme = "README.md"
 categories = ["wasm"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wasm-bindgen/wasm-bindgen"
-
 [package.metadata.docs.rs]
 features = ["serde-serialize"]
 

@@ -4,7 +4,6 @@ version = "0.3.18"
 authors = ["The Servo Project Developers"]
 license = "MIT OR Apache-2.0"
 description = "Implementation of the Unicode Bidirectional Algorithm"
-repository = "https://github.com/servo/unicode-bidi"
 documentation = "https://docs.rs/unicode-bidi/"
 keywords = ["rtl", "unicode", "text", "layout", "bidi"]
 readme="README.md"

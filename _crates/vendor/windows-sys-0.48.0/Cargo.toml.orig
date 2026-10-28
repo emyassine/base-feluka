@@ -6,7 +6,6 @@ authors = ["Microsoft"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "Rust for Windows"
-repository = "https://github.com/microsoft/windows-rs"
 readme = "../../../docs/readme.md"
 rust-version = "1.48"
 categories = ["os::windows-apis"]

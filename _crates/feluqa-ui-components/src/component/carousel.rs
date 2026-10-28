@@ -61,7 +61,7 @@ pub fn Carousel(
             </div>
 
             <script>
-                {format!(
+                {crate::std::format!(
                     r#"
                     (function() {{
                         const setup = () => {{

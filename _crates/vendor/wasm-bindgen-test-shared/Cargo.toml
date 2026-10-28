@@ -33,8 +33,6 @@ homepage = "https://rustwasm.github.io/wasm-bindgen/"
 documentation = "https://docs.rs/wasm-bindgen-test-shared"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rustwasm/wasm-bindgen/tree/master/crates/test-shared"
-
 [lib]
 name = "wasm_bindgen_test_shared"
 path = "src/lib.rs"

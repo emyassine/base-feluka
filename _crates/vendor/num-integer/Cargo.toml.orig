@@ -6,7 +6,6 @@ homepage = "https://github.com/rust-num/num-integer"
 keywords = ["mathematics", "numerics"]
 categories = ["algorithms", "science", "no-std"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-num/num-integer"
 name = "num-integer"
 version = "0.1.47"
 readme = "README.md"

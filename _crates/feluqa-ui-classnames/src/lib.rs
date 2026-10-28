@@ -1,5 +1,6 @@
 #![forbid(missing_docs)]
 
+
 //! # Feluqa class composition
 //!
 //! Two main utils are included in this crate:
@@ -256,6 +257,11 @@
 //! }
 //! ```
 //!
+
+extern crate std;
+extern crate nom;
+#[cfg(feature = "variant")]
+extern crate feluqa_ui_classnames_macros;
 
 pub use crate::core::{merge, *};
 

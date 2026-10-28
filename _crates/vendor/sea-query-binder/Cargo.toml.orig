@@ -9,7 +9,6 @@ edition = "2021"
 description = "Driver library for using SeaQuery with SQLx"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/sea-query"
-repository = "https://github.com/SeaQL/sea-query"
 categories = [ "database" ]
 keywords = [ "database", "sql", "mysql", "postgres", "sqlite" ]
 rust-version = "1.60"

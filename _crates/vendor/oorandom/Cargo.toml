@@ -28,8 +28,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://hg.sr.ht/~icefox/oorandom"
-
 [dependencies]
 
 [dev-dependencies.rand_core]

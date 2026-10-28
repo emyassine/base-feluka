@@ -60,7 +60,7 @@ impl UseHistory {
                     && let Some(el) = target.dyn_ref::<crate::web_sys::HtmlElement>()
                 {
                     let tag = el.tag_name().to_lowercase();
-                    if matches!(tag.as_str(), "input" | "textarea" | "select") {
+                    if crate::std::matches!(tag.as_str(), "input" | "textarea" | "select") {
                         return;
                     }
                 }

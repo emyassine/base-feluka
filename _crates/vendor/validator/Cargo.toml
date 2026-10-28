@@ -29,8 +29,6 @@ keywords = [
     "validator",
 ]
 license = "MIT"
-repository = "https://github.com/Keats/validator"
-
 [lib]
 name = "validator"
 path = "src/lib.rs"

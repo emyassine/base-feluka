@@ -40,8 +40,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/ia0/data-encoding"
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg=docsrs"]
 

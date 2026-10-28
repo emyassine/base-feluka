@@ -33,8 +33,6 @@ categories = [
     "rust-patterns",
 ]
 license = "MIT"
-repository = "https://github.com/djkoloski/munge"
-
 [lib]
 name = "munge_macro"
 path = "src/lib.rs"

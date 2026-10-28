@@ -32,8 +32,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/djkoloski/rend"
-
 [features]
 default = []
 zerocopy-0_8 = [

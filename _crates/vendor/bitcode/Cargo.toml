@@ -28,8 +28,6 @@ autobenches = false
 description = "bitcode is a bitwise binary serializer"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/SoftbearStudios/bitcode"
-
 [package.metadata.docs.rs]
 features = [
     "derive",

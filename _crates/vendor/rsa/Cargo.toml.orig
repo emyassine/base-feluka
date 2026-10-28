@@ -6,7 +6,6 @@ edition = "2021"
 description = "Pure Rust RSA implementation"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/rsa"
-repository = "https://github.com/RustCrypto/RSA"
 keywords = ["rsa", "encryption", "security", "crypto"]
 categories = ["cryptography"]
 readme = "README.md"

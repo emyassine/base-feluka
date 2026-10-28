@@ -22,7 +22,6 @@ documentation = "https://docs.rs/same-file"
 readme = "README.md"
 keywords = ["same", "file", "equal", "inode"]
 license = "Unlicense/MIT"
-repository = "https://github.com/BurntSushi/same-file"
 [dev-dependencies.doc-comment]
 version = "0.3"
 [target."cfg(windows)".dependencies.winapi-util]

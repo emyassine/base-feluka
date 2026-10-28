@@ -23,8 +23,6 @@ autobenches = false
 description = "Asynchronous streams using async & await notation"
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/tokio-rs/async-stream"
-
 [lib]
 name = "async_stream"
 path = "src/lib.rs"

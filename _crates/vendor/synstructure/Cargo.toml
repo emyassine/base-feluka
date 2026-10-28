@@ -38,8 +38,6 @@ keywords = [
     "enum",
 ]
 license = "MIT"
-repository = "https://github.com/mystor/synstructure"
-
 [features]
 default = ["proc-macro"]
 proc-macro = [

@@ -3,7 +3,7 @@ use crate::feluqa_ui_component_macros::void;
 
 const PULSE_ANIMATION: &str = "animate-pulse";
 
-// TODO UI. Skeleton should be able to receive children (or not).
+/// TODO UI. Skeleton should be able to receive children (or not).
 
 mod components {
     use super::*;

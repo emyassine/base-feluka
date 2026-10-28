@@ -30,8 +30,6 @@ homepage = "https://wasm-bindgen.github.io/wasm-bindgen/"
 documentation = "https://docs.rs/wasm-bindgen"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wasm-bindgen/wasm-bindgen/tree/main/crates/macro-support"
-
 [features]
 extra-traits = ["syn/extra-traits"]
 strict-macro = []

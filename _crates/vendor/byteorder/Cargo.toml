@@ -32,8 +32,6 @@ categories = [
     "no-std",
 ]
 license = "Unlicense OR MIT"
-repository = "https://github.com/BurntSushi/byteorder"
-
 [profile.bench]
 opt-level = 3
 

@@ -23,8 +23,6 @@ description = "🧰 The Rust SQL Toolkit. An async, pure Rust SQL crate featurin
 documentation = "https://docs.rs/sqlx"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/launchbadge/sqlx"
-
 [package.metadata.docs.rs]
 features = [
     "all-databases",

@@ -20,7 +20,7 @@ pub struct ServerFnCall {
     args: ServerFnArgs,
     body: ServerFnBody,
     default_path: String,
-    feluqa_ui_server_functions_path: Option<Path>,
+    server_fn_path: Option<Path>,
     preset_server: Option<Type>,
     default_protocol: Option<Type>,
     default_input_encoding: Option<Type>,
@@ -54,7 +54,7 @@ impl ServerFnCall {
             default_path: default_path.into(),
             args,
             body,
-            feluqa_ui_server_functions_path: None,
+            server_fn_path: None,
             preset_server: None,
             default_protocol: None,
             default_input_encoding: None,
@@ -65,11 +65,11 @@ impl ServerFnCall {
         // do that, we wrap the body in a SendWrapper, which is an async fn that
         // asserts that the future is always polled from the same thread.
         if cfg!(feature = "actix") {
-            let feluqa_ui_server_functions_path = myself.feluqa_ui_server_functions_path();
+            let server_fn_path = myself.server_fn_path();
             let block = myself.body.block.to_token_stream();
             myself.body.block = quote! {
                 {
-                    #feluqa_ui_server_functions_path::actix::SendWrapper::new(async move {
+                    #server_fn_path::actix::SendWrapper::new(async move {
                         #block
                     })
                     .await
@@ -101,8 +101,8 @@ impl ServerFnCall {
     }
 
     /// Set the path to the server function crate.
-    pub fn default_feluqa_ui_server_functions_path(mut self, path: Option<Path>) -> Self {
-        self.feluqa_ui_server_functions_path = path;
+    pub fn default_server_fn_path(mut self, path: Option<Path>) -> Self {
+        self.server_fn_path = path;
         self
     }
 
@@ -138,38 +138,38 @@ impl ServerFnCall {
 
     /// Get the client type to use for the server function.
     pub fn client_type(&self) -> Type {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         if let Some(client) = self.args.client.clone() {
             client
         } else if cfg!(feature = "reqwest") {
             parse_quote! {
-                #feluqa_ui_server_functions_path::client::reqwest::ReqwestClient
+                #server_fn_path::client::reqwest::ReqwestClient
             }
         } else {
             parse_quote! {
-                #feluqa_ui_server_functions_path::client::browser::BrowserClient
+                #server_fn_path::client::browser::BrowserClient
             }
         }
     }
 
     /// Get the server type to use for the server function.
     pub fn server_type(&self) -> Type {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         if !cfg!(feature = "ssr") {
             parse_quote! {
-                #feluqa_ui_server_functions_path::mock::BrowserMockServer
+                #server_fn_path::mock::BrowserMockServer
             }
         } else if cfg!(feature = "axum") {
             parse_quote! {
-                #feluqa_ui_server_functions_path::axum::AxumServerFnBackend
+                #server_fn_path::axum::AxumServerFnBackend
             }
         } else if cfg!(feature = "actix") {
             parse_quote! {
-                #feluqa_ui_server_functions_path::actix::ActixServerFnBackend
+                #server_fn_path::actix::ActixServerFnBackend
             }
         } else if cfg!(feature = "generic") {
             parse_quote! {
-                #feluqa_ui_server_functions_path::axum::AxumServerFnBackend
+                #server_fn_path::axum::AxumServerFnBackend
             }
         } else if let Some(server) = &self.args.server {
             server.clone()
@@ -180,54 +180,54 @@ impl ServerFnCall {
             // in things like doctests
             // in reality, one of the above needs to be set
             parse_quote! {
-                #feluqa_ui_server_functions_path::mock::BrowserMockServer
+                #server_fn_path::mock::BrowserMockServer
             }
         }
     }
 
     /// Get the path to the feluqa_ui_server_functions crate.
-    pub fn feluqa_ui_server_functions_path(&self) -> Path {
-        self.feluqa_ui_server_functions_path
+    pub fn server_fn_path(&self) -> Path {
+        self.server_fn_path
             .clone()
             .unwrap_or_else(|| parse_quote! { feluqa_ui_server_functions })
     }
 
     /// Get the input http encoding if no protocol is set
     fn input_http_encoding(&self) -> Type {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         self.args
             .input
             .as_ref()
             .map(|n| {
                 if self.args.builtin_encoding {
-                    parse_quote! { #feluqa_ui_server_functions_path::codec::#n }
+                    parse_quote! { #server_fn_path::codec::#n }
                 } else {
                     n.clone()
                 }
             })
             .unwrap_or_else(|| {
                 self.default_input_encoding.clone().unwrap_or_else(
-                    || parse_quote!(#feluqa_ui_server_functions_path::codec::PostUrl),
+                    || parse_quote!(#server_fn_path::codec::PostUrl),
                 )
             })
     }
 
     /// Get the output http encoding if no protocol is set
     fn output_http_encoding(&self) -> Type {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         self.args
             .output
             .as_ref()
             .map(|n| {
                 if self.args.builtin_encoding {
-                    parse_quote! { #feluqa_ui_server_functions_path::codec::#n }
+                    parse_quote! { #server_fn_path::codec::#n }
                 } else {
                     n.clone()
                 }
             })
             .unwrap_or_else(|| {
                 self.default_output_encoding.clone().unwrap_or_else(
-                    || parse_quote!(#feluqa_ui_server_functions_path::codec::Json),
+                    || parse_quote!(#server_fn_path::codec::Json),
                 )
             })
     }
@@ -243,7 +243,7 @@ impl ServerFnCall {
 
     /// Get the protocol to use for the server function.
     pub fn protocol(&self) -> Type {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         let default_protocol = &self.default_protocol;
         self.args.protocol.clone().unwrap_or_else(|| {
             // If both the input and output encodings are none,
@@ -251,7 +251,7 @@ impl ServerFnCall {
             if self.args.input.is_none() && self.args.output.is_none() {
                 default_protocol.clone().unwrap_or_else(|| {
                     parse_quote! {
-                        #feluqa_ui_server_functions_path::Http<#feluqa_ui_server_functions_path::codec::PostUrl, #feluqa_ui_server_functions_path::codec::Json>
+                        #server_fn_path::Http<#server_fn_path::codec::PostUrl, #server_fn_path::codec::Json>
                     }
                 })
             } else {
@@ -260,7 +260,7 @@ impl ServerFnCall {
                 let input = self.input_http_encoding();
                 let output = self.output_http_encoding();
                 parse_quote! {
-                    #feluqa_ui_server_functions_path::Http<#input, #output>
+                    #server_fn_path::Http<#input, #output>
                 }
             }
         })
@@ -289,7 +289,7 @@ impl ServerFnCall {
 
     fn serde_path(&self) -> String {
         let path = self
-            .feluqa_ui_server_functions_path()
+            .server_fn_path()
             .segments
             .iter()
             .map(|segment| segment.ident.to_string())
@@ -313,14 +313,14 @@ impl ServerFnCall {
     }
 
     fn struct_tokens(&self) -> TokenStream2 {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         let fn_name_as_str = self.fn_name_as_str();
-        let link_to_feluqa_ui_server_functions = format!(
+        let link_to_server_fn = format!(
             "Serialized arguments for the [`{fn_name_as_str}`] server \
              function.\n\n"
         );
         let args_docs = quote! {
-            #[doc = #link_to_feluqa_ui_server_functions]
+            #[doc = #link_to_server_fn]
         };
 
         let docs = self.docs();
@@ -338,13 +338,13 @@ impl ServerFnCall {
             Some("Rkyv") => (
                 PathInfo::Rkyv,
                 quote! {
-                    Clone, #feluqa_ui_server_functions_path::rkyv::Archive, #feluqa_ui_server_functions_path::rkyv::Serialize, #feluqa_ui_server_functions_path::rkyv::Deserialize
+                    Clone, #server_fn_path::rkyv::Archive, #server_fn_path::rkyv::Serialize, #server_fn_path::rkyv::Deserialize
                 },
             ),
             Some("Bitcode") => (
                 PathInfo::Bitcode,
                 quote! {
-                    Clone, #feluqa_ui_server_functions_path::bitcode::Encode, #feluqa_ui_server_functions_path::bitcode::Decode
+                    Clone, #server_fn_path::bitcode::Encode, #server_fn_path::bitcode::Decode
                 },
             ),
             Some("MultipartFormData")
@@ -353,7 +353,7 @@ impl ServerFnCall {
             Some("SerdeLite") => (
                 PathInfo::Serde,
                 quote! {
-                    Clone, #feluqa_ui_server_functions_path::serde_lite::Serialize, #feluqa_ui_server_functions_path::serde_lite::Deserialize
+                    Clone, #server_fn_path::serde_lite::Serialize, #server_fn_path::serde_lite::Deserialize
                 },
             ),
             _ => match &self.args.input_derive {
@@ -368,7 +368,7 @@ impl ServerFnCall {
                         (
                             PathInfo::Serde,
                             quote! {
-                                Clone, #feluqa_ui_server_functions_path::serde::Serialize, #feluqa_ui_server_functions_path::serde::Deserialize
+                                Clone, #server_fn_path::serde::Serialize, #server_fn_path::serde::Deserialize
                             },
                         )
                     }
@@ -395,13 +395,13 @@ impl ServerFnCall {
             .body
             .inputs
             .iter()
-            .map(|feluqa_ui_server_functions_arg| {
-                let mut typed_arg = feluqa_ui_server_functions_arg.arg.clone();
+            .map(|server_fn_arg| {
+                let mut typed_arg = server_fn_arg.arg.clone();
                 // strip `mut`, which is allowed in fn args but not in struct fields
                 if let Pat::Ident(ident) = &mut *typed_arg.pat {
                     ident.mutability = None;
                 }
-                let attrs = &feluqa_ui_server_functions_arg.feluqa_ui_server_functions_attributes;
+                let attrs = &server_fn_arg.server_fn_attributes;
                 quote! { #(#attrs ) * #vis #typed_arg }
             })
             .collect::<Vec<_>>();
@@ -459,14 +459,14 @@ impl ServerFnCall {
     pub fn submit_to_inventory(&self) -> TokenStream2 {
         // auto-registration with inventory
         if cfg!(feature = "ssr") {
-            let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+            let server_fn_path = self.server_fn_path();
             let wrapped_struct_name = self.wrapped_struct_name();
             let wrapped_struct_name_turbofish =
                 self.wrapped_struct_name_turbofish();
             quote! {
-                #feluqa_ui_server_functions_path::inventory::submit! {{
-                    use #feluqa_ui_server_functions_path::{ServerFn, codec::Encoding};
-                    #feluqa_ui_server_functions_path::ServerFnTraitObj::new::<#wrapped_struct_name>(
+                #server_fn_path::inventory::submit! {{
+                    use #server_fn_path::{ServerFn, codec::Encoding};
+                    #server_fn_path::ServerFnTraitObj::new::<#wrapped_struct_name>(
                         |req| Box::pin(#wrapped_struct_name_turbofish::run_on_server(req)),
                     )
                 }}
@@ -479,13 +479,13 @@ impl ServerFnCall {
     /// Generate the server function's URL. This will be the prefix path, then by the
     /// module path if `SERVER_FN_MOD_PATH` is set, then the function name, and finally
     /// a hash of the function name and location in the source code.
-    pub fn feluqa_ui_server_functions_url(&self) -> TokenStream2 {
+    pub fn server_fn_url(&self) -> TokenStream2 {
         let default_path = &self.default_path;
         let prefix =
             self.args.prefix.clone().unwrap_or_else(|| {
                 LitStr::new(default_path, Span::call_site())
             });
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+        let server_fn_path = self.server_fn_path();
         let fn_path = self.args.fn_path.clone().map(|fn_path| {
             let fn_path = fn_path.value();
             // Remove any leading slashes, then add one slash back
@@ -493,12 +493,12 @@ impl ServerFnCall {
             fn_path
         });
 
-        let enable_feluqa_ui_server_functions_mod_path =
+        let enable_server_fn_mod_path =
             option_env!("SERVER_FN_MOD_PATH").is_some();
-        let mod_path = if enable_feluqa_ui_server_functions_mod_path {
+        let mod_path = if enable_server_fn_mod_path {
             quote! {
-                #feluqa_ui_server_functions_path::const_format::concatcp!(
-                    #feluqa_ui_server_functions_path::const_str::replace!(module_path!(), "::", "/"),
+                #server_fn_path::const_format::concatcp!(
+                    #server_fn_path::const_str::replace!(module_path!(), "::", "/"),
                     "/"
                 )
             }
@@ -513,7 +513,7 @@ impl ServerFnCall {
         };
         let hash = if enable_hash {
             quote! {
-                #feluqa_ui_server_functions_path::xxhash_rust::const_xxh64::xxh64(
+                #server_fn_path::xxhash_rust::const_xxh64::xxh64(
                     concat!(env!(#key_env_var), ":", module_path!()).as_bytes(),
                     0
                 )
@@ -525,7 +525,7 @@ impl ServerFnCall {
         let fn_name_as_str = self.fn_name_as_str();
         if let Some(fn_path) = fn_path {
             quote! {
-                #feluqa_ui_server_functions_path::const_format::concatcp!(
+                #server_fn_path::const_format::concatcp!(
                     #prefix,
                     #mod_path,
                     #fn_path
@@ -533,7 +533,7 @@ impl ServerFnCall {
             }
         } else {
             quote! {
-                #feluqa_ui_server_functions_path::const_format::concatcp!(
+                #server_fn_path::const_format::concatcp!(
                     #prefix,
                     "/",
                     #mod_path,
@@ -554,8 +554,8 @@ impl ServerFnCall {
     }
 
     /// Generate the implementation for the server function trait.
-    fn feluqa_ui_server_functions_impl(&self) -> TokenStream2 {
-        let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+    fn server_fn_impl(&self) -> TokenStream2 {
+        let server_fn_path = self.server_fn_path();
         let struct_name = self.struct_name();
 
         let protocol = self.protocol();
@@ -565,7 +565,7 @@ impl ServerFnCall {
             .as_ref()
             .map_or_else(|| {
                 quote! {
-                    <#return_ty as #feluqa_ui_server_functions_path::error::ServerFnMustReturnResult>::Ok
+                    <#return_ty as #server_fn_path::error::ServerFnMustReturnResult>::Ok
                 }
             },
             ToTokens::to_token_stream,
@@ -575,7 +575,7 @@ impl ServerFnCall {
             .as_ref()
             .map_or_else(|| {
                 quote! {
-                    <#return_ty as #feluqa_ui_server_functions_path::error::ServerFnMustReturnResult>::Err
+                    <#return_ty as #server_fn_path::error::ServerFnMustReturnResult>::Err
                 }
             },
             ToTokens::to_token_stream,
@@ -629,8 +629,8 @@ impl ServerFnCall {
                 }
             };
             quote! {
-                // we need this for Actix, for the SendWrapper to count as impl Future
-                // but non-Actix will have a clippy warning otherwise
+                /// we need this for Actix, for the SendWrapper to count as impl Future
+                /// but non-Actix will have a clippy warning otherwise
                 #[allow(clippy::manual_async_fn)]
                 fn run_body(self) -> impl std::future::Future<Output = #return_ty> + Send {
                     #body
@@ -649,7 +649,7 @@ impl ServerFnCall {
         let server = self.server_type();
 
         // generate the url of the server function
-        let path = self.feluqa_ui_server_functions_url();
+        let path = self.server_fn_url();
 
         let middlewares = if cfg!(feature = "ssr") {
             quote! {
@@ -665,7 +665,7 @@ impl ServerFnCall {
         let wrapped_struct_name = self.wrapped_struct_name();
 
         quote! {
-            impl #feluqa_ui_server_functions_path::ServerFn for #wrapped_struct_name {
+            impl #server_fn_path::ServerFn for #wrapped_struct_name {
                 const PATH: &'static str = #path;
 
                 type Client = #client;
@@ -676,7 +676,7 @@ impl ServerFnCall {
                 type InputStreamError = #error_ws_in_ty;
                 type OutputStreamError = #error_ws_out_ty;
 
-                fn middlewares() -> Vec<std::sync::Arc<dyn #feluqa_ui_server_functions_path::middleware::Layer<<Self::Server as #feluqa_ui_server_functions_path::server::Server<Self::Error>>::Request, <Self::Server as #feluqa_ui_server_functions_path::server::Server<Self::Error>>::Response>>> {
+                fn middlewares() -> Vec<std::sync::Arc<dyn #server_fn_path::middleware::Layer<<Self::Server as #server_fn_path::server::Server<Self::Error>>::Request, <Self::Server as #server_fn_path::server::Server<Self::Error>>::Response>>> {
                     #middlewares
                 }
 
@@ -799,13 +799,13 @@ impl ServerFnCall {
                     let data = #struct_name { #(#field_names),* };
                 }
             };
-            let feluqa_ui_server_functions_path = self.feluqa_ui_server_functions_path();
+            let server_fn_path = self.server_fn_path();
             quote! {
                 #docs
                 #(#attrs)*
                 #[allow(unused_variables)]
                 #vis async fn #fn_name(#(#fn_args),*) #output_arrow #return_ty {
-                    use #feluqa_ui_server_functions_path::ServerFn;
+                    use #server_fn_path::ServerFn;
                     #restructure
                     data.run_on_client().await
                 }
@@ -829,7 +829,7 @@ impl ToTokens for ServerFnCall {
 
         let func = self.func_tokens();
 
-        let feluqa_ui_server_functions_impl = self.feluqa_ui_server_functions_impl();
+        let server_fn_impl = self.server_fn_impl();
 
         let struct_tokens = self.struct_tokens();
 
@@ -840,7 +840,7 @@ impl ToTokens for ServerFnCall {
 
             #deref_impl
 
-            #feluqa_ui_server_functions_impl
+            #server_fn_impl
 
             #inventory
 
@@ -868,13 +868,13 @@ impl ToTokens for ServerFnCall {
 pub fn server_macro_impl(
     args: TokenStream2,
     body: TokenStream2,
-    feluqa_ui_server_functions_path: Option<Path>,
+    server_fn_path: Option<Path>,
     default_path: &str,
     preset_server: Option<Type>,
     default_protocol: Option<Type>,
 ) -> Result<TokenStream2> {
     let body = ServerFnCall::parse(default_path, args, body)?
-        .default_feluqa_ui_server_functions_path(feluqa_ui_server_functions_path)
+        .default_server_fn_path(server_fn_path)
         .default_server_type(preset_server)
         .default_protocol(default_protocol);
 
@@ -1298,7 +1298,7 @@ impl Parse for ServerFnArgs {
 #[derive(Debug, Clone)]
 pub struct ServerFnArg {
     /// The attributes on the server function argument.
-    feluqa_ui_server_functions_attributes: Vec<Attribute>,
+    server_fn_attributes: Vec<Attribute>,
     /// The type of the server function argument.
     arg: syn::PatType,
 }
@@ -1339,7 +1339,7 @@ impl Parse for ServerFnArg {
             }
         }
 
-        let feluqa_ui_server_functions_attributes = arg
+        let server_fn_attributes = arg
             .attrs
             .iter()
             .cloned()
@@ -1433,7 +1433,7 @@ impl Parse for ServerFnArg {
         arg.attrs = vec![];
         Ok(ServerFnArg {
             arg,
-            feluqa_ui_server_functions_attributes,
+            server_fn_attributes,
         })
     }
 }

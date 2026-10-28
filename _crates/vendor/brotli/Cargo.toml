@@ -48,8 +48,6 @@ categories = [
     "no-std",
 ]
 license = "BSD-3-Clause AND MIT"
-repository = "https://github.com/dropbox/rust-brotli"
-
 [features]
 benchmark = ["brotli-decompressor/benchmark"]
 billing = []

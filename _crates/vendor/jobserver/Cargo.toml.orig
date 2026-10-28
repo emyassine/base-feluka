@@ -3,7 +3,6 @@ name = "jobserver"
 version = "0.1.34"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/jobserver-rs"
 homepage = "https://github.com/rust-lang/jobserver-rs"
 documentation = "https://docs.rs/jobserver"
 description = """

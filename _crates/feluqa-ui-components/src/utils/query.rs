@@ -49,7 +49,7 @@ impl QueryUtils {
         let new_url = if url_search_params.to_string().as_string().unwrap_or_default().is_empty() {
             pathname
         } else {
-            format!("{}?{}", pathname, url_search_params.to_string().as_string().unwrap_or_default())
+            crate::std::format!("{}?{}", pathname, url_search_params.to_string().as_string().unwrap_or_default())
         };
 
         // Update browser history and navigate
@@ -91,7 +91,7 @@ impl QueryUtils {
         let Ok(params) = crate::web_sys::UrlSearchParams::new_with_str(&current_search) else { return };
         params.set(query_key, value);
         let Ok(pathname) = location.pathname() else { return };
-        let new_url = format!("{}?{}", pathname, params.to_string().as_string().unwrap_or_default());
+        let new_url = crate::std::format!("{}?{}", pathname, params.to_string().as_string().unwrap_or_default());
         let Ok(history) = window().history() else { return };
         let _ = history.replace_state_with_url(&crate::wasm_bindgen::JsValue::NULL, "", Some(&new_url));
     }

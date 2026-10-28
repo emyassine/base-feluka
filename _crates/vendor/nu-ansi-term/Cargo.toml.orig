@@ -11,8 +11,6 @@ rust-version = "1.62.1"
 license = "MIT"
 name = "nu-ansi-term"
 version = "0.50.3"
-repository = "https://github.com/nushell/nu-ansi-term"
-
 [lib]
 doctest = true
 

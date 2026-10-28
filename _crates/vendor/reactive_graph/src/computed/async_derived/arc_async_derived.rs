@@ -106,7 +106,7 @@ use std::{
 /// - [`IntoFuture`](std::future::Future) allows you to create a [`Future`] that resolves
 ///   when this resource is done loading.
 pub struct ArcAsyncDerived<T> {
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     pub(crate) defined_at: &'static Location<'static>,
     // the current state of this signal
     pub(crate) value: Arc<AsyncRwLock<SendOption<T>>>,
@@ -183,7 +183,7 @@ impl<T> BlockingLock<T> for AsyncRwLock<T> {
 impl<T> Clone for ArcAsyncDerived<T> {
     fn clone(&self) -> Self {
         Self {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: self.defined_at,
             value: Arc::clone(&self.value),
             wakers: Arc::clone(&self.wakers),
@@ -196,7 +196,7 @@ impl<T> Clone for ArcAsyncDerived<T> {
 impl<T> Debug for ArcAsyncDerived<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut f = f.debug_struct("ArcAsyncDerived");
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         f.field("defined_at", &self.defined_at);
         f.finish_non_exhaustive()
     }
@@ -205,11 +205,11 @@ impl<T> Debug for ArcAsyncDerived<T> {
 impl<T> DefinedAt for ArcAsyncDerived<T> {
     #[inline(always)]
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -241,7 +241,7 @@ macro_rules! spawn_derived {
         let wakers = Arc::new(RwLock::new(Vec::new()));
 
         let this = ArcAsyncDerived {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             value: Arc::clone(&value),
             wakers,
@@ -730,7 +730,7 @@ impl<T: 'static> ToAnySource for ArcAsyncDerived<T> {
         AnySource(
             Arc::as_ptr(&self.inner) as usize,
             Arc::downgrade(&self.inner) as Weak<dyn Source + Send + Sync>,
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             self.defined_at,
         )
     }

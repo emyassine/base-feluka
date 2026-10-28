@@ -39,8 +39,6 @@ categories = [
     "parsing",
 ]
 license = "Zlib"
-repository = "https://github.com/rodrimati1992/konst/"
-
 [package.metadata.docs.rs]
 features = [
     "docsrs",

@@ -39,8 +39,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/reem/rust-ordered-float"
-
 [lib]
 name = "ordered_float"
 path = "src/lib.rs"

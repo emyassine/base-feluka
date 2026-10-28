@@ -22,18 +22,11 @@ readme = "README.md"
 keywords = ["assert", "static", "testing"]
 categories = ["no-std", "rust-patterns", "development-tools::testing"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/nvzqz/static-assertions-rs"
-
 [features]
 nightly = []
 [badges.is-it-maintained-issue-resolution]
-repository = "nvzqz/static-assertions-rs"
-
 [badges.is-it-maintained-open-issues]
-repository = "nvzqz/static-assertions-rs"
-
 [badges.maintenance]
 status = "passively-maintained"
 
 [badges.travis-ci]
-repository = "nvzqz/static-assertions-rs"

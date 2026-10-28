@@ -27,12 +27,12 @@ pub fn use_pagination() -> PaginationContext {
                 .clone()
                 .into_iter()
                 .filter(|(key, _)| key != QUERY::PAGE)
-                .map(|(key, value)| format!("{}={}", key, value))
+                .map(|(key, value)| crate::std::format!("{}={}", key, value))
                 .collect();
 
-            params.push(format!("{}={}", QUERY::PAGE, page));
+            params.push(crate::std::format!("{}={}", QUERY::PAGE, page));
 
-            format!("?{}", params.join("&"))
+            crate::std::format!("?{}", params.join("&"))
         })
     });
 

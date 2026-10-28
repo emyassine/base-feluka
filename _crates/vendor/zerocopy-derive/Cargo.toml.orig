@@ -12,8 +12,6 @@ name = "zerocopy-derive"
 version = "0.8.63"
 description = "Custom derive for traits from the zerocopy crate"
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
-repository = "https://github.com/google/zerocopy"
-
 # We prefer to include tests when publishing to crates.io so that Crater [1] can
 # detect regressions in our test suite. These two tests are excessively large,
 # so we exclude them to keep the published crate file small.

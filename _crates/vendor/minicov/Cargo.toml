@@ -35,8 +35,6 @@ categories = [
     "embedded",
 ]
 license = "Apache-2.0/MIT"
-repository = "https://github.com/Amanieu/minicov"
-
 [features]
 alloc = []
 default = ["alloc"]

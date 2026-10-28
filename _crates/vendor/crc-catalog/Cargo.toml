@@ -29,8 +29,6 @@ categories = [
     "network-programming",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/akhilles/crc-catalog.git"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 

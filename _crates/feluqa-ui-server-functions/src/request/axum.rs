@@ -66,7 +66,7 @@ where
     {
         Ok(self.into_body().into_data_stream().map(|chunk| {
             chunk.map_err(|e| {
-                Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Deserialization(
+                Error::from_server_fn_error(ServerFnErrorErr::Deserialization(
                     e.to_string(),
                 ))
                 .ser()
@@ -95,7 +95,7 @@ where
                     Self::WebsocketResponse,
                 ),
                 Error,
-            >(Error::from_feluqa_ui_server_functions_error(
+            >(Error::from_server_fn_error(
                 crate::ServerFnErrorErr::Response(
                     "Websocket connections not supported for Axum when the \
                      `axum` feature is not enabled on the `feluqa_ui_server_functions` crate."
@@ -112,7 +112,7 @@ where
                 axum::extract::ws::WebSocketUpgrade::from_request(self, &())
                     .await
                     .map_err(|err| {
-                        Error::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(
+                        Error::from_server_fn_error(ServerFnErrorErr::Request(
                             err.to_string(),
                         ))
                     })?;
@@ -124,7 +124,7 @@ where
         .on_failed_upgrade({
             let mut outgoing_tx = outgoing_tx.clone();
             move |err: axum::Error| {
-                _ = outgoing_tx.start_send(Err(InputStreamError::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Response(err.to_string())).ser()));
+                _ = outgoing_tx.start_send(Err(InputStreamError::from_server_fn_error(ServerFnErrorErr::Response(err.to_string())).ser()));
             }
         })
         .on_upgrade(|mut session| async move {
@@ -135,7 +135,7 @@ where
                             break;
                         };
                         if let Err(err) = session.send(Message::Binary(incoming)).await {
-                            _ = outgoing_tx.start_send(Err(InputStreamError::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Request(err.to_string())).ser()));
+                            _ = outgoing_tx.start_send(Err(InputStreamError::from_server_fn_error(ServerFnErrorErr::Request(err.to_string())).ser()));
                         }
                     },
                         outgoing = session.recv().fuse() => {
@@ -159,7 +159,7 @@ where
                             }
                             Ok(_other) => {}
                             Err(e) => {
-                                _ = outgoing_tx.start_send(Err(InputStreamError::from_feluqa_ui_server_functions_error(ServerFnErrorErr::Response(e.to_string())).ser()));
+                                _ = outgoing_tx.start_send(Err(InputStreamError::from_server_fn_error(ServerFnErrorErr::Response(e.to_string())).ser()));
                             }
                         }
                     }

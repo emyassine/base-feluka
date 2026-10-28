@@ -32,8 +32,6 @@ keywords = [
 ]
 categories = ["development-tools"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/slint-ui/document-features"
-
 [features]
 default = []
 self-test = []

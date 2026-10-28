@@ -35,8 +35,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/slab"
-
 [features]
 default = ["std"]
 std = []

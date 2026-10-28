@@ -30,8 +30,6 @@ keywords = [
 ]
 categories = ["development-tools::testing"]
 license = "MIT"
-repository = "https://github.com/palfrey/serial_test/"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

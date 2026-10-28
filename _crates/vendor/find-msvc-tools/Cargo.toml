@@ -26,8 +26,6 @@ readme = "README.md"
 keywords = ["build-dependencies"]
 categories = ["development-tools::build-utils"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/cc-rs"
-
 [lib]
 name = "find_msvc_tools"
 path = "src/lib.rs"

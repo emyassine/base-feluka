@@ -23,8 +23,6 @@ description = "Easy, safe self-referential struct generation."
 documentation = "https://docs.rs/ouroboros"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/someguynamedjosh/ouroboros"
-
 [lib]
 name = "ouroboros"
 path = "src/lib.rs"

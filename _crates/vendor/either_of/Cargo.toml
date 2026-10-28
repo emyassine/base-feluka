@@ -24,8 +24,6 @@ autobenches = false
 description = "Utilities for working with enumerated types that contain one of 2..n other types."
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/leptos-rs/leptos"
-
 [features]
 default = ["no_std"]
 no_std = []

@@ -29,8 +29,6 @@ documentation = "https://docs.rs/pkg-config"
 readme = "README.md"
 keywords = ["build-dependencies"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/pkg-config-rs"
-
 [lib]
 name = "pkg_config"
 path = "src/lib.rs"

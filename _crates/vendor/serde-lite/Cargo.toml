@@ -30,8 +30,6 @@ keywords = [
 ]
 categories = ["encoding"]
 license = "MIT"
-repository = "https://github.com/operutka/serde-lite"
-
 [features]
 default = []
 derive = ["serde-lite-derive"]

@@ -36,12 +36,12 @@ pub fn use_lock_body_scroll_popover(initial_locked: bool) -> RwSignal<bool> {
             let style = body.style();
 
             let _ = style.set_property("position", "fixed");
-            let _ = style.set_property("top", &format!("-{current_scroll}px"));
+            let _ = style.set_property("top", &crate::std::format!("-{current_scroll}px"));
             let _ = style.set_property("width", "100%");
             let _ = style.set_property("overflow", "hidden");
 
             if scrollbar_width > 0.0 {
-                let _ = style.set_property("padding-right", &format!("{scrollbar_width}px"));
+                let _ = style.set_property("padding-right", &crate::std::format!("{scrollbar_width}px"));
             }
         } else {
             let stored_position = scroll_position_signal.get();

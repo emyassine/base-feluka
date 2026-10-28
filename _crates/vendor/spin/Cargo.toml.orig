@@ -7,7 +7,6 @@ authors = [
     "Joshua Barretto <joshua.s.barretto@gmail.com>",
 ]
 license = "MIT"
-repository = "https://github.com/mvdnes/spin-rs.git"
 keywords = ["spinlock", "mutex", "rwlock"]
 description = "Spin-based synchronization primitives"
 rust-version = "1.38"

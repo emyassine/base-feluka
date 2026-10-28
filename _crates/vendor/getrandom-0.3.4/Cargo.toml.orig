@@ -7,7 +7,6 @@ authors = ["The Rand Project Developers"]
 license = "MIT OR Apache-2.0"
 description = "A small cross-platform library for retrieving random data from system source"
 documentation = "https://docs.rs/getrandom"
-repository = "https://github.com/rust-random/getrandom"
 categories = ["os", "no-std"]
 exclude = [".*"]
 

@@ -73,7 +73,7 @@ pub fn PaginationNavButton(direction: PageDirection) -> impl IntoView {
             class=button_class.with_class("")
             class:opacity-0=is_disabled
             class:pointer-events-none=is_disabled
-            aria-label=format!("Go to {} page", direction)
+            aria-label=crate::std::format!("Go to {} page", direction)
         >
             {icon}
         </a>

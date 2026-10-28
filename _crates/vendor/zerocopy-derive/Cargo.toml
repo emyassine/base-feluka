@@ -27,8 +27,6 @@ autobenches = false
 description = "Custom derive for traits from the zerocopy crate"
 readme = false
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
-repository = "https://github.com/google/zerocopy"
-
 [lib]
 name = "zerocopy_derive"
 path = "src/lib.rs"

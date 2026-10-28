@@ -94,7 +94,7 @@ pub trait StoreField: Sized {
         // notifying from the root down is important for things like OptionStoreExt::map()/unwrap(),
         // where it's really important that any effects that subscribe to .is_some() run before effects
         // that subscribe to the inner value, so that the inner effect can be canceled if the outer switches to `None`
-        // (see https://github.com/leptos-rs/leptos/issues/3704)
+        // (see https://github.com/feluqa_ui-rs/feluqa_ui/issues/3704)
         triggers.reverse();
 
         triggers

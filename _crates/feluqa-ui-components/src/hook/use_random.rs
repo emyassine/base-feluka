@@ -5,16 +5,16 @@ use crate::std::sync::atomic::{AtomicUsize, Ordering};
 const PREFIX: &str = "rust_ui"; // Must NOT contain "/" or "-"
 
 pub fn use_random_id() -> String {
-    format!("_{PREFIX}_{}", generate_hash())
+    crate::std::format!("_{PREFIX}_{}", generate_hash())
 }
 
 pub fn use_random_id_for(element: &str) -> String {
-    format!("{}_{PREFIX}_{}", element, generate_hash())
+    crate::std::format!("{}_{PREFIX}_{}", element, generate_hash())
 }
 
 pub fn use_random_transition_name() -> String {
     let random_id = use_random_id();
-    format!("view-transition-name: {random_id}")
+    crate::std::format!("view-transition-name: {random_id}")
 }
 
 /* ========================================================== */

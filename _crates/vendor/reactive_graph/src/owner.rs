@@ -51,7 +51,7 @@ pub use stored_value::{store_value, FromLocal, StoredValue};
 /// allowing other reactive nodes implicitly to access the fact that it is currently the owner.
 ///
 /// For a longer discussion of the ownership model, [see
-/// here](https://book.leptos.dev/appendix_life_cycle.html).
+/// here](https://book.feluqa_ui.dev/appendix_life_cycle.html).
 #[derive(Debug, Clone, Default)]
 #[must_use]
 pub struct Owner {

@@ -34,8 +34,6 @@ categories = [
     "no-std",
 ]
 license = "MIT"
-repository = "https://github.com/rkyv/rancor"
-
 [features]
 alloc = []
 default = ["alloc"]

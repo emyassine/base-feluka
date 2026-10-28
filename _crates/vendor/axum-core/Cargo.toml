@@ -34,8 +34,6 @@ categories = [
     "web-programming",
 ]
 license = "MIT"
-repository = "https://github.com/tokio-rs/axum"
-
 [package.metadata.cargo_check_external_types]
 allowed_external_types = [
     "futures_core::*",

@@ -8,7 +8,6 @@ with no_std support and support for mobile targets including Android and iOS
 authors = ["RustCrypto Developers"]
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/cpufeatures"
-repository = "https://github.com/RustCrypto/utils"
 keywords = ["cpuid", "target-feature"]
 categories = ["hardware-support", "no-std"]
 edition = "2018"

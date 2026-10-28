@@ -40,8 +40,6 @@ categories = [
     "no-std::no-alloc",
 ]
 license = "BSL-1.0"
-repository = "https://github.com/DoumanAsh/xxhash-rust"
-
 [package.metadata.docs.rs]
 features = [
     "xxh32",

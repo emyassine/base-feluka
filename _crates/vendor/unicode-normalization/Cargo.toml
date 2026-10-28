@@ -48,8 +48,6 @@ keywords = [
     "recomposition",
 ]
 license = "(MIT OR Apache-2.0) AND Unicode-3.0"
-repository = "https://github.com/unicode-rs/unicode-normalization"
-
 [features]
 default = ["std"]
 std = []

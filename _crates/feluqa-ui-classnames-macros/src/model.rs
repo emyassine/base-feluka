@@ -11,7 +11,7 @@ pub struct FeluqaVariantContainer {
 }
 
 #[derive(Debug, FromVariant)]
-#[darling(supports(unit), attributes(tw, default))]
+#[darling(supports(unit), attributes(feluqa, default))]
 pub struct FeluqaVariantOption {
     pub ident: syn::Ident,
     pub class: String,

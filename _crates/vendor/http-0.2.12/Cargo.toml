@@ -27,8 +27,6 @@ readme = "README.md"
 keywords = ["http"]
 categories = ["web-programming"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/hyperium/http"
-
 [dependencies.bytes]
 version = "1"
 

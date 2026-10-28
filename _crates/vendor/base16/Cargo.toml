@@ -20,7 +20,6 @@ readme = "README.md"
 keywords = ["hex", "base16", "encode", "decode", "no_std"]
 categories = ["encoding", "no-std"]
 license = "CC0-1.0"
-repository = "https://github.com/thomcc/rust-base16"
 [package.metadata.docs.rs]
 all-features = true
 
@@ -41,9 +40,6 @@ default = ["std"]
 std = ["alloc"]
 [badges.circle-ci]
 branch = "master"
-repository = "thomcc/rust-base16"
-
 [badges.codecov]
 branch = "master"
-repository = "thomcc/rust-base16"
 service = "github"

@@ -29,8 +29,6 @@ readme = "README.md"
 keywords = ["builder"]
 categories = ["rust-patterns"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/idanarye/rust-typed-builder"
-
 [lib]
 name = "typed_builder_macro"
 path = "src/lib.rs"

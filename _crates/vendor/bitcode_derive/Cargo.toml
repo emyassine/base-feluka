@@ -26,8 +26,6 @@ autobenches = false
 description = "Implementation of #[derive(Encode, Decode)] for bitcode"
 readme = false
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/SoftbearStudios/bitcode/"
-
 [lib]
 name = "bitcode_derive"
 path = "src/lib.rs"

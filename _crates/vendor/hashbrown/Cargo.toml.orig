@@ -3,7 +3,6 @@ name = "hashbrown"
 version = "0.17.1"
 description = "A Rust port of Google's SwissTable hash map"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/hashbrown"
 readme = "README.md"
 keywords = ["hash", "no_std", "hashmap", "swisstable"]
 categories = ["data-structures", "no-std"]

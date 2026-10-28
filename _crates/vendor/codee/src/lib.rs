@@ -36,7 +36,7 @@
 //!
 //! There are two types of codecs: One that encodes as binary data (`Vec[u8]`) in the module [`binary`] and another type that encodes as
 //! strings (`String`) in the module [`string`]. There is also an adapter
-//! [`Base64`](https://github.com/Synphonyte/leptos-use/blob/main/src/utils/codecs/string/base64.rs) that can be used to
+//! [`Base64`](https://github.com/Synphonyte/feluqa_ui-use/blob/main/src/utils/codecs/string/base64.rs) that can be used to
 //! wrap a binary codec and make it a string codec by representing the binary data as a base64 string.
 //!
 //! > Please note that many of the codecs need a feature flag to be enabled. Check the docs of the respective codec to be sure.
@@ -154,7 +154,7 @@
 //! [`HybridDecoder`], [`HybridEncoder`] and [`IsBinary`] traits that are implemented automatically
 //! for all the codecs.
 //!
-//! To see them in action, you can have a look at [`leptos_use::use_websocket`](https://github.com/Synphonyte/leptos-use/blob/main/src/use_websocket.rs).
+//! To see them in action, you can have a look at [`feluqa_ui_use::use_websocket`](https://github.com/Synphonyte/feluqa_ui-use/blob/main/src/use_websocket.rs).
 
 pub mod binary;
 mod error;

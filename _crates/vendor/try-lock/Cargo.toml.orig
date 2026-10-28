@@ -6,7 +6,6 @@ keywords = ["lock", "atomic"]
 categories = ["concurrency", "no-std"]
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 license = "MIT"
-repository = "https://github.com/seanmonstar/try-lock"
 homepage = "https://github.com/seanmonstar/try-lock"
 documentation = "https://docs.rs/try-lock"
 readme = "README.md"

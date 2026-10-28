@@ -40,8 +40,6 @@ categories = [
     "asynchronous",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/actix/actix-net/tree/master/actix-server"
-
 [package.metadata.cargo_check_external_types]
 allowed_external_types = ["tokio::*"]
 

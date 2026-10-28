@@ -8,7 +8,6 @@ readme = "README.md"
 rust-version = "1.67.0"
 keywords = ["gzip", "deflate", "zlib", "zlib-ng", "encoding"]
 categories = ["compression", "api-bindings"]
-repository = "https://github.com/rust-lang/flate2-rs"
 homepage = "https://github.com/rust-lang/flate2-rs"
 documentation = "https://docs.rs/flate2"
 description = """

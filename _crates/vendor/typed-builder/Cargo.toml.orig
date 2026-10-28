@@ -7,7 +7,6 @@ version = "0.23.2"
 authors = ["IdanArye <idanarye@gmail.com>", "Chris Morgan <me@chrismorgan.info>"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/idanarye/rust-typed-builder"
 documentation = "https://idanarye.github.io/rust-typed-builder/"
 readme = "README.md"
 keywords = ["builder"]

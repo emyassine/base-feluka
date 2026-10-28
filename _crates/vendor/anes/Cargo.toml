@@ -21,7 +21,6 @@ documentation = "https://docs.rs/anes/"
 readme = "README.md"
 keywords = ["terminal", "ansi", "sequence", "code", "parser"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/zrzka/anes-rs"
 [package.metadata.docs.rs]
 all-features = true
 

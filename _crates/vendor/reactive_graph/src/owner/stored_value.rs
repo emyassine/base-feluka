@@ -24,7 +24,7 @@ use std::{
 /// updating it does not notify anything else.
 pub struct StoredValue<T, S = SyncStorage> {
     value: ArenaItem<ArcStoredValue<T>, S>,
-    #[cfg(any(debug_assertions, leptos_debuginfo))]
+    #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
     defined_at: &'static Location<'static>,
 }
 
@@ -64,11 +64,11 @@ impl<T, S> Hash for StoredValue<T, S> {
 
 impl<T, S> DefinedAt for StoredValue<T, S> {
     fn defined_at(&self) -> Option<&'static Location<'static>> {
-        #[cfg(any(debug_assertions, leptos_debuginfo))]
+        #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
         {
             Some(self.defined_at)
         }
-        #[cfg(not(any(debug_assertions, leptos_debuginfo)))]
+        #[cfg(not(any(debug_assertions, feluqa_ui_debuginfo)))]
         {
             None
         }
@@ -85,7 +85,7 @@ where
     pub fn new_with_storage(value: T) -> Self {
         Self {
             value: ArenaItem::new_with_storage(ArcStoredValue::new(value)),
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
         }
     }
@@ -184,7 +184,7 @@ where
     #[track_caller]
     fn from(value: ArcStoredValue<T>) -> Self {
         StoredValue {
-            #[cfg(any(debug_assertions, leptos_debuginfo))]
+            #[cfg(any(debug_assertions, feluqa_ui_debuginfo))]
             defined_at: Location::caller(),
             value: ArenaItem::new(value),
         }

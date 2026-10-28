@@ -32,14 +32,10 @@ keywords = [
     "daemon",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/vorner/signal-hook"
-
 [badges.maintenance]
 status = "actively-developed"
 
 [badges.travis-ci]
-repository = "vorner/signal-hook"
-
 [lib]
 name = "signal_hook_registry"
 path = "src/lib.rs"

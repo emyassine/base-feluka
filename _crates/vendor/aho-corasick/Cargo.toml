@@ -38,8 +38,6 @@ keywords = [
 ]
 categories = ["text-processing"]
 license = "Unlicense OR MIT"
-repository = "https://github.com/BurntSushi/aho-corasick"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = [

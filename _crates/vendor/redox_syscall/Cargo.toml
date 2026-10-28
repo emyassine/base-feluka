@@ -24,7 +24,6 @@ description = "A Rust library to access raw Redox system calls"
 documentation = "https://docs.rs/redox_syscall"
 readme = "README.md"
 license = "MIT"
-repository = "https://gitlab.redox-os.org/redox-os/kernel"
 resolver = "3"
 
 [features]

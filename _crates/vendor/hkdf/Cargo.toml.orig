@@ -4,7 +4,6 @@ version = "0.12.4"
 authors = ["RustCrypto Developers"]
 license = "MIT OR Apache-2.0"
 homepage = "https://github.com/RustCrypto/KDFs/"
-repository = "https://github.com/RustCrypto/KDFs/"
 description = "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"
 keywords = ["crypto", "HKDF", "KDF"]
 categories = ["cryptography", "no-std"]

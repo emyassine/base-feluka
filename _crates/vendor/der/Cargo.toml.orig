@@ -8,7 +8,6 @@ full support for heapless no_std targets
 """
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustCrypto/formats/tree/master/der"
 categories = ["cryptography", "data-structures", "encoding", "no-std", "parser-implementations"]
 keywords = ["asn1", "crypto", "itu", "pkcs"]
 readme = "README.md"

@@ -30,8 +30,6 @@ readme = "README.md"
 keywords = ["logging"]
 categories = ["development-tools::debugging"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/log"
-
 [package.metadata.docs.rs]
 features = [
     "std",

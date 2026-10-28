@@ -21,7 +21,6 @@ readme = "README.md"
 keywords = ["atoi", "conversion", "integer"]
 categories = ["parsing"]
 license = "MIT"
-repository = "https://github.com/pacman82/atoi-rs"
 resolver = "2"
 
 [[bench]]

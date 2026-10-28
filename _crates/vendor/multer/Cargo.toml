@@ -34,8 +34,6 @@ categories = [
     "web-programming",
 ]
 license = "MIT"
-repository = "https://github.com/rwf2/multer"
-
 [package.metadata.docs.rs]
 all-features = true
 

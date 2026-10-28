@@ -33,8 +33,6 @@ categories = [
     "no-std",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/bluss/scopeguard"
-
 [package.metadata.release]
 no-dev-version = true
 

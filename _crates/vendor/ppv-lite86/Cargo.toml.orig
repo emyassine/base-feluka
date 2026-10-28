@@ -5,7 +5,6 @@ authors = ["The CryptoCorrosion Contributors"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Cross-platform cryptography-oriented low-level SIMD library."
-repository = "https://github.com/cryptocorrosion/cryptocorrosion"
 keywords = ["crypto", "simd", "x86"]
 categories = ["cryptography", "no-std"]
 rust-version = "1.61"

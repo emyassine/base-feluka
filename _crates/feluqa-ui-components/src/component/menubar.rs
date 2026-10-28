@@ -267,7 +267,7 @@ pub fn MenubarContent(children: Children, #[prop(optional, into)] class: String)
         </ul>
 
         <script>
-            {format!(
+            {crate::std::format!(
                 r#"
                 (function() {{
                     const setupMenu = () => {{
@@ -310,7 +310,7 @@ pub fn MenubarContent(children: Children, #[prop(optional, into)] class: String)
                                 if (m !== menu && m.getAttribute('data-state') === 'open') {{
                                     m.setAttribute('data-state', 'closed');
                                     m.style.pointerEvents = 'none';
-                                    // Update aria-expanded on the other trigger
+                                    /// Update aria-expanded on the other trigger
                                     const otherId = m.id;
                                     const otherTrigger = menubarRoot.querySelector(`[data-menubar-trigger="${{otherId}}"]`);
                                     if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');

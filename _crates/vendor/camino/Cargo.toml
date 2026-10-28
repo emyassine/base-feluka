@@ -50,8 +50,6 @@ categories = [
     "os",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/camino-rs/camino"
-
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg=doc_cfg"]

@@ -7,7 +7,6 @@ authors = [
 ]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rustwasm/gloo"
 description = "HTTP requests library for WASM Apps"
 readme = "README.md"
 keywords = ["requests", "http", "wasm", "websockets"]

@@ -34,8 +34,6 @@ keywords = [
 ]
 categories = ["development-tools::procedural-macro-helpers"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/bkchr/proc-macro-crate"
-
 [lib]
 name = "proc_macro_crate"
 path = "src/lib.rs"

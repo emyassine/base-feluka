@@ -22,6 +22,4 @@ keywords = [
     "media-types",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/hyperium/mime"
-
 [dependencies]

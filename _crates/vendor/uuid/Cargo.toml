@@ -46,8 +46,6 @@ categories = [
     "wasm",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/uuid-rs/uuid"
-
 [package.metadata.docs.rs]
 rustc-args = [
     "--cfg",
@@ -85,11 +83,7 @@ features = [
 ]
 
 [badges.is-it-maintained-issue-resolution]
-repository = "uuid-rs/uuid"
-
 [badges.is-it-maintained-open-issues]
-repository = "uuid-rs/uuid"
-
 [badges.maintenance]
 status = "actively-developed"
 

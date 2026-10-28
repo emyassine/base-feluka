@@ -143,7 +143,7 @@ where
         #[cfg(feature = "subsecond")]
         hot_fn_ptr: CurrentHotPtr,
     ) -> Self {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver)
         {
             let (observer, rx) = channel();
@@ -250,7 +250,7 @@ where
         mut fun: Box<dyn FnMut(Option<T>) -> T + 'static>,
         initial_value: Pin<Box<dyn Future<Output = T>>>,
     ) -> Self {
-        // codegen optimisation:
+        /// codegen optimisation:
         fn prep() -> (Owner, Arc<RwLock<EffectInner>>, crate::channel::Receiver)
         {
             let (observer, rx) = channel();

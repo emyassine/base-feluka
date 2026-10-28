@@ -16,8 +16,6 @@ version = "0.42.2"
 authors = ["Microsoft"]
 description = "Import libs for Windows"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/microsoft/windows-rs"
-
 [target.aarch64-pc-windows-gnullvm.dependencies.windows_aarch64_gnullvm]
 version = "0.42.2"
 

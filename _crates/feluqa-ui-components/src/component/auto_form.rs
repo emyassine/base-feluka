@@ -47,15 +47,15 @@ use crate::component::switch::SwitchLabel;
 /// ```
 #[component]
 pub fn AutoForm<T>(
-    /// The form instance from `use_form::<T>()`
+    // The form instance from `use_form::<T>()`
     form: Form<T>,
-    /// Optional callback when form is submitted with valid data
+    // Optional callback when form is submitted with valid data
     #[prop(optional, into)]
     on_submit: Option<Callback<T>>,
-    /// Optional CSS class for the form element
+    // Optional CSS class for the form element
     #[prop(into, optional)]
     class: String,
-    /// Optional children (typically a submit button)
+    // Optional children (typically a submit button)
     #[prop(optional)]
     children: Option<Children>,
 ) -> impl IntoView

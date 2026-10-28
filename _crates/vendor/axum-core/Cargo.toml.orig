@@ -8,7 +8,6 @@ keywords = ["http", "web", "framework"]
 license = "MIT"
 name = "axum-core"
 readme = "README.md"
-repository = "https://github.com/tokio-rs/axum"
 version = "0.5.6" # remember to bump the version that axum and axum-extra depend on
 
 [package.metadata.cargo_check_external_types]
