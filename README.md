@@ -37,6 +37,6 @@ The panel and view references document current behavior and gaps; browser
 assets alone do not establish feature parity with any PHP framework.
 
 The platform remains in active development. Dynamic module installation,
-domain license enforcement, complete Filament-compatible panels, production
+domain license enforcement, complete legacy panel implementation-compatible panels, production
 Live reconciliation, deployment/restore qualification and enterprise release
 gates are not complete. See the [delivery plan](docs-new/_todo/index.en.md).

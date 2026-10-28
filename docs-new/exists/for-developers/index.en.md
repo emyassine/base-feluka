@@ -17,4 +17,4 @@ Recommended path:
 The runtime currently composes modules statically into a compiled product.
 System-panel installation, domain-scoped activation and license enforcement
 are target capabilities, not shipped functionality. See [the module lifecycle
-status](../reference/panels/filament-port-status.en.md).
+status](../reference/../for-developers/panels-resources-and-pages.en.md).

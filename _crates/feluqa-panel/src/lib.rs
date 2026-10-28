@@ -13,22 +13,9 @@ pub const VIEW_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/resources/view
 pub const LIVE_CLIENT_PATH: &str = "/assets/feluqa-live.js";
 /// First-party Feluqa Live browser client served by the web adapter.
 pub const LIVE_CLIENT_JS: &str = include_str!("../assets/feluqa-live.js");
-/// Filament-derived panel theme CSS from the Webkernel Filament adaptation.
-pub const FILAMENT_THEME_CSS: &str = include_str!("../assets/filament-theme.css");
-/// Rendered Webkernel panel typography rules from the authenticated `/test` panel.
-pub const WEBKERNEL_TYPOGRAPHY_CSS: &str = include_str!("../assets/webkernel-typography.css");
-/// Filament-derived panel browser runtime from the Webkernel Filament adaptation.
-pub const FILAMENT_CLIENT_JS: &str = include_str!("../assets/filament.js");
-/// Filament Echo integration bundle from the Webkernel Filament adaptation.
-pub const FILAMENT_ECHO_JS: &str = include_str!("../assets/filament-echo.js");
-/// Small Feluqa adaptation rules for the shared Filament panel DOM shell.
-pub const FILAMENT_ADAPTER_CSS: &str = include_str!("../assets/filament-panel.css");
 /// Feluqa's accessible notification timeout, dismissal, and action-event client.
 pub const NOTIFICATIONS_CLIENT_JS: &str = include_str!("../assets/feluqa-notifications.js");
-/// Feluqa-owned responsive sidebar and keyboard interactions.
-pub const PANEL_SHELL_CLIENT_JS: &str = include_str!("../assets/feluqa-shell.js");
-/// Feluqa component styles used by server-rendered panel components.
-pub const COMPONENTS_CSS: &str = include_str!("../assets/components.css");
+
 
 /// Webkernel language selector flags bundled with the framework panel.
 pub fn language_flag_svg(locale: &str) -> Option<&'static str> {
@@ -222,7 +209,7 @@ pub struct NavigationGroup {
     pub items: Vec<NavigationItem>,
 }
 
-/// Typed width tokens corresponding to Filament's content width options.
+/// Typed width tokens corresponding to 's content width options.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ContentWidth {
     /// 640px maximum width.
@@ -326,7 +313,7 @@ impl PanelOptions {
             .collect()
     }
 
-    /// Render authorized navigation entries with Filament-compatible DOM classes.
+    /// Render authorized navigation entries with -compatible DOM classes.
     pub fn render_navigation(
         &self,
         principal: &Principal,
@@ -1309,7 +1296,7 @@ pub struct Panel {
     pub options: PanelOptions,
 }
 
-/// Fluent, convention-friendly panel configuration, analogous to Filament's `PanelProvider`.
+/// Fluent, convention-friendly panel configuration, analogous to 's `PanelProvider`.
 #[derive(Clone, Debug)]
 pub struct PanelBuilder {
     panel: Panel,
@@ -1788,7 +1775,7 @@ impl PanelCatalog {
         ordered.sort_by_key(|(declaration_order, widget)| (widget.sort, *declaration_order));
 
         let mut html = String::from(
-            "<div class=\"fi-wi fi-grid lg:fi-grid-cols\" style=\"--cols-default: repeat(1, minmax(0, 1fr)); --cols-lg: repeat(",
+            "<div class=\"  lg:\" style=\"--cols-default: repeat(1, minmax(0, 1fr)); --cols-lg: repeat(",
         );
         write!(html, "{}", panel.widget_columns)
             .map_err(|_| PanelRenderError::Access(PanelError::RegistryCorrupt))?;
@@ -1801,9 +1788,9 @@ impl PanelCatalog {
             {
                 continue;
             }
-            html.push_str("<div class=\"fi-grid-col lg:fi-grid-col-span fi-wi-widget");
+            html.push_str("<div class=\" lg: ");
             if widget.column_start.is_some() {
-                html.push_str(" lg:fi-grid-col-start");
+                html.push_str(" lg:");
             }
             html.push_str("\" style=\"--col-span-lg: span ");
             write!(html, "{}", widget.column_span)
@@ -2447,7 +2434,7 @@ mod tests {
     }
 
     #[test]
-    fn filament_style_panel_provider_builds_typed_auth_branding_and_navigation() {
+    fn _style_panel_provider_builds_typed_auth_branding_and_navigation() {
         let builder = PanelBuilder::new("crm", "CRM", "/admin", PanelKind::Business)
             .brand_name("Numerimondes")
             .brand_logo("/assets/branding/logo.svg")
@@ -2688,7 +2675,7 @@ mod tests {
     }
 
     #[test]
-    fn system_panel_rejects_business_actions_in_its_ui_schema() {
+    fn system_kind_rejects_business_actions_in_its_ui_schema() {
         let mut system = panel(
             PanelKind::System,
             "core",
@@ -3057,11 +3044,11 @@ mod tests {
         assert!(html.as_str().contains("&lt;Acme&gt;"));
         assert!(
             html.as_str()
-                .contains("<th scope=\"col\" class=\"fi-ta-header-cell\">")
+                .contains("<th scope=\"col\" class=\"\">")
         );
         assert!(
             html.as_str()
-                .contains("<span class=\"fi-ta-header-cell-label\">Name</span>")
+                .contains("<span class=\"\">Name</span>")
         );
         assert!(!html.as_str().contains("Email"));
         assert!(!html.as_str().contains("secret@example.test"));
@@ -3235,7 +3222,7 @@ mod tests {
             .expect("select form renders");
         assert!(
             form.as_str()
-                .contains("<select class=\"fi-select-input\" id=\"feluqa-field-new-role_id\"")
+                .contains("<select class=\"\" id=\"feluqa-field-new-role_id\"")
         );
         assert!(
             form.as_str()

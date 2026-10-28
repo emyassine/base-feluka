@@ -99,8 +99,8 @@
 	          .cmd button:hover { color: var(--primary); }
 	          .btns { display: flex; flex-wrap: wrap; gap: 10px; }
 	          .btn { display: inline-flex; min-width: 0; max-width: 100%; flex-wrap: nowrap; align-items: center; gap: 8px; overflow: hidden; padding: 9px 15px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); font-weight: 500; white-space: nowrap; }
-	          .btn > .fi-link-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-	          .btn > .fi-icon, .btn > svg { flex: none; white-space: nowrap; }
+	          .btn > . { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	          .btn > ., .btn > svg { flex: none; white-space: nowrap; }
 	          .btn.primary { border-color: var(--primary); background: var(--primary); color: light-dark(#fff, #0d1117); }
 	          .webkernel-welcome-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
 	          .card { display: flex; gap: 16px; padding: 24px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }

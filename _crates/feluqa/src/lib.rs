@@ -68,15 +68,12 @@ pub use crate::live as liveview;
 /// Deterministic lifecycle for statically linked modules.
 #[cfg(feature = "module")]
 pub extern crate feluqa_module as module;
-/// Typed Filament-style notification contracts and bounded mailbox behavior.
+/// Typed -style notification contracts and bounded mailbox behavior.
 #[cfg(feature = "notifications")]
 pub extern crate feluqa_notifications as notifications;
 /// Validated system and business panel registry.
 #[cfg(feature = "panel")]
 pub extern crate feluqa_panel as panel;
-/// Feluqa-owned default system panel provider and resource declarations.
-#[cfg(feature = "system-panel")]
-pub extern crate feluqa_system_panel as system_panel;
 /// Versioned UI schema and safe component renderer.
 #[cfg(feature = "ui")]
 pub extern crate feluqa_ui as ui;

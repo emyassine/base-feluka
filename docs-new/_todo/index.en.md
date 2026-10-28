@@ -11,6 +11,6 @@ Do not promote an item to `exists/` until its acceptance evidence passes.
 - [Console commands and terminal interaction](console/console.en.md)
 - [Web and workstation module products](cross-platform/web-and-workstation-modules.en.md)
 
-Dynamic module installation, per-domain license enforcement, full Filament
+Dynamic module installation, per-domain license enforcement, full legacy panel implementation
 theme/component parity, generic CRUD and production deployment/restore remain
 open. The delivery plan is the execution source of truth.

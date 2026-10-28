@@ -42,7 +42,7 @@ not implemented yet.
   clusters, widgets, CRUD adapters, migrations, seeders and standalone builds.
 - **Enterprise panels:** complete Feluqa theme/component system,
   accessible forms/tables/actions/notifications, responsive Core panel and
-  first-class public-site panel composition; see F8. Filament parity is no
+  first-class public-site panel composition; see F8. legacy panel implementation parity is no
   longer the target.
 - **Security and data:** server-side authorization on every action,
   tenant/record isolation, PostgreSQL HTTP coverage, audit and a verified

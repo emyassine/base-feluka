@@ -4,7 +4,7 @@
 #![deny(unused_must_use)]
 #![deny(missing_docs)]
 
-//! Typed Filament-style toast data and bounded session-mailbox semantics.
+//! Typed -style toast data and bounded session-mailbox semantics.
 //!
 //! The notification payload is data only. Application code registers server-side actions;
 //! a browser-supplied action ID is never executed without normal authorization checks.
@@ -40,10 +40,10 @@ use serde_json::{Map, Value};
 
 /// Maximum number of unpublished or published notifications held in one mailbox.
 pub const MAX_NOTIFICATIONS: usize = 50;
-/// Default toast lifetime in milliseconds, matching the Webkernel Filament integration.
+/// Default toast lifetime in milliseconds, matching the Webkernel  integration.
 pub const DEFAULT_DURATION_MS: u32 = 6_000;
 
-/// Standard Filament notification status.
+/// Standard  notification status.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum NotificationStatus {
@@ -57,7 +57,7 @@ pub enum NotificationStatus {
     Warning,
 }
 
-/// Icon sizes accepted by Filament notification components.
+/// Icon sizes accepted by  notification components.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub enum NotificationIconSize {
     /// 12px icon.
@@ -111,7 +111,7 @@ pub struct NotificationAction {
     pub url: Option<String>,
 }
 
-/// Data representation of one Filament-style notification.
+/// Data representation of one -style notification.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Notification {
@@ -378,7 +378,7 @@ impl Notification {
         Ok(())
     }
 
-    /// Serialize using Filament's camelCase notification payload shape.
+    /// Serialize using 's camelCase notification payload shape.
     pub fn to_json(&self) -> Result<String, NotificationError> {
         self.validate()?;
         serde_json::to_string(self).map_err(|_| NotificationError::Serialization)
@@ -392,7 +392,7 @@ impl Notification {
         Ok(notification)
     }
 
-    /// Render one escaped notification using Filament's stable DOM classes.
+    /// Render one escaped notification using 's stable DOM classes.
     pub fn render(&self) -> Result<RenderedNotification, NotificationError> {
         self.validate()?;
         let status = self
@@ -405,22 +405,22 @@ impl Notification {
             NotificationDuration::Persistent(_) => String::from("persistent"),
         };
         let mut html = format!(
-            "<article class=\"fi-no-notification fi-color fi-color-{status}{} fi-transition-enter-start\" role=\"status\" data-feluqa-notification data-notification-id=\"{}\" data-duration=\"{}\">",
-            if self.inline { " fi-inline" } else { "" },
+            "<article class=\"  {status}{} \" role=\"status\" data-feluqa-notification data-notification-id=\"{}\" data-duration=\"{}\">",
+            if self.inline { " " } else { "" },
             escape_html(&self.id),
             escape_html(&duration),
         );
         if let Some(icon) = &self.icon {
-            write!(html, "<span class=\"fi-no-notification-icon fi-size-{}{}\" data-icon=\"{}\" aria-hidden=\"true\"></span>", self.icon_size.as_str(), self.icon_color.as_ref().map(|color| format!(" fi-color-{color}")).unwrap_or_default(), escape_html(icon))
+            write!(html, "<span class=\" {}{}\" data-icon=\"{}\" aria-hidden=\"true\"></span>", self.icon_size.as_str(), self.icon_color.as_ref().map(|color| format!(" {color}")).unwrap_or_default(), escape_html(icon))
                 .map_err(|_| NotificationError::Serialization)?;
         }
         html.push_str(
-            "<div class=\"fi-no-notification-main\"><div class=\"fi-no-notification-text\">",
+            "<div class=\"\"><div class=\"\">",
         );
         if let Some(title) = &self.title {
             write!(
                 html,
-                "<h2 class=\"fi-no-notification-title\">{}</h2>",
+                "<h2 class=\"\">{}</h2>",
                 escape_html(title)
             )
             .map_err(|_| NotificationError::Serialization)?;
@@ -428,7 +428,7 @@ impl Notification {
         if let Some(body) = &self.body {
             write!(
                 html,
-                "<div class=\"fi-no-notification-body\">{}</div>",
+                "<div class=\"\">{}</div>",
                 escape_html(body)
             )
             .map_err(|_| NotificationError::Serialization)?;
@@ -436,24 +436,24 @@ impl Notification {
         if let Some(date) = &self.date {
             write!(
                 html,
-                "<time class=\"fi-no-notification-date\">{}</time>",
+                "<time class=\"\">{}</time>",
                 escape_html(date)
             )
             .map_err(|_| NotificationError::Serialization)?;
         }
         html.push_str("</div>");
         if !self.actions.is_empty() {
-            html.push_str("<div class=\"fi-no-notification-actions fi-ac\">");
+            html.push_str("<div class=\" \">");
             for action in &self.actions {
                 match &action.url {
-                    Some(url) => write!(html, "<a class=\"fi-ac-action\" href=\"{}\">{}</a>", escape_html(url), escape_html(&action.label)),
-                    None => write!(html, "<button class=\"fi-ac-action\" type=\"button\" data-feluqa-notification-action=\"{}\" data-permission=\"{}\">{}</button>", escape_html(&action.id), escape_html(&action.permission), escape_html(&action.label)),
+                    Some(url) => write!(html, "<a class=\"\" href=\"{}\">{}</a>", escape_html(url), escape_html(&action.label)),
+                    None => write!(html, "<button class=\"\" type=\"button\" data-feluqa-notification-action=\"{}\" data-permission=\"{}\">{}</button>", escape_html(&action.id), escape_html(&action.permission), escape_html(&action.label)),
                 }
                 .map_err(|_| NotificationError::Serialization)?;
             }
             html.push_str("</div>");
         }
-        html.push_str("<button class=\"fi-no-notification-close-btn\" type=\"button\" data-dismiss-notification aria-label=\"Dismiss notification\">×</button>");
+        html.push_str("<button class=\"\" type=\"button\" data-dismiss-notification aria-label=\"Dismiss notification\">×</button>");
         html.push_str("</div></article>");
         Ok(RenderedNotification { html })
     }
@@ -630,7 +630,7 @@ mod tests {
     use crate::std::string::String;
 
     #[test]
-    fn notification_builder_serializes_filament_camel_case_and_rejects_injected_urls() {
+    fn notification_builder_serializes__camel_case_and_rejects_injected_urls() {
         let notification = Notification::make("customer-created")
             .title("Customer created")
             .body("The customer is ready.")
@@ -684,7 +684,7 @@ mod tests {
     }
 
     #[test]
-    fn persistent_duration_is_the_filament_literal() {
+    fn persistent_duration_is_the__literal() {
         let notification = Notification::make("keep").persistent();
         assert_eq!(
             notification.duration,
@@ -699,7 +699,7 @@ mod tests {
     }
 
     #[test]
-    fn notification_html_uses_filament_classes_and_escapes_all_text_and_attributes() {
+    fn notification_html_uses__classes_and_escapes_all_text_and_attributes() {
         let notification = Notification::make("saved")
             .title("<script>alert(1)</script>")
             .body("A & B")
@@ -713,7 +713,7 @@ mod tests {
         let html = notification.render().expect("safe HTML");
         assert!(
             html.as_str()
-                .contains("fi-no-notification fi-color fi-color-success")
+                .contains("  ")
         );
         assert!(html.as_str().contains("&lt;script&gt;"));
         assert!(html.as_str().contains("A &amp; B"));

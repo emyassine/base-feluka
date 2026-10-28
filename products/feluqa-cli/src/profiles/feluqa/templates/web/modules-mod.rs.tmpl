@@ -8,12 +8,10 @@ use crate::std::result::Result::Ok;
 
 pub mod seeders;
 pub mod live;
-pub mod system;
 
 pub struct AppPanelProvider;
 impl PanelProvider for AppPanelProvider {
     fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {
-        catalog.register_provider(&system::CorePanelProvider)?;
         catalog.register_panel(Panel::single_page(
             "feluqa-erp", "ERP Workspace", "/admin", PanelKind::Business,
             "business.erp.manage", "ERP modules will appear here",

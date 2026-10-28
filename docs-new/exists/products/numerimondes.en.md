@@ -63,8 +63,8 @@ or runtime-installable package format is complete.
 
 These are implementation facts, not an enterprise release qualification.
 Deployment, restore and full PostgreSQL HTTP coverage remain open. The product
-also does not demonstrate full Filament theme/component parity; see the
-[panel port status](../reference/panels/filament-port-status.en.md).
+also does not demonstrate full legacy panel implementation theme/component parity; see the
+[panel port status](../reference/../for-developers/panels-resources-and-pages.en.md).
 
 ## Run the current development product
 

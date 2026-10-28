@@ -17,8 +17,6 @@ extern crate tower_http;
 mod panels {
     #[path = "business/panel_business.rs"]
     pub mod business;
-    #[path = "system/panel_system.rs"]
-    pub mod system;
     #[path = "site/panel_site.rs"]
     pub mod site;
     #[path = "runtime.rs"]
@@ -34,10 +32,6 @@ use std::result::Result;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let business = panels::business::declaration()?;
-    let catalogue = feluqa::system_panel::catalogue_with(business)?;
-    panels::runtime::run(catalogue).await
+    panels::runtime::run(business).await
 }
 
-#[cfg(test)]
-#[path = "../tests/support/app.rs"]
-mod app_tests;

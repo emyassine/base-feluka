@@ -1,4 +1,0 @@
-<x-feluqa-panel::document panel="system" active="/system/users" title="Users · Feluqa Core" :navigation="navigation" :brand_name="brand_name" :csrf_token="csrf_token" :display_name="display_name" :email="email"><div class="fi-panel-page-content"><header><p class="eyebrow">Feluqa Core · Users</p><h1>Users</h1></header>
-<section class="card"><h2>Accounts</h2>{!! user_table !!}<h3>Change account state</h3><form method="post" action="/system/users/active"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>User ID <input name="user_id" type="number" min="1" required></label><label>Active <select name="active"><option value="true">Yes</option><option value="false">No</option></select></label><button class="btn" type="submit">Save</button></form>{!! edit_forms !!}</section>
-<section class="card"><h2>Create account</h2>{!! create_form !!}</section>
-</div></x-feluqa-panel::document>

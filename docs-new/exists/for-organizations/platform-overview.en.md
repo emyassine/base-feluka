@@ -21,7 +21,7 @@ function.
 | Resource-based business CRUD | Initial vertical slice with tenant/record ownership and field-level checks. |
 | Install a packaged module dynamically from System | Not implemented. Current module registration is static and compiled. |
 | Domain-scoped license enforcement and capability gating | Required platform design; not implemented end to end. |
-| Full Filament-compatible theme and component system | Not imported. Selected browser assets and partial Rust components exist. |
+| Full legacy panel implementation-compatible theme and component system | Not imported. Selected browser assets and partial Rust components exist. |
 
 The intended domain-level installation and licensing workflow is described in
 [modules, domains and licensing](modules-domains-and-licensing.en.md).

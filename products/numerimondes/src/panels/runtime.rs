@@ -86,10 +86,6 @@ pub(crate) fn lifecycle_runtime(
     enabled_modules: &[String],
 ) -> Result<feluqa::module::ModuleRuntime, feluqa::module::LifecycleError> {
     let mut runtime = feluqa::module::ModuleRuntime::default();
-    feluqa::module::ServiceProvider::register(
-        &crate::panels::system::CoreServiceProvider,
-        &mut runtime,
-    )?;
     for module in enabled_modules {
         match module.as_str() {
             "numerimondes.crm" => feluqa::module::ServiceProvider::register(
@@ -131,11 +127,6 @@ pub async fn run(catalog: feluqa::panel::PanelCatalog) -> Result<(), Box<dyn Err
     {
         return Err("cannot seed CRM because module `numerimondes.crm` is disabled".into());
     }
-    let live_runtime = if config.security.live_enabled {
-        Some(crate::panels::system::live::runtime(config.live_signing_key()?)?)
-    } else {
-        None
-    };
     let database_source = std::fs::read_to_string(
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("config/database.toml"),
     )?;
@@ -182,7 +173,7 @@ pub async fn run(catalog: feluqa::panel::PanelCatalog) -> Result<(), Box<dyn Err
         databases.default_connection()?.clone(),
         databases.clone(),
         catalog,
-        live_runtime,
+        None,
         config.security.secure_cookies,
     )
     .with_active_modules(active_modules);

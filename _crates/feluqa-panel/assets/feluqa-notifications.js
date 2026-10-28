@@ -4,7 +4,7 @@
   const dismiss = (notification) => {
     if (notification.dataset.dismissed === "true") return;
     notification.dataset.dismissed = "true";
-    notification.classList.add("fi-transition-leave-end");
+    notification.classList.add("");
     window.setTimeout(() => notification.remove(), 320);
   };
 
@@ -19,7 +19,7 @@
           window.setTimeout(() => dismiss(notification), milliseconds);
         }
       }
-      notification.classList.remove("fi-transition-enter-start");
+      notification.classList.remove("");
     });
   };
 

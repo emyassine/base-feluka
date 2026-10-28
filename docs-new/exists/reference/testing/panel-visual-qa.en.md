@@ -1,6 +1,6 @@
 # Panel visual QA
 
-The system panel must be checked in a browser because its Filament-derived stylesheet hides the main content until a browser runtime reveals it. Rust route tests alone cannot catch that failure.
+The system panel must be checked in a browser because its legacy panel implementation-derived stylesheet hides the main content until a browser runtime reveals it. Rust route tests alone cannot catch that failure.
 
 Run from the repository root:
 

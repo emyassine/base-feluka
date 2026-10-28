@@ -1,4 +1,4 @@
-> Update 2026-10-26: [delivery sequencing](../../_todo/enterprise-delivery.en.md), [`.view.rs` language](../../exists/reference/views/view-language.en.md), [panel status](../../exists/reference/panels/filament-port-status.en.md), and [Zed tooling](../../exists/reference/editor/zed-editor.en.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
+> Update 2026-10-26: [delivery sequencing](../../_todo/enterprise-delivery.en.md), [`.view.rs` language](../../exists/reference/views/view-language.en.md), [panel status](../../exists/reference/../for-developers/panels-resources-and-pages.en.md), and [Zed tooling](../../exists/reference/editor/zed-editor.en.md) refine this decision record. Basic views/components/SDUI are prerequisites of Core, even though the historical milestone table places views in M4. These are implementation contracts, not delivered capabilities.
 
 # Feluqa — Product brief, decisions and critique
 
@@ -295,7 +295,7 @@ Exhibit 2a | Module mechanisms compared
 
 ### A9. UI: SDUI, views, live components
 
-**SDUI (Accepted).** Schema-driven forms, tables, widgets, layouts, navigation, actions, validation and authorization, inspired by Filament's fluent API and Webkernel's schemas. The schema is **data first**: a typed builder API that serializes to a declarative form, so the Core panel, API docs and a future visual editor consume the same schema. Output is accessible HTML plus the small client metadata needed for interaction.
+**SDUI (Accepted).** Schema-driven forms, tables, widgets, layouts, navigation, actions, validation and authorization, inspired by legacy panel implementation's fluent API and Webkernel's schemas. The schema is **data first**: a typed builder API that serializes to a declarative form, so the Core panel, API docs and a future visual editor consume the same schema. Output is accessible HTML plus the small client metadata needed for interaction.
 
 **View language.** A familiar template syntax (conditionals, loops, includes, components, slots, escaped output) with its own parser and a bounded expression model, compiled at build time rather than interpreted per request. Inventory existing Webkernel view constructs first; each unsupported one gets a migration path (A6).
 
@@ -615,7 +615,7 @@ Exhibit 4 | Go/no-go gates; a gate passes only if every listed ID passes
 * **D-0029 — Real-time and defense boundaries.** Proposed. Ground-side software only in release 1; kernel crates stay `no_std`-capable; legal review before any defense positioning (decision 2).
 * **D-0030 — Port protocol.** Proposed. Library ports follow the black-box test protocol in Part B.
 * **D-0031 — Web database layer and migrations.** Accepted for the Web profile: SeaORM 1.1.20 with Tokio and SQLite/PostgreSQL drivers, preserving workspace MSRV Rust 1.85. Feluqa modules embed SQL files from `migrations/{sqlite,postgresql}`; each declares supported dialects and supplies exactly one migration variant per declared backend. Named connections are explicit; SQLite is the default. SeaORM 2.x / SQLx 0.9 are deferred while they require Rust 1.94.
-* **D-0032 — Web panel component stack.** Accepted by the owner on 2026-10-28: replace the Filament-derived panel theme and component implementation with Feluqa-owned components, using the MIT-licensed UI registry as source material. Expose components through `feluqa::ui::component`; keep `feluqa::ui` schema contracts `no_std` and browser rendering in the web profile. SSR/hydration build integration and Rust 1.88 for the web UI feature are prerequisites. Remove Filament-derived runtime assets after all panel routes and behaviors migrate and pass the evidence in `feluqa-ui.en.md`.
+* **D-0032 — Web panel component stack.** Accepted by the owner on 2026-10-28: replace the legacy panel implementation-derived panel theme and component implementation with Feluqa-owned components, using the MIT-licensed UI registry as source material. Expose components through `feluqa::ui::component`; keep `feluqa::ui` schema contracts `no_std` and browser rendering in the web profile. SSR/hydration build integration and Rust 1.88 for the web UI feature are prerequisites. Remove legacy panel implementation-derived runtime assets after all panel routes and behaviors migrate and pass the evidence in `feluqa-ui.en.md`.
 
 ### C3. Sources
 
@@ -624,3 +624,6 @@ From earlier revisions: Go `net/http`; Go modules and workspaces; Cargo workspac
 Added (to verify before adoption): pocketbase.io; caddyserver.com and CertMagic; templ.guide; sqlc.dev; cel.dev; cedarpolicy.com; casbin.org; extism.org; litestream.io; data-star.dev; github.com/bigskysoftware/idiomorph; phoenixframework.org and ash-hq.org; github.com/cloudflare/pingora; theupdateframework.io; sigstore.dev; OrchardCore documentation.
 
 Added for the expanded scope (to verify before adoption): tauri.app; bevyengine.org; embassy.dev; rtic.rs; tockos.org; ferrocene.dev; github.com/mozilla/uniffi-rs; github.com/mavlink/rust-mavlink; px4.io; ardupilot.org; wails.io; ebitengine.org; eur-lex.europa.eu (Regulation 2021/821 on dual-use items).
+
+
+- **D-0033 — No built-in System panel.** Accepted by the owner on 2026-10-28: remove the built-in System panel implementation, routes, pages, scaffold output and facade feature. Keep `feluqa::panel` as the generic panel contract so products and modules can declare their own panels. Identity, authorization and database contracts remain separate platform capabilities.

@@ -12,4 +12,4 @@ d'acceptation.
 - [Recherche sur les tests navigateur](testing/browser-testing-research.en.md)
 
 L'installation dynamique, les licences par domaine, la parité complète avec le
-thème/composants Filament et le déploiement/restauration restent à faire.
+thème/composants legacy panel implementation et le déploiement/restauration restent à faire.

@@ -1,4 +1,0 @@
-<x-feluqa-panel::document panel="system" active="/system/roles" title="Roles · Feluqa Core" :navigation="navigation" :brand_name="brand_name" :csrf_token="csrf_token" :display_name="display_name" :email="email"><div class="fi-panel-page-content"><header><p class="eyebrow">Feluqa Core · Roles</p><h1>Roles and permissions</h1></header>
-<section class="card"><h2>Current roles</h2>{!! role_table !!}{!! edit_forms !!}</section>
-<section class="card"><h2>Create role</h2><p>Enter exact permission names separated by commas. Feluqa checks each permission on the server.</p>{!! create_form !!}</section>
-</div></x-feluqa-panel::document>

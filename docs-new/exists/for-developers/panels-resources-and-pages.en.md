@@ -9,7 +9,7 @@ administration panel, a public website panel, or both.
 
 The existing `.view.rs` catalog includes `x-feluqa::button` and
 `x-feluqa::field`. They are legacy server-rendered components and still use
-Filament-derived classes; they are not the target component API. New panel UI
+legacy panel implementation-derived classes; they are not the target component API. New panel UI
 work follows the [Feluqa UI component contract](../../knowledge/architecture/feluqa-ui.en.md),
 which is still being implemented. Do not treat the source move as a completed
 panel migration.
@@ -44,6 +44,6 @@ widget slots are still in progress.
 
 The current panel registry validates page/resource paths and permissions.
 Implementation status and remaining gaps are tracked in the dedicated
-[panel port inventory](../reference/panels/filament-port-status.en.md).
+[panel port inventory](../reference/../for-developers/panels-resources-and-pages.en.md).
 
 Next: [store data and run migrations](data-and-migrations.en.md).

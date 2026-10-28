@@ -8,7 +8,7 @@ navigation, forms, storage and product adapters through the readable
 `feluqa::ui::*` hierarchy. They should not need to adopt a separate UI
 framework for each product target.
 
-The web panel is moving from its legacy Filament-derived markup and assets to
+The web panel is moving from its legacy legacy panel implementation-derived markup and assets to
 Feluqa-owned components. Keep existing routes, services, authorization, CSRF,
 audit handling and business logic as server-side authorities during this
 migration. A hidden/disabled action is never a substitute for authorization.

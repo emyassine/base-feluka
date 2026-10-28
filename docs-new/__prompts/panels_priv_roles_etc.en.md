@@ -279,7 +279,7 @@ Le schéma, `.env.example`, la validation au démarrage et la page de config du 
 
 ## Ce qui passe à la compilation
 
-| Avant (Filament / manuel) | Feluqa |
+| Avant (legacy panel implementation / manuel) | Feluqa |
 |---|---|
 | `discoverResources(in:, for:)` | scanner d'attributs, registre `static` |
 | `'name'` en string | constantes `Customer::NAME` |

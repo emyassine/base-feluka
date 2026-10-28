@@ -10,7 +10,7 @@ publish = ["feluqa"]
 
 [features]
 default = ["web"]
-web = ["console", "definitions", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde", "dep:tokio", "dep:tower-http", "dep:toml"]
+web = ["console", "definitions", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "imagery", "dep:axum", "dep:serde", "dep:tokio", "dep:tower-http", "dep:toml"]
 console = ["definitions", "dep:feluqa-console", "dep:feluqa-console-macros", "feluqa-console/platform"]
 console-build = ["console", "feluqa-console/build"]
 definitions = ["dep:feluqa-definitions"]
@@ -26,7 +26,6 @@ live = ["auth", "dep:feluqa-live"]
 module = ["dep:feluqa-module"]
 database = ["dep:feluqa-database"]
 core = ["database", "dep:feluqa-core"]
-system-panel = ["panel", "dep:feluqa-system-panel"]
 imagery = ["dep:feluqa-imagery"]
 spa = ["ui", "auth", "live"]
 mobile = ["ui", "auth"]
@@ -43,7 +42,6 @@ feluqa-live = { version = "0.1.0", registry = "feluqa", path = "../feluqa-live",
 feluqa-module = { version = "0.1.0", registry = "feluqa", path = "../feluqa-module", optional = true}
 feluqa-database = { version = "0.1.0", registry = "feluqa", path = "../feluqa-database", optional = true}
 feluqa-core = { version = "0.1.0", registry = "feluqa", path = "../feluqa-core", optional = true}
-feluqa-system-panel = { version = "0.1.0", registry = "feluqa", path = "../feluqa-system-panel", optional = true}
 feluqa-imagery = { version = "0.1.0", registry = "feluqa", path = "../feluqa-imagery", optional = true}
 feluqa-console = { version = "0.1.1", registry = "feluqa", path = "../feluqa-console", optional = true}
 feluqa-console-macros = { version = "0.1.0", registry = "feluqa", path = "../feluqa-console-macros", optional = true}

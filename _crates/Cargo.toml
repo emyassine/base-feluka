@@ -34,7 +34,6 @@ members = [
     "feluqa-ui-classnames-macros",
     "feluqa-panel",
     "feluqa-notifications",
-    "feluqa-system-panel",
     "feluqa-imagery",
     "feluqa-live",
     "feluqa-module",

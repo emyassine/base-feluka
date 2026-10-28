@@ -6,7 +6,7 @@ start with [organizations](../for-organizations/index.en.md) or
 
 - [CLI commands](cli/commands.en.md)
 - [View language](views/view-language.en.md)
-- [Panel and component implementation status](panels/filament-port-status.en.md)
+- [Panel and component implementation status](../for-developers/panels-resources-and-pages.en.md)
 - [Rust coding standard](rust/rust-coding-standard.en.md)
 - [Zed editor integration](editor/zed-editor.en.md)
 - [Panel visual QA evidence](testing/panel-visual-qa.en.md)

@@ -1,7 +1,7 @@
 # Feluqa — feuille de route du framework
 
 Date de cadrage : 26 octobre 2026
-Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](enterprise-delivery.fr.md), [le contrat des vues](../exists/reference/views/view-language.en.md) et [les panels/composants](../exists/reference/panels/filament-port-status.en.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
+Statut : cadrage initial conservé. Pour le travail courant, suivre [le plan de livraison enterprise](enterprise-delivery.fr.md), [le contrat des vues](../exists/reference/views/view-language.en.md) et [les panels/composants](../exists/reference/../for-developers/panels-resources-and-pages.en.md). Leurs dépendances et critères de sortie prévalent sur cet ordre initial.
 
 ## État de réalisation (26 octobre 2026)
 
@@ -173,4 +173,4 @@ Un profilement des fourchettes doit être fait après les phases 0–3. L’ambi
 - [Décisions d’architecture](../knowledge/architecture/platform-vision-decisions.en.md) — exigences, critères FEL et gates M0–M8.
 - [Résultats M0](../exists/reference/research/m0-results.en.md) — rapport comparatif et liens vers les preuves conservées dans `products/__M0/`.
 - Webkernel views : `/home/yassine/Projects/Php/framework/__work/AGENTS_VIEWS.md` et les fichiers `.view.php` actifs sous `webkernel-src/y-dev-platform/`.
-- Webkernel routes : `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/filament/routes/web.php`.
+- Webkernel routes : `/home/yassine/Projects/Php/framework/__work/webkernel-src/y-dev-platform/platform/legacy panel implementation/routes/web.php`.

@@ -94,74 +94,16 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     assert!(application.join("src/modules/seeders/mod.rs").is_file());
     assert!(application.join("src/app/controllers/site.rs").is_file());
     assert!(application.join("src/app/controllers/panels.rs").is_file());
-    assert!(application.join("src/app/controllers/system.rs").is_file());
-    assert!(
-        application
-            .join("src/app/controllers/system/administration.rs")
-            .is_file()
-    );
-    assert!(
-        application
-            .join("src/app/controllers/system/operations.rs")
-            .is_file()
-    );
     let modules = fs::read_to_string(application.join("src/modules/mod.rs"))
-        .expect("system and ERP panel catalogue");
-    assert!(modules.contains("catalog.register_provider(&system::CorePanelProvider)?;"));
+        .expect("application panel catalogue");
+    assert!(!modules.contains("pub mod system"));
+    assert!(modules.contains("PanelProvider"));
     assert!(modules.contains("business.erp.manage"));
-    let system_provider = fs::read_to_string(application.join("src/modules/system/mod.rs"))
-        .expect("built-in Feluqa Core panel provider");
-    assert!(system_provider.contains("feluqa::system_panel::SystemPanelProvider"));
-    let system_views = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../_crates/feluqa-system-panel/resources/views/pages");
-    let roles_view = fs::read_to_string(system_views.join("system_roles.view.rs"))
-        .expect("framework-owned resource driven Core role view");
-    assert!(roles_view.contains("{!! role_table !!}"));
-    assert!(roles_view.contains("{!! create_form !!}"));
-    assert!(roles_view.contains("{!! edit_forms !!}"));
-    assert!(!roles_view.contains("<pre>"));
-    let users_view = fs::read_to_string(system_views.join("system_users.view.rs"))
-        .expect("framework-owned resource driven Core user view");
-    assert!(users_view.contains("{!! user_table !!}"));
-    assert!(users_view.contains("{!! create_form !!}"));
-    assert!(users_view.contains("{!! edit_forms !!}"));
-    assert!(!users_view.contains("<pre>"));
-    let dashboard_view = fs::read_to_string(system_views.join("system_dashboard.view.rs"))
-        .expect("framework-owned Live-enabled Core dashboard");
-    assert!(dashboard_view.contains("data-feluqa-live"));
-    assert!(dashboard_view.contains("<x-feluqa-panel::document"));
-    assert!(!dashboard_view.contains("<!doctype"));
-    assert!(
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../_crates/feluqa-panel/resources/views/components/shell.view.rs")
-            .is_file()
-    );
+    assert!(!application.join("src/modules/system").exists());
     let routes = fs::read_to_string(application.join("src/routes/web.rs"))
-        .expect("authenticated panel routes");
-    assert!(routes.contains(".authenticated(core_store.clone())"));
-    assert!(routes.contains("/{*path}"));
-    assert!(routes.contains("/system/setup"));
-    assert!(routes.contains("/system/login"));
-    assert!(routes.contains("system::logout"));
-    assert!(routes.contains("system::administration::users"));
-    assert!(routes.contains("system::administration::create_role"));
-    assert!(routes.contains("system::administration::update_user_role"));
-    assert!(routes.contains("system::operations::run_migrations"));
-    assert!(routes.contains("system::operations::audit"));
-    assert!(routes.contains("system::operations::dashboard"));
-    assert!(routes.contains("/live/snapshots/{action}"));
-    assert!(routes.contains("/live/actions"));
-    assert!(!application.join("src/modules/system/views").exists());
-    assert!(
-        !application
-            .join("resources/views/components/panel_shell.view.rs")
-            .exists()
-    );
-    let system = fs::read_to_string(application.join("src/app/controllers/system.rs"))
-        .expect("setup, login, logout and CSRF handlers");
-    assert!(system.contains("anonymous_csrf_valid"));
-    assert!(system.contains("core.verify_csrf"));
-    assert!(system.contains("core.logout"));
+        .expect("application routes");
+    assert!(!routes.contains("/system"));
+    assert!(routes.contains("/admin"));
     assert!(
         application
             .join("resources/views/pages/home.view.rs")

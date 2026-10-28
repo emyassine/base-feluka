@@ -593,7 +593,7 @@ fn render_form(
     output.push_str("\"><input type=\"hidden\" name=\"csrf_token\" value=\"");
     push_escaped(output, csrf);
     output.push_str("\">");
-    output.push_str("<div class=\"fi-grid\" style=\"--cols-default: repeat(1, minmax(0, 1fr))\">");
+    output.push_str("<div class=\"\" style=\"--cols-default: repeat(1, minmax(0, 1fr))\">");
     if let Some(record_id) = record_id {
         output.push_str("<input type=\"hidden\" name=\"id\" value=\"");
         core::write!(output, "{record_id}")
@@ -620,7 +620,7 @@ fn render_form(
         }
     }
     output.push_str(
-        "</div><button type=\"submit\" class=\"fi-btn fi-size-md fi-color fi-color-primary\">",
+        "</div><button type=\"submit\" class=\"   \">",
     );
     push_escaped(output, submit);
     output.push_str("</button></form>");
@@ -673,16 +673,16 @@ fn render_input(
     if !valid_html_id(&id) {
         return Err(RenderError::InvalidPropertyValue("id"));
     }
-    output.push_str("<div class=\"fi-fo-field\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
+    output.push_str("<div class=\"\" data-field-wrapper><div class=\"\"><div class=\"\"><label class=\"\" for=\"");
     push_escaped(output, &id);
-    output.push_str("\"><span class=\"fi-fo-field-label-content\">");
+    output.push_str("\"><span class=\"\">");
     push_escaped(output, label);
     if required {
-        output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
+        output.push_str("<sup class=\"\">*</sup>");
     }
-    output.push_str("</span></label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\">");
+    output.push_str("</span></label></div></div><div class=\"\"><div class=\"\"><div class=\"\">");
     if input_type == "textarea" {
-        output.push_str("<textarea class=\"fi-textarea\" id=\"");
+        output.push_str("<textarea class=\"\" id=\"");
         push_escaped(output, &id);
         output.push_str("\" name=\"");
         push_escaped(output, name);
@@ -700,7 +700,7 @@ fn render_input(
         push_escaped(output, value);
         output.push_str("</textarea>");
     } else {
-        output.push_str("<input class=\"fi-input\" id=\"");
+        output.push_str("<input class=\"\" id=\"");
         push_escaped(output, &id);
         output.push_str("\" name=\"");
         push_escaped(output, name);
@@ -765,14 +765,14 @@ fn render_select(
         }
     }
 
-    output.push_str("<div class=\"fi-fo-field\" data-field-wrapper><div class=\"fi-fo-field-label-col\"><div class=\"fi-fo-field-label-ctn\"><label class=\"fi-fo-field-label\" for=\"");
+    output.push_str("<div class=\"\" data-field-wrapper><div class=\"\"><div class=\"\"><label class=\"\" for=\"");
     push_escaped(output, id);
-    output.push_str("\"><span class=\"fi-fo-field-label-content\">");
+    output.push_str("\"><span class=\"\">");
     push_escaped(output, label);
     if required {
-        output.push_str("<sup class=\"fi-fo-field-label-required-mark\">*</sup>");
+        output.push_str("<sup class=\"\">*</sup>");
     }
-    output.push_str("</span></label></div></div><div class=\"fi-fo-field-content-col\"><div class=\"fi-input-wrp\"><div class=\"fi-input-wrp-content-ctn\"><select class=\"fi-select-input\" id=\"");
+    output.push_str("</span></label></div></div><div class=\"\"><div class=\"\"><div class=\"\"><select class=\"\" id=\"");
     push_escaped(output, id);
     output.push_str("\" name=\"");
     push_escaped(output, name);
@@ -856,19 +856,19 @@ fn render_table(
         .and_then(Value::as_array)
         .filter(|headers| !headers.is_empty() && headers.len() <= 32)
         .ok_or(RenderError::InvalidPropertyType("headers"))?;
-    output.push_str("<div class=\"fi-ta\"><div class=\"fi-ta-ctn fi-ta-ctn-with-header\"><div class=\"fi-ta-main\"><div class=\"fi-ta-header-ctn\"><div class=\"fi-ta-header\"><div><h3 class=\"fi-ta-header-heading\">");
+    output.push_str("<div class=\"\"><div class=\" \"><div class=\"\"><div class=\"\"><div class=\"\"><div><h3 class=\"\">");
     push_escaped(output, caption);
-    output.push_str("</h3></div></div></div><div class=\"fi-ta-header-toolbar\"><div class=\"fi-ta-search-field\"><div class=\"fi-input-wrp\"><span class=\"fi-input-wrp-prefix\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 1 0 3.477 9.763l3.63 3.63a.75.75 0 1 0 1.06-1.06l-3.63-3.63A5.5 5.5 0 0 0 9 3.5ZM5 9a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z\" clip-rule=\"evenodd\"/></svg></span><div class=\"fi-input-wrp-content-ctn\"><input class=\"fi-input\" type=\"search\" aria-label=\"Search table\" autocomplete=\"off\" placeholder=\"Search\" data-feluqa-table-search></div></div></div></div><div class=\"fi-ta-content-ctn\"><div class=\"fi-ta-content\"><table class=\"fi-ta-table\"><thead><tr class=\"fi-ta-row\">");
+    output.push_str("</h3></div></div></div><div class=\"\"><div class=\"\"><div class=\"\"><span class=\"\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 1 0 3.477 9.763l3.63 3.63a.75.75 0 1 0 1.06-1.06l-3.63-3.63A5.5 5.5 0 0 0 9 3.5ZM5 9a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z\" clip-rule=\"evenodd\"/></svg></span><div class=\"\"><input class=\"\" type=\"search\" aria-label=\"Search table\" autocomplete=\"off\" placeholder=\"Search\" data-feluqa-table-search></div></div></div></div><div class=\"\"><div class=\"\"><table class=\"\"><thead><tr class=\"\">");
     for header in headers {
         let header = header
             .as_str()
             .filter(|header| !header.trim().is_empty() && header.len() <= 512)
             .ok_or(RenderError::InvalidPropertyValue("headers"))?;
-        output.push_str("<th scope=\"col\" class=\"fi-ta-header-cell\"><span class=\"fi-ta-header-cell-label\">");
+        output.push_str("<th scope=\"col\" class=\"\"><span class=\"\">");
         push_escaped(output, header);
         output.push_str("</span></th>");
     }
-    output.push_str("</tr></thead><tbody class=\"fi-ta-rows\">");
+    output.push_str("</tr></thead><tbody class=\"\">");
     for row in rows {
         let UiNode::Component {
             name,
@@ -886,7 +886,7 @@ fn render_table(
         if cells.len() != headers.len() {
             return Err(RenderError::InvalidPropertyValue("headers"));
         }
-        output.push_str("<tr class=\"fi-ta-row\">");
+        output.push_str("<tr class=\"\">");
         for cell in cells {
             let UiNode::Component {
                 name,
@@ -902,7 +902,7 @@ fn render_table(
             }
             require_props(props, &["value"])?;
             require_no_children(children)?;
-            output.push_str("<td class=\"fi-ta-cell\">");
+            output.push_str("<td class=\"\">");
             push_escaped(output, required_string(props, "value")?);
             output.push_str("</td>");
         }
@@ -1125,12 +1125,12 @@ mod render_tests {
         let html = render(&document).expect("render safe table");
         assert!(
             html.as_str()
-                .contains("class=\"fi-ta-header-heading\">Customers")
+                .contains("class=\"\">Customers")
         );
         assert!(html.as_str().contains("data-feluqa-table-search"));
         assert!(
             html.as_str()
-                .contains("class=\"fi-ta-header-cell-label\">Name")
+                .contains("class=\"\">Name")
         );
         assert!(html.as_str().contains("&lt;Acme&gt;"));
     }
@@ -1183,9 +1183,9 @@ mod render_tests {
             )],
         };
         let output = render(&document).expect("render valid select");
-        assert!(output.as_str().contains("class=\"fi-fo-field\""));
+        assert!(output.as_str().contains("class=\"\""));
         assert!(output.as_str().contains(
-            "<select class=\"fi-select-input\" id=\"role-id\" name=\"role_id\" required>"
+            "<select class=\"\" id=\"role-id\" name=\"role_id\" required>"
         ));
         assert!(output.as_str().contains("Editor &lt;restricted&gt;"));
 
@@ -1232,7 +1232,7 @@ mod render_tests {
             )],
         };
         let html = render(&document).expect("render safe form");
-        assert!(html.as_str().contains("class=\"fi-fo-field\""));
+        assert!(html.as_str().contains("class=\"\""));
         assert!(html.as_str().contains("Customer &lt;name&gt;"));
         assert!(
             html.as_str()
@@ -1240,7 +1240,7 @@ mod render_tests {
         );
         assert!(
             html.as_str()
-                .contains("class=\"fi-btn fi-size-md fi-color fi-color-primary\"")
+                .contains("class=\"   \"")
         );
     }
 
@@ -1280,7 +1280,7 @@ mod render_tests {
         };
         let html = render(&document).expect("render safe textarea form");
         assert!(html.as_str().contains("id=\"feluqa-field-27-permissions\""));
-        assert!(html.as_str().contains("<textarea class=\"fi-textarea\""));
+        assert!(html.as_str().contains("<textarea class=\"\""));
         assert!(html.as_str().contains("&lt;script&gt;bad&lt;/script&gt;"));
         assert!(html.as_str().contains("Update grants</button>"));
     }

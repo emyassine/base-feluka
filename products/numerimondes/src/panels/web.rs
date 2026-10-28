@@ -10,9 +10,8 @@ use crate::std::path::PathBuf;
 /// Build the composed Numerimondes panel and site application.
 pub fn router(state: PanelState) -> Router {
     let panels = crate::panels::site::routes::routes()
-        .merge(crate::panels::system::routes::routes())
         .merge(crate::panels::business::routes::routes())
-        .merge(crate::panels::system::live::routes(&state));
+;
     let panels = if state
         .active_modules
         .iter()

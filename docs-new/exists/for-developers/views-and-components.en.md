@@ -16,4 +16,4 @@ interpolate untrusted values into JavaScript or CSS.
 
 Use components registered by the owning panel or module. Feluqa owns the panel
 shell; user page templates provide content. Current component and theme
-coverage is listed in the [panel port status](../reference/panels/filament-port-status.en.md).
+coverage is listed in the [panel port status](../reference/../for-developers/panels-resources-and-pages.en.md).
