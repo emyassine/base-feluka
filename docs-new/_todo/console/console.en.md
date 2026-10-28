@@ -64,9 +64,10 @@ Aliases resolve to one canonical command and do not create a second command.
 Command registration belongs in `feluqa-console`, not a CLI-specific
 command catalogue. `#[feluqa::command(...)]` leaves an ordinary compiled Rust
 handler and registers its metadata in the console registry. Help, path parsing,
-alias resolution and dispatch consume that registry. Products can contribute
-commands from any linked crate or source file, provided the product compiles
-that code.
+alias resolution and dispatch consume that registry. Products contribute
+commands from files under configured profile command directories; the generated
+module path records the owning profile, so moving a command file changes which
+profile exposes it.
 
 ```rust
 #![no_implicit_prelude]
@@ -118,20 +119,19 @@ families such as `profiles/feluqa/src/make/migration.rs`. Console generates the
 Rust declarations needed to compile those files. Rust modules still exist in
 the compiled crate, but contributors do not maintain a second command index.
 
-The command registry is permissive about *where linked command code lives*:
-commands can be declared in different files, modules and dependency crates.
-This is not runtime filesystem scanning. A `.rs` file that the Rust crate graph
-does not compile cannot register a command. A product may use a build script to
-generate module declarations for a conventional development-command folder;
-the resulting Rust is compiled before the command is dispatched. The running
-binary never interprets or executes arbitrary Rust source from disk.
+The command registry uses compile-time module declarations, not runtime
+filesystem scanning. A `.rs` file outside a configured profile command
+directory cannot register a product command. A product build script recursively
+finds annotated command files under those directories and generates Rust module
+declarations before compilation. The running binary never interprets or
+executes arbitrary Rust source from disk.
 
 ### Profile-first product layout
 
 Each profile declares the directory that owns its commands. The console build
 helper recursively visits that directory and compiles only files marked with
-`#[feluqa::command(...)]`. The attribute supplies the public command path, so
-filenames and nesting organize source without deciding the command name.
+`#[feluqa::command(...)]`. The source directory determines the profile; the
+attribute supplies the public command path.
 
 ```text
 products/feluqa-cli/src/

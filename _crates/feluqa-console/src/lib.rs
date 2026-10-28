@@ -366,13 +366,15 @@ impl CommandRegistry {
         let mut commands: Vec<&'static CommandDescriptor> =
             inventory::iter::<CommandDescriptor>().collect();
         commands.sort_by(|left, right| left.name.cmp(right.name));
-        let mut paths: Vec<&str> = Vec::new();
+        let mut paths: Vec<(&str, &CommandDescriptor)> = Vec::new();
         for command in &commands {
             for path in core::iter::once(command.name).chain(command.aliases.iter().copied()) {
-                if paths.contains(&path) {
+                if paths.iter().any(|(existing, previous)| {
+                    *existing == path && commands_share_profile(previous, command)
+                }) {
                     return Err(RegistryError::DuplicatePath(path.to_string()));
                 }
-                paths.push(path);
+                paths.push((path, command));
             }
         }
         Ok(Self { commands })
@@ -647,6 +649,8 @@ impl CommandRegistry {
 
 fn command_belongs_to_profile(command: &CommandDescriptor, profile: &str) -> bool {
     let mut prefix = String::from("__feluqa_command_");
+    prefix.push_str(&profile.chars().count().to_string());
+    prefix.push('_');
     for character in profile.chars() {
         prefix.push(if character.is_ascii_alphanumeric() {
             character.to_ascii_lowercase()
@@ -659,6 +663,25 @@ fn command_belongs_to_profile(command: &CommandDescriptor, profile: &str) -> boo
         .module_path
         .split("::")
         .any(|component| component.starts_with(&prefix))
+}
+
+fn commands_share_profile(left: &CommandDescriptor, right: &CommandDescriptor) -> bool {
+    match (command_profile(left), command_profile(right)) {
+        (Some(left), Some(right)) => left == right,
+        _ => true,
+    }
+}
+
+fn command_profile(command: &CommandDescriptor) -> Option<String> {
+    command
+        .module_path
+        .split("::")
+        .find_map(|component| component.strip_prefix("__feluqa_command_"))
+        .and_then(|component| {
+            let (length, rest) = component.split_once('_')?;
+            let length = length.parse::<usize>().ok()?;
+            Some(rest.chars().take(length).collect())
+        })
 }
 
 fn context_matches(required: &str, active: &str) -> bool {

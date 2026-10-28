@@ -70,12 +70,8 @@ fn create_app(
         None => current.to_path_buf(),
     };
     match workspace {
-        Some(_) => feluqa::console::info(
-            "Default parent: products/ (local Feluqa crates). Choose another folder below.",
-        ),
-        None => feluqa::console::info(
-            "Default parent: current folder. Choose another folder below.",
-        ),
+        Some(_) => feluqa::console::info("Default: products/ (local Feluqa crates)."),
+        None => feluqa::console::info("Default: current folder."),
     }
     let parent = if interactive {
         let default_text = default_parent.display().to_string();

@@ -222,6 +222,8 @@ fn collect(directory: &Path, files: &mut Vec<PathBuf>) -> Result<(), String> {
 
 fn module_name(profile: &str, path: &Path) -> String {
     let mut name = String::from("__feluqa_command_");
+    name.push_str(&profile.chars().count().to_string());
+    name.push('_');
     for character in profile.chars() {
         name.push(if character.is_ascii_alphanumeric() {
             character.to_ascii_lowercase()
@@ -229,7 +231,6 @@ fn module_name(profile: &str, path: &Path) -> String {
             '_'
         });
     }
-    name.push_str("__");
     for component in path.components() {
         name.push('_');
         for character in component.as_os_str().to_string_lossy().chars() {
