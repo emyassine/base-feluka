@@ -19,6 +19,9 @@
 #   5. Build for a specific target triple (e.g., cross-compilation):
 #      ./build.sh x86_64-unknown-linux-musl
 #      ./build.sh --release --all x86_64-unknown-linux-musl
+#
+#   6. Build and open workspace documentation:
+#      ./build.sh --docs
 # ==============================================================================
 
 set -euo pipefail
@@ -58,6 +61,7 @@ host_target="$(rustc -vV | sed -n 's/^host: //p')"
 target=''
 profile='debug'
 build_all='false'
+build_docs='false'
 
 for argument in "$@"; do
     case "$argument" in
@@ -67,9 +71,12 @@ for argument in "$@"; do
         --all)
             build_all='true'
             ;;
+        --docs)
+            build_docs='true'
+            ;;
         --*)
             print_error "Unknown option: $argument"
-            printf 'Usage: %s [--release] [--all] [target-triple]\n' "$0" >&2
+            printf 'Usage: %s [--release] [--all] [--docs] [target-triple]\n' "$0" >&2
             exit 2
             ;;
         *)
@@ -83,6 +90,24 @@ for argument in "$@"; do
 done
 
 cd "$repository_root"
+
+if [[ "$build_docs" == 'true' ]]; then
+    if [[ "$build_all" == 'true' || "$profile" == 'release' || -n "$target" ]]; then
+        print_error "Pass --docs by itself."
+        exit 2
+    fi
+
+    print_info "Building and opening Feluqa documentation..."
+    cargo \
+        --config 'registries.feluqa.index="sparse+https://crates.feluqa.numerimondes.com/api/v1/crates/"' \
+        --config 'registries.feluqa.credential-provider="cargo:token"' \
+        doc \
+        --manifest-path "$repository_root/Cargo.toml" \
+        --workspace \
+        --all-features \
+        --open
+    exit 0
+fi
 
 if [[ -z "$host_target" ]]; then
     print_error "Could not determine the Rust host target. Pass a target triple."
