@@ -115,6 +115,24 @@ impl PanelPage {
     }
 }
 
+/// A standalone dashboard page declared by its owning panel.
+pub trait Dashboard {
+    /// Route segment relative to the owning panel.
+    const ROUTE_PATH: &'static str;
+    /// Human-readable dashboard title.
+    const TITLE: &'static str;
+    /// Navigation order among dashboard destinations.
+    const NAVIGATION_SORT: i32;
+
+    /// Build the permission-checked page rendered by the panel runtime.
+    fn page() -> Result<PanelPage, PanelError>;
+
+    /// Dashboard widgets in their declared order.
+    fn widgets() -> Vec<PanelWidget> {
+        Vec::new()
+    }
+}
+
 /// A schema-backed panel widget with explicit visibility and dashboard placement.
 #[derive(Clone, Debug, PartialEq)]
 pub struct PanelWidget {

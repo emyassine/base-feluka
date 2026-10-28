@@ -1,3 +1,0 @@
-[connections.default]
-url = "sqlite://storage/resource-route-test-2140344.sqlite?mode=rwc"
-max_connections = 1

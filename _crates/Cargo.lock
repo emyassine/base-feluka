@@ -1427,6 +1427,7 @@ dependencies = [
  "serde",
  "subtle",
  "tokio",
+ "toml 0.8.23",
  "tower",
  "tower-http",
 ]
@@ -3265,7 +3266,6 @@ dependencies = [
  "serde_json",
  "subtle",
  "tokio",
- "toml 0.8.23",
  "tower",
  "tower-http",
 ]

@@ -38,6 +38,14 @@ pub mod resource;
 /// Registers the standard `/system` panel and Feluqa Core resources.
 pub struct SystemPanelProvider;
 
+/// Build a panel catalogue with Feluqa Core and one application-owned panel.
+pub fn catalogue_with(panel: Panel) -> Result<PanelCatalog, PanelCatalogError> {
+    let mut catalogue = PanelCatalog::default();
+    SystemPanelProvider.register(&mut catalogue)?;
+    catalogue.register_panel(panel)?;
+    Ok(catalogue)
+}
+
 impl PanelProvider for SystemPanelProvider {
     fn register(&self, catalog: &mut PanelCatalog) -> Result<(), PanelCatalogError> {
         let panel = PanelBuilder::new("system", "Feluqa Core", "/system", PanelKind::System)

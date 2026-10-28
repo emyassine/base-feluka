@@ -8,6 +8,11 @@ use crate::std::vec;
 use feluqa::auth::Permission;
 use feluqa::panel::{NavigationGroup, NavigationItem, PanelBuilder, PanelError, PanelKind};
 
+#[path = "resources/customers.rs"]
+pub mod customers;
+#[path = "pages/overview.rs"]
+pub mod overview;
+
 /// Add this panel's business destinations to its sidebar declaration.
 pub fn navigation(panel: PanelBuilder) -> Result<PanelBuilder, PanelError> {
     let overview =
@@ -49,7 +54,7 @@ pub fn declaration() -> Result<feluqa::panel::Panel, PanelError> {
         .brand_name("Numerimondes")
         .dark_mode()
         .login()
-        .page(crate::panels::pages::business::overview()?)
-        .resource(crate::panels::resources::customers::CUSTOMERS.slug("customers"));
+        .pages([overview::Overview::page()?])
+        .resources([customers::CUSTOMERS.slug("customers")]);
     navigation(panel)?.build()
 }

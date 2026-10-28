@@ -10,7 +10,7 @@ publish = ["feluqa"]
 
 [features]
 default = ["web"]
-web = ["console", "definitions", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde", "dep:tokio", "dep:tower-http"]
+web = ["console", "definitions", "view", "auth", "ui", "panel", "notifications", "live", "module", "database", "core", "system-panel", "imagery", "dep:axum", "dep:serde", "dep:tokio", "dep:tower-http", "dep:toml"]
 console = ["definitions", "dep:feluqa-console", "dep:feluqa-console-macros", "feluqa-console/platform"]
 console-build = ["console", "feluqa-console/build"]
 definitions = ["dep:feluqa-definitions"]
@@ -52,6 +52,7 @@ axum = { workspace = true, optional = true }
 serde = { workspace = true, optional = true }
 tokio = { workspace = true, optional = true }
 tower-http = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
 subtle.workspace = true
 
 [dev-dependencies]

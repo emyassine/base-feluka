@@ -1,3 +1,0 @@
-id = "resource-route-test-2140344.app"
-supported_databases = ["sqlite", "postgresql"]
-database_connections = ["default"]

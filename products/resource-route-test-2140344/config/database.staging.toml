@@ -1,3 +1,0 @@
-[connections.default]
-url_env = "FELUQA_DATABASE_URL"
-max_connections = 5

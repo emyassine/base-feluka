@@ -17,6 +17,8 @@ extern crate core as rust_core;
 extern crate serde;
 #[cfg(feature = "web")]
 extern crate std;
+#[cfg(feature = "web")]
+extern crate toml;
 #[cfg(test)]
 extern crate std;
 extern crate subtle;
@@ -86,6 +88,10 @@ pub extern crate feluqa_view as view;
 #[cfg(feature = "web")]
 pub mod web;
 
+/// Typed Feluqa application settings and environment validation.
+#[cfg(feature = "web")]
+pub mod application;
+
 /// Axum-backed request and response types exposed by the Feluqa web profile.
 #[cfg(feature = "web")]
 pub mod http {
@@ -121,6 +127,9 @@ pub mod prelude {
     pub use crate::alloc::string::String;
     pub use crate::alloc::string::ToString;
     pub use crate::alloc::vec::Vec;
+    pub use crate::application::{
+        ApplicationSettings, ModulesSettings, RuntimeSettings, SecuritySettings,
+    };
     #[cfg(feature = "auth")]
     pub use crate::auth::Principal;
     pub use crate::database;

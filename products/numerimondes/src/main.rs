@@ -10,18 +10,23 @@ extern crate serde_json;
 extern crate std;
 extern crate subtle;
 extern crate tokio;
-extern crate toml;
 #[cfg(test)]
 extern crate tower;
 extern crate tower_http;
 
 mod app;
-mod config;
 mod generated_migrations {
     include!(concat!(env!("OUT_DIR"), "/migrations.rs"));
 }
 mod modules;
-mod panels;
+mod panels {
+    #[path = "business/panel_business.rs"]
+    pub mod business;
+    #[path = "runtime.rs"]
+    pub mod runtime;
+    #[path = "web.rs"]
+    pub mod web;
+}
 mod routes;
 mod views;
 
@@ -32,8 +37,8 @@ use std::result::Result;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let business = panels::business::declaration()?;
-    let panels = panels::declaration(business)?;
-    panels::runtime::run(panels).await
+    let catalogue = feluqa::system_panel::catalogue_with(business)?;
+    panels::runtime::run(catalogue).await
 }
 
 #[cfg(test)]

@@ -1,4 +1,0 @@
-[app]
-name = "Resource Route Test 2140344"
-profile = "web"
-service_provider = "src/service_provider.rs"

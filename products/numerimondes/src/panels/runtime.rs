@@ -17,7 +17,8 @@ pub async fn run(catalog: feluqa::panel::PanelCatalog) -> Result<(), Box<dyn Err
     let Some(command) = crate::routes::console::run()? else {
         return Ok(());
     };
-    let config = crate::config::AppConfig::load_default()?;
+    let project_directory = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let config = feluqa::application::ApplicationSettings::load_from(project_directory)?;
     let mut module_runtime = crate::modules::lifecycle_runtime(&config.modules.enabled)?;
     if matches!(&command, crate::routes::console::RuntimeCommand::Seed(_))
         && !config
