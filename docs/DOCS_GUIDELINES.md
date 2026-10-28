@@ -44,20 +44,24 @@ Architecture and product pages MUST identify mixed status explicitly. An accepte
 ADR is a decision, not proof of delivery. Use MUST, SHOULD and MAY with their
 RFC 2119 meanings; do not turn a research suggestion into a requirement.
 
-Current user decisions and `AGENTS.md` govern work. Domain contracts and the
-English delivery plan govern their respective scope. The current baseline lists
-known stale assertions. Original proposals and historical records retain their
-text for traceability, but their status notices take precedence over obsolete
-present-tense wording. Never infer approval from migration or from a `[Target]`
-label inside a conflicting proposal.
+The owner-designated **Monorepo Architecture**, **Product Document**, and
+**Compilation** chapters are the normative architecture/product/compilation
+contracts. When they conflict with other documentation, those three chapters
+take precedence; update the lower-priority document and `AGENTS.md` to match.
+The source establishes target direction and does not turn `[Target]` into shipped
+behavior. Implementation facts still require current code and acceptance evidence.
+Owner instructions take precedence over every repository document. Historical
+source blocks remain for traceability and are explicitly subordinate wherever
+they disagree with these canonical chapters.
 
 ## Decisions and maintenance
 
-Record a conflict in `decisions/` with a stable ID, sources, current rule, options,
-impact, required evidence and **Pending owner decision**. Tell the owner before
-implementing a conflicting choice. Do not select a winner silently. After the
-owner decides, record date/rationale, update affected contracts, `AGENTS.md`,
-roadmap and templates, and preserve the earlier proposal as history.
+Use `decisions/` for choices the canonical chapters actually leave open (for
+example registry trust, sync semantics and agent approval defaults). Do not reopen
+a conflict already resolved by the owner-designated architecture/product/compilation
+chapters. Record the controlling clause, options, impact and required evidence.
+Preserve superseded statements as history and update `AGENTS.md`, roadmap and
+templates to match the controlling contract.
 
 Consolidate related work into navigable chapters; preserve detailed acceptance
 criteria, task IDs, examples, caveats and evidence. Link to one canonical contract
