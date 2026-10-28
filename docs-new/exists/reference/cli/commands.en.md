@@ -56,8 +56,9 @@ proposed `feluqa support:ide view-highlight --ide=<name>` interface and
 editor-neutral Tree-sitter target.
 
 The CLI does not use the installed binary's build path to find an app and does
-not scan workspaces after detecting an app. `update` is reserved for a future
-distribution channel and is not implemented. An explicit app target is
+not scan workspaces after detecting an app. `update` is not implemented yet;
+see the [update and release policy](../../../knowledge/policy/updates.en.md)
+for its distribution and activation requirements. An explicit app target is
 accepted only at the workspace root; arbitrary filesystem paths are rejected.
 
 ## Commands

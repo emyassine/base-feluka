@@ -10,3 +10,7 @@ tokens, credentials, or a token-bearing Cargo configuration.
 
 Third-party assets and code retain their own notices and licenses. Preserve
 those notices when packaging the platform or its modules.
+
+For canonical remote endpoints and the required CLI/platform update behavior,
+see the [update and release policy](updates.en.md). Endpoint URLs live in
+`feluqa-definitions::RemoteLink`.

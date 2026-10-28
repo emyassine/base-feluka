@@ -15,6 +15,7 @@ extern crate toml;
 mod context;
 mod path;
 mod product;
+mod remote_link;
 
 pub use context::{ContextError, ContextScope, FeluqaContext, PathScope};
 pub use path::{PortablePath, PortablePathError};
@@ -22,3 +23,4 @@ pub use product::{
     FeluqaProduct, ProductError, list_workspace_products, read_product, relative_path,
     workspace_product,
 };
+pub use remote_link::RemoteLink;

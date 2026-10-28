@@ -589,7 +589,7 @@ Exhibit 4 | Go/no-go gates; a gate passes only if every listed ID passes
 - **D-0004 — Language.** Accepted: Rust, based on the pre-registered M0 weighted result (84.09 vs 67.21). Go was faster on the measured HTTP handler and build loop; details and limits are in [the M0 results report](../../exists/reference/research/m0-results.en.md).
 - **D-0005 — Downloadable runtime modules.** Accepted. No host rebuild; verification, permissions, limits, activation, rollback.
 - **D-0006 — First milestone.** Superseded by C1.
-- **D-0007 — Artifact distribution.** Proposed. Manifest, digest, signature; staged atomic activation; TUF/Sigstore-style trust.
+- **D-0007 — Artifact distribution and updates.** Accepted. CLI and platform updates follow the [canonical update and release policy](../policy/updates.en.md); remote endpoints are centralized in `feluqa-definitions::RemoteLink`. Staged activation, signature/digest verification, health-gated rollout, and rollback are release requirements, not implemented capabilities.
 - **D-0008 — SDUI and server-driven UI.** Accepted. Data-first schema, compiled views, live components.
 - **D-0009 — Client libraries.** Proposed. Server-driven by default; small morphing runtime; Alpine/htmx/Datastar opt-in; Node build optional.
 - **D-0010 — Performance contract.** Proposed. p50 under 1 ms at the app socket on the reference scenario; p99 tracked; CI-enforced.

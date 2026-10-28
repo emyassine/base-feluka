@@ -142,12 +142,16 @@ fn create_app(
             ),
         )
     };
+    let registry_index = feluqa::definitions::RemoteLink::PrivateCrateRegistry
+        .url()
+        .ok_or_else(|| String::from("the private Feluqa crate registry is not configured"))?;
     let result = (|| {
         let replacements = [
             ("@@SLUG@@", slug.as_str()),
             ("@@NAME@@", display_name.as_str()),
             ("@@FELUQA_DEPENDENCY@@", dependency.0.as_str()),
             ("@@FELUQA_DEPENDENCY_FIELDS@@", dependency.1.as_str()),
+            ("@@FELUQA_REGISTRY_INDEX@@", registry_index),
         ];
         feluqa::console::generator::write_templates_quiet(
             &target,

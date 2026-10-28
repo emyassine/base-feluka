@@ -8,6 +8,7 @@
 - [Console runtime model](architecture/console-runtime-model.en.md)
 - [Dependency review policy](policy/dependencies.en.md)
 - [Proprietary software and registry policy](policy/proprietary.en.md)
+- [Update and release policy](policy/updates.en.md)
 - [Research and working notes](notes/)
 
 These documents explain why the platform is shaped this way. They are not a
