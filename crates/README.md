@@ -1,6 +1,6 @@
 # Framework Crates
 
-This directory contains Feluqa’s reusable framework packages. Products live in `products/`; tools live in `tools/`. The repository’s virtual Cargo workspace is defined by the root `Cargo.toml`.
+This directory contains Feluqa’s reusable framework packages. Products live in `products/`. The repository’s virtual Cargo workspace is defined by the root `Cargo.toml`.
 
 ## Why the crates are grouped
 
