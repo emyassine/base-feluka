@@ -41,6 +41,8 @@ mod roles;
 pub use self::roles::*;
 mod operations;
 pub use self::operations::*;
+mod ui_components;
+pub(crate) use self::ui_components::*;
 
 mod live_support;
 use self::live_support::*;

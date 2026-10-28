@@ -45,6 +45,14 @@ pub async fn system_modules(State(state): State<PanelState>, headers: HeaderMap)
             ])
         })
         .collect::<Vec<_>>();
+    let active_module_count = rows
+        .iter()
+        .filter(|row| {
+            row.values
+                .get("state")
+                .is_some_and(|state| state == "started")
+        })
+        .count();
     let table = match core_resource_table(
         &crate::modules::system::resource::MODULES,
         &access,
@@ -54,6 +62,7 @@ pub async fn system_modules(State(state): State<PanelState>, headers: HeaderMap)
         Ok(table) => table,
         Err(status) => return status.into_response(),
     };
+    let table = with_modules_component_card(table, rows.len(), active_module_count);
     render_core_resource(&state, &identity, csrf, "Modules", "/system/modules", table).await
 }
 
