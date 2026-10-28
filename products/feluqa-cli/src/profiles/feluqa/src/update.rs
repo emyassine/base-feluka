@@ -68,7 +68,7 @@ fn update_cli(check_only: bool) -> Result<ExitCode, String> {
         let detail = String::from_utf8_lossy(&info.stderr);
         if detail.contains("could not find `feluqa-cli`") {
             return Err(String::from(
-                "No Feluqa CLI release is published yet, so there is nothing to update.",
+                "No Feluqa CLI release is published yet, so there is nothing to update.\n\nLearn more by visiting https://feluqa.numerimondes.com",
             ));
         }
         return Err(String::from(

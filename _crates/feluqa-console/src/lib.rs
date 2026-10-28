@@ -867,28 +867,28 @@ impl MakeConsole {
         {
             Ok(arguments) => arguments,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&error);
                 return ExitCode::FAILURE;
             }
         };
         let (requested, _, _) = match selected_profile(&arguments) {
             Ok(selected) => selected,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&error);
                 return ExitCode::FAILURE;
             }
         };
         let profiles = match Profiles::new(self.profiles) {
             Ok(profiles) => profiles,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&alloc::format!("{error}"));
                 return ExitCode::FAILURE;
             }
         };
         let profile = match profiles.select(requested.as_deref(), Some(binary_name)) {
             Ok(profile) => profile,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&alloc::format!("{error}"));
                 return ExitCode::FAILURE;
             }
         };
@@ -897,9 +897,7 @@ impl MakeConsole {
         let current = match std::env::current_dir() {
             Ok(directory) => directory,
             Err(error) => {
-                terminal::error(&std::format!(
-                    "{binary_name}: could not read current directory: {error}"
-                ));
+                terminal::error(&std::format!("could not read current directory: {error}"));
                 return ExitCode::FAILURE;
             }
         };
@@ -907,7 +905,7 @@ impl MakeConsole {
             Some(provider) => match (provider.create)(&current) {
                 Ok(host) => host,
                 Err(error) => {
-                    terminal::error(&std::format!("{binary_name}: {error}"));
+                    terminal::error(&error);
                     return ExitCode::FAILURE;
                 }
             },
@@ -917,7 +915,7 @@ impl MakeConsole {
                     match platform::FeluqaHost::new(&current) {
                         Ok(host) => std::boxed::Box::new(host),
                         Err(error) => {
-                            terminal::error(&std::format!("{binary_name}: {error}"));
+                            terminal::error(&error);
                             return ExitCode::FAILURE;
                         }
                     }
@@ -977,7 +975,7 @@ impl MakeConsole {
                     }
                 })
                 .unwrap_or(ExitCode::SUCCESS),
-            Err(error) => finish_console_error(binary_name, &error),
+            Err(error) => finish_console_error(&error),
         }
     }
 
@@ -1027,43 +1025,43 @@ impl MakeConsole {
         {
             Ok(arguments) => arguments,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&error);
                 return ExitCode::FAILURE;
             }
         };
         let mut host = match create_host() {
             Ok(host) => host,
             Err(error) => {
-                terminal::error(&std::format!("{binary_name}: {error}"));
+                terminal::error(&error);
                 return ExitCode::FAILURE;
             }
         };
         match run(self.profiles, binary_name, &arguments, &mut host) {
             Ok(()) => exit_code(&host),
-            Err(error) => finish_console_error(binary_name, &error),
+            Err(error) => finish_console_error(&error),
         }
     }
 }
 
 #[cfg(feature = "std")]
-fn finish_console_error(binary_name: &str, error: &str) -> std::process::ExitCode {
+fn finish_console_error(error: &str) -> std::process::ExitCode {
     use std::process::ExitCode;
 
     match error {
         "selection cancelled" => {
-            terminal::warning(&std::format!("{binary_name}: selection cancelled"));
+            terminal::warning("selection cancelled");
             ExitCode::SUCCESS
         }
         "interrupted" => {
-            terminal::warning(&std::format!("{binary_name}: interrupted"));
+            terminal::warning("interrupted");
             ExitCode::from(130)
         }
         "terminated" => {
-            terminal::warning(&std::format!("{binary_name}: terminated"));
+            terminal::warning("terminated");
             ExitCode::from(143)
         }
         _ => {
-            terminal::error(&std::format!("{binary_name}: {error}"));
+            terminal::error(error);
             ExitCode::FAILURE
         }
     }
