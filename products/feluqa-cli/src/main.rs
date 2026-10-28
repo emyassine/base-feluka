@@ -17,11 +17,11 @@ pub const PROFILES: &[Profile] = &[
         binary_name: "feluqa",
         commands_directory: "profiles/feluqa/src",
         header: concat!(
-            "FELUQA v",
+            "feluqa v",
             env!("CARGO_PKG_VERSION"),
-            "\nSovereign application platform",
-            "\nRust · Tokio · Axum · SeaORM",
-            "\nAPI reference: crates.feluqa.numerimondes.com/api/docs/"
+            " [Server Profile]\n",
+            "High-availability backend, API, and ERP module engine.\n",
+            "Sovereign infrastructure — Zero vendor lock-in."
         ),
         launch_aliases: &[],
     },

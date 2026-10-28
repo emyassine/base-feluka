@@ -12,8 +12,8 @@ The API is available when the `console` feature is enabled.
 Status output automatically adds spacing around its badge. Help descriptions and
 the help footer are muted, and layout measures the current terminal width on
 each render so it can follow a resize. Both CLI profile headers use the shared
-workspace version; the Feluqa profile also advertises its Rust web stack and
-API reference.
+workspace version. The Feluqa header states the platform's purpose and intended
+users; help does not redundantly print the selected profile identifier.
 
 ## Sync-first and optional asynchronous execution
 

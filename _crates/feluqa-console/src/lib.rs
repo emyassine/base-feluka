@@ -509,12 +509,6 @@ impl CommandRegistry {
                         )
                         .map_err(io_error)?;
                     }
-                    writeln!(
-                        output,
-                        "Profile: {} · Context: {}",
-                        profile, command.context
-                    )
-                    .map_err(io_error)?;
                     return Ok(());
                 }
                 Err(error @ RegistryError::UnavailableInContext { .. }) => return Err(error),
@@ -548,15 +542,6 @@ impl CommandRegistry {
             }
             return Err(RegistryError::UnknownCommand(topic.to_string()));
         }
-        writeln!(
-            output,
-            "{}",
-            terminal::paint(
-                &alloc::format!("{product} · profile {profile}"),
-                terminal::Color::Accent
-            )
-        )
-        .map_err(io_error)?;
         if let Some(notice) = notice {
             write!(
                 output,
@@ -648,12 +633,7 @@ impl CommandRegistry {
         use std::io::{self, Write};
         if !profile.header.is_empty() {
             let mut output = io::stdout().lock();
-            writeln!(
-                output,
-                "{}\n",
-                terminal::paint(profile.header, terminal::Color::Accent)
-            )
-            .map_err(io_error)?;
+            writeln!(output, "{}", profile.header).map_err(io_error)?;
         }
         self.print_help_in_context_with_notice(
             profile.id,

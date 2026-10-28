@@ -183,12 +183,15 @@ pub fn command_entry(name: &str, description: &str) -> String {
 
 /// Current terminal width, honoring the conventional `COLUMNS` setting.
 pub fn columns() -> usize {
-    crate::crossterm::terminal::size()
-        .ok()
-        .map(|(_, width)| usize::from(width))
-        .filter(|width| (20..=500).contains(width))
-        .or_else(configured_columns)
-        .unwrap_or(80)
+    let terminal_width = if io::stdout().is_terminal() {
+        crate::crossterm::terminal::size()
+            .ok()
+            .map(|(width, _)| usize::from(width))
+            .filter(|width| (20..=500).contains(width))
+    } else {
+        None
+    };
+    terminal_width.or_else(configured_columns).unwrap_or(80)
 }
 
 fn configured_columns() -> Option<usize> {
