@@ -8,7 +8,6 @@ members = [
     "crates/platform/*",
     "tools/*",
     "products/feluqa-cli",
-    "products/numerimondes",
 ]
 exclude = ["shells"]
 [workspace.package]
@@ -44,9 +43,6 @@ feluqa_ui_autoform = { package = "feluqa-ui-autoform", path = "crates/ui/feluqa-
 feluqa_ui_component_macros = { package = "feluqa-ui-component-macros", path = "crates/macros/feluqa-ui-component-macros", version = "0.3.22" }
 feluqa_ui_classnames = { package = "feluqa-ui-classnames", path = "crates/ui/feluqa-ui-classnames", version = "0.1.21", features = ["variant"] }
 feluqa_ui_classnames_macros = { package = "feluqa-ui-classnames-macros", path = "crates/macros/feluqa-ui-classnames-macros", version = "0.1.9" }
-strum = { version = "0.28", features = ["derive"] }
-time = { version = "0.3", features = ["serde", "wasm-bindgen"] }
-validator = { version = "0.20", features = ["derive"] }
 js-sys = "0.3"
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"

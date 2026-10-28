@@ -1,6 +1,0 @@
-[app]
-host = "127.0.0.1"
-
-[security]
-secure_cookies = true
-live_enabled = false

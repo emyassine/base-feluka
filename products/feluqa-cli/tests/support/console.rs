@@ -41,14 +41,33 @@ fn make_requires_a_natural_language_target() {
 
 #[test]
 fn app_context_is_detected_before_the_parent_workspace() {
-    let app = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../products/numerimondes");
-    match context::detect(&app).expect("Numerimondes app is valid") {
+    let workspace = env::temp_dir().join(format!("feluqa-app-context-{}", crate::std::process::id()));
+    let app = workspace.join("products/demo");
+    fs::create_dir_all(app.join("src")).expect("create app source");
+    fs::create_dir_all(workspace.join(".feluqa")).expect("create workspace config directory");
+    fs::write(
+        workspace.join(".feluqa/workspace.toml"),
+        "[workspace]\nproducts = \"products\"\ncrates = \"crates\"\n",
+    )
+    .expect("write workspace config");
+    fs::write(workspace.join("Cargo.toml"), "[workspace]\nresolver = \"3\"\n")
+        .expect("write workspace manifest");
+    fs::write(
+        app.join("Cargo.toml"),
+        "[package]\nname = \"demo\"\nversion = \"0.1.0\"\nedition = \"2024\"\n",
+    )
+    .expect("write app manifest");
+    fs::write(app.join("feluqa.toml"), "[app]\nname = \"Demo\"\nprofile = \"web\"\n")
+        .expect("write Feluqa manifest");
+    fs::write(app.join("src/main.rs"), "fn main() {}\n").expect("write app entrypoint");
+    match context::detect(&app).expect("demo app is valid") {
         context::Context::App(application) => {
-            assert_eq!(application.package_name, "numerimondes");
+            assert_eq!(application.package_name, "demo");
             assert_eq!(application.profile, "web");
         }
         _ => panic!("application context must win over its parent workspace"),
     }
+    fs::remove_dir_all(workspace).expect("remove app context fixture");
 }
 
 #[test]
@@ -124,7 +143,7 @@ fn web_scaffold_creates_a_strict_standalone_application_without_overwrite() {
     assert!(!main.contains("@@NAME@@"));
     let manifest =
         fs::read_to_string(application.join("Cargo.toml")).expect("generated Cargo manifest");
-    assert!(manifest.contains("path = \"../../_crates/feluqa\""));
+    assert!(manifest.contains("path = \"../../crates/platform/feluqa\""));
     assert!(global::new::run(&arguments, &directory, Some(&directory)).is_err());
 
     let external_arguments = [OsString::from("Remote Site")];

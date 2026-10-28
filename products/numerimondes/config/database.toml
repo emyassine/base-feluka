@@ -1,3 +1,0 @@
-[connections.default]
-url = "sqlite://storage/numerimondes.sqlite?mode=rwc"
-max_connections = 1

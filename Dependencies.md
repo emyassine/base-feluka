@@ -6,34 +6,34 @@ This file lists the locked dependency set for the root Cargo workspace and revie
 
 | Count | What it measures |
 |---:|---|
-| 607 | Package/version records in `Cargo.lock`, including optional integrations and packages for other targets. |
-| 41 | First-party workspace packages locked by path. |
+| 606 | Package/version records in the pruned `Cargo.lock`, including optional integrations and packages for other targets. |
+| 40 | First-party workspace packages locked by path. |
 | 566 | Registry packages in the lockfile. |
-| 462 | Packages in the currently resolved workspace graph reported by `cargo metadata --locked --offline`. |
-| 343 | Distinct package name/version pairs reachable from Numerimondes normal and build dependencies for `x86_64-unknown-linux-gnu`. |
-| 38 | First-party workspace packages in that Numerimondes graph. |
-| 305 | Third-party packages in that Numerimondes graph. |
-| 14 | Package names with multiple active versions in that graph (14 additional versions). |
+| 461 | Packages in the currently resolved workspace graph reported by `cargo metadata --locked --offline`. |
+| — | No demo product dependency graph exists yet: `demo-module` is an empty virtual workspace, not a Cargo package. |
+| — | Product-specific dependency counts require a real product package. |
+| — | Product-specific dependency counts require a real product package. |
+| — | Product-specific duplicate-version counts require a real product package. |
 
-These counts answer different questions. The 607 lockfile records are not 607 crates compiled by every application. The lockfile retains optional integrations such as Actix and dependencies for feature/target combinations that are not active in one build. Cargo metadata currently resolves 462 packages for the workspace’s selected features, leaving 145 lockfile records outside that resolved set. The app-specific dependency tree is narrower still.
+These counts answer different questions. The 606 lockfile records are not 606 crates compiled by every application. The lockfile retains optional integrations such as Actix and dependencies for feature/target combinations that are not active in one build. Cargo metadata currently resolves 461 packages for the workspace’s selected features, leaving 145 lockfile records outside that resolved set. The app-specific dependency tree will be measurable once a product package exists.
 
 ## Axum and Actix
 
-Numerimondes uses Axum directly, and `feluqa` also makes Axum available through its `web` feature. Cargo resolves one Axum 0.8 version for this build. Keeping a direct Axum dependency is correct when application code imports Axum types; relying on a transitive facade dependency would make the app manifest less honest.
+Feluqa uses Axum as its web runtime. The empty `demo-module` does not currently declare Axum or any runtime dependency. A product should declare Axum directly only when its own source imports Axum types; it should not rely on a transitive facade dependency.
 
-Actix is an optional backend in `feluqa-ui-server-functions`. The `actix` feature is not enabled by Numerimondes, and `cargo tree -p numerimondes --target x86_64-unknown-linux-gnu -e normal,build -i actix-web` reports that `actix-web` is not in this build graph. Its packages appear in `Cargo.lock` because the optional integration is declared. This does not mean the current app requires both web frameworks.
+Actix is an optional backend in `feluqa-ui-server-functions`. The `actix` feature is optional and is not enabled by the current default workspace graph. Its packages appear in `Cargo.lock` because the optional integration is declared. This does not mean the framework requires both web frameworks in one application.
 
 ## Main build-time concern
 
-The `feluqa` facade declares `default = ["web"]`. That `web` feature enables Console, view, auth, UI, panel, notifications, Live, module, database and Core along with Axum/Tokio. Numerimondes depends on `feluqa` with default features enabled for both its runtime and build dependency. As a result, the app pulls UI runtime/components and browser-related crates into its server build. The supplied build log confirms that: it compiles UI runtime, DOM renderer, WASM bindings, `web-sys`, UI navigation and component macros alongside Axum, Tokio and SQLx.
+The `feluqa` facade declares `default = ["web"]`. That `web` feature enables Console, view, auth, UI, panel, notifications, Live, module, database and Core along with Axum/Tokio. A product that enables the facade default `web` feature may pull UI runtime/components and browser-related crates into a server build. The previously supplied Numerimondes log showed that combination, but Numerimondes has been removed and that log is not a current product benchmark. The empty `demo-module` builds no product graph.
 
-The fastest likely improvement is to make the facade default lightweight and require products to opt into the features they use. For Numerimondes, define an explicit product feature set; for its build dependency, request only the APIs needed by `build.rs` (view compilation, panel view-root access and migration registry generation). The build script currently reaches `feluqa::panel` and `feluqa::database`; inspect and split those build-support APIs if they force UI/runtime dependencies. Preserve product behavior and confirm feature selection with `cargo tree -e features` before changing it.
+The fastest likely improvement is to make the facade default lightweight and require products to opt into the features they use. For each product, define an explicit feature set. Keep build dependencies limited to the APIs needed by its build script (view compilation, panel view-root access and migration registry generation). Split build-support APIs from runtime features if they pull unrelated UI/runtime dependencies. Confirm feature selection with `cargo tree -e features` when a product package exists.
 
 Other candidates to measure are SQLite versus PostgreSQL feature selection in SeaORM, server-only versus browser/hydration UI dependencies, and whether every product needs the full default component catalogue. These should be separate features or target-specific dependencies where the APIs permit. Do not remove dependencies solely to lower the count.
 
 ## Duplicate versions
 
-These different versions are simultaneously reachable in the Numerimondes Linux normal/build graph:
+The previous product report found these different versions in the removed Numerimondes Linux normal/build graph. This is historical evidence, not a current product graph:
 
 | Package | Active versions |
 |---|---|
@@ -56,15 +56,15 @@ Some duplicates are expected. `syn` 2 and 3, `toml` 0.8 and 1.1, `thiserror` 1 a
 
 ## Build output and current blocker
 
-The supplied `feluqa dev numerimondes` output shows a cold or invalidated dependency build: many third-party and UI packages compile before the application build script fails. It does not include a successful end-to-end duration, so it cannot establish the steady-state or warm-build cost. Cargo reuses unchanged artifacts after a successful build when the compiler, features, profile, target and inputs remain the same.
+The supplied `feluqa dev numerimondes` output is historical: it shows a cold or invalidated dependency build that ended in a product build-script error. Numerimondes has since been removed. The output has no successful end-to-end duration and is not a current product benchmark. The empty `demo-module` has no source target to build.
 
-The observed failure is separate from dependency count: `products/numerimondes/build.rs` reaches `generated.write_to(...)`, but `generated` is not defined in the shown function. The view loop is empty. This prevents the build from completing and makes build-time comparisons unreliable until the build script is repaired.
+The old build-script failure was part of the removed Numerimondes project. It is retained here only as historical context; it is no longer a current build blocker.
 
 The number of package boundaries is not itself the main build-time measure. Count the packages activated for the product, proc-macro/build-script work, feature unification, target/profile changes, and which source edits invalidate which packages. A large transitive graph can still have good warm builds; a broad default feature set makes cold builds and unrelated rebuilds more expensive.
 
 ## Recommended order
 
-1. Fix the current Numerimondes build-script error, then record cold build, warm no-op build and one application-source edit with the same toolchain and target.
+1. Create a real product package with source, then record cold build, warm no-op build and one application-source edit with the same toolchain and target.
 
 2. Review the `feluqa` facade default. Prefer no broad default feature set; have each product opt into the server, UI, panel, database and other capabilities it uses. Update templates and guides with the feature contract.
 
@@ -78,9 +78,9 @@ The number of package boundaries is not itself the main build-time measure. Coun
 
 ## Inventory method
 
-Snapshot reviewed on 2026-10-28. Commands used: `cargo metadata --locked --offline --format-version 1`, `cargo tree -p numerimondes --target x86_64-unknown-linux-gnu --edges normal,build --prefix none --format '{p}'`, `cargo tree -p numerimondes --duplicates`, and manifest/lockfile inspection. This is dependency-graph analysis; no tests or benchmarks were run.
+Snapshot reviewed on 2026-10-28 after removing Numerimondes. Commands used: `cargo metadata --manifest-path Cargo.toml --locked --offline --format-version 1`, lockfile inspection and manifest inspection. The product-specific Axum/Actix and duplicate-version figures from the earlier report are no longer presented as current; there is no product package to analyze. No tests or benchmarks were run.
 
-The following direct dependency table covers every dependency declaration of the 41 workspace packages, including optional, build, dev and target-specific declarations. “Default off” means the manifest disables that dependency’s default features. The lockfile inventory below lists every exact package/version record.
+The following direct dependency table covers every dependency declaration of the 40 workspace packages, including optional, build, dev and target-specific declarations. “Default off” means the manifest disables that dependency’s default features. The lockfile inventory below lists every exact package/version record.
 
 ## Root dependency catalog and patches
 
@@ -188,7 +188,6 @@ The virtual workspace root has no compiled library of its own. Its `[workspace.d
 | [`feluqa-ui-server-functions-macros-default`](crates/macros/feluqa-ui-server-functions-macros-default/Cargo.toml) | `feluqa-ui-server-functions-macros =0.8.12`, `syn ^3.0` |
 | [`feluqa-ui-task-runtime`](crates/ui/feluqa-ui-task-runtime/Cargo.toml) | `futures-lite ^2.6.0` (dev; default off), `serial_test ^3.2.0` (dev), `tokio ^1.41` (dev; default off; features: rt, macros, time), `wasm-bindgen-test ^0.3.50` (dev), `async-executor ^1.13.1` (optional), `futures ^0.3.31`, `glib ^0.20.6` (optional), `thiserror ^2.0.12`, `tokio ^1.41` (optional; default off; features: rt), `tracing ^0.1.41` (optional), `wasm-bindgen-futures ^0.4.50` (optional) |
 | [`feluqa-view`](crates/ui/feluqa-view/Cargo.toml) | `quote ^1.0` (optional), `syn ^2.0` (optional; features: full, parsing, printing) |
-| [`numerimondes`](products/numerimondes/Cargo.toml) | `feluqa *` (build; features: view-compiler), `feluqa-build *` (build), `tower ^0.5` (dev; features: util), `axum ^0.8`, `feluqa ^0.2.0`, `sea-orm =1.1.20` (default off; features: macros, runtime-tokio-rustls, sqlx-sqlite, sqlx-postgres, with-json), `serde ^1` (default off; features: derive, alloc), `serde_json ^1` (default off; features: alloc), `subtle ^2`, `tokio ^1` (features: macros, rt-multi-thread, net, signal), `tower-http ^0.6` (features: fs) |
 
 ## First-party workspace packages
 
@@ -234,7 +233,6 @@ The virtual workspace root has no compiled library of its own. Its `[workspace.d
 | `feluqa-ui-server-functions-macros-default` | `0.8.6` | `crates/macros/feluqa-ui-server-functions-macros-default/Cargo.toml` |
 | `feluqa-ui-task-runtime` | `0.3.0` | `crates/ui/feluqa-ui-task-runtime/Cargo.toml` |
 | `feluqa-view` | `0.2.0` | `crates/ui/feluqa-view/Cargo.toml` |
-| `numerimondes` | `0.2.0` | `products/numerimondes/Cargo.toml` |
 
 ## Third-party locked package inventory
 

@@ -1,3 +1,0 @@
-id = "numerimondes.crm"
-supported_databases = ["sqlite", "postgresql"]
-database_connections = ["default"]

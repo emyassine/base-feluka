@@ -3265,22 +3265,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "numerimondes"
-version = "0.2.0"
-dependencies = [
- "axum",
- "feluqa",
- "feluqa-build",
- "sea-orm",
- "serde",
- "serde_json",
- "subtle",
- "tokio",
- "tower",
- "tower-http",
-]
-
-[[package]]
 name = "oco_ref"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

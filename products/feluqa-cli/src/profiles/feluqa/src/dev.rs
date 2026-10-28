@@ -51,7 +51,7 @@ pub(crate) fn run(
         let name = context.argument_or_prompt(
             0,
             "Application",
-            Some("e.g. numerimondes"),
+            Some("e.g. bookstore"),
             "usage: feluqa dev <app>",
         )?;
         arguments.push(OsString::from(name));
@@ -482,15 +482,20 @@ mod tests {
     fn dev_target_uses_the_application_binary_and_watches_local_framework_sources()
     -> Result<(), String> {
         let app_directory = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../numerimondes")
             .canonicalize()
             .map_err(|error| error.to_string())?;
-        let application = crate::feluqa::console::platform::read_application(&app_directory)?;
+        let application = Application {
+            display_name: String::from("Feluqa CLI"),
+            package_name: String::from("feluqa-cli"),
+            profile: String::from("web"),
+            manifest: app_directory.join("Cargo.toml"),
+            directory: app_directory.clone(),
+        };
         let target = super::resolve_target(&application)?;
 
         assert_eq!(
             target.executable.file_name(),
-            Some(crate::std::ffi::OsStr::new("numerimondes"))
+            Some(crate::std::ffi::OsStr::new("feluqa"))
         );
         assert!(
             target
