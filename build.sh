@@ -125,7 +125,10 @@ if [[ "$profile" == 'release' ]]; then
 fi
 
 print_info "Fetching dependencies and building Feluqa (${profile})..."
-cargo "${build_arguments[@]}"
+cargo \
+    --config 'registries.feluqa.index="sparse+https://crates.feluqa.numerimondes.com/api/v1/crates/"' \
+    --config 'registries.feluqa.credential-provider="cargo:token"' \
+    "${build_arguments[@]}"
 
 build_root="${CARGO_TARGET_DIR:-$repository_root/target}"
 if [[ -n "$target" ]]; then

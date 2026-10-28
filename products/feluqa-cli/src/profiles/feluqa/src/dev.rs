@@ -269,7 +269,7 @@ fn resolve_target(application: &Application) -> Result<DevTarget, String> {
         if directory == application.directory {
             continue;
         }
-        let workspace_root = metadata.workspace_root.as_std_path();
+        let workspace_root = metadata.workspace_root.as_path();
         let in_framework_tree = directory.starts_with(workspace_root.join("crates"))
             || directory.starts_with(workspace_root.join("tools"));
         if !in_framework_tree {
