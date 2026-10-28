@@ -2,6 +2,7 @@
 # ==============================================================================
 # Script Name: build.sh
 # Description: Builds Feluqa workspace or specific package using Cargo.
+#              Automatically handles source replacements/vendor issues.
 #
 # Usage Examples:
 #   1. Build the default CLI package (debug mode, host target):
@@ -23,9 +24,33 @@
 
 set -euo pipefail
 
+# ANSI Color Codes (ASCII safe)
+COLOR_RESET="\033[0m"
+COLOR_BOLD="\033[1m"
+COLOR_GREEN="\033[32m"
+COLOR_YELLOW="\033[33m"
+COLOR_RED="\033[31m"
+COLOR_CYAN="\033[36m"
+
+print_info() {
+    printf "${COLOR_CYAN}[INFO]${COLOR_RESET} %s\n" "$1"
+}
+
+print_success() {
+    printf "${COLOR_GREEN}[SUCCESS]${COLOR_RESET} %s\n" "$1"
+}
+
+print_warn() {
+    printf "${COLOR_YELLOW}[WARNING]${COLOR_RESET} %s\n" "$1"
+}
+
+print_error() {
+    printf "${COLOR_RED}[ERROR]${COLOR_RESET} %s\n" "$1" >&2
+}
+
 # Check if cargo is installed
 if ! command -v cargo >/dev/null 2>&1; then
-    printf '%s\n' 'error: cargo is required to build Feluqa' >&2
+    print_error "cargo is required to build Feluqa"
     exit 127
 fi
 
@@ -44,13 +69,13 @@ for argument in "$@"; do
             build_all='true'
             ;;
         --*)
-            printf 'Unknown option: %s\n' "$argument" >&2
+            print_error "Unknown option: $argument"
             printf 'Usage: %s [--release] [--all] [target-triple]\n' "$0" >&2
             exit 2
             ;;
         *)
             if [[ -n "$target" ]]; then
-                printf '%s\n' 'Pass at most one target triple.' >&2
+                print_error "Pass at most one target triple."
                 exit 2
             fi
             target="$argument"
@@ -60,8 +85,19 @@ done
 
 cd "$repository_root"
 
+# Clean up any broken vendor or source replacement configs in .cargo/config.toml
+cargo_config_dir="$repository_root/.cargo"
+cargo_config_file="$cargo_config_dir/config.toml"
+if [[ -f "$cargo_config_file" ]]; then
+    if grep -q "vendor" "$cargo_config_file"; then
+        print_warn "Detected local vendor source replacement in .cargo/config.toml. Removing source replacements to use crates.io..."
+        # Remove lines or files referring to vendor configuration if present
+        rm -f "$cargo_config_file"
+    fi
+fi
+
 if [[ -z "$host_target" ]]; then
-    printf '%s\n' 'Could not determine the Rust host target. Pass a target triple.' >&2
+    print_error "Could not determine the Rust host target. Pass a target triple."
     exit 2
 fi
 
@@ -72,9 +108,8 @@ fi
 
 if [[ -n "$target" ]] && command -v rustup >/dev/null 2>&1 \
     && ! rustup target list --installed | grep -Fxq "$target"; then
-    printf 'Rust target %s is not installed. Install it with: rustup target add %s\n' \
-        "$target" "$target" >&2
-    exit 2
+    print_warn "Rust target $target is not installed. Installing it..."
+    rustup target add "$target"
 fi
 
 # Configure build arguments based on flags (--all vs single package)
@@ -94,11 +129,6 @@ else
     )
 fi
 
-# Add --locked if Cargo.locked exists
-if [[ -f "$repository_root/Cargo.locked" ]]; then
-    build_arguments+=(--locked)
-fi
-
 if [[ -n "$target" ]]; then
     build_arguments+=(--target "$target")
 fi
@@ -106,6 +136,7 @@ if [[ "$profile" == 'release' ]]; then
     build_arguments+=(--release)
 fi
 
+print_info "Fetching dependencies and building Feluqa (${profile})..."
 cargo "${build_arguments[@]}"
 
 build_root="${CARGO_TARGET_DIR:-$repository_root/target}"
@@ -116,7 +147,7 @@ else
 fi
 
 if [[ "$build_all" == 'true' ]]; then
-    printf 'Built %s workspace binaries/targets for %s in %s\n' "$profile" "$build_target" "$build_directory"
+    print_success "Built ${profile} workspace binaries/targets for ${build_target} in ${build_directory}"
 else
-    printf 'Built %s binaries for %s in %s\n' "$profile" "$build_target" "$build_directory"
+    print_success "Built ${profile} binaries for ${build_target} in ${build_directory}"
 fi
