@@ -9,6 +9,7 @@
 - [Dependency review policy](policy/dependencies.en.md)
 - [Proprietary software and registry policy](policy/proprietary.en.md)
 - [Update and release policy](policy/updates.en.md)
+- [Compilation reliability and built-in BI requirements](../../README_Compilation.en.md)
 - [Research and working notes](notes/)
 
 These documents explain why the platform is shaped this way. They are not a

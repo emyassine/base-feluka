@@ -73,6 +73,12 @@ Keep handler elapsed time, whole server request duration and client-observed lat
 
 ## Workflow and acceptance
 
+Compilation scalability and built-in BI requirements are recorded in
+[Compilation](README_Compilation.en.md). Measure before partitioning generated
+code, preserve deterministic cache invalidation, budget workstation resources,
+and keep BI data changes outside compilation. Generated-crate orchestration and
+the integrated BI catalogue remain planned, not verified capabilities.
+
 Use the delivery plan's task IDs and acceptance criteria. Inspect the current code and documentation before choosing the next change. Implement complete vertical behavior with a representative product consumer, and keep implemented/planned status explicit. Update CLI templates and docs when changing the public DX.
 
 From repository root:
