@@ -22,8 +22,3 @@ feluqa = { version = "0.2.0", registry = "feluqa", path = "../../_crates/feluqa"
 name = "feluqa"
 path = "src/main.rs"
 
-[[bin]]
-name = "nadim"
-path = "src/main.rs"
-test = false
-
