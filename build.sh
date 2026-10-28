@@ -2,7 +2,6 @@
 # ==============================================================================
 # Script Name: build.sh
 # Description: Builds Feluqa workspace or specific package using Cargo.
-#              Automatically handles source replacements/vendor issues.
 #
 # Usage Examples:
 #   1. Build the default CLI package (debug mode, host target):
@@ -84,17 +83,6 @@ for argument in "$@"; do
 done
 
 cd "$repository_root"
-
-# Clean up any broken vendor or source replacement configs in .cargo/config.toml
-cargo_config_dir="$repository_root/.cargo"
-cargo_config_file="$cargo_config_dir/config.toml"
-if [[ -f "$cargo_config_file" ]]; then
-    if grep -q "vendor" "$cargo_config_file"; then
-        print_warn "Detected local vendor source replacement in .cargo/config.toml. Removing source replacements to use crates.io..."
-        # Remove lines or files referring to vendor configuration if present
-        rm -f "$cargo_config_file"
-    fi
-fi
 
 if [[ -z "$host_target" ]]; then
     print_error "Could not determine the Rust host target. Pass a target triple."
