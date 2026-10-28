@@ -17,12 +17,12 @@ use crate::std::string::{String, ToString};
 #[feluqa::command(
     name = "new",
     description = "Create a Feluqa application",
-    context = "any",
+    context = "anywhere",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let mut arguments = crate::feluqa::console::platform::arguments(context);
     if arguments.is_empty() {
         let value = context.argument_or_prompt(
             0,
@@ -33,21 +33,22 @@ pub(crate) fn run(
         arguments.push(OsString::from(value));
     }
     let interactive = feluqa::console::terminal::interactive();
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let host = crate::feluqa::console::platform::host(context)?;
     let result = match &host.context {
-        crate::__feluqa_profile_feluqa::context::Context::Global => {
+        crate::feluqa::console::platform::Context::Global
+        | crate::feluqa::console::platform::Context::Platform(_) => {
             create_app(interactive, &arguments, &host.current, None)
         }
-        crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => {
+        crate::feluqa::console::platform::Context::Workspace(workspace) => {
             create_app(interactive, &arguments, workspace, Some(workspace))
         }
-        crate::__feluqa_profile_feluqa::context::Context::App(_) => {
+        crate::feluqa::console::platform::Context::App(_) => {
             Err(String::from(
                 "`feluqa new` is global; run it outside an application directory",
             ))
         }
     };
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 
@@ -67,7 +68,7 @@ fn create_app(
     let display_name = feluqa::console::generator::project_display_name(&slug);
     let default_parent = match workspace {
         Some(workspace) => {
-            crate::__feluqa_profile_feluqa::context::workspace_products_root(workspace)?
+            crate::feluqa::console::platform::workspace_products_root(workspace)?
         }
         None => current.to_path_buf(),
     };
@@ -94,7 +95,7 @@ fn create_app(
     };
     let target = parent.join(&slug);
     let configured_products = workspace
-        .map(crate::__feluqa_profile_feluqa::context::workspace_products_root)
+        .map(crate::feluqa::console::platform::workspace_products_root)
         .transpose()?;
     let uses_workspace_crates = configured_products.as_deref() == Some(parent.as_path());
     let confirmation = if uses_workspace_crates {

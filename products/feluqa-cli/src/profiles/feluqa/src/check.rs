@@ -8,23 +8,21 @@ use crate::std::process::{Command, ExitCode};
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
 use crate::std::string::String;
-use crate::__feluqa_profile_feluqa::context::Application;
+use crate::feluqa::console::platform::Application;
 
 #[feluqa::command(
     name = "check",
     description = "Check the current application",
-    context = "app",
+    context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    crate::feluqa::console::ensure_context("in_dev")?;
-
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let arguments = crate::feluqa::console::platform::arguments(context);
+    let host = crate::feluqa::console::platform::host(context)?;
+    let application = crate::feluqa::console::platform::application(host)?;
     let result = execute(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 fn execute(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {

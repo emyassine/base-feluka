@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-use crate::__feluqa_profile_feluqa::context::Application;
+use crate::feluqa::console::platform::Application;
 use crate::std::collections::BTreeMap;
 use crate::std::convert::From;
 use crate::std::eprintln;
@@ -30,22 +30,20 @@ extern crate std;
 #[feluqa::command(
     name = "dev",
     description = "Build and run the current application with file watching",
-    context = "app",
+    context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    crate::feluqa::console::ensure_context("in_dev")?;
-
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let arguments = crate::feluqa::console::platform::arguments(context);
+    let host = crate::feluqa::console::platform::host(context)?;
+    let application = crate::feluqa::console::platform::application(host)?;
     let result = if arguments.is_empty() {
         watch(application)
     } else {
         Err(crate::std::string::String::from("usage: feluqa dev"))
     };
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 const POLL_INTERVAL: Duration = Duration::from_millis(400);
@@ -409,7 +407,7 @@ mod tests {
             .join("../numerimondes")
             .canonicalize()
             .map_err(|error| error.to_string())?;
-        let application = crate::__feluqa_profile_feluqa::context::read_application(&app_directory)?;
+        let application = crate::feluqa::console::platform::read_application(&app_directory)?;
         let target = super::resolve_target(&application)?;
 
         assert_eq!(

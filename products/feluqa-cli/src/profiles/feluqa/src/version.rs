@@ -8,12 +8,12 @@ use crate::std::process::ExitCode;
     name = "version",
     description = "Print the Feluqa CLI version",
     aliases = ["v", "--version", "-V"],
-    context = "any",
+    context = "anywhere",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let host = crate::feluqa::console::platform::host(context)?;
     host.exit_code = version();
     crate::std::result::Result::Ok(())
 }

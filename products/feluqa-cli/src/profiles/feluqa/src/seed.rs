@@ -8,25 +8,23 @@ use crate::std::process::{Command, ExitCode};
 use crate::std::format;
 use crate::std::result::Result;
 use crate::std::result::Result::{Err, Ok};
-use crate::__feluqa_profile_feluqa::context::Application;
+use crate::feluqa::console::platform::Application;
 
 #[feluqa::command(
     name = "seed",
     description = "Run one registered application seeder",
-    context = "app-or-workspace",
+    context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    crate::feluqa::console::ensure_context("in_dev")?;
-
-    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let mut arguments = crate::feluqa::console::platform::arguments(context);
+    let host = crate::feluqa::console::platform::host(context)?;
     let result = match &host.context {
-        crate::__feluqa_profile_feluqa::context::Context::App(application) => {
+        crate::feluqa::console::platform::Context::App(application) => {
             execute(&arguments, application)
         }
-        crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => {
+        crate::feluqa::console::platform::Context::Workspace(workspace) => {
             if arguments.len() != 2 {
                 return crate::std::result::Result::Err(String::from(
                     "usage: feluqa seed <app> <seeder-id>",
@@ -35,20 +33,21 @@ pub(crate) fn run(
             let name = arguments[0]
                 .to_str()
                 .ok_or_else(|| String::from("application name must be valid UTF-8"))?;
-            let application = crate::__feluqa_profile_feluqa::context::workspace_application(
+            let application = crate::feluqa::console::platform::workspace_application(
                 workspace,
                 name,
             )?;
             let seeder = arguments.remove(1);
             execute(&[seeder], &application)
         }
-        crate::__feluqa_profile_feluqa::context::Context::Global => {
+        crate::feluqa::console::platform::Context::Global
+        | crate::feluqa::console::platform::Context::Platform(_) => {
             return crate::std::result::Result::Err(String::from(
                 "seeders require an application or Feluqa workspace context",
             ));
         }
     };
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 fn execute(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {

@@ -11,15 +11,15 @@ use crate::std::string::String;
 #[feluqa::command(
     name = "update",
     description = "Update Feluqa from its configured distribution source",
-    context = "any",
+    context = "anywhere",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    let arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let arguments = crate::feluqa::console::platform::arguments(context);
+    let host = crate::feluqa::console::platform::host(context)?;
     let result = execute(&arguments);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 fn execute(_arguments: &[OsString]) -> Result<ExitCode, String> {

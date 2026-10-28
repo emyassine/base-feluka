@@ -1,7 +1,7 @@
 #![no_implicit_prelude]
 
 use crate::feluqa;
-use crate::__feluqa_profile_feluqa::context::Application;
+use crate::feluqa::console::platform::Application;
 use crate::std::convert::From;
 use crate::std::ffi::OsString;
 use crate::std::format;
@@ -19,14 +19,12 @@ use crate::std::string::String;
     name = "make resource",
     description = "Generate a permission-aware CRUD resource",
     usage = "feluqa make resource <arguments>",
-    context = "app",
+    context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    crate::feluqa::console::ensure_context("in_dev")?;
-
-    let mut arguments = crate::__feluqa_profile_feluqa::context::arguments(context);
+    let mut arguments = crate::feluqa::console::platform::arguments(context);
     if arguments.is_empty() {
         let value = context.argument_or_prompt(
             0,
@@ -36,10 +34,10 @@ pub(crate) fn run(
         )?;
         arguments.push(OsString::from(value));
     }
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
-    let application = crate::__feluqa_profile_feluqa::context::application(host)?;
+    let host = crate::feluqa::console::platform::host(context)?;
+    let application = crate::feluqa::console::platform::application(host)?;
     let result = generate(&arguments, application);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 
 fn generate(arguments: &[OsString], application: &Application) -> Result<ExitCode, String> {

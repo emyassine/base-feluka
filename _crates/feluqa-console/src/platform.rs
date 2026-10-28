@@ -21,7 +21,7 @@ use std::vec::Vec;
 
 /// Check whether the current working directory matches a platform context.
 ///
-/// `in_dev` means this directory belongs to a configured Feluqa workspace;
+/// `in_dev` means this directory belongs to a product or development workspace;
 /// `platform` means it belongs to an installed platform root; `anywhere` is
 /// always true. Unknown context names return false.
 pub fn current_context(expected: &str) -> bool {
@@ -37,7 +37,7 @@ pub fn current_context(expected: &str) -> bool {
         Err(_) => return false,
     };
     match expected {
-        "in_dev" => context.workspace_root().is_some(),
+        "in_dev" => context.workspace_root().is_some() || context.product_root().is_some(),
         "platform" => context.platform_root().is_some(),
         "module" => context.module_root().is_some(),
         _ => false,
@@ -62,6 +62,8 @@ pub enum Context {
     App(FeluqaProduct),
     /// A development workspace root.
     Workspace(PathBuf),
+    /// An installed Feluqa platform root.
+    Platform(PathBuf),
     /// No known Feluqa root.
     Global,
 }
@@ -85,6 +87,8 @@ impl FeluqaHost {
             Context::App(feluqa_definitions::read_product(root).map_err(|error| error.to_string())?)
         } else if let Some(root) = definition.workspace_root() {
             Context::Workspace(root.to_path_buf())
+        } else if let Some(root) = definition.platform_root() {
+            Context::Platform(root.to_path_buf())
         } else {
             Context::Global
         };
@@ -105,15 +109,16 @@ impl ConsoleHost for FeluqaHost {
     }
     fn command_context(&self) -> &'static str {
         match &self.context {
-            Context::App(_) => "app",
-            Context::Workspace(_) => "workspace",
-            Context::Global => "global",
+            Context::App(_) | Context::Workspace(_) => "in_dev",
+            Context::Platform(_) => "platform",
+            Context::Global => "outside",
         }
     }
     fn context_notice(&self, _profile: &str) -> Option<&'static str> {
         match &self.context {
             Context::App(_) => Some("Feluqa application detected."),
             Context::Workspace(_) => Some("Feluqa workspace detected."),
+            Context::Platform(_) => Some("Feluqa platform detected."),
             Context::Global => Some("No Feluqa application or workspace detected."),
         }
     }
@@ -142,7 +147,9 @@ pub fn application(host: &FeluqaHost) -> Result<&FeluqaProduct, String> {
         Context::Workspace(_) => Err(String::from(
             "this command requires an application directory",
         )),
-        Context::Global => Err(String::from("this command requires a Feluqa application")),
+        Context::Platform(_) | Context::Global => {
+            Err(String::from("this command requires a Feluqa application"))
+        }
     }
 }
 

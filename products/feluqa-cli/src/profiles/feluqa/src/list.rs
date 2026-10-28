@@ -14,28 +14,27 @@ use crate::std::string::{String, ToString};
 #[feluqa::command(
     name = "list",
     description = "List applications in the current Feluqa workspace",
-    context = "workspace",
+    context = "in_dev",
 )]
 pub(crate) fn run(
     context: &mut feluqa::console::CommandContext<'_>,
 ) -> feluqa::console::CommandResult {
-    crate::feluqa::console::ensure_context("in_dev")?;
-
-    let host = crate::__feluqa_profile_feluqa::context::host(context)?;
+    let host = crate::feluqa::console::platform::host(context)?;
     let workspace = match &host.context {
-        crate::__feluqa_profile_feluqa::context::Context::Workspace(workspace) => workspace.clone(),
-        crate::__feluqa_profile_feluqa::context::Context::App(application) => {
-            crate::__feluqa_profile_feluqa::context::find_workspace(&application.directory)
+        crate::feluqa::console::platform::Context::Workspace(workspace) => workspace.clone(),
+        crate::feluqa::console::platform::Context::App(application) => {
+            crate::feluqa::console::platform::find_workspace(&application.directory)
                 .ok_or_else(|| String::from("this app is not inside a Feluqa workspace"))?
         }
-        crate::__feluqa_profile_feluqa::context::Context::Global => {
+        crate::feluqa::console::platform::Context::Global
+        | crate::feluqa::console::platform::Context::Platform(_) => {
             return crate::std::result::Result::Err(String::from(
                 "`feluqa list` needs a Feluqa workspace",
             ));
         }
     };
     let result = list_applications(&workspace);
-    crate::__feluqa_profile_feluqa::context::finish(host, result)
+    crate::feluqa::console::platform::finish(host, result)
 }
 fn list_applications(workspace: &Path) -> Result<ExitCode, String> {
     let mut applications = crate::feluqa::definitions::list_workspace_products(workspace)
