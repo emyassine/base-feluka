@@ -51,7 +51,6 @@ fn update_platform() -> Result<ExitCode, String> {
 }
 
 fn update_cli(check_only: bool) -> Result<ExitCode, String> {
-    let install_root = tracked_install_root()?;
     let registry = feluqa::definitions::RemoteLink::CliUpdate
         .url()
         .ok_or_else(|| String::from("the private Feluqa crate registry is not configured"))?;
@@ -64,18 +63,23 @@ fn update_cli(check_only: bool) -> Result<ExitCode, String> {
     configure_registry(&mut info, registry);
     let info = info
         .output()
-        .map_err(|error| format!("could not start Cargo to check CLI releases: {error}"))?;
+        .map_err(|_| String::from("Cargo could not be started, so Feluqa could not check for updates."))?;
     if !info.status.success() {
         let detail = String::from_utf8_lossy(&info.stderr);
-        return Err(format!(
-            "could not check the private CLI release; the package may not be published yet: {}",
-            detail.trim()
+        if detail.contains("could not find `feluqa-cli`") {
+            return Err(String::from(
+                "No Feluqa CLI release is published yet, so there is nothing to update.",
+            ));
+        }
+        return Err(String::from(
+            "Feluqa could not check for a CLI update. Check your internet connection and private registry access; no files were changed.",
         ));
     }
     print!("{}", String::from_utf8_lossy(&info.stdout));
     if check_only {
         return Ok(ExitCode::SUCCESS);
     }
+    let install_root = tracked_install_root()?;
 
     let mut install = Command::new("cargo");
     install
@@ -91,7 +95,7 @@ fn update_cli(check_only: bool) -> Result<ExitCode, String> {
     configure_registry(&mut install, registry);
     let status = install
         .status()
-        .map_err(|error| format!("could not start Cargo to update the Feluqa CLI: {error}"))?;
+        .map_err(|_| String::from("Cargo could not be started, so Feluqa could not install the update."))?;
     Ok(exit_code(status.code()))
 }
 
@@ -102,8 +106,9 @@ fn tracked_install_root() -> Result<PathBuf, String> {
         .parent()
         .ok_or_else(|| String::from("could not determine the Feluqa install directory"))?;
     if bin_directory.file_name().and_then(|name| name.to_str()) != Some("bin") {
-        return Err(String::from(
-            "this executable is not in a Cargo install directory; update it with its installation method",
+        return Err(format!(
+            "`{}` is a local or externally managed executable, not a Cargo-installed Feluqa CLI; this command will not replace it. Rebuild a checkout with `./build.sh` or update it with its installer.",
+            executable.display()
         ));
     }
     let install_root = bin_directory
@@ -159,9 +164,6 @@ fn same_path(left: &Path, right: &Path) -> bool {
 fn configure_registry(command: &mut Command, index: &str) {
     let index_config = format!("registries.feluqa.index=\"{index}\"");
     command.arg("--config").arg(index_config);
-    command
-        .arg("--config")
-        .arg("registries.feluqa.credential-provider=[\"cargo:token\"]");
 }
 
 fn exit_code(code: Option<i32>) -> ExitCode {
