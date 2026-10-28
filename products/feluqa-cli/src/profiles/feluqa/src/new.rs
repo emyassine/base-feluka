@@ -72,7 +72,7 @@ fn create_app(
     };
     match workspace {
         Some(_) => feluqa::console::info(&format!(
-            "The default project path is {}/{}\nBecause this checkout keeps application consumers in products/\nand resolves Feluqa from local workspace crates.\nYou can choose another parent directory.",
+            "The default project path is\n{}/{}\nBecause this checkout keeps application consumers in products/\nand resolves Feluqa from local workspace crates.\nYou can choose another parent directory.",
             default_parent.display(), slug
         )),
         None => feluqa::console::info(&format!(
