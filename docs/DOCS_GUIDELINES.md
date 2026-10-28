@@ -39,9 +39,9 @@ keywords only for requirements.
 | `04.for-organizations/` | Availability, modules, licensing, data and security |
 | `05.reference/` | CLI, editor, Rust, visual QA and view-language references |
 | `06.governance-and-policy/` | Dependencies, proprietary distribution, updates and migration records |
-| `07.research-and-notes/` | Experiments, source notes and measured results |
+| `07.research-and-notes/` | Experiments, proposals, source notes, historical records and measured results |
 | `roadmap/` | Planned work, dependencies and acceptance criteria |
-| `decisions/` | Accepted decisions and choices that remain open |
+| Domain chapters | Accepted product, architecture, security and policy decisions |
 
 English is the normative language. A translated page should use the same number
 and slug as its English source. Keep repository and product README files, legal
@@ -68,10 +68,10 @@ The owner-designated [Monorepo Architecture](02.architecture/01.monorepo-archite
 [Product Document](01.introduction/02.intent.en.md), and
 [Compilation requirements](02.architecture/02.compilation-and-targets.en.md)
 set the architecture, product and compilation direction. They take precedence
-over conflicting pages and older decision records. Follow the
-[index of accepted decisions](decisions/03.accepted-decisions.en.md).
-Use [the open-decision register](decisions/01.pending-decisions.en.md) only for
-choices those sources leave unresolved.
+over conflicting pages and older decision records. Use the
+[open-question register](07.research-and-notes/12.open-questions.en.md) only for
+choices those sources leave unresolved. Record accepted decisions in their domain
+chapters; the historical index under research notes is not normative.
 
 A selected target is not proof that a feature has shipped. Describe current
 behavior with implementation evidence and link to the
@@ -79,9 +79,10 @@ behavior with implementation evidence and link to the
 
 ## Maintain decisions and historical sources
 
-Record a new decision with its status, reason, consequences and acceptance
-criteria. When the owner decides an open question, add it to accepted decisions,
-update the affected chapters and remove it from the open register.
+Record an accepted decision in its domain chapter with its status, reason,
+consequences and acceptance criteria. Update affected chapters and remove the
+question from the open register. Keep proposal options clearly marked as
+unapproved. Do not use a permanent `docs/decisions/` directory.
 
 Preserve source blocks that serve as historical evidence. Do not rewrite their
 content while claiming to preserve the original. Put current status and

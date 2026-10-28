@@ -27,7 +27,7 @@
       "destination": "docs/02.architecture/02.compilation-and-targets.en.md",
       "source_sha256": "333d82e057c9b5dfb7bb2e4f0da3e82244f79bf7c95a800d88a2eeab1481be7d",
       "source_bytes": 10941,
-      "migrated_body_sha256": "551d3f7408f201b77ad2ef1112b36882705e5a0755166edc8f926bb03a1f860e"
+      "migrated_body_sha256": "0e2248fac7d7e5b9a189e1b99c5c5755dbd88768f216c97b830964cfeb8f791a"
     },
     {
       "source": "docs-new/knowledge/architecture/attribute-driven-applications.en.md",
@@ -76,7 +76,7 @@
       "destination": "docs/03.for-developers/01.getting-started.en.md",
       "source_sha256": "35045ccd8730159915b55fd4958076b79926173981b6dc884a75ef36eec199f7",
       "source_bytes": 1001,
-      "migrated_body_sha256": "e526fdbde31b618b8f5a6c3680d6483f24bee36e00fb5028aa42db04b8ff1a8c"
+      "migrated_body_sha256": "12dbb68513f9f3a0c666fcb50e22200d8d3503de848d88a9c4688622b1b099f6"
     },
     {
       "source": "docs-new/exists/for-developers/develop-a-module.en.md",
@@ -202,7 +202,7 @@
       "destination": "docs/06.governance-and-policy/01.dependencies.en.md",
       "source_sha256": "29bc84285ca372007194624425eb323a62112a5f3d481fa22097f2d0925b8408",
       "source_bytes": 2513,
-      "migrated_body_sha256": "4769cef623a68324e3ba079c60ceb0939f3505bae940120fc9c4e0d570ec30b8"
+      "migrated_body_sha256": "6d005efde44902dbdc49af6855ff124477293cfbeacfa1e1b99d7b22b5a32524"
     },
     {
       "source": "docs-new/knowledge/policy/proprietary.en.md",
@@ -314,14 +314,14 @@
       "destination": "docs/02.architecture/09.knowledge-index.en.md",
       "source_sha256": "87dcd985f9316bd0f5719f1c0cffb478d90db20c4f4fa321bdd9e4e2df778946",
       "source_bytes": 968,
-      "migrated_body_sha256": "b827aa8807a796b67ca6a342e89ef00c2f53b33223f89c263c1ee7b6f77b2e47"
+      "migrated_body_sha256": "cc585d37966c99e8a7e67904c85edb74b84135f4e3520271878b9f6e71f5c18f"
     },
     {
       "source": "docs-new/knowledge/index.fr.md",
       "destination": "docs/02.architecture/09.knowledge-index.fr.md",
       "source_sha256": "21266434ecf2c87419e83224c3861099f95bcbef85f8a12c3adaf5cbeaac2d6e",
       "source_bytes": 537,
-      "migrated_body_sha256": "12da6023f820620b0535430984d39380044e77ea7a44de6a4d059067de78f6b6"
+      "migrated_body_sha256": "ce91697eb2a747f6b813e2cccabd45c78a8475796613a7b85e83c1a81f34fcc3"
     },
     {
       "source": "docs-new/exists/index.en.md",
@@ -349,14 +349,14 @@
       "destination": "docs/roadmap/01.index.en.md",
       "source_sha256": "9c965302a4d456f856a096dd6d158eb4db49142e2ebae5d5375dccaa1a0ef673",
       "source_bytes": 1022,
-      "migrated_body_sha256": "9eafa126fbda29d70a56912ea28859989d983976fc9d1688ca3521f2aae541b8"
+      "migrated_body_sha256": "49830834e07432dc743728bf720c499715f39ad22b1f307917ce0eccee327ffb"
     },
     {
       "source": "docs-new/_todo/index.fr.md",
       "destination": "docs/roadmap/01.index.fr.md",
       "source_sha256": "1541256e1a50fdbfbf0a6f10ec373277b3b83cefd82382ce2e80b91c451118b2",
       "source_bytes": 754,
-      "migrated_body_sha256": "64e65940fe6da1c9a25a087c3dac56deab22305ca64042acb62cc5bd634b0904"
+      "migrated_body_sha256": "fc74ed5c0ea576bc9fdabc1e20d0a2c67e45c04be57fb16d28d891f895f4a39e"
     },
     {
       "source": "docs-new/_todo/enterprise-delivery.en.md",
@@ -370,14 +370,14 @@
       "destination": "docs/roadmap/02.enterprise-delivery.fr.md",
       "source_sha256": "bf08396c3ca3abb8bc49bb4f0380d1f659c645e453803ab44b9db226c17918be",
       "source_bytes": 25756,
-      "migrated_body_sha256": "4f87bf6dbed40b2e447f4dcdce710f5dc02b1bfed3a876c3b50b67c78acbdb43"
+      "migrated_body_sha256": "f9cec21a1f3af4d049bf86af4663804816ed8db64da59a30f6642ad93fe44f90"
     },
     {
       "source": "docs-new/_todo/roadmap.fr.md",
       "destination": "docs/roadmap/03.initial-roadmap.fr.md",
       "source_sha256": "1b63eb22db1457f5ece083ab418a26ee45996540d94de5780042569ab9617f48",
       "source_bytes": 16718,
-      "migrated_body_sha256": "2c5808f6b941834edae9c9e6222eb6bfc4daaa8da82c2d95b32b00cd92976dd4"
+      "migrated_body_sha256": "867909d4bc40b38bcf34afdb70213f2c0c55fc7926fb08846a549c9e323305a1"
     },
     {
       "source": "docs-new/_todo/console/console.en.md",
@@ -391,7 +391,7 @@
       "destination": "docs/roadmap/05.web-and-workstation-modules.en.md",
       "source_sha256": "9f1019311854d83e7568a27e2e1b51bbf7822ca8ee1434b87af2bf42d6e001ad",
       "source_bytes": 5072,
-      "migrated_body_sha256": "79ac09234d45e63ba00036a394b37f97ff265a4ff4e5bdeec5f968e888173da9"
+      "migrated_body_sha256": "8f2762c08be600dad7f7b978daeeb2bda831c1f85190ae6b3db13d93ba5906f4"
     },
     {
       "source": "docs-new/_todo/editor/ide-support-commands.en.md",
@@ -409,21 +409,21 @@
     },
     {
       "source": "docs-new/_todo/open-decisions.en.md",
-      "destination": "docs/decisions/03.open-architecture.en.md",
+      "destination": "docs/07.research-and-notes/15.open-architecture-history.en.md",
       "source_sha256": "9f1b09edb550921ff52a57845f78362682926b6eaecd004e54c97f5105653030",
       "source_bytes": 1288,
       "migrated_body_sha256": "6dbffb701802aa4b59bbd1e85d51a69de096a343707bc16bac813271c1d43eb5"
     },
     {
       "source": "docs-new/knowledge/architecture/platform-vision-decisions.en.md",
-      "destination": "docs/decisions/02.platform-vision-record.en.md",
+      "destination": "docs/07.research-and-notes/13.platform-vision-record.en.md",
       "source_sha256": "e01f2912864426ca54dc204c2acf309d9d94011738495f7fcb3357c3c4a7085e",
       "source_bytes": 61886,
       "migrated_body_sha256": "0b0aacb883f0470e0941f4670c869eb72b00e6b9c2ac1cb961fe19b7709e0e5a"
     },
     {
       "source": "docs-new/questions.en.md",
-      "destination": "docs/decisions/04.compile-time-licensing-proposal.en.md",
+      "destination": "docs/07.research-and-notes/16.compile-time-licensing-proposal.en.md",
       "source_sha256": "972aa2f3d4dbdbef59b5fd3130f2de07103ae16b9b4f6c1a03a350b1249dbad9",
       "source_bytes": 6272,
       "migrated_body_sha256": "972aa2f3d4dbdbef59b5fd3130f2de07103ae16b9b4f6c1a03a350b1249dbad9"
