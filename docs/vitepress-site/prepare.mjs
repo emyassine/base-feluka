@@ -15,6 +15,8 @@ const mermaidConfig = await readFile(mermaidConfigPath, 'utf8')
 const darkMessageTextColor = '#f1f3fc'
 const records = []
 const routeMap = new Map()
+const sidebarConfigurations = new Map()
+const sidebarIconSources = new Set()
 let diagramsCached = 0
 let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+-/, '')
@@ -22,12 +24,44 @@ const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i,
 const execFile = promisify(execFileCallback)
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
+  let sidebarConfig
+  try {
+    sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+  }
+  if (sidebarConfig) {
+    const outputRelativePath = relative(outputRoot, outputPath).split(sep).join('/')
+    const matchingGuide = config.subguides.find((guide) => outputRelativePath.startsWith(`${guide.path}/`))
+    const guideRelativePath = matchingGuide ? outputRelativePath.slice(matchingGuide.path.length + 1) : ''
+    const isTopLevelGroup = Boolean(guideRelativePath && !guideRelativePath.includes('/'))
+    if (!sidebarConfig.labels || typeof sidebarConfig.labels !== 'object' || Array.isArray(sidebarConfig.labels)) {
+      throw new Error(`sidebar.json must define a labels object by language: ${join(sourcePath, 'sidebar.json')}`)
+    }
+    for (const language of config.languages) {
+      if (typeof sidebarConfig.labels[language] !== 'string' || !sidebarConfig.labels[language].trim()) {
+        throw new Error(`sidebar.json needs a non-empty labels.${language}: ${join(sourcePath, 'sidebar.json')}`)
+      }
+    }
+    if (sidebarConfig.icon != null && typeof sidebarConfig.icon !== 'string') {
+      throw new Error(`sidebar.json icon must be a path relative to that file: ${join(sourcePath, 'sidebar.json')}`)
+    }
+    if (sidebarConfig.icon && !isTopLevelGroup) {
+      throw new Error(`sidebar.json icons are only allowed on top-level guide groups: ${join(sourcePath, 'sidebar.json')}`)
+    }
+    sidebarConfigurations.set(outputRelativePath, {
+      labels: sidebarConfig.labels,
+      icon: sidebarConfig.icon ? resolve(sourcePath, sidebarConfig.icon) : null,
+    })
+    if (sidebarConfig.icon) sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
+  }
   for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
-    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'vitepress.config.json') continue
+    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'vitepress.config.json' || entry.name === 'sidebar.json') continue
     const from = join(sourcePath, entry.name)
     const to = join(outputPath, entry.isDirectory() ? cleanDir(entry.name) : cleanFile(entry.name))
     if (entry.isDirectory()) await scan(sourceRoot, outputRoot, from, to)
     else {
+      if (sidebarIconSources.has(resolve(from))) continue
       await mkdir(dirname(to), { recursive: true })
       routeMap.set(resolve(from), to)
       if (extname(entry.name).toLowerCase() === '.md') records.push({ from, to, sourceRoot })
@@ -59,6 +93,15 @@ async function copyAsset(sourceFile) {
   }
   return publishedPath.split(sep).join('/')
 }
+
+const generatedSidebar = {}
+for (const [path, metadata] of sidebarConfigurations) {
+  generatedSidebar[path] = {
+    labels: metadata.labels,
+    icon: metadata.icon ? await copyAsset(metadata.icon) : null,
+  }
+}
+await writeFile(join(siteDirectory, '.vitepress/generated-sidebar.json'), JSON.stringify(generatedSidebar, null, 2))
 
 const configuredIndex = resolve(configDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {

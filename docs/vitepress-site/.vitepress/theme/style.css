@@ -1,3 +1,60 @@
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--vp-c-text-3) 42%, transparent) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-text-3) 42%, transparent);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
+  background-clip: padding-box;
+}
+
+.VPSidebarItem.level-0 .text:has(.sidebar-group-icon) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-group-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-group-label {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.sidebar-group-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
 .vp-doc .mermaid-figure {
   position: relative;
   max-width: 100%;

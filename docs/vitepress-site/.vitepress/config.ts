@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
@@ -8,6 +8,9 @@ const configDirectory = resolve(siteDirectory, '../guides')
 const siteConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
 const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
+const sidebarMetadataPath = join(siteDirectory, '.vitepress/generated-sidebar.json')
+const sidebarMetadata = existsSync(sidebarMetadataPath) ? JSON.parse(readFileSync(sidebarMetadataPath, 'utf8')) : {}
+const activeLanguage = siteConfig.languages[0]
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
 const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
   ? resolve(process.env.FELUQA_DOCS_OUT_DIR)
@@ -37,6 +40,20 @@ function titleOf(file: string): string {
   return title
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  })[character]!)
+}
+
+function groupTitle(path: string, fallback: string): string {
+  const metadata = sidebarMetadata[path]
+  const label = metadata?.labels?.[activeLanguage] ?? fallback
+  const escapedLabel = escapeHtml(label)
+  if (!metadata?.icon) return escapedLabel
+  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" aria-hidden="true"><img src="/${escapeHtml(metadata.icon)}" alt=""></span><span>${escapedLabel}</span></span>`
+}
+
 function orderKey(name: string): [number, string] {
   const match = name.match(/^(\d+)[.-]/)
   return [match ? Number(match[1]) : Number.MAX_SAFE_INTEGER, name]
@@ -54,13 +71,15 @@ function sidebar(directory: string, root = directory): any[] {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
       const items = sidebar(path, root)
-      return items.length ? [{ text: entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' '), collapsed: true, items }] : []
+      const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
+      const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
+      return items.length ? [{ text: groupTitle(relativePath, fallback), collapsed: true, items }] : []
     }
     if (!entry.name.endsWith('.md')) return []
     if (directory === root && entry.name === 'index.md') return []
     const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
     const target = entry.name === 'index.md' ? `${relative(generatedDirectory, dirname(path)).replace(/\\/g, '/')}/index.html` : `${clean}.html`
-    return [{ text: titleOf(path), link: `/${target.replace(/^\.\//, '')}` }]
+    return [{ text: escapeHtml(titleOf(path)), link: `/${target.replace(/^\.\//, '')}` }]
   })
 }
 
