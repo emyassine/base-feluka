@@ -1,0 +1,2 @@
+- The doc comment is mandatory. It becomes the label shown in the System panel. Without it, compilation fails. >>>>>>>>>> we need to have internationalization built in even for enums some times with icon and description etc in it !
+- <module>.viewe if module is just a name we choose there is a possibility of collisions ! and it's not acceptable.
