@@ -125,6 +125,13 @@ const nav = site.subguides.map((guide: { path: string; label: string }) => {
       : `/${base}${base ? '/' : ''}`
   return { text: guide.label, link }
 })
+const languageMenu = site.languages.length ? [{
+  text: site.languageLabels?.[site.languages[0]] ?? site.languages[0].toUpperCase(),
+  items: site.languages.map((language: string) => ({
+    text: site.languageLabels?.[language] ?? language.toUpperCase(),
+    link: site.languageLinks?.[language] ?? (language === site.languages[0] ? '/' : `/${language}/`),
+  })),
+}] : []
 const sidebars = Object.fromEntries(site.subguides.map((guide: { path: string; label: string }) => {
   const base = routeBase(guide.path)
   const directory = join(generatedDirectory, ...base.split('/').filter(Boolean))
@@ -235,7 +242,9 @@ export default defineConfig({
     return head
   },
   themeConfig: {
-    nav,
+    nav: [...nav, ...languageMenu],
+    langMenuLabel: site.languageMenuLabel ?? 'Change language',
+    socialLinks: site.socialLinks ?? [],
     sidebar: sidebars,
     search: { provider: siteConfig.search.provider, options: {
       miniSearch: { searchOptions: siteConfig.search.miniSearch },

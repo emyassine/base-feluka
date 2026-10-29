@@ -9,6 +9,22 @@ import { sortNavigationEntries } from './navigation-order.mjs'
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
 const configDirectory = resolve(siteDirectory, '../guides')
 const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
+if (!Array.isArray(config.languages) || !config.languages.length || config.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(config.languages).size !== config.languages.length) {
+  throw new Error('languages must be a non-empty array of unique locale codes')
+}
+for (const language of config.languages) {
+  const label = config.languageLabels?.[language]
+  if (label !== undefined && (typeof label !== 'string' || !label.trim())) {
+    throw new Error(`languageLabels.${language} must be a non-empty string`)
+  }
+  const link = config.languageLinks?.[language]
+  if (link !== undefined && (typeof link !== 'string' || !link.startsWith('/') || link.startsWith('//'))) {
+    throw new Error(`languageLinks.${language} must be a root-relative URL`)
+  }
+}
+if (config.socialLinks !== undefined && (!Array.isArray(config.socialLinks) || config.socialLinks.some((item) => !item || typeof item.link !== 'string' || !item.link.trim() || !(typeof item.icon === 'string' || typeof item.icon?.svg === 'string')))) {
+  throw new Error('socialLinks entries must define an icon and link')
+}
 if (config.seo?.siteUrl != null && config.seo.siteUrl !== '' && (typeof config.seo.siteUrl !== 'string' || !/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/.test(config.seo.siteUrl))) {
   throw new Error('seo.siteUrl must be an absolute HTTPS URL when configured')
 }

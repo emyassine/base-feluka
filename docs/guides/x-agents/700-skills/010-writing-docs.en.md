@@ -61,7 +61,7 @@ meaning rather than turning it into a simpler but different idea.
 
 ## Use the canonical taxonomy
 
-Read Feluqa's [Taxonomy](../feluqa.rs/010-get-started/000-introduction/030-taxonomy.en.md)
+Read Feluqa's [Taxonomy](/get-started/introduction/taxonomy)
 before introducing or changing a domain term. In particular, keep these
 boundaries clear:
 
@@ -267,9 +267,9 @@ the terminology consistent.
 ## Structure and file naming
 
 - Keep one concept per Markdown file in the relevant concepts section; keep
-  agent extensibility in `010-get-started/030-agentic-development/`.
+  agent extensibility in `020-agentic-development/`.
   Use a descriptive, topic-specific filename such as
-  `000-agent-ready-extensible-modules.en.md`.
+  `010-agent-ready-extensible-modules.en.md`.
 - Choose filenames and page titles that remain distinct across the whole
   future site. Avoid generic repeated names such as `overview`, `concepts`, or
   `getting-started` when a more specific slug is available.

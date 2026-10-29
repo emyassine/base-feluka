@@ -48,6 +48,32 @@
   "languages": [
     "en"
   ],
+  "languageLabels": {
+    "en": "English"
+  },
+  "languageLinks": {
+    "en": "/"
+  },
+  "languageMenuLabel": "Change language",
+  "socialLinks": [
+    {
+      "icon": "github",
+      "link": "https://github.com/emyassine/base-feluka",
+      "ariaLabel": "Feluqa on GitHub"
+    },
+    {
+      "icon": {
+        "svg": "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><title>Website</title><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>"
+      },
+      "link": "https://numerimondes.com",
+      "ariaLabel": "Numerimondes website"
+    },
+    {
+      "icon": "linkedin",
+      "link": "https://www.linkedin.com/in/elmoumenyassine",
+      "ariaLabel": "Yassine on LinkedIn"
+    }
+  ],
   "markdown": {
     "lineNumbers": true,
     "image": {
@@ -100,7 +126,7 @@
     "light": "feluqa.rs/.art/logo-lightmode.png",
     "dark": "feluqa.rs/.art/logo-darkmode.png",
     "alt": "Feluqa",
-    "width": "100%",
+    "width": "50rem",
     "extraStyle": "padding: 0.2rem;"
   },
   "seo": {

@@ -88,7 +88,7 @@ markets where they can establish a defensible position. Feluqa's own thesis
 adds that modern development tools make broad platform capabilities more
 attainable for a small team, while users and their agents can shape the
 specialized business workflows. We describe this as [“breadth is now
-affordable, depth belongs to users”](../010-get-started/030-agentic-development/010-agent-ready-extensible-modules.en.md).
+affordable, depth belongs to users”](/agents/agentic-development/agent-ready-extensible-modules).
 
 Proprietary ownership does not by itself prove that software is safer, more
 reliable, or technically superior. Those qualities require implementation,

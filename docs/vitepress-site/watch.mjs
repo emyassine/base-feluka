@@ -1,5 +1,5 @@
 import { watch as watchFs } from 'node:fs'
-import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { readFile, readdir, utimes } from 'node:fs/promises'
 import { spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
@@ -76,7 +76,8 @@ async function processChanges() {
     }
     const nextSignature = await structuralSignature()
     if (nextSignature !== previousSignature) {
-      await writeFile(vitepressConfig, await readFile(vitepressConfig))
+      const now = new Date()
+      await utimes(vitepressConfig, now, now)
       log('Navigation or site configuration changed; VitePress is restarting to reload its config.')
     } else {
       log(`Updated generated documentation in ${((Date.now() - started) / 1000).toFixed(2)}s; VitePress will hot reload changed pages.`)

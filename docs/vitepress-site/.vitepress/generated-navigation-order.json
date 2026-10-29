@@ -38,9 +38,6 @@
   "get-started/installation/index.md": "index.en.md",
   "get-started/configuration": "020-configuration",
   "get-started/configuration/pages-and-config.md": "020-pages-and-config.en.md",
-  "get-started/agentic-development": "030-agentic-development",
-  "get-started/agentic-development/agent-ready-extensible-modules.md": "010-agent-ready-extensible-modules.en.md",
-  "get-started/agentic-development/complementary-agent-project.md": "020-complementary-agent-project.en.md",
   "get-started/directory-structure": "040-directory-structure",
   "get-started/directory-structure/cli-structure.md": "010-cli-structure.en.md",
   "get-started/directory-structure/module-submodule-feature-contexts.md": "030-module-submodule-feature-contexts.en.md",
@@ -78,5 +75,9 @@
   "vitepress.site.config.json": "vitepress.site.config.json",
   "agents": "x-agents",
   "agents/index.md": "000.index.en.md",
-  "agents/writing-docs.md": "010-writing-docs.en.md"
+  "agents/agentic-development": "020-agentic-development",
+  "agents/agentic-development/agent-ready-extensible-modules.md": "010-agent-ready-extensible-modules.en.md",
+  "agents/agentic-development/complementary-agent-project.md": "020-complementary-agent-project.en.md",
+  "agents/skills": "700-skills",
+  "agents/skills/writing-docs.md": "010-writing-docs.en.md"
 }
