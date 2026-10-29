@@ -44,21 +44,19 @@ async function copyAsset(sourceFile) {
   if (sourceRelativePath === '..' || sourceRelativePath.startsWith(`..${sep}`)) {
     throw new Error(`Asset path escapes docs/guides: ${sourceFile}`)
   }
-  const target = join(outputDirectory, 'public', sourceRelativePath)
-  await access(sourceFile)
+  const bytes = await readFile(sourceFile)
+  const assetName = `${createHash('sha256').update(bytes).digest('hex')}${extname(sourceFile).toLowerCase()}`
+  const publishedPath = join('__docs-assets', assetName)
+  const target = join(outputDirectory, 'public', publishedPath)
   await mkdir(dirname(target), { recursive: true })
-  await cp(sourceFile, target)
-  return sourceRelativePath
+  try { await access(target) }
+  catch (error) {
+    if (error.code !== 'ENOENT') throw error
+    await writeFile(target, bytes)
+  }
+  return publishedPath.split(sep).join('/')
 }
 
-for (const guide of config.subguides) {
-  const guideRoot = resolve(sourceRoot, guide.path)
-  const guideConfigPath = join(guideRoot, 'vitepress.config.json')
-  const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
-  for (const asset of [guideConfig.logo.light, guideConfig.logo.dark, guideConfig.favicon]) {
-    await copyAsset(resolve(dirname(guideConfigPath), asset))
-  }
-}
 const configuredIndex = resolve(configDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)
