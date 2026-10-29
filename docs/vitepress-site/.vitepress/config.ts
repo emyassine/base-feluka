@@ -9,7 +9,9 @@ const siteConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.site
 const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
-const outputDirectory = resolve(configDirectory, site.outputDir)
+const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
+  ? resolve(process.env.FELUQA_DOCS_OUT_DIR)
+  : resolve(configDirectory, site.outputDir)
 const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: string }) => {
   const configPath = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
   return [guide.path, { path: configPath, config: JSON.parse(readFileSync(configPath, 'utf8')) }]
