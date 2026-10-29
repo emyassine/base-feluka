@@ -51,7 +51,7 @@ function groupTitle(path: string, fallback: string): string {
   const label = metadata?.labels?.[activeLanguage] ?? fallback
   const escapedLabel = escapeHtml(label)
   if (!metadata?.icon) return escapedLabel
-  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" aria-hidden="true"><img src="/${escapeHtml(metadata.icon)}" alt=""></span><span>${escapedLabel}</span></span>`
+  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(metadata.icon)}')" aria-hidden="true"></span><span>${escapedLabel}</span></span>`
 }
 
 function orderKey(name: string): [number, string] {
