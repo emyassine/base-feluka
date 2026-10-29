@@ -1,18 +1,11 @@
 {
   "site": {
     "body": {
-      "family": "DM Sans",
-      "src": "/__docs-assets/9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543.woff2",
-      "weight": "400 700",
+      "family": "Manrope",
+      "src": "/__docs-assets/8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e.woff2",
+      "weight": "200 800",
       "style": "normal",
       "fallback": "ui-sans-serif, system-ui, sans-serif"
-    },
-    "code": {
-      "family": "Space Grotesk",
-      "src": "/__docs-assets/0640890476fc1198ab4de571fb658de443c4d85b66466ec09534a8737ab1ce9d.woff2",
-      "weight": "300 700",
-      "style": "normal",
-      "fallback": "ui-monospace, monospace"
     }
   },
   "guides": {

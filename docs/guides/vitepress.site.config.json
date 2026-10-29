@@ -5,14 +5,9 @@
   },
   "fonts": {
     "body": {
-      "family": "DM Sans",
-      "src": ".art/fonts/dm-sans-latin.woff2",
-      "weight": "400 700"
-    },
-    "code": {
-      "family": "Space Grotesk",
-      "src": ".art/fonts/space-grotesk-latin.woff2",
-      "weight": "300 700"
+      "family": "Manrope",
+      "src": ".art/fonts/manrope-latin.woff2",
+      "weight": "200 800"
     }
   },
   "guidesPath": ".",
