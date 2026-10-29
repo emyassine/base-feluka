@@ -29,6 +29,8 @@ await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 const sourceRoot = resolve(siteDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
+await mkdir(join(outputDirectory, 'public'), { recursive: true })
+await cp(join(sourceRoot, 'feluqa-docs-hero.svg'), join(outputDirectory, 'public/feluqa-docs-hero.svg'))
 const configuredIndex = resolve(siteDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)

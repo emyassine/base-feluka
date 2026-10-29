@@ -23,11 +23,12 @@ function sidebar(directory: string, root = directory): any[] {
     }
     if (!entry.name.endsWith('.md')) return []
     const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
-    return [{ text: titleOf(path), link: `/${clean}` }]
+    const target = entry.name === 'index.md' ? `${relative(generatedDirectory, dirname(path)).replace(/\\/g, '/')}/index.html` : `${clean}.html`
+    return [{ text: titleOf(path), link: `/${target.replace(/^\.\//, '')}` }]
   })
 }
 
-const nav = siteConfig.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}/` }))
+const nav = siteConfig.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}/index.html` }))
 const items = siteConfig.subguides.flatMap((guide: { path: string; label: string }) => {
   const directory = join(generatedDirectory, guide.path)
   return [{ text: guide.label, items: sidebar(directory) }]
@@ -37,6 +38,6 @@ export default defineConfig({
   title: siteConfig.siteName,
   srcDir: '.generated-guides',
   outDir: resolve(siteDirectory, siteConfig.outputDir),
-  cleanUrls: true,
+  cleanUrls: false,
   themeConfig: { nav, sidebar: items },
 })
