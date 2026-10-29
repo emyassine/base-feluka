@@ -13,5 +13,5 @@ The rendering runtime source has been copied into first-party `feluqa-ui-*`
 workspace packages and renamed to Feluqa package and Rust identifiers. The fork
 is not yet compiling: normalized manifests need their complete dependency
 contracts restored, then the component crate and panel integration need to pass
-the build and browser acceptance gates. The feature requires Rust 1.88; the
-workspace baseline remains Rust 1.85.
+the build and browser acceptance gates. The feature requires Rust 1.88, which
+is now the workspace baseline.

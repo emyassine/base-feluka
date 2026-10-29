@@ -54,7 +54,7 @@ commitment.
 
 | Version | Rust requirement | Release | Bug fixes until | Security fixes until |
 | --- | --- | --- | --- | --- |
-| `0.2.0` workspace development baseline | `1.85` workspace baseline; selected packages/features declare `1.88` | Development version; no release date recorded | Not applicable | Not applicable |
+| `0.2.0` workspace development baseline | `1.88` | Development version; no release date recorded | Not applicable | Not applicable |
 
 The `0.2.0` row describes the current workspace manifest. It is not a
 published release and carries no support commitment.
@@ -65,16 +65,17 @@ Each release entry will state the minimum supported Rust version (MSRV) for
 that release. The MSRV is the minimum compiler version the release promises to
 support; it is not necessarily the latest stable Rust version.
 
-The workspace currently declares Rust 1.85 as its baseline. Some packages or
-features declare Rust 1.88. These are manifest declarations for the current
-development tree, not a verified release-wide MSRV promise. Check the package
-and feature you use, and use the release-specific requirement when one is
-published.
+The workspace currently declares Rust 1.88 as its baseline. This is a manifest
+declaration for the development tree, not a verified release-wide MSRV
+promise. Check package-specific requirements and use the release-specific
+requirement when one is published.
 
 ## Current Development Baseline
 
-The workspace manifest currently sets version `0.2.0` and Rust `1.85` as its
-baseline; selected packages or features require Rust `1.88`. This describes the
-repository's development configuration, not a published release or a support
-commitment. The release cadence, verified release-wide MSRV, and support
-periods remain to be established.
+The workspace manifest currently sets the exact version `0.2.0` and Rust
+`1.88` as its baseline. This documentation line covers package versions
+`<=1.0.0`. Cargo's package `version` field stores one exact version; a range
+such as `<=1.0.0` belongs in a dependency requirement, not in that field. The
+current version describes the repository's development configuration, not a
+published release or a support commitment. The release cadence, verified
+release-wide MSRV, and support periods remain to be established.

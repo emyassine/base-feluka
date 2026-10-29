@@ -1,7 +1,7 @@
 # Dependencies
 
 Package: `feluqa-console` 0.1.1  
-Workspace MSRV declaration: Rust 1.85  
+Workspace MSRV declaration: Rust 1.88
 Review date: 2026-10-27
 
 This crate provides the runtime-neutral command registry and the optional
