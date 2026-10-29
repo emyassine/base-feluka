@@ -144,26 +144,28 @@ and execution context, and handles terminal input and output. A **profile**
 connects a binary name to the commands available in that console. Each command
 is a handler registered in the profile's source tree.
 
-The existing Feluqa CLI uses this structure:
+For this small CLI application, one simple structure is:
 
 ```text
-products/feluqa-cli/
-├── Cargo.toml                     # declares the `feluqa` binary
-├── build.rs                       # discovers command handlers
+hello-cli/
+├── Cargo.toml                # declares the `hello-cli` binary
+├── build.rs                  # discovers command handlers
 └── src/
-    ├── main.rs                    # declares profiles and starts MakeConsole
-    └── profiles/
-        └── feluqa/src/             # commands in the Feluqa console profile
-            ├── new.rs
-            ├── dev.rs
-            └── make/
-                └── module.rs       # `make module` handler
+    ├── main.rs               # declares the console profile and starts it
+    └── commands/
+        └── hello.rs          # the `hello` command handler
 ```
 
-`Cargo.toml` gives the executable its binary name. In the Feluqa CLI, that
-name is `feluqa`, so a command path such as `make module` is invoked as
-`feluqa make module`. A separate CLI application can choose its own binary
-name, such as `hello-cli`.
+`Cargo.toml` gives the executable its binary name. The Feluqa CLI binary is
+named `feluqa`; a separate CLI application can choose a name such as
+`hello-cli`. The command folder is the project's choice. `commands/` is a
+simple convention here, and the console profile points to whichever source
+folder the project uses.
+
+The Feluqa CLI itself has multiple console profiles and groups related commands
+in nested source folders, such as its `make` commands. That organization suits
+the CLI's larger command set; a small application does not need an extra
+profile directory or a nested `src` folder.
 
 ### The binary and its console entry point
 
@@ -209,7 +211,7 @@ pub const PROFILES: &[Profile] = &[Profile {
     id: "hello-cli",
     name: "Hello CLI",
     binary_name: "hello-cli",
-    commands_directory: "profiles/hello_cli/src",
+    commands_directory: "commands",
     header: "Hello CLI",
     launch_aliases: &[],
 }];
@@ -246,11 +248,11 @@ binary, `build.rs` generates command registration, `main.rs` starts the
 console, and the console profile owns the command handlers.
 
 The generated project scaffold will provide the manifest, dependency features,
-entry point, and build script. Developers add commands inside the profile's
-console source tree:
+entry point, and build script. The `commands_directory` value is relative to
+the source root (`src` in this example), so this profile discovers:
 
 ```text
-src/profiles/hello_cli/src/hello.rs
+src/commands/hello.rs
 ```
 
 ### The first command handler
