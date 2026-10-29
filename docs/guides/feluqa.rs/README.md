@@ -13,9 +13,11 @@ Naming: `[order]-folder/[order]-file.en.md`.
 3. Read the [`000-prologue/030-contribution-guide.en.md`](000-prologue/030-contribution-guide.en.md)
    before contributing. The Upgrade Guide is added when there is an earlier
    major version to upgrade from.
-4. Read about the [complementary agent project](010-get-started/030-agentic-development/020-complementary-agent-project.en.md)
+4. Explore the [batteries included](000-prologue/040-batteries-included.en.md)
+   capabilities and their current status.
+5. Read about the [complementary agent project](010-get-started/030-agentic-development/020-complementary-agent-project.en.md)
    and its intended relationship with Feluqa.
-5. Begin learning Feluqa at
+6. Begin learning Feluqa at
    [`010-get-started/000-introduction/010-introduction.en.md`](010-get-started/000-introduction/010-introduction.en.md),
    then continue through the product model, taxonomy, architecture overview,
    and the [learning guides](010-get-started/060-learning/010-create-your-first-application.en.md).
