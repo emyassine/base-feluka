@@ -39,8 +39,20 @@ function markdownFromNode(node: MarkdownNode): string {
   }
 }
 
-function copyText(text: string): void {
-  void navigator.clipboard.writeText(text)
+async function copyText(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text)
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.append(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    textarea.remove()
+  }
 }
 
 const PageActions = {
@@ -51,22 +63,31 @@ const PageActions = {
     const labels = () => isFrench()
       ? { title: 'À propos de cette page', trigger: 'Markdown', copyLink: 'Copier le lien de la page', copyMarkdown: 'Copier en Markdown', chatgpt: 'Demander à ChatGPT', claude: 'Demander à Claude', copied: 'Copié' }
       : { title: 'About this page', trigger: 'Markdown', copyLink: 'Copy page link', copyMarkdown: 'Copy as markdown', chatgpt: 'Ask ChatGPT', claude: 'Ask Claude', copied: 'Copied' }
-    const action = (label: string, run: () => void) => h('button', { class: 'page-actions__item', type: 'button', role: 'menuitem', onClick: () => { run(); open.value = false } }, label)
+    const action = (label: string, run: () => void | Promise<void>) => h('button', { class: 'page-actions__item', type: 'button', role: 'menuitem', onClick: () => { void run(); open.value = false } }, label)
     const pageUrl = () => window.location.href
     const askUrl = (provider: 'chatgpt' | 'claude') => {
       const prompt = `${isFrench() ? 'Explique cette page de documentation' : 'Explain this documentation page'}: ${pageUrl()}`
       return provider === 'chatgpt' ? `https://chatgpt.com/?q=${encodeURIComponent(prompt)}` : `https://claude.ai/new?q=${encodeURIComponent(prompt)}`
     }
-    const copyMarkdown = () => {
+    const copyMarkdown = async () => {
       const article = document.querySelector<HTMLElement>('.vp-doc')
       if (!article) return
       const clone = article.cloneNode(true) as HTMLElement
       clone.querySelectorAll('.header-anchor, button, .mermaid-toolbar').forEach((element) => element.remove())
-      copyText(Array.from(clone.childNodes).map(markdownFromNode).join('').trim() + '\n')
+      await copyText(Array.from(clone.childNodes).map(markdownFromNode).join('').trim() + '\n')
     }
     const onKeydown = (event: KeyboardEvent) => { if (event.key === 'Escape') open.value = false }
-    onMounted(() => document.addEventListener('keydown', onKeydown))
-    onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
+    const onDocumentClick = (event: MouseEvent) => {
+      if (!(event.target instanceof Element) || !event.target.closest('.VPDocAsideMeta')) open.value = false
+    }
+    onMounted(() => {
+      document.addEventListener('keydown', onKeydown)
+      document.addEventListener('click', onDocumentClick)
+    })
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', onKeydown)
+      document.removeEventListener('click', onDocumentClick)
+    })
     return () => {
       const text = labels()
       return h('section', { class: 'VPDocAsideMeta', 'aria-label': text.title }, [
