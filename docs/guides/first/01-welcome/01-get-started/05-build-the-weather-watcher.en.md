@@ -62,3 +62,7 @@ rather than available commands.
 ## Previous step
 
 Start with [Program 0: Hello CLI](04-program-0-hello-cli.en.md).
+
+## Next step
+
+Learn how an [application profile differs from a binary and compilation target](06-choose-an-application-profile.en.md).

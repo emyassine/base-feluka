@@ -76,4 +76,5 @@ local protocol; one application does not depend on the other's executable.
 2. [How a Feluqa CLI is structured](03-cli-structure.en.md): learn how the binary, console, profiles, and command handlers fit together.
 3. [Program 0: Hello CLI](04-program-0-hello-cli.en.md): write a command that prints `Hello CLI`.
 4. [Build the weather watcher](05-build-the-weather-watcher.en.md): extend the first command into a useful local service with weather checks and email notifications.
+5. [Choose an application profile](06-choose-an-application-profile.en.md): distinguish application profiles, executable binaries, and Rust compilation targets.
 
