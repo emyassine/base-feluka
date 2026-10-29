@@ -27,11 +27,11 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
 
 await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
-for (const guide of config.guides) {
-  const sourceRoot = resolve(siteDirectory, guide.source)
-  const outputRoot = join(outputDirectory, guide.output)
-  await mkdir(outputRoot, { recursive: true })
-  await scan(sourceRoot, outputRoot)
+const sourceRoot = resolve(siteDirectory, config.guidesPath)
+await scan(sourceRoot, outputDirectory)
+const configuredIndex = resolve(siteDirectory, config.indexPath)
+if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
+  throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)
 }
 for (const record of records) {
   let markdown = await readFile(record.from, 'utf8')
@@ -49,11 +49,3 @@ for (const record of records) {
   await writeFile(record.to, markdown)
 }
 
-const landing = ['---', `title: ${config.siteName}`, '---', '', `# ${config.siteName}`, '', ...config.guides.map((guide) => {
-  const source = resolve(siteDirectory, guide.source, guide.entry)
-  const target = routeMap.get(source)
-  const isIndex = Boolean(target && /\/index\.md$/.test(target))
-  const page = target ? relative(outputDirectory, target).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '') : guide.output
-  return `- [${guide.output}](/${page}${isIndex ? '/' : ''})`
-}), ''].join('\n')
-await writeFile(join(outputDirectory, 'index.md'), landing)

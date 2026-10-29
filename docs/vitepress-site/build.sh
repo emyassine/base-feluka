@@ -9,11 +9,7 @@ if [[ ! -d "$site_dir/node_modules/vitepress" ]]; then
 fi
 
 node "$site_dir/prepare.mjs"
-(cd "$site_dir" && npm run docs:build -- --base /)
-
-for language in $(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).languages.join(" "))' "$site_dir/config-vitepress-site.json"); do
-  index_path=$(node -e 'const c=JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.stdout.write(c.indexPath.replaceAll("$lang", process.argv[2]))' "$site_dir/config-vitepress-site.json" "$language")
-  cp "$repo_docs_dir/build/index.html" "$site_dir/$index_path"
-done
+(cd "$site_dir" && npm run docs:build -- --base ./)
+test -f "$repo_docs_dir/build/index.html"
 test -f "$repo_docs_dir/build/index.html"
 printf 'Built documentation site at %s\n' "$repo_docs_dir/build"
