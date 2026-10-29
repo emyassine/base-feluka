@@ -139,10 +139,10 @@ function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
     const directory = join(generatedDirectory, prefix, ...base.split('/').filter(Boolean))
     const items = sidebar(directory, directory, language)
     const guideIndex = base ? join(directory, 'index.md') : ''
-    if (guideIndex && existsSync(guideIndex)) {
-      items.unshift({ text: escapeHtml(titleOf(guideIndex)), link: publicPagePath(guideIndex) })
-    }
-    return [`/${prefix}${base}${base ? '/' : ''}`, items]
+    const sidebarItems = guideIndex && existsSync(guideIndex)
+      ? [{ text: escapeHtml(titleOf(guideIndex)), link: publicPagePath(guideIndex), collapsed: false, items }]
+      : items
+    return [`/${prefix}${base}${base ? '/' : ''}`, sidebarItems]
   }))
 }
 const sidebars = localizedSidebars()
@@ -186,7 +186,10 @@ export default defineConfig({
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
-    const siteUrl = siteConfig.seo?.siteUrl
+    const siteUrl = siteConfig.seo?.siteUrl ?? process.env.FELUQA_PUBLIC_URL
+    if (siteUrl && !/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/.test(siteUrl)) {
+      throw new Error('seo.siteUrl or FELUQA_PUBLIC_URL must be an absolute HTTPS URL')
+    }
     const guideRouteKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'
     const seoHead = transformDocumentationHead({
       page,
@@ -197,6 +200,7 @@ export default defineConfig({
       siteUrl,
       images: (generatedOgImages as Record<string, string[]>)[guideRouteKey] ?? (generatedOgImages as Record<string, string[]>).root ?? [],
       defaultLanguage,
+      languages: siteConfig.languages,
     })
     head.push(...seoHead)
     const faqEntry = Object.entries(siteConfig.seo?.locales ?? {}).find(([language]) => {

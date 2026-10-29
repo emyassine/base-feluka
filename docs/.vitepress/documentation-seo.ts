@@ -7,6 +7,7 @@ export interface SeoOptions {
   siteUrl?: string | null
   images: string[]
   defaultLanguage: string
+  languages: string[]
 }
 
 function shuffle<T>(items: T[]): T[] {
@@ -27,7 +28,13 @@ export function transformDocumentationHead(options: SeoOptions) {
   const frontmatter = options.pageData.frontmatter ?? {}
   const title = String(options.pageData.title ?? options.title)
   const description = String(options.pageData.description ?? frontmatter.description ?? options.description ?? '')
-  const canonicalPath = cleanPageUrl(options.page)
+  const pageUrl = cleanPageUrl(options.page)
+  const localeCodes = options.languages.map((language) => language.toLowerCase())
+  const firstSegment = pageUrl.split('/').filter(Boolean)[0]?.toLowerCase()
+  const routePath = firstSegment && localeCodes.includes(firstSegment) && firstSegment !== options.defaultLanguage.toLowerCase()
+    ? `/${pageUrl.split('/').filter(Boolean).slice(1).join('/')}${pageUrl.endsWith('/') ? '/' : ''}`
+    : pageUrl
+  const canonicalPath = pageUrl
   const canonicalUrl = options.siteUrl ? new URL(canonicalPath, options.siteUrl).href : null
   const imageUrls = shuffle(options.images.filter((image) => typeof image === 'string' && image.length > 0))
   const locale = String(frontmatter.requestedLanguage ?? frontmatter.lang ?? options.defaultLanguage)
@@ -46,6 +53,13 @@ export function transformDocumentationHead(options: SeoOptions) {
   if (canonicalUrl) {
     head.push(['link', { rel: 'canonical', href: canonicalUrl }])
     head.push(['meta', { property: 'og:url', content: canonicalUrl }])
+    for (const language of options.languages) {
+      const localizedPath = language.toLowerCase() === options.defaultLanguage.toLowerCase()
+        ? routePath
+        : `/${language.toLowerCase()}${routePath === '/' ? '/' : routePath}`
+      head.push(['link', { rel: 'alternate', hreflang: language, href: new URL(localizedPath, options.siteUrl!).href }])
+    }
+    head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: new URL(routePath, options.siteUrl).href }])
   }
   if (frontmatter.date) head.push(['meta', { property: 'article:published_time', content: String(frontmatter.date) }])
   if (frontmatter.lastmod) head.push(['meta', { property: 'article:modified_time', content: String(frontmatter.lastmod) }])
