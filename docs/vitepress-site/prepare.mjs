@@ -88,11 +88,17 @@ async function writeIfChanged(target, content) {
 }
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
+  const entries = (await readdir(sourcePath, { withFileTypes: true }))
+    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json')
+  const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
+  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
-  try {
-    sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
-  } catch (error) {
-    if (error.code !== 'ENOENT') throw error
+  if (!indexOnly) {
+    try {
+      sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error
+    }
   }
   if (sidebarConfig) {
     const outputRelativePath = relative(outputRoot, stagedPath(sourcePath)).split(sep).join('/')
@@ -120,8 +126,6 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     })
     if (sidebarConfig.icon) sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
   }
-  const entries = (await readdir(sourcePath, { withFileTypes: true }))
-    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json')
   if (sourcePath !== sourceRoot) directories.push({ sourcePath, outputPath, entries })
   for (const entry of entries) {
     const from = join(sourcePath, entry.name)
@@ -156,8 +160,10 @@ for (const directory of directories) {
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   if (!guide || sourceRelative === guide.path) continue
   const hasPublishedMarkdown = records.some(({ from }) => from.startsWith(`${directory.sourcePath}${sep}`))
+  const navigationEntries = directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
+  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   const outputRelative = relative(outputDirectory, stagedPath(directory.sourcePath)).split(sep).join('/')
-  if (hasPublishedMarkdown && !sidebarConfigurations.has(outputRelative)) {
+  if (hasPublishedMarkdown && !indexOnly && !sidebarConfigurations.has(outputRelative)) {
     throw new Error(`Every documentation subdirectory needs sidebar.json with localized labels: ${join(directory.sourcePath, 'sidebar.json')}`)
   }
 }

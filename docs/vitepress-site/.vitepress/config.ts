@@ -90,6 +90,13 @@ function sidebar(directory: string, root = directory): any[] {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
       if (directory === root && subguideRootPaths.has(entry.name)) return []
+      const childEntries = readdirSync(path, { withFileTypes: true }).filter((child) => !child.name.startsWith('.'))
+      const pageEntries = childEntries.filter((child) => child.isDirectory() || child.name.endsWith('.md'))
+      const onlyIndex = pageEntries.length === 1 && !pageEntries[0].isDirectory() && pageEntries[0].name === 'index.md'
+      if (onlyIndex) {
+        const indexPath = join(path, 'index.md')
+        return [{ text: escapeHtml(titleOf(indexPath)), link: publicPagePath(indexPath) }]
+      }
       const items = sidebar(path, root)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
       const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
