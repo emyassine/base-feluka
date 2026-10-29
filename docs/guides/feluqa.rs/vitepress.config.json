@@ -10,6 +10,7 @@
   "colors": {
     "primary": "oklch(57.7% .245 27.325)",
     "secondary": "oklch(66% .21 28)",
+    "sidebarIcon": "#99c3ff",
     "inlineCode": "#99c3ff",
     "heroNameColor": "transparent",
     "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
