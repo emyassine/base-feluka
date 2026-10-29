@@ -104,6 +104,10 @@
   background-clip: padding-box;
 }
 
+#VPContent .VPDoc .vp-doc a:not(.header-anchor) {
+  color: var(--vp-doc-link-color, var(--vp-c-brand-1));
+}
+
 .VPSidebarItem.level-0 .text:has(.sidebar-group-icon) {
   display: flex;
   align-items: center;
