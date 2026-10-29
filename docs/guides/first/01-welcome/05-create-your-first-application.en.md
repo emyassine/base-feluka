@@ -132,7 +132,53 @@ is not available to application users. Other editors such as VS Code, Emacs,
 and Vim can be used with Rust Analyzer; `.view.rs` support depends on an editor
 extension being available for that editor.
 
-## 4. Build the weather watcher
+## 4. Program 0: Hello CLI
+
+The first program should be a single command with one job: print a greeting.
+This introduces a Feluqa command handler and the console output API before the
+weather watcher adds external services and background work.
+
+```rust
+#![no_implicit_prelude]
+#![forbid(unsafe_code)]
+#![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+extern crate feluqa;
+
+/// Prints the first greeting from this application.
+#[feluqa::command(
+    name = "hello",
+    description = "Print a greeting",
+    context = "anywhere",
+)]
+fn hello(
+    _context: &mut feluqa::console::CommandContext<'_>,
+) -> feluqa::console::CommandResult {
+    feluqa::console::echo(
+        "Hello CLI",
+        feluqa::console::OutputStyle::Plain,
+    );
+    ::core::result::Result::Ok(())
+}
+```
+
+The example uses the current `CommandContext`, `CommandResult`, and `echo`
+contracts. The future CLI application scaffold will provide the surrounding
+crate setup and command registration so the first command can be run without
+editing framework internals.
+
+These crate-level rules are the recommended starting point for Feluqa Rust
+code:
+
+| Attribute | Why use it |
+|-----------|------------|
+| `#![no_implicit_prelude]` | Makes imports explicit. Code does not silently depend on names brought into scope by Rust's prelude, which helps generated code and macros behave predictably. |
+| `#![forbid(unsafe_code)]` | Prevents unsafe blocks in application code, keeping memory-safety boundaries small and visible. |
+| `#![deny(unused_must_use)]` | Rejects silently ignored results from operations that may fail or require action. Handle the result or explicitly explain why it can be discarded. |
+| `#![deny(missing_docs)]` | Requires documentation on public APIs so generated help and reference docs explain what the API does and why it exists. |
+
+## 5. Build the weather watcher
 
 The tutorial will develop the example in stages:
 
@@ -152,7 +198,7 @@ a Linux service with a `systemd` unit, restart behavior, a dedicated service
 account, and an operator guide. The service should start only after its
 configuration and notification path have been verified.
 
-## 5. Run it locally
+## 6. Run it locally
 
 For an application shape supported by the current CLI, the available workflow
 is:
