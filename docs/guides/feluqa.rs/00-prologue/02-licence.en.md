@@ -34,12 +34,12 @@ their own modules. Keeping the platform proprietary gives NUMERIMONDES control
 of its integrated roadmap and the ability to fund and protect sustained work
 across the SDK, runtimes, development tools, deployment, and operations.
 
-The commercial ambition is to build durable, defensible leadership in military
-software and software for small and medium-sized enterprises. Proprietary
-technology is part of that strategy: the goal is to create a distinct product
-that is difficult to substitute, then sustain it as a business. This is an
-ambition, not a claim that Feluqa has already achieved a tenfold technical
-advantage, a monopoly, or market leadership.
+The commercial ambition is to build a durable, differentiated position in
+military software and software for small and medium-sized enterprises.
+Proprietary technology is part of that strategy: the goal is to create a
+distinct product that is difficult to substitute and sustain it as a business.
+This is an ambition, not a claim that Feluqa has already achieved a tenfold
+technical advantage or market leadership.
 
 This position draws on the strategic argument in Peter Thiel's *Zero to One*
 that lasting companies build differentiated technology and serve markets
