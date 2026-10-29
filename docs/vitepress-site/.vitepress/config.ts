@@ -97,12 +97,13 @@ export default defineConfig({
   outDir: outputDirectory,
   cleanUrls: false,
   mpa: false,
+  vite: { configFile: join(siteDirectory, 'vite.config.ts') },
   markdown: siteConfig.markdown,
   transformHead({ page }) {
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
-    if (guide) head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
+    head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
     const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
     const declarations: string[] = []
     const colorProperties: Record<string, string> = {

@@ -169,12 +169,15 @@ const generatedFonts = {
   site: await prepareFonts(config.fonts, join(configDirectory, 'vitepress.site.config.json')),
   guides: {},
 }
+const generatedGuideColors = {}
 for (const guide of config.subguides) {
   const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
+  generatedGuideColors[guide.path] = guideConfig.colors ?? {}
 }
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))
 
 const generatedSidebar = {}
 for (const [path, metadata] of sidebarConfigurations) {
@@ -258,7 +261,10 @@ await Promise.all(records.map(async (record) => {
     }
     return { block, id }
   }))
-  for (const { block, id } of rendered.reverse()) markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
+  for (const { block, id } of rendered.reverse()) {
+    const image = `<img :src="'/mermaid/${id}.svg'" :data-light-src="'/mermaid/${id}.svg'" :data-dark-src="'/mermaid/${id}.dark.svg'" alt="Mermaid diagram" />`
+    markdown = `${markdown.slice(0, block.index)}${image}${markdown.slice(block.index + block[0].length)}`
+  }
   const markdownAssetTargets = new Map()
   const stageReference = async (reference, baseDirectory) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(reference)) return null

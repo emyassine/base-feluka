@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
+import guideColors from '../generated-guide-colors.json'
 import './style.css'
 
 const zoomStep = 0.25
@@ -158,6 +159,29 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
 const MermaidLayout = {
   setup() {
     const route = useRoute()
+    const colorProperties: Record<string, string> = {
+      primary: '--vp-c-brand-1',
+      secondary: '--vp-c-brand-2',
+      tertiary: '--vp-c-brand-3',
+      soft: '--vp-c-brand-soft',
+      sidebarIcon: '--vp-sidebar-icon-color',
+      inlineCode: '--vp-code-color',
+      heroNameColor: '--vp-home-hero-name-color',
+      heroNameBackground: '--vp-home-hero-name-background',
+    }
+    const applyGuideColors = () => {
+      const pathGuide = route.path.split('/').filter(Boolean)[0]
+      const configured = guideColors as Record<string, Record<string, string>>
+      const colors = configured[pathGuide] ?? Object.values(configured)[0] ?? {}
+      const root = document.documentElement
+      for (const [key, property] of Object.entries(colorProperties)) {
+        root.style.removeProperty(property)
+        const value = colors[key]
+        if (typeof value === 'string' && value.trim()) root.style.setProperty(property, value.trim())
+      }
+      if (colors.primary && !colors.tertiary) root.style.setProperty('--vp-c-brand-3', 'var(--vp-c-brand-1)')
+      if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
+    }
     let observer: MutationObserver | undefined
     let dialog: HTMLDialogElement | undefined
     let dialogImage: HTMLImageElement | undefined
@@ -294,6 +318,7 @@ const MermaidLayout = {
   }
 
   onMounted(() => {
+    applyGuideColors()
     document.addEventListener('click', handleClick)
     document.addEventListener('keydown', handleKeydown)
     observer = new MutationObserver(installFigures)
@@ -302,7 +327,7 @@ const MermaidLayout = {
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     void nextTick(installFigures)
   })
-  const stopWatchingRoute = watch(() => route.path, () => void nextTick(installFigures), { flush: 'post' })
+  const stopWatchingRoute = watch(() => route.path, () => void nextTick(() => { applyGuideColors(); installFigures() }), { flush: 'post' })
   onBeforeUnmount(() => {
     stopWatchingRoute()
     observer?.disconnect()
