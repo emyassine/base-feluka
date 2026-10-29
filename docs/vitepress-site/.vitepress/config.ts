@@ -27,7 +27,7 @@ function sidebar(directory: string, root = directory): any[] {
   })
 }
 
-const nav = siteConfig.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}` }))
+const nav = siteConfig.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}/` }))
 const items = siteConfig.subguides.flatMap((guide: { path: string; label: string }) => {
   const directory = join(generatedDirectory, guide.path)
   return [{ text: guide.label, items: sidebar(directory) }]

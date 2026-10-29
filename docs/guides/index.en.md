@@ -5,10 +5,13 @@ hero:
   name: Feluqa
   text: Build applications with one platform
   tagline: Guides for building, extending, and contributing to Feluqa.
+  image:
+    src: ./feluqa-docs-hero.svg
+    alt: Feluqa platform modules connected through a shared foundation
   actions:
     - theme: brand
       text: Get started
-      link: ./feluqa.rs/get-started/introduction/introduction
+      link: ./feluqa.rs/get-started/introduction/introduction/
     - theme: alt
       text: Core contribution
       link: ./feluqa.rs/core-contribution/
