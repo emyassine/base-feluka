@@ -21,9 +21,10 @@ Feluqa is proprietary software owned by NUMERIMONDES SARL AU. All rights are
 reserved unless NUMERIMONDES grants specific rights in a separate written
 licence. Access to the repository does not, by itself, grant permission to
 use, copy, modify, publish, distribute, sublicense, or create derivative
-works from Feluqa. The repository's [`LICENSE`](../../../../LICENSE) file states
-the operative terms. Third-party components remain under their own licences
-and notices.
+works from Feluqa. For the full copyright and licence information, consult the
+`LICENSE` file distributed with the source code or the Licences resource in
+the System Control Panel, when available. Third-party components remain under
+their own licences and notices.
 
 ## Why Feluqa is proprietary
 
@@ -124,6 +125,3 @@ well as for the account of third parties:
 And more generally, all commercial, industrial, financial, movable, and
 real-estate operations related directly or indirectly to the above purposes,
 or likely to favour their achievement and development.
-
-The repository's [`LICENSE`](../../../../LICENSE) remains the source for
-Feluqa's software licence terms.
