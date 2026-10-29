@@ -186,6 +186,23 @@ Generated into `target/feluqa/`, never edited and never committed:
 
 Shared modules can be included in separate Applications built for different target profiles. See [web and workstation modules](../../08-roadmap/01-delivery-tracks.en.md) (track F9) for the planned server and workstation composition and connectivity design.
 
+## Interaction surfaces and desktop hosts
+
+An application's target profile and its interaction surface are separate
+choices. `workstation` describes where and how the application runtime is
+deployed; `console`, `graphical`, or `mixed` describes how a person interacts
+with it. A console application is therefore not limited to a shell window on
+the developer's operating system.
+
+Feluqa may provide a workstation host that presents a console application in
+a terminal-style desktop window. A separate product experience could combine
+a graphical desktop interface with an integrated terminal for console
+commands. These experiences need a desktop host that connects the window to
+the Feluqa console runtime; a Rust binary or a `workstation` profile alone
+does not provide that host. Neither desktop terminal experience is currently
+implemented. Host-shell selection and its build configuration remain product
+and architecture work.
+
 ## Platform capabilities
 
 | Component | Purpose |

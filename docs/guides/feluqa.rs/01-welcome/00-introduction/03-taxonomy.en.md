@@ -31,6 +31,9 @@ They are related, but they are not interchangeable.
 | **Module** | A named unit of business capability, such as sales, inventory, or telemetry. An application includes one or more modules. Modules declare their own capabilities, permissions, configuration, and dependencies. A module is not itself an application or a product. |
 | **Feature** | An optional capability within a module or application, enabled according to product configuration, license, or tenant policy. |
 | **Target profile** | The constraints and runtime shape for a build, such as server, workstation, mobile, or embedded `no_std`. Separate target profiles may produce separate application artifacts from shared modules. |
+| **Interaction surface** | How a person interacts with an application: a command-line interface, a graphical interface, or both. This is independent of the application's target profile. |
+| **Host shell** | The runtime window or environment that presents an interaction surface. A workstation host could present a terminal as its primary interface or include a terminal within a graphical application. These host-shell options are product direction and are not implemented yet. |
+| **Console application** | An application whose interaction model is based on commands and terminal input/output. It may run in a terminal or, as a future workstation product, inside a desktop host. “Console” describes the interaction model, not the Rust compilation target. |
 | **Artifact** | A versioned build output for one application and target profile. Signing, installation, and dynamic module installation are target capabilities; they are not all implemented today. |
 | **Application instance** | A running deployment of an application, with its own configuration, data, identity, and lifecycle. Multiple instances may serve different organizations or environments. |
 | **Tenant** | An organization or isolated customer scope inside an application instance. A tenant is data and authorization context, not a device or a separate application. |
@@ -43,6 +46,15 @@ workstation communicates with the server through a defined API when connected;
 neither application needs to compile against the other's executable. A
 standalone workstation deployment can use its own local storage and defined
 synchronization behavior when that capability is implemented.
+
+### Example: console interaction on a workstation
+
+A console application can use a desktop host that opens a terminal-style
+window and presents the application's commands there. A different product
+could use a graphical desktop interface and include a terminal panel for
+console commands. In both cases, workstation is the target profile; terminal,
+graphical, or mixed describes the interaction surface. These are design
+examples, not current Feluqa features.
 
 ## Feluqa components
 

@@ -34,6 +34,14 @@ This model aims to make it possible to:
 These are product goals; the repository does not yet provide every runtime or
 module lifecycle capability needed to deliver them.
 
+Feluqa products may offer console workflows through more than a conventional
+terminal window. A desktop product could present a terminal as its primary
+interface, or provide a terminal inside a graphical desktop application.
+These are distinct product experiences: the first hosts a console interface
+in a desktop window, while the second combines graphical workflows with an
+integrated console. Both are product directions, not capabilities currently
+provided by the repository.
+
 ## Who uses Feluqa
 
 People encounter Feluqa in different ways. A founder or product owner may be

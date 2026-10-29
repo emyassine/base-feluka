@@ -50,6 +50,12 @@ configuration. It is separate from the product's application profile: a
 profile describes the application/runtime, while the compilation target
 describes where the resulting program runs.
 
+The interaction surface is another independent choice. A console application
+could run in a traditional terminal, in a future desktop host that presents
+it as a terminal-style window, or as part of a graphical desktop application
+with an integrated terminal. These desktop host experiences are product
+directions; they are not currently available in Feluqa.
+
 ## Where should the choice live?
 
 Declare the application's supported profiles in Feluqa project configuration
@@ -65,5 +71,6 @@ profile. See [How a Feluqa CLI Is Structured](03-cli-structure.en.md).
 ## Continue
 
 You have now seen how to choose and distinguish the application profile,
-binary, and compilation target. Continue with the [Feluqa architecture
-overview](../00-introduction/04-architecture-overview.en.md).
+binary, compilation target, and interaction surface. Continue with the
+[Feluqa architecture overview](../00-introduction/04-architecture-overview.en.md)
+for Feluqa's target architecture.
