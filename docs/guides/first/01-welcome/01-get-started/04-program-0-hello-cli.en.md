@@ -21,16 +21,35 @@ This command handler lives in the console profile's command source tree. The bin
 
 ## Command handler
 
+The CLI application scaffold is planned but is not available yet. Once it
+supports console applications, create this file from the project root:
+
+```text
+src/commands/hello.rs
+```
+
+Paste the following handler into that file:
+
 This handler is named `hello`; with the `hello-cli` binary, the user runs
 `hello-cli hello`:
 
 ```rust
+// Disable Rust's automatic prelude imports.
+// Common types and variants (Result, Ok, Err, Option, etc.)
+// must be imported explicitly.
 #![no_implicit_prelude]
-#![forbid(unsafe_code)]
-#![deny(unused_must_use)]
-#![deny(missing_docs)]
+#![forbid(unsafe_code)]   // Forbid unsafe Rust code throughout this crate.
+#![deny(unused_must_use)] // Treat ignored results marked #[must_use] as compilation errors.
+#![deny(missing_docs)]    // Require documentation for public items.
 
-extern crate feluqa;
+extern crate feluqa;            // Make the Feluqa crate available.
+use ::core::result::Result::Ok; // Import the Ok variant explicitly because the prelude is disabled.
+use feluqa::console::{ // Import the Feluqa console API used by this command.
+    echo,
+    CommandContext,
+    CommandResult,
+    OutputStyle,
+};
 
 /// Prints the first greeting from this console application.
 #[feluqa::command(
@@ -39,13 +58,20 @@ extern crate feluqa;
     context = "anywhere",
 )]
 fn hello(
-    _context: &mut feluqa::console::CommandContext<'_>,
-) -> feluqa::console::CommandResult {
-    feluqa::console::echo(
+    // Mutable reference to the command's execution context.
+    // The leading underscore indicates that it is intentionally unused.
+    _context: &mut CommandContext<'_>,
+) -> CommandResult {
+    // Write a plain-text message to the Feluqa console.
+    echo(
         "Hello CLI",
-        feluqa::console::OutputStyle::Plain,
+        OutputStyle::Plain,
     );
-    ::core::result::Result::Ok(())
+
+    // Return success without an associated value.
+    // Ok = success; () = unit value (no meaningful data).
+    // An error would instead be returned with Err(error).
+    Ok(())
 }
 ```
 
@@ -66,6 +92,24 @@ code:
 | `#![forbid(unsafe_code)]` | Prevents unsafe blocks in application code, keeping memory-safety boundaries small and visible. |
 | `#![deny(unused_must_use)]` | Rejects silently ignored results from operations that may fail or require action. Handle the result or explicitly explain why it can be discarded. |
 | `#![deny(missing_docs)]` | Requires documentation on public APIs so generated help and reference docs explain what the API does and why it exists. |
+
+## Run Program 0
+
+From the project root, run the binary with the `hello` command:
+
+```sh
+cargo run -- hello
+```
+
+The console prints:
+
+```text
+Hello CLI
+```
+
+> **Congratulations!** You have created and run your first Feluqa console
+> command. The `hello` handler is registered with the `hello-cli` binary and
+> uses Feluqa's console API to write its output.
 
 ## Continue
 

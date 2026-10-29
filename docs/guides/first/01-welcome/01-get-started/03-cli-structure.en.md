@@ -151,13 +151,16 @@ dependency enables the console command scanner. `Cargo.toml` declares the
 binary, `build.rs` generates command registration, `main.rs` starts the
 console, and the console profile owns the command handlers.
 
-The generated project scaffold will provide the manifest, dependency features,
-entry point, and build script. The `commands_directory` value is relative to
-the source root (`src` in this example), so this profile discovers:
+The planned CLI project scaffold will provide the manifest, dependency
+features, entry point, and build script. Its `commands_directory` value is
+relative to the source root (`src` in this example), so this profile discovers:
 
 ```text
 src/commands/hello.rs
 ```
+
+That file is where the developer writes the command handler. The full
+`hello.rs` source and the command to run it are in [Program 0: Hello CLI](04-program-0-hello-cli.en.md).
 
 ## Continue
 
