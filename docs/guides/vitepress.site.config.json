@@ -16,15 +16,33 @@
   "subguides": [
     {
       "path": "feluqa.rs",
-      "label": "Feluqa"
+      "label": "Feluqa",
+      "uri": {
+        "base": "/",
+        "entry": "get-started",
+        "index": "feluqa/"
+      }
     },
     {
       "path": "feluqa-internals",
-      "label": "Feluqa’s Internals"
+      "label": "Feluqa’s Internals",
+      "uri": {
+        "base": "/feluqa-internals/"
+      }
     },
     {
       "path": "x-agents",
-      "label": "Agents"
+      "label": "Agents",
+      "uri": {
+        "base": "/agents/"
+      }
+    },
+    {
+      "path": "learn",
+      "label": "Learn",
+      "uri": {
+        "base": "/learn/"
+      }
     }
   ],
   "languages": [
@@ -77,5 +95,12 @@
       "message": "",
       "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
     }
+  },
+  "logo": {
+    "light": "feluqa.rs/.art/logo-lightmode.png",
+    "dark": "feluqa.rs/.art/logo-darkmode.png",
+    "alt": "Feluqa",
+    "width": "100%",
+    "extraStyle": "padding: 0.2rem;"
   }
 }

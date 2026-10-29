@@ -1,5 +1,5 @@
 import { access, readdir, readFile } from 'node:fs/promises'
-import { join, resolve, dirname } from 'node:path'
+import { join, resolve, dirname, extname } from 'node:path'
 import { pathToFileURL, fileURLToPath } from 'node:url'
 
 const output = resolve(process.argv[2])
@@ -26,12 +26,17 @@ for (const htmlFile of htmlFiles) {
     let target = href.startsWith('/')
       ? join(output, decodeURIComponent(url.pathname.slice(1)))
       : fileURLToPath(url)
-    if (url.pathname.endsWith('/')) target = join(target, 'index.html')
-    try {
-      await access(target)
-    } catch {
-      missing.push(`${htmlFile}: ${href} -> ${target}`)
+    const candidates = url.pathname.endsWith('/')
+      ? [join(target, 'index.html')]
+      : !extname(url.pathname)
+        ? [`${target}.html`, join(target, 'index.html')]
+        : [target]
+    let found = false
+    for (const candidate of candidates) {
+      try { await access(candidate); found = true; break }
+      catch { /* Try the other output form used by cleanUrls. */ }
     }
+    if (!found) missing.push(`${htmlFile}: ${href} -> ${candidates.join(' or ')}`)
   }
 }
 if (missing.length) {

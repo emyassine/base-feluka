@@ -189,6 +189,7 @@ const MermaidLayout = {
       soft: '--vp-c-brand-soft',
       sidebarIcon: '--vp-sidebar-icon-color',
       inlineCode: '--vp-code-color',
+      inlineCodeBackground: '--vp-code-bg',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
@@ -206,6 +207,21 @@ const MermaidLayout = {
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
       root.style.removeProperty('--feluqa-nav-logo-width')
       if (colors.logoWidth) root.style.setProperty('--feluqa-nav-logo-width', colors.logoWidth)
+      let guideStyle = document.getElementById('feluqa-configured-guide-styles') as HTMLStyleElement | null
+      if (!guideStyle) {
+        guideStyle = document.createElement('style')
+        guideStyle.id = 'feluqa-configured-guide-styles'
+        document.head.append(guideStyle)
+      }
+      const logoRules = colors.logoExtraStyle
+        ? `.VPNavBarTitle.has-sidebar .logo { ${colors.logoExtraStyle} }`
+        : ''
+      guideStyle.textContent = logoRules
+      document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle.has-sidebar img.logo').forEach((logo) => {
+        const source = logo.classList.contains('dark') ? colors.logoDark : colors.logoLight
+        if (typeof source === 'string' && source && logo.getAttribute('src') !== source) logo.setAttribute('src', source)
+        if (typeof colors.logoAlt === 'string') logo.alt = colors.logoAlt
+      })
       const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }
       const fonts = { ...fontConfig.site, ...(fontConfig.guides[pathGuide] ?? {}) }
       const fontRules: string[] = []

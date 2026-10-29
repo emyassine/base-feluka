@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { execFile as execFileCallback } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { promisify } from 'node:util'
+import { sortNavigationEntries } from './navigation-order.mjs'
 
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
 const configDirectory = resolve(siteDirectory, '../guides')
@@ -20,11 +21,29 @@ const generatedFiles = new Set()
 const navigationOrder = {}
 const sidebarConfigurations = new Map()
 const sidebarIconSources = new Set()
+const directories = []
+const guideUris = new Map()
 let diagramsCached = 0
 let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+[.-]/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const execFile = promisify(execFileCallback)
+const sourceRoot = resolve(configDirectory, config.guidesPath)
+
+function stagedPath(sourcePath) {
+  const sourceRelative = relative(sourceRoot, sourcePath).split(sep).join('/')
+  const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  if (!guide) {
+    const parts = sourceRelative.split('/')
+    return join(outputDirectory, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
+  }
+  const uri = guideUris.get(guide.path)
+  const local = sourceRelative === guide.path ? '' : sourceRelative.slice(guide.path.length + 1)
+  const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
+  if (parts.length === 1 && parts[0] === 'index.md' && uri.index) parts.splice(0, 1, ...uri.index.replace(/\/$/, '').split('/'), 'index.md')
+  const base = uri.base.replace(/^\/+|\/+$/g, '')
+  return join(outputDirectory, ...[base, ...parts].filter(Boolean).flatMap((part) => part.split('/')))
+}
 
 async function copyIfChanged(source, target) {
   const content = await readFile(source)
@@ -56,9 +75,10 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     if (error.code !== 'ENOENT') throw error
   }
   if (sidebarConfig) {
-    const outputRelativePath = relative(outputRoot, outputPath).split(sep).join('/')
-    const matchingGuide = config.subguides.find((guide) => outputRelativePath.startsWith(`${guide.path}/`))
-    const guideRelativePath = matchingGuide ? outputRelativePath.slice(matchingGuide.path.length + 1) : ''
+    const outputRelativePath = relative(outputRoot, stagedPath(sourcePath)).split(sep).join('/')
+    const sourceRelativePath = relative(sourceRoot, sourcePath).split(sep).join('/')
+    const matchingGuide = config.subguides.find((guide) => sourceRelativePath.startsWith(`${guide.path}/`))
+    const guideRelativePath = matchingGuide ? sourceRelativePath.slice(matchingGuide.path.length + 1) : ''
     const isTopLevelGroup = Boolean(guideRelativePath && !guideRelativePath.includes('/'))
     if (!sidebarConfig.labels || typeof sidebarConfig.labels !== 'object' || Array.isArray(sidebarConfig.labels)) {
       throw new Error(`sidebar.json must define a labels object by language: ${join(sourcePath, 'sidebar.json')}`)
@@ -80,10 +100,13 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     })
     if (sidebarConfig.icon) sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
   }
-  for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
-    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'vitepress.config.json' || entry.name === 'sidebar.json') continue
+  const entries = (await readdir(sourcePath, { withFileTypes: true }))
+    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json')
+  if (sourcePath !== sourceRoot) directories.push({ sourcePath, outputPath, entries })
+  for (const entry of entries) {
     const from = join(sourcePath, entry.name)
-    const to = join(outputPath, entry.isDirectory() ? cleanDir(entry.name) : cleanFile(entry.name))
+    const to = stagedPath(from)
+    await mkdir(dirname(to), { recursive: true })
     navigationOrder[relative(outputRoot, to).split(sep).join('/')] = entry.name
     if (entry.isDirectory()) await scan(sourceRoot, outputRoot, from, to)
     else {
@@ -99,10 +122,25 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
   }
 }
 
+for (const guide of config.subguides) {
+  if (!guide.uri || typeof guide.uri !== 'object' || Array.isArray(guide.uri) || typeof guide.uri.base !== 'string' || !/^\/(?:[A-Za-z0-9._~-]+\/)*$/.test(guide.uri.base)) {
+    throw new Error(`Each subguides entry must define uri.base as an absolute path ending in /: ${guide.path}`)
+  }
+  guideUris.set(guide.path, guide.uri)
+}
 if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
-const sourceRoot = resolve(configDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
+for (const directory of directories) {
+  const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
+  const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  if (!guide || sourceRelative === guide.path) continue
+  const hasPublishedMarkdown = records.some(({ from }) => from.startsWith(`${directory.sourcePath}${sep}`))
+  const outputRelative = relative(outputDirectory, stagedPath(directory.sourcePath)).split(sep).join('/')
+  if (hasPublishedMarkdown && !sidebarConfigurations.has(outputRelative)) {
+    throw new Error(`Every documentation subdirectory needs sidebar.json with localized labels: ${join(directory.sourcePath, 'sidebar.json')}`)
+  }
+}
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-navigation-order.json'), JSON.stringify(navigationOrder, null, 2))
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 
@@ -169,22 +207,86 @@ const generatedFonts = {
   guides: {},
 }
 const generatedGuideColors = {}
+const generatedGuideKeys = new Map()
+const siteLogo = config.logo ?? {}
 for (const guide of config.subguides) {
   const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
+  const uri = guide.uri
+  if (uri.index != null && (typeof uri.index !== 'string' || !/^([A-Za-z0-9._~-]+\/)*$/.test(uri.index))) {
+    throw new Error(`uri.index must be a relative directory path ending in / in ${guideConfigPath}`)
+  }
+  guideUris.set(guide.path, uri)
+  const routeKey = uri.base.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean)[0] || 'root'
+  generatedGuideKeys.set(guide.path, routeKey)
   generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
+  generatedFonts.guides[routeKey] = generatedFonts.guides[guide.path]
   const faviconPath = guideConfig.favicon
     ? `/${await copyAsset(resolve(dirname(guideConfigPath), guideConfig.favicon))}`
     : null
-  if (guideConfig.logoWidth != null && (typeof guideConfig.logoWidth !== 'string' || !/^(?:auto|(?:\d+(?:\.\d+)?)(?:px|rem|em|vw|vh|%)|100%)$/.test(guideConfig.logoWidth.trim()))) {
-    throw new Error(`logoWidth must be auto or a CSS width such as 100%, 96px, or 6rem in ${guideConfigPath}`)
+  const logo = { ...siteLogo, ...(guideConfig.logo ?? {}) }
+  if (typeof logo.light !== 'string' || typeof logo.dark !== 'string') {
+    throw new Error(`logo.light and logo.dark must be set globally or in ${guideConfigPath}`)
   }
-  generatedGuideColors[guide.path] = { ...(guideConfig.colors ?? {}), ...(guideConfig.logoWidth ? { logoWidth: guideConfig.logoWidth.trim() } : {}), ...(faviconPath ? { favicon: faviconPath } : {}) }
+  if (logo.width != null && (typeof logo.width !== 'string' || !/^(?:auto|(?:\d+(?:\.\d+)?)(?:px|rem|em|vw|vh|%)|100%)$/.test(logo.width.trim()))) {
+    throw new Error(`logo.width must be auto or a CSS width such as 100%, 96px, or 6rem in ${guideConfigPath}`)
+  }
+  if (logo.extraStyle != null && (typeof logo.extraStyle !== 'string' || /[{}<>]|url\s*\(|expression\s*\(|@import/i.test(logo.extraStyle))) {
+    throw new Error(`logo.extraStyle must contain plain CSS declarations without URLs or rule syntax in ${guideConfigPath}`)
+  }
+  const logoAsset = async (key) => {
+    const guideOverride = guideConfig.logo?.[key]
+    const value = guideOverride ?? siteLogo[key]
+    const origin = guideOverride != null ? dirname(guideConfigPath) : configDirectory
+    if (/^(?:https?:|data:)/i.test(value)) return value
+    return `/${await copyAsset(resolve(origin, value))}`
+  }
+  generatedGuideColors[routeKey] = {
+    ...(guideConfig.colors ?? {}),
+    logoLight: await logoAsset('light'),
+    logoDark: await logoAsset('dark'),
+    logoAlt: logo.alt ?? 'Feluqa',
+    ...(logo.width ? { logoWidth: logo.width.trim() } : {}),
+    ...(logo.extraStyle ? { logoExtraStyle: logo.extraStyle.trim() } : {}),
+    ...(faviconPath ? { favicon: faviconPath } : {}),
+  }
 }
+const nonRootGuideKeys = new Set([...generatedGuideKeys.values()].filter((key) => key !== 'root'))
+const rootGuide = config.subguides.find((guide) => generatedGuideKeys.get(guide.path) === 'root')
+if (rootGuide) {
+  const rootColors = generatedGuideColors.root
+  for (const entry of await readdir(outputDirectory, { withFileTypes: true })) {
+    if (!entry.isDirectory() || ['public', '__docs-assets', ...nonRootGuideKeys].includes(entry.name)) continue
+    generatedGuideColors[entry.name] = rootColors
+    generatedFonts.guides[entry.name] = generatedFonts.guides[rootGuide.path]
+  }
+}
+
+function publicPagePath(outputPath) {
+  const page = relative(outputDirectory, outputPath).split(sep).join('/')
+  return page
+}
+
+function publicUrl(outputPath) {
+  const target = publicPagePath(outputPath)
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  if (target === 'index.md') return '/'
+  return `/${target.replace(/\.md$/, '')}`
+}
+
+function publicMarkdownLink(outputPath) {
+  const target = publicPagePath(outputPath)
+  if (target === 'index.md') return '/'
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  return `/${target.replace(/\.md$/, '')}`
+}
+
+const generatedMarkdown = new Set(records.map(({ to }) => to))
+await rm(join(siteDirectory, '.vitepress/generated-rewrites.json'), { force: true })
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-site-content.json'), JSON.stringify({
-  guidePaths: config.subguides.map(({ path }) => path),
+  guidePaths: [...Object.keys(generatedGuideColors)],
   footer: config.footer ?? {},
 }, null, 2))
 
@@ -284,9 +386,7 @@ await Promise.all(records.map(async (record) => {
       throw error
     })
     if (!sourceRelativePath) return null
-    let target = relative(dirname(record.to), join(outputDirectory, sourceRelativePath)).split(sep).join('/')
-    if (!target.startsWith('.')) target = `./${target}`
-    return `${target}${suffix.join('')}`
+    return `/${sourceRelativePath}${suffix.join('')}`
   }
 
   const frontmatterRange = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
@@ -314,19 +414,70 @@ await Promise.all(records.map(async (record) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(href)) return all
     const [path, ...suffix] = href.split(/(?=[?#])/)
     const sourceFile = resolve(dirname(record.from), path)
-    const outputTarget = routeMap.get(sourceFile) ?? routeMap.get(`${sourceFile}.md`)
+    let outputTarget = routeMap.get(sourceFile) ?? routeMap.get(`${sourceFile}.md`)
+    if (!outputTarget) {
+      const cleanPath = path.replace(/\.html?$/i, '').replace(/\.md$/i, '')
+      const candidates = [
+        resolve(dirname(record.to), path),
+        resolve(dirname(record.to), `${cleanPath}.md`),
+        resolve(dirname(record.to), cleanPath, 'index.md'),
+      ]
+      outputTarget = candidates.find((candidate) => generatedMarkdown.has(candidate))
+    }
     if (!outputTarget) {
       const assetTarget = markdownAssetTargets.get(href)
       return assetTarget ? `${before}${assetTarget}${after}` : all
     }
-    let target = relative(dirname(record.to), outputTarget).split(sep).join('/')
-    if (target.endsWith('.md')) target = target.slice(0, -3)
-    if (!target.startsWith('.')) target = `./${target}`
+    const target = publicMarkdownLink(outputTarget)
     return `${before}${target}${suffix.join('')}${after}`
   })
   generatedFiles.add(record.to)
   await writeIfChanged(record.to, markdown)
 }))
+
+for (const directory of [...directories].reverse()) {
+  const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
+  const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  if (!guide) continue
+  const indexPath = join(stagedPath(directory.sourcePath), 'index.md')
+  if (!generatedMarkdown.has(indexPath)) {
+    const sourceNames = Object.fromEntries(directory.entries.map((entry) => [entry.name, entry.name]))
+    const first = sortNavigationEntries(directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name)), sourceNames)[0]
+    if (!first) continue
+    let childPage = stagedPath(join(directory.sourcePath, first.name))
+    if (first.isDirectory()) childPage = join(childPage, 'index.md')
+    if (!generatedMarkdown.has(childPage)) continue
+    let markdown = await readFile(childPage, 'utf8')
+    if (/^---\s*\n/.test(markdown)) {
+      const end = markdown.indexOf('\n---', 4)
+      if (end < 0) throw new Error(`Malformed frontmatter in ${childPage}`)
+      const frontmatter = markdown.slice(4, end)
+      if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
+      else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
+    } else {
+      markdown = `---\nsearch: false\n---\n\n${markdown}`
+    }
+    generatedMarkdown.add(indexPath)
+    generatedFiles.add(indexPath)
+    await writeIfChanged(indexPath, markdown)
+  }
+  const noSlashAlias = `${stagedPath(directory.sourcePath)}.md`
+  if (!generatedMarkdown.has(noSlashAlias)) {
+    let markdown = await readFile(indexPath, 'utf8')
+    if (/^---\s*\n/.test(markdown)) {
+      const end = markdown.indexOf('\n---', 4)
+      if (end < 0) throw new Error(`Malformed frontmatter in ${indexPath}`)
+      const frontmatter = markdown.slice(4, end)
+      if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
+      else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
+    } else {
+      markdown = `---\nsearch: false\n---\n\n${markdown}`
+    }
+    generatedMarkdown.add(noSlashAlias)
+    generatedFiles.add(noSlashAlias)
+    await writeIfChanged(noSlashAlias, markdown)
+  }
+}
 
 if (incremental) {
   async function removeStale(directory) {

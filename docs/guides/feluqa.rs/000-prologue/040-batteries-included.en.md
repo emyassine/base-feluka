@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Batteries"
+sidebarTitle: "Batteries Included"
 icon: "battery-charging"
 title: "Batteries Included"
 description: "The major capabilities Feluqa brings together, what is available today, and what remains a product direction."

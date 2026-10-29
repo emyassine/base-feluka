@@ -10,7 +10,18 @@
   },
   "guides": {
     "feluqa.rs": {},
+    "root": {},
     "feluqa-internals": {},
-    "x-agents": {}
+    "x-agents": {},
+    "agents": {},
+    "learn": {},
+    "art": {},
+    "conventions": {},
+    "deployment": {},
+    "feluqa": {},
+    "get-started": {},
+    "prologue": {},
+    "security": {},
+    "storage": {}
   }
 }

@@ -1,11 +1,6 @@
 {
   "title": "Feluqa",
   "showSiteTitle": false,
-  "logo": {
-    "light": ".art/logo-lightmode.png",
-    "dark": ".art/logo-darkmode.png",
-    "alt": "Feluqa"
-  },
   "favicon": ".art/favicon.png",
   "colors": {
     "primary": "oklch(57.7% .245 27.325)",
@@ -13,7 +8,7 @@
     "sidebarIcon": "#8b9099",
     "inlineCode": "oklch(57.7% .245 27.325)",
     "heroNameColor": "transparent",
-    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
-  },
-  "logoWidth": "100%"
+    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))",
+    "inlineCodeBackground": "#252a37"
+  }
 }

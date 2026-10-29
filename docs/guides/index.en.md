@@ -12,10 +12,10 @@ hero:
   actions:
     - theme: brand
       text: Get started
-      link: ./feluqa.rs/get-started/introduction/introduction.html
+      link: /get-started/
     - theme: alt
       text: Feluqa’s Internals
-      link: ./feluqa-internals/index.html
+      link: /feluqa-internals/
 features:
   - icon: 📘
     title: Get started

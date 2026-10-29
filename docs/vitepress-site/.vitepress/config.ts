@@ -15,6 +15,8 @@ const navigationOrderPath = join(siteDirectory, '.vitepress/generated-navigation
 const navigationOrder = existsSync(navigationOrderPath) ? JSON.parse(readFileSync(navigationOrderPath, 'utf8')) : {}
 const generatedFontPath = join(siteDirectory, '.vitepress/generated-fonts.json')
 const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
+const generatedGuideColorsPath = join(siteDirectory, '.vitepress/generated-guide-colors.json')
+const generatedGuideColors = existsSync(generatedGuideColorsPath) ? JSON.parse(readFileSync(generatedGuideColorsPath, 'utf8')) : {}
 const activeLanguage = siteConfig.languages[0]
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
 const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
@@ -24,6 +26,18 @@ const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: strin
   const configPath = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
   return [guide.path, { path: configPath, config: JSON.parse(readFileSync(configPath, 'utf8')) }]
 }))
+const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
+const subguideRootPaths = new Set(site.subguides.map((guide: { path: string }) => routeBase(guide.path).split('/').filter(Boolean)[0]).filter(Boolean))
+function publicPagePath(file: string): string {
+  const sourceRelative = relative(generatedDirectory, file).replace(/\\/g, '/')
+  const target = sourceRelative
+  if (target === 'index.md') return '/'
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  return `/${target.replace(/\.md$/, '')}`
+}
+function directoryLink(directory: string): string {
+  return publicPagePath(join(directory, 'index.md'))
+}
 const assetMime = (assetPath: string) => ({
   '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
@@ -72,23 +86,33 @@ function sidebar(directory: string, root = directory): any[] {
   return ordered(directory, readdirSync(directory, { withFileTypes: true })).flatMap((entry) => {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
+      if (directory === root && subguideRootPaths.has(entry.name)) return []
       const items = sidebar(path, root)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
       const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
-      return items.length ? [{ text: groupTitle(relativePath, fallback), collapsed: true, items }] : []
+      return items.length ? [{ text: groupTitle(relativePath, fallback), link: directoryLink(path), collapsed: true, items }] : []
     }
     if (!entry.name.endsWith('.md')) return []
-    if (directory === root && entry.name === 'index.md') return []
+    if (entry.name === 'index.md') return []
     const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
-    const target = entry.name === 'index.md' ? `${relative(generatedDirectory, dirname(path)).replace(/\\/g, '/')}/index.html` : `${clean}.html`
-    return [{ text: escapeHtml(titleOf(path)), link: `/${target.replace(/^\.\//, '')}` }]
+    return [{ text: escapeHtml(titleOf(path)), link: publicPagePath(path) }]
   })
 }
 
-const nav = site.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}/index.html` }))
+const nav = site.subguides.map((guide: { path: string; label: string }) => {
+  const uri = guide.uri
+  const base = routeBase(guide.path)
+  const link = uri.entry
+    ? `/${[base, uri.entry].filter(Boolean).join('/')}/`
+    : uri.index && !base
+      ? `/${uri.index}`
+      : `/${base}${base ? '/' : ''}`
+  return { text: guide.label, link }
+})
 const sidebars = Object.fromEntries(site.subguides.map((guide: { path: string; label: string }) => {
-  const directory = join(generatedDirectory, guide.path)
-  return [`/${guide.path}/`, sidebar(directory)]
+  const base = routeBase(guide.path)
+  const directory = join(generatedDirectory, ...base.split('/').filter(Boolean))
+  return [`/${base}${base ? '/' : ''}`, sidebar(directory)]
 }))
 
 export default defineConfig({
@@ -96,16 +120,18 @@ export default defineConfig({
   head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
   srcDir: '.generated-guides',
   outDir: outputDirectory,
-  cleanUrls: false,
+  cleanUrls: true,
   mpa: false,
   vite: { configFile: join(siteDirectory, 'vite.config.ts') },
   markdown: siteConfig.markdown,
   transformHead({ page }) {
-    const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
+    const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`) || page.startsWith(`${routeBase(entry.path)}/`))
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
     const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
+    const routeKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'
+    const logoSettings = generatedGuideColors[routeKey] ?? generatedGuideColors.root ?? {}
     const declarations: string[] = []
     const colorProperties: Record<string, string> = {
       primary: '--vp-c-brand-1',
@@ -114,6 +140,7 @@ export default defineConfig({
       soft: '--vp-c-brand-soft',
       sidebarIcon: '--vp-sidebar-icon-color',
       inlineCode: '--vp-code-color',
+      inlineCodeBackground: '--vp-code-bg',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
@@ -127,8 +154,9 @@ export default defineConfig({
     }
     if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
     if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
-    if (guideEntry.config.logoWidth) declarations.push(`--feluqa-nav-logo-width: ${guideEntry.config.logoWidth.trim()};`)
+    if (logoSettings.logoWidth) declarations.push(`--feluqa-nav-logo-width: ${logoSettings.logoWidth};`)
     if (declarations.length) head.push(['style', {}, `:root { ${declarations.join(' ')} }`])
+    if (logoSettings.logoExtraStyle) head.push(['style', {}, `.VPNavBarTitle.has-sidebar .logo { ${logoSettings.logoExtraStyle} }`])
     const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
     const fontFaces: string[] = []
     const fontDeclarations: string[] = []
@@ -168,9 +196,9 @@ export default defineConfig({
     aside: true,
     footer: siteConfig.footer?.[siteConfig.languages[0]] ?? siteConfig.footer?.root,
     logo: {
-      light: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.light),
-      dark: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.dark),
-      alt: primaryConfig.logo.alt,
+      light: generatedGuideColors.root?.logoLight,
+      dark: generatedGuideColors.root?.logoDark,
+      alt: generatedGuideColors.root?.logoAlt ?? siteConfig.logo?.alt ?? 'Feluqa',
     },
     siteTitle: primaryConfig.showSiteTitle ? primaryConfig.title : false,
   },
