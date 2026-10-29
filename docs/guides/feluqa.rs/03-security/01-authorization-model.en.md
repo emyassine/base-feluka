@@ -20,6 +20,10 @@ author:
 
 Feluqa separates **who may administer a Platform instance**, **what an account may do in an application**, and **what it may do to a specific record**. Each question has its own layer.
 
+Authorization is one part of application security. Rust's memory-safety
+guarantees do not automatically secure authentication, permissions, input
+handling, or business rules; see [What Rust Does—and Does Not—Protect](04-rust-security-boundaries.en.md).
+
 | Layer | Question | Scope | Defined by |
 | --- | --- | --- | --- |
 | **Privilege level** | How much platform administration may this account perform? | One Platform instance | Built-in platform policy |

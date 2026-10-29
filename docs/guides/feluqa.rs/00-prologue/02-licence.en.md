@@ -70,6 +70,32 @@ access, and agree the contribution terms before work is incorporated. See the
 workflow. Feluqa remains proprietary; the agreed terms make clear how your
 contribution may be used in the product.
 
+## Want a Product Built with Feluqa?
+
+NUMERIMONDES works with organisations that want to create a product using
+Feluqa. Start a conversation about the users, workflows, operating environment,
+and delivery goals. A written proposal and agreement will define the project
+scope, deliverables, rights in customer-specific work, Feluqa usage rights,
+deployment, support, maintenance, and fees before work begins. Commercial
+terms may include development, licensing, support, or maintenance fees; terms
+are agreed for each engagement.
+
+### Build with your own team
+
+Organisations may also want their own engineers to build and maintain products
+with Feluqa. NUMERIMONDES can discuss the required access, usage rights,
+onboarding, and support. A client's engineers may propose improvements to the
+Feluqa SDK; changes are reviewed against the development guidelines, product
+architecture, and security requirements, and the contribution terms are agreed
+before accepted work is incorporated.
+
+### Find people to build with Feluqa
+
+NUMERIMONDES can use its in-house recruitment activity to help identify and
+assemble a qualified team for a Feluqa project. A directory of people with
+Feluqa experience is planned; profiles will be published only with each
+person's agreement and with their experience clearly described.
+
 ## Legal Overview
 
 Official identifiers, registered purpose, and company documents for
@@ -77,18 +103,17 @@ Numerimondes SARL AU.
 
 ### Legal Identity
 
-| | |
-|---|---|
-| **Registered name** | Numerimondes SARL AU |
-| **Legal form** | SARL AU (single-shareholder limited company) |
-| **Patente** | Conseil en gestion (management consulting) |
-| **Headquarters** | 10 Rue de la Liberté, 3rd floor, apt. 5, Casablanca |
-| **Founder & Manager** | Yassine El Moumen |
-| **RC** | 152844 |
-| **ICE** | 003396233000077 |
-| **CNSS** | 5174227 |
-| **Email** | contact@numerimondes.com |
-| **Phone** | +212 6 20 99 06 92 |
+|                       |                                                     |
+|-----------------------|-----------------------------------------------------|
+| **Registered name**   | Numerimondes SARL AU                                |
+| **Legal form**        | SARL AU (single-shareholder limited company)        |
+| **Patente**           | Conseil en gestion (management consulting)          |
+| **Headquarters**      | 10 Rue de la Liberté, 3rd floor, apt. 5, Casablanca |
+| **Founder & Manager** | Yassine El Moumen                                   |
+| **RC**                | 152844                                              |
+| **ICE**               | 003396233000077                                     |
+| **Email**             | contact@numerimondes.com                            |
+| **Phone**             | +212 6 20 99 06 92                                  |
 
 ### Registered Purpose (*Objet Social*)
 

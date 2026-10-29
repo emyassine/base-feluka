@@ -28,6 +28,10 @@ and agree the terms for your contribution before incorporating it. Read the
 [Licence and Ownership](02-licence.en.md) page for the proprietary ownership
 model and contribution terms.
 
+Organisations interested in building a product or contributing to the Feluqa
+SDK with their own engineering team can also use the contact path above. The
+licence page explains the client-product and internal-team options.
+
 For work authorized under those terms, identify the affected product, crate,
 documentation page, or roadmap item. Read the relevant guide and inspect the
 current implementation before proposing a change. Describe current behavior
