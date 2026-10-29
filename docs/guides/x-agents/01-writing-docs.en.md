@@ -134,6 +134,53 @@ When the content is a service offer, keep it in a clearly labelled section
 after the reader-facing product and licensing explanation. Do not turn a
 licensing introduction into an unexpected sales pitch.
 
+## Voice, tone, and reader fit
+
+Write for people first. Keep paragraphs short and focused, use headings and
+lists to make long pages easy to scan, and add a diagram when it explains a
+relationship more clearly than prose. Use a conversational, friendly, and
+respectful voice: knowledgeable and natural, without slang, forced humor,
+overfamiliarity, or a formal legalistic tone. Make the information useful to a
+reader who may be in a hurry.
+
+- Prefer clear, direct wording, familiar words, active voice, and short
+  sentences. Address the reader as "you" when it makes the instruction clearer.
+- Write for readers with different levels of English and technical experience.
+  Keep phrasing consistent and easy to translate; avoid culture-specific jokes,
+  idioms, figurative language, seasonal references, and unexplained jargon.
+- Use a technical term when it is the precise term the audience needs. Define
+  unfamiliar or overloaded terms on first use, or link to a trusted definition.
+- Avoid buzzwords, cutesy or goofy phrasing, internet slang and abbreviations,
+  needless exclamation marks, and placeholder politeness such as "please note."
+  Avoid "simply," "it's easy," or "quickly" in procedures; explain the actual
+  steps and requirements instead.
+- Be polite without padding instructions with "please." Avoid "let's" phrasing
+  and repetitive sentence openings. Use transitions only when they clarify the
+  relationship between ideas.
+- Use examples that respect varied people, places, and backgrounds. Avoid
+  language that insults, stereotypes, excludes, or uses disability as an
+  insult; use descriptive link text and do not rely on visual cues alone.
+- Read awkward passages aloud and ask what the reader needs to know or do.
+  Revise for clarity and usefulness before trying to make the writing more
+  entertaining.
+
+These are defaults, not a reason to erase Feluqa's terminology, the owner's
+meaning, or a specific user instruction. Follow a requested narrow edit
+narrowly. Google's developer documentation guidance is a useful reference for
+global, accessible, and inclusive writing; apply it in ways that fit Feluqa's
+audience and product voice.
+
+Further reading:
+
+- [Write for a global audience](https://developers.google.com/style/translation)
+- [Write accessible documentation](https://developers.google.com/style/accessibility)
+- [Write inclusive documentation](https://developers.google.com/style/inclusive-documentation)
+- [Avoid jargon](https://developers.google.com/style/jargon)
+- [Figurative language](https://developers.google.com/style/inclusive-documentation#figurative-language)
+- [Exclamation points](https://developers.google.com/style/periods#exclamation-points)
+- [Abbreviations](https://developers.google.com/style/abbreviations#dont-use)
+- [Internet abbreviations: "tl;dr" and "ymmv"](https://developers.google.com/style/word-list#tldr)
+
 ## Structure and file naming
 
 - Keep one concept per Markdown file under `01-get-started/03-concepts/`.
@@ -164,3 +211,7 @@ Before finishing:
 5. Run `git diff --check`. For documentation-only changes, review links,
    terminology, front matter, and rendering structure; do not run a runtime
    test suite unless requested or required by repository guidance.
+
+6. Apply the Feluqa voice and tone and the global-writing guidance above.
+   Check that the prose stays concise, approachable, inclusive, and precise
+   without changing the author's intended point.
