@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Security"
+    "en": "Security",
+    "fr": "Sécurité"
   },
   "icon": "sidebar-icon.svg"
 }

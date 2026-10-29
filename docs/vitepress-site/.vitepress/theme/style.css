@@ -327,7 +327,7 @@
 .VPNavBarTitle.has-sidebar .logo {
   width: var(--feluqa-nav-logo-width, auto);
   max-width: 100%;
-  height: var(--vp-nav-logo-height, 24px);
+  height: auto;
   box-sizing: border-box;
   object-fit: contain;
   object-position: left center;

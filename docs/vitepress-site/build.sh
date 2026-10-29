@@ -21,7 +21,7 @@ if [[ ! -d "$site_dir/node_modules/vitepress" ]]; then
 fi
 
 stage 'Preparing guides and rendering uncached Mermaid diagrams'
-node "$site_dir/prepare.mjs"
+FELUQA_PREPARE_LOCK_HELD=1 node "$site_dir/prepare.mjs"
 stage 'Building VitePress client site with native local search'
 (cd "$site_dir" && FELUQA_DOCS_OUT_DIR="$stage_dir" npm run docs:build -- --base /)
 test -f "$stage_dir/index.html"

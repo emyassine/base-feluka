@@ -1,0 +1,9 @@
+.FeluqaDocumentationNotices { display: grid; gap: 10px; margin: 0 0 24px; }
+.FeluqaDocumentationNotices__fallback,
+.FeluqaDocumentationNotices__status { border: 1px solid var(--vp-c-divider); border-radius: 8px; padding: 12px 16px; color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); }
+.FeluqaDocumentationNotices__fallback { border-left: 3px solid var(--vp-c-brand-1); }
+.FeluqaDocumentationNotices__fallback strong { display: block; margin-bottom: 3px; font-size: 13px; }
+.FeluqaDocumentationNotices__fallback p { margin: 0; color: var(--vp-c-text-2); font-size: 14px; }
+.FeluqaDocumentationNotices__status.is-exploring { border-left: 3px solid var(--vp-c-warning-1); background: var(--vp-c-warning-soft); }
+.FeluqaDocumentationNotices__status.is-validated { border-left: 3px solid var(--vp-c-tip-1); background: var(--vp-c-tip-soft); }
+.FeluqaLastModified { display: flex; gap: 6px; align-items: center; margin: 12px 0; color: var(--vp-c-text-2); font-size: 12px; }

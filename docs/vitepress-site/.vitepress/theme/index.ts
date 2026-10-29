@@ -1,9 +1,11 @@
 import DefaultTheme from 'vitepress/theme'
-import { h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Fragment, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
 import generatedFonts from '../generated-fonts.json'
 import siteContent from '../generated-site-content.json'
+import { DocumentationLastModified, DocumentationNotice } from '../../../.vitepress/documentation-hooks'
+import '../../../.vitepress/documentation-hooks.css'
 import './style.css'
 
 const zoomStep = 0.25
@@ -413,7 +415,8 @@ const MermaidLayout = {
     dialog?.remove()
   })
     return () => h(DefaultTheme.Layout, null, {
-      'aside-outline-before': () => h(PageActions),
+      'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
+      'aside-outline-before': () => h(Fragment, null, [h(PageActions), h(DocumentationLastModified)]),
       'layout-bottom': () => h(SidebarFooter),
     })
   },

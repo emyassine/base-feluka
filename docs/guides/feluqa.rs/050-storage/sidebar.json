@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Storage"
+    "en": "Storage",
+    "fr": "Stockage"
   },
   "icon": "sidebar-icon.svg"
 }

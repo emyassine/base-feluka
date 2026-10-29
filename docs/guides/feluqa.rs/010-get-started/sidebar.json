@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Get started"
+    "en": "Get started",
+    "fr": "Bien démarrer"
   },
   "icon": "sidebar-icon.svg"
 }

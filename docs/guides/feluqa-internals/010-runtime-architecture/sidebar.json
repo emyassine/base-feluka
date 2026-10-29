@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Runtime"
+    "en": "Runtime",
+    "fr": "Runtime"
   },
   "icon": "sidebar-icon.svg"
 }

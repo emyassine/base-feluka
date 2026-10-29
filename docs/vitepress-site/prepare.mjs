@@ -2,24 +2,39 @@ import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/pro
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFile as execFileCallback } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { promisify } from 'node:util'
 import { sortNavigationEntries } from './navigation-order.mjs'
 
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
+if (process.env.FELUQA_PREPARE_LOCK_HELD !== '1') {
+  const result = spawnSync('flock', ['--exclusive', join(siteDirectory, '.build.lock'), process.execPath, fileURLToPath(import.meta.url)], {
+    cwd: siteDirectory,
+    env: { ...process.env, FELUQA_PREPARE_LOCK_HELD: '1' },
+    stdio: 'inherit',
+  })
+  if (result.error) throw result.error
+  process.exit(result.status ?? 1)
+}
 const configDirectory = resolve(siteDirectory, '../guides')
 const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
 if (!Array.isArray(config.languages) || !config.languages.length || config.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(config.languages).size !== config.languages.length) {
   throw new Error('languages must be a non-empty array of unique locale codes')
 }
+const defaultLanguage = config.fallbackLanguage ?? config.languages[0]
+if (!config.languages.includes(defaultLanguage)) throw new Error('fallbackLanguage must be listed in languages')
 for (const language of config.languages) {
-  const label = config.languageLabels?.[language]
-  if (label !== undefined && (typeof label !== 'string' || !label.trim())) {
+  if (typeof config.languageLabels?.[language] !== 'string' || !config.languageLabels[language].trim()) {
     throw new Error(`languageLabels.${language} must be a non-empty string`)
   }
-  const link = config.languageLinks?.[language]
-  if (link !== undefined && (typeof link !== 'string' || !link.startsWith('/') || link.startsWith('//'))) {
-    throw new Error(`languageLinks.${language} must be a root-relative URL`)
+  if (typeof config.fallbackNotices?.[language] !== 'string' || !config.fallbackNotices[language].includes('{requested}') || !config.fallbackNotices[language].includes('{fallback}')) {
+    throw new Error(`fallbackNotices.${language} must include {requested} and {fallback}`)
+  }
+}
+for (const language of config.languages) {
+  if (config.languageMenuLabels?.[language] !== undefined && (typeof config.languageMenuLabels[language] !== 'string' || !config.languageMenuLabels[language].trim())) {
+    throw new Error(`languageMenuLabels.${language} must be a non-empty string`)
   }
 }
 if (config.socialLinks !== undefined && (!Array.isArray(config.socialLinks) || config.socialLinks.some((item) => !item || typeof item.link !== 'string' || !item.link.trim() || !(typeof item.icon === 'string' || typeof item.icon?.svg === 'string')))) {
@@ -66,22 +81,26 @@ let diagramsCached = 0
 let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+[.-]/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
+const sourceLanguage = (path) => path.match(/\.([a-z]{2,3}(?:-[A-Z]{2})?)\.md$/i)?.[1]?.toLowerCase() ?? defaultLanguage.toLowerCase()
 const execFile = promisify(execFileCallback)
 const sourceRoot = resolve(configDirectory, config.guidesPath)
 
-function stagedPath(sourcePath) {
+function stagedPath(sourcePath, language = null) {
   const sourceRelative = relative(sourceRoot, sourcePath).split(sep).join('/')
+  const isMarkdown = sourcePath.toLowerCase().endsWith('.md')
+  const locale = (language ?? (isMarkdown ? sourceLanguage(sourcePath) : defaultLanguage)).toLowerCase()
+  const localePrefix = locale === defaultLanguage.toLowerCase() ? [] : [locale]
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   if (!guide) {
     const parts = sourceRelative.split('/')
-    return join(outputDirectory, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
+    return join(outputDirectory, ...localePrefix, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
   }
   const uri = guideUris.get(guide.path)
   const local = sourceRelative === guide.path ? '' : sourceRelative.slice(guide.path.length + 1)
   const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
   if (parts.length === 1 && parts[0] === 'index.md' && uri.index) parts.splice(0, 1, ...uri.index.replace(/\/$/, '').split('/'), 'index.md')
   const base = uri.base.replace(/^\/+|\/+$/g, '')
-  return join(outputDirectory, ...[base, ...parts].filter(Boolean).flatMap((part) => part.split('/')))
+  return join(outputDirectory, ...localePrefix, ...[base, ...parts].filter(Boolean).flatMap((part) => part.split('/')))
 }
 
 async function copyIfChanged(source, target) {
@@ -150,7 +169,14 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     const from = join(sourcePath, entry.name)
     const to = stagedPath(from)
     await mkdir(dirname(to), { recursive: true })
-    navigationOrder[relative(outputRoot, to).split(sep).join('/')] = entry.name
+    const orderPath = relative(outputRoot, to).split(sep).join('/')
+    navigationOrder[orderPath] = entry.name
+    if (entry.isDirectory()) {
+      for (const language of config.languages) {
+        if (language.toLowerCase() === defaultLanguage.toLowerCase()) continue
+        navigationOrder[`${language}/${orderPath}`] = entry.name
+      }
+    }
     if (entry.isDirectory()) await scan(sourceRoot, outputRoot, from, to)
     else {
       if (sidebarIconSources.has(resolve(from))) continue
@@ -188,6 +214,17 @@ for (const directory of directories) {
 }
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-navigation-order.json'), JSON.stringify(navigationOrder, null, 2))
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
+if (config.publicFiles !== undefined && (!config.publicFiles || typeof config.publicFiles !== 'object' || Array.isArray(config.publicFiles))) {
+  throw new Error('publicFiles must be an object of root-level filenames and text contents')
+}
+for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
+  if (!/^[A-Za-z0-9._-]+\.txt$/.test(name) || typeof content !== 'string') {
+    throw new Error(`publicFiles.${name} must be a .txt filename with string content`)
+  }
+  const target = join(outputDirectory, 'public', name)
+  generatedFiles.add(target)
+  await writeIfChanged(target, content.endsWith('\n') ? content : `${content}\n`)
+}
 
 async function copyAsset(sourceFile) {
   const sourceRelativePath = relative(sourceRoot, sourceFile)
@@ -202,6 +239,19 @@ async function copyAsset(sourceFile) {
     await writeIfChanged(target, bytes)
   }
   return publishedPath.split(sep).join('/')
+}
+
+async function prepareOgImages(value, configPath) {
+  if (value === undefined) return undefined
+  const images = typeof value === 'string' ? [value] : value
+  if (!Array.isArray(images) || images.some((image) => typeof image !== 'string' || !image.trim())) {
+    throw new Error(`ogImages must be a path or an array of paths in ${configPath}`)
+  }
+  return Promise.all(images.map(async (image) => {
+    if (/^https:\/\//i.test(image)) return image
+    if (/^(?:[a-z]+:|\/|\\)/i.test(image)) throw new Error(`ogImages paths must be relative to ${configPath} or HTTPS URLs`)
+    return `/${await copyAsset(resolve(dirname(configPath), image))}`
+  }))
 }
 
 async function prepareFonts(fonts, configPath) {
@@ -252,8 +302,11 @@ const generatedFonts = {
   guides: {},
 }
 const generatedGuideColors = {}
+const generatedOgImages = {}
 const generatedGuideKeys = new Map()
 const siteLogo = config.logo ?? {}
+const siteOgImages = await prepareOgImages(config.ogImages ?? [], join(configDirectory, 'vitepress.site.config.json'))
+generatedOgImages.root = siteOgImages
 for (const guide of config.subguides) {
   const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
@@ -266,6 +319,7 @@ for (const guide of config.subguides) {
   generatedGuideKeys.set(guide.path, routeKey)
   generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
   generatedFonts.guides[routeKey] = generatedFonts.guides[guide.path]
+  generatedOgImages[routeKey] = await prepareOgImages(guideConfig.ogImages, guideConfigPath) ?? siteOgImages
   const faviconPath = guideConfig.favicon
     ? `/${await copyAsset(resolve(dirname(guideConfigPath), guideConfig.favicon))}`
     : null
@@ -330,10 +384,12 @@ const generatedMarkdown = new Set(records.map(({ to }) => to))
 await rm(join(siteDirectory, '.vitepress/generated-rewrites.json'), { force: true })
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-og-images.json'), JSON.stringify(generatedOgImages, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-site-content.json'), JSON.stringify({
   guidePaths: [...Object.keys(generatedGuideColors)],
   footer: config.footer ?? {},
   seo: config.seo ?? {},
+  documentationNotices: config.documentationNotices ?? {},
 }, null, 2))
 
 const generatedSidebar = {}
@@ -481,6 +537,57 @@ await Promise.all(records.map(async (record) => {
   await writeIfChanged(record.to, markdown)
 }))
 
+const defaultPageRecords = records.filter(({ from }) => sourceLanguage(from).toLowerCase() === defaultLanguage.toLowerCase())
+const defaultRouteUrls = new Set(defaultPageRecords.map(({ to }) => publicMarkdownLink(to).replace(/\/$/, '') || '/'))
+for (const directory of directories) {
+  const indexPath = join(stagedPath(directory.sourcePath, defaultLanguage), 'index.md')
+  defaultRouteUrls.add(publicMarkdownLink(indexPath).replace(/\/$/, '') || '/')
+}
+for (const language of config.languages) {
+  if (language.toLowerCase() === defaultLanguage.toLowerCase()) continue
+  const requestedLabel = config.languageLabels[language]
+  const fallbackLabel = config.languageLabels[defaultLanguage]
+  const notice = config.fallbackNotices[language]
+    .replaceAll('{requested}', requestedLabel)
+    .replaceAll('{fallback}', fallbackLabel)
+  for (const record of defaultPageRecords) {
+    const localizedTarget = stagedPath(record.from, language)
+    if (generatedMarkdown.has(localizedTarget)) continue
+    let markdown = await readFile(record.to, 'utf8')
+    if (/^---\s*\n/.test(markdown)) {
+      const end = markdown.indexOf('\n---', 4)
+      if (end < 0) throw new Error(`Malformed frontmatter in ${record.to}`)
+      const metadata = `requestedLanguage: ${JSON.stringify(language)}\ncontentLanguage: ${JSON.stringify(defaultLanguage)}\nlanguageFallbackNotice: ${JSON.stringify(notice)}\n`
+      const frontmatter = markdown.slice(4, end).replace(/^lang:\s*.*$/m, `lang: ${JSON.stringify(language)}`)
+      markdown = `---\n${metadata}${frontmatter}\n---${markdown.slice(end + 4)}`
+    } else {
+      markdown = `---\nrequestedLanguage: ${JSON.stringify(language)}\ncontentLanguage: ${JSON.stringify(defaultLanguage)}\nlanguageFallbackNotice: ${JSON.stringify(notice)}\n---\n\n${markdown}`
+    }
+    markdown = markdown.replace(/(!?\[[^\]]*\]\()([^)]+)(\))/g, (all, before, href, after) => {
+      if (before.startsWith('!') || !href.startsWith('/') || href.startsWith('//')) return all
+      const path = href.split(/[?#]/, 1)[0].replace(/\/$/, '') || '/'
+      if (!defaultRouteUrls.has(path)) return all
+      return `${before}/${language}${href}${after}`
+    })
+    // Markdown SFC imports resolve from the localized file's directory. Keep
+    // relative assets available at that exact path for generated fallback pages.
+    for (const [, , specifier] of markdown.matchAll(/\bfrom\s+(['"])(\.{1,2}\/[^'"]+)\1/g)) {
+      const sourceAsset = resolve(dirname(record.to), specifier)
+      const localizedAsset = resolve(dirname(localizedTarget), specifier)
+      try {
+        await access(sourceAsset)
+        await mkdir(dirname(localizedAsset), { recursive: true })
+        await copyIfChanged(sourceAsset, localizedAsset)
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error
+      }
+    }
+    generatedMarkdown.add(localizedTarget)
+    generatedFiles.add(localizedTarget)
+    await writeIfChanged(localizedTarget, markdown)
+  }
+}
+
 let generatedSeoPages = 0
 const seoPath = config.seo?.path ?? 'faq'
 const seoLocales = config.seo?.locales ?? {}
@@ -512,43 +619,65 @@ for (const directory of [...directories].reverse()) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   if (!guide) continue
-  const indexPath = join(stagedPath(directory.sourcePath), 'index.md')
-  if (!generatedMarkdown.has(indexPath)) {
-    const sourceNames = Object.fromEntries(directory.entries.map((entry) => [entry.name, entry.name]))
-    const first = sortNavigationEntries(directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name)), sourceNames)[0]
-    if (!first) continue
-    let childPage = stagedPath(join(directory.sourcePath, first.name))
-    if (first.isDirectory()) childPage = join(childPage, 'index.md')
-    if (!generatedMarkdown.has(childPage)) continue
-    let markdown = await readFile(childPage, 'utf8')
-    if (/^---\s*\n/.test(markdown)) {
-      const end = markdown.indexOf('\n---', 4)
-      if (end < 0) throw new Error(`Malformed frontmatter in ${childPage}`)
-      const frontmatter = markdown.slice(4, end)
-      if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
-      else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
-    } else {
-      markdown = `---\nsearch: false\n---\n\n${markdown}`
+  const sourceNames = Object.fromEntries(directory.entries.map((entry) => [entry.name, entry.name]))
+  const sortedEntries = sortNavigationEntries(directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name)), sourceNames)
+  for (const language of config.languages) {
+    const directoryTarget = stagedPath(directory.sourcePath, language)
+    const indexPath = join(directoryTarget, 'index.md')
+    if (!generatedMarkdown.has(indexPath)) {
+      let childPage
+      const seen = new Set()
+      for (const entry of sortedEntries) {
+        if (entry.isDirectory()) {
+          const candidates = [join(stagedPath(join(directory.sourcePath, entry.name), language), 'index.md'), join(stagedPath(join(directory.sourcePath, entry.name), defaultLanguage), 'index.md')]
+          childPage = candidates.find((candidate) => generatedMarkdown.has(candidate))
+        } else {
+          const slug = cleanFile(entry.name)
+          if (seen.has(slug)) continue
+          seen.add(slug)
+          const family = sortedEntries.filter((candidate) => !candidate.isDirectory() && cleanFile(candidate.name) === slug)
+          const selected = family.find((candidate) => sourceLanguage(candidate.name).toLowerCase() === language.toLowerCase())
+            ?? family.find((candidate) => sourceLanguage(candidate.name).toLowerCase() === defaultLanguage.toLowerCase())
+          if (selected) {
+            const localizedCandidate = stagedPath(join(directory.sourcePath, selected.name), language)
+            const defaultCandidate = stagedPath(join(directory.sourcePath, selected.name), defaultLanguage)
+            childPage = generatedMarkdown.has(localizedCandidate) ? localizedCandidate : defaultCandidate
+          }
+        }
+        if (childPage && generatedMarkdown.has(childPage)) break
+      }
+      if (!childPage || !generatedMarkdown.has(childPage)) continue
+      let markdown = await readFile(childPage, 'utf8')
+      if (/^---\s*\n/.test(markdown)) {
+        const end = markdown.indexOf('\n---', 4)
+        if (end < 0) throw new Error(`Malformed frontmatter in ${childPage}`)
+        const frontmatter = markdown.slice(4, end)
+        if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
+        else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
+      } else {
+        markdown = `---\nsearch: false\n---\n\n${markdown}`
+      }
+      generatedMarkdown.add(indexPath)
+      generatedFiles.add(indexPath)
+      await writeIfChanged(indexPath, markdown)
     }
-    generatedMarkdown.add(indexPath)
-    generatedFiles.add(indexPath)
-    await writeIfChanged(indexPath, markdown)
-  }
-  const noSlashAlias = `${stagedPath(directory.sourcePath)}.md`
-  if (!generatedMarkdown.has(noSlashAlias)) {
-    let markdown = await readFile(indexPath, 'utf8')
-    if (/^---\s*\n/.test(markdown)) {
-      const end = markdown.indexOf('\n---', 4)
-      if (end < 0) throw new Error(`Malformed frontmatter in ${indexPath}`)
-      const frontmatter = markdown.slice(4, end)
-      if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
-      else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
-    } else {
-      markdown = `---\nsearch: false\n---\n\n${markdown}`
+    const languageRoot = relative(outputDirectory, directoryTarget).replace(/\\/g, '/') === language.toLowerCase()
+    const noSlashAlias = `${directoryTarget}.md`
+    if (!languageRoot && !generatedMarkdown.has(noSlashAlias)) {
+      let markdown = await readFile(indexPath, 'utf8')
+      if (/^---\s*\n/.test(markdown)) {
+        const end = markdown.indexOf('\n---', 4)
+        if (end < 0) throw new Error(`Malformed frontmatter in ${indexPath}`)
+        const frontmatter = markdown.slice(4, end)
+        if (!/^search\s*:/m.test(frontmatter)) markdown = `---\n${frontmatter}\nsearch: false${markdown.slice(end)}`
+        else markdown = markdown.replace(/^search\s*:\s*.*$/m, 'search: false')
+      } else {
+        markdown = `---\nsearch: false\n---\n\n${markdown}`
+      }
+      generatedMarkdown.add(noSlashAlias)
+      generatedFiles.add(noSlashAlias)
+      await writeIfChanged(noSlashAlias, markdown)
     }
-    generatedMarkdown.add(noSlashAlias)
-    generatedFiles.add(noSlashAlias)
-    await writeIfChanged(noSlashAlias, markdown)
   }
 }
 

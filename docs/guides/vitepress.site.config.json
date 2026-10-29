@@ -17,6 +17,10 @@
     {
       "path": "feluqa.rs",
       "label": "Feluqa",
+      "labels": {
+        "en": "Feluqa",
+        "fr": "Feluqa"
+      },
       "uri": {
         "base": "/",
         "entry": "get-started",
@@ -26,6 +30,10 @@
     {
       "path": "feluqa-internals",
       "label": "Feluqa’s Internals",
+      "labels": {
+        "en": "Feluqa’s Internals",
+        "fr": "Les internes de Feluqa"
+      },
       "uri": {
         "base": "/feluqa-internals/"
       }
@@ -33,6 +41,10 @@
     {
       "path": "x-agents",
       "label": "Agents",
+      "labels": {
+        "en": "Agents",
+        "fr": "Agents"
+      },
       "uri": {
         "base": "/agents/"
       }
@@ -40,19 +52,31 @@
     {
       "path": "learn",
       "label": "Learn",
+      "labels": {
+        "en": "Learn",
+        "fr": "Apprendre"
+      },
       "uri": {
         "base": "/learn/"
       }
     }
   ],
   "languages": [
-    "en"
+    "en",
+    "fr"
   ],
+  "fallbackLanguage": "en",
   "languageLabels": {
-    "en": "English"
+    "en": "English",
+    "fr": "Français"
   },
-  "languageLinks": {
-    "en": "/"
+  "languageMenuLabels": {
+    "en": "Change language",
+    "fr": "Changer de langue"
+  },
+  "fallbackNotices": {
+    "en": "This page is not available in {requested}. Showing the {fallback} version.",
+    "fr": "Cette page n’est pas disponible en {requested}. La version {fallback} est affichée."
   },
   "languageMenuLabel": "Change language",
   "socialLinks": [
@@ -96,6 +120,21 @@
         "navigateDownKeyAriaLabel": "Arrow down",
         "closeText": "Close",
         "closeKeyAriaLabel": "Escape"
+      },
+      "fr": {
+        "buttonText": "Rechercher",
+        "buttonAriaLabel": "Rechercher dans la documentation",
+        "displayDetails": "Afficher les détails",
+        "resetButtonTitle": "Réinitialiser la recherche",
+        "backButtonTitle": "Fermer la recherche",
+        "noResultsText": "Aucun résultat",
+        "selectText": "Sélectionner",
+        "selectKeyAriaLabel": "Entrée",
+        "navigateText": "Naviguer",
+        "navigateUpKeyAriaLabel": "Flèche vers le haut",
+        "navigateDownKeyAriaLabel": "Flèche vers le bas",
+        "closeText": "Fermer",
+        "closeKeyAriaLabel": "Échap"
       }
     },
     "provider": "local",
@@ -112,7 +151,8 @@
   },
   "outline": {
     "labels": {
-      "en": "On this page"
+      "en": "On this page",
+      "fr": "Sur cette page"
     },
     "level": "deep"
   },
@@ -120,6 +160,10 @@
     "en": {
       "message": "Questions? Read the <a href=\"/faq/\">quick answers</a>.",
       "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+    },
+    "fr": {
+      "message": "Des questions ? Consultez les <a href=\"/fr/faq/\">réponses rapides</a>.",
+      "copyright": "Documentation Feluqa - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
     }
   },
   "logo": {
@@ -128,6 +172,26 @@
     "alt": "Feluqa",
     "width": "50rem",
     "extraStyle": "padding: 0.2rem;"
+  },
+  "publicFiles": {
+    "llms.txt": "# Feluqa Documentation\n\n> Documentation for Feluqa, a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.\n\n## Guides\n\n- [Feluqa](/get-started/) — product direction, setup, and application development.\n- [Feluqa’s Internals](/feluqa-internals/) — runtime, workspace, and compile-time architecture.\n- [Agents](/agents/) — contribution guidance for AI coding agents.\n- [Learn](/learn/) — practical application tutorials.\n\n## Documentation status\n\nTreat pages marked Exploring as provisional and pages marked Target as planned product direction. Do not describe planned capabilities as implemented.",
+    "humans.txt": "/* TEAM */\nOwner: Numerimondes\nWebsite: https://numerimondes.com\nGitHub: https://github.com/emyassine/base-feluka\n\n/* SITE */\nFeluqa Documentation\nBuilt with VitePress.",
+    "robots.txt": "User-agent: *\nAllow: /"
+  },
+  "ogImages": [
+    "feluqa.rs/.art/og-feluqa.png"
+  ],
+  "documentationNotices": {
+    "en": {
+      "exploring": "This page describes an area that is still being explored.",
+      "validated": "The information on this page has been validated.",
+      "fallbackTitle": "Language availability"
+    },
+    "fr": {
+      "exploring": "Cette page décrit un sujet encore à l’étude.",
+      "validated": "Les informations de cette page ont été vérifiées.",
+      "fallbackTitle": "Disponibilité linguistique"
+    }
   },
   "seo": {
     "locales": {
@@ -173,6 +237,49 @@
         "pageTitle": "Feluqa FAQ",
         "pageNavTitle": "FAQ",
         "description": "Frequently asked questions and links to the Feluqa documentation guides."
+      },
+      "fr": {
+        "quickLinksTitle": "Guides populaires",
+        "faqTitle": "Réponses rapides",
+        "quickLinks": [
+          {
+            "label": "Bien démarrer",
+            "description": "Comprendre Feluqa et créer une première application.",
+            "url": "/fr/get-started/"
+          },
+          {
+            "label": "Les internes de Feluqa",
+            "description": "Explorer l’architecture du runtime, du workspace et de la compilation.",
+            "url": "/fr/feluqa-internals/"
+          },
+          {
+            "label": "Agents",
+            "description": "Consulter les consignes de contribution pour les agents de codage IA.",
+            "url": "/fr/agents/"
+          },
+          {
+            "label": "Apprendre",
+            "description": "Suivre des tutoriels pratiques de développement d’applications.",
+            "url": "/fr/learn/"
+          }
+        ],
+        "faq": [
+          {
+            "question": "Qu’est-ce que Feluqa ?",
+            "answer": "Feluqa est une plateforme propriétaire et un espace de noms unifié pour créer des applications web, poste de travail, mobiles, de jeux, des API et des systèmes temps réel. L’architecture cible est encore en développement."
+          },
+          {
+            "question": "Par où commencer ?",
+            "answer": "Commencez par Bien démarrer pour comprendre l’orientation actuelle du produit, préparer votre environnement et suivre les guides de développement."
+          },
+          {
+            "question": "La plateforme complète est-elle disponible aujourd’hui ?",
+            "answer": "Non. Le dépôt fournit certaines fondations du framework, tandis que plusieurs capacités cibles, dont l’installation dynamique de modules et les shells runtime complets, sont encore en développement."
+          }
+        ],
+        "pageTitle": "FAQ Feluqa",
+        "pageNavTitle": "FAQ",
+        "description": "Questions fréquentes et liens vers les guides de documentation Feluqa."
       }
     },
     "siteUrl": null,

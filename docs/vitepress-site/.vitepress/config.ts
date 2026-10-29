@@ -3,6 +3,7 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { sortNavigationEntries } from '../navigation-order.mjs'
+import { transformDocumentationHead } from '../../.vitepress/documentation-seo'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const configDirectory = resolve(siteDirectory, '../guides')
@@ -17,7 +18,10 @@ const generatedFontPath = join(siteDirectory, '.vitepress/generated-fonts.json')
 const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
 const generatedGuideColorsPath = join(siteDirectory, '.vitepress/generated-guide-colors.json')
 const generatedGuideColors = existsSync(generatedGuideColorsPath) ? JSON.parse(readFileSync(generatedGuideColorsPath, 'utf8')) : {}
-const activeLanguage = siteConfig.languages[0]
+const generatedOgImages = existsSync(join(siteDirectory, '.vitepress/generated-og-images.json'))
+  ? JSON.parse(readFileSync(join(siteDirectory, '.vitepress/generated-og-images.json'), 'utf8'))
+  : {}
+const defaultLanguage = siteConfig.fallbackLanguage ?? siteConfig.languages[0]
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
 const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
   ? resolve(process.env.FELUQA_DOCS_OUT_DIR)
@@ -73,9 +77,9 @@ function escapeHtml(value: string): string {
   })[character]!)
 }
 
-function groupTitle(path: string, fallback: string): string {
+function groupTitle(path: string, fallback: string, language = defaultLanguage): string {
   const metadata = sidebarMetadata[path]
-  const label = metadata?.labels?.[activeLanguage] ?? fallback
+  const label = metadata?.labels?.[language] ?? metadata?.labels?.[defaultLanguage] ?? fallback
   const escapedLabel = escapeHtml(label)
   if (!metadata?.icon) return escapedLabel
   return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(metadata.icon)}')" aria-hidden="true"></span><span>${escapedLabel}</span></span>`
@@ -90,7 +94,7 @@ function ordered<T extends { name: string }>(directory: string, entries: T[]): T
   return sortNavigationEntries(entries, sourceNames)
 }
 
-function sidebar(directory: string, root = directory): any[] {
+function sidebar(directory: string, root = directory, language = defaultLanguage): any[] {
   return ordered(directory, readdirSync(directory, { withFileTypes: true })).flatMap((entry) => {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
@@ -102,10 +106,10 @@ function sidebar(directory: string, root = directory): any[] {
         const indexPath = join(path, 'index.md')
         return [{ text: escapeHtml(titleOf(indexPath)), link: publicPagePath(indexPath) }]
       }
-      const items = sidebar(path, root)
+      const items = sidebar(path, root, language)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
       const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
-      return items.length ? [{ text: groupTitle(relativePath, fallback), link: directoryLink(path), collapsed: true, items }] : []
+      return items.length ? [{ text: groupTitle(relativePath, fallback, language), link: directoryLink(path), collapsed: true, items }] : []
     }
     if (!entry.name.endsWith('.md')) return []
     if (entry.name === 'index.md') return []
@@ -115,31 +119,54 @@ function sidebar(directory: string, root = directory): any[] {
   })
 }
 
-const nav = site.subguides.map((guide: { path: string; label: string }) => {
+function navigation(language = defaultLanguage): any[] {
+ return site.subguides.map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
   const uri = guide.uri
   const base = routeBase(guide.path)
+  const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `/${language}`
   const link = uri.entry
-    ? `/${[base, uri.entry].filter(Boolean).join('/')}/`
+    ? `${localePrefix}/${[base, uri.entry].filter(Boolean).join('/')}/`
     : uri.index && !base
-      ? `/${uri.index}`
-      : `/${base}${base ? '/' : ''}`
-  return { text: guide.label, link }
-})
-const languageMenu = site.languages.length ? [{
-  text: site.languageLabels?.[site.languages[0]] ?? site.languages[0].toUpperCase(),
-  items: site.languages.map((language: string) => ({
-    text: site.languageLabels?.[language] ?? language.toUpperCase(),
-    link: site.languageLinks?.[language] ?? (language === site.languages[0] ? '/' : `/${language}/`),
-  })),
-}] : []
-const sidebars = Object.fromEntries(site.subguides.map((guide: { path: string; label: string }) => {
-  const base = routeBase(guide.path)
-  const directory = join(generatedDirectory, ...base.split('/').filter(Boolean))
-  return [`/${base}${base ? '/' : ''}`, sidebar(directory)]
-}))
+      ? `${localePrefix}/${uri.index}`
+      : `${localePrefix}/${base}${base ? '/' : ''}`
+  return { text: guide.labels?.[language] ?? guide.label, link }
+ })
+}
+function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
+  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
+  return Object.fromEntries(site.subguides.map((guide: { path: string; label: string }) => {
+    const base = routeBase(guide.path)
+    const directory = join(generatedDirectory, prefix, ...base.split('/').filter(Boolean))
+    const items = sidebar(directory, directory, language)
+    const guideIndex = base ? join(directory, 'index.md') : ''
+    if (guideIndex && existsSync(guideIndex)) {
+      items.unshift({ text: escapeHtml(titleOf(guideIndex)), link: publicPagePath(guideIndex) })
+    }
+    return [`/${prefix}${base}${base ? '/' : ''}`, items]
+  }))
+}
+const sidebars = localizedSidebars()
+const localizedThemeConfig = Object.fromEntries(site.languages
+  .filter((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase())
+  .map((language: string) => [language, {
+    nav: navigation(language),
+    sidebar: localizedSidebars(language),
+    outline: { label: siteConfig.outline.labels[language] ?? siteConfig.outline.labels[defaultLanguage] ?? 'On this page' },
+    footer: siteConfig.footer?.[language] ?? siteConfig.footer?.[defaultLanguage],
+    langMenuLabel: siteConfig.languageMenuLabels?.[language] ?? 'Change language',
+  }]))
+const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => [
+  language.toLowerCase() === defaultLanguage.toLowerCase() ? 'root' : language,
+  {
+    label: site.languageLabels[language],
+    lang: language,
+    ...(language.toLowerCase() === defaultLanguage.toLowerCase() ? {} : { link: `/${language}/` }),
+  },
+]))
 
 export default defineConfig({
   title: siteConfig.site.name,
+  locales: vitepressLocales,
   head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
   srcDir: '.generated-guides',
   outDir: outputDirectory,
@@ -147,12 +174,31 @@ export default defineConfig({
   mpa: false,
   vite: { configFile: join(siteDirectory, 'vite.config.ts') },
   markdown: siteConfig.markdown,
-  transformHead({ page }) {
-    const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`) || page.startsWith(`${routeBase(entry.path)}/`))
+  transformHead({ page, pageData, title, description }) {
+    const pageParts = page.replace(/^\/+/, '').split('/')
+    const normalizedPage = site.languages.some((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase() && language.toLowerCase() === pageParts[0].toLowerCase())
+      ? pageParts.slice(1).join('/')
+      : pageParts.join('/')
+    const guide = site.subguides.find((entry: { path: string }) => {
+      const base = routeBase(entry.path)
+      return Boolean(base && (normalizedPage === base || normalizedPage.startsWith(`${base}/`)))
+    })
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
     const siteUrl = siteConfig.seo?.siteUrl
+    const guideRouteKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'
+    const seoHead = transformDocumentationHead({
+      page,
+      pageData,
+      title,
+      description,
+      siteName: siteConfig.site.name,
+      siteUrl,
+      images: (generatedOgImages as Record<string, string[]>)[guideRouteKey] ?? (generatedOgImages as Record<string, string[]>).root ?? [],
+      defaultLanguage,
+    })
+    head.push(...seoHead)
     const faqEntry = Object.entries(siteConfig.seo?.locales ?? {}).find(([language]) => {
       const seoPath = siteConfig.seo.path ?? 'faq'
       const languagePath = language.toLowerCase() === defaultSeoLocale ? seoPath : `${language}/${seoPath}`
@@ -242,8 +288,9 @@ export default defineConfig({
     return head
   },
   themeConfig: {
-    nav: [...nav, ...languageMenu],
-    langMenuLabel: site.languageMenuLabel ?? 'Change language',
+    nav: navigation(),
+    locales: localizedThemeConfig,
+    langMenuLabel: siteConfig.languageMenuLabels?.[defaultLanguage] ?? 'Change language',
     socialLinks: site.socialLinks ?? [],
     sidebar: sidebars,
     search: { provider: siteConfig.search.provider, options: {

@@ -11,20 +11,42 @@ const primaryFavicon = Object.values(generatedGuideColors)[0]?.favicon
 const mimeTypes: Record<string, string> = {
   '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
-  '.woff2': 'font/woff2',
+  '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2',
 }
 
 export default defineConfig({
+  resolve: {
+    alias: [
+      { find: /^vue$/, replacement: resolve(siteDirectory, 'node_modules/vue/dist/vue.runtime.esm-bundler.js') },
+      { find: /^vitepress$/, replacement: resolve(siteDirectory, 'node_modules/vitepress/dist/client/index.js') },
+    ],
+  },
   publicDir: publicDirectory,
   plugins: [{
     name: 'feluqa-generated-public-assets',
     configureServer(server) {
       server.middlewares.use((request, response, next) => {
+        let requestUrl: URL
         let pathname: string
-        try { pathname = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname) }
+        try {
+          requestUrl = new URL(request.url ?? '/', 'http://localhost')
+          pathname = decodeURIComponent(requestUrl.pathname)
+        }
         catch { next(); return }
+        if (requestUrl.searchParams.has('import')) {
+          if (pathname.endsWith('/index.md')) {
+            const siblingMarkdown = pathname.slice(0, -'/index.md'.length) + '.md'
+            const siblingPath = resolve(siteDirectory, '.generated-guides', `.${siblingMarkdown}`)
+            if (!existsSync(resolve(siteDirectory, '.generated-guides', `.${pathname}`)) && existsSync(siblingPath)) {
+              request.url = `${siblingMarkdown}${requestUrl.search}`
+            }
+          }
+          next()
+          return
+        }
         const isDefaultIcon = pathname === '/favicon.ico' && typeof primaryFavicon === 'string'
-        if (!isDefaultIcon && !pathname.startsWith('/mermaid/') && !pathname.startsWith('/__docs-assets/')) {
+        const isConfiguredTextFile = /^\/(?:[A-Za-z0-9._-]+\.txt)$/.test(pathname)
+        if (!isDefaultIcon && !isConfiguredTextFile && !pathname.startsWith('/mermaid/') && !pathname.startsWith('/__docs-assets/')) {
           next()
           return
         }
