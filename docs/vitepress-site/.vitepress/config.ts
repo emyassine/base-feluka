@@ -78,6 +78,7 @@ export default defineConfig({
   outDir: outputDirectory,
   cleanUrls: false,
   mpa: false,
+  markdown: siteConfig.markdown,
   transformHead({ page }) {
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     if (!guide) return []

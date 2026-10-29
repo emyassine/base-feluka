@@ -20,12 +20,13 @@ author:
 
 This command handler lives in the console profile's command source tree. The binary, `main.rs`, build script, and profile setup are explained in [How a Feluqa CLI Is Structured](../040-directory-structure/010-cli-structure.en.md).
 
-> **A note on what you are learning:** This first program introduces ideas
-> that appear across Rust projects: crate roots, imports, library paths,
-> `Result`, attributes, functions, references, and return values. Knowing these
-> basics will help you read a wide range of Rust code. Each project may add its
-> own APIs and concepts, so use this as a foundation rather than a complete
-> guide to every part of Rust.
+::: tip A note on what you are learning
+This first program introduces ideas that appear across Rust projects: crate
+roots, imports, library paths, `Result`, attributes, functions, references, and
+return values. Knowing these basics will help you read a wide range of Rust
+code. Each project may add its own APIs and concepts, so use this as a
+foundation rather than a complete guide to every part of Rust.
+:::
 
 ## Command handler
 

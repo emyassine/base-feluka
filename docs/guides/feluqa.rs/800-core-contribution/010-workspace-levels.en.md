@@ -41,11 +41,14 @@ flowchart TB
     W1 -. provides crates .-> W2
 ```
 
-## Framework workspace
+## Workspace manifests
 
-At the repository root, in `.feluqa/workspace.toml`:
+Each workspace declares its role in `.feluqa/workspace.toml` at the repository
+root. Select a tab to compare the framework and developer workspace manifests:
 
-```toml
+::: code-group
+
+```toml [Framework workspace]
 [workspace]
 kind = "framework"
 name = "feluqa"
@@ -55,33 +58,37 @@ tools = "tools"
 git = "https://github.com/emyassine/base-feluka.git"
 ```
 
-## Developer workspace
-
-At the root of the developer's repository, even if it manages several modules:
-
-```toml
+```toml [Developer workspace]
 [workspace]
 kind = "developer"
 modules = ["modules/*"]
 ```
 
+:::
+
 The repository may contain other folders. It does not have to adopt the `crates/` and `products/` layout of the framework.
 
 ## Declaring a package
 
-A package announces its role with the `feluqa` attribute. Its `feluqa.toml` sits next to its `Cargo.toml`.
+A package announces its role with the `feluqa` attribute. These examples show
+the two package roles; a framework crate and a developer module use the same
+attribute with different values:
 
-```rust
+::: code-group
+
+```rust [Framework crate]
 // crates/core/feluqa-core/src/lib.rs
 #[feluqa(kind = "crate")]
 pub struct FeluqaPackage;
 ```
 
-```rust
+```rust [Developer module]
 // modules/inventory/src/main.rs
 #[feluqa(kind = "module")]
 fn main() {}
 ```
+
+:::
 
 `tools/feluqa-build` uses neither kind, so it needs neither the attribute nor a `feluqa.toml`.
 

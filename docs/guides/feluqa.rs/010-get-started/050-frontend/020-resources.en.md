@@ -21,7 +21,12 @@ author:
 
 A resource is a complete CRUD in **one file**.
 
-```rust
+Start with a derived resource for conventional CRUD, or choose the custom
+`Resource` implementation when you need to define forms, tables, or hooks:
+
+::: code-group
+
+```rust [Custom resource]
 // src/modules/sales/resources/customer.rs
 use feluqa::resource::prelude::*;
 use feluqa::ui::{form::*, Icon};
@@ -68,9 +73,7 @@ impl Resource for CustomerResource {
 }
 ```
 
-## Level 0: zero configuration
-
-```rust
+```rust [Derived resource]
 /// Customer. A full CRUD with table, form, routes and permissions.
 #[derive(feluqa::Model, feluqa::Resource)]
 #[resource(panel = "admin", group = "Shop")]
@@ -81,7 +84,10 @@ pub struct Customer {
 }
 ```
 
-Move to level 1 (the `impl Resource`) only when you need control.
+:::
+
+The derived form provides the starting CRUD; use the custom implementation
+when the application needs more control.
 
 ## Generated capabilities
 

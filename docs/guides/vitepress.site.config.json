@@ -19,6 +19,12 @@
   "languages": [
     "en"
   ],
+  "markdown": {
+    "lineNumbers": true,
+    "image": {
+      "lazyLoad": true
+    }
+  },
   "search": {
     "labels": {
       "root": {
