@@ -1,7 +1,7 @@
 ---
 icon: "scale"
-title: "Licence and Ownership"
-description: "Feluqa's proprietary status, the strategy behind it, contributor terms, and company identification."
+title: "Build with Feluqa"
+description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2
@@ -14,20 +14,38 @@ author:
   linkedin: "https://www.linkedin.com/in/elmoumenyassine"
   email: "yassine@numerimondes.com"
 ---
-# Licence and Ownership
 
-The **Feluqa SDK** and **Feluqa Platform** are proprietary software owned by
-NUMERIMONDES SARL AU. Their use is governed by the written licence or contract
-that applies to the relevant organisation and deployment. A **Product** built
-with Feluqa is a separate deliverable: its agreement specifies the rights in
-that Product, its Applications and Modules, and any customer-specific source
-code. These terms use Feluqa's [canonical taxonomy](../01-get-started/00-introduction/03-taxonomy.en.md).
+# Build with Feluqa
 
-Employees, subcontractors, and AI agents may act only within the rights
-granted to the organisation they work for. Access to Feluqa source code or a
-compiled deliverable does not, by itself, grant additional rights to use,
-modify, publish, distribute, or sublicense the Feluqa SDK or Platform.
-Third-party components remain subject to their own licences and notices.
+Creating an **Application** with Feluqa is free of charge. Your organisation
+can build Applications with the SDK and use the Products it creates with
+them. This freedom to create and use your Products is guaranteed.
+
+## Feluqa Platform and licensing
+
+The **Feluqa Platform** and its current **SDK** are proprietary software owned
+by NUMERIMONDES SARL AU. Proprietary describes ownership and licensing; it
+does not prevent organisations from creating Applications with Feluqa or
+using the Products they build. The licence terms distinguish rights to the
+Platform and SDK from rights in a Product, its Applications and Modules, and
+customer-specific source code. These terms use Feluqa's
+[canonical taxonomy](../01-get-started/00-introduction/03-taxonomy.en.md).
+
+Today, Feluqa has one SDK. Additional SDKs may be developed for different
+audiences or target profiles.
+
+Some Feluqa components will be released under open-source licences over time.
+Each release will identify the crates, licence, and applicable versions.
+Other crates may remain unpublished to meet the security, operational,
+contractual, or strategic needs of civilian, research, military, and
+government deployments. This can apply even when a crate contains no
+client-specific business logic or deployment configuration. These decisions
+are made component by component; keeping source private is not, by itself, a
+security guarantee.
+
+Employees, subcontractors, and AI agents may work within the rights granted to
+their organisation. Third-party components remain subject to their own
+licences and notices.
 
 For full copyright and licence information, consult the licence materials
 distributed with the relevant source code or the Licences resource in the
@@ -35,12 +53,13 @@ System Control Panel, when available.
 
 ## Why Feluqa is proprietary
 
-Feluqa is being developed as a long-term platform business, not as an open
-source project. The product strategy is to provide systemic breadth in the
-platform while letting users and their agents provide domain depth through
-their own modules. Keeping the platform proprietary gives NUMERIMONDES control
-of its integrated roadmap and the ability to fund and protect sustained work
-across the SDK, runtimes, development tools, deployment, and operations.
+Proprietary software is not inherently good or bad; it is an ownership and
+distribution model. For Feluqa, it lets NUMERIMONDES steward an integrated
+platform and sustain work across SDKs, runtimes, development tools, deployment,
+and operations. Application creation remains free, and organisations can
+build with their own engineers. The product strategy is to provide systemic
+breadth in the platform while letting users and their agents provide domain
+depth through their own Modules.
 
 The commercial ambition is to build a durable, differentiated position in
 military software and software for small and medium-sized enterprises.
@@ -75,34 +94,8 @@ Maintainers will discuss scope and implementation with you, arrange access to
 the private Feluqa monorepo where appropriate, and agree the contribution
 terms before work is incorporated. See the
 [Contribution Guide](03-contribution-guide.en.md) for the engineering
-workflow. Feluqa remains proprietary; the agreed terms make clear how your
-contribution may be used in the product.
-
-## Want a Product Built with Feluqa?
-
-NUMERIMONDES works with organisations that want to create a product using
-Feluqa. Start a conversation about the users, workflows, operating environment,
-and delivery goals. A written proposal and agreement will define the project
-scope, deliverables, rights in customer-specific work, Feluqa usage rights,
-deployment, support, maintenance, and fees before work begins. Commercial
-terms may include development, licensing, support, or maintenance fees; terms
-are agreed for each engagement.
-
-### Build with your own team
-
-Organisations may also want their own engineers to build and maintain products
-with Feluqa. NUMERIMONDES can discuss the required access, usage rights,
-onboarding, and support. A client's engineers may propose improvements to the
-Feluqa SDK; changes are reviewed against the development guidelines, product
-architecture, and security requirements, and the contribution terms are agreed
-before accepted work is incorporated.
-
-### Find people to build with Feluqa
-
-NUMERIMONDES can use its in-house recruitment activity to help identify and
-assemble a qualified team for a Feluqa project. A directory of people with
-Feluqa experience is planned; profiles will be published only with each
-person's agreement and with their experience clearly described.
+workflow. The Feluqa Platform remains proprietary; agreed terms make clear how
+your contribution may be used in proprietary or open-source components.
 
 ## Legal Overview
 
@@ -157,3 +150,29 @@ well as for the account of third parties:
 And more generally, all commercial, industrial, financial, movable, and
 real-estate operations related directly or indirectly to the above purposes,
 or likely to favour their achievement and development.
+
+## Want a Product Built with Feluqa?
+
+NUMERIMONDES works with organisations that want a Product created with Feluqa.
+Start a conversation about the users, workflows, operating environment, and
+delivery goals. A written proposal will define the scope, deliverables, rights
+in customer-specific work, Feluqa usage rights, deployment, support,
+maintenance, and any fees before work begins. Commercial terms may include
+development, licensing, support, or maintenance fees; terms are agreed for
+each engagement.
+
+### Build with your own team
+
+Organisations can have their own engineers build and maintain Products with
+Feluqa. NUMERIMONDES can discuss the required access, usage rights, onboarding,
+and support. A client's engineers may propose improvements to the Feluqa SDK;
+changes are reviewed against the development guidelines, product architecture,
+and security requirements, and contribution terms are agreed before accepted
+work is incorporated.
+
+### Find people to build with Feluqa
+
+NUMERIMONDES can use its in-house recruitment activity to help identify and
+assemble a qualified team for a Feluqa project. A directory of people with
+Feluqa experience is planned; profiles will be published only with each
+person's agreement and with their experience clearly described.

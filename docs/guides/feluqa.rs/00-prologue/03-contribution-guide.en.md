@@ -23,9 +23,9 @@ monorepo if you need it. A public issues and discussions space for these
 requests is planned and will be linked from the GitHub page when ready.
 
 Maintainers will work with you on scope and implementation, arrange access,
-and agree the terms for your contribution before incorporating it. Read the
-[Licence and Ownership](02-licence.en.md) page for the proprietary ownership
-model and contribution terms.
+and agree the terms for your contribution before incorporating it. Read
+[Build with Feluqa](02-licence.en.md) for the licensing model and contribution
+terms.
 
 Organisations interested in building a product or contributing to the Feluqa
 SDK with their own engineering team can also use the contact path above. The
