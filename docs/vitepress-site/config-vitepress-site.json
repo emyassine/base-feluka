@@ -1,0 +1,11 @@
+{
+  "guides": [
+    { "source": "../guides/feluqa.rs", "output": "feluqa", "entry": "000-prologue/010-release-notes.en.md" },
+    { "source": "../guides/x-agents", "output": "x-agents", "entry": "000.index.en.md" }
+  ],
+  "languages": ["en"],
+  "defaultLanguage": "en",
+  "indexPath": "../build/index.$lang.html",
+  "outputDir": "../build",
+  "siteName": "Numerimondes Documentation"
+}
