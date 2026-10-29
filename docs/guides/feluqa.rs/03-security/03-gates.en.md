@@ -8,7 +8,6 @@ weight: 3
 status: "Target"
 tags: [feluqa, security, gate, attributes]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

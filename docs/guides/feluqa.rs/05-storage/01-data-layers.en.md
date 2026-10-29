@@ -8,7 +8,6 @@ weight: 1
 status: "Target"
 tags: [feluqa, storage, sqlite, toml, json]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

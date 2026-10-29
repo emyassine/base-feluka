@@ -8,7 +8,6 @@ weight: 2
 status: "Exploring"
 tags: [feluqa, licence, proprietary, contributors]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"
@@ -17,14 +16,22 @@ author:
 ---
 # Licence and Ownership
 
-Feluqa is proprietary software owned by NUMERIMONDES SARL AU. All rights are
-reserved unless NUMERIMONDES grants specific rights in a separate written
-licence. Access to the repository does not, by itself, grant permission to
-use, copy, modify, publish, distribute, sublicense, or create derivative
-works from Feluqa. For the full copyright and licence information, consult the
-`LICENSE` file distributed with the source code or the Licences resource in
-the System Control Panel, when available. Third-party components remain under
-their own licences and notices.
+The **Feluqa SDK** and **Feluqa Platform** are proprietary software owned by
+NUMERIMONDES SARL AU. Their use is governed by the written licence or contract
+that applies to the relevant organisation and deployment. A **Product** built
+with Feluqa is a separate deliverable: its agreement specifies the rights in
+that Product, its Applications and Modules, and any customer-specific source
+code. These terms use Feluqa's [canonical taxonomy](../01-get-started/00-introduction/03-taxonomy.en.md).
+
+Employees, subcontractors, and AI agents may act only within the rights
+granted to the organisation they work for. Access to Feluqa source code or a
+compiled deliverable does not, by itself, grant additional rights to use,
+modify, publish, distribute, or sublicense the Feluqa SDK or Platform.
+Third-party components remain subject to their own licences and notices.
+
+For full copyright and licence information, consult the licence materials
+distributed with the relevant source code or the Licences resource in the
+System Control Panel, when available.
 
 ## Why Feluqa is proprietary
 
@@ -64,8 +71,9 @@ to discuss your idea and request access to the private monorepo. A public
 issues and discussions space for contribution proposals and access requests
 is planned; it will be linked from the GitHub page when it is ready.
 
-Maintainers will discuss scope and implementation with you, arrange repository
-access, and agree the contribution terms before work is incorporated. See the
+Maintainers will discuss scope and implementation with you, arrange access to
+the private Feluqa monorepo where appropriate, and agree the contribution
+terms before work is incorporated. See the
 [Contribution Guide](03-contribution-guide.en.md) for the engineering
 workflow. Feluqa remains proprietary; the agreed terms make clear how your
 contribution may be used in the product.

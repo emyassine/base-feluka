@@ -8,7 +8,6 @@ date: 2026-10-29
 lastmod: 2026-10-29
 status: "Exploring"
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

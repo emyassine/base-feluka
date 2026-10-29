@@ -8,7 +8,6 @@ weight: 2
 status: "Partial"
 tags: [feluqa, http, axum, live-actions, routes]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

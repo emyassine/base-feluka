@@ -8,7 +8,6 @@ weight: 1
 status: "Target"
 tags: [feluqa, security, rbac, privileges, roles, permissions]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

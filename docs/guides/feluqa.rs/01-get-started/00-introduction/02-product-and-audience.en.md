@@ -8,7 +8,6 @@ weight: 2
 status: "Exploring"
 tags: [feluqa, product, audience, modules]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

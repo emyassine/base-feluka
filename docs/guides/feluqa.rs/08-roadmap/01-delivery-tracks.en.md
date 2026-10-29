@@ -8,7 +8,6 @@ weight: 1
 status: "Exploring"
 tags: [feluqa, roadmap, tracks]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

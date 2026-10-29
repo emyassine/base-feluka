@@ -8,7 +8,6 @@ weight: 1
 status: "Partial"
 tags: [feluqa, workspace, package, toml]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

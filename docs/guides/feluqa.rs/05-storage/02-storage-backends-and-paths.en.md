@@ -8,7 +8,6 @@ weight: 2
 status: "Exploring"
 tags: [feluqa, storage, postgresql, sqlite, paths]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

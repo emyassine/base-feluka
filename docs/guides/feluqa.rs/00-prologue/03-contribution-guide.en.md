@@ -8,7 +8,6 @@ weight: 3
 status: "Exploring"
 tags: [feluqa, contribution, development, agents]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

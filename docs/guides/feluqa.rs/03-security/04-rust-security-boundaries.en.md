@@ -8,7 +8,6 @@ weight: 4
 status: "Exploring"
 tags: [feluqa, security, rust, memory-safety]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"

@@ -8,7 +8,6 @@ weight: 4
 status: "Target"
 tags: [feluqa, system-panel, core, administration]
 draft: true
-lang: en
 author:
   name: "El Moumen Yassine"
   url: "https://numerimondes.com"
