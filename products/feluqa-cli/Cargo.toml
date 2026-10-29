@@ -2,6 +2,7 @@
 name = "feluqa-cli"
 version.workspace = true
 workspace = "../.."
+build = "build.rs"
 description = "Command line product for the Feluqa application platform."
 authors = ["El Moumen Yassine <yassine@numerimondes.com>"]
 edition.workspace = true
@@ -21,4 +22,3 @@ feluqa = { version = "0.2.0", registry = "feluqa", path = "../../crates/platform
 [[bin]]
 name = "feluqa"
 path = "src/main.rs"
-

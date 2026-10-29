@@ -169,13 +169,29 @@ profile directory or a nested `src` folder.
 
 ### The binary and its console entry point
 
-The relevant part of `Cargo.toml` declares the binary:
+The package manifest declares both the build script and binary:
 
 ```toml
+[package]
+name = "hello-cli"
+build = "build.rs"
+
 [[bin]]
 name = "hello-cli"
 path = "src/main.rs"
 ```
+
+Cargo integrates with specialized tools through build scripts instead of
+replacing those tools. It compiles and runs a package's build script just
+before compiling the package. The Cargo Book describes this
+[build-script lifecycle](https://doc.rust-lang.org/cargo/reference/build-scripts.html).
+Feluqa's console scanner uses it to discover command handlers and generate
+their registration.
+
+`build = "build.rs"` belongs under `[package]`, because it configures the
+package's build script. It does not belong in `[[bin]]`, which configures the
+binary target. Cargo can discover a root-level `build.rs` by convention;
+Feluqa declares the path explicitly so the manifest states that intent.
 
 Before looking at the Rust files, one Rust term helps explain their first
 lines: Rust has a **prelude**, a set of commonly used names the compiler makes
