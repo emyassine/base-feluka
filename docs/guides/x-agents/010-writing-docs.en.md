@@ -279,6 +279,44 @@ the terminology consistent.
 - Use an ordered folder structure consistently; add an Upgrade Guide only
   when a prior major version exists to upgrade from.
 
+## Use the built-in Markdown features
+
+The documentation site uses VitePress's Markdown renderer. Prefer its native
+features over hand-written HTML: heading anchors, internal links without file
+extensions, tables, task lists, footnotes, emoji, `[[toc]]`, callout
+containers, GitHub-style alerts, syntax highlighting, line highlighting,
+snippets, and lazy-loaded images are available.
+
+Use a code group when readers need to compare valid alternatives for the same
+task. Give every tab a short, meaningful label and keep the examples focused
+on the difference being explained:
+
+::: code-group
+
+```rust [Derived resource]
+#[derive(feluqa::Model, feluqa::Resource)]
+pub struct Customer {
+    #[field(text, required)]
+    pub name: String,
+}
+```
+
+```rust [Custom resource]
+pub struct CustomerResource;
+
+impl Resource for CustomerResource {
+    type Model = Customer;
+}
+```
+
+:::
+
+Use `::: tip`, `::: info`, `::: warning`, `::: danger`, and `::: details`
+for short, relevant asides. Keep ordinary explanation in the page body, and
+use fenced code blocks with a language identifier so VitePress can highlight
+them. Use line highlighting only when it helps readers focus on specific
+changes.
+
 ## Final review
 
 Before finishing:

@@ -32,11 +32,9 @@ const primaryConfig = primaryGuideConfig.config
 
 function titleOf(file: string): string {
   const source = readFileSync(file, 'utf8')
-  return source.match(/^sidebarTitle:\s*["']?(.+?)["']?\s*$/m)?.[1]
-    ?? source.match(/^navTitle:\s*["']?(.+?)["']?\s*$/m)?.[1]
-    ?? source.match(/^title:\s*["']?(.+?)["']?\s*$/m)?.[1]
-    ?? source.match(/^#\s+(.+)$/m)?.[1]
-    ?? relative(generatedDirectory, file).split(sep).pop()!.replace(/^\d+[-.]/, '').replace(/\.md$/, '').replace(/[-_]/g, ' ')
+  const title = source.match(/^sidebarTitle:\s*["']?(.+?)["']?\s*$/m)?.[1]
+  if (!title) throw new Error(`Every published Markdown page must define sidebarTitle: ${file}`)
+  return title
 }
 
 function orderKey(name: string): [number, string] {
