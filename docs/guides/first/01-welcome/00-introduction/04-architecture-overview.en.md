@@ -184,7 +184,7 @@ Generated into `target/feluqa/`, never edited and never committed:
 | `workstation` | Standalone local app on a desktop | SQLite in the user data directory | Target |
 | `embedded` (`no_std`) | Telemetry, sensor ingestion | Minimal or none | Exploring |
 
-Shared modules can be included in separate Applications built for different target profiles. See [web and workstation modules](../08-roadmap/01-delivery-tracks.en.md) (track F9) for the planned server and workstation composition and connectivity design.
+Shared modules can be included in separate Applications built for different target profiles. See [web and workstation modules](../../08-roadmap/01-delivery-tracks.en.md) (track F9) for the planned server and workstation composition and connectivity design.
 
 ## Platform capabilities
 

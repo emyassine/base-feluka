@@ -65,7 +65,7 @@ Feluqa provides shared building blocks, including an SDK, compile-time
 validation and generation, a CLI, storage integrations, and platform services.
 The current implementation and remaining gaps are described in the
 [architecture overview](04-architecture-overview.en.md) and the
-[delivery roadmap](../08-roadmap/01-delivery-tracks.en.md).
+[delivery roadmap](../../08-roadmap/01-delivery-tracks.en.md).
 
 ## Examples
 

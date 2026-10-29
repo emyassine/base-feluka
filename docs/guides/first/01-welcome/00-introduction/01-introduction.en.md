@@ -49,17 +49,17 @@ implementation status so readers can tell the difference.
 - [Architecture overview](04-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
-- [Create your first application](05-create-your-first-application.en.md): see
+- [Create your first application](../01-get-started/01-create-your-first-application.en.md): see
   the planned path from project setup to a useful running application.
 
 ## Continue reading
 
-- [Workspaces and packages](../02-workspaces-and-contexts/01-workspace-levels.en.md):
+- [Workspaces and packages](../../02-workspaces-and-contexts/01-workspace-levels.en.md):
   understand how projects and shared code are organized (mostly useful for
   framework contributors).
-- [Security model](../03-security/01-authorization-model.en.md): explore
+- [Security model](../../03-security/01-authorization-model.en.md): explore
   authorization and isolation.
-- [Install an app on a new server](../06-deployment/01-installing-an-app-with-the-cli.en.md):
+- [Install an app on a new server](../../06-deployment/01-installing-an-app-with-the-cli.en.md):
   follow the deployment workflow.
-- [Roadmap](../08-roadmap/01-delivery-tracks.en.md): see planned work and
+- [Roadmap](../../08-roadmap/01-delivery-tracks.en.md): see planned work and
   delivery priorities.

@@ -126,5 +126,5 @@ scope that owns platform-wide privileges. Avoid using `app`, `product`, and
 `module` as synonyms in code, manifests, CLI commands, or documentation.
 
 For authorization details, see the
-[authorization model](../03-security/01-authorization-model.en.md) and
-[privilege levels](../03-security/02-privilege-levels.en.md).
+[authorization model](../../03-security/01-authorization-model.en.md) and
+[privilege levels](../../03-security/02-privilege-levels.en.md).
