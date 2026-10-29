@@ -3,8 +3,8 @@ icon: "shield"
 title: "Gates: Protecting a Function"
 description: "The #[gate] attribute: syntax, options, resolution order, secure-by-default rules and the builder equivalent."
 summary: "Documents the planned #[gate] attribute for protecting service functions, resource hooks, API handlers, actions, and custom pages. It covers options, composition rules, secure-by-default compile errors, explicit public access, the builder equivalent, and the checks and audit behavior the macro is intended to generate."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 3
 status: "Target"
 tags: [feluqa, security, gate, attributes]

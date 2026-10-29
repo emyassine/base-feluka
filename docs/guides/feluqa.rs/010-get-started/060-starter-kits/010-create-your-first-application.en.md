@@ -5,8 +5,8 @@ description: "The planned Feluqa getting-started path: choose an application, pr
 summary: "Introduces the planned first-project journey and explains Feluqa's command format, including the binary name, command namespace, arguments, and options. It helps readers choose an application profile and follow the setup, CLI structure, first greeting command, and weather-watcher tutorial while clearly separating the planned scaffold from currently available CLI behavior."
 weight: 1
 tags: [feluqa, getting-started, cli, application]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -72,9 +72,9 @@ local protocol; one application does not depend on the other's executable.
 
 ## Follow the walkthrough
 
-1. [Prepare your development environment](020-prepare-your-development-environment.en.md): install the Rust toolchain and target dependencies, then choose an editor.
-2. [How a Feluqa CLI is structured](030-cli-structure.en.md): learn how the binary, console, profiles, and command handlers fit together.
-3. [Program 0: Hello CLI](040-program-0-hello-cli.en.md): write a command that prints `Hello CLI`.
-4. [Build the weather watcher](050-build-the-weather-watcher.en.md): extend the first command into a useful local service with weather checks and email notifications.
-5. [Choose an application profile](060-choose-an-application-profile.en.md): distinguish application profiles, executable binaries, and Rust compilation targets.
+1. [Prepare your development environment](../010-installation/010-prepare-your-development-environment.en.md): install the Rust toolchain and target dependencies, then choose an editor.
+2. [How a Feluqa CLI is structured](../040-directory-structure/010-cli-structure.en.md): learn how the binary, console, profiles, and command handlers fit together.
+3. [Program 0: Hello CLI](020-program-0-hello-cli.en.md): write a command that prints `Hello CLI`.
+4. [Build the weather watcher](030-build-the-weather-watcher.en.md): extend the first command into a useful local service with weather checks and email notifications.
+5. [Choose an application profile](../020-configuration/010-choose-an-application-profile.en.md): distinguish application profiles, executable binaries, and Rust compilation targets.
 

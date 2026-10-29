@@ -3,8 +3,8 @@ icon: "scale"
 title: "Build with Feluqa"
 description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
 summary: "Explains that building Applications for personal, commercial, organizational, and authorized client work is free of charge and that creators may use the Products they create. It distinguishes the proprietary SDK and Platform from customer Products, describes contribution and selective open-source direction, provides company legal information, and outlines options for product development support."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 2
 status: "Exploring"
 tags: [feluqa, licence, proprietary, contributors]

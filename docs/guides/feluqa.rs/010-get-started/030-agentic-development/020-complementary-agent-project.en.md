@@ -3,8 +3,8 @@ icon: "bot"
 title: "A Complementary Agent Project"
 description: "How a separate, user-chosen AI agent could work with Feluqa to create and evolve product software."
 summary: "Describes a separate, planned agent companion that could let organisations choose a local agent or another supported provider. It outlines how agents could use Feluqa contracts and CLI workflows to create, compile, validate, test, package, and distribute product-specific Modules and Features while respecting privacy, permissions, review, and current implementation limits."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 4
 status: "Exploring"
 tags: [feluqa, agents, complementary-projects, product-direction]
@@ -58,5 +58,5 @@ This agent companion is a complementary product direction, not a delivered
 Feluqa feature. The repository does not yet provide the complete agent
 orchestration, local-agent runtime, provider selection, dynamic extension,
 compilation-to-distribution workflow, or a named companion product. The
-[agent-ready extensibility concept](../010-get-started/030-concepts/000-agent-ready-extensible-modules.en.md)
+[agent-ready extensibility concept](010-agent-ready-extensible-modules.en.md)
 describes the corresponding Feluqa platform direction.

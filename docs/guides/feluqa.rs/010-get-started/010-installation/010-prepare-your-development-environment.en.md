@@ -5,8 +5,8 @@ description: "The planned Feluqa dev:init setup for Rust, target-specific tools,
 summary: "Describes the planned feluqa dev:init flow for installing Rust and target-specific dependencies based on the selected application profile. It covers editor choice, recommends Zed while noting other Rust Analyzer editors, and links the setup stage to the first project tutorial without presenting the planned automation as implemented."
 weight: 2
 tags: [feluqa, getting-started, rust, zed, setup]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -17,7 +17,7 @@ author:
 ---
 # Prepare Your Development Environment
 
-> This is part two of [Create Your First Application](010-create-your-first-application.en.md).
+> This is part two of [Create Your First Application](../060-starter-kits/010-create-your-first-application.en.md).
 
 ## Prepare the development environment
 
@@ -81,5 +81,5 @@ extension being available for that editor.
 
 ## Continue
 
-With the machine ready, continue to [How a Feluqa CLI is structured](030-cli-structure.en.md).
+With the machine ready, continue to [How a Feluqa CLI is structured](../040-directory-structure/010-cli-structure.en.md).
 

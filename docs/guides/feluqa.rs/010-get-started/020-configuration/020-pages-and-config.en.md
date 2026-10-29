@@ -3,8 +3,8 @@ icon: "file-cog"
 title: "Pages and Configuration"
 description: "Overriding a resource page only when needed, and generating typed configuration with #[config]."
 summary: "Explains when to override a generated resource page and how Feluqa's typed configuration declaration generates a schema, environment example, startup validation, and System Panel page. It also describes configuration sources and the handling rules that keep saved secrets out of logs and client schemas."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 3
 status: "Target"
 tags: [feluqa, page, config, env]

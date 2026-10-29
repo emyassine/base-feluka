@@ -3,8 +3,8 @@ icon: "scroll-text"
 title: "Release Notes"
 description: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."
 summary: "Explains Feluqa's versioning scheme before and after 1.0, the absence of an announced release cadence or support periods, and how release-specific Rust MSRV requirements should be interpreted. It distinguishes the current 0.2.0 workspace baseline from a published release or verified support promise."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 1
 status: "Exploring"
 tags: [feluqa, release-notes, versioning]

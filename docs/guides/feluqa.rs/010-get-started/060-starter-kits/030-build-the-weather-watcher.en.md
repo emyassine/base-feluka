@@ -5,8 +5,8 @@ description: "Extend the first Feluqa CLI program into a weather watcher with em
 summary: "Plans a staged weather-watcher CLI tutorial: start with a local deterministic forecast, add a live provider and locally stored API key, then send email alerts and run the program as a service. It describes local execution, implementation status, and how the exercise builds on the first Feluqa command."
 weight: 5
 tags: [feluqa, getting-started, cli, weather, service]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -61,8 +61,8 @@ rather than available commands.
 
 ## Previous step
 
-Start with [Program 0: Hello CLI](040-program-0-hello-cli.en.md).
+Start with [Program 0: Hello CLI](020-program-0-hello-cli.en.md).
 
 ## Next step
 
-Learn how an [application profile differs from a binary and compilation target](060-choose-an-application-profile.en.md).
+Learn how an [application profile differs from a binary and compilation target](../020-configuration/010-choose-an-application-profile.en.md).

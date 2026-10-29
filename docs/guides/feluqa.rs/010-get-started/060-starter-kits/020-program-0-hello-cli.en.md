@@ -5,8 +5,8 @@ description: "Write a first Feluqa console command that prints Hello CLI, and le
 summary: "Walks through a first console command that prints Hello CLI and returns a command result. It explains the handler's relationship to the binary and profile, introduces core/alloc/std, Rust paths and the prelude, explains the crate attributes and lint choices, and shows how to run the program and continue learning."
 weight: 4
 tags: [feluqa, getting-started, cli, rust]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -17,7 +17,7 @@ author:
 ---
 # Program 0: Hello CLI
 
-This command handler lives in the console profile's command source tree. The binary, `main.rs`, build script, and profile setup are explained in [How a Feluqa CLI Is Structured](030-cli-structure.en.md).
+This command handler lives in the console profile's command source tree. The binary, `main.rs`, build script, and profile setup are explained in [How a Feluqa CLI Is Structured](../040-directory-structure/010-cli-structure.en.md).
 
 > **A note on what you are learning:** This first program introduces ideas
 > that appear across Rust projects: crate roots, imports, library paths,
@@ -173,4 +173,4 @@ Hello CLI
 
 ## Continue
 
-Next, [build the weather watcher](050-build-the-weather-watcher.en.md).
+Next, [build the weather watcher](030-build-the-weather-watcher.en.md).

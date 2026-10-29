@@ -3,8 +3,8 @@ icon: "layout-dashboard"
 title: "System Panel (Feluqa Core)"
 description: "The built-in control plane: first-run setup, users, privileges, roles, permissions, modules, features, configuration, audit and licensing."
 summary: "Describes the planned System Control Panel as the Platform's `/system` administration surface, separate from business application panels. It outlines its sections and the rules governing access and administrative responsibilities."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 4
 status: "Target"
 tags: [feluqa, system-panel, core, administration]

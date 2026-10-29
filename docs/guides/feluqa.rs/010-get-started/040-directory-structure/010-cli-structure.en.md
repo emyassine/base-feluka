@@ -5,8 +5,8 @@ description: "How the CLI binary, Cargo manifest, main.rs, build script, console
 summary: "Explains a Feluqa CLI as a console application with a named binary, Cargo manifest, main.rs entry point, build script, console profile, and command handlers. It uses the Feluqa CLI layout to show how profile command directories and generated registration fit together, why Cargo runs build.rs, and how a command is discovered and invoked."
 weight: 3
 tags: [feluqa, cli, console, rust]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -87,7 +87,7 @@ Feluqa prefers explicit imports. `#![no_implicit_prelude]` suppresses the
 standard, extern-crate, `macro_use`, and tool preludes; the language prelude
 remains. Code explicitly imports or qualifies the names it uses, making
 dependencies and macro inputs easier to inspect and generated application
-code more predictable. See [Program 0: Hello CLI](040-program-0-hello-cli.en.md)
+code more predictable. See [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md)
 for the library layers and an example using `::core`.
 
 The binary's `main.rs` declares which command profile belongs to it, then
@@ -162,8 +162,8 @@ src/commands/hello.rs
 ```
 
 That file is where the developer writes the command handler. The full
-`hello.rs` source and the command to run it are in [Program 0: Hello CLI](040-program-0-hello-cli.en.md).
+`hello.rs` source and the command to run it are in [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md).
 
 ## Continue
 
-Now write [Program 0: Hello CLI](040-program-0-hello-cli.en.md).
+Now write [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md).

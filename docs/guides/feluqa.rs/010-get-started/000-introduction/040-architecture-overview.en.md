@@ -3,8 +3,8 @@ icon: "network"
 title: "Architecture Overview"
 description: "How the Feluqa SDK, CLI, artifacts, Platform, Applications, and clients fit together, and what is generated at compile time."
 summary: "Presents Feluqa's target architecture, from Product and Module composition through SDK, CLI, generated artifacts, runtime layers, target profiles, and client interaction surfaces. It describes compile-time generation, execution and deployment flows, desktop console options, platform capabilities, and design targets, while identifying what the current implementation does not yet deliver."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 4
 status: "Target"
 tags: [feluqa, architecture, overview, mermaid, sdk]

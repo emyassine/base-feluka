@@ -3,8 +3,8 @@ icon: "layers"
 title: "Data Layers: TOML, SQLite, JSON and Memory"
 description: "Which format or store to use for manifests, runtime settings, business data, exchanges and temporary state."
 summary: "Maps TOML, SQLite, JSON, and in-memory storage to manifests, runtime settings, business data, exchanges, and temporary state. It explains how interface changes are persisted and applied, when to use typed columns or validated JSON, and why synchronization across devices requires a separate design."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 1
 status: "Target"
 tags: [feluqa, storage, sqlite, toml, json]

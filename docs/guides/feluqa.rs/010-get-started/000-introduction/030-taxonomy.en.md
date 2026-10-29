@@ -3,8 +3,8 @@ icon: "list-tree"
 title: "Taxonomy"
 description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
 summary: "Defines Feluqa's canonical distinctions among Products, Applications, Modules, Features, SDK, Platform, workspaces, packages, runtimes, and access-control terms. Examples show how several applications can form one Product and how console interfaces relate to target profiles; the guide also sets naming rules and clarifies that target terminology does not promise completed migrations or features."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 3
 status: "Target"
 tags: [feluqa, taxonomy, vocabulary, glossary, sdk]

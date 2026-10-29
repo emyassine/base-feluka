@@ -5,8 +5,8 @@ description: "Understand the difference between a Feluqa application profile, a 
 summary: "Distinguishes an Application Profile, the executable binary, and Rust's compilation target, explaining what each choice determines. It describes where the profile choice belongs in Feluqa's project setup and connects the concept to the next getting-started step."
 weight: 6
 tags: [feluqa, getting-started, profiles, targets]
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 status: "Exploring"
 draft: true
 author:
@@ -66,7 +66,7 @@ what kind of application the project is.
 
 For the first CLI example, no extra application-type attribute is needed: its
 `Cargo.toml` declares the binary, and its `main.rs` declares the console
-profile. See [How a Feluqa CLI Is Structured](030-cli-structure.en.md).
+profile. See [How a Feluqa CLI Is Structured](../040-directory-structure/010-cli-structure.en.md).
 
 ## Continue
 

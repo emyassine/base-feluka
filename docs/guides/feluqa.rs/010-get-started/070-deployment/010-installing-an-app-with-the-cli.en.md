@@ -3,8 +3,8 @@ icon: "server"
 title: "Installing a Feluqa Application on a New Server with the CLI"
 description: "How feluqa-cli prepares a fresh server, verifies and installs a signed Feluqa Application, bootstraps the platform owner, and sets up privileges, roles, permissions and the built-in System Control Panel."
 summary: "Presents the target Feluqa CLI workflow for preparing a server, verifying and installing a signed Application artifact, and bootstrapping its first Platform owner. It covers staging and rollback, configuration and migrations, access-control setup, operations, air-gapped installation, and security properties while marking proposed commands as unimplemented design."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 1
 status: "Target"
 tags: [feluqa, cli, install, deployment, privileges]

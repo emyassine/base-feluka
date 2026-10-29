@@ -3,8 +3,8 @@ icon: "file-pen-line"
 title: "Writing Published Feluqa Documentation"
 description: "A workflow for writing accurate Feluqa docs that preserve product intent, use canonical terms, and stand on their own on the documentation site."
 summary: "Provides a workflow for researching, drafting, and reviewing published Feluqa documentation. It covers preserving product intent and canonical terminology, site independence, honest implementation status, licensing and agent distinctions, global and accessible writing, file structure, and final review."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 1
 status: "Exploring"
 tags: [feluqa, agents, skills, documentation, writing]

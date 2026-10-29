@@ -3,8 +3,8 @@ icon: "book-open"
 title: "Introduction to Feluqa"
 description: "A short introduction to Feluqa, its purpose, and the guides that explain its product model, vocabulary, and architecture."
 summary: "Introduces Feluqa's goals for Rust applications across web, desktop, mobile, IoT, workstation, and high-stakes environments. It explains that the platform is under development, distinguishes existing foundations from design targets, and directs readers to product, architecture, security, deployment, and roadmap guides."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 1
 status: "Exploring"
 tags: [feluqa, about, rust, introduction]
@@ -49,17 +49,17 @@ implementation status so readers can tell the difference.
 - [Architecture overview](040-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
-- [Create your first application](../010-first-projects/010-create-your-first-application.en.md): see
+- [Create your first application](../060-starter-kits/010-create-your-first-application.en.md): see
   the planned path from project setup to a useful running application.
 
 ## Continue reading
 
-- [Workspaces and packages](../../020-workspaces-and-contexts/010-workspace-levels.en.md):
+- [Workspaces and packages](../040-directory-structure/020-workspace-levels.en.md):
   understand how projects and shared code are organized (mostly useful for
   framework contributors).
 - [Security model](../../030-security/010-authorization-model.en.md): explore
   authorization and isolation.
-- [Install an app on a new server](../../060-deployment/010-installing-an-app-with-the-cli.en.md):
+- [Install an app on a new server](../070-deployment/010-installing-an-app-with-the-cli.en.md):
   follow the deployment workflow.
 - [Roadmap](../../080-roadmap/010-delivery-tracks.en.md): see planned work and
   delivery priorities.

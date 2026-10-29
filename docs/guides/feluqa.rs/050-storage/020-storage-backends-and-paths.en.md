@@ -3,8 +3,8 @@ icon: "hard-drive"
 title: "Storage Backends and Paths"
 description: "SQLite versus PostgreSQL, browser storage, per-module storage paths, and how this compares with editors such as Zed."
 summary: "Compares SQLite, PostgreSQL, and browser storage by deployment and use, and relates persistent state to user-owned storage locations. It explains context-derived Module paths and the storage facade, then gives exploratory criteria for deciding when to switch backends."
-date: 2026-100-29
-lastmod: 2026-100-29
+date: 2026-10-29
+lastmod: 2026-10-29
 weight: 2
 status: "Exploring"
 tags: [feluqa, storage, postgresql, sqlite, paths]
