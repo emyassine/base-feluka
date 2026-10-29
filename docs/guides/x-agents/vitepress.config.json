@@ -1,0 +1,10 @@
+{
+  "title": "Feluqa AI Agent Guides",
+  "showSiteTitle": false,
+  "logo": {
+    "light": "../feluqa.rs/.art/logo-lightmode.png",
+    "dark": "../feluqa.rs/.art/logo-darkmode.png",
+    "alt": "Feluqa"
+  },
+  "favicon": "../feluqa.rs/.art/favicon.png"
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Feluqa",
+  "showSiteTitle": false,
+  "logo": {
+    "light": ".art/logo-lightmode.png",
+    "dark": ".art/logo-darkmode.png",
+    "alt": "Feluqa"
+  },
+  "favicon": ".art/favicon.png"
+}

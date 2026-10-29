@@ -12,7 +12,7 @@ const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i,
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
-    if (entry.name.startsWith('.') || entry.name === 'README.md') continue
+    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'vitepress.config.json') continue
     const from = join(sourcePath, entry.name)
     const to = join(outputPath, entry.isDirectory() ? cleanDir(entry.name) : cleanFile(entry.name))
     if (entry.isDirectory()) await scan(sourceRoot, outputRoot, from, to)
@@ -31,6 +31,17 @@ const sourceRoot = resolve(siteDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 await cp(join(sourceRoot, 'feluqa-docs-hero.svg'), join(outputDirectory, 'public/feluqa-docs-hero.svg'))
+for (const guide of config.subguides) {
+  const guideRoot = resolve(sourceRoot, guide.path)
+  const guideConfig = JSON.parse(await readFile(join(guideRoot, 'vitepress.config.json'), 'utf8'))
+  for (const asset of [guideConfig.logo.light, guideConfig.logo.dark, guideConfig.favicon]) {
+    const assetSource = resolve(guideRoot, asset)
+    const assetName = asset.split('/').pop()
+    const assetOutput = join(outputDirectory, 'public', guide.path, '.art', assetName)
+    await mkdir(dirname(assetOutput), { recursive: true })
+    await cp(assetSource, assetOutput)
+  }
+}
 const configuredIndex = resolve(siteDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)

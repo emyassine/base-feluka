@@ -3,12 +3,25 @@ import { dirname, join, relative, resolve, sep } from 'node:path'
 
 const output = resolve(process.argv[2])
 const pages = []
+const stylesheets = []
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) await collect(path)
     else if (entry.name.endsWith('.html')) pages.push(path)
+    else if (entry.name.endsWith('.css')) stylesheets.push(path)
   }
+}
+for (const stylesheet of stylesheets) {
+  const cssDirectory = relative(output, dirname(stylesheet))
+  const css = await readFile(stylesheet, 'utf8')
+  const relativeCss = css.replace(/url\((['"]?)(\/[^)'"]+)\1\)/g, (all, quote, url) => {
+    const [pathname, ...suffix] = url.slice(1).split(/(?=[?#])/)
+    let target = relative(cssDirectory || '.', pathname).split(sep).join('/')
+    if (!target.startsWith('.')) target = `./${target}`
+    return `url(${quote}${target}${suffix.join('')}${quote})`
+  })
+  await writeFile(stylesheet, relativeCss)
 }
 await collect(output)
 for (const page of pages) {
