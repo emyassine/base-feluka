@@ -80,13 +80,12 @@ distinct product that is difficult to substitute and sustain it as a business.
 This is an ambition, not a claim that Feluqa has already achieved a tenfold
 technical advantage or market leadership.
 
-This position draws on the strategic argument in Peter Thiel's *Zero to One*
-that lasting companies build differentiated technology and serve markets
-where they can establish a defensible position. Feluqa's own thesis adds that
-modern development tools make broad platform capabilities more attainable
-for a small team, while users and their agents can shape the specialized
-business workflows. The product intent document describes this as
-["breadth is now affordable, depth belongs to users"](../../../../README_Product_Document_Intent.en.md#2-strategic-thesis-breadth-is-now-affordable-depth-belongs-to-users).
+We believe that lasting companies build differentiated technology and serve
+markets where they can establish a defensible position. Feluqa's own thesis
+adds that modern development tools make broad platform capabilities more
+attainable for a small team, while users and their agents can shape the
+specialized business workflows. We describe this as [“breadth is now
+affordable, depth belongs to users”](../01-get-started/03-concepts/00-breadth-is-now-affordable-depth-belongs-to-users.en.md).
 
 Proprietary ownership does not by itself prove that software is safer, more
 reliable, or technically superior. Those qualities require implementation,
