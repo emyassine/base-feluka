@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Data Layers: TOML, SQLite, JSON and Memory"
+sidebarTitle: "Data Layers"
 icon: "layers"
 title: "Data Layers: TOML, SQLite, JSON and Memory"
 description: "Which format or store to use for manifests, runtime settings, business data, exchanges and temporary state."

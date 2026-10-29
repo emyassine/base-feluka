@@ -4,12 +4,15 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const siteConfig = JSON.parse(readFileSync(join(siteDirectory, 'vitepress.site.config.json'), 'utf8'))
-const technicalConfig = JSON.parse(readFileSync(join(siteDirectory, 'vitepress.config.json'), 'utf8'))
+const configDirectory = resolve(siteDirectory, '../guides')
+const siteConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
+const technicalConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.config.json'), 'utf8'))
 const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
+const sourceDirectory = resolve(configDirectory, site.guidesPath)
+const outputDirectory = resolve(configDirectory, site.outputDir)
 const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: string }) => {
-  const configPath = resolve(site.guidesPath, guide.path, 'vitepress.config.json')
+  const configPath = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
   return [guide.path, JSON.parse(readFileSync(configPath, 'utf8'))]
 }))
 const assetUrl = (guidePath: string, asset: string) => `/${guidePath}/.art/${asset.split('/').pop()}`
@@ -61,9 +64,9 @@ const sidebars = Object.fromEntries(site.subguides.map((guide: { path: string; l
 export default defineConfig({
   title: siteConfig.site.name,
   srcDir: '.generated-guides',
-  outDir: resolve(siteDirectory, siteConfig.outputDir),
+  outDir: outputDirectory,
   cleanUrls: false,
-  mpa: true,
+  mpa: false,
   transformHead({ page }) {
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     if (!guide) return []
@@ -79,7 +82,12 @@ export default defineConfig({
         button: { buttonText: labels.buttonText, buttonAriaLabel: labels.buttonAriaLabel },
         modal: { displayDetails: labels.displayDetails, resetButtonTitle: labels.resetButtonTitle, backButtonTitle: labels.backButtonTitle, noResultsText: labels.noResultsText,
           footer: { selectText: labels.selectText, selectKeyAriaLabel: labels.selectKeyAriaLabel, navigateText: labels.navigateText, navigateUpKeyAriaLabel: labels.navigateUpKeyAriaLabel, navigateDownKeyAriaLabel: labels.navigateDownKeyAriaLabel, closeText: labels.closeText, closeKeyAriaLabel: labels.closeKeyAriaLabel } }
-      } }]))
+      } }])),
+      _render: (source: string, env: { relativePath: string; frontmatter?: { search?: boolean } }, markdown: { render: (source: string, env: unknown) => string }) => {
+        const html = markdown.render(source, env)
+        const excluded = (technicalConfig.search.excludePaths ?? []).some((path: string) => env.relativePath.startsWith(path))
+        return env.frontmatter?.search === false || excluded ? '' : html
+      },
     } },
     outline: { label: siteConfig.outline.labels.en, level: technicalConfig.outline.level },
     aside: true,

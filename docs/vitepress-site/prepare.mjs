@@ -6,7 +6,8 @@ import { createHash } from 'node:crypto'
 import { promisify } from 'node:util'
 
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
-const config = JSON.parse(await readFile(join(siteDirectory, 'vitepress.site.config.json'), 'utf8'))
+const configDirectory = resolve(siteDirectory, '../guides')
+const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
 const outputDirectory = join(siteDirectory, '.generated-guides')
 const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
 const records = []
@@ -34,7 +35,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
 
 await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
-const sourceRoot = resolve(siteDirectory, config.guidesPath)
+const sourceRoot = resolve(configDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 await cp(join(sourceRoot, 'feluqa-docs-hero.svg'), join(outputDirectory, 'public/feluqa-docs-hero.svg'))
@@ -49,7 +50,7 @@ for (const guide of config.subguides) {
     await cp(assetSource, assetOutput)
   }
 }
-const configuredIndex = resolve(siteDirectory, config.indexPath)
+const configuredIndex = resolve(configDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)
 }

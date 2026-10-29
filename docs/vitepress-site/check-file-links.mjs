@@ -21,7 +21,11 @@ for (const htmlFile of htmlFiles) {
     if (/^(?:[a-z]+:|#|\/\/)/i.test(href)) continue
     const url = new URL(href, pathToFileURL(htmlFile))
     if (url.protocol !== 'file:') continue
-    let target = fileURLToPath(url)
+    // VitePress uses base-relative URLs (for example /assets/app.js). During
+    // the static link audit, that base is the generated output directory.
+    let target = href.startsWith('/')
+      ? join(output, decodeURIComponent(url.pathname.slice(1)))
+      : fileURLToPath(url)
     if (url.pathname.endsWith('/')) target = join(target, 'index.html')
     try {
       await access(target)

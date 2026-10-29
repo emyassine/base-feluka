@@ -16,11 +16,9 @@ fi
 
 stage 'Preparing guides and rendering uncached Mermaid diagrams'
 node "$site_dir/prepare.mjs"
-stage 'Building static pages with VitePress'
-(cd "$site_dir" && npm run docs:build -- --base / --mpa)
-stage 'Inlining CSS, fonts, images, and file-safe controls'
+stage 'Building VitePress client site with native local search'
+(cd "$site_dir" && npm run docs:build -- --base /)
 test -f "$repo_docs_dir/build/index.html"
-node "$site_dir/make-file-urls-relative.mjs" "$repo_docs_dir/build"
 stage 'Checking generated local links'
 node "$site_dir/check-file-links.mjs" "$repo_docs_dir/build"
 stage "Build complete: $repo_docs_dir/build"
