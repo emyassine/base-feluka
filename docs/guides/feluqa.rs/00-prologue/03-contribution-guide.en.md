@@ -17,11 +17,15 @@ author:
 ---
 # Contribution Guide
 
-Thank you for helping improve Feluqa. Start by identifying the affected
-product, crate, documentation page, or roadmap item. Read the relevant guide
-and inspect the current implementation before proposing a change. Describe
-current behavior and implementation status accurately; keep unfinished work in
-the roadmap.
+Feluqa is proprietary. Before preparing material for inclusion, read the
+[Licence and Ownership](02-licence.en.md) page. External contributions require
+written terms agreed with NUMERIMONDES in advance; repository access or a
+review discussion does not grant contribution rights.
+
+For work authorized under those terms, identify the affected product, crate,
+documentation page, or roadmap item. Read the relevant guide and inspect the
+current implementation before proposing a change. Describe current behavior
+and implementation status accurately; keep unfinished work in the roadmap.
 
 ## Working agreements
 
@@ -35,7 +39,7 @@ the roadmap.
 - Run the checks appropriate to the change and report what you ran and any
   existing failures.
 
-The repository's `AGENTS.md` is the authoritative contributor workflow for
+The repository's `AGENTS.md` is the authoritative engineering workflow for
 this checkout. These guidelines provide a versioned entry point for
 contributors; update them when the repository workflow changes.
 

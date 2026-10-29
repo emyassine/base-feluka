@@ -8,10 +8,12 @@ Naming: `[order]-folder/[order]-file.en.md`.
 
 1. Start with [`00-prologue/01-release-notes.en.md`](00-prologue/01-release-notes.en.md)
    for versioning and release information.
-2. Read the [`00-prologue/03-contribution-guide.en.md`](00-prologue/03-contribution-guide.en.md)
+2. Read [`00-prologue/02-licence.en.md`](00-prologue/02-licence.en.md) for
+   ownership and contributor terms.
+3. Read the [`00-prologue/03-contribution-guide.en.md`](00-prologue/03-contribution-guide.en.md)
    before contributing. The Upgrade Guide is added when there is an earlier
    major version to upgrade from.
-3. Begin learning Feluqa at
+4. Begin learning Feluqa at
    [`01-welcome/00-introduction/01-introduction.en.md`](01-welcome/00-introduction/01-introduction.en.md),
    then continue through the product model, taxonomy, architecture overview,
    and first-application walkthrough in `01-welcome/01-get-started/`.
