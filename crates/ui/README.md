@@ -12,6 +12,6 @@ For example, the shared layer can describe a form with labeled fields and a subm
 
 This checkout has versioned UI schemas in `feluqa-ui`, a separate `feluqa-ui-reactivity` package, the compiled `.view.rs` engine in `feluqa-view`, UI components and macros, and web-oriented runtime/DOM packages. These are the current implementation boundaries; they are not yet the final single headless-core-plus-renderers design.
 
-The complete semantic tree, target-neutral renderer contract and native shell adapters remain future work. Do not describe SwiftUI, Compose, GTK, Qt or WinUI integration as delivered. The web profile is the first target. For its current behavior, see the [web profile guide](../../docs/02.architecture/07.web-profile.en.md) and [view language reference](../../docs/05.reference/05.view-language.en.md).
+The complete semantic tree, target-neutral renderer contract and native shell adapters remain future work. Do not describe SwiftUI, Compose, GTK, Qt or WinUI integration as delivered. The web profile is the first target. For its current behavior, see the [web profile guide](../../docs-new/technical/02.architecture/07.web-profile.en.md) and [view language reference](../../docs-new/technical/05.reference/05.view-language.en.md).
 
 Keep business authorization and data access in server services. UI schemas describe presentation; hiding a control is never an authorization check.

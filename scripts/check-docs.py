@@ -9,7 +9,8 @@ import sys
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / 'docs'
+DOCS = ROOT / 'docs-new'
+TECHNICAL = DOCS / 'technical'
 LINK = re.compile(r'!?\[[^\]\n]*\]\(([^\s)]+)\)')
 NAME = re.compile(r'\d{2}\.[a-z0-9]+(?:-[a-z0-9]+)*\.[a-z]{2}\.md$')
 
@@ -83,7 +84,7 @@ def main():
             errors.append(f'{page.relative_to(ROOT)}: unreachable from index')
     retained = 0
     if args.migration:
-        manifest = json.loads((DOCS / 'migration-manifest.json').read_text())
+        manifest = json.loads((TECHNICAL / 'migration-manifest.json').read_text())
         sources = set()
         for record in manifest['records']:
             if record['source'] in sources:

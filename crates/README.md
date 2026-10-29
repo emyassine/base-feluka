@@ -20,7 +20,7 @@ Feluqa’s selected UI direction is a shared, headless Rust layer with target-sp
 
 This keeps application behavior and UI meaning reusable while letting each platform use its own input, accessibility, navigation and visual conventions. It does not mean every platform must share identical pixels.
 
-The complete headless semantic core and native shell adapters are not implemented yet. The current UI packages include versioned UI schemas, a separate reactivity package, view compilation, components and web-oriented runtime packages. See [`ui/README.md`](ui/README.md) and the [monorepo architecture](../docs/02.architecture/01.monorepo-architecture.en.md) for the current-to-target mapping.
+The complete headless semantic core and native shell adapters are not implemented yet. The current UI packages include versioned UI schemas, a separate reactivity package, view compilation, components and web-oriented runtime packages. See [`ui/README.md`](ui/README.md) and the [monorepo architecture](../docs-new/technical/02.architecture/01.monorepo-architecture.en.md) for the current-to-target mapping.
 
 ## What is not here yet
 

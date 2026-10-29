@@ -177,7 +177,7 @@ Keep planned capabilities marked as planned. Existing deliberate application
 breakage after legacy panel removal is a separate issue; documentation does not
 repair it or provide a valid application performance baseline.
 
-Related contracts: [enterprise delivery](docs-new/_todo/enterprise-delivery.en.md),
-[panels and resources](docs-new/exists/for-developers/panels-resources-and-pages.en.md),
-[attribute-driven applications](docs-new/knowledge/architecture/attribute-driven-applications.en.md)
-and [web/workstation modules](docs-new/_todo/cross-platform/web-and-workstation-modules.en.md).
+Related contracts: [enterprise delivery](docs-new/technical/roadmap/02.enterprise-delivery.en.md),
+[panels and resources](docs-new/technical/03.for-developers/03.panels-resources-and-pages.en.md),
+[attribute-driven applications](docs-new/technical/02.architecture/03.attribute-driven-applications.en.md)
+and [web/workstation modules](docs-new/technical/roadmap/05.web-and-workstation-modules.en.md).

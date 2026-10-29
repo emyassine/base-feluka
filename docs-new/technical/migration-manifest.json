@@ -1,0 +1,432 @@
+{
+  "date": "2026-10-28",
+  "records": [
+    {
+      "source": "docs-new/index.en.md",
+      "destination": "docs-new/technical/01.introduction/04.previous-navigation.en.md",
+      "source_sha256": "19f912a4e8832f566a5cf987ab9af56808cd616976116cb696415c7ff644bec4",
+      "source_bytes": 1281,
+      "migrated_body_sha256": "05616f064ad634b1b44136eea18f41701e5a04f5cbf7fb44c3288118e05371e2"
+    },
+    {
+      "source": "README_Product_Document_Intent.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/17.product-document-source.en.md",
+      "source_sha256": "b11361c146de09e3682a56feb705d69d2f995984349566e6fd5ddd2b93cc0b17",
+      "source_bytes": 12632,
+      "migrated_body_sha256": "4a2ca7fdc88eb27199563e1656b9d8c8b73c74e63ac3e1ef0c0df5e0c82cd7a2"
+    },
+    {
+      "source": "README_Monorepo_Arch.en.md",
+      "destination": "docs-new/technical/02.architecture/01.monorepo-architecture.en.md",
+      "source_sha256": "730e9291a48670bbaff92467b9a2a7d1ff1f24a4503ff8a9d17bc0af9aa9e8d2",
+      "source_bytes": 25171,
+      "migrated_body_sha256": "9b378b551e68f9e324df2b2a268b147c27784435f23bffbbaa418c4ff828f74f"
+    },
+    {
+      "source": "README_Compilation.en.md",
+      "destination": "docs-new/technical/02.architecture/02.compilation-and-targets.en.md",
+      "source_sha256": "333d82e057c9b5dfb7bb2e4f0da3e82244f79bf7c95a800d88a2eeab1481be7d",
+      "source_bytes": 10941,
+      "migrated_body_sha256": "542d85eaf6a8f0da384872b205d6b2c7688b3709c167e3ed09f4b39b2f90b7c8"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/attribute-driven-applications.en.md",
+      "destination": "docs-new/technical/02.architecture/03.attribute-driven-applications.en.md",
+      "source_sha256": "207f33b69b4a4f45292505a1e2831a274f3c0e151d9aee9b78491074ad7299d7",
+      "source_bytes": 5872,
+      "migrated_body_sha256": "43fbe845f771a9b8aa114dd79d650affa37d4b4438195bcae0be4baef5a6b304"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/console-runtime-model.en.md",
+      "destination": "docs-new/technical/02.architecture/04.console-runtime-model.en.md",
+      "source_sha256": "53c533491632757758dee58bbad59df4cdb40a73a60b6b57b45e0f8deb0f08ed",
+      "source_bytes": 3025,
+      "migrated_body_sha256": "73de478ac5451f2127421d0f3ecd93003baa72d98821a07ae5755b5e2b4ee9e3"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/feluqa-ui.en.md",
+      "destination": "docs-new/technical/02.architecture/05.feluqa-ui-headless-and-shells.en.md",
+      "source_sha256": "8acddab293aff3995e1709272b5fc15b6d5edbd13fe441ab8fcdcb742a464eeb",
+      "source_bytes": 3726,
+      "migrated_body_sha256": "56f5aa29291ebfd37a817f188ea816805e0a17b9d9b93130bff96faf25aaa9be"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-module-layout.en.md",
+      "destination": "docs-new/technical/02.architecture/06.platform-module-layout.en.md",
+      "source_sha256": "be6f7444c67637125a0ac816ad6b88fc3d7bca5cc40a13e65a0484f080cf8677",
+      "source_bytes": 5114,
+      "migrated_body_sha256": "ebd55ab33bbbf91c1e322b91f8083429040242c18a91f847fa19a0ceae543c02"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/web-profile.en.md",
+      "destination": "docs-new/technical/02.architecture/07.web-profile.en.md",
+      "source_sha256": "4158ac0011b1a64074a74908d53859477e1a7290455976f92cfc918a619009da",
+      "source_bytes": 3203,
+      "migrated_body_sha256": "f17ff1d58360a1b75ef899b9cc0fae307ba32c61fe0535acfff3c6e4f79a4c6a"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-context-and-productivity.en.md",
+      "destination": "docs-new/technical/02.architecture/08.platform-context-and-productivity.en.md",
+      "source_sha256": "09a9c73fae19e5c2475506c1d429586ee98a599ef91de2c9d57fd802d8855796",
+      "source_bytes": 6555,
+      "migrated_body_sha256": "07ea47b54df0f873f76b7b76bb9046d7f377b7b337b0d63940d96151f09b18a7"
+    },
+    {
+      "source": "docs-new/exists/for-developers/index.en.md",
+      "destination": "docs-new/technical/03.for-developers/01.getting-started.en.md",
+      "source_sha256": "35045ccd8730159915b55fd4958076b79926173981b6dc884a75ef36eec199f7",
+      "source_bytes": 1001,
+      "migrated_body_sha256": "ead7c4f90e0bfeee2ccabd37959084721998cb11beee10b6896043b56d211c27"
+    },
+    {
+      "source": "docs-new/exists/for-developers/develop-a-module.en.md",
+      "destination": "docs-new/technical/03.for-developers/02.develop-a-module.en.md",
+      "source_sha256": "9f6b3abc31ffb4044b11a5d1d86376a2f9d6be9fabf2ae5fd10c7c6a7206e26b",
+      "source_bytes": 1516,
+      "migrated_body_sha256": "cb7dddcaecb5b031613e5b68b134569e55f169b665e8050442ad9889cc03bd2b"
+    },
+    {
+      "source": "docs-new/exists/for-developers/panels-resources-and-pages.en.md",
+      "destination": "docs-new/technical/03.for-developers/03.panels-resources-and-pages.en.md",
+      "source_sha256": "1db7bb46a97452b3c2de60d397227ed0985432d410df8cd348a7078a74e20dc4",
+      "source_bytes": 2456,
+      "migrated_body_sha256": "2d659d8a70a342f73d62ccead076ae973a41246f77c895c988feb568c8b4eaa0"
+    },
+    {
+      "source": "docs-new/exists/for-developers/views-and-components.en.md",
+      "destination": "docs-new/technical/03.for-developers/04.views-and-components.en.md",
+      "source_sha256": "9cdf83885f4d75a4d8e59f3836f1e304988cd612cd3347837cc302856dea6f7a",
+      "source_bytes": 945,
+      "migrated_body_sha256": "240ebc531f172b9c3320cead01a299eb3b4fe8ee11708f6f3255fa5a58173191"
+    },
+    {
+      "source": "docs-new/exists/for-developers/custom-routes.en.md",
+      "destination": "docs-new/technical/03.for-developers/05.custom-routes.en.md",
+      "source_sha256": "b15a9214ee4b9dd04afb51f71130c7ad55aed135202a7fd8eafb947c3c42d5bc",
+      "source_bytes": 1159,
+      "migrated_body_sha256": "21cd95f858116fcbf1c1e32d804a2da377f8376dc681b529689e2917b3dfdfe8"
+    },
+    {
+      "source": "docs-new/exists/for-developers/data-and-migrations.en.md",
+      "destination": "docs-new/technical/03.for-developers/06.data-and-migrations.en.md",
+      "source_sha256": "cc305923d97d02919eef8fd69b2c584a9cfb036d36dba49c842bb0d1c9cf2a82",
+      "source_bytes": 1349,
+      "migrated_body_sha256": "97e5b7ddafebef6d6fe6d0286f697227f1c16eaf10ab2505dd4b4867a6624bc0"
+    },
+    {
+      "source": "docs-new/exists/for-developers/authorization.en.md",
+      "destination": "docs-new/technical/03.for-developers/07.authorization.en.md",
+      "source_sha256": "e1f2f9777fe9edb2ab6c369f1e9d6f0173a10d463db4306755f71517f98524c6",
+      "source_bytes": 1468,
+      "migrated_body_sha256": "7635c2ee2782884fb6b5d69683ba88060363d0433f51b438b26375bc4c9d28aa"
+    },
+    {
+      "source": "docs-new/exists/for-developers/testing-and-release.en.md",
+      "destination": "docs-new/technical/03.for-developers/08.testing-and-release.en.md",
+      "source_sha256": "17dc5dd43af7e713e0e914866ca38eb608c666a5705b12f28645ea5e2273c650",
+      "source_bytes": 1183,
+      "migrated_body_sha256": "620e7502309bf6e02e517d681e91ebbaa67cfdd06ada178f93f02cb83149c9b8"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/platform-overview.en.md",
+      "destination": "docs-new/technical/04.for-organizations/01.platform-overview.en.md",
+      "source_sha256": "aa6152eef3c5b5f93081d56cca0d85ec3dc7e53ee1e730adecd195e099eec069",
+      "source_bytes": 1924,
+      "migrated_body_sha256": "b93c4b90ad4f08cda21680d4a7096cf1a5fbb2b20143db131bc78db4c543f1e4"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/modules-domains-and-licensing.en.md",
+      "destination": "docs-new/technical/04.for-organizations/02.modules-domains-and-licensing.en.md",
+      "source_sha256": "71cf399fe5ed69a9b2a10ff485cce2d59bbf3e258fcd31cdad5ea59d88e2a0a7",
+      "source_bytes": 1673,
+      "migrated_body_sha256": "f9350398eba0f8c0449f6aa122e02538a56df80763e4343ab20c86d8938c93e7"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/data-and-security.en.md",
+      "destination": "docs-new/technical/04.for-organizations/03.data-and-security.en.md",
+      "source_sha256": "c1629fcf536bd8a6bba57910408366fef2ff2c7808c2aa36f61a9b3651c66435",
+      "source_bytes": 1600,
+      "migrated_body_sha256": "a6ad386f95c2da9949d27b9391de605836d122309d5eff485e8a4572cb6304ff"
+    },
+    {
+      "source": "docs-new/exists/for-organizations/index.en.md",
+      "destination": "docs-new/technical/04.for-organizations/04.index.en.md",
+      "source_sha256": "46434e12271352cb766aa94711a14b76f9430c340f3394df5e573e978f017291",
+      "source_bytes": 555,
+      "migrated_body_sha256": "62b6b10a96e231754008e53cb50a47214afda6264f67bca864c96bcdb0d4faf4"
+    },
+    {
+      "source": "docs-new/exists/reference/cli/commands.en.md",
+      "destination": "docs-new/technical/05.reference/01.cli-commands.en.md",
+      "source_sha256": "72c624f13234bc1ef21a8b416be8f48a0be17177296fab272acea2ed12dda117",
+      "source_bytes": 11451,
+      "migrated_body_sha256": "d3e1c2fe78e4dec1cd7f6f4860283d8d7b30d66279f0ed82cdfd88e6d98ccdde"
+    },
+    {
+      "source": "docs-new/exists/reference/editor/zed-editor.en.md",
+      "destination": "docs-new/technical/05.reference/02.zed-editor.en.md",
+      "source_sha256": "a3fb8e173f7ee2855361c9be0b4d1bac87ab41bcf69d31a4cb30aac769093967",
+      "source_bytes": 4252,
+      "migrated_body_sha256": "cf14d94c6b7d49a0838bce854174b1ea62b14d1dafefbf4d85b0b9a6f8325e82"
+    },
+    {
+      "source": "docs-new/exists/reference/rust/rust-coding-standard.en.md",
+      "destination": "docs-new/technical/05.reference/03.rust-coding-standard.en.md",
+      "source_sha256": "8c726cfd731d03c3d250568d8409ad823f1c2c4f8960358ef4d6ae3a395d0520",
+      "source_bytes": 9922,
+      "migrated_body_sha256": "a56ec5b2bf07d15bcc7de6dc20d305ba9cf22e73cdcb6a308ea589d9f87c9589"
+    },
+    {
+      "source": "docs-new/exists/reference/testing/panel-visual-qa.en.md",
+      "destination": "docs-new/technical/05.reference/04.panel-visual-qa.en.md",
+      "source_sha256": "a99c6f1a0a9e399c38f1901c4fbf65e724d5233c459dcd677148889b1c8cd7f7",
+      "source_bytes": 1069,
+      "migrated_body_sha256": "52d41da48df80ddff937f8739ee0f365fa379712cf062a9154424248420cdbe1"
+    },
+    {
+      "source": "docs-new/exists/reference/views/view-language.en.md",
+      "destination": "docs-new/technical/05.reference/05.view-language.en.md",
+      "source_sha256": "be883cc02b73db347a257f1dfc71aa32624b709c75137a476a86ef5f5b0f9b13",
+      "source_bytes": 5958,
+      "migrated_body_sha256": "5f4de0ee6251b3da48f83b18d129a2a66c4aa94b4d91257a320ec757e7b56337"
+    },
+    {
+      "source": "docs-new/exists/reference/index.en.md",
+      "destination": "docs-new/technical/05.reference/06.index.en.md",
+      "source_sha256": "a8fff6c652c80077564dcd802a85a83d9ea70b966ecf66b20434e3d1ab6840c7",
+      "source_bytes": 618,
+      "migrated_body_sha256": "46036715daa8ea811efda8691209fa2cdb204d2ee534e40e431abef4c95c5ceb"
+    },
+    {
+      "source": "docs-new/knowledge/policy/dependencies.en.md",
+      "destination": "docs-new/technical/06.governance-and-policy/01.dependencies.en.md",
+      "source_sha256": "29bc84285ca372007194624425eb323a62112a5f3d481fa22097f2d0925b8408",
+      "source_bytes": 2513,
+      "migrated_body_sha256": "d47e20871d7bb53dc8327256777013356aa763344cd5e8e9743ab02805005002"
+    },
+    {
+      "source": "docs-new/knowledge/policy/proprietary.en.md",
+      "destination": "docs-new/technical/06.governance-and-policy/02.proprietary.en.md",
+      "source_sha256": "bb5f6e9bb64d7acb4e849f2a00bd5d1feab074fa84deadef2dd1c1f37df84cef",
+      "source_bytes": 806,
+      "migrated_body_sha256": "7ea06596f04199d555602b24118b45d221b72ba26495184312f534b606c89192"
+    },
+    {
+      "source": "docs-new/knowledge/policy/updates.en.md",
+      "destination": "docs-new/technical/06.governance-and-policy/03.updates.en.md",
+      "source_sha256": "621c33ac45ebd2deea0f7eb950069079945218d6f197cddcd2740ea690a78b66",
+      "source_bytes": 4532,
+      "migrated_body_sha256": "dee9efdb0997be640145fe5741b09c30256e8ebc57ddf4e0a22f0ffa379e3753"
+    },
+    {
+      "source": "docs-new/knowledge/policy/proprietary.fr.md",
+      "destination": "docs-new/technical/06.governance-and-policy/02.proprietary.fr.md",
+      "source_sha256": "cb0185e015b8ab02688dea98e1ad847de9a3fc4cfc92b511bbfe86686317c61e",
+      "source_bytes": 1290,
+      "migrated_body_sha256": "e4f81ab18fa3fd366e829e654a0ccfe921698cd1f579ad858716a761e1bfa841"
+    },
+    {
+      "source": "docs-new/knowledge/notes/ai-docs.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/01.ai-docs.en.md",
+      "source_sha256": "3384066f38429127f5fca4fb3c18872a627851b2f73251cfc9e2bec3a61dc39e",
+      "source_bytes": 174,
+      "migrated_body_sha256": "3384066f38429127f5fca4fb3c18872a627851b2f73251cfc9e2bec3a61dc39e"
+    },
+    {
+      "source": "docs-new/knowledge/notes/desktop-web-mobile.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/02.desktop-web-mobile.en.md",
+      "source_sha256": "a02b9e4eae61a552c63cc8e38d3e0966fbdb12733b9af87d797ce6ff55ac0dbe",
+      "source_bytes": 299,
+      "migrated_body_sha256": "a02b9e4eae61a552c63cc8e38d3e0966fbdb12733b9af87d797ce6ff55ac0dbe"
+    },
+    {
+      "source": "docs-new/knowledge/notes/internationalization.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/03.internationalization.en.md",
+      "source_sha256": "37a4a9f07771ad65c0a0199273142245ddea4ecb0454cfbe5b786acab4517117",
+      "source_bytes": 328,
+      "migrated_body_sha256": "37a4a9f07771ad65c0a0199273142245ddea4ecb0454cfbe5b786acab4517117"
+    },
+    {
+      "source": "docs-new/knowledge/notes/internalize-dependencies.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/04.internalize-dependencies.en.md",
+      "source_sha256": "50fa5947549a92dcd8e9092fcd31ff1ee4146be605b6fffa0f2cf168af05d933",
+      "source_bytes": 286,
+      "migrated_body_sha256": "50fa5947549a92dcd8e9092fcd31ff1ee4146be605b6fffa0f2cf168af05d933"
+    },
+    {
+      "source": "docs-new/exists/reference/research/m0-results.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/05.m0-results.en.md",
+      "source_sha256": "b7d00dc8dc37eb1e46d59435faf4ed0d8efc9a32ce8b81d0ad1854cd2df5ca25",
+      "source_bytes": 21294,
+      "migrated_body_sha256": "394375b1d1840f00e93457ba2a64625746db4041e7409dd6903c0d2cd01f7e9c"
+    },
+    {
+      "source": "docs-new/knowledge/notes/basic-libraries.fr.md",
+      "destination": "docs-new/technical/07.research-and-notes/06.basic-libraries.fr.md",
+      "source_sha256": "97b223d631057d185b5a74c2b3810def2187ed2f32dfecc2465cf3c4377b2e69",
+      "source_bytes": 5291,
+      "migrated_body_sha256": "97b223d631057d185b5a74c2b3810def2187ed2f32dfecc2465cf3c4377b2e69"
+    },
+    {
+      "source": "docs-new/knowledge/notes/cli.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/07.cli.en.md",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_bytes": 0,
+      "migrated_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "docs-new/__prompts/panels_priv_roles_etc.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/08.panel-privileges-source.en.md",
+      "source_sha256": "b643305577eaf24d99f4a404c0dc7f462b0b9017add0f486ed23e3742e3a9e11",
+      "source_bytes": 32168,
+      "migrated_body_sha256": "8ca288618ae04d7784d34b0d802955f9337f149583c178bf965fe2b16b4b9967"
+    },
+    {
+      "source": "docs-new/_todo/testing/browser-testing-research.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/09.browser-testing.en.md",
+      "source_sha256": "6dbf1659f359a3815610d762d122307cdf25cb0a7f88c202dbb9cd12d9a3eb67",
+      "source_bytes": 4208,
+      "migrated_body_sha256": "6dbf1659f359a3815610d762d122307cdf25cb0a7f88c202dbb9cd12d9a3eb67"
+    },
+    {
+      "source": "docs-new/_todo/telemetry_logs_exports/idea_about_telem_legs_exp.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/10.telemetry-logs-exports.en.md",
+      "source_sha256": "dffa2f69243b356ace3807778317a69b0eec02af886de05a73c98741fc318f65",
+      "source_bytes": 333,
+      "migrated_body_sha256": "dffa2f69243b356ace3807778317a69b0eec02af886de05a73c98741fc318f65"
+    },
+    {
+      "source": "_ToRead_later.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/11.reading-notes.en.md",
+      "source_sha256": "490861a7162e5eee0fc3a58bfbf0ed52f9d7e781846756e3b95b357bf0071445",
+      "source_bytes": 326,
+      "migrated_body_sha256": "490861a7162e5eee0fc3a58bfbf0ed52f9d7e781846756e3b95b357bf0071445"
+    },
+    {
+      "source": "docs-new/knowledge/intent.en.md",
+      "destination": "docs-new/technical/01.introduction/05.previous-intent.en.md",
+      "source_sha256": "3779f79f803364df0fe2a945fa3c0a5cdee44d02eb57d655d23fdb8d25b211a6",
+      "source_bytes": 1361,
+      "migrated_body_sha256": "aa4ec346c40bc097443a6d58695c949dfd8febe833a08f1e7e56e01993d0b46c"
+    },
+    {
+      "source": "docs-new/knowledge/index.en.md",
+      "destination": "docs-new/technical/02.architecture/09.knowledge-index.en.md",
+      "source_sha256": "87dcd985f9316bd0f5719f1c0cffb478d90db20c4f4fa321bdd9e4e2df778946",
+      "source_bytes": 968,
+      "migrated_body_sha256": "64701554ac1f7b4ff4b8cc0e423f19db41989884d58f8d0b03a18271982689fb"
+    },
+    {
+      "source": "docs-new/knowledge/index.fr.md",
+      "destination": "docs-new/technical/02.architecture/09.knowledge-index.fr.md",
+      "source_sha256": "21266434ecf2c87419e83224c3861099f95bcbef85f8a12c3adaf5cbeaac2d6e",
+      "source_bytes": 537,
+      "migrated_body_sha256": "4b32625ec37a45057d7de265bebd6bb4287df138a1834475c503f30240bc4f87"
+    },
+    {
+      "source": "docs-new/exists/index.en.md",
+      "destination": "docs-new/technical/03.for-developers/09.implementation-index.en.md",
+      "source_sha256": "21c2a8963717b2dc2f8e917251be5a30e9cba0c3c6519e69f8dd7525abc3189d",
+      "source_bytes": 1284,
+      "migrated_body_sha256": "f1928000689f6e90e3ab6872e361841afd6ff51d5e5b05cb275f5fd536632213"
+    },
+    {
+      "source": "docs-new/exists/products/index.en.md",
+      "destination": "docs-new/technical/03.for-developers/10.product-implementations.en.md",
+      "source_sha256": "62c766842f7c68f623d639ae191605309bae3bf3934db1ea3cb4af5651fbf951",
+      "source_bytes": 238,
+      "migrated_body_sha256": "09d3f51da31bd7498dc5cfdbe20d7744c05bcb3a7dc8274e55bfa1145841606b"
+    },
+    {
+      "source": "docs-new/exists/products/numerimondes.en.md",
+      "destination": "docs-new/technical/03.for-developers/11.numerimondes.en.md",
+      "source_sha256": "5801e4cec0eb8b2cc9de72e5aa62dce6debaa98a543bf950475f56dde2593884",
+      "source_bytes": 4248,
+      "migrated_body_sha256": "67048164b3b6810b5c57105739fafcabc5d5cc48d1098446cc9254247908e1c3"
+    },
+    {
+      "source": "docs-new/_todo/index.en.md",
+      "destination": "docs-new/technical/roadmap/01.index.en.md",
+      "source_sha256": "9c965302a4d456f856a096dd6d158eb4db49142e2ebae5d5375dccaa1a0ef673",
+      "source_bytes": 1022,
+      "migrated_body_sha256": "e5bdc7813494db4da5c10baf8f6968944c4dd44cdc8d183e4eb0d586d745076c"
+    },
+    {
+      "source": "docs-new/_todo/index.fr.md",
+      "destination": "docs-new/technical/roadmap/01.index.fr.md",
+      "source_sha256": "1541256e1a50fdbfbf0a6f10ec373277b3b83cefd82382ce2e80b91c451118b2",
+      "source_bytes": 754,
+      "migrated_body_sha256": "3f3054b069c37367cb311fb7a07c839bc7521dd27ae030b0f7d9404b54595016"
+    },
+    {
+      "source": "docs-new/_todo/enterprise-delivery.en.md",
+      "destination": "docs-new/technical/roadmap/02.enterprise-delivery.en.md",
+      "source_sha256": "899e791c7ba47860570347017c805831d240e0ffe03ca4b36410021ed4a900a6",
+      "source_bytes": 6892,
+      "migrated_body_sha256": "a31ed51d9622b1914c74ac4f90d929db28fa7d720371d7f0871b3161b56d8bc2"
+    },
+    {
+      "source": "docs-new/_todo/enterprise-delivery.fr.md",
+      "destination": "docs-new/technical/roadmap/02.enterprise-delivery.fr.md",
+      "source_sha256": "bf08396c3ca3abb8bc49bb4f0380d1f659c645e453803ab44b9db226c17918be",
+      "source_bytes": 25756,
+      "migrated_body_sha256": "9d57ce5f2359af1b45f5ac35707119c7337c8a9671d691980b09113ea15620c5"
+    },
+    {
+      "source": "docs-new/_todo/roadmap.fr.md",
+      "destination": "docs-new/technical/roadmap/03.initial-roadmap.fr.md",
+      "source_sha256": "1b63eb22db1457f5ece083ab418a26ee45996540d94de5780042569ab9617f48",
+      "source_bytes": 16718,
+      "migrated_body_sha256": "b46820a314abd261c088b18049a03f737169ae406608681e8c3b2b57a8a2476c"
+    },
+    {
+      "source": "docs-new/_todo/console/console.en.md",
+      "destination": "docs-new/technical/roadmap/04.console.en.md",
+      "source_sha256": "7bea40f240bd0d20448103ef292378d6d01aa8b95e4fa50afc2755c8939af8c9",
+      "source_bytes": 21466,
+      "migrated_body_sha256": "a430ecc3dba7070c3447ffdd80f4119e1750f833da06424420e5a367eed1eb24"
+    },
+    {
+      "source": "docs-new/_todo/cross-platform/web-and-workstation-modules.en.md",
+      "destination": "docs-new/technical/roadmap/05.web-and-workstation-modules.en.md",
+      "source_sha256": "9f1019311854d83e7568a27e2e1b51bbf7822ca8ee1434b87af2bf42d6e001ad",
+      "source_bytes": 5072,
+      "migrated_body_sha256": "5f82bdbb769227615d74331d0fb1331830642d5f075b13fd95234f4fb7d7d055"
+    },
+    {
+      "source": "docs-new/_todo/editor/ide-support-commands.en.md",
+      "destination": "docs-new/technical/roadmap/06.ide-support-commands.en.md",
+      "source_sha256": "968d90c608346d06adcd7ad61e36cf2eaf698c180d116bb98d2e56911e391a1e",
+      "source_bytes": 5968,
+      "migrated_body_sha256": "5124d3a741d962dde7c17c97cc5e09283102048f6c383bd925baaca565690017"
+    },
+    {
+      "source": "docs-new/_todo/views/webkernel-view-compatibility.en.md",
+      "destination": "docs-new/technical/roadmap/07.webkernel-view-compatibility.en.md",
+      "source_sha256": "1f62d61273e88b3dae67f774465e941981716e8fd010dc9716c375f447084abb",
+      "source_bytes": 5604,
+      "migrated_body_sha256": "ee3d521287c68b267215fc929daeba245c8688d90d5e623fd6230ea1d553fe76"
+    },
+    {
+      "source": "docs-new/_todo/open-decisions.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/15.open-architecture-history.en.md",
+      "source_sha256": "9f1b09edb550921ff52a57845f78362682926b6eaecd004e54c97f5105653030",
+      "source_bytes": 1288,
+      "migrated_body_sha256": "3179d864644cc389e8c40829e1fff52c78f21e4c01e19f83fc18b65e7d2a51a3"
+    },
+    {
+      "source": "docs-new/knowledge/architecture/platform-vision-decisions.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/13.platform-vision-record.en.md",
+      "source_sha256": "e01f2912864426ca54dc204c2acf309d9d94011738495f7fcb3357c3c4a7085e",
+      "source_bytes": 61886,
+      "migrated_body_sha256": "04eca69ffb3ab794a7a1e6bb42c2e93a228334540c7745254523b7219a65f4d1"
+    },
+    {
+      "source": "docs-new/questions.en.md",
+      "destination": "docs-new/technical/07.research-and-notes/16.compile-time-licensing-proposal.en.md",
+      "source_sha256": "972aa2f3d4dbdbef59b5fd3130f2de07103ae16b9b4f6c1a03a350b1249dbad9",
+      "source_bytes": 6272,
+      "migrated_body_sha256": "fbd5ed4ce130d7032171d71c8803c8e526d91967062d00cb274212431b4efded"
+    }
+  ]
+}

@@ -7,8 +7,8 @@ targets. Web delivery is the current priority.
 
 ## Start here
 
-- [Documentation](docs-new/00.index.en.md): developer guides for the Feluqa framework,
-  from app creation to deployment and the current roadmap.
+- [Documentation](docs-new/00.index.en.md): the single index for the developer guides
+  and technical references, from app creation to the current roadmap.
 - [Contributor instructions](AGENTS.md): repository boundaries, Rust rules
   and validation commands.
 

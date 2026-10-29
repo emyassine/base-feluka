@@ -11,4 +11,4 @@ Platform packages define Feluqa’s public entry points and the contracts that a
 
 A product composes its routes, modules and panel providers. The platform provides shared contracts and services; product-specific pages and business workflows belong in the product or module. Keep the facade stable and expose only documented APIs.
 
-Deploy orchestration, dynamic module installation, registry trust and a built-in operator panel remain roadmap work. See the [monorepo architecture](../../docs/02.architecture/01.monorepo-architecture.en.md) for the selected larger layout and its current status.
+Deploy orchestration, dynamic module installation, registry trust and a built-in operator panel remain roadmap work. See the [monorepo architecture](../../docs-new/technical/02.architecture/01.monorepo-architecture.en.md) for the selected larger layout and its current status.
