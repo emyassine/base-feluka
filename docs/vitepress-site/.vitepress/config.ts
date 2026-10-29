@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs'
-import { dirname, join, relative, resolve, sep } from 'node:path'
+import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
@@ -12,11 +12,21 @@ const sourceDirectory = resolve(configDirectory, site.guidesPath)
 const outputDirectory = resolve(configDirectory, site.outputDir)
 const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: string }) => {
   const configPath = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
-  return [guide.path, JSON.parse(readFileSync(configPath, 'utf8'))]
+  return [guide.path, { path: configPath, config: JSON.parse(readFileSync(configPath, 'utf8')) }]
 }))
-const assetUrl = (guidePath: string, asset: string) => `/${guidePath}/.art/${asset.split('/').pop()}`
+const assetMime = (assetPath: string) => ({
+  '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
+  '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
+}[extname(assetPath).toLowerCase()] ?? 'application/octet-stream')
+function assetDataUri(configPath: string, assetPath: string): string {
+  if (/^(?:https?:|data:)/i.test(assetPath)) return assetPath
+  const resolvedAsset = resolve(dirname(configPath), assetPath)
+  const data = readFileSync(resolvedAsset).toString('base64')
+  return `data:${assetMime(resolvedAsset)};base64,${data}`
+}
 const primaryGuide = site.subguides[0]
-const primaryConfig = guideConfigs[primaryGuide.path]
+const primaryGuideConfig = guideConfigs[primaryGuide.path]
+const primaryConfig = primaryGuideConfig.config
 
 function titleOf(file: string): string {
   const source = readFileSync(file, 'utf8')
@@ -69,8 +79,8 @@ export default defineConfig({
   transformHead({ page }) {
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     if (!guide) return []
-    const pageConfig = guideConfigs[guide.path]
-    return [['link', { rel: 'icon', type: 'image/png', href: assetUrl(guide.path, pageConfig.favicon) }]]
+    const guideEntry = guideConfigs[guide.path]
+    return [['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }]]
   },
   themeConfig: {
     nav,
@@ -92,8 +102,8 @@ export default defineConfig({
     aside: true,
     footer: siteConfig.footer?.en,
     logo: {
-      light: assetUrl(primaryGuide.path, primaryConfig.logo.light),
-      dark: assetUrl(primaryGuide.path, primaryConfig.logo.dark),
+      light: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.light),
+      dark: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.dark),
       alt: primaryConfig.logo.alt,
     },
     siteTitle: primaryConfig.showSiteTitle ? primaryConfig.title : false,

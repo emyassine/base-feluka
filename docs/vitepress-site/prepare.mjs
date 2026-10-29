@@ -38,17 +38,25 @@ await mkdir(outputDirectory, { recursive: true })
 const sourceRoot = resolve(configDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
+
+async function copyAsset(sourceFile) {
+  const sourceRelativePath = relative(sourceRoot, sourceFile)
+  if (sourceRelativePath === '..' || sourceRelativePath.startsWith(`..${sep}`)) {
+    throw new Error(`Asset path escapes docs/guides: ${sourceFile}`)
+  }
+  const target = join(outputDirectory, 'public', sourceRelativePath)
+  await access(sourceFile)
+  await mkdir(dirname(target), { recursive: true })
+  await cp(sourceFile, target)
+  return sourceRelativePath
+}
+
 for (const guide of config.subguides) {
   const guideRoot = resolve(sourceRoot, guide.path)
-  const artOutput = join(outputDirectory, 'public', guide.path, '.art')
-  try { await cp(join(guideRoot, '.art'), artOutput, { recursive: true }) }
-  catch (error) { if (error.code !== 'ENOENT') throw error }
-  const guideConfig = JSON.parse(await readFile(join(guideRoot, 'vitepress.config.json'), 'utf8'))
+  const guideConfigPath = join(guideRoot, 'vitepress.config.json')
+  const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   for (const asset of [guideConfig.logo.light, guideConfig.logo.dark, guideConfig.favicon]) {
-    const assetSource = resolve(guideRoot, asset)
-    const assetTarget = join(artOutput, asset.split('/').pop())
-    await mkdir(dirname(assetTarget), { recursive: true })
-    await cp(assetSource, assetTarget)
+    await copyAsset(resolve(dirname(guideConfigPath), asset))
   }
 }
 const configuredIndex = resolve(configDirectory, config.indexPath)
@@ -93,28 +101,51 @@ await Promise.all(records.map(async (record) => {
     return { block, id }
   }))
   for (const { block, id } of rendered.reverse()) markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
+  const markdownAssetTargets = new Map()
+  const stageReference = async (reference, baseDirectory) => {
+    if (/^(?:[a-z]+:|\/|#)/i.test(reference)) return null
+    const [path, ...suffix] = reference.split(/(?=[?#])/)
+    const sourceFile = resolve(baseDirectory, path)
+    const sourceRelativePath = await copyAsset(sourceFile).catch((error) => {
+      if (error.code === 'ENOENT') return null
+      throw error
+    })
+    if (!sourceRelativePath) return null
+    let target = relative(dirname(record.to), join(outputDirectory, sourceRelativePath)).split(sep).join('/')
+    if (!target.startsWith('.')) target = `./${target}`
+    return `${target}${suffix.join('')}`
+  }
+
+  const frontmatterRange = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+  if (frontmatterRange) {
+    const frontmatterStart = frontmatterRange.index + frontmatterRange[0].indexOf(frontmatterRange[1])
+    const frontmatter = frontmatterRange[1]
+    const sources = [...frontmatter.matchAll(/^(\s*src:\s*)(["']?)([^"'\s]+)\2(\s*)$/gm)]
+    for (const match of sources.reverse()) {
+      const target = await stageReference(match[3], dirname(record.from))
+      if (!target) continue
+      const replacement = `${match[1]}${match[2]}${target}${match[2]}${match[4]}`
+      const start = frontmatterStart + match.index
+      markdown = `${markdown.slice(0, start)}${replacement}${markdown.slice(start + match[0].length)}`
+    }
+  }
+
   for (const [, href] of markdown.matchAll(/!?\[[^\]]*\]\(([^\s)]+)\)/g)) {
     if (/^(?:[a-z]+:|\/|#)/i.test(href)) continue
     const [path] = href.split(/(?=[?#])/)
     const sourceFile = resolve(dirname(record.from), path)
     if (routeMap.has(sourceFile) || routeMap.has(`${sourceFile}.md`)) continue
-    const assetRelativePath = relative(sourceRoot, sourceFile)
-    if (assetRelativePath.startsWith('..') || resolve(sourceRoot, assetRelativePath) !== sourceFile) continue
-    try {
-      await access(sourceFile)
-      const assetOutput = join(outputDirectory, 'public', assetRelativePath)
-      await mkdir(dirname(assetOutput), { recursive: true })
-      await cp(sourceFile, assetOutput)
-    } catch (error) {
-      if (error.code !== 'ENOENT') throw error
-    }
+    markdownAssetTargets.set(href, await stageReference(href, dirname(record.from)))
   }
   markdown = markdown.replace(/(!?\[[^\]]*\]\()([^\s)]+)(\))/g, (all, before, href, after) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(href)) return all
     const [path, ...suffix] = href.split(/(?=[?#])/)
     const sourceFile = resolve(dirname(record.from), path)
     const outputTarget = routeMap.get(sourceFile) ?? routeMap.get(`${sourceFile}.md`)
-    if (!outputTarget) return all
+    if (!outputTarget) {
+      const assetTarget = markdownAssetTargets.get(href)
+      return assetTarget ? `${before}${assetTarget}${after}` : all
+    }
     let target = relative(dirname(record.to), outputTarget).split(sep).join('/')
     if (target.endsWith('.md')) target = target.slice(0, -3)
     if (!target.startsWith('.')) target = `./${target}`
