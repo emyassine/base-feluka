@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFile as execFileCallback } from 'node:child_process'
@@ -8,8 +8,11 @@ import { promisify } from 'node:util'
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
 const config = JSON.parse(await readFile(join(siteDirectory, 'vitepress.site.config.json'), 'utf8'))
 const outputDirectory = join(siteDirectory, '.generated-guides')
+const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
 const records = []
 const routeMap = new Map()
+let diagramsCached = 0
+let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+-/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const execFile = promisify(execFileCallback)
@@ -50,23 +53,44 @@ const configuredIndex = resolve(siteDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)
 }
-for (const record of records) {
+let activeRenderers = 0
+const rendererQueue = []
+async function renderDiagram(source, svg) {
+  if (activeRenderers >= 3) await new Promise((resume) => rendererQueue.push(resume))
+  activeRenderers += 1
+  try {
+    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-q'])
+  } finally {
+    activeRenderers -= 1
+    rendererQueue.shift()?.()
+  }
+}
+
+await mkdir(mermaidCache, { recursive: true })
+await Promise.all(records.map(async (record) => {
   let markdown = await readFile(record.from, 'utf8')
   const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
   if (!frontmatter || !/^sidebarTitle:\s*.+$/m.test(frontmatter[1])) {
     throw new Error(`Every published Markdown page must define sidebarTitle: ${record.from}`)
   }
   const mermaidBlocks = [...markdown.matchAll(/^```mermaid\s*\n([\s\S]*?)\n```\s*$/gm)]
-  for (const block of mermaidBlocks.reverse()) {
+  const rendered = await Promise.all(mermaidBlocks.map(async (block) => {
     const diagram = block[1]
     const id = createHash('sha256').update(diagram).digest('hex').slice(0, 16)
     const source = join(outputDirectory, `.mermaid-${id}.mmd`)
     const svg = join(outputDirectory, 'public', 'mermaid', `${id}.svg`)
+    const cachedSvg = join(mermaidCache, `${id}.svg`)
     await mkdir(dirname(svg), { recursive: true })
-    await writeFile(source, diagram)
-    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-q'])
-    markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
-  }
+    try { await access(cachedSvg); await cp(cachedSvg, svg); diagramsCached += 1 }
+    catch {
+      await writeFile(source, diagram)
+      await renderDiagram(source, svg)
+      await cp(svg, cachedSvg)
+      diagramsRendered += 1
+    }
+    return { block, id }
+  }))
+  for (const { block, id } of rendered.reverse()) markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
   markdown = markdown.replace(/(!?\[[^\]]*\]\()([^\s)]+)(\))/g, (all, before, href, after) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(href)) return all
     const [path, ...suffix] = href.split(/(?=[?#])/)
@@ -79,5 +103,6 @@ for (const record of records) {
     return `${before}${target}${suffix.join('')}${after}`
   })
   await writeFile(record.to, markdown)
-}
+}))
+process.stdout.write(`Prepared ${records.length} Markdown pages; Mermaid diagrams: ${diagramsCached} cached, ${diagramsRendered} rendered.\n`)
 
