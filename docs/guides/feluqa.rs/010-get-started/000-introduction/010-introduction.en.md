@@ -49,7 +49,7 @@ implementation status so readers can tell the difference.
 - [Architecture overview](040-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
-- [Create your first application](../060-starter-kits/010-create-your-first-application.en.md): see
+- [Create your first application](../060-learning/010-create-your-first-application.en.md): see
   the planned path from project setup to a useful running application.
 
 ## Continue reading

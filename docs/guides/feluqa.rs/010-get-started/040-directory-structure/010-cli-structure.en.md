@@ -87,7 +87,7 @@ Feluqa prefers explicit imports. `#![no_implicit_prelude]` suppresses the
 standard, extern-crate, `macro_use`, and tool preludes; the language prelude
 remains. Code explicitly imports or qualifies the names it uses, making
 dependencies and macro inputs easier to inspect and generated application
-code more predictable. See [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md)
+code more predictable. See [Program 0: Hello CLI](../060-learning/020-program-0-hello-cli.en.md)
 for the library layers and an example using `::core`.
 
 The binary's `main.rs` declares which command profile belongs to it, then
@@ -162,8 +162,8 @@ src/commands/hello.rs
 ```
 
 That file is where the developer writes the command handler. The full
-`hello.rs` source and the command to run it are in [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md).
+`hello.rs` source and the command to run it are in [Program 0: Hello CLI](../060-learning/020-program-0-hello-cli.en.md).
 
 ## Continue
 
-Now write [Program 0: Hello CLI](../060-starter-kits/020-program-0-hello-cli.en.md).
+Now write [Program 0: Hello CLI](../060-learning/020-program-0-hello-cli.en.md).
