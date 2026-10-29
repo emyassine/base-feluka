@@ -17,9 +17,13 @@ author:
 
 # Build with Feluqa
 
-Creating an **Application** with Feluqa is free of charge. Your organisation
-can build Applications with the SDK and use the Products it creates with
-them. This freedom to create and use your Products is guaranteed.
+Creating an **Application** with Feluqa is free of charge for personal
+projects and commercial work. Individuals and organisations can build
+Applications with the SDK; contractors and subcontractors can build them for
+clients when authorised to do so. You are free to use the **Products** you
+create for yourself, your organisation, or your client. This right to use your
+Products is guaranteed. The Feluqa SDK and Platform have separate licence
+terms.
 
 ## Feluqa Platform and licensing
 
