@@ -6,7 +6,6 @@ import { defineConfig } from 'vitepress'
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const configDirectory = resolve(siteDirectory, '../guides')
 const siteConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
-const technicalConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.config.json'), 'utf8'))
 const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
@@ -76,8 +75,8 @@ export default defineConfig({
   themeConfig: {
     nav,
     sidebar: sidebars,
-    search: { provider: technicalConfig.search.provider, options: {
-      miniSearch: { searchOptions: technicalConfig.search.miniSearch },
+    search: { provider: siteConfig.search.provider, options: {
+      miniSearch: { searchOptions: siteConfig.search.miniSearch },
       locales: Object.fromEntries(Object.entries(siteConfig.search.labels).map(([lang, labels]: [string, any]) => [lang, { translations: {
         button: { buttonText: labels.buttonText, buttonAriaLabel: labels.buttonAriaLabel },
         modal: { displayDetails: labels.displayDetails, resetButtonTitle: labels.resetButtonTitle, backButtonTitle: labels.backButtonTitle, noResultsText: labels.noResultsText,
@@ -85,11 +84,11 @@ export default defineConfig({
       } }])),
       _render: (source: string, env: { relativePath: string; frontmatter?: { search?: boolean } }, markdown: { render: (source: string, env: unknown) => string }) => {
         const html = markdown.render(source, env)
-        const excluded = (technicalConfig.search.excludePaths ?? []).some((path: string) => env.relativePath.startsWith(path))
+        const excluded = (siteConfig.search.excludePaths ?? []).some((path: string) => env.relativePath.startsWith(path))
         return env.frontmatter?.search === false || excluded ? '' : html
       },
     } },
-    outline: { label: siteConfig.outline.labels.en, level: technicalConfig.outline.level },
+    outline: { label: siteConfig.outline.labels.en, level: siteConfig.outline.level },
     aside: true,
     footer: siteConfig.footer?.en,
     logo: {

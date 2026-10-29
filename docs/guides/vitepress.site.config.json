@@ -36,12 +36,24 @@
         "closeText": "Close",
         "closeKeyAriaLabel": "Escape"
       }
-    }
+    },
+    "provider": "local",
+    "miniSearch": {
+      "fuzzy": 0.2,
+      "prefix": true,
+      "boost": {
+        "title": 4,
+        "text": 2,
+        "titles": 1
+      }
+    },
+    "excludePaths": []
   },
   "outline": {
     "labels": {
       "en": "On this page"
-    }
+    },
+    "level": "deep"
   },
   "footer": {
     "en": {
