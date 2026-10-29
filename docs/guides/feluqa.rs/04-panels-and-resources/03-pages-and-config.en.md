@@ -2,6 +2,7 @@
 icon: "file-cog"
 title: "Pages and Configuration"
 description: "Overriding a resource page only when needed, and generating typed configuration with #[config]."
+summary: "Overriding a resource page only when needed, and generating typed configuration with #[config]."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3

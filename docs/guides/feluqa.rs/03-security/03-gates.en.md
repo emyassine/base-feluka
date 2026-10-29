@@ -2,6 +2,7 @@
 icon: "shield"
 title: "Gates: Protecting a Function"
 description: "The #[gate] attribute: syntax, options, resolution order, secure-by-default rules and the builder equivalent."
+summary: "The #[gate] attribute: syntax, options, resolution order, secure-by-default rules and the builder equivalent."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3

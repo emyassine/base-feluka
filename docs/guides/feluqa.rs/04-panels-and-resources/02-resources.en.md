@@ -2,6 +2,7 @@
 icon: "database"
 title: "Resources"
 description: "A complete CRUD in one file: form, table, actions, policy, generated routes, permissions and SDUI schema, from zero-config to full control."
+summary: "A complete CRUD in one file: form, table, actions, policy, generated routes, permissions and SDUI schema, from zero-config to full control."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2

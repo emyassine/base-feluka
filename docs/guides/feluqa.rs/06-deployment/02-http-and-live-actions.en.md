@@ -2,6 +2,7 @@
 icon: "radio"
 title: "HTTP Surface and Live Actions"
 description: "Route classes, request lifecycle through gates, health endpoints and signed live actions in a Feluqa installation."
+summary: "Route classes, request lifecycle through gates, health endpoints and signed live actions in a Feluqa installation."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2

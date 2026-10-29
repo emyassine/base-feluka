@@ -2,6 +2,7 @@
 icon: "folder-tree"
 title: "How a Feluqa CLI Is Structured"
 description: "How the CLI binary, Cargo manifest, main.rs, build script, console profile, and command source tree fit together."
+summary: "How the CLI binary, Cargo manifest, main.rs, build script, console profile, and command source tree fit together."
 weight: 3
 tags: [feluqa, cli, console, rust]
 date: 2026-10-29

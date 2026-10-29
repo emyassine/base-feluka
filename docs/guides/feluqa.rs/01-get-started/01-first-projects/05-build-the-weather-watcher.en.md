@@ -2,6 +2,7 @@
 icon: "cloud-rain"
 title: "Build the Weather Watcher"
 description: "Extend the first Feluqa CLI program into a weather watcher with email alerts and a local service workflow."
+summary: "Extend the first Feluqa CLI program into a weather watcher with email alerts and a local service workflow."
 weight: 5
 tags: [feluqa, getting-started, cli, weather, service]
 date: 2026-10-29

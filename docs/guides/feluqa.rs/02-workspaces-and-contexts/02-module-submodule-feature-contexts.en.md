@@ -2,6 +2,7 @@
 icon: "blocks"
 title: "Contexts: Module, Submodule and Feature"
 description: "How Feluqa resolves the current context (module, submodule, feature) so that code never repeats it, and how each context scopes permissions, storage and configuration."
+summary: "How Feluqa resolves the current context (module, submodule, feature) so that code never repeats it, and how each context scopes permissions, storage and configuration."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2

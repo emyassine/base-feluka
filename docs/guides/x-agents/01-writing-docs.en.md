@@ -2,6 +2,7 @@
 icon: "file-pen-line"
 title: "Writing Published Feluqa Documentation"
 description: "A workflow for writing accurate Feluqa docs that preserve product intent, use canonical terms, and stand on their own on the documentation site."
+summary: "Guidance for researching, structuring, and reviewing Feluqa documentation while preserving the owner's intent, using precise terminology, and writing clearly for a global audience."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1
@@ -143,26 +144,55 @@ respectful voice: knowledgeable and natural, without slang, forced humor,
 overfamiliarity, or a formal legalistic tone. Make the information useful to a
 reader who may be in a hurry.
 
-- Prefer clear, direct wording, familiar words, active voice, and short
-  sentences. Address the reader as "you" when it makes the instruction clearer.
+- Prefer simple, direct words, active voice, and present tense. Use shorter
+  sentences and one main idea per sentence; as a guide, aim for fewer than 26
+  words when that stays natural and clear. Keep modifiers close to the words
+  they describe, avoid piling up noun modifiers, and repeat a term when that
+  makes its meaning clearer. Address the reader as "you" when the reader is
+  performing the documented task.
 - Write for readers with different levels of English and technical experience.
-  Keep phrasing consistent and easy to translate; avoid culture-specific jokes,
-  idioms, figurative language, seasonal references, and unexplained jargon.
-- Use a technical term when it is the precise term the audience needs. Define
-  unfamiliar or overloaded terms on first use, or link to a trusted definition.
-- Avoid buzzwords, cutesy or goofy phrasing, internet slang and abbreviations,
-  needless exclamation marks, and placeholder politeness such as "please note."
-  Avoid "simply," "it's easy," or "quickly" in procedures; explain the actual
-  steps and requirements instead.
-- Be polite without padding instructions with "please." Avoid "let's" phrasing
-  and repetitive sentence openings. Use transitions only when they clarify the
-  relationship between ideas.
+  Keep terminology, phrasing, formatting, and capitalization consistent so
+  readers and translators do not have to infer whether two expressions mean
+  the same thing. Avoid culture-specific jokes, idioms, seasonal references,
+  and figurative language.
+- Use a technical term when it is precise and useful to the intended readers.
+  Avoid vague, overloaded, or group-specific jargon where a plain, specific
+  phrase works. If a necessary term is unfamiliar, define it at first use or
+  link to a trusted definition; use the term consistently afterward.
+- Spell out an abbreviation on first use when readers might not know it. Do
+  not introduce abbreviations that are unrelated to the page's subject, used
+  only once without a clear benefit, or likely to slow comprehension. Avoid
+  internet shorthand such as "tl;dr" and "ymmv"; write the intended meaning.
+  Follow established technical names and code syntax where needed.
+- Avoid buzzwords, cutesy or goofy phrasing, needless exclamation marks, and
+  placeholder politeness such as "please note." Avoid "simply," "it's easy,"
+  and "quickly" in procedures; state the actual steps and requirements. Be
+  polite without padding instructions with "please." Avoid "let's" phrasing
+  and repetitive sentence openings.
 - Use examples that respect varied people, places, and backgrounds. Avoid
-  language that insults, stereotypes, excludes, or uses disability as an
-  insult; use descriptive link text and do not rely on visual cues alone.
+  unnecessarily gendered, biased, insulting, or ableist language. Prefer
+  precise descriptions over violent or graphic phrases.
+- Make documents navigable: use a clear heading hierarchy, meaningful link
+  text that makes sense out of context, and lists for procedures. Break up
+  dense prose. Introduce tables before using them and choose a list when it
+  communicates the same information more clearly. Provide equivalent text for
+  information conveyed by images; write useful alternative text for
+  informative images and empty alternative text for decorative images.
+- For web content, use semantic and native HTML elements, preserve keyboard
+  access, and label interactive controls. When practical, review rendered
+  content with keyboard navigation and a screen reader. Document accessibility
+  features when the product provides them. Do not rely on punctuation,
+  formatting, or visual position alone to convey meaning. Avoid forced line
+  breaks inside paragraphs, which can make resized text harder to read.
 - Read awkward passages aloud and ask what the reader needs to know or do.
   Revise for clarity and usefulness before trying to make the writing more
   entertaining.
+
+For punctuation, avoid exclamation points in concept and reference pages and
+usually in procedures. A tutorial can use one sparingly to mark a real
+milestone, such as the reader completing setup. Complete sentences normally
+end with a period; headings do not. Keep punctuation from changing the meaning
+of a sentence for readers using assistive technology.
 
 These are defaults, not a reason to erase Feluqa's terminology, the owner's
 meaning, or a specific user instruction. Follow a requested narrow edit
@@ -179,7 +209,7 @@ Further reading:
 - [Figurative language](https://developers.google.com/style/inclusive-documentation#figurative-language)
 - [Exclamation points](https://developers.google.com/style/periods#exclamation-points)
 - [Abbreviations](https://developers.google.com/style/abbreviations#dont-use)
-- [Internet abbreviations: "tl;dr" and "ymmv"](https://developers.google.com/style/word-list#tldr)
+- [Word list: "tl;dr" and "ymmv"](https://developers.google.com/style/word-list#tldr)
 
 ## Structure and file naming
 

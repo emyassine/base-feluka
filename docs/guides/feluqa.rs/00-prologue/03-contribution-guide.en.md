@@ -2,6 +2,7 @@
 icon: "git-pull-request"
 title: "Contribution Guide"
 description: "How to prepare a Feluqa contribution and use the contributor and agent skill guides."
+summary: "How to prepare a Feluqa contribution and use the contributor and agent skill guides."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3

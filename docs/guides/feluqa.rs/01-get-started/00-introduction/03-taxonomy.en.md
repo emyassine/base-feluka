@@ -2,6 +2,7 @@
 icon: "list-tree"
 title: "Taxonomy"
 description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
+summary: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3

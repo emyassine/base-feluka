@@ -2,6 +2,7 @@
 icon: "badge-check"
 title: "What Moves to Compile Time"
 description: "Comparison of manual and legacy approaches with Feluqa's attribute-driven, compile-time equivalents."
+summary: "Comparison of manual and legacy approaches with Feluqa's attribute-driven, compile-time equivalents."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1

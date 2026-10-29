@@ -2,6 +2,7 @@
 icon: "square-terminal"
 title: "Create Your First Application"
 description: "The planned Feluqa getting-started path: choose an application, prepare the environment, create a first CLI command, and build a useful weather watcher."
+summary: "The planned Feluqa getting-started path: choose an application, prepare the environment, create a first CLI command, and build a useful weather watcher."
 weight: 1
 tags: [feluqa, getting-started, cli, application]
 date: 2026-10-29

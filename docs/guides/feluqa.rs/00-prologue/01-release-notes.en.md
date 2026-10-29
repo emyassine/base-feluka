@@ -2,6 +2,7 @@
 icon: "scroll-text"
 title: "Release Notes"
 description: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."
+summary: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1

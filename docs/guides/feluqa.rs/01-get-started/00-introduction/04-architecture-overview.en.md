@@ -2,6 +2,7 @@
 icon: "network"
 title: "Architecture Overview"
 description: "How the Feluqa SDK, CLI, artifacts, Platform, Applications, and clients fit together, and what is generated at compile time."
+summary: "How the Feluqa SDK, CLI, artifacts, Platform, Applications, and clients fit together, and what is generated at compile time."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 4

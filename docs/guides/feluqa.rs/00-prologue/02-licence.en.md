@@ -2,6 +2,7 @@
 icon: "scale"
 title: "Build with Feluqa"
 description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
+summary: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2

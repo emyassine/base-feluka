@@ -2,6 +2,7 @@
 icon: "terminal"
 title: "Program 0: Hello CLI"
 description: "Write a first Feluqa console command that prints Hello CLI, and learn why the crate uses explicit imports and strict lints."
+summary: "Write a first Feluqa console command that prints Hello CLI, and learn why the crate uses explicit imports and strict lints."
 weight: 4
 tags: [feluqa, getting-started, cli, rust]
 date: 2026-10-29

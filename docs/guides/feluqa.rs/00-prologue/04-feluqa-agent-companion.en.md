@@ -2,6 +2,7 @@
 icon: "bot"
 title: "A Complementary Agent Project"
 description: "How a separate, user-chosen AI agent could work with Feluqa to create and evolve product software."
+summary: "How a separate, user-chosen AI agent could work with Feluqa to create and evolve product software."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 4

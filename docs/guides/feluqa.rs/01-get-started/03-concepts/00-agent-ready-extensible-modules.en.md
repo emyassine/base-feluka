@@ -2,6 +2,7 @@
 icon: "blocks"
 title: "Agent-Ready, Extensible Modules"
 description: "Feluqa's belief that agents should help users create and evolve product-specific software through explicit extension points."
+summary: "Feluqa's belief that agents should help users create and evolve product-specific software through explicit extension points."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 0
