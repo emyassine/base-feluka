@@ -29,7 +29,7 @@ If you only remember one thing: the **SDK** is what you build with, the
 |------|------------|----------------|
 | **Feluqa SDK** | The library you build with. A single `feluqa` entry point (`feluqa::ui`, `feluqa::panel`, `feluqa::auth`, `feluqa::resource`), the attributes (`#[panel]`, `#[resource]`, `#[gate]`, ...) and the compile-time scanner. Linked into your App at build time. | Developer machine (as a dependency) |
 | **Feluqa Platform** | The server-side runtime and control plane: authentication, schema management, access control, audit, configuration and the System panel. The same for everyone. | Server |
-| **Feluqa App** | The application you build with the SDK. It is installed and run on the client machine (or on a server, in hosted mode). | Client or server |
+| **Feluqa App** | An application built with the SDK. It is installed and run on the client machine (or on a server, in hosted mode). | Client or server |
 | **Client** | The machine or device on which a Feluqa App runs or from which it is used: a workstation, a mobile device, a ground station, or a browser connecting to a hosted app. | End-user side |
 | **Feluqa CLI** | The command-line tool that creates, validates, builds, installs and operates projects, modules and apps. | Developer machine and servers |
 | **Module** | A unit of business functionality developed with Feluqa, for example `sales`. A module is treated as a **product in its own right**: it has its own id (its folder name), version, permissions and features, and can be shipped alone or combined with others. | Developer workspace |

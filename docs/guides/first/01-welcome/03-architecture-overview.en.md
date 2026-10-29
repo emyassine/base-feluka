@@ -37,7 +37,7 @@ author:
 | **Feluqa SDK** | The library you build with: attributes, the compile-time scanner, the single `feluqa` namespace. | While you write and compile | Developer machine, linked into the App |
 | **Feluqa CLI** | Creates, validates, builds, installs and operates projects. | Development and operations | Developer machine and servers |
 | **Feluqa Platform** | Authentication, access control, audit, configuration, System panel. | Runtime | Server |
-| **Feluqa App** | The product you built, made of one or more modules. | Runtime | Client, or server in hosted mode |
+| **Feluqa App** | An application made of one or more modules. | Runtime | Client, or server in hosted mode |
 
 Most people only ever deal with these four. The internal Feluqa crates that
 implement them are an implementation detail.

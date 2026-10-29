@@ -62,7 +62,7 @@ different part of the system.
 | **End user** | Uses the finished application. | The application itself, on a browser, workstation, phone, or ground station. |
 | **Framework contributor** | Works on Feluqa itself. | The Feluqa source repository, a multi-package Rust workspace. |
 
-If you are a product builder or an operator, you can safely skip anything that
+Readers working on a product or operating one can safely skip anything that
 talks about the framework's own repository. It exists so that Feluqa can be
 developed, not so that you have to understand it.
 
