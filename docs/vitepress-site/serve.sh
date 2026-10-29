@@ -24,14 +24,29 @@ if [[ -z "$port" ]]; then
   exit 1
 fi
 
-if [[ ! -d "$site_dir/node_modules/vitepress" ]]; then
+if [[ ! -x "$site_dir/node_modules/.bin/vitepress" ]]; then
   printf '[serve] Installing VitePress dependencies\n'
   npm --prefix "$site_dir" install
 fi
 
-printf '[serve] Building docs with VitePress local search enabled\n'
-"$site_dir/build.sh"
+printf '[serve] Preparing guides and cached Mermaid diagrams\n'
+node "$site_dir/prepare.mjs"
+printf '[serve] Starting VitePress dev server at http://%s:%s/\n' "$host" "$port"
+printf '[serve] Markdown and asset edits hot reload; navigation/config edits reload VitePress. Ctrl+C stops both processes.\n'
 
-printf '[serve] Starting local site at http://%s:%s/ (Ctrl+C to stop)\n' "$host" "$port"
-cd "$site_dir"
-npm exec vitepress -- preview --host "$host" --port "$port" --strictPort
+(cd "$site_dir" && exec ./node_modules/.bin/vitepress dev --host "$host" --port "$port" --strictPort) &
+vitepress_pid=$!
+(cd "$site_dir" && exec node watch.mjs) &
+watcher_pid=$!
+
+shutdown() {
+  trap - EXIT INT TERM
+  kill -TERM "$watcher_pid" "$vitepress_pid" 2>/dev/null || true
+  wait "$watcher_pid" 2>/dev/null || true
+  wait "$vitepress_pid" 2>/dev/null || true
+}
+trap shutdown EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+wait -n "$vitepress_pid" "$watcher_pid"

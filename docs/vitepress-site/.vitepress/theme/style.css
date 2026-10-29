@@ -282,3 +282,7 @@
     transition: none;
   }
 }
+
+.items > .VPSidebarItem:first-child {
+  margin-top: 12px;
+}

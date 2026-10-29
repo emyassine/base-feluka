@@ -13,8 +13,10 @@ const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
 const mermaidConfigPath = join(siteDirectory, '.vitepress/mermaid-config.json')
 const mermaidConfig = await readFile(mermaidConfigPath, 'utf8')
 const darkMessageTextColor = '#f1f3fc'
+const incremental = process.env.FELUQA_PREPARE_INCREMENTAL === '1'
 const records = []
 const routeMap = new Map()
+const generatedFiles = new Set()
 const sidebarConfigurations = new Map()
 const sidebarIconSources = new Set()
 let diagramsCached = 0
@@ -22,6 +24,28 @@ let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+-/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const execFile = promisify(execFileCallback)
+
+async function copyIfChanged(source, target) {
+  const content = await readFile(source)
+  let current
+  try { current = await readFile(target) }
+  catch (error) { if (error.code !== 'ENOENT') throw error }
+  if (current?.equals(content)) return false
+  await mkdir(dirname(target), { recursive: true })
+  await writeFile(target, content)
+  return true
+}
+
+async function writeIfChanged(target, content) {
+  const buffer = Buffer.isBuffer(content) ? content : Buffer.from(content)
+  let current
+  try { current = await readFile(target) }
+  catch (error) { if (error.code !== 'ENOENT') throw error }
+  if (current?.equals(buffer)) return false
+  await mkdir(dirname(target), { recursive: true })
+  await writeFile(target, buffer)
+  return true
+}
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   let sidebarConfig
@@ -65,12 +89,15 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
       await mkdir(dirname(to), { recursive: true })
       routeMap.set(resolve(from), to)
       if (extname(entry.name).toLowerCase() === '.md') records.push({ from, to, sourceRoot })
-      else await cp(from, to)
+      else {
+        generatedFiles.add(to)
+        await copyIfChanged(from, to)
+      }
     }
   }
 }
 
-await rm(outputDirectory, { recursive: true, force: true })
+if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 const sourceRoot = resolve(configDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
@@ -85,6 +112,7 @@ async function copyAsset(sourceFile) {
   const assetName = `${createHash('sha256').update(bytes).digest('hex')}${extname(sourceFile).toLowerCase()}`
   const publishedPath = join('__docs-assets', assetName)
   const target = join(outputDirectory, 'public', publishedPath)
+  generatedFiles.add(target)
   await mkdir(dirname(target), { recursive: true })
   try { await access(target) }
   catch (error) {
@@ -146,7 +174,7 @@ for (const guide of config.subguides) {
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
 }
-await writeFile(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 
 const generatedSidebar = {}
 for (const [path, metadata] of sidebarConfigurations) {
@@ -155,7 +183,7 @@ for (const [path, metadata] of sidebarConfigurations) {
     icon: metadata.icon ? await copyAsset(metadata.icon) : null,
   }
 }
-await writeFile(join(siteDirectory, '.vitepress/generated-sidebar.json'), JSON.stringify(generatedSidebar, null, 2))
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-sidebar.json'), JSON.stringify(generatedSidebar, null, 2))
 
 const configuredIndex = resolve(configDirectory, config.indexPath)
 if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
@@ -213,14 +241,17 @@ await Promise.all(records.map(async (record) => {
     const cachedSvg = join(mermaidCache, `${id}.svg`)
     const cachedDarkSvg = join(mermaidCache, `${id}.dark-${darkMessageTextColor.slice(1)}.svg`)
     await mkdir(dirname(svg), { recursive: true })
-    try { await access(cachedSvg); await cp(cachedSvg, svg); diagramsCached += 1 }
+    try { await access(cachedSvg); await copyIfChanged(cachedSvg, svg); diagramsCached += 1 }
     catch {
-      await writeFile(source, diagram)
+      await writeIfChanged(source, diagram)
       await renderDiagram(source, svg)
       await cp(svg, cachedSvg)
       diagramsRendered += 1
     }
-    try { await access(cachedDarkSvg); await cp(cachedDarkSvg, darkSvg) }
+    await rm(source, { force: true })
+    generatedFiles.add(svg)
+    generatedFiles.add(darkSvg)
+    try { await access(cachedDarkSvg); await copyIfChanged(cachedDarkSvg, darkSvg) }
     catch {
       await createDarkVariant(svg, darkSvg)
       await cp(darkSvg, cachedDarkSvg)
@@ -278,7 +309,23 @@ await Promise.all(records.map(async (record) => {
     if (!target.startsWith('.')) target = `./${target}`
     return `${before}${target}${suffix.join('')}${after}`
   })
-  await writeFile(record.to, markdown)
+  generatedFiles.add(record.to)
+  await writeIfChanged(record.to, markdown)
 }))
+
+if (incremental) {
+  async function removeStale(directory) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const path = join(directory, entry.name)
+      if (entry.isDirectory()) {
+        await removeStale(path)
+        if ((await readdir(path)).length === 0) await rm(path, { recursive: true, force: true })
+      } else if (!generatedFiles.has(path)) {
+        await rm(path, { force: true })
+      }
+    }
+  }
+  await removeStale(outputDirectory)
+}
 process.stdout.write(`Prepared ${records.length} Markdown pages; Mermaid diagrams: ${diagramsCached} cached, ${diagramsRendered} rendered.\n`)
 
