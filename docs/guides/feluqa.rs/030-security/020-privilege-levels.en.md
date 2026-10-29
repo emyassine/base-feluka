@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Privilege Levels"
 icon: "badge-check"
 title: "Privilege Levels"
 description: "Platform-wide privilege levels (platform-owner, super-admin, sysadmin, staff) with internal and external origins, rank rules and delegation limits."

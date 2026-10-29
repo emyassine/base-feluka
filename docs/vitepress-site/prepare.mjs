@@ -52,6 +52,10 @@ if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(out
 }
 for (const record of records) {
   let markdown = await readFile(record.from, 'utf8')
+  const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+  if (!frontmatter || !/^sidebarTitle:\s*.+$/m.test(frontmatter[1])) {
+    throw new Error(`Every published Markdown page must define sidebarTitle: ${record.from}`)
+  }
   const mermaidBlocks = [...markdown.matchAll(/^```mermaid\s*\n([\s\S]*?)\n```\s*$/gm)]
   for (const block of mermaidBlocks.reverse()) {
     const diagram = block[1]

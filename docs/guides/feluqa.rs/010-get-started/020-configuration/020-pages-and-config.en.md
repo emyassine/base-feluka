@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Pages and Configuration"
 icon: "file-cog"
 title: "Pages and Configuration"
 description: "Overriding a resource page only when needed, and generating typed configuration with #[config]."

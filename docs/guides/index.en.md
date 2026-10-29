@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Index"
 description: Feluqa developer documentation for applications, modules, and platform contributors.
 layout: home
 hero:

@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Taxonomy"
 icon: "list-tree"
 title: "Taxonomy"
 description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."

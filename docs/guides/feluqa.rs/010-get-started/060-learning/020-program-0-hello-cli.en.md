@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Program 0: Hello CLI"
 icon: "terminal"
 title: "Program 0: Hello CLI"
 description: "Write a first Feluqa console command that prints Hello CLI, and learn why the crate uses explicit imports and strict lints."

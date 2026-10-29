@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "What Moves to Compile Time"
 icon: "badge-check"
 title: "What Moves to Compile Time"
 description: "Comparison of manual and legacy approaches with Feluqa's attribute-driven, compile-time equivalents."

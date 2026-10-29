@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Contribution Guide"
 icon: "git-pull-request"
 title: "Contribution Guide"
 description: "How to propose a Feluqa contribution and find the guides for working with the Feluqa team."

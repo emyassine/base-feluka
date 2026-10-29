@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Build with Feluqa"
 icon: "scale"
 title: "Build with Feluqa"
 description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."

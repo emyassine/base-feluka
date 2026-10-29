@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Build the Weather Watcher"
 icon: "cloud-rain"
 title: "Build the Weather Watcher"
 description: "Extend the first Feluqa CLI program into a weather watcher with email alerts and a local service workflow."

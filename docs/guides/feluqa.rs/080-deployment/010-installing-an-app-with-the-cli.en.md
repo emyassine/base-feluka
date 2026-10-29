@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Installing a Feluqa Application on a New Server with the CLI"
 icon: "server"
 title: "Installing a Feluqa Application on a New Server with the CLI"
 description: "How feluqa-cli prepares a fresh server, verifies and installs a signed Feluqa Application, bootstraps the platform owner, and sets up privileges, roles, permissions and the built-in System Control Panel."

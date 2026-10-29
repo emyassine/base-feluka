@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Feluqa Guides"
 title: Feluqa Guides
 description: Start here for Feluqa product, application, and contributor documentation.
 ---

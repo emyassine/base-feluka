@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "How a Feluqa CLI Is Structured"
 icon: "folder-tree"
 title: "How a Feluqa CLI Is Structured"
 description: "How the CLI binary, Cargo manifest, main.rs, build script, console profile, and command source tree fit together."

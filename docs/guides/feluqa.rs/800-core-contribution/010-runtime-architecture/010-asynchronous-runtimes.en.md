@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Asynchronous Runtimes by Target"
 icon: "timer"
 title: "Asynchronous Runtimes by Target"
 description: "How Feluqa should use async execution on server, embedded, and real-time targets."

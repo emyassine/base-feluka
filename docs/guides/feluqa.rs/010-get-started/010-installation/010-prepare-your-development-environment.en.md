@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Prepare Your Development Environment"
 icon: "wrench"
 title: "Prepare Your Development Environment"
 description: "The planned Feluqa dev:init setup for Rust, target-specific tools, and the recommended Zed editor."

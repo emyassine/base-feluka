@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Application Profiles and Starter Kits"
 icon: "layers-3"
 title: "Application Profiles and Starter Kits"
 description: "Choose an application profile or starter kit when creating a Feluqa application."

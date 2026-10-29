@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "HTTP and Live Actions"
 icon: "radio"
 title: "HTTP Surface and Live Actions"
 description: "Route classes, request lifecycle through gates, health endpoints and signed live actions in a Feluqa installation."

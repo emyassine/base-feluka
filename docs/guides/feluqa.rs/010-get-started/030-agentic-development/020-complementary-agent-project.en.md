@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "A Complementary Agent Project"
 icon: "bot"
 title: "A Complementary Agent Project"
 description: "How a separate, user-chosen AI agent could work with Feluqa to create and evolve product software."

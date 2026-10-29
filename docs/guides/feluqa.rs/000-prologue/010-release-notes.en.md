@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Release Notes"
 icon: "scroll-text"
 title: "Release Notes"
 description: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."

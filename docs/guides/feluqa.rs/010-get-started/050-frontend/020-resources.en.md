@@ -1,4 +1,5 @@
 ---
+sidebarTitle: "Resources"
 icon: "database"
 title: "Resources"
 description: "A complete CRUD in one file: form, table, actions, policy, generated routes, permissions and SDUI schema, from zero-config to full control."
