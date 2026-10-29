@@ -2,7 +2,7 @@
 icon: "book-open"
 title: "Introduction to Feluqa"
 description: "A short introduction to Feluqa, its purpose, and the guides that explain its product model, vocabulary, and architecture."
-summary: "Introduces Feluqa's goals for Rust applications across web, desktop, mobile, IoT, workstation, and high-stakes environments. It explains that the platform is under development, distinguishes existing foundations from design targets, and directs readers to product, architecture, security, deployment, and roadmap guides."
+summary: "Introduces Feluqa's goals for Rust applications across web, desktop, mobile, IoT, workstation, and high-stakes environments. It explains that the platform is under development, distinguishes existing foundations from design targets, and directs readers to product, architecture, security, and deployment guides."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1
@@ -58,5 +58,3 @@ so readers can tell the difference.
   authorization and isolation.
 - [Install an app on a new server](../../080-deployment/010-installing-an-app-with-the-cli.en.md):
   follow the deployment workflow.
-- [Roadmap](../../080-roadmap/010-delivery-tracks.en.md): see planned work and
-  delivery priorities.

@@ -28,8 +28,9 @@ meaning rather than turning it into a simpler but different idea.
 1. Read the whole source document when the user names it as the basis for a
    page. Do not infer its thesis from one section or a search excerpt.
 2. Read Feluqa's canonical taxonomy and product intent. Check the relevant
-   architecture, roadmap, and implementation-status documents before making
-   claims about terms, capabilities, or plans.
+   architecture and implementation-status documents before making claims about
+   terms or capabilities. Consult local planning notes when available, but do
+   not treat them as published product guarantees.
 3. Inspect the current documentation tree and nearby pages. Paths and
    numbering can change; do not assume a path from earlier conversation is
    still current.

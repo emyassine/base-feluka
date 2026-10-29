@@ -42,7 +42,7 @@ options.
 - For Rust changes, use the documented facade APIs and lint policy, handle
   errors explicitly, and include coverage appropriate to the behavior changed.
 - For documentation changes, check links, terminology, and whether claims match
-  the implementation and roadmap.
+  current implementation and product direction.
 - Run the checks appropriate to the change and report what you ran and any
   existing failures.
 

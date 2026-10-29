@@ -7,3 +7,6 @@
 products/*/storage/**
 !products/*/storage/.gitkeep
 products/feluqa-cli/dist/
+
+# Local instructions and planning notes for this documentation corpus.
+/docs/guides/feluqa.rs/.x-agents/

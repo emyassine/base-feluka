@@ -22,9 +22,34 @@ its Product's workflows. The direction is **batteries included, but
 removable**: capabilities should have clear contracts and be replaceable where
 an Application needs a different implementation.
 
+Feluqa's ambition is to become the standard all-in-one ecosystem for building
+Rust applications: the breadth of reusable components associated with
+Symfony, the developer experience associated with Laravel, a product-building
+layer in the spirit of Filament, and first-class desktop experiences that
+belong alongside environments such as KDE. These are references for the
+coherence and reach Feluqa aims to offer, not claims of feature parity or
+affiliation.
+
+The goal is a connected system of components, tools, and conventions that
+teams can adopt as a whole or compose around their needs. “All in one” does
+not mean every capability must be fused into one runtime: components should
+have clear boundaries and contracts.
+
 Some foundations are already available. Other capabilities are incomplete or
 still product goals. The status beside each area describes Feluqa today; it
 does not promise that every battery is finished or replaceable yet.
+
+## Terms used on this page
+
+| Term | Meaning here |
+|---|---|
+| **Asynchronous (`async`)** | A way to express work that can pause while waiting and resume later, allowing a runtime to schedule other work in the meantime. |
+| **Asynchronous runtime** | The executor and supporting services that poll asynchronous tasks and provide facilities such as network I/O and timers. |
+| **Tokio** | The established asynchronous runtime used by Feluqa's current server profile. The recommended approach is to depend on it externally rather than reimplement or maintain a fork. |
+| **Axum** | The HTTP web framework used by Feluqa's current server profile. |
+| **Adapter** | A boundary that connects a library or protocol to a framework, such as an Axum adapter for the Inertia server protocol. |
+| **Inertia.js** | A way to build server-routed single-page applications with a frontend framework. The Rust `inertia-omega` project provides an alpha server implementation and Axum adapter; Feluqa has not selected it. |
+| **Battery** | A capability Feluqa makes available or aims to provide through a documented contract. “Removable” is a product requirement; it does not mean every current capability can already be replaced. |
 
 ## The major capabilities
 
@@ -143,20 +168,6 @@ changes, compile, validate, test, package, and distribute software through
 explicit and reviewable steps. The complete agent workflow and complementary
 agent product are not available yet.
 
-## Terms used on this page
-
-| Term | Meaning here |
-|---|---|
-| **Asynchronous (`async`)** | A way to express work that can pause while waiting and resume later, allowing a runtime to schedule other work in the meantime. |
-| **Asynchronous runtime** | The executor and supporting services that poll asynchronous tasks and provide facilities such as network I/O and timers. |
-| **Tokio** | The established asynchronous runtime used by Feluqa's current server profile. The recommended approach is to depend on it externally rather than reimplement or maintain a fork. |
-| **Axum** | The HTTP web framework used by Feluqa's current server profile. |
-| **Adapter** | A boundary that connects a library or protocol to a framework, such as an Axum adapter for the Inertia server protocol. |
-| **Inertia.js** | A way to build server-routed single-page applications with a frontend framework. The Rust `inertia-omega` project provides an alpha server implementation and Axum adapter; Feluqa has not selected it. |
-| **Battery** | A capability Feluqa makes available or aims to provide through a documented contract. “Removable” is a product requirement; it does not mean every current capability can already be replaced. |
-
-For the current implementation status and remaining work, see the
-[delivery roadmap](../080-roadmap/010-delivery-tracks.en.md).
-
-The decorative Lucide icons used on this page are distributed under the ISC
-licence; see the [icon licence notice](../000-art/LICENSE-LUCIDE.md).
+Each area above is labelled with its current status. Feluqa's implementation
+continues to evolve, so the capability guides describe what is available and
+what remains a product direction.

@@ -70,9 +70,8 @@ Application code defines the business side:
 
 Feluqa provides shared building blocks, including an SDK, compile-time
 validation and generation, a CLI, storage integrations, and platform services.
-The current implementation and remaining gaps are described in the
-[architecture overview](040-architecture-overview.en.md) and the
-[delivery roadmap](../../080-roadmap/010-delivery-tracks.en.md).
+The architecture overview and relevant capability guides distinguish
+implemented behavior from remaining product goals.
 
 ## Examples
 
