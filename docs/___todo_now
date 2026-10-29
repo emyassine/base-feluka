@@ -75,690 +75,7 @@ lang: en
 
 ---
 
-# 2. Local Full-Text Search — Mandatory
-
-Implement VitePress local fuzzy full-text search using MiniSearch.
-
-This functionality must be actually operational, not simply represented by a search button.
-
-VitePress supports this natively:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'local'
-    }
-  }
-})
-```
-
-However, our project must support configuring this behavior through the project's JSON configuration system.
-
-## 2.1 Configuration
-
-Support search configuration via:
-
-`vitepress.config.json`
-
-Prefer placing site-level settings, search names, localized search labels, and presentation settings in:
-
-`vitepress.site.config.json`
-
-Use a clear separation of responsibilities between the two JSON files.
-
-- `vitepress.config.json`: technical VitePress configuration, provider selection, search engine settings, indexing behavior, integrations.
-- `vitepress.site.config.json`: site identity, language labels, search UI translations, footer, and presentation settings.
-
-If the existing architecture already defines these responsibilities differently, preserve its conventions while ensuring all requested settings are configurable.
-
-**Do not create two competing sources of truth.**
-
-The native `.vitepress/config.ts` must load and translate these JSON configurations into valid VitePress configuration.
-
-JSON files are the project configuration source. The TypeScript configuration acts as the adapter to VitePress.
-
-## 2.2 Local search functionality
-
-Implement:
-
-- Fuzzy full-text search.
-- Prefix matching.
-- Search through page titles.
-- Search through document headings.
-- Search through Markdown content.
-- Correct result links.
-- Correct heading anchors.
-- Keyboard navigation.
-- Responsive search interface.
-- Localized search interface.
-- Proper indexing for the generated documentation pages.
-- Exclusion of pages marked as non-searchable.
-
-Use VitePress's native local search where possible.
-
-Do not unnecessarily recreate the search engine.
-
----
-
-# 3. Multilingual Local Search
-
-Search must support the project's documentation languages.
-
-VitePress supports localized search labels through:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'local',
-      options: {
-        locales: {
-          zh: {
-            translations: {
-              button: {
-                buttonText: '搜索',
-                buttonAriaLabel: '搜索'
-              },
-              modal: {
-                displayDetails: '显示详细列表',
-                resetButtonTitle: '重置搜索',
-                backButtonTitle: '关闭搜索',
-                noResultsText: '没有结果',
-                footer: {
-                  selectText: '选择',
-                  selectKeyAriaLabel: '输入',
-                  navigateText: '导航',
-                  navigateUpKeyAriaLabel: '上箭头',
-                  navigateDownKeyAriaLabel: '下箭头',
-                  closeText: '关闭',
-                  closeKeyAriaLabel: 'esc'
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-})
-```
-
-## Requirements
-
-Support configuration for:
-
-### Search button
-
-- `buttonText`
-- `buttonAriaLabel`
-
-### Search modal
-
-- `displayDetails`
-- `resetButtonTitle`
-- `backButtonTitle`
-- `noResultsText`
-
-### Search footer
-
-- `selectText`
-- `selectKeyAriaLabel`
-- `navigateText`
-- `navigateUpKeyAriaLabel`
-- `navigateDownKeyAriaLabel`
-- `closeText`
-- `closeKeyAriaLabel`
-
-All these values must be configurable per language.
-
-Remember that VitePress uses `root` for the default locale when configuring localized search translations.
-
-Do not blindly copy the Chinese locale example into the application. Adapt it to the languages that actually exist in the project.
-
-Provide sensible defaults for missing translations.
-
-Preserve language-specific search behavior.
-
----
-
-# 4. MiniSearch Advanced Configuration
-
-Support advanced MiniSearch options through JSON.
-
-VitePress configuration example:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'local',
-      options: {
-        miniSearch: {
-          options: {
-            // extractField
-            // tokenize
-            // processTerm
-          },
-          searchOptions: {
-            // Search options
-          }
-        }
-      }
-    }
-  }
-})
-```
-
-Supported MiniSearch configuration includes:
-
-- `extractField`
-- `tokenize`
-- `processTerm`
-- `searchOptions`
-
-The default search options include:
-
-```ts
-{
-  fuzzy: 0.2,
-  prefix: true,
-  boost: {
-    title: 4,
-    text: 2,
-    titles: 1
-  }
-}
-```
-
-Implement reasonable defaults and configurable overrides.
-
-Since JSON cannot represent JavaScript functions, implement any necessary transformation functions in TypeScript, using explicit validated presets or supported named strategies.
-
-Do not attempt to serialize executable functions into JSON.
-
-## Language tokenization
-
-VitePress uses `Intl.Segmenter` to segment Chinese and Japanese characters in supported environments.
-
-When unavailable, the fallback uses ordinary splitting and may provide reduced matching accuracy.
-
-Custom tokenization can override this behavior.
-
-Preserve native language handling unless an explicit supported override is requested.
-
-## Search document IDs
-
-Search document IDs use site-relative paths such as:
-
-`/guide/page.html#section`
-
-They do not include the configured site `base`.
-
-VitePress resolves the `base` when rendering search results.
-
-Make sure customizations do not accidentally duplicate or omit the base path.
-
----
-
-# 5. Search Index Exclusion and Custom Content Rendering
-
-Support excluding documentation pages from search.
-
-A Markdown file may contain:
-
-```yaml
----
-search: false
----
-```
-
-Such pages must not appear in search results.
-
-Where necessary, support path-based search exclusions.
-
-VitePress supports custom rendering:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'local',
-      options: {
-        async _render(src, env, md) {
-          const html = await md.renderAsync(src, env)
-
-          if (env.frontmatter?.search === false) {
-            return ''
-          }
-
-          if (env.relativePath.startsWith('some/path')) {
-            return ''
-          }
-
-          return html
-        }
-      }
-    }
-  }
-})
-```
-
-## Critical implementation detail
-
-When a custom `_render` function is used, VitePress requires the application to handle `search: false` itself.
-
-Also, `env.frontmatter` may not be fully populated before calling:
-
-`md.renderAsync(src, env)`
-
-Therefore, always ensure Markdown rendering happens before inspecting frontmatter properties when using this mechanism.
-
-Support optional configuration for:
-
-- Search exclusion by frontmatter.
-- Search exclusion by directory or path.
-- Search indexing rules.
-- Custom heading/title indexing when appropriate.
-
-For example, a document's frontmatter title may be prepended to the searchable content:
-
-```ts
-async _render(src, env, md) {
-  const html = await md.renderAsync(src, env)
-
-  if (env.frontmatter?.title) {
-    return (
-      await md.renderAsync(`# ${env.frontmatter.title}`)
-    ) + html
-  }
-
-  return html
-}
-```
-
-If using such behavior, avoid indexing duplicated content unnecessarily.
-
-Preserve correct search headings and anchors.
-
----
-
-# 6. Alternative Search Providers
-
-Local search is the required default.
-
-However, structure the configuration so that alternative search providers can be supported without redesigning the entire system.
-
-Relevant alternatives:
-
-- Algolia DocSearch
-- Pagefind: https://npmx.dev/package/vitepress-plugin-pagefind
-- Typesense: https://npmx.dev/package/vitepress-plugin-typesense
-- Cloudflare AI Search: https://npmx.dev/package/vitepress-plugin-cloudflare-ai-search
-
-Do not install all of these providers automatically.
-
-Implement the local provider now, and allow optional Algolia configuration as described below.
-
-Other community plugins can remain documented extension points unless already required by the existing implementation.
-
----
-
-# 7. Optional Algolia DocSearch Integration
-
-Support selecting Algolia instead of local search through configuration.
-
-Example:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'algolia',
-      options: {
-        appId: '...',
-        apiKey: '...',
-        indexName: '...'
-      }
-    }
-  }
-})
-```
-
-The required configuration includes:
-
-- `appId`
-- `apiKey`
-- `indexName`
-
-These must be validated when Algolia is enabled.
-
-Do not hardcode real credentials.
-
-Follow appropriate security practices for public search keys and secret administrative credentials.
-
-Support the same internationalization principles where available.
-
----
-
-# 8. Algolia Ask AI Support
-
-Support the optional Ask AI integration offered by Algolia DocSearch.
-
-Example:
-
-```ts
-import { defineConfig } from 'vitepress'
-
-export default defineConfig({
-  themeConfig: {
-    search: {
-      provider: 'algolia',
-      options: {
-        appId: '...',
-        apiKey: '...',
-        indexName: '...',
-        askAi: {
-          assistantId: 'XXXYYY'
-        }
-      }
-    }
-  }
-})
-```
-
-The `assistantId` is mandatory when Ask AI is enabled.
-
-Optional Ask AI overrides include:
-
-- `appId`
-- `apiKey`
-- `indexName`
-
-When omitted, use the corresponding top-level Algolia options.
-
-Ask AI must remain disabled when it is not explicitly configured.
-
-If keyword search is desired without Ask AI, omit `askAi`.
-
----
-
-# 9. Algolia Ask AI Side Panel
-
-Support the optional side panel functionality available in compatible DocSearch versions.
-
-Example:
-
-```ts
-{
-  askAi: {
-    assistantId: 'XXXYYY',
-    sidePanel: {
-      panel: {
-        variant: 'floating',
-        side: 'right',
-        width: '360px',
-        expandedWidth: '580px',
-        suggestedQuestions: true
-      }
-    }
-  }
-}
-```
-
-Support relevant settings:
-
-- `variant`
-- `side`
-- `width`
-- `expandedWidth`
-- `suggestedQuestions`
-- `keyboardShortcuts`
-
-The default keyboard shortcut can be:
-
-`Ctrl/Cmd+I`
-
-Allow disabling it:
-
-```ts
-sidePanel: {
-  keyboardShortcuts: {
-    'Ctrl/Cmd+I': false
-  }
-}
-```
-
-**Important:** To enable suggested questions in the side panel, use:
-
-`askAi.sidePanel.panel.suggestedQuestions`
-
-Do not assume that `askAi.suggestedQuestions` alone enables suggestions in the integrated side panel.
-
----
-
-# 10. Algolia Integration Modes
-
-Support the following modes where the installed VitePress/DocSearch versions allow them:
-
-- `auto`
-- `sidePanel`
-- `hybrid`
-- `modal`
-
-Expected semantics:
-
-### `auto`
-
-Automatically infer the appropriate mode:
-
-- Hybrid when keyword search is configured.
-- Side panel when only the Ask AI side panel is configured.
-
-### `sidePanel`
-
-Force side-panel-only mode and hide the keyword search button.
-
-### `hybrid`
-
-Enable both the keyword search modal and Ask AI side panel.
-
-Requires compatible keyword search configuration.
-
-### `modal`
-
-Keep Ask AI inside the DocSearch modal rather than the separate side panel.
-
-## Ask AI without keyword search
-
-Support the following configuration shape:
-
-```ts
-{
-  provider: 'algolia',
-  options: {
-    mode: 'sidePanel',
-    askAi: {
-      assistantId: 'XXXYYY',
-      appId: '...',
-      apiKey: '...',
-      indexName: '...',
-      sidePanel: true
-    }
-  }
-}
-```
-
-Only activate these features when valid configuration and compatible versions are present.
-
-Do not invent unsupported native APIs.
-
----
-
-# 11. Algolia Crawler Configuration
-
-Where Algolia is enabled, support or document a compatible crawler configuration.
-
-The documentation should explain these crawler concepts:
-
-- `appId`
-- `apiKey`
-- `rateLimit`
-- `startUrls`
-- `renderJavaScript`
-- `sitemaps`
-- `exclusionPatterns`
-- `ignoreCanonicalTo`
-- `discoveryPatterns`
-- `schedule`
-- `actions`
-- `initialIndexSettings`
-
-An example crawler may use:
-
-```js
-new Crawler({
-  appId: '...',
-  apiKey: '...',
-  rateLimit: 8,
-  startUrls: ['https://vitepress.dev/'],
-  renderJavaScript: false,
-  sitemaps: [],
-  exclusionPatterns: [],
-  ignoreCanonicalTo: false,
-  discoveryPatterns: ['https://vitepress.dev/**'],
-  schedule: 'at 05:10 on Saturday',
-
-  actions: [
-    {
-      indexName: 'vitepress',
-      pathsToMatch: ['https://vitepress.dev/**'],
-      recordExtractor: ({ $, helpers }) => {
-        return helpers.docsearch({
-          recordProps: {
-            lvl0: {
-              selectors: 'section.has-active div h2',
-              defaultValue: 'Documentation'
-            },
-            lvl1: '.content h1',
-            lvl2: '.content h2',
-            lvl3: '.content h3',
-            lvl4: '.content h4',
-            lvl5: '.content h5',
-            content: '.content p, .content li'
-          },
-          indexHeadings: true
-        })
-      }
-    }
-  ]
-})
-```
-
-Support/document index settings for:
-
-- Faceting by `type` and `lang`.
-- Retrieving hierarchy, content, anchors, and URLs.
-- Highlighting and snippets.
-- Heading hierarchy from `lvl0` through `lvl6`.
-- Camel-case hierarchy variants.
-- Searchable content.
-- Distinct records by URL.
-- Ranking by page rank, heading level, and position.
-- Typo tolerance.
-- Word matching.
-- Attribute relevance.
-- Proximity.
-- Exact matching.
-- Custom ranking.
-
-Relevant index fields and options include:
-
-```js
-{
-  attributesForFaceting: ['type', 'lang'],
-
-  attributesToRetrieve: [
-    'hierarchy',
-    'content',
-    'anchor',
-    'url'
-  ],
-
-  attributesToHighlight: [
-    'hierarchy',
-    'hierarchy_camel',
-    'content'
-  ],
-
-  attributesToSnippet: ['content:10'],
-
-  camelCaseAttributes: [
-    'hierarchy',
-    'hierarchy_radio',
-    'content'
-  ],
-
-  distinct: true,
-  attributeForDistinct: 'url',
-
-  customRanking: [
-    'desc(weight.pageRank)',
-    'desc(weight.level)',
-    'asc(weight.position)'
-  ],
-
-  ranking: [
-    'words',
-    'filters',
-    'typo',
-    'attribute',
-    'proximity',
-    'exact',
-    'custom'
-  ],
-
-  highlightPreTag:
-    '<span class="algolia-docsearch-suggestion--highlight">',
-
-  highlightPostTag: '</span>',
-
-  minWordSizefor1Typo: 3,
-  minWordSizefor2Typos: 7,
-
-  allowTyposOnNumericTokens: false,
-
-  minProximity: 1,
-  ignorePlurals: true,
-  advancedSyntax: true,
-
-  attributeCriteriaComputedByMinProximity: true,
-
-  removeWordsIfNoResults: 'allOptional'
-}
-```
-
-Adapt crawler selectors and URLs to the actual site.
-
-Do not blindly copy VitePress's public website URL into our production configuration.
-
-An external Algolia crawler cannot be considered deployed merely because a local example configuration file exists.
-
-Make the distinction explicit in the final implementation report.
-
----
-
-# 12. VitePress Badge Component — Full Support
+# 2. VitePress Badge Component — Full Support
 
 Add support for VitePress's globally available `<Badge>` component.
 
@@ -851,7 +168,7 @@ Instead, verify that the existing Markdown pipeline supports it.
 
 ---
 
-# 13. Global Footer — Mandatory
+# 3. Global Footer — Mandatory
 
 Implement a global footer using the native VitePress footer API.
 
@@ -945,7 +262,7 @@ Do not claim footer support is complete if the footer never appears on ordinary 
 
 ---
 
-# 14. Site Configuration — `vitepress.site.config.json`
+# 4. Site Configuration — `vitepress.site.config.json`
 
 Prefer centralizing user-facing website configuration in:
 
@@ -960,9 +277,6 @@ Examples:
 - Branding where already supported.
 - Supported languages.
 - Localized labels.
-- Search button labels.
-- Search modal translations.
-- Search footer translations.
 - Global footer message.
 - Copyright.
 - Related presentation options.
@@ -974,20 +288,6 @@ Suggested conceptual structure:
   "site": {
     "name": "Feluqa",
     "description": "Feluqa Documentation"
-  },
-  "search": {
-    "labels": {
-      "en": {
-        "buttonText": "Search",
-        "buttonAriaLabel": "Search documentation",
-        "noResultsText": "No results"
-      },
-      "fr": {
-        "buttonText": "Rechercher",
-        "buttonAriaLabel": "Rechercher dans la documentation",
-        "noResultsText": "Aucun résultat"
-      }
-    }
   },
   "footer": {
     "en": {
@@ -1004,8 +304,6 @@ Suggested conceptual structure:
 
 This is an illustrative structure, not a mandatory schema.
 
-Complete the actual translation schema to cover ALL search labels previously listed.
-
 Choose a consistent final schema based on the existing project.
 
 Make sure it is loaded and used by the VitePress configuration adapter.
@@ -1014,7 +312,7 @@ Do not merely create the JSON file without connecting it to the runtime.
 
 ---
 
-# 15. Per-Page Outline — Mandatory
+# 5. Per-Page Outline — Mandatory
 
 Every applicable documentation page must have an automatically generated outline based on its Markdown headings.
 
@@ -1101,7 +399,7 @@ Both must work together.
 
 ---
 
-# 16. Sidebar Ordering — VERY IMPORTANT
+# 6. Sidebar Ordering — VERY IMPORTANT
 
 This is a critical architectural requirement.
 
@@ -1219,7 +517,7 @@ weight: 1
 
 as the primary source of sidebar order.
 
-A `weight` field may exist for other purposes or backward compatibility, but it must not override the explicitly established numerical filename ordering system.
+A `weight` field may exist for other purposes, but it must not override numerical filename ordering.
 
 Do not require:
 
@@ -1274,7 +572,7 @@ If changes are necessary, make them minimal and well-integrated.
 
 ---
 
-# 17. Page Discovery and Navigation Consistency
+# 7. Page Discovery and Navigation Consistency
 
 Ensure the documentation discovery pipeline correctly handles:
 
@@ -1288,7 +586,6 @@ Ensure the documentation discovery pipeline correctly handles:
 - Auto-generated sidebar entries.
 - Correct document URLs.
 - Working internal links.
-- Search indexing.
 - Per-page outlines.
 - Page-level metadata.
 - Existing draft/visibility conventions.
@@ -1302,13 +599,10 @@ For example, a documentation page discovered by the sidebar should have:
 - The correct language.
 - The correct ordering.
 - An automatically generated outline when appropriate.
-- Search availability unless excluded.
-
-Avoid situations where navigation uses one discovery algorithm while search or metadata uses conflicting assumptions.
 
 ---
 
-# 18. Configuration Architecture
+# 8. Configuration Architecture
 
 Integrate the requirements cleanly.
 
@@ -1318,12 +612,7 @@ The project should have a clear distinction between:
 
 Technical VitePress behavior, including:
 
-- Search provider.
-- Local search configuration.
-- MiniSearch options.
 - Indexing configuration.
-- Optional Algolia configuration.
-- Optional Ask AI configuration.
 - Global technical outline defaults.
 - Other existing VitePress-specific settings.
 
@@ -1334,7 +623,6 @@ User-facing and site-level information, including:
 - Site name.
 - Site description.
 - Language names and labels.
-- Search interface translations.
 - Outline labels.
 - Footer message.
 - Copyright.
@@ -1354,13 +642,10 @@ Per-page metadata and overrides, including:
 - `tags`
 - `draft`
 - `lang`
-- `search`
 - `outline`
 - `footer`
 
 Do not require fields that are naturally optional.
-
-Preserve backward compatibility with existing pages.
 
 ## TypeScript integration
 
@@ -1376,7 +661,7 @@ Avoid duplicate settings and conflicting overrides.
 
 ---
 
-# 19. Theme and Layout Integration
+# 9. Theme and Layout Integration
 
 All new functionality must fit the existing documentation theme.
 
@@ -1390,7 +675,6 @@ Verify compatibility with:
 - Nested navigation.
 - Long document headings.
 - Deep outlines.
-- Search result modals.
 - Footer rendering.
 - Custom badges.
 - Existing custom styles or components.
@@ -1403,7 +687,7 @@ Do not destroy current styling or navigation behavior.
 
 ---
 
-# 20. Required Verification
+# 10. Required Verification
 
 You must actually verify the implementation.
 
@@ -1422,34 +706,6 @@ At minimum, check the following.
 - [ ] Filename fallback works.
 - [ ] No hardcoded frontmatter ordering required.
 - [ ] Language-specific navigation is correct.
-
-## Local search
-
-- [ ] Search button appears.
-- [ ] Search modal opens.
-- [ ] Full-text search produces results.
-- [ ] Fuzzy search works.
-- [ ] Prefix search works.
-- [ ] Page titles are indexed.
-- [ ] Headings are indexed.
-- [ ] Document content is indexed.
-- [ ] Result links navigate correctly.
-- [ ] Heading anchors navigate correctly.
-- [ ] `search: false` excludes pages.
-- [ ] Multilingual translations work.
-- [ ] Search respects the configured base path.
-- [ ] Advanced MiniSearch options are handled correctly.
-
-## Optional Algolia
-
-- [ ] Provider configuration is supported.
-- [ ] Required options are validated.
-- [ ] Credentials are not hardcoded.
-- [ ] Ask AI options are mapped correctly.
-- [ ] Side panel options are mapped correctly.
-- [ ] Integration modes are handled when supported.
-- [ ] Incompatible configuration is rejected or reported clearly.
-- [ ] No false claim that remote crawling or AI services are operational without deployment and credentials.
 
 ## Badges
 
@@ -1510,7 +766,7 @@ Add or update tests where appropriate, especially for the numerical ordering log
 
 ---
 
-# 21. Implementation Workflow — Follow This Order
+# 11. Implementation Workflow — Follow This Order
 
 Perform the following steps in order.
 
@@ -1542,39 +798,31 @@ Implement `navTitle`, numerical ordering, recursive nested navigation, and multi
 
 Integrate `vitepress.config.json` and `vitepress.site.config.json`.
 
-**Step 5 — Implement local search**
-
-Implement MiniSearch and multilingual search labels, including exclusion behavior.
-
-**Step 6 — Add optional provider support**
-
-Implement compatible Algolia settings and Ask AI configuration without making external providers mandatory.
-
-**Step 7 — Implement badges**
+**Step 5 — Implement badges**
 
 Verify native `<Badge>` support and correct styling.
 
-**Step 8 — Implement footer**
+**Step 6 — Implement footer**
 
 Integrate footer configuration and ensure visibility with the current layout.
 
-**Step 9 — Implement page outline**
+**Step 7 — Implement page outline**
 
 Enable automatically generated outlines and per-page overrides.
 
-**Step 10 — Verify**
+**Step 8 — Verify**
 
 Run appropriate tests, type checks, and production build.
 
 Fix errors rather than merely reporting them.
 
-**Step 11 — Continue previous work**
+**Step 9 — Continue previous work**
 
 Return to the implementation you were performing before these instructions and finish any remaining parts.
 
 Do not abandon the original task because of these additional requirements.
 
-**Step 12 — Final audit**
+**Step 10 — Final audit**
 
 Re-read every section of this prompt and verify the code against it.
 
@@ -1582,7 +830,7 @@ Do not consider the task complete until the audit is finished.
 
 ---
 
-# 22. Final Response Requirements
+# 12. Final Response Requirements
 
 Your final response must contain:
 
@@ -1590,12 +838,11 @@ Your final response must contain:
 2. **Implemented functionality:** A clear summary of working features.
 3. **Navigation:** Explanation of how recursive numeric ordering works.
 4. **Configuration:** Explanation of the two JSON configuration files and their responsibilities.
-5. **Search:** Confirmation of the selected provider, local search behavior, and multilingual support.
-6. **Badges:** Confirmation of supported variants and rendering.
-7. **Footer:** Confirmation of rendering, including sidebar-visible pages.
-8. **Outline:** Confirmation of automatic generation and per-page overrides.
-9. **Verification:** Tests and build commands actually executed, with results.
-10. **Remaining limitations:** Only genuinely unresolved or externally dependent items, with an explanation.
+5. **Badges:** Confirmation of supported variants and rendering.
+6. **Footer:** Confirmation of rendering, including sidebar-visible pages.
+7. **Outline:** Confirmation of automatic generation and per-page overrides.
+8. **Verification:** Tests and build commands actually executed, with results.
+9. **Remaining limitations:** Only genuinely unresolved or externally dependent items, with an explanation.
 
 Distinguish between:
 
@@ -1612,29 +859,25 @@ Never mark a feature as completed merely because configuration examples or comme
 
 The most important constraints are:
 
-**1. Complete implementation, not partial implementation.**
+**-1. Complete implementation, not partial implementation.**
 
-**2. Do not forget `navTitle` in `<name>.<lang>.md`.**
+**0. Do not forget `navTitle` in `<name>.<lang>.md`.**
 
-**3. Local search must work and be configurable.**
+**3. The footer must be implemented using configuration from `vitepress.site.config.json`.**
 
-**4. Search labels and translations must be configurable through the site configuration.**
+**4. Badges must support all documented VitePress variants.**
 
-**5. The footer must be implemented using configuration from `vitepress.site.config.json`.**
+**5. Every applicable page must have an automatically generated outline.**
 
-**6. Badges must support all documented VitePress variants.**
+**6. The sidebar MUST follow numerical filename and folder prefixes recursively.**
 
-**7. Every applicable page must have an automatically generated outline.**
+**7. NEVER replace numerical filesystem ordering with hardcoded `weight` or `nav_order` frontmatter.**
 
-**8. The sidebar MUST follow numerical filename and folder prefixes recursively.**
+**8. Preserve the existing architecture and functionality.**
 
-**9. NEVER replace numerical filesystem ordering with hardcoded `weight` or `nav_order` frontmatter.**
+**9. Continue and finish the work that was already in progress.**
 
-**10. Preserve the existing architecture and functionality.**
-
-**11. Continue and finish the work that was already in progress.**
-
-**12. Verify actual functionality, not merely the existence of code.**
+**10. Verify actual functionality, not merely the existence of code.**
 
 If a detail is ambiguous, inspect the project and adopt the solution that best preserves the existing architecture and these requirements.
 
