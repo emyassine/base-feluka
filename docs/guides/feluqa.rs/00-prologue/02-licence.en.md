@@ -17,21 +17,27 @@ author:
 
 # Build with Feluqa
 
-Creating an **Application** with Feluqa is free of charge for personal
+Creating an **Application** with the Feluqa SDK is free of charge for personal
 projects and commercial work. Individuals and organisations can build
-Applications with the SDK; contractors and subcontractors can build them for
+Applications with it; contractors and subcontractors can build them for
 clients when authorised to do so. You are free to use the **Products** you
 create for yourself, your organisation, or your client. This right to use your
-Products is guaranteed. The Feluqa SDK and Platform have separate licence
-terms.
+Products is guaranteed.
 
 ## Feluqa Platform and licensing
 
-The **Feluqa Platform** and its current **SDK** are proprietary software owned
-by NUMERIMONDES SARL AU. Proprietary describes ownership and licensing; it
-does not prevent organisations from creating Applications with Feluqa or
-using the Products they build. The licence terms distinguish rights to the
-Platform and SDK from rights in a Product, its Applications and Modules, and
+The **Feluqa SDK** is the development API and tools used to create Applications.
+Its use for Application creation is free of charge. The **Feluqa Platform** is
+the shared runtime and control plane designed to provide capabilities such as
+identity, access control, audit, and configuration; it is distinct from a
+customer's Product.
+
+Both the SDK and Platform are proprietary software owned by NUMERIMONDES SARL
+AU. Proprietary describes ownership; it does not take away the guaranteed
+right to create Applications and use the Products built with them.
+
+The applicable terms distinguish rights to Feluqa's SDK and Platform
+components from rights in a Product, its Applications and Modules, and
 customer-specific source code. These terms use Feluqa's
 [canonical taxonomy](../01-get-started/00-introduction/03-taxonomy.en.md).
 
