@@ -2,7 +2,7 @@
 icon: "layers-3"
 title: "Choose an Application Profile"
 description: "Understand the difference between a Feluqa application profile, a console binary, and a Rust compilation target."
-summary: "Understand the difference between a Feluqa application profile, a console binary, and a Rust compilation target."
+summary: "Distinguishes an Application Profile, the executable binary, and Rust's compilation target, explaining what each choice determines. It describes where the profile choice belongs in Feluqa's project setup and connects the concept to the next getting-started step."
 weight: 6
 tags: [feluqa, getting-started, profiles, targets]
 date: 2026-10-29

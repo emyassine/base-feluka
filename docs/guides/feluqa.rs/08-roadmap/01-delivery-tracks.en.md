@@ -2,7 +2,7 @@
 icon: "route"
 title: "Delivery Tracks"
 description: "Active Feluqa delivery tracks F4 to F12 with estimates and what remains to be built."
-summary: "Active Feluqa delivery tracks F4 to F12 with estimates and what remains to be built."
+summary: "Summarizes active Feluqa delivery tracks, their estimated effort, scope, dependencies, and current implementation state. It cautions that estimates are ranges rather than commitments and should not be added into a delivery schedule without re-estimation at acceptance gates."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1

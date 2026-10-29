@@ -2,7 +2,7 @@
 icon: "git-pull-request"
 title: "Contribution Guide"
 description: "How to prepare a Feluqa contribution and use the contributor and agent skill guides."
-summary: "How to prepare a Feluqa contribution and use the contributor and agent skill guides."
+summary: "Describes how prospective contributors can contact Feluqa, discuss scope and terms, and request monorepo access when needed. It sets expectations for implementation proposals, documentation, validation, and honest status reporting, and explains how the x-agents skills support contributors without replacing repository instructions."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3

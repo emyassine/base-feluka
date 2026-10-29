@@ -2,7 +2,7 @@
 icon: "shield-check"
 title: "What Rust Does—and Does Not—Protect"
 description: "Understand Rust's memory-safety guarantees and the application security risks that still need engineering controls."
-summary: "Understand Rust's memory-safety guarantees and the application security risks that still need engineering controls."
+summary: "Explains which memory-safety errors safe Rust helps prevent and why Rust does not automatically secure an application. It reviews injection, authentication and authorization, cryptography, web attacks, resource exhaustion, deserialization, unsafe code, dependencies, and business logic, then gives a practical model and further reading."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 4

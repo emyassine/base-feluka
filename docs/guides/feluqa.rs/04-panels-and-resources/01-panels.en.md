@@ -2,7 +2,7 @@
 icon: "panels-top-left"
 title: "Panels"
 description: "How to declare a Feluqa panel: path, branding, login, tenancy, middleware, navigation groups and render hooks."
-summary: "How to declare a Feluqa panel: path, branding, login, tenancy, middleware, navigation groups and render hooks."
+summary: "Shows how to declare a Feluqa web panel, including its path, branding, login, tenancy, middleware, navigation groups, and render hooks. It explains strict authorization as the default, the restricted prototype mode, injected resources, and common panel types."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1

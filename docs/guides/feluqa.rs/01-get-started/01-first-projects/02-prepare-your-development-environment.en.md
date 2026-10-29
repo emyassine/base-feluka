@@ -2,7 +2,7 @@
 icon: "wrench"
 title: "Prepare Your Development Environment"
 description: "The planned Feluqa dev:init setup for Rust, target-specific tools, and the recommended Zed editor."
-summary: "The planned Feluqa dev:init setup for Rust, target-specific tools, and the recommended Zed editor."
+summary: "Describes the planned feluqa dev:init flow for installing Rust and target-specific dependencies based on the selected application profile. It covers editor choice, recommends Zed while noting other Rust Analyzer editors, and links the setup stage to the first project tutorial without presenting the planned automation as implemented."
 weight: 2
 tags: [feluqa, getting-started, rust, zed, setup]
 date: 2026-10-29

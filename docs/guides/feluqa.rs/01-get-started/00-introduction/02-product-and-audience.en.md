@@ -2,7 +2,7 @@
 icon: "users"
 title: "Product and Audience"
 description: "Feluqa's product model, the people who interact with it, and the responsibilities shared between an application and its platform."
-summary: "Feluqa's product model, the people who interact with it, and the responsibilities shared between an application and its platform."
+summary: "Explains Feluqa's product-first model, in which Applications combine business Modules and may expose different interfaces, including console and desktop experiences. It identifies the concerns of product owners, technical teams, operators, and end users, separates application responsibilities from shared platform services, and marks workstation and runtime capabilities as goals where they are not yet implemented."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2
