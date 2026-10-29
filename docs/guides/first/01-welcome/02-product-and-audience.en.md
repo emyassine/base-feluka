@@ -1,4 +1,5 @@
 ---
+icon: "users"
 title: "Product and Audience"
 description: "Feluqa's product model, the people who interact with it, and the responsibilities shared between an application and its platform."
 date: 2026-10-29

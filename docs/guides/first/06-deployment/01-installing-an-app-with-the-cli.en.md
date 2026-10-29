@@ -1,4 +1,5 @@
 ---
+icon: "server"
 title: "Installing a Feluqa App on a New Server with the CLI"
 description: "How feluqa-cli prepares a fresh server, verifies and installs a signed Feluqa App, bootstraps the app owner, and sets up privileges, roles, permissions and the built-in System panel."
 date: 2026-10-29

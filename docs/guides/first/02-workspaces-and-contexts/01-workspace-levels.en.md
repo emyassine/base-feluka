@@ -1,4 +1,5 @@
 ---
+icon: "folder-tree"
 title: "Workspaces and Packages"
 description: "The three organizational levels of Feluqa: framework workspace, developer workspace and package, and how .feluqa/workspace.toml identifies them."
 date: 2026-10-29

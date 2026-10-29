@@ -1,4 +1,5 @@
 ---
+icon: "network"
 title: "Architecture Overview"
 description: "How the Feluqa SDK, CLI, artifacts, Platform, App and clients fit together, how modules become products, and what is generated at compile time."
 date: 2026-10-29

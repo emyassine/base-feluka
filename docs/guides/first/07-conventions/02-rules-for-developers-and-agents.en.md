@@ -1,4 +1,5 @@
 ---
+icon: "list-checks"
 title: "Rules for Developers and Agents"
 description: "Coding conventions and CLI generators for Feluqa developers and AI agents; also generated into AGENTS.md by feluqa new."
 date: 2026-10-29

@@ -1,4 +1,5 @@
 ---
+icon: "layout-dashboard"
 title: "System Panel (Feluqa Core)"
 description: "The built-in control plane: first-run setup, users, privileges, roles, permissions, modules, features, configuration, audit and licensing."
 date: 2026-10-29

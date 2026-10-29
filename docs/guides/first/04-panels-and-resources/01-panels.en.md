@@ -1,4 +1,5 @@
 ---
+icon: "panels-top-left"
 title: "Panels"
 description: "How to declare a Feluqa panel: path, branding, login, tenancy, middleware, navigation groups and render hooks."
 date: 2026-10-29

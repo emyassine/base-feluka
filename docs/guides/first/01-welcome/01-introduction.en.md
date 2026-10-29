@@ -1,4 +1,5 @@
 ---
+icon: "book-open"
 title: "Introduction to Feluqa"
 description: "A short introduction to Feluqa, its purpose, and the guides that explain its product model, vocabulary, and architecture."
 date: 2026-10-29

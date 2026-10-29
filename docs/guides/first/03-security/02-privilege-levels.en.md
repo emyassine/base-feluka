@@ -1,4 +1,5 @@
 ---
+icon: "badge-check"
 title: "Privilege Levels"
 description: "Platform-wide privilege levels (app-owner, super-admin, sysadmin, staff) with internal and external origins, rank rules and delegation limits."
 date: 2026-10-29

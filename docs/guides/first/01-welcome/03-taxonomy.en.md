@@ -1,4 +1,5 @@
 ---
+icon: "list-tree"
 title: "Taxonomy"
 description: "The shared vocabulary of Feluqa: SDK, Platform, app, client, CLI, modules, submodules, features, panels, privileges, roles and permissions."
 date: 2026-10-29
