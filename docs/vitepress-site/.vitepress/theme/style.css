@@ -319,3 +319,7 @@
 .items > .VPSidebarItem:first-child {
   margin-top: 12px;
 }
+
+.items > .VPSidebarItem:last-child {
+  margin-bottom: 12px;
+}

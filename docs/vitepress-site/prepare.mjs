@@ -260,6 +260,9 @@ await Promise.all(records.map(async (record) => {
     await rm(source, { force: true })
     generatedFiles.add(svg)
     generatedFiles.add(darkSvg)
+    const importableSvg = join(outputDirectory, 'mermaid', `${id}.svg`)
+    generatedFiles.add(importableSvg)
+    await copyIfChanged(svg, importableSvg)
     try { await access(cachedDarkSvg); await copyIfChanged(cachedDarkSvg, darkSvg) }
     catch {
       await createDarkVariant(svg, darkSvg)
@@ -267,10 +270,7 @@ await Promise.all(records.map(async (record) => {
     }
     return { block, id }
   }))
-  for (const { block, id } of rendered.reverse()) {
-    const image = `<img :src="'/mermaid/${id}.svg'" :data-light-src="'/mermaid/${id}.svg'" :data-dark-src="'/mermaid/${id}.dark.svg'" alt="Mermaid diagram" />`
-    markdown = `${markdown.slice(0, block.index)}${image}${markdown.slice(block.index + block[0].length)}`
-  }
+  for (const { block, id } of rendered.reverse()) markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
   const markdownAssetTargets = new Map()
   const stageReference = async (reference, baseDirectory) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(reference)) return null

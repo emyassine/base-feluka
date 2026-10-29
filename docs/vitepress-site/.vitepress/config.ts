@@ -93,6 +93,7 @@ const sidebars = Object.fromEntries(site.subguides.map((guide: { path: string; l
 
 export default defineConfig({
   title: siteConfig.site.name,
+  head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
   srcDir: '.generated-guides',
   outDir: outputDirectory,
   cleanUrls: false,

@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import { h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
+import generatedFonts from '../generated-fonts.json'
 import siteContent from '../generated-site-content.json'
 import './style.css'
 
@@ -203,6 +204,25 @@ const MermaidLayout = {
       }
       if (colors.primary && !colors.tertiary) root.style.setProperty('--vp-c-brand-3', 'var(--vp-c-brand-1)')
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
+      const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }
+      const fonts = { ...fontConfig.site, ...(fontConfig.guides[pathGuide] ?? {}) }
+      const fontRules: string[] = []
+      for (const role of ['body', 'code']) {
+        root.style.removeProperty(role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono')
+        const font = fonts[role]
+        if (!font) continue
+        const family = JSON.stringify(font.family)
+        const property = role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono'
+        root.style.setProperty(property, `${family}, ${font.fallback}`)
+        if (font.src) fontRules.push(`@font-face{font-family:${family};src:url(${JSON.stringify(font.src)}) format('woff2');font-style:${font.style};font-weight:${font.weight};font-display:swap}`)
+      }
+      let fontStyle = document.getElementById('feluqa-configured-fonts')
+      if (!fontStyle) {
+        fontStyle = document.createElement('style')
+        fontStyle.id = 'feluqa-configured-fonts'
+        document.head.append(fontStyle)
+      }
+      fontStyle.textContent = fontRules.join('\n')
       if (colors.favicon) {
         let icon = document.querySelector<HTMLLinkElement>('link[data-feluqa-favicon]')
         if (!icon) {
@@ -295,16 +315,19 @@ const MermaidLayout = {
   const installFigures = () => {
     const root = document.querySelector('.vp-doc')
     if (!root) return
-    root.querySelectorAll<HTMLImageElement>('img[src^="/mermaid/"]').forEach((image) => {
+    root.querySelectorAll<HTMLImageElement>('img[alt="Mermaid diagram"]').forEach((image) => {
       if (image.closest('.mermaid-figure')) return
+      const source = image.getAttribute('src') || image.src
+      const id = source.match(/([a-f0-9]{16})(?:\.[a-zA-Z0-9_-]+)?(?:\.dark)?\.svg(?:[?#].*)?$/)?.[1]
+      if (!id) return
       const figure = document.createElement('div')
       figure.className = 'mermaid-figure'
       figure.dataset.zoom = '1'
       figure.tabIndex = 0
       figure.setAttribute('role', 'group')
       figure.setAttribute('aria-label', 'Mermaid diagram. Use the controls to zoom or open a larger view.')
-      image.dataset.lightSrc = image.getAttribute('src') || image.src
-      image.dataset.darkSrc = image.dataset.lightSrc.replace(/\.svg$/, '.dark.svg')
+      image.dataset.lightSrc = `/mermaid/${id}.svg`
+      image.dataset.darkSrc = `/mermaid/${id}.dark.svg`
       image.parentNode?.insertBefore(figure, image)
       figure.append(image)
       const toolbar = document.createElement('div')

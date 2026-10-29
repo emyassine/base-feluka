@@ -70,8 +70,8 @@
   },
   "footer": {
     "en": {
-      "message": "Feluqa documentation",
-      "copyright": "Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+      "message": "",
+      "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
     }
   }
 }
