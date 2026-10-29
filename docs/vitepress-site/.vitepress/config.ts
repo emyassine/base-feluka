@@ -100,7 +100,29 @@ export default defineConfig({
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     if (!guide) return []
     const guideEntry = guideConfigs[guide.path]
-    return [['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }]]
+    const head: any[] = [['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }]]
+    const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
+    const declarations: string[] = []
+    const colorProperties: Record<string, string> = {
+      primary: '--vp-c-brand-1',
+      secondary: '--vp-c-brand-2',
+      tertiary: '--vp-c-brand-3',
+      soft: '--vp-c-brand-soft',
+      heroNameColor: '--vp-home-hero-name-color',
+      heroNameBackground: '--vp-home-hero-name-background',
+    }
+    for (const [key, property] of Object.entries(colorProperties)) {
+      const value = colors[key]
+      if (value === undefined) continue
+      if (typeof value !== 'string' || !value.trim() || /[<>;{}]/.test(value)) {
+        throw new Error(`Invalid colors.${key} in ${guideEntry.path}/vitepress.config.json`)
+      }
+      declarations.push(`${property}: ${value.trim()};`)
+    }
+    if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
+    if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
+    if (declarations.length) head.push(['style', {}, `:root { ${declarations.join(' ')} }`])
+    return head
   },
   themeConfig: {
     nav,
