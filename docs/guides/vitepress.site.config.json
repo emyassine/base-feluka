@@ -92,7 +92,7 @@
   },
   "footer": {
     "en": {
-      "message": "",
+      "message": "Questions? Read the <a href=\"/faq/\">quick answers</a>.",
       "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
     }
   },
@@ -143,9 +143,13 @@
             "question": "Is the complete platform available today?",
             "answer": "No. The repository provides selected framework foundations, while several target capabilities such as dynamic module installation and complete runtime shells remain in active development."
           }
-        ]
+        ],
+        "pageTitle": "Feluqa FAQ",
+        "pageNavTitle": "FAQ",
+        "description": "Frequently asked questions and links to the Feluqa documentation guides."
       }
     },
-    "siteUrl": null
+    "siteUrl": null,
+    "path": "faq"
   }
 }

@@ -27,10 +27,15 @@ const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: strin
   return [guide.path, { path: configPath, config: JSON.parse(readFileSync(configPath, 'utf8')) }]
 }))
 const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
-const subguideRootPaths = new Set(site.subguides.flatMap((guide: { path: string; uri: { index?: string } }) => [
+const defaultSeoLocale = site.languages[0].toLowerCase().split('-')[0]
+const seoSidebarRoots = Object.keys(site.seo?.locales ?? {}).map((language: string) => {
+  const seoPath = site.seo.path ?? 'faq'
+  return (language.toLowerCase() === defaultSeoLocale ? seoPath : `${language}/${seoPath}`).split('/')[0]
+})
+const subguideRootPaths = new Set([...site.subguides.flatMap((guide: { path: string; uri: { index?: string } }) => [
   routeBase(guide.path).split('/').filter(Boolean)[0],
   guide.uri.index?.split('/').filter(Boolean)[0],
-]).filter(Boolean))
+]).filter(Boolean), ...seoSidebarRoots])
 function publicPagePath(file: string): string {
   const sourceRelative = relative(generatedDirectory, file).replace(/\\/g, '/')
   const target = sourceRelative
@@ -141,11 +146,19 @@ export default defineConfig({
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
     const siteUrl = siteConfig.seo?.siteUrl
-    if (page === 'index.md' && siteUrl) {
-      const localeKey = siteConfig.languages[0].toLowerCase().split('-')[0]
-      const discovery = siteConfig.seo.locales?.[localeKey] ?? siteConfig.seo.locales?.root
-      if (discovery) {
-        const graph: any[] = [{ '@type': 'WebSite', name: siteConfig.site.name, url: siteUrl }]
+    const faqEntry = Object.entries(siteConfig.seo?.locales ?? {}).find(([language]) => {
+      const seoPath = siteConfig.seo.path ?? 'faq'
+      const languagePath = language.toLowerCase() === defaultSeoLocale ? seoPath : `${language}/${seoPath}`
+      return page.replace(/^\/+/, '') === `${languagePath}/index.md`
+    })
+    if (faqEntry && siteUrl) {
+      const [language, discovery] = faqEntry as [string, any]
+      const localizedPath = language.toLowerCase() === defaultSeoLocale ? siteConfig.seo.path ?? 'faq' : `${language}/${siteConfig.seo.path ?? 'faq'}`
+      const canonicalUrl = new URL(`/${localizedPath}/`, siteUrl).href
+      const graph: any[] = [
+        { '@type': 'WebSite', name: siteConfig.site.name, url: siteUrl },
+        { '@type': 'WebPage', name: discovery.pageTitle ?? discovery.faqTitle ?? 'FAQ', url: canonicalUrl, inLanguage: language },
+      ]
         if (discovery.quickLinks?.length) {
           graph.push({
             '@type': 'ItemList',
@@ -155,7 +168,7 @@ export default defineConfig({
             })),
           })
         }
-        if (discovery.faq?.length) {
+      if (discovery.faq?.length) {
           graph.push({
             '@type': 'FAQPage',
             mainEntity: discovery.faq.map((item: any) => ({
@@ -164,8 +177,7 @@ export default defineConfig({
             })),
           })
         }
-        head.push(['script', { type: 'application/ld+json' }, JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })])
-      }
+      head.push(['script', { type: 'application/ld+json' }, JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })])
     }
     const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
     const routeKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'

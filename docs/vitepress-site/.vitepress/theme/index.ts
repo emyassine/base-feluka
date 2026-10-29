@@ -4,7 +4,6 @@ import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
 import generatedFonts from '../generated-fonts.json'
 import siteContent from '../generated-site-content.json'
-import FeluqaDiscovery from './components/FeluqaDiscovery.vue'
 import './style.css'
 
 const zoomStep = 0.25
@@ -415,7 +414,6 @@ const MermaidLayout = {
   })
     return () => h(DefaultTheme.Layout, null, {
       'aside-outline-before': () => h(PageActions),
-      'home-features-after': () => h(FeluqaDiscovery),
       'layout-bottom': () => h(SidebarFooter),
     })
   },

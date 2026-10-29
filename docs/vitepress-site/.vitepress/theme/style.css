@@ -42,55 +42,6 @@
 
 .FeluqaSidebarFooter p + p { margin-top: 4px; }
 
-.FeluqaDiscovery {
-  margin: 0 auto;
-  padding: 40px 24px 64px;
-}
-
-.FeluqaDiscovery__inner {
-  display: grid;
-  max-width: 1152px;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  gap: 40px;
-  margin: 0 auto;
-}
-
-.FeluqaDiscovery h2 {
-  margin: 0 0 16px;
-  border-top: 1px solid var(--vp-c-divider);
-  padding-top: 20px;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.FeluqaDiscovery__links nav { border-bottom: 1px solid var(--vp-c-divider); }
-
-.FeluqaDiscovery__link {
-  position: relative;
-  display: grid;
-  gap: 3px;
-  padding: 13px 30px 13px 0;
-  border-top: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-1);
-  text-decoration: none;
-}
-
-.FeluqaDiscovery__link:hover .FeluqaDiscovery__link-label { color: var(--vp-c-brand-1); }
-.FeluqaDiscovery__link-label { font-size: 16px; font-weight: 500; }
-.FeluqaDiscovery__link-description { color: var(--vp-c-text-2); font-size: 13px; line-height: 1.5; }
-.FeluqaDiscovery__arrow { position: absolute; top: 50%; right: 4px; color: var(--vp-c-text-2); font-size: 24px; transform: translateY(-50%); }
-
-.FeluqaDiscovery__faq details { border-top: 1px solid var(--vp-c-divider); padding: 14px 0; }
-.FeluqaDiscovery__faq details:last-child { border-bottom: 1px solid var(--vp-c-divider); }
-.FeluqaDiscovery__faq summary { color: var(--vp-c-text-1); cursor: pointer; font-size: 15px; font-weight: 500; }
-.FeluqaDiscovery__faq p { margin: 9px 0 0; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.65; }
-
-@media (max-width: 720px) {
-  .FeluqaDiscovery { padding: 28px 24px 48px; }
-  .FeluqaDiscovery__inner { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-}
-
 .FeluqaSidebarFooter a {
   text-decoration: underline;
   text-underline-offset: 2px;

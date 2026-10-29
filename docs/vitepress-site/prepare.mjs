@@ -12,6 +12,9 @@ const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.c
 if (config.seo?.siteUrl != null && config.seo.siteUrl !== '' && (typeof config.seo.siteUrl !== 'string' || !/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/.test(config.seo.siteUrl))) {
   throw new Error('seo.siteUrl must be an absolute HTTPS URL when configured')
 }
+if (config.seo?.path != null && (typeof config.seo.path !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(config.seo.path))) {
+  throw new Error('seo.path must be a relative URL path without leading or trailing slashes')
+}
 if (config.seo?.locales != null) {
   if (typeof config.seo.locales !== 'object' || Array.isArray(config.seo.locales)) throw new Error('seo.locales must be an object keyed by language')
   for (const [language, locale] of Object.entries(config.seo.locales)) {
@@ -462,6 +465,33 @@ await Promise.all(records.map(async (record) => {
   await writeIfChanged(record.to, markdown)
 }))
 
+let generatedSeoPages = 0
+const seoPath = config.seo?.path ?? 'faq'
+const seoLocales = config.seo?.locales ?? {}
+const defaultSeoLocale = config.languages[0].toLowerCase().split('-')[0]
+for (const [language, locale] of Object.entries(seoLocales)) {
+  if (!locale || (!locale.quickLinks?.length && !locale.faq?.length)) continue
+  const localizedPath = language.toLowerCase() === defaultSeoLocale ? seoPath : `${language}/${seoPath}`
+  const pathParts = localizedPath.split('/')
+  const indexPath = join(outputDirectory, ...pathParts, 'index.md')
+  const noSlashAlias = join(outputDirectory, ...pathParts.slice(0, -1), `${pathParts.at(-1)}.md`)
+  if (generatedMarkdown.has(indexPath) || generatedMarkdown.has(noSlashAlias)) {
+    throw new Error(`SEO page path conflicts with a documentation page: ${localizedPath}`)
+  }
+  const title = locale.pageTitle ?? locale.faqTitle ?? 'Frequently asked questions'
+  const description = locale.description ?? locale.faqTitle ?? title
+  const quickLinks = (locale.quickLinks ?? []).map((link) => `- [${link.label}](${link.url}) — ${link.description}`).join('\n')
+  const answers = (locale.faq ?? []).map((item) => `### ${item.question}\n\n${item.answer}`).join('\n\n')
+  const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle ?? 'FAQ')}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle ?? 'Popular guides'}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle ?? 'Quick answers'}\n\n${answers}\n` : ''}`
+  generatedMarkdown.add(indexPath)
+  generatedFiles.add(indexPath)
+  await writeIfChanged(indexPath, content)
+  generatedMarkdown.add(noSlashAlias)
+  generatedFiles.add(noSlashAlias)
+  await writeIfChanged(noSlashAlias, content.replace(/\n---\n/, '\nsearch: false\n---\n'))
+  generatedSeoPages += 1
+}
+
 for (const directory of [...directories].reverse()) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
@@ -520,5 +550,5 @@ if (incremental) {
   }
   await removeStale(outputDirectory)
 }
-process.stdout.write(`Prepared ${records.length} Markdown pages; Mermaid diagrams: ${diagramsCached} cached, ${diagramsRendered} rendered.\n`)
+process.stdout.write(`Prepared ${records.length + generatedSeoPages} Markdown pages; Mermaid diagrams: ${diagramsCached} cached, ${diagramsRendered} rendered.\n`)
 
