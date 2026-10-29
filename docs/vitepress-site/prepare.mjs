@@ -17,11 +17,12 @@ const incremental = process.env.FELUQA_PREPARE_INCREMENTAL === '1'
 const records = []
 const routeMap = new Map()
 const generatedFiles = new Set()
+const navigationOrder = {}
 const sidebarConfigurations = new Map()
 const sidebarIconSources = new Set()
 let diagramsCached = 0
 let diagramsRendered = 0
-const cleanDir = (s) => s.replace(/^\d+-/, '')
+const cleanDir = (s) => s.replace(/^\d+[.-]/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const execFile = promisify(execFileCallback)
 
@@ -83,6 +84,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'vitepress.config.json' || entry.name === 'sidebar.json') continue
     const from = join(sourcePath, entry.name)
     const to = join(outputPath, entry.isDirectory() ? cleanDir(entry.name) : cleanFile(entry.name))
+    navigationOrder[relative(outputRoot, to).split(sep).join('/')] = entry.name
     if (entry.isDirectory()) await scan(sourceRoot, outputRoot, from, to)
     else {
       if (sidebarIconSources.has(resolve(from))) continue
@@ -101,6 +103,7 @@ if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 const sourceRoot = resolve(configDirectory, config.guidesPath)
 await scan(sourceRoot, outputDirectory)
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-navigation-order.json'), JSON.stringify(navigationOrder, null, 2))
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 
 async function copyAsset(sourceFile) {
@@ -178,6 +181,10 @@ for (const guide of config.subguides) {
 }
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))
+await writeIfChanged(join(siteDirectory, '.vitepress/generated-site-content.json'), JSON.stringify({
+  guidePaths: config.subguides.map(({ path }) => path),
+  footer: config.footer ?? {},
+}, null, 2))
 
 const generatedSidebar = {}
 for (const [path, metadata] of sidebarConfigurations) {

@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import { h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
+import siteContent from '../generated-site-content.json'
 import './style.css'
 
 const zoomStep = 0.25
@@ -105,6 +106,27 @@ const PageActions = {
               h('a', { class: 'page-actions__item', role: 'menuitem', href: askUrl('claude'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.claude),
             ]) : null,
           ]),
+        ]),
+      ])
+    }
+  },
+}
+
+const SidebarFooter = {
+  setup() {
+    const { frontmatter, lang } = useData()
+    const route = useRoute()
+    return () => {
+      if (frontmatter.value.footer === false || frontmatter.value.layout === 'home') return null
+      const guidePath = route.path.split('/').filter(Boolean)[0]
+      if (!siteContent.guidePaths.includes(guidePath)) return null
+      const language = lang.value.toLowerCase().split('-')[0]
+      const footer = siteContent.footer[language] ?? siteContent.footer.root
+      if (!footer) return null
+      return h('footer', { class: 'FeluqaSidebarFooter' }, [
+        h('div', { class: 'FeluqaSidebarFooter__content' }, [
+          footer.message ? h('p', { class: 'message', innerHTML: footer.message }) : null,
+          footer.copyright ? h('p', { class: 'copyright', innerHTML: footer.copyright }) : null,
         ]),
       ])
     }
@@ -336,7 +358,10 @@ const MermaidLayout = {
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
-    return () => h(DefaultTheme.Layout, null, { 'aside-outline-before': () => h(PageActions) })
+    return () => h(DefaultTheme.Layout, null, {
+      'aside-outline-before': () => h(PageActions),
+      'layout-bottom': () => h(SidebarFooter),
+    })
   },
 }
 

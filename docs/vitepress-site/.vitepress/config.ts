@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
+import { sortNavigationEntries } from '../navigation-order.mjs'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const configDirectory = resolve(siteDirectory, '../guides')
@@ -10,6 +11,8 @@ const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
 const sidebarMetadataPath = join(siteDirectory, '.vitepress/generated-sidebar.json')
 const sidebarMetadata = existsSync(sidebarMetadataPath) ? JSON.parse(readFileSync(sidebarMetadataPath, 'utf8')) : {}
+const navigationOrderPath = join(siteDirectory, '.vitepress/generated-navigation-order.json')
+const navigationOrder = existsSync(navigationOrderPath) ? JSON.parse(readFileSync(navigationOrderPath, 'utf8')) : {}
 const generatedFontPath = join(siteDirectory, '.vitepress/generated-fonts.json')
 const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
 const activeLanguage = siteConfig.languages[0]
@@ -56,20 +59,17 @@ function groupTitle(path: string, fallback: string): string {
   return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(metadata.icon)}')" aria-hidden="true"></span><span>${escapedLabel}</span></span>`
 }
 
-function orderKey(name: string): [number, string] {
-  const match = name.match(/^(\d+)[.-]/)
-  return [match ? Number(match[1]) : Number.MAX_SAFE_INTEGER, name]
-}
-
-function ordered<T extends { name: string }>(entries: T[]): T[] {
-  return entries.sort((a, b) => {
-    const [an, as] = orderKey(a.name), [bn, bs] = orderKey(b.name)
-    return an - bn || as.localeCompare(bs)
-  })
+function ordered<T extends { name: string }>(directory: string, entries: T[]): T[] {
+  const sourceNames: Record<string, string> = {}
+  for (const entry of entries) {
+    const key = relative(generatedDirectory, join(directory, entry.name)).replace(/\\/g, '/')
+    sourceNames[entry.name] = navigationOrder[key] ?? entry.name
+  }
+  return sortNavigationEntries(entries, sourceNames)
 }
 
 function sidebar(directory: string, root = directory): any[] {
-  return ordered(readdirSync(directory, { withFileTypes: true })).flatMap((entry) => {
+  return ordered(directory, readdirSync(directory, { withFileTypes: true })).flatMap((entry) => {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
       const items = sidebar(path, root)
@@ -162,9 +162,9 @@ export default defineConfig({
         return env.frontmatter?.search === false || excluded ? '' : html
       },
     } },
-    outline: { label: siteConfig.outline.labels.en, level: siteConfig.outline.level },
+    outline: { label: siteConfig.outline.labels[siteConfig.languages[0]] ?? siteConfig.outline.labels.root, level: siteConfig.outline.level },
     aside: true,
-    footer: siteConfig.footer?.en,
+    footer: siteConfig.footer?.[siteConfig.languages[0]] ?? siteConfig.footer?.root,
     logo: {
       light: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.light),
       dark: assetDataUri(primaryGuideConfig.path, primaryConfig.logo.dark),

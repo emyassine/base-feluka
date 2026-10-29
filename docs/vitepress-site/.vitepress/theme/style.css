@@ -18,6 +18,39 @@
 
 .VPDocAsideMeta .meta-row { position: relative; padding: 4px; }
 
+.FeluqaSidebarFooter {
+  position: relative;
+  z-index: var(--vp-z-index-footer);
+  margin: 24px 0 0 var(--vp-sidebar-width);
+  border-top: 1px solid var(--vp-c-divider);
+  padding: 24px 32px;
+  background: var(--vp-c-bg);
+}
+
+.FeluqaSidebarFooter__content {
+  max-width: var(--vp-layout-max-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.FeluqaSidebarFooter p {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.FeluqaSidebarFooter p + p { margin-top: 4px; }
+
+.FeluqaSidebarFooter a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 959px) {
+  .FeluqaSidebarFooter { margin-left: 0; padding-right: 24px; padding-left: 24px; }
+}
+
 .page-actions__trigger {
   display: flex;
   width: 100%;

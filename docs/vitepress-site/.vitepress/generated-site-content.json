@@ -1,0 +1,12 @@
+{
+  "guidePaths": [
+    "feluqa.rs",
+    "x-agents"
+  ],
+  "footer": {
+    "en": {
+      "message": "Feluqa documentation",
+      "copyright": "Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+    }
+  }
+}
