@@ -12,6 +12,7 @@ const outputDirectory = join(siteDirectory, '.generated-guides')
 const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
 const mermaidConfigPath = join(siteDirectory, '.vitepress/mermaid-config.json')
 const mermaidConfig = await readFile(mermaidConfigPath, 'utf8')
+const darkMessageTextColor = '#f1f3fc'
 const records = []
 const routeMap = new Map()
 let diagramsCached = 0
@@ -76,6 +77,28 @@ async function renderDiagram(source, svg) {
   }
 }
 
+const flowchartPalette = [
+  ['#a8b9ff', '#1c2447', '#667fd3'],
+  ['#a9e8d0', '#163b31', '#4e9d80'],
+  ['#ffc2d4', '#492435', '#cb6688'],
+  ['#ffe09b', '#493713', '#c58b2a'],
+  ['#cbbaff', '#332658', '#8c6fd0'],
+]
+function colorizeFlowchart(source) {
+  if (!/^\s*(?:flowchart|graph)\s/m.test(source) || /\bclassDef\b/.test(source)) return source
+  const nodeIds = [...new Set([...source.matchAll(/(?:^|[\s,])([A-Za-z_][A-Za-z0-9_]*)\s*(?=\[\[|\[\(|\(\(|\(\[|\{\{|\{\[|\[|\(|\{)/gm)].map((match) => match[1]))]
+  if (!nodeIds.length) return source
+  const definitions = flowchartPalette.map(([fill, text, stroke], index) => `classDef feluqaPalette${index} fill:${fill},stroke:${stroke},color:${text},stroke-width:1.5px;`)
+  const assignments = nodeIds.map((node, index) => `class ${node} feluqaPalette${index % flowchartPalette.length};`)
+  return `${source}\n${definitions.join('\n')}\n${assignments.join('\n')}`
+}
+async function createDarkVariant(lightPath, darkPath) {
+  const source = await readFile(lightPath, 'utf8')
+  if (!source.includes('</svg>')) throw new Error(`Mermaid output is not a valid SVG: ${lightPath}`)
+  const style = `<style>.messageText{fill:${darkMessageTextColor}!important;}</style>`
+  await writeFile(darkPath, source.replace('</svg>', `${style}</svg>`))
+}
+
 await mkdir(mermaidCache, { recursive: true })
 await Promise.all(records.map(async (record) => {
   let markdown = await readFile(record.from, 'utf8')
@@ -85,11 +108,13 @@ await Promise.all(records.map(async (record) => {
   }
   const mermaidBlocks = [...markdown.matchAll(/^```mermaid\s*\n([\s\S]*?)\n```\s*$/gm)]
   const rendered = await Promise.all(mermaidBlocks.map(async (block) => {
-    const diagram = block[1]
+    const diagram = colorizeFlowchart(block[1])
     const id = createHash('sha256').update(mermaidConfig).update('\0').update(diagram).digest('hex').slice(0, 16)
     const source = join(outputDirectory, `.mermaid-${id}.mmd`)
     const svg = join(outputDirectory, 'public', 'mermaid', `${id}.svg`)
+    const darkSvg = join(outputDirectory, 'public', 'mermaid', `${id}.dark.svg`)
     const cachedSvg = join(mermaidCache, `${id}.svg`)
+    const cachedDarkSvg = join(mermaidCache, `${id}.dark-${darkMessageTextColor.slice(1)}.svg`)
     await mkdir(dirname(svg), { recursive: true })
     try { await access(cachedSvg); await cp(cachedSvg, svg); diagramsCached += 1 }
     catch {
@@ -97,6 +122,11 @@ await Promise.all(records.map(async (record) => {
       await renderDiagram(source, svg)
       await cp(svg, cachedSvg)
       diagramsRendered += 1
+    }
+    try { await access(cachedDarkSvg); await cp(cachedDarkSvg, darkSvg) }
+    catch {
+      await createDarkVariant(svg, darkSvg)
+      await cp(darkSvg, cachedDarkSvg)
     }
     return { block, id }
   }))

@@ -52,13 +52,26 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
   return button
 }
 
-function MermaidLayout() {
-  const route = useRoute()
-  let observer: MutationObserver | undefined
-  let dialog: HTMLDialogElement | undefined
-  let dialogImage: HTMLImageElement | undefined
-  let viewport: HTMLDivElement | undefined
-  let pointer: { id: number; x: number; y: number; left: number; top: number } | undefined
+const MermaidLayout = {
+  setup() {
+    const route = useRoute()
+    let observer: MutationObserver | undefined
+    let dialog: HTMLDialogElement | undefined
+    let dialogImage: HTMLImageElement | undefined
+    let viewport: HTMLDivElement | undefined
+    let themeObserver: MutationObserver | undefined
+    let pointer: { id: number; x: number; y: number; left: number; top: number } | undefined
+
+    const syncDiagramTheme = () => {
+      const dark = document.documentElement.classList.contains('dark')
+      document.querySelectorAll<HTMLImageElement>('.mermaid-figure img, .mermaid-dialog img').forEach((image) => {
+        const lightSource = image.dataset.lightSrc
+        const darkSource = image.dataset.darkSrc
+        if (!lightSource || !darkSource) return
+        const source = dark ? darkSource : lightSource
+        if (image.getAttribute('src') !== source) image.setAttribute('src', source)
+      })
+    }
 
   const installDialog = () => {
     if (dialog) return
@@ -108,7 +121,11 @@ function MermaidLayout() {
     installDialog()
     const source = figure.querySelector('img')
     if (!dialog || !dialogImage || !viewport || !source) return
-    dialogImage.src = source.currentSrc || source.src
+    const lightSource = source.dataset.lightSrc || source.getAttribute('src') || source.src
+    const darkSource = source.dataset.darkSrc || lightSource.replace(/\.svg$/, '.dark.svg')
+    dialogImage.dataset.lightSrc = lightSource
+    dialogImage.dataset.darkSrc = darkSource
+    dialogImage.src = document.documentElement.classList.contains('dark') ? darkSource : lightSource
     dialogImage.alt = source.alt || 'Mermaid diagram'
     setZoom(viewport, 1)
     viewport.scrollTo(0, 0)
@@ -127,6 +144,8 @@ function MermaidLayout() {
       figure.tabIndex = 0
       figure.setAttribute('role', 'group')
       figure.setAttribute('aria-label', 'Mermaid diagram. Use the controls to zoom or open a larger view.')
+      image.dataset.lightSrc = image.getAttribute('src') || image.src
+      image.dataset.darkSrc = image.dataset.lightSrc.replace(/\.svg$/, '.dark.svg')
       image.parentNode?.insertBefore(figure, image)
       figure.append(image)
       const toolbar = document.createElement('div')
@@ -139,6 +158,7 @@ function MermaidLayout() {
       figure.append(toolbar)
       image.draggable = false
     })
+    syncDiagramTheme()
   }
 
   const handleClick = (event: MouseEvent) => {
@@ -175,17 +195,21 @@ function MermaidLayout() {
     document.addEventListener('keydown', handleKeydown)
     observer = new MutationObserver(installFigures)
     observer.observe(document.body, { childList: true, subtree: true })
+    themeObserver = new MutationObserver(syncDiagramTheme)
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     void nextTick(installFigures)
   })
   const stopWatchingRoute = watch(() => route.path, () => void nextTick(installFigures), { flush: 'post' })
   onBeforeUnmount(() => {
     stopWatchingRoute()
     observer?.disconnect()
+    themeObserver?.disconnect()
     document.removeEventListener('click', handleClick)
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
-  return () => h(DefaultTheme.Layout)
+    return () => h(DefaultTheme.Layout)
+  },
 }
 
 export default {
