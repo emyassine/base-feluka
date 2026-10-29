@@ -3,7 +3,7 @@ title: "Architecture Overview"
 description: "How the Feluqa SDK, CLI, artifacts, Platform, App and clients fit together, how modules become products, and what is generated at compile time."
 date: 2026-10-29
 lastmod: 2026-10-29
-weight: 3
+weight: 4
 status: "Target"
 tags: [feluqa, architecture, overview, mermaid, sdk]
 draft: true
@@ -184,3 +184,28 @@ Generated into `target/feluqa/`, never edited and never committed:
 | `embedded` (`no_std`) | Telemetry, sensor ingestion | Minimal or none | Exploring |
 
 A module is written once and a target profile decides what each build includes. See [web and workstation modules](../08-roadmap/01-delivery-tracks.en.md) (track F9) for how one module serves both server and workstation products.
+
+## Platform capabilities
+
+| Component | Purpose |
+|-----------|---------|
+| **Feluqa CLI** | Creates, validates, builds, installs, and operates projects, modules, and applications. |
+| **Modules** | Self-contained units of business functionality with their own version, permissions, and features. |
+| **Target profiles** | Select dependencies and capabilities for server, workstation, and constrained `no_std` builds. |
+| **Feluqa SDK** | Provides attributes, panels, resources, and the compile-time scanner through a single `feluqa` entry point. |
+| **Feluqa Platform** | The planned server-side runtime and control plane, including a System panel for authentication, schema management, and access control. |
+| **Authorization** | Defines privileges, roles, permissions, and policies. Runtime authorization remains necessary even when compile-time checks are available. |
+| **Storage** | Uses embedded SQLite as the proposed local default, with other strategies depending on deployment needs. |
+
+## Design targets
+
+These figures and capabilities are **design targets**, not measured guarantees;
+they have not yet been revalidated.
+
+| Area | Target | Why it matters |
+|------|--------|----------------|
+| Language | Native Rust | Memory safety and control over runtime costs. |
+| Hot-path latency | Sub-millisecond p50 | A target for selected operations, not an end-to-end or real-time guarantee. |
+| Local persistence | SQLite by default | Reduces setup requirements for standalone deployments. |
+| Security boundaries | Separate platform, application, and user scopes | Makes ownership and access rules explicit. |
+| Access control | Privileges, roles, permissions, and policies | Combines compile-time validation where possible with runtime authorization. |

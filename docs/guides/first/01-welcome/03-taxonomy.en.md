@@ -3,7 +3,7 @@ title: "Taxonomy"
 description: "The shared vocabulary of Feluqa: SDK, Platform, app, client, CLI, modules, submodules, features, panels, privileges, roles and permissions."
 date: 2026-10-29
 lastmod: 2026-10-29
-weight: 2
+weight: 3
 status: "Target"
 tags: [feluqa, taxonomy, vocabulary, glossary, sdk]
 draft: true
