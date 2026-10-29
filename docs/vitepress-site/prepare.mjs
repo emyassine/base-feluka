@@ -9,6 +9,26 @@ import { sortNavigationEntries } from './navigation-order.mjs'
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
 const configDirectory = resolve(siteDirectory, '../guides')
 const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
+if (config.seo?.siteUrl != null && config.seo.siteUrl !== '' && (typeof config.seo.siteUrl !== 'string' || !/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/.test(config.seo.siteUrl))) {
+  throw new Error('seo.siteUrl must be an absolute HTTPS URL when configured')
+}
+if (config.seo?.locales != null) {
+  if (typeof config.seo.locales !== 'object' || Array.isArray(config.seo.locales)) throw new Error('seo.locales must be an object keyed by language')
+  for (const [language, locale] of Object.entries(config.seo.locales)) {
+    if (!locale || typeof locale !== 'object' || Array.isArray(locale)) throw new Error(`seo.locales.${language} must be an object`)
+    for (const key of ['quickLinks', 'faq']) {
+      if (locale[key] != null && !Array.isArray(locale[key])) throw new Error(`seo.locales.${language}.${key} must be an array`)
+    }
+    for (const link of locale.quickLinks ?? []) {
+      if (typeof link.label !== 'string' || typeof link.description !== 'string' || typeof link.url !== 'string' || !link.url.startsWith('/') || link.url.startsWith('//')) {
+        throw new Error(`seo.locales.${language}.quickLinks entries need label, description, and a root-relative url`)
+      }
+    }
+    for (const item of locale.faq ?? []) {
+      if (typeof item.question !== 'string' || typeof item.answer !== 'string') throw new Error(`seo.locales.${language}.faq entries need question and answer text`)
+    }
+  }
+}
 const outputDirectory = join(siteDirectory, '.generated-guides')
 const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
 const mermaidConfigPath = join(siteDirectory, '.vitepress/mermaid-config.json')
@@ -288,6 +308,7 @@ await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-site-content.json'), JSON.stringify({
   guidePaths: [...Object.keys(generatedGuideColors)],
   footer: config.footer ?? {},
+  seo: config.seo ?? {},
 }, null, 2))
 
 const generatedSidebar = {}

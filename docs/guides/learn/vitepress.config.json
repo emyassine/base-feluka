@@ -6,9 +6,9 @@
     "primary": "oklch(68% .19 153)",
     "sidebarIcon": "#8b9099",
     "inlineCode": "oklch(78% .16 150)",
-    "inlineCodeBackground": "#182b26",
     "secondary": "oklch(75% .17 170)",
     "heroNameColor": "transparent",
-    "heroNameBackground": "linear-gradient(120deg, oklch(68% .19 153), oklch(77% .17 180))"
+    "heroNameBackground": "linear-gradient(120deg, oklch(68% .19 153), oklch(77% .17 180))",
+    "inlineCodeBackgroundDarkMode": "#182b26"
   }
 }

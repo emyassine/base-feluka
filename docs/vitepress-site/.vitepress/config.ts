@@ -27,7 +27,10 @@ const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: strin
   return [guide.path, { path: configPath, config: JSON.parse(readFileSync(configPath, 'utf8')) }]
 }))
 const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
-const subguideRootPaths = new Set(site.subguides.map((guide: { path: string }) => routeBase(guide.path).split('/').filter(Boolean)[0]).filter(Boolean))
+const subguideRootPaths = new Set(site.subguides.flatMap((guide: { path: string; uri: { index?: string } }) => [
+  routeBase(guide.path).split('/').filter(Boolean)[0],
+  guide.uri.index?.split('/').filter(Boolean)[0],
+]).filter(Boolean))
 function publicPagePath(file: string): string {
   const sourceRelative = relative(generatedDirectory, file).replace(/\\/g, '/')
   const target = sourceRelative
@@ -94,6 +97,7 @@ function sidebar(directory: string, root = directory): any[] {
     }
     if (!entry.name.endsWith('.md')) return []
     if (entry.name === 'index.md') return []
+    if (existsSync(join(directory, entry.name.slice(0, -'.md'.length)))) return []
     const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
     return [{ text: escapeHtml(titleOf(path)), link: publicPagePath(path) }]
   })
@@ -129,6 +133,33 @@ export default defineConfig({
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
+    const siteUrl = siteConfig.seo?.siteUrl
+    if (page === 'index.md' && siteUrl) {
+      const localeKey = siteConfig.languages[0].toLowerCase().split('-')[0]
+      const discovery = siteConfig.seo.locales?.[localeKey] ?? siteConfig.seo.locales?.root
+      if (discovery) {
+        const graph: any[] = [{ '@type': 'WebSite', name: siteConfig.site.name, url: siteUrl }]
+        if (discovery.quickLinks?.length) {
+          graph.push({
+            '@type': 'ItemList',
+            name: discovery.quickLinksTitle,
+            itemListElement: discovery.quickLinks.map((link: any, index: number) => ({
+              '@type': 'ListItem', position: index + 1, name: link.label, url: new URL(link.url, siteUrl).href,
+            })),
+          })
+        }
+        if (discovery.faq?.length) {
+          graph.push({
+            '@type': 'FAQPage',
+            mainEntity: discovery.faq.map((item: any) => ({
+              '@type': 'Question', name: item.question,
+              acceptedAnswer: { '@type': 'Answer', text: item.answer },
+            })),
+          })
+        }
+        head.push(['script', { type: 'application/ld+json' }, JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })])
+      }
+    }
     const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
     const routeKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'
     const logoSettings = generatedGuideColors[routeKey] ?? generatedGuideColors.root ?? {}
@@ -140,7 +171,6 @@ export default defineConfig({
       soft: '--vp-c-brand-soft',
       sidebarIcon: '--vp-sidebar-icon-color',
       inlineCode: '--vp-code-color',
-      inlineCodeBackground: '--vp-code-bg',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
@@ -152,10 +182,19 @@ export default defineConfig({
       }
       declarations.push(`${property}: ${value.trim()};`)
     }
+    const codeBackgroundRules: string[] = []
+    for (const [key, selector] of [['inlineCodeBackgroundDarkMode', ':root.dark'], ['inlineCodeBackgroundLightMode', ':root:not(.dark)']]) {
+      const value = colors[key]
+      if (value === undefined) continue
+      if (typeof value !== 'string' || !value.trim() || /[<>;{}]/.test(value)) {
+        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/vitepress.config.json`)
+      }
+      codeBackgroundRules.push(`${selector} { --vp-code-bg: ${value.trim()}; }`)
+    }
     if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
     if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
     if (logoSettings.logoWidth) declarations.push(`--feluqa-nav-logo-width: ${logoSettings.logoWidth};`)
-    if (declarations.length) head.push(['style', {}, `:root { ${declarations.join(' ')} }`])
+    if (declarations.length || codeBackgroundRules.length) head.push(['style', {}, `${declarations.length ? `:root { ${declarations.join(' ')} }` : ''} ${codeBackgroundRules.join(' ')}`])
     if (logoSettings.logoExtraStyle) head.push(['style', {}, `.VPNavBarTitle.has-sidebar .logo { ${logoSettings.logoExtraStyle} }`])
     const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
     const fontFaces: string[] = []

@@ -102,5 +102,49 @@
     "alt": "Feluqa",
     "width": "100%",
     "extraStyle": "padding: 0.2rem;"
+  },
+  "seo": {
+    "locales": {
+      "en": {
+        "quickLinksTitle": "Popular guides",
+        "faqTitle": "Quick answers",
+        "quickLinks": [
+          {
+            "label": "Get started",
+            "description": "Understand Feluqa and build a first application.",
+            "url": "/get-started/"
+          },
+          {
+            "label": "Feluqa’s Internals",
+            "description": "Explore runtime, workspace, and compile-time architecture.",
+            "url": "/feluqa-internals/"
+          },
+          {
+            "label": "Agents",
+            "description": "Read contribution guidance for AI coding agents.",
+            "url": "/agents/"
+          },
+          {
+            "label": "Learn",
+            "description": "Follow practical application tutorials.",
+            "url": "/learn/"
+          }
+        ],
+        "faq": [
+          {
+            "question": "What is Feluqa?",
+            "answer": "Feluqa is a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development."
+          },
+          {
+            "question": "Where should I start?",
+            "answer": "Start with Get started to understand the current product direction, set up a development environment, and follow the application guides."
+          },
+          {
+            "question": "Is the complete platform available today?",
+            "answer": "No. The repository provides selected framework foundations, while several target capabilities such as dynamic module installation and complete runtime shells remain in active development."
+          }
+        ]
+      }
+    }
   }
 }

@@ -9,6 +9,6 @@
     "inlineCode": "#d2a8ff",
     "heroNameColor": "transparent",
     "heroNameBackground": "linear-gradient(120deg, oklch(68% .28 300), oklch(76% .24 250))",
-    "inlineCodeBackground": "#261b38"
+    "inlineCodeBackgroundDarkMode": "#261b38"
   }
 }

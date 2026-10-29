@@ -4,6 +4,7 @@ import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
 import generatedFonts from '../generated-fonts.json'
 import siteContent from '../generated-site-content.json'
+import FeluqaDiscovery from './components/FeluqaDiscovery.vue'
 import './style.css'
 
 const zoomStep = 0.25
@@ -189,7 +190,6 @@ const MermaidLayout = {
       soft: '--vp-c-brand-soft',
       sidebarIcon: '--vp-sidebar-icon-color',
       inlineCode: '--vp-code-color',
-      inlineCodeBackground: '--vp-code-bg',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
@@ -216,7 +216,11 @@ const MermaidLayout = {
       const logoRules = colors.logoExtraStyle
         ? `.VPNavBarTitle.has-sidebar .logo { ${colors.logoExtraStyle} }`
         : ''
-      guideStyle.textContent = logoRules
+      const codeBackgroundRules = [
+        colors.inlineCodeBackgroundDarkMode ? `:root.dark { --vp-code-bg: ${colors.inlineCodeBackgroundDarkMode}; }` : '',
+        colors.inlineCodeBackgroundLightMode ? `:root:not(.dark) { --vp-code-bg: ${colors.inlineCodeBackgroundLightMode}; }` : '',
+      ].filter(Boolean).join('\n')
+      guideStyle.textContent = `${logoRules}\n${codeBackgroundRules}`
       document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle.has-sidebar img.logo').forEach((logo) => {
         const source = logo.classList.contains('dark') ? colors.logoDark : colors.logoLight
         if (typeof source === 'string' && source && logo.getAttribute('src') !== source) logo.setAttribute('src', source)
@@ -396,7 +400,7 @@ const MermaidLayout = {
     document.addEventListener('keydown', handleKeydown)
     observer = new MutationObserver(installFigures)
     observer.observe(document.body, { childList: true, subtree: true })
-    themeObserver = new MutationObserver(syncDiagramTheme)
+    themeObserver = new MutationObserver(() => { applyGuideColors(); syncDiagramTheme() })
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     void nextTick(installFigures)
   })
@@ -411,6 +415,7 @@ const MermaidLayout = {
   })
     return () => h(DefaultTheme.Layout, null, {
       'aside-outline-before': () => h(PageActions),
+      'home-features-after': () => h(FeluqaDiscovery),
       'layout-bottom': () => h(SidebarFooter),
     })
   },

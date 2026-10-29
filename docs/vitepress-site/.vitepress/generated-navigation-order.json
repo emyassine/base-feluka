@@ -35,7 +35,7 @@
   "get-started/introduction/taxonomy.md": "030-taxonomy.en.md",
   "get-started/introduction/architecture-overview.md": "040-architecture-overview.en.md",
   "get-started/installation": "010-installation",
-  "get-started/installation/prepare-your-development-environment.md": "010-prepare-your-development-environment.en.md",
+  "get-started/installation/index.md": "index.en.md",
   "get-started/configuration": "020-configuration",
   "get-started/configuration/pages-and-config.md": "020-pages-and-config.en.md",
   "get-started/agentic-development": "030-agentic-development",
