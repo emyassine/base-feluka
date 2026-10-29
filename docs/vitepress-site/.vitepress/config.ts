@@ -29,15 +29,20 @@ function sidebar(directory: string, root = directory): any[] {
 }
 
 const nav = siteConfig.subguides.map((guide: { path: string; label: string }) => ({ text: guide.label, link: `/${guide.path}/index.html` }))
-const items = siteConfig.subguides.flatMap((guide: { path: string; label: string }) => {
+const sidebars = Object.fromEntries(siteConfig.subguides.map((guide: { path: string; label: string }) => {
   const directory = join(generatedDirectory, guide.path)
-  return [{ text: guide.label, items: sidebar(directory) }]
-})
+  return [`/${guide.path}/`, [{ text: guide.label, items: sidebar(directory) }]]
+}))
 
 export default defineConfig({
   title: siteConfig.siteName,
   srcDir: '.generated-guides',
   outDir: resolve(siteDirectory, siteConfig.outputDir),
   cleanUrls: false,
-  themeConfig: { nav, sidebar: items },
+  themeConfig: {
+    nav,
+    sidebar: sidebars,
+    outline: { label: 'On this page', level: 'deep' },
+    aside: true,
+  },
 })
