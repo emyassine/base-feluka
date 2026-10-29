@@ -12,7 +12,6 @@
     "secondary": "oklch(66% .21 28)",
     "sidebarIcon": "#8b9099",
     "inlineCode": "oklch(57.7% .245 27.325)",
-    "contentLink": "#99c3ff",
     "heroNameColor": "transparent",
     "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
   }

@@ -110,7 +110,6 @@ export default defineConfig({
       soft: '--vp-c-brand-soft',
       sidebarIcon: '--vp-sidebar-icon-color',
       inlineCode: '--vp-code-color',
-      contentLink: '--vp-doc-link-color',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
