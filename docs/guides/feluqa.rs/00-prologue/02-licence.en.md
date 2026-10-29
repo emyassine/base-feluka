@@ -58,18 +58,17 @@ contractual commitments.
 
 ## Contributions
 
-Feluqa is not accepting contributions under an open source contribution
-licence. A public repository or review discussion does not grant a right to
-submit code for incorporation. External contributions may be considered only
-under written terms agreed with NUMERIMONDES before submission; those terms
-must make clear the rights granted for the contribution and its use in
-Feluqa.
+We welcome contributions and want to work closely with the people who make
+them. Start by reaching out through [Feluqa on GitHub](https://github.com/feluqa/)
+to discuss your idea and request access to the private monorepo. A public
+issues and discussions space for contribution proposals and access requests
+is planned; it will be linked from the GitHub page when it is ready.
 
-If contributor terms have not been provided and agreed, do not submit code,
-documentation, designs, or other material with the expectation that it will
-be incorporated into Feluqa. Use the
-[Contribution Guide](03-contribution-guide.en.md) for the repository workflow,
-and contact NUMERIMONDES to discuss contribution terms first.
+Maintainers will discuss scope and implementation with you, arrange repository
+access, and agree the contribution terms before work is incorporated. See the
+[Contribution Guide](03-contribution-guide.en.md) for the engineering
+workflow. Feluqa remains proprietary; the agreed terms make clear how your
+contribution may be used in the product.
 
 ## Legal Overview
 

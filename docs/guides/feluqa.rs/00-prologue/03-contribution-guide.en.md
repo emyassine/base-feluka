@@ -17,10 +17,16 @@ author:
 ---
 # Contribution Guide
 
-Feluqa is proprietary. Before preparing material for inclusion, read the
-[Licence and Ownership](02-licence.en.md) page. External contributions require
-written terms agreed with NUMERIMONDES in advance; repository access or a
-review discussion does not grant contribution rights.
+We welcome contributions and aim to collaborate directly with contributors.
+Start by reaching out through [Feluqa on GitHub](https://github.com/feluqa/),
+describe what you would like to improve, and request access to the private
+monorepo if you need it. A public issues and discussions space for these
+requests is planned and will be linked from the GitHub page when ready.
+
+Maintainers will work with you on scope and implementation, arrange access,
+and agree the terms for your contribution before incorporating it. Read the
+[Licence and Ownership](02-licence.en.md) page for the proprietary ownership
+model and contribution terms.
 
 For work authorized under those terms, identify the affected product, crate,
 documentation page, or roadmap item. Read the relevant guide and inspect the
