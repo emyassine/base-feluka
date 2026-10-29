@@ -10,6 +10,8 @@ const configDirectory = resolve(siteDirectory, '../guides')
 const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
 const outputDirectory = join(siteDirectory, '.generated-guides')
 const mermaidCache = join(siteDirectory, '.vitepress/mermaid-cache')
+const mermaidConfigPath = join(siteDirectory, '.vitepress/mermaid-config.json')
+const mermaidConfig = await readFile(mermaidConfigPath, 'utf8')
 const records = []
 const routeMap = new Map()
 let diagramsCached = 0
@@ -67,7 +69,7 @@ async function renderDiagram(source, svg) {
   if (activeRenderers >= 3) await new Promise((resume) => rendererQueue.push(resume))
   activeRenderers += 1
   try {
-    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-q'])
+    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-c', mermaidConfigPath, '-q'])
   } finally {
     activeRenderers -= 1
     rendererQueue.shift()?.()
@@ -84,7 +86,7 @@ await Promise.all(records.map(async (record) => {
   const mermaidBlocks = [...markdown.matchAll(/^```mermaid\s*\n([\s\S]*?)\n```\s*$/gm)]
   const rendered = await Promise.all(mermaidBlocks.map(async (block) => {
     const diagram = block[1]
-    const id = createHash('sha256').update(diagram).digest('hex').slice(0, 16)
+    const id = createHash('sha256').update(mermaidConfig).update('\0').update(diagram).digest('hex').slice(0, 16)
     const source = join(outputDirectory, `.mermaid-${id}.mmd`)
     const svg = join(outputDirectory, 'public', 'mermaid', `${id}.svg`)
     const cachedSvg = join(mermaidCache, `${id}.svg`)
