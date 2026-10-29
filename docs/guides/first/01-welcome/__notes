@@ -1,0 +1,18 @@
+see https://dioxuslabs.com/
+
+they have https://dioxuslabs.com/learn/0.7/ (intro)
+then https://dioxuslabs.com/learn/0.7/getting_started/
+
+in the taxonomy we say that app is the module (two names for same things) then we say that priviledge is platform wide but the platform owner is app-owner ? wtf !
+
+the feluqa app should have a command for usecases example :
+
+- building a server app + desktop app (two modules to be compiled separatly and each one should consume from the other) the command feluqa dev <app> will be then useful : but the developement can be simpler with `feluqa new <appname>` then it asks if it's simple app or server/client or peer-to-peer etc for example :)
+
+- also we may need `feluqa dev:<sub namespace> [cmd]` : here https://dioxuslabs.com/learn/0.7/getting_started/ they put how to fucking install rustup and dioxus cli and Platform-specific dependencies (MacOS, Windows, LInux, WSL, IOS, Android) but we can have a feluqa dev:init (interractive command by default) so that we dont have a lot of things to be made by dev (with options and steps)
+
+this welcome needs to have a "Create Your First Application" after that I guess
+
+But we have a lot of possible apps : CLI the first app maybe will be good to start with !
+
+The will ask "What are we building?" and we'll do something really useful like realtime weather detection and notification over email from cli. On lance l'application sur systemd (linux) avec observer ou quelque chose du genre :)
