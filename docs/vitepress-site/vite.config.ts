@@ -1,9 +1,27 @@
 import { createReadStream, existsSync, readFileSync } from 'node:fs'
 import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, loadConfigFromFile, mergeConfig } from 'vite'
 
 const siteDirectory = fileURLToPath(new URL('.', import.meta.url))
+const projectDirectory = resolve(siteDirectory, '../guides')
+const siteConfiguration = JSON.parse(readFileSync(join(projectDirectory, 'vitepress.site.config.json'), 'utf8'))
+
+async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
+  const configured = siteConfiguration.project?.viteConfig
+  const candidates = configured
+    ? [resolve(projectDirectory, configured)]
+    : ['vite.config.ts', 'vite.config.mts', 'vite.config.js', 'vite.config.mjs'].map((name) => join(projectDirectory, name))
+  const configFile = candidates.find((candidate) => existsSync(candidate))
+  if (!configFile) return {}
+  const loaded = await loadConfigFromFile(
+    { command: process.env.NODE_ENV === 'production' ? 'build' : 'serve', mode: process.env.NODE_ENV ?? 'development' },
+    configFile,
+    projectDirectory,
+    'silent',
+  )
+  return (loaded?.config ?? {}) as Record<string, unknown>
+}
 
 const publicDirectory = resolve(siteDirectory, '.generated-guides/public')
 const generatedGuideColors = JSON.parse(readFileSync(join(siteDirectory, '.vitepress/generated-guide-colors.json'), 'utf8'))
@@ -14,17 +32,18 @@ const mimeTypes: Record<string, string> = {
   '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2',
 }
 
-export default defineConfig({
+const siteViteConfig = {
   resolve: {
     alias: [
       { find: /^vue$/, replacement: resolve(siteDirectory, 'node_modules/vue/dist/vue.runtime.esm-bundler.js') },
+      { find: /^vue\/(.+)$/, replacement: `${resolve(siteDirectory, 'node_modules/vue')}/$1` },
       { find: /^vitepress$/, replacement: resolve(siteDirectory, 'node_modules/vitepress/dist/client/index.js') },
     ],
   },
   publicDir: publicDirectory,
   plugins: [{
     name: 'feluqa-generated-public-assets',
-    configureServer(server) {
+    configureServer(server: { middlewares: { use: (handler: (request: any, response: any, next: () => void) => void) => void } }) {
       server.middlewares.use((request, response, next) => {
         let requestUrl: URL
         let pathname: string
@@ -63,4 +82,9 @@ export default defineConfig({
       })
     },
   }],
+}
+
+export default defineConfig(async () => {
+  const projectViteConfig = await loadProjectViteConfig()
+  return mergeConfig(siteViteConfig, projectViteConfig)
 })

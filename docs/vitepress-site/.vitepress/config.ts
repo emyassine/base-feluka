@@ -3,7 +3,7 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { sortNavigationEntries } from '../navigation-order.mjs'
-import { transformDocumentationHead } from '../../.vitepress/documentation-seo'
+import { transformDocumentationHead } from './generated-hooks'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const configDirectory = resolve(siteDirectory, '../guides')

@@ -13,6 +13,10 @@
   "guidesPath": ".",
   "indexPath": "index.en.md",
   "outputDir": "../build",
+  "project": {
+    "components": ".components",
+    "hooks": ".hooks"
+  },
   "subguides": [
     {
       "path": "feluqa.rs",

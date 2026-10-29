@@ -4,8 +4,14 @@ import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated-guide-colors.json'
 import generatedFonts from '../generated-fonts.json'
 import siteContent from '../generated-site-content.json'
-import { DocumentationLastModified, DocumentationNotice } from '../../../.vitepress/documentation-hooks'
-import '../../../.vitepress/documentation-hooks.css'
+import { DocumentationLastModified, DocumentationNotice } from '../generated-theme'
+import { registerProjectComponents } from '../generated-components'
+import Aurora from './components/vuebits/Aurora.vue'
+import BlurText from './components/vuebits/BlurText.vue'
+import GlareHover from './components/vuebits/GlareHover.vue'
+import ShinyText from './components/vuebits/ShinyText.vue'
+import SpotlightCard from './components/vuebits/SpotlightCard.vue'
+import './tailwind.css'
 import './style.css'
 
 const zoomStep = 0.25
@@ -427,4 +433,13 @@ const MermaidLayout = {
 export default {
   ...DefaultTheme,
   Layout: MermaidLayout,
+  enhanceApp(context: Parameters<NonNullable<typeof DefaultTheme.enhanceApp>>[0]) {
+    DefaultTheme.enhanceApp?.(context)
+    context.app.component('VbAurora', Aurora)
+    context.app.component('VbBlurText', BlurText)
+    context.app.component('VbGlareHover', GlareHover)
+    context.app.component('VbShinyText', ShinyText)
+    context.app.component('VbSpotlightCard', SpotlightCard)
+    registerProjectComponents(context.app)
+  },
 }
