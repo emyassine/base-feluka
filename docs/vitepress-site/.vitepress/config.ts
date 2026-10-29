@@ -108,6 +108,7 @@ export default defineConfig({
       secondary: '--vp-c-brand-2',
       tertiary: '--vp-c-brand-3',
       soft: '--vp-c-brand-soft',
+      inlineCode: '--vp-code-color',
       heroNameColor: '--vp-home-hero-name-color',
       heroNameBackground: '--vp-home-hero-name-background',
     }
