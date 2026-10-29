@@ -134,9 +134,129 @@ extension being available for that editor.
 
 ## 4. Program 0: Hello CLI
 
-The first program should be a single command with one job: print a greeting.
-This introduces a Feluqa command handler and the console output API before the
-weather watcher adds external services and background work.
+The first program is a **console application**: it has a named executable
+binary, a `main.rs` that starts Feluqa's console, and one command handler
+registered with that console. A command is not a standalone function; it
+belongs to a console profile selected by the binary.
+
+The **console** is the runtime that selects a command, provides its arguments
+and execution context, and handles terminal input and output. A **profile**
+connects a binary name to the commands available in that console. Each command
+is a handler registered in the profile's source tree.
+
+The existing Feluqa CLI uses this structure:
+
+```text
+products/feluqa-cli/
+├── Cargo.toml                     # declares the `feluqa` binary
+├── build.rs                       # discovers command handlers
+└── src/
+    ├── main.rs                    # declares profiles and starts MakeConsole
+    └── profiles/
+        └── feluqa/src/             # commands in the Feluqa console profile
+            ├── new.rs
+            ├── dev.rs
+            └── make/
+                └── module.rs       # `make module` handler
+```
+
+`Cargo.toml` gives the executable its binary name. In the Feluqa CLI, that
+name is `feluqa`, so a command path such as `make module` is invoked as
+`feluqa make module`. A separate CLI application can choose its own binary
+name, such as `hello-cli`.
+
+### The binary and its console entry point
+
+The relevant part of `Cargo.toml` declares the binary:
+
+```toml
+[[bin]]
+name = "hello-cli"
+path = "src/main.rs"
+```
+
+Before looking at the Rust files, one Rust term helps explain their first
+lines: Rust has a **prelude**, a set of commonly used names the compiler makes
+available without an explicit `use`. For example, ordinary code can often
+write `Option`, `Result`, `String`, and `Vec` without importing them. This is
+convenient, but it can hide where names come from and make generated code or
+macros depend on implicit imports.
+
+Feluqa prefers explicit imports. `#![no_implicit_prelude]` turns off those
+automatic imports, so code must name or import what it uses. That makes the
+crate's dependencies and macro inputs easier to inspect and keeps generated
+application code predictable.
+
+The binary's `main.rs` declares which command profile belongs to it, then
+starts the console dispatcher. This follows the structure used by
+`products/feluqa-cli/src/main.rs`:
+
+```rust
+#![no_implicit_prelude]
+#![forbid(unsafe_code)]
+#![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+extern crate feluqa;
+extern crate std;
+
+use feluqa::console::{MakeConsole, Profile};
+use std::process::ExitCode;
+
+/// The console profiles compiled into this binary.
+#[feluqa::console::profile_registry]
+pub const PROFILES: &[Profile] = &[Profile {
+    id: "hello-cli",
+    name: "Hello CLI",
+    binary_name: "hello-cli",
+    commands_directory: "profiles/hello_cli/src",
+    header: "Hello CLI",
+    launch_aliases: &[],
+}];
+
+fn main() -> ExitCode {
+    MakeConsole::new(PROFILES).run()
+}
+```
+
+`build.rs` asks Feluqa's build-time scanner to find the command handlers under
+the profile directory and generate their registration:
+
+```rust
+#![no_implicit_prelude]
+#![forbid(unsafe_code)]
+#![deny(unused_must_use)]
+#![deny(missing_docs)]
+
+extern crate feluqa;
+extern crate std;
+
+fn main() {
+    if let std::result::Result::Err(error) =
+        feluqa::console::build::compile_profiles_from_source("src", "src/main.rs")
+    {
+        std::panic!("could not compile console commands: {error}");
+    }
+}
+```
+
+The normal `feluqa` dependency provides the console runtime; the build
+dependency enables the console command scanner. `Cargo.toml` declares the
+binary, `build.rs` generates command registration, `main.rs` starts the
+console, and the console profile owns the command handlers.
+
+The generated project scaffold will provide the manifest, dependency features,
+entry point, and build script. Developers add commands inside the profile's
+console source tree:
+
+```text
+src/profiles/hello_cli/src/hello.rs
+```
+
+### The first command handler
+
+This handler is named `hello`; with the `hello-cli` binary, the user runs
+`hello-cli hello`:
 
 ```rust
 #![no_implicit_prelude]
@@ -146,7 +266,7 @@ weather watcher adds external services and background work.
 
 extern crate feluqa;
 
-/// Prints the first greeting from this application.
+/// Prints the first greeting from this console application.
 #[feluqa::command(
     name = "hello",
     description = "Print a greeting",
@@ -164,16 +284,19 @@ fn hello(
 ```
 
 The example uses the current `CommandContext`, `CommandResult`, and `echo`
-contracts. The future CLI application scaffold will provide the surrounding
-crate setup and command registration so the first command can be run without
-editing framework internals.
+contracts. The console dispatches to the handler, which writes `Hello CLI` and
+returns a result. The command's namespace and arguments are parsed before the
+handler runs; later commands can call services, inspect options, or perform
+longer operations without changing how the binary starts.
+
+### Why these crate attributes
 
 These crate-level rules are the recommended starting point for Feluqa Rust
 code:
 
 | Attribute | Why use it |
 |-----------|------------|
-| `#![no_implicit_prelude]` | Makes imports explicit. Code does not silently depend on names brought into scope by Rust's prelude, which helps generated code and macros behave predictably. |
+| `#![no_implicit_prelude]` | Disables Rust's implicit prelude imports. Import or qualify the names the crate uses so dependencies stay visible and generated code is predictable. |
 | `#![forbid(unsafe_code)]` | Prevents unsafe blocks in application code, keeping memory-safety boundaries small and visible. |
 | `#![deny(unused_must_use)]` | Rejects silently ignored results from operations that may fail or require action. Handle the result or explicitly explain why it can be discarded. |
 | `#![deny(missing_docs)]` | Requires documentation on public APIs so generated help and reference docs explain what the API does and why it exists. |
