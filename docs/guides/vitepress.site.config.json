@@ -170,7 +170,7 @@
     "light": "feluqa.rs/.art/logo-lightmode.png",
     "dark": "feluqa.rs/.art/logo-darkmode.png",
     "alt": "Feluqa",
-    "width": "50rem",
+    "height": "2.75rem",
     "extraStyle": "padding: 0.2rem;"
   },
   "publicFiles": {

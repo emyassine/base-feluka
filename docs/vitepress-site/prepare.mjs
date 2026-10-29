@@ -328,7 +328,10 @@ for (const guide of config.subguides) {
     throw new Error(`logo.light and logo.dark must be set globally or in ${guideConfigPath}`)
   }
   if (logo.width != null && (typeof logo.width !== 'string' || !/^(?:auto|(?:\d+(?:\.\d+)?)(?:px|rem|em|vw|vh|%)|100%)$/.test(logo.width.trim()))) {
-    throw new Error(`logo.width must be auto or a CSS width such as 100%, 96px, or 6rem in ${guideConfigPath}`)
+    throw new Error(`logo.width must be auto or a maximum CSS width such as 100%, 96px, or 6rem in ${guideConfigPath}`)
+  }
+  if (logo.height != null && (typeof logo.height !== 'string' || !/^(?:\d+(?:\.\d+)?)(?:px|rem|em|vw|vh|%)$/.test(logo.height.trim()))) {
+    throw new Error(`logo.height must be a CSS height such as 32px or 2.5rem in ${guideConfigPath}`)
   }
   if (logo.extraStyle != null && (typeof logo.extraStyle !== 'string' || /[{}<>]|url\s*\(|expression\s*\(|@import/i.test(logo.extraStyle))) {
     throw new Error(`logo.extraStyle must contain plain CSS declarations without URLs or rule syntax in ${guideConfigPath}`)
@@ -346,6 +349,7 @@ for (const guide of config.subguides) {
     logoDark: await logoAsset('dark'),
     logoAlt: logo.alt ?? 'Feluqa',
     ...(logo.width ? { logoWidth: logo.width.trim() } : {}),
+    ...(logo.height ? { logoHeight: logo.height.trim() } : {}),
     ...(logo.extraStyle ? { logoExtraStyle: logo.extraStyle.trim() } : {}),
     ...(faviconPath ? { favicon: faviconPath } : {}),
   }

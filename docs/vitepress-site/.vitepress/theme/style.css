@@ -324,10 +324,11 @@
   margin-bottom: 12px;
 }
 
-.VPNavBarTitle.has-sidebar .logo {
-  width: var(--feluqa-nav-logo-width, auto);
-  max-width: 100%;
-  height: auto;
+.VPNavBarTitle .logo {
+  width: auto;
+  height: var(--feluqa-nav-logo-height, 2.5rem);
+  max-width: var(--feluqa-nav-logo-width, 100%);
+  max-height: calc(var(--vp-nav-height) - 20px);
   box-sizing: border-box;
   object-fit: contain;
   object-position: left center;

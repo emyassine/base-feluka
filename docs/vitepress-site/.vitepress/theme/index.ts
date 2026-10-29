@@ -208,6 +208,8 @@ const MermaidLayout = {
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
       root.style.removeProperty('--feluqa-nav-logo-width')
       if (colors.logoWidth) root.style.setProperty('--feluqa-nav-logo-width', colors.logoWidth)
+      root.style.removeProperty('--feluqa-nav-logo-height')
+      if (colors.logoHeight) root.style.setProperty('--feluqa-nav-logo-height', colors.logoHeight)
       let guideStyle = document.getElementById('feluqa-configured-guide-styles') as HTMLStyleElement | null
       if (!guideStyle) {
         guideStyle = document.createElement('style')
@@ -215,14 +217,14 @@ const MermaidLayout = {
         document.head.append(guideStyle)
       }
       const logoRules = colors.logoExtraStyle
-        ? `.VPNavBarTitle.has-sidebar .logo { ${colors.logoExtraStyle} }`
+        ? `.VPNavBarTitle .logo { ${colors.logoExtraStyle} }`
         : ''
       const codeBackgroundRules = [
         colors.inlineCodeBackgroundDarkMode ? `:root.dark { --vp-code-bg: ${colors.inlineCodeBackgroundDarkMode}; }` : '',
         colors.inlineCodeBackgroundLightMode ? `:root:not(.dark) { --vp-code-bg: ${colors.inlineCodeBackgroundLightMode}; }` : '',
       ].filter(Boolean).join('\n')
       guideStyle.textContent = `${logoRules}\n${codeBackgroundRules}`
-      document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle.has-sidebar img.logo').forEach((logo) => {
+      document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle img.logo').forEach((logo) => {
         const source = logo.classList.contains('dark') ? colors.logoDark : colors.logoLight
         if (typeof source === 'string' && source && logo.getAttribute('src') !== source) logo.setAttribute('src', source)
         if (typeof colors.logoAlt === 'string') logo.alt = colors.logoAlt

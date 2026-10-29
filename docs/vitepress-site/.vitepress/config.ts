@@ -270,8 +270,9 @@ export default defineConfig({
     if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
     if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
     if (logoSettings.logoWidth) declarations.push(`--feluqa-nav-logo-width: ${logoSettings.logoWidth};`)
+    if (logoSettings.logoHeight) declarations.push(`--feluqa-nav-logo-height: ${logoSettings.logoHeight};`)
     if (declarations.length || codeBackgroundRules.length) head.push(['style', {}, `${declarations.length ? `:root { ${declarations.join(' ')} }` : ''} ${codeBackgroundRules.join(' ')}`])
-    if (logoSettings.logoExtraStyle) head.push(['style', {}, `.VPNavBarTitle.has-sidebar .logo { ${logoSettings.logoExtraStyle} }`])
+    if (logoSettings.logoExtraStyle) head.push(['style', {}, `.VPNavBarTitle .logo { ${logoSettings.logoExtraStyle} }`])
     const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
     const fontFaces: string[] = []
     const fontDeclarations: string[] = []
