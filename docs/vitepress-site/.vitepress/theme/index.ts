@@ -1,11 +1,93 @@
 import DefaultTheme from 'vitepress/theme'
-import { h, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
-import { useRoute } from 'vitepress'
+import { h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useData, useRoute } from 'vitepress'
 import './style.css'
 
 const zoomStep = 0.25
 const minZoom = 0.75
 const maxZoom = 4
+
+type MarkdownNode = Node
+
+function markdownFromNode(node: MarkdownNode): string {
+  if (node.nodeType === Node.TEXT_NODE) return (node.textContent || '').replace(/\\/g, '\\\\').replace(/([*_`])/g, '\\$1')
+  if (!(node instanceof HTMLElement)) return ''
+  if (node.matches('.header-anchor, button, .mermaid-toolbar, .VPBadge')) return node.matches('.VPBadge') ? node.textContent?.trim() || '' : ''
+  const children = () => Array.from(node.childNodes).map(markdownFromNode).join('')
+  const content = children().trim()
+  if (!content && !['IMG', 'BR', 'HR'].includes(node.tagName)) return ''
+  switch (node.tagName) {
+    case 'H1': case 'H2': case 'H3': case 'H4': case 'H5': case 'H6': return `${'#'.repeat(Number(node.tagName[1]))} ${content}\n\n`
+    case 'P': return `${content}\n\n`
+    case 'A': return `[${content}](${node.getAttribute('href') || ''})`
+    case 'STRONG': case 'B': return `**${content}**`
+    case 'EM': case 'I': return `*${content}*`
+    case 'CODE': return node.parentElement?.tagName === 'PRE' ? content : `\`${content}\``
+    case 'PRE': {
+      const code = node.querySelector('code')
+      const language = Array.from(code?.classList || []).find((name) => name.startsWith('language-'))?.slice(9) || ''
+      return `\n\`\`\`${language}\n${code?.textContent?.trimEnd() || node.textContent?.trimEnd() || ''}\n\`\`\`\n\n`
+    }
+    case 'UL': case 'OL': return `${Array.from(node.children).map((item, index) => `${node.tagName === 'OL' ? `${index + 1}.` : '-'} ${markdownFromNode(item).trim().replace(/\n/g, '\n  ')}`).join('\n')}\n\n`
+    case 'LI': return children()
+    case 'BLOCKQUOTE': return `${content.split('\n').map((line) => `> ${line}`).join('\n')}\n\n`
+    case 'IMG': return `![${node.getAttribute('alt') || ''}](${node.getAttribute('src') || ''})`
+    case 'BR': return '  \n'
+    case 'HR': return '\n---\n\n'
+    case 'TABLE': return `${Array.from(node.querySelectorAll('tr')).map((row, index) => `| ${Array.from(row.children).map((cell) => cell.textContent?.trim().replace(/\|/g, '\\|') || '').join(' | ')} |${index === 0 ? `\n| ${Array.from(row.children).map(() => '---').join(' | ')} |` : ''}`).join('\n')}\n\n`
+    default: return content
+  }
+}
+
+function copyText(text: string): void {
+  void navigator.clipboard.writeText(text)
+}
+
+const PageActions = {
+  setup() {
+    const { lang } = useData()
+    const open = ref(false)
+    const isFrench = () => lang.value.toLowerCase().startsWith('fr')
+    const labels = () => isFrench()
+      ? { title: 'À propos de cette page', trigger: 'Markdown', copyLink: 'Copier le lien de la page', copyMarkdown: 'Copier en Markdown', chatgpt: 'Demander à ChatGPT', claude: 'Demander à Claude', copied: 'Copié' }
+      : { title: 'About this page', trigger: 'Markdown', copyLink: 'Copy page link', copyMarkdown: 'Copy as markdown', chatgpt: 'Ask ChatGPT', claude: 'Ask Claude', copied: 'Copied' }
+    const action = (label: string, run: () => void) => h('button', { class: 'page-actions__item', type: 'button', role: 'menuitem', onClick: () => { run(); open.value = false } }, label)
+    const pageUrl = () => window.location.href
+    const askUrl = (provider: 'chatgpt' | 'claude') => {
+      const prompt = `${isFrench() ? 'Explique cette page de documentation' : 'Explain this documentation page'}: ${pageUrl()}`
+      return provider === 'chatgpt' ? `https://chatgpt.com/?q=${encodeURIComponent(prompt)}` : `https://claude.ai/new?q=${encodeURIComponent(prompt)}`
+    }
+    const copyMarkdown = () => {
+      const article = document.querySelector<HTMLElement>('.vp-doc')
+      if (!article) return
+      const clone = article.cloneNode(true) as HTMLElement
+      clone.querySelectorAll('.header-anchor, button, .mermaid-toolbar').forEach((element) => element.remove())
+      copyText(Array.from(clone.childNodes).map(markdownFromNode).join('').trim() + '\n')
+    }
+    const onKeydown = (event: KeyboardEvent) => { if (event.key === 'Escape') open.value = false }
+    onMounted(() => document.addEventListener('keydown', onKeydown))
+    onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
+    return () => {
+      const text = labels()
+      return h('section', { class: 'VPDocAsideMeta', 'aria-label': text.title }, [
+        h('h2', { class: 'meta-title' }, text.title),
+        h('div', { class: 'meta-box' }, [
+          h('div', { class: 'meta-row VPLlmsPageActions' }, [
+            h('button', { class: 'page-actions__trigger', type: 'button', 'aria-haspopup': 'menu', 'aria-expanded': String(open.value), onClick: () => { open.value = !open.value } }, [
+              h('span', { class: 'page-actions__file-icon', 'aria-hidden': 'true' }, '▤'), h('span', text.trigger), h('span', { class: 'page-actions__caret', 'aria-hidden': 'true' }, '⌄'),
+            ]),
+            open.value ? h('div', { class: 'page-actions__menu', role: 'menu' }, [
+              action(text.copyLink, () => copyText(pageUrl())),
+              action(text.copyMarkdown, copyMarkdown),
+              h('a', { class: 'page-actions__item', role: 'menuitem', href: askUrl('chatgpt'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.chatgpt),
+              h('a', { class: 'page-actions__item', role: 'menuitem', href: askUrl('claude'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.claude),
+            ]) : null,
+          ]),
+        ]),
+      ])
+    }
+  },
+}
 
 type ZoomTarget = HTMLElement
 
@@ -208,7 +290,7 @@ const MermaidLayout = {
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
-    return () => h(DefaultTheme.Layout)
+    return () => h(DefaultTheme.Layout, null, { 'aside-outline-before': () => h(PageActions) })
   },
 }
 
