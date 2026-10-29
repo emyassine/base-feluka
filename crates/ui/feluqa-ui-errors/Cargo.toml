@@ -33,6 +33,10 @@ path = "src/lib.rs"
 version = "0.2.16"
 default-features = true
 
+[dependencies.throw_error]
+version = "0.3.0"
+default-features = true
+
 [dev-dependencies.anyhow]
 version = "1.0.100"
 default-features = false
