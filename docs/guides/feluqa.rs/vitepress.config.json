@@ -14,5 +14,6 @@
     "inlineCode": "oklch(57.7% .245 27.325)",
     "heroNameColor": "transparent",
     "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
-  }
+  },
+  "logoWidth": "100%"
 }

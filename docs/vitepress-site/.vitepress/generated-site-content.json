@@ -1,6 +1,7 @@
 {
   "guidePaths": [
     "feluqa.rs",
+    "feluqa-internals",
     "x-agents"
   ],
   "footer": {

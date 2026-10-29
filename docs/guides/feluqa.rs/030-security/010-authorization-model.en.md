@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Authorization Model"
+sidebarTitle: "Authorization"
 icon: "shield-check"
 title: "Authorization Model"
 description: "How privilege levels, roles, permissions, policies and gates combine to decide whether an action is allowed in Feluqa."

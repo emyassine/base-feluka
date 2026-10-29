@@ -323,3 +323,11 @@
 .items > .VPSidebarItem:last-child {
   margin-bottom: 12px;
 }
+
+.VPNavBarTitle.has-sidebar .logo {
+  width: var(--feluqa-nav-logo-width, auto);
+  max-width: 100%;
+  height: var(--vp-nav-logo-height);
+  object-fit: contain;
+  object-position: left center;
+}

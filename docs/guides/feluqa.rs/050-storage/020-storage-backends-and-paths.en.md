@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Storage Backends and Paths"
+sidebarTitle: "Storage Paths"
 icon: "hard-drive"
 title: "Storage Backends and Paths"
 description: "SQLite versus PostgreSQL, browser storage, per-module storage paths, and how this compares with editors such as Zed."

@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Contexts: Module, Submodule and Feature"
+sidebarTitle: "Contexts"
 icon: "blocks"
 title: "Contexts: Module, Submodule and Feature"
 description: "How Feluqa resolves the current context (module, submodule, feature) so that code never repeats it, and how each context scopes permissions, storage and configuration."

@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Index"
+sidebarTitle: "Home"
 description: Feluqa developer documentation for applications, modules, and platform contributors.
 layout: home
 hero:
@@ -14,8 +14,8 @@ hero:
       text: Get started
       link: ./feluqa.rs/get-started/introduction/introduction.html
     - theme: alt
-      text: Core contribution
-      link: ./feluqa.rs/core-contribution/index.html
+      text: Feluqa’s Internals
+      link: ./feluqa-internals/index.html
 features:
   - icon: 📘
     title: Get started

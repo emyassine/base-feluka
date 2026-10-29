@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Architecture Overview"
+sidebarTitle: "Architecture"
 icon: "network"
 title: "Architecture Overview"
 description: "How the Feluqa SDK, CLI, artifacts, Platform, Applications, and clients fit together, and what is generated at compile time."

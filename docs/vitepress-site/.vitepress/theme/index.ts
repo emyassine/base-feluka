@@ -204,6 +204,8 @@ const MermaidLayout = {
       }
       if (colors.primary && !colors.tertiary) root.style.setProperty('--vp-c-brand-3', 'var(--vp-c-brand-1)')
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
+      root.style.removeProperty('--feluqa-nav-logo-width')
+      if (colors.logoWidth) root.style.setProperty('--feluqa-nav-logo-width', colors.logoWidth)
       const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }
       const fonts = { ...fontConfig.site, ...(fontConfig.guides[pathGuide] ?? {}) }
       const fontRules: string[] = []

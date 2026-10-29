@@ -10,6 +10,7 @@
   },
   "guides": {
     "feluqa.rs": {},
+    "feluqa-internals": {},
     "x-agents": {}
   }
 }

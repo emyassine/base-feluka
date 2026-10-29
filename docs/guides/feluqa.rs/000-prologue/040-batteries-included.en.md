@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Batteries Included"
+sidebarTitle: "Batteries"
 icon: "battery-charging"
 title: "Batteries Included"
 description: "The major capabilities Feluqa brings together, what is available today, and what remains a product direction."
@@ -56,30 +56,50 @@ does not promise that every battery is finished or replaceable yet.
 
 ### Application and runtime foundation
 
-| Battery | Status | Included capability and direction |
-|---|---|---|
-| ![](../000-art/batteries-included/code-xml.svg) Application foundation | In progress | The Rust developer kit (SDK), compile-time checks, and generated application metadata provide a shared foundation for Modules, permissions, resources, and routes. Application composition is still being completed. |
-| ![](../000-art/batteries-included/timer.svg) Async server execution | Current server foundation | Rust's `async` and `.await` syntax lets work pause while waiting for a database or network response. The server profile uses Tokio to execute asynchronous work and provide services such as network I/O and timers. |
-| ![](../000-art/batteries-included/server-cog.svg) Web and API services | Available; evolving | The web profile uses Axum for HTTP routing and request handling, with Tower services and middleware. [inertia-omega](https://github.com/inertiajs/inertia-omega) is an alpha Rust implementation of the Inertia server protocol with an Axum adapter; it is a possible future integration to evaluate, not a Feluqa dependency. |
+<VPTeamMembers size="small" :members="foundation" />
 
 ### Platform and data services
 
-| Battery | Status | Included capability and direction |
-|---|---|---|
-| ![](../000-art/batteries-included/shield-check.svg) Identity, access control, and audit | Foundations available | Feluqa Core provides account and role operations, server-side sessions, CSRF protection, tenant-bound identities, and audit persistence. The full System Control Panel, agent identities, and production multi-instance session management remain unfinished. |
-| ![](../000-art/batteries-included/database-zap.svg) Data persistence | Available foundations | The database service supports SQLite and PostgreSQL through SeaORM, with named pools and embedded migrations and checksums. Backup, restore, and production operations still need release-level qualification. |
-| ![](../000-art/batteries-included/panel-top.svg) Panels and resources | Shared contracts; integration in progress | The panel catalogue and typed UI schemas provide foundations for registering business resources and pages. The complete System Control Panel, Feluqa UI integration, and a broad accessible component catalogue are not yet complete. |
-| ![](../000-art/batteries-included/activity.svg) Live interactions | Typed dispatch available | Feluqa has signed, typed Live action dispatch. Browser-side state reconciliation and shared replay protection still need work; this is not yet a complete real-time synchronization system with conflict handling. |
+<VPTeamMembers size="small" :members="platform" />
 
 ### Development, extension, and operations
 
-| Battery | Status | Included capability and direction |
-|---|---|---|
-| ![](../000-art/batteries-included/blocks.svg) Modules and extensibility | Static foundation; dynamic lifecycle planned | Applications can be composed from statically compiled Rust Modules. The current lifecycle can order and start registered Modules with rollback. Dynamic installation, upgrades, and removal are product targets. Explicit contracts and extension points should let developers and authorized agents add Product-specific behavior as reviewable software. |
-| ![](../000-art/batteries-included/terminal.svg) Console and developer CLI | Available; workflows evolving | The CLI provides project commands, and the console framework supports named binaries, profiles, and command handlers. See [Application Profiles and Starter Kits](../010-get-started/070-starter-kits/010-application-profiles-and-starter-kits.en.md) for the planned `feluqa new <app> profile <profile-or-starter-kit>` command shape. |
-| ![](../000-art/batteries-included/cloud-cog.svg) Deployment and operations | Product target | Feluqa aims to make building and operating an Application a coherent, scriptable workflow. Standalone builds outside the development checkout, production deployment, rollback, backup, and restore are not yet qualified as a complete operational path. |
-| ![](../000-art/batteries-included/bot.svg) Agent workflows | Product direction | Feluqa is intended to support local agents and agents chosen by each organisation. The CLI should help them inspect project capabilities, propose changes, compile, validate, test, package, and distribute software through explicit, reviewable steps. The complete agent workflow and complementary agent product are not available yet. |
+<VPTeamMembers size="small" :members="operations" />
 
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+import applicationIcon from '../art/batteries-included/code-xml.svg'
+import asyncIcon from '../art/batteries-included/timer.svg'
+import webIcon from '../art/batteries-included/server-cog.svg'
+import identityIcon from '../art/batteries-included/shield-check.svg'
+import dataIcon from '../art/batteries-included/database-zap.svg'
+import panelsIcon from '../art/batteries-included/panel-top.svg'
+import liveIcon from '../art/batteries-included/activity.svg'
+import modulesIcon from '../art/batteries-included/blocks.svg'
+import consoleIcon from '../art/batteries-included/terminal.svg'
+import deploymentIcon from '../art/batteries-included/cloud-cog.svg'
+import agentsIcon from '../art/batteries-included/bot.svg'
+
+const foundation = [
+  { avatar: applicationIcon, name: 'Application foundation', title: 'In progress', desc: 'SDK, compile-time checks, and application metadata establish shared contracts. Application composition is still being completed.' },
+  { avatar: asyncIcon, name: 'Async execution', title: 'Server foundation', desc: 'The server profile uses Tokio for asynchronous tasks, network I/O, and timers.' },
+  { avatar: webIcon, name: 'Web and APIs', title: 'Available; evolving', desc: 'Axum handles HTTP routing with Tower services and middleware. Inertia support remains a possible future integration.' },
+]
+
+const platform = [
+  { avatar: identityIcon, name: 'Identity and access', title: 'Foundations available', desc: 'Accounts, roles, server-side sessions, CSRF, tenant identities, and audit persistence are available. The complete System Panel is unfinished.' },
+  { avatar: dataIcon, name: 'Data persistence', title: 'Available foundations', desc: 'SQLite and PostgreSQL support uses SeaORM, named pools, and embedded migrations. Backup and restore need release qualification.' },
+  { avatar: panelsIcon, name: 'Panels and resources', title: 'Integration in progress', desc: 'The panel catalogue and typed UI schemas provide shared contracts. The full System Panel and UI integration remain incomplete.' },
+  { avatar: liveIcon, name: 'Live actions', title: 'Typed dispatch available', desc: 'Signed, typed actions are supported. Browser reconciliation and shared replay protection remain unfinished.' },
+]
+
+const operations = [
+  { avatar: modulesIcon, name: 'Modules', title: 'Static composition', desc: 'Applications compose statically compiled Rust modules. Dynamic installation, upgrades, and removal remain product goals.' },
+  { avatar: consoleIcon, name: 'Console and CLI', title: 'Available; evolving', desc: 'The CLI and console framework provide project commands, named binaries, profiles, and handlers.' },
+  { avatar: deploymentIcon, name: 'Deployment', title: 'Product target', desc: 'Standalone builds, deployment, rollback, backup, and restore are not yet a qualified end-to-end path.' },
+  { avatar: agentsIcon, name: 'Agent workflows', title: 'Product direction', desc: 'Agents should inspect, propose, validate, and package changes through explicit, reviewable steps. The complete workflow is not available yet.' },
+]
+</script>
 Each area above is labelled with its current status. Feluqa's implementation
 continues to evolve, so the capability guides describe what is available and
 what remains a product direction.

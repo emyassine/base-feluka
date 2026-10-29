@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Feluqa Guides"
+sidebarTitle: "Feluqa"
 title: Feluqa Guides
 description: Start here for Feluqa product, application, and contributor documentation.
 ---
@@ -17,5 +17,5 @@ Choose a section to continue.
 
 ## Contribute to Feluqa
 
-- [Core contribution](core-contribution/index): explore workspaces, runtimes, compile-time guarantees, and contributor rules.
+- [Core contribution](../feluqa-internals/index): explore workspaces, runtimes, compile-time guarantees, and contributor rules.
 - [Prologue](prologue/release-notes): read the release notes, license, contribution guide, and capabilities overview.

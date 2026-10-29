@@ -19,8 +19,12 @@
       "label": "Feluqa"
     },
     {
+      "path": "feluqa-internals",
+      "label": "Feluqa’s Internals"
+    },
+    {
       "path": "x-agents",
-      "label": "AI agent guides"
+      "label": "Agents"
     }
   ],
   "languages": [

@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Create Your First Application"
+sidebarTitle: "First App"
 icon: "square-terminal"
 title: "Create Your First Application"
 description: "The planned Feluqa getting-started path: choose an application, prepare the environment, create a first CLI command, and build a useful weather watcher."

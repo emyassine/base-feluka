@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "What Rust Does—and Does Not—Protect"
+sidebarTitle: "Rust Boundaries"
 icon: "shield-check"
 title: "What Rust Does—and Does Not—Protect"
 description: "Understand Rust's memory-safety guarantees and the application security risks that still need engineering controls."

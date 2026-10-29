@@ -127,6 +127,7 @@ export default defineConfig({
     }
     if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
     if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
+    if (guideEntry.config.logoWidth) declarations.push(`--feluqa-nav-logo-width: ${guideEntry.config.logoWidth.trim()};`)
     if (declarations.length) head.push(['style', {}, `:root { ${declarations.join(' ')} }`])
     const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
     const fontFaces: string[] = []

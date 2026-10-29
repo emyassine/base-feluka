@@ -6,5 +6,6 @@
     "dark": "../feluqa.rs/.art/logo-darkmode.png",
     "alt": "Feluqa"
   },
-  "favicon": "../feluqa.rs/.art/favicon.png"
+  "favicon": "../feluqa.rs/.art/favicon.png",
+  "logoWidth": "100%"
 }

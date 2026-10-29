@@ -176,7 +176,10 @@ for (const guide of config.subguides) {
   const faviconPath = guideConfig.favicon
     ? `/${await copyAsset(resolve(dirname(guideConfigPath), guideConfig.favicon))}`
     : null
-  generatedGuideColors[guide.path] = { ...(guideConfig.colors ?? {}), ...(faviconPath ? { favicon: faviconPath } : {}) }
+  if (guideConfig.logoWidth != null && (typeof guideConfig.logoWidth !== 'string' || !/^(?:auto|(?:\d+(?:\.\d+)?)(?:px|rem|em|vw|vh|%)|100%)$/.test(guideConfig.logoWidth.trim()))) {
+    throw new Error(`logoWidth must be auto or a CSS width such as 100%, 96px, or 6rem in ${guideConfigPath}`)
+  }
+  generatedGuideColors[guide.path] = { ...(guideConfig.colors ?? {}), ...(guideConfig.logoWidth ? { logoWidth: guideConfig.logoWidth.trim() } : {}), ...(faviconPath ? { favicon: faviconPath } : {}) }
 }
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))

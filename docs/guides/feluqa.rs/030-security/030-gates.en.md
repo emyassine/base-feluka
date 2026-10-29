@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Gates: Protecting a Function"
+sidebarTitle: "Gates"
 icon: "shield"
 title: "Gates: Protecting a Function"
 description: "The #[gate] attribute: syntax, options, resolution order, secure-by-default rules and the builder equivalent."

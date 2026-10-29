@@ -1,0 +1,19 @@
+{
+  "title": "Feluqa’s Internals",
+  "showSiteTitle": false,
+  "logo": {
+    "light": "../feluqa.rs/.art/logo-lightmode.png",
+    "dark": "../feluqa.rs/.art/logo-darkmode.png",
+    "alt": "Feluqa"
+  },
+  "logoWidth": "100%",
+  "favicon": "../feluqa.rs/.art/favicon.png",
+  "colors": {
+    "primary": "oklch(57.7% .245 27.325)",
+    "secondary": "oklch(66% .21 28)",
+    "sidebarIcon": "#8b9099",
+    "inlineCode": "oklch(57.7% .245 27.325)",
+    "heroNameColor": "transparent",
+    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
+  }
+}

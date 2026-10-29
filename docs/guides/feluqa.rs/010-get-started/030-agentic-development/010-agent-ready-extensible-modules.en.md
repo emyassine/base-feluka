@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Agent-Ready, Extensible Modules"
+sidebarTitle: "Agent Modules"
 icon: "blocks"
 title: "Agent-Ready, Extensible Modules"
 description: "Feluqa's belief that agents should help users create and evolve product-specific software through explicit extension points."
