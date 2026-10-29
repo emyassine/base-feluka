@@ -6,6 +6,9 @@
     "docs:build": "vitepress build"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.2",
+    "happy-dom": "^21.0.4",
+    "mermaid": "^11.17.2",
     "vitepress": "^1.6.4"
   }
 }

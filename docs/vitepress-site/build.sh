@@ -9,7 +9,7 @@ if [[ ! -d "$site_dir/node_modules/vitepress" ]]; then
 fi
 
 node "$site_dir/prepare.mjs"
-(cd "$site_dir" && npm run docs:build -- --base /)
+(cd "$site_dir" && npm run docs:build -- --base / --mpa)
 test -f "$repo_docs_dir/build/index.html"
 test -f "$repo_docs_dir/build/index.html"
 node "$site_dir/make-file-urls-relative.mjs" "$repo_docs_dir/build"

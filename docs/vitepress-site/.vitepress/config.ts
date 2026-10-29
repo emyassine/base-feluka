@@ -47,6 +47,7 @@ export default defineConfig({
   srcDir: '.generated-guides',
   outDir: resolve(siteDirectory, siteConfig.outputDir),
   cleanUrls: false,
+  mpa: true,
   transformHead({ page }) {
     const guide = siteConfig.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
     if (!guide) return []

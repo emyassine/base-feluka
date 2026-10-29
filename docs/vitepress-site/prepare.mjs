@@ -1,6 +1,9 @@
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { execFile as execFileCallback } from 'node:child_process'
+import { createHash } from 'node:crypto'
+import { promisify } from 'node:util'
 
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
 const config = JSON.parse(await readFile(join(siteDirectory, 'config-vitepress-site.json'), 'utf8'))
@@ -9,6 +12,7 @@ const records = []
 const routeMap = new Map()
 const cleanDir = (s) => s.replace(/^\d+-/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
+const execFile = promisify(execFileCallback)
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
@@ -48,6 +52,17 @@ if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(out
 }
 for (const record of records) {
   let markdown = await readFile(record.from, 'utf8')
+  const mermaidBlocks = [...markdown.matchAll(/^```mermaid\s*\n([\s\S]*?)\n```\s*$/gm)]
+  for (const block of mermaidBlocks.reverse()) {
+    const diagram = block[1]
+    const id = createHash('sha256').update(diagram).digest('hex').slice(0, 16)
+    const source = join(outputDirectory, `.mermaid-${id}.mmd`)
+    const svg = join(outputDirectory, 'public', 'mermaid', `${id}.svg`)
+    await mkdir(dirname(svg), { recursive: true })
+    await writeFile(source, diagram)
+    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-q'])
+    markdown = `${markdown.slice(0, block.index)}![Mermaid diagram](/mermaid/${id}.svg)${markdown.slice(block.index + block[0].length)}`
+  }
   markdown = markdown.replace(/(!?\[[^\]]*\]\()([^\s)]+)(\))/g, (all, before, href, after) => {
     if (/^(?:[a-z]+:|\/|#)/i.test(href)) return all
     const [path, ...suffix] = href.split(/(?=[?#])/)
