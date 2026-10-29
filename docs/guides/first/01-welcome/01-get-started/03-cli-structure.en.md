@@ -83,10 +83,12 @@ write `Option`, `Result`, `String`, and `Vec` without importing them. This is
 convenient, but it can hide where names come from and make generated code or
 macros depend on implicit imports.
 
-Feluqa prefers explicit imports. `#![no_implicit_prelude]` turns off those
-automatic imports, so code must name or import what it uses. That makes the
-crate's dependencies and macro inputs easier to inspect and keeps generated
-application code predictable.
+Feluqa prefers explicit imports. `#![no_implicit_prelude]` suppresses the
+standard, extern-crate, `macro_use`, and tool preludes; the language prelude
+remains. Code explicitly imports or qualifies the names it uses, making
+dependencies and macro inputs easier to inspect and generated application
+code more predictable. See [Program 0: Hello CLI](04-program-0-hello-cli.en.md)
+for the library layers and an example using `::core`.
 
 The binary's `main.rs` declares which command profile belongs to it, then
 starts the console dispatcher. This follows the structure used by

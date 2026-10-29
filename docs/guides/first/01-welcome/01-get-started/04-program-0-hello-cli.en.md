@@ -34,17 +34,17 @@ This handler is named `hello`; with the `hello-cli` binary, the user runs
 `hello-cli hello`:
 
 ```rust
-// Disable Rust's automatic prelude imports.
-// Common types and variants (Result, Ok, Err, Option, etc.)
-// must be imported explicitly.
+// Disable Rust's implicit standard, extern-crate, macro_use, and tool preludes.
+// Names used below are imported or qualified explicitly.
 #![no_implicit_prelude]
 #![forbid(unsafe_code)]   // Forbid unsafe Rust code throughout this crate.
 #![deny(unused_must_use)] // Treat ignored results marked #[must_use] as compilation errors.
 #![deny(missing_docs)]    // Require documentation for public items.
 
-extern crate feluqa;            // Make the Feluqa crate available.
-use ::core::result::Result::Ok; // Import the Ok variant explicitly because the prelude is disabled.
-use feluqa::console::{ // Import the Feluqa console API used by this command.
+extern crate core;              // Make the core crate available explicitly.
+extern crate feluqa;            // Make the Feluqa crate available explicitly.
+use ::core::result::Result::Ok; // Import the Ok variant from Rust's core library.
+use feluqa::console::{
     echo,
     CommandContext,
     CommandResult,
@@ -74,6 +74,59 @@ fn hello(
     Ok(())
 }
 ```
+
+## Rust's `core`, `alloc`, and `std` libraries
+
+Rust's libraries form layers. `core` provides fundamental types and traits
+without requiring an operating system or heap allocation. `alloc` adds
+heap-backed types and requires an allocator. `std` builds on these libraries
+with operating-system facilities such as files, networking, threads, and I/O.
+
+```text
+std   operating-system services and higher-level APIs
+└── alloc   heap-backed types such as String, Vec, and Box
+    └── core   fundamental types and traits such as Result, Option, and Iterator
+```
+
+| Library | Provides | Examples |
+|---|---|---|
+| `core` | Fundamental types, traits, and operations; no OS or heap requirement. | `Result`, `Option`, `Iterator` |
+| `alloc` | Heap allocation abstractions and heap-backed collections; needs an allocator, not necessarily an OS. | `String`, `Vec`, `Box` |
+| `std` | The standard library's OS integration and higher-level facilities. | `File`, `TcpStream`, `thread` |
+
+`std` re-exports many items from `core`, so `core::result::Result` and
+`std::result::Result` name the same type. Feluqa code can use `core` when it
+wants a fundamental Rust type without making that type's path depend on `std`.
+
+## Explicit crate paths and the prelude
+
+A Rust **prelude** is a set of names made available without a `use` statement.
+Rust has several preludes; the standard prelude is why ordinary Rust code can
+often write `Option` or `Result` without an import. Feluqa uses
+`#![no_implicit_prelude]` to suppress implicit prelude imports, so this example
+explicitly brings the `core` crate into scope and imports `Ok` from it.
+
+The leading `::` in `::core::result::Result::Ok` starts resolution from the
+external crate namespace in Rust 2018 and later. It makes clear that `core`
+means Rust's external crate, even if the application also has a local module
+named `core`. The leading `::` affects name resolution; it does not select a
+different library. It is useful for this explicit path, but is not required on
+every import.
+
+```rust
+extern crate core;
+use ::core::result::Result::{Ok, Err};
+
+fn example() -> ::core::result::Result<(), &'static str> {
+    Ok(())
+}
+```
+
+In the command above, `extern crate core;` makes the crate available despite
+the disabled extern prelude, and `use ::core::result::Result::Ok;` makes the
+success variant available as `Ok(())`. The same convention can be used for
+Feluqa APIs: import the items a command needs, while keeping their crate origin
+visible.
 
 The example uses the current `CommandContext`, `CommandResult`, and `echo`
 contracts. The console dispatches to the handler, which writes `Hello CLI` and
