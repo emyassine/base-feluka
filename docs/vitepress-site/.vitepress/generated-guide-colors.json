@@ -5,7 +5,10 @@
     "sidebarIcon": "#8b9099",
     "inlineCode": "oklch(57.7% .245 27.325)",
     "heroNameColor": "transparent",
-    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))"
+    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))",
+    "favicon": "/__docs-assets/84eb15058039efcb2168b968c8fe0db5d792aaad5c3ec65e97e792a55a0595b5.png"
   },
-  "x-agents": {}
+  "x-agents": {
+    "favicon": "/__docs-assets/84eb15058039efcb2168b968c8fe0db5d792aaad5c3ec65e97e792a55a0595b5.png"
+  }
 }

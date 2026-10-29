@@ -203,6 +203,16 @@ const MermaidLayout = {
       }
       if (colors.primary && !colors.tertiary) root.style.setProperty('--vp-c-brand-3', 'var(--vp-c-brand-1)')
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
+      if (colors.favicon) {
+        let icon = document.querySelector<HTMLLinkElement>('link[data-feluqa-favicon]')
+        if (!icon) {
+          icon = document.createElement('link')
+          icon.rel = 'icon'
+          icon.dataset.feluqaFavicon = ''
+          document.head.append(icon)
+        }
+        icon.href = colors.favicon
+      }
     }
     let observer: MutationObserver | undefined
     let dialog: HTMLDialogElement | undefined

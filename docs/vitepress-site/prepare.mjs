@@ -114,13 +114,9 @@ async function copyAsset(sourceFile) {
   const bytes = await readFile(sourceFile)
   const assetName = `${createHash('sha256').update(bytes).digest('hex')}${extname(sourceFile).toLowerCase()}`
   const publishedPath = join('__docs-assets', assetName)
-  const target = join(outputDirectory, 'public', publishedPath)
-  generatedFiles.add(target)
-  await mkdir(dirname(target), { recursive: true })
-  try { await access(target) }
-  catch (error) {
-    if (error.code !== 'ENOENT') throw error
-    await writeFile(target, bytes)
+  for (const target of [join(outputDirectory, publishedPath), join(outputDirectory, 'public', publishedPath)]) {
+    generatedFiles.add(target)
+    await writeIfChanged(target, bytes)
   }
   return publishedPath.split(sep).join('/')
 }
@@ -177,7 +173,10 @@ for (const guide of config.subguides) {
   const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
-  generatedGuideColors[guide.path] = guideConfig.colors ?? {}
+  const faviconPath = guideConfig.favicon
+    ? `/${await copyAsset(resolve(dirname(guideConfigPath), guideConfig.favicon))}`
+    : null
+  generatedGuideColors[guide.path] = { ...(guideConfig.colors ?? {}), ...(faviconPath ? { favicon: faviconPath } : {}) }
 }
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(siteDirectory, '.vitepress/generated-guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))
