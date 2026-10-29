@@ -3,6 +3,18 @@
     "name": "Feluqa",
     "description": "Feluqa Documentation"
   },
+  "fonts": {
+    "body": {
+      "family": "DM Sans",
+      "src": ".art/fonts/dm-sans-latin.woff2",
+      "weight": "400 700"
+    },
+    "code": {
+      "family": "Space Grotesk",
+      "src": ".art/fonts/space-grotesk-latin.woff2",
+      "weight": "300 700"
+    }
+  },
   "guidesPath": ".",
   "indexPath": "index.en.md",
   "outputDir": "../build",

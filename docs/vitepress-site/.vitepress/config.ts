@@ -10,6 +10,8 @@ const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
 const sidebarMetadataPath = join(siteDirectory, '.vitepress/generated-sidebar.json')
 const sidebarMetadata = existsSync(sidebarMetadataPath) ? JSON.parse(readFileSync(sidebarMetadataPath, 'utf8')) : {}
+const generatedFontPath = join(siteDirectory, '.vitepress/generated-fonts.json')
+const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
 const activeLanguage = siteConfig.languages[0]
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
 const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
@@ -98,9 +100,9 @@ export default defineConfig({
   markdown: siteConfig.markdown,
   transformHead({ page }) {
     const guide = site.subguides.find((entry: { path: string }) => page.startsWith(`${entry.path}/`))
-    if (!guide) return []
-    const guideEntry = guideConfigs[guide.path]
-    const head: any[] = [['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }]]
+    const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
+    const head: any[] = []
+    if (guide) head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
     const colors = guideEntry.config.colors ?? primaryConfig.colors ?? {}
     const declarations: string[] = []
     const colorProperties: Record<string, string> = {
@@ -117,13 +119,30 @@ export default defineConfig({
       const value = colors[key]
       if (value === undefined) continue
       if (typeof value !== 'string' || !value.trim() || /[<>;{}]/.test(value)) {
-        throw new Error(`Invalid colors.${key} in ${guideEntry.path}/vitepress.config.json`)
+        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/vitepress.config.json`)
       }
       declarations.push(`${property}: ${value.trim()};`)
     }
     if (colors.primary && !colors.tertiary) declarations.push('--vp-c-brand-3: var(--vp-c-brand-1);')
     if (colors.primary && !colors.soft) declarations.push('--vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);')
     if (declarations.length) head.push(['style', {}, `:root { ${declarations.join(' ')} }`])
+    const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
+    const fontFaces: string[] = []
+    const fontDeclarations: string[] = []
+    for (const role of ['body', 'code']) {
+      const font = fonts[role]
+      if (!font) continue
+      const family = JSON.stringify(font.family)
+      const fallback = font.fallback
+      const property = role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono'
+      fontDeclarations.push(`${property}: ${family}, ${fallback};`)
+      if (font.src) {
+        fontFaces.push(`@font-face { font-family: ${family}; src: url(${JSON.stringify(font.src)}) format('woff2'); font-style: ${font.style}; font-weight: ${font.weight}; font-display: swap; }`)
+      }
+    }
+    if (fontDeclarations.length || fontFaces.length) {
+      head.push(['style', {}, `${fontFaces.join(' ')} :root { ${fontDeclarations.join(' ')} }`])
+    }
     return head
   },
   themeConfig: {

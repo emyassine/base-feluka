@@ -94,6 +94,60 @@ async function copyAsset(sourceFile) {
   return publishedPath.split(sep).join('/')
 }
 
+async function prepareFonts(fonts, configPath) {
+  if (fonts == null) return {}
+  if (typeof fonts !== 'object' || Array.isArray(fonts)) {
+    throw new Error(`fonts must be an object in ${configPath}`)
+  }
+  const prepared = {}
+  for (const role of ['body', 'code']) {
+    const font = fonts[role]
+    if (font == null) continue
+    if (typeof font !== 'object' || Array.isArray(font)) {
+      throw new Error(`fonts.${role} must be an object in ${configPath}`)
+    }
+    const { family, src, weight = '400 700', style = 'normal', fallback } = font
+    if (typeof family !== 'string' || !/^[\p{L}\p{N} _-]+$/u.test(family.trim())) {
+      throw new Error(`fonts.${role}.family must be a plain font family name in ${configPath}`)
+    }
+    if (src != null && (typeof src !== 'string' || extname(src).toLowerCase() !== '.woff2')) {
+      throw new Error(`fonts.${role}.src must be a relative WOFF2 path in ${configPath}`)
+    }
+    if (!(typeof weight === 'number' && weight >= 1 && weight <= 1000) && !(typeof weight === 'string' && /^\d{1,4}(?:\s+\d{1,4})?$/.test(weight))) {
+      throw new Error(`fonts.${role}.weight must be a number or range such as "400 700" in ${configPath}`)
+    }
+    if (style !== 'normal' && style !== 'italic') {
+      throw new Error(`fonts.${role}.style must be normal or italic in ${configPath}`)
+    }
+    if (fallback != null && (typeof fallback !== 'string' || !/^[\p{L}\p{N} _,-]+$/u.test(fallback))) {
+      throw new Error(`fonts.${role}.fallback contains invalid CSS in ${configPath}`)
+    }
+    const source = src ? resolve(dirname(configPath), src) : null
+    prepared[role] = {
+      family: family.trim(),
+      src: source ? `/${await copyAsset(source)}` : null,
+      weight: String(weight),
+      style,
+      fallback: fallback ?? (role === 'body' ? 'ui-sans-serif, system-ui, sans-serif' : 'ui-monospace, monospace'),
+    }
+  }
+  for (const role of Object.keys(fonts)) {
+    if (!['body', 'code'].includes(role)) throw new Error(`Unknown font role fonts.${role} in ${configPath}; use body or code`)
+  }
+  return prepared
+}
+
+const generatedFonts = {
+  site: await prepareFonts(config.fonts, join(configDirectory, 'vitepress.site.config.json')),
+  guides: {},
+}
+for (const guide of config.subguides) {
+  const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
+  const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
+  generatedFonts.guides[guide.path] = await prepareFonts(guideConfig.fonts, guideConfigPath)
+}
+await writeFile(join(siteDirectory, '.vitepress/generated-fonts.json'), JSON.stringify(generatedFonts, null, 2))
+
 const generatedSidebar = {}
 for (const [path, metadata] of sidebarConfigurations) {
   generatedSidebar[path] = {
