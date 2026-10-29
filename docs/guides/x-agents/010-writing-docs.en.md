@@ -18,7 +18,8 @@ author:
 # Writing Published Feluqa Documentation
 
 Use this workflow when creating or revising documentation intended for the
-Feluqa documentation site. The site is independent of the monorepo. Write for
+Feluqa documentation site. The site is independent of Feluqa's private source
+tree. Write for
 the people who will read the published page, and preserve the product owner's
 meaning rather than turning it into a simpler but different idea.
 
@@ -74,13 +75,13 @@ boundaries clear:
   a **workspace** contains related packages and projects.
 
 Avoid vague references such as "the repository" when they could mean the
-private Feluqa monorepo, a product workspace, a Cargo package, a crate, a
+private Feluqa source tree, a product workspace, a Cargo package, a crate, a
 source distribution, or a customer's code. Name the exact thing.
 
-## Keep site documentation independent of the monorepo
+## Keep site documentation independent of private source files
 
-Published docs must make sense to someone who has never seen the private
-monorepo. Do not link to root files such as `LICENSE.md`, `README.md`, or
+Published docs must make sense to someone who has never seen Feluqa's private
+source tree. Do not link to local files such as `LICENSE.md`, `README.md`, or
 `README_Product_Document_Intent.en.md` with relative filesystem paths. Summarise
 the relevant content in the guide and link to another published guide page,
 the public website, or a file distributed with the relevant source code.
@@ -263,7 +264,8 @@ the terminology consistent.
 
 ## Structure and file naming
 
-- Keep one concept per Markdown file under `010-get-started/030-concepts/`.
+- Keep one concept per Markdown file in the relevant concepts section; keep
+  agent extensibility in `010-get-started/030-agentic-development/`.
   Use a descriptive, topic-specific filename such as
   `000-agent-ready-extensible-modules.en.md`.
 - Choose filenames and page titles that remain distinct across the whole
@@ -287,7 +289,7 @@ Before finishing:
 3. Verify implementation-status statements against the current repository
    guidance. Treat unknown or incomplete behavior as unknown or incomplete.
 4. Check every local link from the page's actual location. Do not rely on
-   monorepo-relative links for a published site.
+   local source-tree links for a published site.
 5. Run `git diff --check`. For documentation-only changes, review links,
    terminology, front matter, and rendering structure; do not run a runtime
    test suite unless requested or required by repository guidance.

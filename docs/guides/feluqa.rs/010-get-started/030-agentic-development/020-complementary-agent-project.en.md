@@ -55,7 +55,7 @@ and release workflow keep the result within the application's lifecycle.
 ## Intended relationship and status
 
 This agent companion is a complementary product direction, not a delivered
-Feluqa feature. The repository does not yet provide the complete agent
+Feluqa feature. Feluqa does not yet provide the complete agent
 orchestration, local-agent runtime, provider selection, dynamic extension,
 compilation-to-distribution workflow, or a named companion product. The
 [agent-ready extensibility concept](010-agent-ready-extensible-modules.en.md)

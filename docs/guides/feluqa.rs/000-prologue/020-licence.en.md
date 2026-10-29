@@ -2,7 +2,7 @@
 icon: "scale"
 title: "Build with Feluqa"
 description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
-summary: "Explains that building Applications for personal, commercial, organizational, and authorized client work is free of charge and that creators may use the Products they create. It distinguishes the proprietary SDK and Platform from customer Products, describes contribution and selective open-source direction, provides company legal information, and outlines options for product development support."
+summary: "Explains that building Applications for personal, commercial, organizational, and authorized client work is free of charge and that creators may use the Products they create. It distinguishes the proprietary developer kit (SDK) and Platform from customer Products, describes contribution and selective open-source direction, provides company legal information, and outlines product-development options."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2
@@ -18,20 +18,20 @@ author:
 
 # Build with Feluqa
 
-Creating an **Application** with the Feluqa SDK is free of charge for personal
-projects and commercial work. Individuals and organisations can build
-Applications with it; contractors and subcontractors can build them for
-clients when authorised to do so. You are free to use the **Products** you
-create for yourself, your organisation, or your client. This right to use your
-Products is guaranteed.
+Creating an **Application** with Feluqa's developer tools (the software
+development kit, or SDK) is free of charge for personal projects and
+commercial work. Individuals and organisations can build Applications with
+it; contractors and subcontractors can build them for clients when authorised
+to do so. You are free to use the **Products** you create for yourself, your
+organisation, or your client. This right to use your Products is guaranteed.
 
 ## Feluqa Platform and licensing
 
 The **Feluqa SDK** is the development API and tools used to create Applications.
-Its use for Application creation is free of charge. The **Feluqa Platform** is
-the shared runtime and control plane designed to provide capabilities such as
-identity, access control, audit, and configuration; it is distinct from a
-customer's Product.
+Its use for Application creation is free of charge. The shared runtime and
+administration services (the **Feluqa Platform**) provide capabilities such
+as identity, access control, audit, and configuration; the Platform is
+distinct from a customer's Product.
 
 Both the SDK and Platform are proprietary software owned by NUMERIMONDES SARL
 AU. Proprietary describes ownership; it does not take away your guaranteed
@@ -44,14 +44,15 @@ components from rights in a Product, its Applications and Modules, and
 customer-specific source code. These terms use Feluqa's
 [canonical taxonomy](../010-get-started/000-introduction/030-taxonomy.en.md).
 
-Today, Feluqa has one SDK. Additional SDKs may be developed for different
-audiences or target profiles.
+Feluqa currently has one SDK. Additional SDKs may be developed for different
+audiences or application profiles.
 
-Some Feluqa components will be released under open-source licences over time.
-Each release will identify the crates, licence, and applicable versions.
-Other crates may remain unpublished to meet the security, operational,
+Some Feluqa software components (Rust crates) will be released under
+open-source licences over time. Each release will identify the components,
+licence, and applicable versions. Other components may remain unpublished to
+meet the security, operational,
 contractual, or strategic needs of civilian, research, military, and
-government deployments. This can apply even when a crate contains no
+government deployments. This can apply even when a component contains no
 client-specific business logic or deployment configuration. These decisions
 are made component by component; keeping source private is not, by itself, a
 security guarantee.
@@ -86,7 +87,7 @@ markets where they can establish a defensible position. Feluqa's own thesis
 adds that modern development tools make broad platform capabilities more
 attainable for a small team, while users and their agents can shape the
 specialized business workflows. We describe this as [“breadth is now
-affordable, depth belongs to users”](../010-get-started/030-concepts/000-agent-ready-extensible-modules.en.md).
+affordable, depth belongs to users”](../010-get-started/030-agentic-development/010-agent-ready-extensible-modules.en.md).
 
 Proprietary ownership does not by itself prove that software is safer, more
 reliable, or technically superior. Those qualities require implementation,
@@ -97,16 +98,12 @@ contractual commitments.
 ## Contributions
 
 We welcome contributions and want to work closely with the people who make
-them. Start by reaching out through [Feluqa on GitHub](https://github.com/feluqa/)
-to discuss your idea and request access to the private monorepo. A public
-issues and discussions space for contribution proposals and access requests
-is planned; it will be linked from the GitHub page when it is ready.
-
-Maintainers will discuss scope and implementation with you, arrange access to
-the private Feluqa monorepo where appropriate, and agree the contribution
+them. Contact Feluqa through [GitHub](https://github.com/feluqa/) to discuss
+your idea. Maintainers will work with you on scope, access, and contribution
 terms before work is incorporated. See the
-[Contribution Guide](030-contribution-guide.en.md) for the engineering
-workflow. The Feluqa Platform remains proprietary; agreed terms make clear how
+[Contribution Guide](030-contribution-guide.en.md) for how to get started and
+[Core Contribution](../800-core-contribution/000.index.en.md) for engineering
+guidance. The Feluqa Platform remains proprietary; agreed terms make clear how
 your contribution may be used in proprietary or open-source components.
 
 ## Legal Overview

@@ -65,4 +65,4 @@ Start with [Program 0: Hello CLI](020-program-0-hello-cli.en.md).
 
 ## Next step
 
-Learn how an [application profile differs from a binary and compilation target](../020-configuration/010-choose-an-application-profile.en.md).
+Learn how an [application profile differs from a binary and compilation target](../070-starter-kits/010-application-profiles-and-starter-kits.en.md).

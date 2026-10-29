@@ -64,8 +64,8 @@ arbitrary uncompiled code can be inserted into a running application.
 
 Agent-ready extension contracts, agent identities, provider choice, and
 machine-driven build and distribution workflows are product direction. The
-repository has foundations for the Feluqa CLI, console, module contracts, and
-build-time tooling, but the complete agent workflow, dynamic module lifecycle,
+Feluqa CLI, console, module contracts, and build-time tooling have some
+foundations, but the complete agent workflow, dynamic module lifecycle,
 and companion agent product are not implemented. See [the complementary
-agent project](../../000-prologue/040-feluqa-agent-companion.en.md) for the
+agent project](020-complementary-agent-project.en.md) for the
 proposed relationship between Feluqa and a separate agent product.

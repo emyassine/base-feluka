@@ -17,10 +17,10 @@ author:
 ---
 # Introduction to Feluqa
 
-Feluqa is a sovereign, ultra-fast application platform and runtime for building
-**enterprise backends, standalone workstations, high-stakes operations, lean
+Feluqa is an application platform and runtime built with Rust for
+**enterprise backends, standalone workstations, high-stakes operations,
 tactical units, and defense-adjacent workloads** *(such as ground-side drone
-telemetry, sensor-fusion ingestion, and secure logistics)* with Rust.
+telemetry, sensor-fusion ingestion, and secure logistics)*.
 
 The goal is to share one codebase across web, desktop, mobile, and IoT
 deployments, while adapting each build to its target environment.
@@ -29,13 +29,13 @@ By avoiding heavy runtime overhead and garbage-collection pauses, Feluqa aims
 to bring the performance and control of native software to business
 applications and field systems.
 
-Feluqa is under development. Some foundations exist in the current codebase;
-other capabilities described here are design targets. Each guide marks its
-implementation status so readers can tell the difference.
+Feluqa is under development. Some capabilities are implemented; others
+described here are design targets. Each guide marks its implementation status
+so readers can tell the difference.
 
 | Status | Meaning |
 |--------|---------|
-| **Implemented** | Available in the current codebase and covered by the documented baseline. |
+| **Implemented** | Available in the current Feluqa release and covered by the documented baseline. |
 | **Partial** | Some foundations exist, and the page identifies what is missing. |
 | **Target** | An agreed design that is not yet fully implemented. |
 | **Exploring** | An idea or working proposal that may change. |
@@ -45,7 +45,7 @@ implementation status so readers can tell the difference.
 - [Product and audience](020-product-and-audience.en.md): understand the product
   model, the people who interact with Feluqa, and what the platform provides.
 - [Taxonomy](030-taxonomy.en.md): learn the shared meanings of Application, Platform,
-  SDK, module, product, and other terms.
+  developer kit (SDK), module, product, and other terms.
 - [Architecture overview](040-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
@@ -54,12 +54,9 @@ implementation status so readers can tell the difference.
 
 ## Continue reading
 
-- [Workspaces and packages](../040-directory-structure/020-workspace-levels.en.md):
-  understand how projects and shared code are organized (mostly useful for
-  framework contributors).
 - [Security model](../../030-security/010-authorization-model.en.md): explore
   authorization and isolation.
-- [Install an app on a new server](../070-deployment/010-installing-an-app-with-the-cli.en.md):
+- [Install an app on a new server](../../080-deployment/010-installing-an-app-with-the-cli.en.md):
   follow the deployment workflow.
 - [Roadmap](../../080-roadmap/010-delivery-tracks.en.md): see planned work and
   delivery priorities.

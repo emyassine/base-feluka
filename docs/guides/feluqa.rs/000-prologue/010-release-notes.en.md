@@ -2,7 +2,7 @@
 icon: "scroll-text"
 title: "Release Notes"
 description: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."
-summary: "Explains Feluqa's versioning scheme before and after 1.0, the absence of an announced release cadence or support periods, and how release-specific Rust MSRV requirements should be interpreted. It distinguishes the current 0.2.0 workspace baseline from a published release or verified support promise."
+summary: "Explains Feluqa's versioning scheme before and after 1.0, the absence of an announced release cadence or support periods, and how to interpret release-specific Rust compiler requirements. It distinguishes the current 0.2.0 development version from a published release or support promise."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1
@@ -52,30 +52,28 @@ support dates will be added here once they are established. The table below
 will list published releases; development versions do not imply a support
 commitment.
 
-| Version | Rust requirement | Release | Bug fixes until | Security fixes until |
+| Version | Minimum Rust version | Release | Bug fixes until | Security fixes until |
 | --- | --- | --- | --- | --- |
-| `0.2.0` workspace development baseline | `1.88` | Development version; no release date recorded | Not applicable | Not applicable |
+| `0.2.0` development baseline | `1.88` | Development version; no release date recorded | Not applicable | Not applicable |
 
-The `0.2.0` row describes the current workspace manifest. It is not a
+The `0.2.0` row describes the current development version. It is not a
 published release and carries no support commitment.
 
 ## Rust Version Requirements
 
-Each release entry will state the minimum supported Rust version (MSRV) for
-that release. The MSRV is the minimum compiler version the release promises to
-support; it is not necessarily the latest stable Rust version.
+Each release entry will state its minimum supported Rust version (MSRV). The
+MSRV is the minimum compiler version the release promises to support; it is
+not necessarily the latest stable Rust version.
 
-The workspace currently declares Rust 1.88 as its baseline. This is a manifest
-declaration for the development tree, not a verified release-wide MSRV
-promise. Check package-specific requirements and use the release-specific
-requirement when one is published.
+Feluqa currently uses Rust 1.88 as its development baseline. This value does
+not establish a release-wide MSRV promise. Check package-specific requirements
+and use a release-specific requirement when one is published.
 
 ## Current Development Baseline
 
-The workspace manifest currently sets the exact version `0.2.0` and Rust
-`1.88` as its baseline. This documentation line covers package versions
-`<=1.0.0`. Cargo's package `version` field stores one exact version; a range
-such as `<=1.0.0` belongs in a dependency requirement, not in that field. The
-current version describes the repository's development configuration, not a
-published release or a support commitment. The release cadence, verified
+The current development version is `0.2.0`, with Rust `1.88` as the compiler
+baseline. This documentation line covers package versions `<=1.0.0`. Cargo's
+package `version` field stores one exact version; a range such as `<=1.0.0`
+belongs in a dependency requirement, not in that field. The current version is
+not a published release or a support commitment. The release cadence, verified
 release-wide MSRV, and support periods remain to be established.

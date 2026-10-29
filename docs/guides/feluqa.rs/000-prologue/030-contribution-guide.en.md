@@ -1,8 +1,8 @@
 ---
 icon: "git-pull-request"
 title: "Contribution Guide"
-description: "How to prepare a Feluqa contribution and use the contributor and agent skill guides."
-summary: "Describes how prospective contributors can contact Feluqa, discuss scope and terms, and request monorepo access when needed. It sets expectations for implementation proposals, documentation, validation, and honest status reporting, and explains how the x-agents skills support contributors without replacing repository instructions."
+description: "How to propose a Feluqa contribution and find the guides for working with the Feluqa team."
+summary: "Explains how to propose a contribution through Feluqa's GitHub page, discuss scope and terms with maintainers, and find the core contribution guidance and AI-agent skills."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3
@@ -19,28 +19,25 @@ author:
 
 We welcome contributions and aim to collaborate directly with contributors.
 Start by reaching out through [Feluqa on GitHub](https://github.com/feluqa/),
-describe what you would like to improve, and request access to the private
-monorepo if you need it. A public issues and discussions space for these
-requests is planned and will be linked from the GitHub page when ready.
+describe what you would like to improve, and request the access needed for the
+work. A public issues and discussions space for these requests is planned and
+will be linked from the GitHub page when ready.
 
 Maintainers will work with you on scope and implementation, arrange access,
 and agree the terms for your contribution before incorporating it. Read
 [Build with Feluqa](020-licence.en.md) for the licensing model and contribution
-terms.
+terms. For source-level engineering guidance, see
+[Core Contribution](../800-core-contribution/000.index.en.md).
 
-Organisations interested in building a product or contributing to the Feluqa
-SDK with their own engineering team can also use the contact path above. The
-licence page explains the client-product and internal-team options.
-
-For work authorized under those terms, identify the affected product, crate,
-documentation page, or roadmap item. Read the relevant guide and inspect the
-current implementation before proposing a change. Describe current behavior
-and implementation status accurately; keep unfinished work in the roadmap.
+Organisations interested in building a Product or contributing to Feluqa's
+developer tools (SDK) with their own engineering team can also use the contact
+path above. The licence page explains the client-product and internal-team
+options.
 
 ## Working agreements
 
-- Follow the repository's `AGENTS.md`, Rust coding standard, and documentation
-  voice and tone.
+- Follow the contribution instructions, Rust coding standard, and documentation
+  voice and tone that apply to the work.
 - Keep changes focused on a useful behavior or clear documentation outcome.
 - For Rust changes, use the documented facade APIs and lint policy, handle
   errors explicitly, and include coverage appropriate to the behavior changed.
@@ -49,16 +46,16 @@ and implementation status accurately; keep unfinished work in the roadmap.
 - Run the checks appropriate to the change and report what you ran and any
   existing failures.
 
-The repository's `AGENTS.md` is the authoritative engineering workflow for
-this checkout. These guidelines provide a versioned entry point for
-contributors; update them when the repository workflow changes.
+The source-level engineering rules are collected in the
+[Core Contribution](../800-core-contribution/000.index.en.md) section.
+These published guides provide contributors with an entry point to that work.
 
 ## Skills for AI agents
 
 Feluqa also maintains [`x-agents`](../../x-agents/000.index.en.md), a collection
 of skills for AI agents working with Feluqa. Skills provide reusable,
-task-specific workflows. They supplement repository instructions; they do not
-replace `AGENTS.md`, the coding standard, or the relevant product guides.
+task-specific workflows. They supplement the relevant contribution and
+technical guides; they do not replace the applicable engineering rules.
 
 Human contributors can read the skills as useful references, but do not need
 to install or use agent-specific tooling to contribute.

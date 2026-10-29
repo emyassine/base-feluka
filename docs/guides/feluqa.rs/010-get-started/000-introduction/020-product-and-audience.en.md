@@ -31,7 +31,7 @@ This model aims to make it possible to:
 - offer modules independently and enable features for specific customers;
 - reuse a module in a hosted application or a standalone workstation.
 
-These are product goals; the repository does not yet provide every runtime or
+These are product goals; Feluqa does not yet provide every runtime or
 module lifecycle capability needed to deliver them.
 
 Feluqa products may offer console workflows through more than a conventional
@@ -40,7 +40,7 @@ interface, or provide a terminal inside a graphical desktop application.
 These are distinct product experiences: the first hosts a console interface
 in a desktop window, while the second combines graphical workflows with an
 integrated console. Both are product directions, not capabilities currently
-provided by the repository.
+available in the current release.
 
 ## Who uses Feluqa
 
@@ -54,11 +54,10 @@ users work with the resulting application.
 | **Product builder** | Shapes and develops modules and applications. | The project and its tools, including the Feluqa CLI. |
 | **Operator** | Installs, configures, and runs an application on a server or device. | The CLI and, as it is completed, the built-in System panel. |
 | **End user** | Uses an application. | Its interface on a browser, workstation, phone, or other supported device. |
-| **Framework contributor** | Works on Feluqa itself. | The Feluqa source repository and Rust workspace. |
+| **Feluqa contributor** | Helps improve Feluqa. | The contribution process and, when authorized, the relevant source code. |
 
-You do not need to work on the framework itself to understand or use an
-application built with Feluqa. The framework's repository matters mainly to
-contributors.
+You do not need to contribute to Feluqa itself to understand or use an
+application built with it.
 
 ## Application responsibilities
 

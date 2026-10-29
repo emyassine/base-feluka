@@ -28,7 +28,7 @@ author:
 4. **Context is implicit.** The scanner knows the current module, so you write `Refund`, not `sales.refund`. The full path is still accepted.
 5. **Secure by default.** A write handler without `#[gate]` does not compile.
 6. **One file, one responsibility.** One resource per file. No catch-all `mod.rs` or `admin.rs`.
-7. **One entry point.** The Feluqa SDK exposes a single namespace: `feluqa::ui`, `feluqa::panel`, `feluqa::auth`, `feluqa::resource`. Application code never imports internal `feluqa_*` crates.
+7. **One entry point.** The Feluqa developer kit (SDK) provides a consistent Rust interface for application capabilities such as user interfaces, panels, authentication, and resources.
 8. **Server is the source of truth.** Hiding something in the client is never protection.
 
 ## The pieces and where they run
@@ -40,8 +40,7 @@ author:
 | **Feluqa Platform** | Authentication, access control, audit, configuration, System panel. | Runtime | Server |
 | **Application** | A target-specific program composed of one or more modules. | Runtime | Server, workstation, mobile, or another target |
 
-Most people only ever deal with these four. The internal Feluqa crates that
-implement them are an implementation detail.
+Most people work with these four parts through the application and its tools.
 
 ## From modules to application artifacts
 

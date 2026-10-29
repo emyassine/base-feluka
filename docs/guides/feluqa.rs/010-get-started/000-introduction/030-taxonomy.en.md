@@ -2,7 +2,7 @@
 icon: "list-tree"
 title: "Taxonomy"
 description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
-summary: "Defines Feluqa's canonical distinctions among Products, Applications, Modules, Features, SDK, Platform, workspaces, packages, runtimes, and access-control terms. Examples show how several applications can form one Product and how console interfaces relate to target profiles; the guide also sets naming rules and clarifies that target terminology does not promise completed migrations or features."
+summary: "Defines Feluqa's canonical distinctions among Products, Applications, Modules, Features, developer kit (SDK), Platform, projects, packages, runtimes, and access-control terms. Examples show how several applications can form one Product and how console interfaces relate to target profiles; the guide also sets naming rules and clarifies that target terminology does not promise completed features."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3
@@ -63,12 +63,12 @@ examples, not current Feluqa features.
 | **Feluqa Platform** | The Feluqa-provided runtime and control plane: identity, access control, audit, configuration, and system administration. Its runtime capabilities vary by target profile. |
 | **Platform instance** | One deployed installation of the Feluqa Platform. It administers its own system configuration and hosted application instances. This is the scope of platform-wide administration. |
 | **System Control Panel** | The operator interface for administering a Platform instance and its registered applications and modules. It is a platform product, separate from business application panels. |
-| **Feluqa SDK** | The public Rust APIs and compile-time tools used to define applications and modules. Application code uses the `feluqa` namespace rather than Feluqa's internal crates. |
+| **Feluqa developer kit (SDK)** | The Rust APIs and build tools used to create applications and modules. |
 | **Feluqa CLI** | The command-line product for creating, developing, building, installing, and operating Feluqa projects and artifacts. Each command's implementation status is documented where that workflow is described. |
 | **Project** | The source and configuration used to develop one or more applications and their modules. A project is a developer concept; it is not necessarily one deployable application. |
-| **Workspace** | A Cargo or Feluqa-managed set of related projects and packages. A framework workspace contains Feluqa itself; a product workspace contains application source. |
-| **Crate** | A Rust compilation unit managed by Cargo. A crate may implement part of an application or framework, but a Rust crate is not automatically a Feluqa module. |
-| **Package** | A versioned unit with a manifest and dependency identity. Application packages and module packages have distinct manifests and roles. |
+| **Workspace** | A Cargo-managed set of related Rust packages. A project may use a workspace when it needs more than one package. |
+| **Crate** | A Rust compilation unit. A crate may implement part of an application, but it is not automatically a Feluqa Module. |
+| **Package** | A Rust project unit described by a Cargo manifest. A package can contain a library, an executable, or both. |
 | **Client** | A device or program that accesses an application, such as a browser, workstation, phone, or another service. A client is not a tenant. |
 
 ## Application building blocks

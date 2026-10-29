@@ -2,7 +2,7 @@
 icon: "folder-tree"
 title: "How a Feluqa CLI Is Structured"
 description: "How the CLI binary, Cargo manifest, main.rs, build script, console profile, and command source tree fit together."
-summary: "Explains a Feluqa CLI as a console application with a named binary, Cargo manifest, main.rs entry point, build script, console profile, and command handlers. It uses the Feluqa CLI layout to show how profile command directories and generated registration fit together, why Cargo runs build.rs, and how a command is discovered and invoked."
+summary: "Explains a Feluqa CLI as a console application with a named binary, Cargo manifest, main.rs entry point, build script, console profile, and command handlers. It shows how a project can organize command source, why Cargo runs build.rs, and how a command is discovered and invoked."
 weight: 3
 tags: [feluqa, cli, console, rust]
 date: 2026-10-29
@@ -45,11 +45,6 @@ named `feluqa`; a separate CLI application can choose a name such as
 simple convention here, and the console profile points to whichever source
 folder the project uses.
 
-The Feluqa CLI itself has multiple console profiles and groups related commands
-in nested source folders, such as its `make` commands. That organization suits
-the CLI's larger command set; a small application does not need an extra
-profile directory or a nested `src` folder.
-
 ## The binary and its console entry point
 
 The package manifest declares both the build script and binary:
@@ -91,8 +86,7 @@ code more predictable. See [Program 0: Hello CLI](../060-learning/020-program-0-
 for the library layers and an example using `::core`.
 
 The binary's `main.rs` declares which command profile belongs to it, then
-starts the console dispatcher. This follows the structure used by
-`products/feluqa-cli/src/main.rs`:
+starts the console dispatcher. For example:
 
 ```rust
 #![no_implicit_prelude]

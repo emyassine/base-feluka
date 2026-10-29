@@ -18,8 +18,10 @@ Naming: `[order]-folder/[order]-file.en.md`.
 5. Begin learning Feluqa at
    [`010-get-started/000-introduction/010-introduction.en.md`](010-get-started/000-introduction/010-introduction.en.md),
    then continue through the product model, taxonomy, architecture overview,
-   concepts in `010-get-started/030-concepts/`, and first-project walkthrough in
-   `010-get-started/010-first-projects/`.
+   and the [learning guides](010-get-started/060-learning/010-create-your-first-application.en.md).
+
+Contributors to Feluqa itself can start with the
+[Core Contribution guide](800-core-contribution/000.index.en.md).
 
 AI-agent skills are maintained separately in [`../x-agents/000.index.en.md`](../x-agents/000.index.en.md)
 and are introduced by the Contribution Guide.

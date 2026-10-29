@@ -1,8 +1,8 @@
 ---
 icon: "layers-3"
-title: "Choose an Application Profile"
-description: "Understand the difference between a Feluqa application profile, a console binary, and a Rust compilation target."
-summary: "Distinguishes an Application Profile, the executable binary, and Rust's compilation target, explaining what each choice determines. It describes where the profile choice belongs in Feluqa's project setup and connects the concept to the next getting-started step."
+title: "Application Profiles and Starter Kits"
+description: "Choose an application profile or starter kit when creating a Feluqa application."
+summary: "Explains that a Feluqa starter kit is selected as an application profile when creating an application, using the `feluqa new <app> profile <profile-or-starter-kit>` command shape. It distinguishes the selected profile or starter kit from the executable binary, Rust compilation target, and interaction surface, and marks tooling that is not yet available."
 weight: 6
 tags: [feluqa, getting-started, profiles, targets]
 date: 2026-10-29
@@ -15,7 +15,20 @@ author:
   linkedin: "https://www.linkedin.com/in/elmoumenyassine"
   email: "yassine@numerimondes.com"
 ---
-# Choose an Application Profile
+# Application Profiles and Starter Kits
+
+A starter kit is an application profile selected when creating a new
+application. The command shape is:
+
+```text
+feluqa new <app> profile <profile-or-starter-kit>
+```
+
+Here, `<app>` names the new application and the final argument selects the
+profile or starter kit that provides its initial structure and configuration.
+The available profiles and starter kits depend on what Feluqa provides.
+This command workflow is planned; the current CLI syntax is documented with
+the commands that are available today.
 
 When you create an application, three related choices may appear: what kind
 of application you are building, which executable starts it, and which
@@ -58,7 +71,7 @@ directions; they are not currently available in Feluqa.
 
 ## Where should the choice live?
 
-Declare the application's supported profiles in Feluqa project configuration
+Declare the application's supported profiles through Feluqa project configuration
 when that configuration is available. Keep the Rust compilation target in
 the Cargo build workflow. A build script may read project settings, validate
 them, or generate code, but it should not be the only place that declares
