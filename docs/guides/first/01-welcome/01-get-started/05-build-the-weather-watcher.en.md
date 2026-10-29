@@ -37,16 +37,16 @@ configuration and notification path have been verified.
 
 ## Run it locally
 
-For an application shape supported by the current CLI, the available workflow
-is:
+For an application shape supported by the current CLI, the available workflow is:
 
-```sh
+```bash
 feluqa new weather-watch --profile web
 cd weather-watch
 feluqa dev
 ```
 
 This creates a web application, not the CLI weather service described above.
+
 The project chooser and a CLI application profile need to land before the
 weather watcher can be followed end to end with Feluqa commands.
 
@@ -62,4 +62,3 @@ rather than available commands.
 ## Previous step
 
 Start with [Program 0: Hello CLI](04-program-0-hello-cli.en.md).
-
