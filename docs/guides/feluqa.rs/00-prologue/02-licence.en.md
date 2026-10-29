@@ -70,19 +70,60 @@ be incorporated into Feluqa. Use the
 [Contribution Guide](03-contribution-guide.en.md) for the repository workflow,
 and contact NUMERIMONDES to discuss contribution terms first.
 
-## Company identification
+## Legal Overview
 
-The following company details are provided for identifying the owner and
-service provider of Feluqa:
+Official identifiers, registered purpose, and company documents for
+Numerimondes SARL AU.
 
-| Field | Details |
+### Legal Identity
+
+| | |
 |---|---|
-| Service provider / network operator | NUMERIMONDES SARL AU |
-| Representative | Yassine EL MOUMEN, Founder and Manager |
-| Status | Single-member limited company (SARL AU); share capital: 100,000 MAD (approximately €10,000) |
-| Address | 10 Rue de la Liberté, 3rd floor, apartment 5, Belvédère, Casablanca, Morocco |
-| Identifier | ICE 003396233000077 |
+| **Registered name** | Numerimondes SARL AU |
+| **Legal form** | SARL AU (single-shareholder limited company) |
+| **Patente** | Conseil en gestion (management consulting) |
+| **Headquarters** | 10 Rue de la Liberté, 3rd floor, apt. 5, Casablanca |
+| **Founder & Manager** | Yassine El Moumen |
+| **RC** | 152844 |
+| **ICE** | 003396233000077 |
+| **CNSS** | 5174227 |
+| **Email** | contact@numerimondes.com |
+| **Phone** | +212 6 20 99 06 92 |
 
-These details identify the company associated with Feluqa. The repository's
-[`LICENSE`](../../../../LICENSE) remains the source for the software licence
-terms.
+### Registered Purpose (*Objet Social*)
+
+The text below is taken verbatim from the company's statutes (*statuts de la
+société*). It is the legal purpose registered with Moroccan authorities—not
+a marketing summary.
+
+Day-to-day positioning and services are available on
+[numerimondes.com](https://numerimondes.com).
+
+**Patente:** management consulting.
+
+The Company has for its purpose, in Morocco and abroad, for its own account as
+well as for the account of third parties:
+
+- Commercial development consulting;
+- Information systems consulting and software development;
+- Information technology consulting and digital transformation;
+- Digital marketing consulting;
+- Consulting, control, and audit in security, safety, and cybersecurity;
+- E-learning and training; organisation of turnkey seminars, conferences,
+  and modular training programmes; in-company training and pedagogical
+  engineering;
+- Management and operation of telephone contact centres;
+- Recruitment, human-resources strategy consulting, career development, and
+  skills evaluation;
+- Representation and exploitation of all patents, trademarks, or licences
+  for IT and industrial products, accessories, and solutions;
+- Purchase, import, sale, and export of all IT equipment and materials;
+  management, installation, fit-out, and operation of any commercial or
+  industrial unit suited to the activities listed above.
+
+And more generally, all commercial, industrial, financial, movable, and
+real-estate operations related directly or indirectly to the above purposes,
+or likely to favour their achievement and development.
+
+The repository's [`LICENSE`](../../../../LICENSE) remains the source for
+Feluqa's software licence terms.
