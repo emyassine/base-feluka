@@ -18,8 +18,9 @@ author:
 # Create Your First Application
 
 > **Exploring.** This page describes the intended beginner journey. The
-> interactive project chooser, `feluqa dev:init`, CLI application scaffold, and
-> service packaging described below are not implemented yet. Today,
+> interactive project chooser, setup automation in `feluqa dev:init`, CLI
+> application scaffold, and service packaging described below are not
+> implemented yet. Today,
 > `feluqa new <name> --profile web` creates the available web application
 > scaffold, and `feluqa dev` watches and runs a development application.
 
@@ -27,6 +28,33 @@ The first project should answer a useful question from a terminal, then grow
 into a service that can notify someone when conditions change. The walkthrough
 will build a weather watcher in small steps so each stage can be run and
 understood on its own.
+
+## Feluqa command format
+
+A Feluqa command has a binary name, a command namespace, optional positional
+arguments, and optional flags or options:
+
+```text
+<binary> <principal-namespace[:sub-namespace...]> [<argument> ...] [<option> ...]
+```
+
+- **Binary** selects the executable, usually `feluqa`.
+- **Namespace** names the requested operation. A colon separates nested command
+  namespaces, such as `dev:init` or `support:ide`.
+- **Arguments** provide required values or identify an object, such as `zed`.
+- **Options** change the operation or provide named values, such as
+  `--profile web`; a flag is an option that needs no value.
+
+For example, `feluqa support:ide zed` means “run the IDE support command for
+Zed.” The command routes to its Feluqa handler, which performs validation and
+the relevant setup work. `feluqa dev:init` routes to the development setup
+handler, which selects and prepares the toolchain for the current project.
+
+**This is the target syntax for new namespaced commands.** The current CLI has
+some space-separated command groups, such as `feluqa make resource`; those
+commands have not yet been normalized to the target syntax. The command
+interface is still being shaped, so the CLI can adopt a consistent namespace
+form without preserving old command spellings for backward compatibility.
 
 ## 1. Choose what you are building
 
@@ -46,12 +74,65 @@ local protocol; one application does not depend on the other's executable.
 
 ## 2. Prepare the development environment
 
-The proposed `feluqa dev:init` command checks for Rust and the Feluqa CLI,
-reports missing system dependencies, and offers platform-specific setup steps.
-It should explain each action and let the developer choose what to install.
-The command and its setup recipes remain planned.
+The interactive `feluqa dev:init` command is intended to prepare the machine
+for the application and target profiles selected in the previous step. It will
+inspect the host, identify the required tools, install missing supported
+dependencies, and verify the result. It should avoid installing tools for
+targets the project does not use.
 
-## 3. Build the weather watcher
+Depending on the selected application, setup may include:
+
+- **Rust.** Install Rust with `rustup` when needed and select the stable
+  toolchain. Install only the target triples required by the selected builds;
+  for example, a browser WebAssembly build may need
+  `wasm32-unknown-unknown`.
+- **Feluqa tooling.** Install or locate the Feluqa CLI and verify that it can
+  create and build the selected application type.
+- **Host dependencies.** Detect and install operating-system packages needed
+  by the selected runtimes. A command-line or server project should not install
+  graphical desktop libraries. Native desktop targets may need a platform UI
+  toolkit; mobile targets require their platform SDKs and build tools.
+- **Platform-specific setup.** On macOS, iOS builds require Apple's Xcode and
+  SDKs. Android builds require the Android SDK and NDK. Linux and Windows
+  desktop builds may need additional native libraries or toolchains. WSL setup
+  depends on whether the selected target needs Linux graphics or device access.
+
+`dev:init` should finish with a clear report of installed tools, selected Rust
+targets, and any requirement that still needs a manual step, such as accepting
+a platform SDK license. A developer can then build and run a minimal project
+before adding application code.
+
+The stable Rust compiler is the expected default. If Rust is already managed
+with `rustup`, the equivalent setup includes commands such as:
+
+```sh
+rustup toolchain install stable
+rustup target add wasm32-unknown-unknown  # only when the selected build needs it
+```
+
+The [Rust Book](https://doc.rust-lang.org/book/) is a useful way to learn Rust.
+It is recommended background, not a prerequisite for trying the first Feluqa
+project. The walkthrough introduces Rust concepts as they appear and keeps
+async code, lifetimes, and ownership details tied to the examples that need
+them.
+
+## 3. Pick an editor
+
+**Zed is the recommended editor for Feluqa projects.** It is fast, has built-in
+Rust Analyzer support, and can use Feluqa's editor extension for `.view.rs`
+templates. The extension provides template highlighting and Rust injections;
+Rust Analyzer provides Rust navigation and analysis, while the Feluqa build
+reports template compiler errors.
+
+The Feluqa Zed extension is not yet available through a user-facing install
+channel. The planned CLI command is `feluqa support:ide zed`; both the
+command and extension distribution still need to be implemented. Until then,
+Zed's Rust support is available, while Feluqa-specific `.view.rs` highlighting
+is not available to application users. Other editors such as VS Code, Emacs,
+and Vim can be used with Rust Analyzer; `.view.rs` support depends on an editor
+extension being available for that editor.
+
+## 4. Build the weather watcher
 
 The tutorial will develop the example in stages:
 
@@ -71,7 +152,7 @@ a Linux service with a `systemd` unit, restart behavior, a dedicated service
 account, and an operator guide. The service should start only after its
 configuration and notification path have been verified.
 
-## 4. Run it locally
+## 5. Run it locally
 
 For an application shape supported by the current CLI, the available workflow
 is:
@@ -89,8 +170,8 @@ weather watcher can be followed end to end with Feluqa commands.
 ## When the walkthrough is ready
 
 The guide can become a runnable tutorial once Feluqa supports an interactive
-application-type chooser, environment preflight, a CLI application scaffold,
-local configuration for external services, and a documented Linux service
-package. The server-plus-workstation option also needs a clear shared-module
-and API example. Until then, these steps are product direction rather than
-available commands.
+application-type chooser, environment setup and verification, a CLI application
+scaffold, local configuration for external services, and a documented Linux
+service package. The server-plus-workstation option also needs a clear
+shared-module and API example. Until then, these steps are product direction
+rather than available commands.
