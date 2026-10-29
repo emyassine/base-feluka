@@ -33,8 +33,10 @@ identity, access control, audit, and configuration; it is distinct from a
 customer's Product.
 
 Both the SDK and Platform are proprietary software owned by NUMERIMONDES SARL
-AU. Proprietary describes ownership; it does not take away the guaranteed
-right to create Applications and use the Products built with them.
+AU. Proprietary describes ownership; it does not take away your guaranteed
+right to create Applications and use the Products built with them, or your
+right to contribute to Feluqa and help others build with it through the
+collaboration process.
 
 The applicable terms distinguish rights to Feluqa's SDK and Platform
 components from rights in a Product, its Applications and Modules, and
