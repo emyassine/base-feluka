@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto'
 import { promisify } from 'node:util'
 
 const siteDirectory = dirname(fileURLToPath(import.meta.url))
-const config = JSON.parse(await readFile(join(siteDirectory, 'config-vitepress-site.json'), 'utf8'))
+const config = JSON.parse(await readFile(join(siteDirectory, 'vitepress.site.config.json'), 'utf8'))
 const outputDirectory = join(siteDirectory, '.generated-guides')
 const records = []
 const routeMap = new Map()

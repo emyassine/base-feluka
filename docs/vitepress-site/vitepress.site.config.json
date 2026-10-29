@@ -1,0 +1,37 @@
+{
+  "site": { "name": "Feluqa", "description": "Feluqa Documentation" },
+  "guidesPath": "../guides",
+  "indexPath": "../guides/index.en.md",
+  "outputDir": "../build",
+  "subguides": [
+    { "path": "feluqa.rs", "label": "Feluqa" },
+    { "path": "x-agents", "label": "AI agent guides" }
+  ],
+  "languages": ["en"],
+  "search": {
+    "labels": {
+      "root": {
+        "buttonText": "Search",
+        "buttonAriaLabel": "Search documentation",
+        "displayDetails": "Display detailed list",
+        "resetButtonTitle": "Reset search",
+        "backButtonTitle": "Close search",
+        "noResultsText": "No results",
+        "selectText": "Select",
+        "selectKeyAriaLabel": "Enter",
+        "navigateText": "Navigate",
+        "navigateUpKeyAriaLabel": "Arrow up",
+        "navigateDownKeyAriaLabel": "Arrow down",
+        "closeText": "Close",
+        "closeKeyAriaLabel": "Escape"
+      }
+    }
+  },
+  "outline": { "labels": { "en": "On this page" } },
+  "footer": {
+    "en": {
+      "message": "Feluqa documentation",
+      "copyright": "Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+    }
+  }
+}
