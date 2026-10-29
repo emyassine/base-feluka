@@ -27,5 +27,3 @@ features:
     title: Contribute to Feluqa
     details: Read the workspace, runtime, compilation, and contributor guides.
 ---
-
-Choose a guide collection from the navigation to get started.
