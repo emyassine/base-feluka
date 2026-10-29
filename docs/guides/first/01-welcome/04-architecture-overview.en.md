@@ -1,7 +1,7 @@
 ---
 icon: "network"
 title: "Architecture Overview"
-description: "How the Feluqa SDK, CLI, artifacts, Platform, App and clients fit together, how modules become products, and what is generated at compile time."
+description: "How the Feluqa SDK, CLI, artifacts, Platform, Applications, and clients fit together, and what is generated at compile time."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 4
@@ -20,9 +20,9 @@ author:
 
 ## Principles
 
-1. **Modules are products.** A module is self-contained, versioned and
-   shippable on its own or combined with others. Everything below serves that
-   idea.
+1. **Products compose applications; applications compose modules.** A product
+   is the solution people use. An application is a deployable program for one
+   target role. Modules provide reusable business capabilities inside it.
 2. **Write only business logic.** Routes, permissions, sidebar, SDUI schemas, manifests and configuration files are generated at compile time.
 3. **No manual registry, no magic strings.** Everything is declared with attributes (`#[panel]`, `#[resource]`, `#[permissions]`, `#[gate]`, ...) and collected by the compile-time scanner.
 4. **Context is implicit.** The scanner knows the current module, so you write `Refund`, not `sales.refund`. The full path is still accepted.
@@ -35,19 +35,19 @@ author:
 
 | Piece | Role | When it matters | Where it runs |
 | --- | --- | --- | --- |
-| **Feluqa SDK** | The library you build with: attributes, the compile-time scanner, the single `feluqa` namespace. | While you write and compile | Developer machine, linked into the App |
+| **Feluqa SDK** | The library you build with: attributes, the compile-time scanner, the single `feluqa` namespace. | While you write and compile | Developer machine, linked into the Application |
 | **Feluqa CLI** | Creates, validates, builds, installs and operates projects. | Development and operations | Developer machine and servers |
 | **Feluqa Platform** | Authentication, access control, audit, configuration, System panel. | Runtime | Server |
-| **Feluqa App** | An application made of one or more modules. | Runtime | Client, or server in hosted mode |
+| **Application** | A target-specific program composed of one or more modules. | Runtime | Server, workstation, mobile, or another target |
 
 Most people only ever deal with these four. The internal Feluqa crates that
 implement them are an implementation detail.
 
-## From module to deployed product
+## From modules to application artifacts
 
-A module is the unit of product thinking. A Product assembles modules, the
-build turns it into a signed artifact, and the CLI installs that artifact on
-the right target.
+A Product can provide several Applications for different target roles. Each
+Application composes the modules it needs; each target build produces an
+artifact for that Application and target profile.
 
 ```mermaid
 flowchart LR
@@ -60,9 +60,9 @@ flowchart LR
             M2["Inventory"]
             M3["Telemetry"]
         end
-        PROD["Product<br/>assembled from modules"]
+        APP_BUILD["Application<br/>for one target role"]
         SDK --> MODS
-        MODS --> PROD
+        MODS --> APP_BUILD
     end
 
     ART[("Signed artifact<br/>versioned · installable")]
@@ -73,7 +73,7 @@ flowchart LR
         subgraph SRV["Server"]
             direction LR
             PL["Feluqa Platform"]
-            APP["Feluqa App"]
+            APP["Application instance"]
             PL --- APP
         end
         INST --> SRV
@@ -81,7 +81,7 @@ flowchart LR
 
     CL["Clients<br/>browser · workstation · mobile · ground station"]
 
-    PROD -->|"build"| ART
+    APP_BUILD -->|"target build"| ART
     ART --> INST
     SRV -->|"HTTP"| CL
 
@@ -93,7 +93,7 @@ flowchart LR
 
     class SDK sdk
     class M1,M2,M3 module
-    class PROD product
+    class APP_BUILD product
     class ART artifact
     class INST,PL,APP,CL runtime
 ```
@@ -111,7 +111,7 @@ flowchart LR
     D --> E
     E --> F[("Signed artifact")]
     F --> G["feluqa install"]
-    G --> H["Server<br/>Platform + App + System panel"]
+    G --> H["Platform instance<br/>Application instance + System Control Panel"]
     H --> I["Clients over HTTP"]
 
     classDef step fill:#f5f3ff,color:#312e81,stroke:#8b5cf6
@@ -174,7 +174,7 @@ Generated into `target/feluqa/`, never edited and never committed:
 - configuration schemas and `.env.example`;
 - reference documentation.
 
-`feluqa.toml` (product) and `module.toml` (module) remain valid contexts but are now simple markers written once by `feluqa new` or `feluqa make:module`. Their content is derived from attributes and `Cargo.toml`.
+`feluqa.toml` (application) and `module.toml` (module) are build contexts. The current CLI creates the application manifest with `feluqa new`; module generation remains a separate capability.
 
 ## Target profiles
 
@@ -184,7 +184,7 @@ Generated into `target/feluqa/`, never edited and never committed:
 | `workstation` | Standalone local app on a desktop | SQLite in the user data directory | Target |
 | `embedded` (`no_std`) | Telemetry, sensor ingestion | Minimal or none | Exploring |
 
-A module is written once and a target profile decides what each build includes. See [web and workstation modules](../08-roadmap/01-delivery-tracks.en.md) (track F9) for how one module serves both server and workstation products.
+Shared modules can be included in separate Applications built for different target profiles. See [web and workstation modules](../08-roadmap/01-delivery-tracks.en.md) (track F9) for the planned server and workstation composition and connectivity design.
 
 ## Platform capabilities
 

@@ -1,7 +1,7 @@
 ---
 icon: "badge-check"
 title: "Privilege Levels"
-description: "Platform-wide privilege levels (app-owner, super-admin, sysadmin, staff) with internal and external origins, rank rules and delegation limits."
+description: "Platform-wide privilege levels (platform-owner, super-admin, sysadmin, staff) with internal and external origins, rank rules and delegation limits."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 2
@@ -20,7 +20,7 @@ author:
 
 ## Scope
 
-Privilege levels govern **platform-level access only**:
+Privilege levels govern administration of one **Platform instance only**:
 
 - who can manage the platform itself (settings, modules, licensing, billing);
 - who can configure or administer the instance.
@@ -38,18 +38,18 @@ Each level exists in two **origins**:
 
 | Level | Rank | Internal | External | Description |
 | --- | --- | --- | --- | --- |
-| `app-owner` | 60 | yes | **never** | Ultimate authority over the instance. One per instance. |
+| `platform-owner` | 60 | yes | **never** | Ultimate authority over this Platform instance. One per instance. |
 | `super-admin` | 50 | `super-admin` | `external-super-admin` | Full administrative access to platform features and modules. |
 | `sysadmin` | 40 | `sysadmin` | `external-sysadmin` | Infrastructure, integrations and system configuration. |
 | `staff` | 30 | `staff` | `external-staff` | Platform team member whose permissions come from assigned roles. |
 
-`staff` replaces any earlier "member" term. **Member** is reserved for module-level end-user concepts.
+`staff` is a platform administration level. **Member** is reserved for application-level end-user concepts. Platform privileges do not grant application permissions.
 
 ## Rank versus origin
 
 - **Rank** is the hierarchy weight. It is identical for internal and external variants at the same level: a super-admin is a super-admin.
-- **Origin** is a separate attribute. The application owner uses it to control visibility, feature access and UI, for example hiding financial modules from external users.
-- `app-owner` has no external equivalent.
+- **Origin** is a separate attribute. Platform policy can use it to control administrative visibility and access, for example limiting external operators to assigned system tasks.
+- `platform-owner` has no external equivalent.
 
 ## API sketch
 
@@ -86,9 +86,9 @@ pub async fn uninstall_module(ctx: &Ctx, id: ModuleId) -> Result<()> { /* ... */
 
 | Rule | Reason |
 | --- | --- |
-| Only an `app-owner` can create or transfer `app-owner`. | There is exactly one owner. |
+| Only the `platform-owner` can create or transfer the `platform-owner` privilege. | There is exactly one owner. |
 | A user can assign only levels **strictly below** their own. | Prevents privilege escalation. |
-| An external user can never be assigned `app-owner`. | Ownership is internal by definition. |
+| An external user can never be assigned `platform-owner`. | Ownership is internal by definition. |
 | Changing a user's privilege requires re-authentication. | Protects against hijacked sessions. |
 | Privilege changes are audited with actor, target, before and after. | Accountability. |
 | Privilege level never grants module permissions by itself. | Avoids implicit super-powers; the exception is platform permissions explicitly mapped to a level. |

@@ -44,11 +44,13 @@ implementation status so readers can tell the difference.
 
 - [Product and audience](02-product-and-audience.en.md): understand the product
   model, the people who interact with Feluqa, and what the platform provides.
-- [Taxonomy](03-taxonomy.en.md): learn the shared meanings of App, Platform,
+- [Taxonomy](03-taxonomy.en.md): learn the shared meanings of Application, Platform,
   SDK, module, product, and other terms.
 - [Architecture overview](04-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
+- [Create your first application](05-create-your-first-application.en.md): see
+  the planned path from project setup to a useful running application.
 
 ## Continue reading
 

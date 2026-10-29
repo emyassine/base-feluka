@@ -17,9 +17,9 @@ Feluqa is **one proprietary ecosystem and one namespace** across web, SPAs, mobi
 
 - Tooling, schemas and libraries are **shared**.
 - Runtimes keep **separate target profiles**, because latency, memory, scheduling and standard-library constraints (`std` vs `no_std`) differ per environment.
-- Feluqa is the **installed platform**. Developers build installable **Feluqa Modules** against it. Operators manage those modules per domain through the built-in **System Panel**.
-- A product source may be one module, or compose several business domains into one installable module.
-- The module/package boundary is explicit. A Rust `mod` is only a language namespace; it is not a product boundary.
+- Feluqa provides the **Platform runtime and control plane**. Developers compose **Applications** from reusable **Modules**. Operators manage a Platform instance and its application instances through the built-in **System Control Panel**.
+- A **Product** is the business solution offered to an organization or user. It may include a server Application and one or more client or workstation Applications that share Modules and communicate through explicit APIs.
+- The module/application boundary is explicit. A Rust `mod` is only a language namespace; it is not automatically a Feluqa Module.
 - The **server profile is the first delivery priority**.
 - Dynamic module installation, license enforcement and domain-scoped activation are `[Target]` capabilities, not delivered guarantees.
 
@@ -73,15 +73,26 @@ feluqa deploy --module ./billing --domain billing.example.com
 
 ---
 
-## 3. Platform vs. module model
+## 3. Product and runtime boundaries
+
+These terms are distinct and must not be used as synonyms:
 
 | Concept | Meaning | Owner |
 | :-- | :-- | :-- |
-| **Platform** | Host runtime + services (auth, DB, live, notifications, imagery, UI engine, System Panel) | Feluqa |
-| **Module** | Installable unit of business capability, authored against the SDK | Developer / agent |
-| **Domain** | A tenant-like scope (organisation, site, workspace) in which modules are activated | Operator |
-| **Target profile** | A runtime environment with fixed constraints (server, web, desktop, mobile, embedded) | Feluqa |
-| **Shell** | Native OS wrapper around the headless UI core (SwiftUI, Compose, GTK, Qt, …) | Feluqa |
+| **Product** | A business solution offered to an organization or user; it may include several applications for different target profiles. | Product organization |
+| **Application** | A deployable program for one execution role, such as server or workstation, composed from one or more modules. A product can include multiple applications. | Developer / agent |
+| **Module** | A reusable unit of business capability included in an application. It declares its identity, dependencies, capabilities and permissions. It is not itself a Product or Application. | Developer / agent |
+| **Platform** | Feluqa-provided runtime and control plane for identity, access control, audit, configuration, and application hosting. | Feluqa |
+| **Platform instance** | One deployed Feluqa installation with its own operators, configuration, system services, and hosted application instances. | Operator |
+| **Application instance** | One running deployment of an Application with its own configuration and data. | Operator |
+| **Tenant** | An organization or isolated customer scope inside an Application instance. | Operator |
+| **Target profile** | A runtime environment with fixed constraints (server, workstation, mobile, embedded). | Feluqa |
+| **Shell** | Native OS wrapper around the headless UI core (SwiftUI, Compose, GTK, Qt, …). | Feluqa |
+
+Platform-wide privilege is scoped to a Platform instance. The target name for
+its highest authority is `platform-owner`; business permissions remain
+application-scoped. This terminology replaces the ambiguous `app-owner` name;
+the project does not preserve that name for backward compatibility.
 
 **Lifecycle `[Target]`:** author → package (manifest + artifact) → sign → publish to registry → operator installs → license checked → activated per domain → observed → upgraded / rolled back.
 

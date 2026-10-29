@@ -1,7 +1,7 @@
 ---
 icon: "server"
-title: "Installing a Feluqa App on a New Server with the CLI"
-description: "How feluqa-cli prepares a fresh server, verifies and installs a signed Feluqa App, bootstraps the app owner, and sets up privileges, roles, permissions and the built-in System panel."
+title: "Installing a Feluqa Application on a New Server with the CLI"
+description: "How feluqa-cli prepares a fresh server, verifies and installs a signed Feluqa Application, bootstraps the platform owner, and sets up privileges, roles, permissions and the built-in System Control Panel."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 1
@@ -16,7 +16,7 @@ author:
   email: "yassine@numerimondes.com"
 ---
 
-# Installing a Feluqa App on a New Server with the CLI
+# Installing a Feluqa Application on a New Server with the CLI
 
 > **Target design.** The command names and flags below are the proposed contract for track F6 (CLI and deployment) and F7 (installable module lifecycle). They are not all implemented.
 
@@ -31,7 +31,7 @@ feluqa server init --profile production
 # 2. Install the app artifact
 feluqa install ./inventory-1.4.0.feluqa --domain erp.example.com
 
-# 3. Bootstrap the first app owner (prints a one-time setup link)
+# 3. Bootstrap the first platform owner (prints a one-time setup link)
 feluqa admin bootstrap
 ```
 
@@ -67,7 +67,7 @@ sequenceDiagram
     Op->>CLI: feluqa admin bootstrap
     CLI-->>Op: one-time setup token (short-lived)
     Op->>SP: open /system/setup with token
-    SP->>DB: create app-owner, force credentials and re-auth
+    SP->>DB: create platform-owner, force credentials and re-auth
     SP-->>Op: System panel ready
 ```
 
@@ -92,11 +92,11 @@ sequenceDiagram
 | Permissions | The scanner (compile time), registered at install | Appear in the System panel, never seeded manually |
 | Baseline roles | Generated per module (`viewer`, `editor`, `manager`) | Assignable immediately |
 | Declared roles | `#[roles]` in code | Read-only, clonable |
-| Privilege levels | Built in | `app-owner` created once through the bootstrap token |
+| Privilege levels | Built in | `platform-owner` created once through the bootstrap token |
 | Access Control resource | Injected into every panel | Authorized users can create roles |
 | System panel | Built in | `/system`, gated by privilege level |
 
-The first account is **always** the `app-owner` and is internal. The owner then creates `super-admin` and other accounts, marking contractors as **external**.
+The first account is **always** the `platform-owner` and is internal. The owner then creates `super-admin` and other accounts, marking contractors as **external**.
 
 ## Operations after install
 

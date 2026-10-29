@@ -18,19 +18,19 @@ author:
 
 # Authorization Model
 
-Feluqa separates **who you are on the platform**, **what you may do in a module** and **what you may do to this specific record**. Each question has its own layer.
+Feluqa separates **who may administer a Platform instance**, **what an account may do in an application**, and **what it may do to a specific record**. Each question has its own layer.
 
 | Layer | Question | Scope | Defined by |
 | --- | --- | --- | --- |
-| **Privilege level** | How powerful is this account on the platform? | Platform instance | Built-in enum |
-| **Role** | Which bundle of permissions does this user hold? | Module, submodule | `#[roles]` and the Access Control resource |
-| **Permission** | Is this capability allowed? | Module, submodule, resource | `#[permissions]` and `#[resource]` |
+| **Privilege level** | How much platform administration may this account perform? | One Platform instance | Built-in platform policy |
+| **Application role** | Which bundle of application permissions does this account hold? | Application and tenant | `#[roles]` and the Access Control resource |
+| **Permission** | Is this application capability allowed? | Module, submodule, resource | `#[permissions]` and `#[resource]` |
 | **Policy** | Is it allowed on *this* record? | Single record | `#[policy]` |
 | **Gate** | Where is all of this enforced? | Function, handler, action | `#[gate]` |
 
 ## Decision pipeline
 
-Every protected call goes through the same ordered checks. **All must pass (AND).** Any failure produces a denial and an audit entry.
+Every protected call goes through the relevant ordered checks. **All required checks must pass (AND).** A platform privilege applies only to System Control Panel operations; application roles and permissions govern business operations. A platform rank does not grant application permissions. Any failure produces a denial and an audit entry.
 
 ```mermaid
 flowchart TD

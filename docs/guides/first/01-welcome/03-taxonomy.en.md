@@ -1,7 +1,7 @@
 ---
 icon: "list-tree"
 title: "Taxonomy"
-description: "The shared vocabulary of Feluqa: SDK, Platform, app, client, CLI, modules, submodules, features, panels, privileges, roles and permissions."
+description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 3
@@ -17,147 +17,114 @@ author:
 ---
 # Taxonomy
 
-This is the first page to read. Each term below has **one meaning, everywhere**
-in the Feluqa documentation.
+These terms describe different boundaries in Feluqa. **Product** names the
+solution people use. **Application** names a deployable program. **Module**
+names a reusable unit of business capability included in an application.
+They are related, but they are not interchangeable.
 
-If you only remember one thing: the **SDK** is what you build with, the
-**Platform** is what runs on the server, the **App** is what you ship, and the
-**CLI** builds, installs and operates all of it.
+## Product and runtime boundaries
 
-## Building blocks
+| Term | Meaning |
+|------|---------|
+| **Product** | A solution offered to an organization or user, such as a bookstore system. A product may include several applications for different targets and user experiences. It is a business and packaging concept, not a runtime process. |
+| **Application** | A Feluqa program composed for a particular execution role, such as a server application or a workstation application. It is built from one or more modules and produces target-specific artifacts. “App” is only an informal shortening of Application; it does not name a separate concept. |
+| **Module** | A named unit of business capability, such as sales, inventory, or telemetry. An application includes one or more modules. Modules declare their own capabilities, permissions, configuration, and dependencies. A module is not itself an application or a product. |
+| **Feature** | An optional capability within a module or application, enabled according to product configuration, license, or tenant policy. |
+| **Target profile** | The constraints and runtime shape for a build, such as server, workstation, mobile, or embedded `no_std`. Separate target profiles may produce separate application artifacts from shared modules. |
+| **Artifact** | A versioned build output for one application and target profile. Signing, installation, and dynamic module installation are target capabilities; they are not all implemented today. |
+| **Application instance** | A running deployment of an application, with its own configuration, data, identity, and lifecycle. Multiple instances may serve different organizations or environments. |
+| **Tenant** | An organization or isolated customer scope inside an application instance. A tenant is data and authorization context, not a device or a separate application. |
 
-| Term | What it is | Where it lives |
-|------|------------|----------------|
-| **Feluqa SDK** | The library you build with. A single `feluqa` entry point (`feluqa::ui`, `feluqa::panel`, `feluqa::auth`, `feluqa::resource`), the attributes (`#[panel]`, `#[resource]`, `#[gate]`, ...) and the compile-time scanner. Linked into your App at build time. | Developer machine (as a dependency) |
-| **Feluqa Platform** | The server-side runtime and control plane: authentication, schema management, access control, audit, configuration and the System panel. The same for everyone. | Server |
-| **Feluqa App** | An application built with the SDK. It is installed and run on the client machine (or on a server, in hosted mode). | Client or server |
-| **Client** | The machine or device on which a Feluqa App runs or from which it is used: a workstation, a mobile device, a ground station, or a browser connecting to a hosted app. | End-user side |
-| **Feluqa CLI** | The command-line tool that creates, validates, builds, installs and operates projects, modules and apps. | Developer machine and servers |
-| **Module** | A unit of business functionality developed with Feluqa, for example `sales`. A module is treated as a **product in its own right**: it has its own id (its folder name), version, permissions and features, and can be shipped alone or combined with others. | Developer workspace |
-| **Product** | A deployable application assembled from one or more modules. Marked by a `feluqa.toml`. | Developer workspace |
-| **Submodule** | A sub-domain nested inside a module, for example `sales/invoicing`. | Inside a module |
-| **Feature** | A switchable capability of a module or submodule, for example `loyalty`. Can be enabled per license or tenant. | Inside a module |
-| **Target profile** | A deployment shape: `no_std` embedded, workstation, or server. | Build time |
-| **Artifact** | The signed, versioned, installable output of a build. | Release channel |
+### Example: one product, two applications
 
-## Internal terms
+A bookstore product might contain a **server application** and a **workstation
+application**. Both can include shared catalog and inventory modules. The
+workstation communicates with the server through a defined API when connected;
+neither application needs to compile against the other's executable. A
+standalone workstation deployment can use its own local storage and defined
+synchronization behavior when that capability is implemented.
 
-These matter mostly to people who work on Feluqa itself. If you build products
-on Feluqa, you can skip this table.
+## Feluqa components
 
-| Term | What it is | Where it lives |
-|------|------------|----------------|
-| **Crate** | The standard Rust unit of compilation and distribution, built by Cargo. | Anywhere Rust is built |
-| **Feluqa crate** | A crate of the framework itself, for example `feluqa-core`. Internal building blocks shared by the SDK and the Platform. Application code reaches them through the SDK, never directly. | Feluqa source workspace |
-| **Package** | Umbrella term for a Feluqa crate or a module. Every package has a `feluqa.toml`. | Both |
-| **Workspace** | A repository root identified by `.feluqa/workspace.toml`. Either `framework` (for contributors working on Feluqa itself) or `developer` (for product builders). Most users only ever see a developer workspace. | Repository root |
+| Term | Meaning |
+|------|---------|
+| **Feluqa Platform** | The Feluqa-provided runtime and control plane: identity, access control, audit, configuration, and system administration. Its runtime capabilities vary by target profile. |
+| **Platform instance** | One deployed installation of the Feluqa Platform. It administers its own system configuration and hosted application instances. This is the scope of platform-wide administration. |
+| **System Control Panel** | The operator interface for administering a Platform instance and its registered applications and modules. It is a platform product, separate from business application panels. |
+| **Feluqa SDK** | The public Rust APIs and compile-time tools used to define applications and modules. Application code uses the `feluqa` namespace rather than Feluqa's internal crates. |
+| **Feluqa CLI** | The command-line product for creating, developing, building, installing, and operating Feluqa projects and artifacts. Each command's implementation status is documented where that workflow is described. |
+| **Project** | The source and configuration used to develop one or more applications and their modules. A project is a developer concept; it is not necessarily one deployable application. |
+| **Workspace** | A Cargo or Feluqa-managed set of related projects and packages. A framework workspace contains Feluqa itself; a product workspace contains application source. |
+| **Crate** | A Rust compilation unit managed by Cargo. A crate may implement part of an application or framework, but a Rust crate is not automatically a Feluqa module. |
+| **Package** | A versioned unit with a manifest and dependency identity. Application packages and module packages have distinct manifests and roles. |
+| **Client** | A device or program that accesses an application, such as a browser, workstation, phone, or another service. A client is not a tenant. |
 
 ## Application building blocks
 
-| Term | What it is |
-|------|------------|
-| **Panel** | A web-served surface of an app (for example `/admin`) with its own branding, login, navigation and middleware. |
-| **Resource** | A complete CRUD definition (model, form, table, actions, policy) in a single file. |
-| **Page** | A screen of a resource or a custom screen. Resource pages are generated and only overridden when needed. |
-| **System panel** | The built-in panel of the Platform: users, privileges, roles, permissions, modules, configuration, audit. |
-| **Scanner** | The compile-time component of the SDK that discovers attributes and generates routes, permissions, configuration schemas and docs. |
-| **Tenant** | An organization (customer, team, unit) isolated inside one app instance. |
+| Term | Meaning |
+|------|---------|
+| **Panel** | A user-facing surface provided by an application, such as an operator or business interface. |
+| **Resource** | A typed business entity and its permitted operations, forms, tables, and policies. |
+| **Page** | A screen within a panel, generated from a resource or implemented for a specific workflow. |
+| **Service** | Application logic that performs business operations. UI visibility does not authorize a service action; the server checks access independently. |
 
-## Access control vocabulary
+## Access-control terms
 
-| Term | What it is |
-|------|------------|
-| **Privilege level** | The platform-wide rank of a user (`app-owner`, `super-admin`, `sysadmin`, `staff`, plus external variants). Answers "how powerful is this account on the platform?". |
-| **Origin** | Whether a user is `internal` or `external` (contractor, auditor, integrator). Separate from rank. |
-| **Permission** | An atomic capability, such as `sales.refund` or `sales.customers.delete`. |
-| **Role** | A named bundle of permissions, defined per module and assignable to users. |
-| **Policy** | A per-record rule, such as "a customer with open orders cannot be deleted". Combined with permissions using AND. |
-| **Gate** | The enforcement point. `#[gate]` guards a function, a handler or an action. |
-| **Clearance** | *(Exploring)* an optional classification label for high-security deployments. |
+Authorization uses separate scopes. **Platform roles** govern administration
+of a Platform instance. **Application roles and permissions** govern business
+actions. **Policies** apply record-specific rules. A platform-wide rank does
+not grant business permissions by itself.
 
-## Concept map
+| Term | Meaning |
+|------|---------|
+| **Platform owner** | The single highest-authority principal for one Platform instance. The target identifier is `platform-owner`; the old `app-owner` name is retired because it incorrectly suggests ownership of a business application. |
+| **Privilege level** | A rank used for platform-instance administration, such as `platform-owner`, `super-admin`, `sysadmin`, or `staff`. It does not grant application permissions by itself. |
+| **Origin** | Whether an administrative account is internal to the operating organization or external, such as an auditor or contractor. Origin is separate from privilege level. |
+| **Permission** | An atomic application capability, such as `sales.refund` or `sales.customers.delete`. |
+| **Application role** | A named set of application permissions assignable within the relevant application and tenant scope. |
+| **Policy** | A rule that decides whether an otherwise authorized action applies to a particular record. |
+| **Gate** | A server-side enforcement point that checks the required identity, privilege, permission, and policy conditions before an action runs. |
+| **Clearance** | An exploring classification label that may add data-handling constraints in high-security deployments. |
+
+These are the target names and boundaries. Feluqa does not preserve confusing
+legacy names for backward compatibility. Renaming an implemented identifier
+requires changing its API, stored data, CLI output, and documentation together;
+the target terminology does not claim that migration is already complete.
+
+## How the terms fit together
 
 ```mermaid
 flowchart TB
-    subgraph SRC["Feluqa source · contributors only"]
-        FC["Feluqa crates<br/>shared foundation"]
+    PRODUCT["Product<br/>business solution"]
+    subgraph PROJECT["Project and workspace · source code"]
+        APP1["Server application"]
+        APP2["Workstation application"]
+        SALES["Sales module"]
+        CATALOG["Catalog module"]
+        INVENTORY["Inventory module"]
+        SALES --> APP1
+        CATALOG --> APP1
+        INVENTORY --> APP1
+        CATALOG --> APP2
+        INVENTORY --> APP2
     end
-
-    SDK["Feluqa SDK<br/>feluqa::ui · panel · auth · resource"]
-    CLI["Feluqa CLI"]
-
-    subgraph DEV["Developer workspace · product builders"]
-        direction LR
-        PR["Product"]
-        M["Module"]
-        SM["Submodule"]
-        F["Feature"]
-        PR --> M --> SM
-        M --> F
-        SM --> F
-    end
-
-    ART[("Artifact<br/>signed · versioned")]
-
-    subgraph SRV["Server"]
-        direction LR
-        PL["Feluqa Platform"]
-        SP["System panel"]
-        APP["Feluqa App"]
-        DB[("SQLite or PostgreSQL")]
-        PL --> SP
-        PL --> APP
-        APP --> DB
-    end
-
-    CL["Client<br/>workstation · mobile · browser · ground station"]
-
-    FC --> SDK
-    FC --> PL
-    SDK -->|"you build with"| DEV
-    DEV -->|"compiled into"| ART
-    CLI -->|"builds"| ART
-    CLI -->|"installs on"| SRV
-    ART --> APP
-    CL -->|"HTTP"| APP
-
-    classDef source fill:#1e1b4b,color:#ffffff,stroke:#8b5cf6,stroke-width:2px
-    classDef sdk fill:#e0e7ff,color:#312e81,stroke:#6366f1,stroke-width:2px
-    classDef dev fill:#f5f3ff,color:#312e81,stroke:#8b5cf6
-    classDef runtime fill:#f8fafc,color:#0f172a,stroke:#94a3b8
-    classDef artifact fill:#312e81,color:#ffffff,stroke:#6366f1,stroke-width:2px
-
-    class FC source
-    class SDK,CLI sdk
-    class PR,M,SM,F dev
-    class PL,SP,APP,DB,CL runtime
-    class ART artifact
+    ART1[("Server artifact")]
+    ART2[("Workstation artifact")]
+    PI["Platform instance"]
+    PRODUCT --> APP1
+    PRODUCT --> APP2
+    APP1 --> ART1 --> PI
+    APP2 --> ART2
 ```
 
-## Where each piece lives
+## Naming rule
 
-| Piece | When it matters | Where it runs |
-|-------|-----------------|---------------|
-| **SDK** | While you write and compile your app | Developer machine, linked into the App |
-| **CLI** | While you create, build, install and operate | Developer machine and servers |
-| **Platform** | At runtime | Server |
-| **App** | At runtime | Client, or server in hosted mode |
+Use **Product** for the solution being offered, **Application** for a program
+that is built and run, and **Module** for a reusable business capability
+included in an application. Use **Platform instance** for the administrative
+scope that owns platform-wide privileges. Avoid using `app`, `product`, and
+`module` as synonyms in code, manifests, CLI commands, or documentation.
 
-## Common confusions
-
-- **SDK vs Platform.** The SDK is what you compile against. The Platform is
-  what runs on the server. They share Feluqa crates, but you never import those
-  crates directly: you go through the SDK.
-- **Module vs product.** A module is a self-contained piece of functionality that
-  can stand as a product on its own. A Product assembles one or more modules
-  into something deployable.
-- **Crate vs module.** A module is a crate (or a folder inside one) that follows
-  Feluqa conventions and carries a `feluqa.toml`. Not every crate is a module;
-  `tools/feluqa-build` is neither.
-- **Platform vs App.** The Platform is the same for everyone. The App is yours.
-  They are installed and versioned separately.
-- **Client vs tenant.** A client is a device or a program. A tenant is an
-  organization inside the app.
-- **Privilege level vs role.** Privilege is platform rank. Roles are module-level
-  bundles of permissions. See
-  [the authorization model](../03-security/01-authorization-model.en.md).
+For authorization details, see the
+[authorization model](../03-security/01-authorization-model.en.md) and
+[privilege levels](../03-security/02-privilege-levels.en.md).

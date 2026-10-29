@@ -18,20 +18,20 @@ author:
 
 # System Panel (Feluqa Core)
 
-The System panel is part of the Platform. It is available on every installation at `/system`, with no code to write.
+The System Control Panel is part of the Feluqa Platform. It administers one Platform instance at `/system`, separately from business application panels.
 
 ## Sections
 
 | Section | Purpose | Minimum privilege |
 | --- | --- | --- |
-| **Setup** | First-run bootstrap of the `app-owner` | One-time token |
+| **Setup** | First-run bootstrap of the `platform-owner` for this Platform instance | One-time token |
 | **Users** | Accounts, origin (internal/external), privilege level, sessions | `super-admin` |
 | **Roles and permissions** | Browse the generated permission table, build roles, assign them | `super-admin` or delegated permission |
 | **Modules** | Install, activate, deactivate, upgrade, uninstall by domain | `sysadmin` |
 | **Features** | Toggle features per license or tenant | `sysadmin` |
 | **Tenants** | Lifecycle: create, suspend, archive, restore | `super-admin` |
 | **Configuration** | Typed settings generated from `#[config]` | `sysadmin` |
-| **Licensing** | License status and domain activation | `app-owner` |
+| **Licensing** | License status and domain activation | `platform-owner` |
 | **Audit** | Every allow/deny, privilege change and install action | Audit permission |
 | **Health** | Version, migrations, storage, backups | `staff` |
 
