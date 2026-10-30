@@ -34,7 +34,7 @@ interface SpotlightCardProps {
   spotlightColor?: string
 }
 
-const { className = '', spotlightColor = 'rgba(74, 222, 128, 0.13)' } = defineProps<SpotlightCardProps>()
+const { className = '', spotlightColor = 'color-mix(in srgb, var(--feluqa-brand, var(--vp-c-brand-1)) 12%, transparent)' } = defineProps<SpotlightCardProps>()
 const card = ref<HTMLDivElement | null>(null)
 const position = ref<Position>({ x: 0, y: 0 })
 const opacity = ref(0)
