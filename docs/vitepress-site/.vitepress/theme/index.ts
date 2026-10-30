@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
-import { Fragment, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Fragment, h, nextTick, onBeforeUnmount, onMounted, ref, watch, type Component } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated/guide-colors.json'
 import generatedFonts from '../generated/fonts.json'
@@ -220,6 +220,23 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
 const MermaidLayout = {
   setup() {
     const route = useRoute()
+    const configuredLayoutSlots = () => {
+      const content = siteContent as typeof siteContent & {
+        languages?: string[]
+        defaultLanguage?: string
+        themeSlots?: { site?: Record<string, string | null>; guides?: Record<string, Record<string, string | null>> }
+      }
+      const themeSlots = content.themeSlots
+      const segments = route.path.split('/').filter(Boolean)
+      const localized = segments.length > 1 && content.languages?.includes(segments[0]) && segments[0] !== content.defaultLanguage
+      const routeKey = localized ? `${segments[0]}/${segments[1]}` : segments[0] ?? 'root'
+      const slots = { ...themeSlots?.site, ...themeSlots?.guides?.[routeKey] }
+      return Object.fromEntries(Object.entries(slots).map(([slot, name]) => [slot, () => {
+        if (!name) return null
+        const component = (projectComponents as Record<string, Component>)[name]
+        return component ? h(component) : null
+      }]))
+    }
     const colorProperties: Record<string, string> = {
       primary: '--vp-c-brand-1',
       secondary: '--vp-c-brand-2',
@@ -458,10 +475,7 @@ const MermaidLayout = {
     dialog?.remove()
   })
     return () => h(DefaultTheme.Layout, null, {
-      'sidebar-nav-before': () => {
-        const SidebarNavigation = projectComponents.BranchedSidebar
-        return SidebarNavigation ? h(SidebarNavigation) : null
-      },
+      ...configuredLayoutSlots(),
       'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'aside-outline-before': () => h(Fragment, null, [h(PageActions), h(DocumentationLastModified)]),
       'layout-bottom': () => h(SidebarFooter),
