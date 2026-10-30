@@ -22,7 +22,7 @@ body:has(.collection-article-subnav) #VPContent .VPDoc .aside {
   display: none;
 }
 
-body:has(.collection-article-subnav) #VPContent { padding-top: 40px; }
+body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav-height) + 40px); }
 
 .collection-article-footer {
   width: min(100% - 48px, 700px);
@@ -31,17 +31,19 @@ body:has(.collection-article-subnav) #VPContent { padding-top: 40px; }
 
 .collection-article-subnav {
   position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
+  top: var(--vp-nav-height);
+  left: 50%;
+  z-index: 0;
   display: flex;
-  width: 100%;
+  width: 100vw;
   min-height: 40px;
   box-sizing: border-box;
   align-items: center;
-  border-block: 1px solid var(--vp-c-divider);
+  border-top: 1px solid var(--vp-c-divider);
+  border-bottom: 1px solid var(--vp-c-divider);
   padding: 0 max(24px, calc((100vw - 770px) / 2));
   background: var(--vp-c-bg);
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
@@ -56,8 +58,17 @@ body:has(.collection-article-subnav) #VPContent { padding-top: 40px; }
 
 .collection-article-subnav__inner > * { pointer-events: auto; }
 .VPNavBar:has(.collection-article-subnav) { z-index: var(--vp-z-index-nav); }
-.VPNavBar:has(.collection-article-subnav) .content-body { position: static; }
-.VPNavBar:has(.collection-article-subnav) .divider { visibility: hidden; }
+.VPNavBar:has(.collection-article-subnav) .content-body { position: static !important; }
+.VPNavBar:has(.collection-article-subnav) .divider {
+  position: relative;
+  z-index: 1;
+  padding-left: 0 !important;
+  background: transparent;
+}
+.VPNavBar:has(.collection-article-subnav) .divider-line {
+  width: 100%;
+  background: var(--vp-c-divider) !important;
+}
 .VPNavBar .VPFlyout,
 .collection-article-actions { position: relative; z-index: 2; }
 
