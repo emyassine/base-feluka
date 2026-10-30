@@ -63,7 +63,11 @@ function directoryLink(directory: string): string {
 }
 function hasSourceIndex(directory: string): boolean {
   const indexKey = relative(generatedDirectory, join(directory, 'index.md')).replace(/\\/g, '/')
-  return Object.hasOwn(navigationOrder, indexKey)
+  if (Object.hasOwn(navigationOrder, indexKey)) return true
+  const [first, ...rest] = indexKey.split('/')
+  return rest.length > 0
+    && site.languages.some((language: string) => language.toLowerCase() === first)
+    && Object.hasOwn(navigationOrder, rest.join('/'))
 }
 const assetMime = (assetPath: string) => ({
   '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
@@ -164,14 +168,18 @@ function navigation(language = defaultLanguage): any[] {
       ? `${localePrefix}/${uri.index}`
       : `${localePrefix}/${base}${base ? '/' : ''}`
   const activeMatch = base
-    ? `^${localePrefix}/${base}/`
-    : `^${localePrefix}/(?!(?:${site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)).filter(Boolean).join('|')})(?:/|$))`
+    ? `^${localePrefix}/${base}(?:/|$)`
+    : `^${localePrefix}/(?!(?:${[...site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)), ...generatedCollections.map((collection: { id: string }) => collection.id)].filter(Boolean).join('|')})(?:/|$))`
   return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
  })
- const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => ({
-  text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
-  link: collection.links[language] ?? collection.links[defaultLanguage],
- }))
+ const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => {
+  const link = collection.links[language] ?? collection.links[defaultLanguage]
+  return {
+    text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
+    link,
+    activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+  }
+ })
  return [...guideLinks, ...collectionLinks]
 }
 function localizedSidebars(language = defaultLanguage): Record<string, any> {
