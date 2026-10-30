@@ -29,6 +29,7 @@ const wordLabel = computed(() => locale.value === 'fr' ? 'mots' : 'words');
         <span v-if="frontmatter.wordCount">{{ frontmatter.wordCount }} {{ wordLabel }}</span>
         <span v-if="frontmatter.readingTime">{{ frontmatter.readingTime }} {{ readingLabel }}</span>
       </div>
+      <div class="collection-article-actions"><slot name="actions" /></div>
     </div>
   </nav>
 </template>

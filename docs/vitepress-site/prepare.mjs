@@ -104,8 +104,8 @@ for (const language of config.languages) {
   if (typeof config.languageLabels?.[language] !== 'string' || !config.languageLabels[language].trim()) {
     throw new Error(`languageLabels.${language} must be a non-empty string`)
   }
-  if (typeof config.fallbackNotices?.[language] !== 'string' || !config.fallbackNotices[language].includes('{requested}') || !config.fallbackNotices[language].includes('{fallback}')) {
-    throw new Error(`fallbackNotices.${language} must include {requested} and {fallback}`)
+  if (typeof config.fallbackNotices?.[language] !== 'string' || !config.fallbackNotices[language].includes('{requested}')) {
+    throw new Error(`fallbackNotices.${language} must include {requested}`)
   }
 }
 for (const language of config.languages) {

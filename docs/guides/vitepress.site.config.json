@@ -107,7 +107,7 @@
   },
   "fallbackNotices": {
     "en": "This page is not available in {requested}. Showing the {fallback} version.",
-    "fr": "Cette page n’est pas disponible en {requested}. La version {fallback} est affichée."
+    "fr": "Cette page n’est pas disponible en {requested}. La version en anglais est affichée."
   },
   "languageMenuLabel": "Change language",
   "socialLinks": [

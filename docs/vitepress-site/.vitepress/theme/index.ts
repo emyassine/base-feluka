@@ -468,11 +468,13 @@ const MermaidLayout = {
     return () => {
       const layoutSlots = configuredLayoutSlots()
       const configuredSubnav = layoutSlots['nav-bar-content-after']
+      const renderedSubnav = configuredSubnav?.()
+      const subnavComponent = renderedSubnav?.type as Component | undefined
       return h(DefaultTheme.Layout, null, {
       ...layoutSlots,
-      'nav-bar-content-after': () => articleLayout() && configuredSubnav
-        ? h(Fragment, null, [configuredSubnav(), h('div', { class: 'collection-article-actions' }, [h(PageActions)])])
-        : configuredSubnav?.(),
+      'nav-bar-content-after': () => articleLayout() && subnavComponent
+        ? h(subnavComponent, null, { actions: () => h(PageActions) })
+        : renderedSubnav,
       'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
         h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
