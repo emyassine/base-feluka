@@ -11,10 +11,14 @@ interface SidebarEntry {
 
 const route = useRoute()
 const router = useRouter()
-const { theme, lang } = useData()
+const { theme } = useData()
 
 function plainText(value: string): string {
   return value.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim()
+}
+
+function iconFromText(value: string): string | undefined {
+  return value.match(/--sidebar-group-icon-url:\s*url\((?:'|")?([^'")]+)(?:'|")?\)/)?.[1]
 }
 
 const sourceItems = computed<SidebarEntry[]>(() => {
@@ -26,24 +30,21 @@ const sourceItems = computed<SidebarEntry[]>(() => {
   return key ? (sidebar[key] as SidebarEntry[]) : []
 })
 
-function leafItems(items: SidebarEntry[], parent = ''): Array<{ value: string; label: string }> {
-  return items.flatMap((item) => {
-    const text = plainText(item.text ?? item.link ?? '')
-    const label = [parent, text].filter(Boolean).join(' / ')
-    if (item.items?.length) return leafItems(item.items, label)
-    return item.link ? [{ value: item.link, label }] : []
-  })
-}
-
 const items = computed(() => sourceItems.value.flatMap((item) => {
+  const label = plainText(item.text ?? item.link ?? '')
   if (item.items?.length) {
-    const children = [
-      ...(item.link ? [{ value: item.link, label: lang.value.toLowerCase().startsWith('fr') ? 'Vue d’ensemble' : 'Overview' }] : []),
-      ...leafItems(item.items),
-    ]
-    return children.length ? [{ label: plainText(item.text ?? ''), children }] : []
+    const children = item.items.flatMap((child) => {
+      if (!child.link) return []
+      return [{
+        value: child.link,
+        label: plainText(child.text ?? child.link),
+        icon: iconFromText(child.text ?? ''),
+      }]
+    })
+    return children.length ? [{ label, children }] : []
   }
-  return item.link ? [{ label: plainText(item.text ?? item.link), value: item.link }] : []
+  const icon = iconFromText(item.text ?? '')
+  return item.link ? [{ label, value: item.link, icon }] : []
 }))
 
 const normalizePath = (path: string) => path.replace(/index\.html$/, '').replace(/\.html$/, '').replace(/\/+$/, '') || '/'
@@ -70,7 +71,7 @@ function navigate(path: string): void {
       :row-height="34"
       :indent="32"
       color="var(--vp-c-text-1)"
-      accent-color="var(--vp-c-brand-1)"
+      accent-color="var(--vp-c-text-1)"
       line-color="var(--vp-c-divider)"
       @select="(path: string) => navigate(path)"
     />

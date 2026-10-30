@@ -105,7 +105,9 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
       const onlyIndex = pageEntries.length === 1 && !pageEntries[0].isDirectory() && pageEntries[0].name === 'index.md'
       if (onlyIndex) {
         const indexPath = join(path, 'index.md')
-        return [{ text: escapeHtml(titleOf(indexPath)), link: publicPagePath(indexPath) }]
+        const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
+        const fallback = titleOf(indexPath)
+        return [{ text: groupTitle(relativePath, fallback, language), link: publicPagePath(indexPath) }]
       }
       const items = sidebar(path, root, language)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')

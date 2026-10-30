@@ -2,5 +2,6 @@
   "labels": {
     "en": "Frontend",
     "fr": "Interface utilisateur"
-  }
+  },
+  "icon": "sidebar-icon.svg"
 }

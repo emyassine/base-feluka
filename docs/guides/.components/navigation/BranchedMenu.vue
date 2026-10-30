@@ -4,11 +4,13 @@ import { computed, onMounted, onUnmounted, ref, watch, type CSSProperties } from
 export interface BranchedMenuChild {
   value: string;
   label: string;
+  icon?: string;
 }
 
 export interface BranchedMenuItem {
   label: string;
   value?: string;
+  icon?: string;
   children?: BranchedMenuChild[];
 }
 
@@ -150,6 +152,8 @@ const navStyle = computed(
       '--bm-fold': `${props.foldDuration}ms`
     }) as CSSProperties
 );
+
+const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } as CSSProperties) : undefined
 </script>
 
 <template>
@@ -179,6 +183,7 @@ const navStyle = computed(
         :data-active="!item.children && (item.value ?? item.label) === active ? '' : undefined"
         @click="item.children ? toggle(i) : select(item.value ?? item.label, item)"
       >
+        <span v-if="item.icon" class="branched-menu-icon" :style="iconStyle(item.icon)" aria-hidden="true" />
         {{ item.label }}
       </button>
       <div
@@ -227,6 +232,7 @@ const navStyle = computed(
               :tabindex="open.has(i) ? 0 : -1"
               @click="select(kid.value, kid)"
             >
+              <span v-if="kid.icon" class="branched-menu-icon" :style="iconStyle(kid.icon)" aria-hidden="true" />
               <span class="block overflow-hidden text-ellipsis whitespace-nowrap">{{ kid.label }}</span>
             </button>
           </div>
@@ -235,3 +241,15 @@ const navStyle = computed(
     </div>
   </nav>
 </template>
+
+<style scoped>
+.branched-menu-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  background-color: currentColor;
+  -webkit-mask: var(--bm-icon) center / contain no-repeat;
+  mask: var(--bm-icon) center / contain no-repeat;
+}
+</style>

@@ -143,7 +143,7 @@
   font-weight: 400;
 }
 
-.VPSidebarItem.level-0 .text:has(.sidebar-group-icon) {
+.VPSidebarItem .text:has(.sidebar-group-icon) {
   display: flex;
   align-items: center;
   gap: 8px;

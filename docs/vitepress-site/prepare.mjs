@@ -167,19 +167,15 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
-  if (!indexOnly) {
-    try {
-      sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
-    } catch (error) {
-      if (error.code !== 'ENOENT') throw error
-    }
+  try {
+    sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
   }
   if (sidebarConfig) {
     const outputRelativePath = relative(outputRoot, stagedPath(sourcePath)).split(sep).join('/')
     const sourceRelativePath = relative(sourceRoot, sourcePath).split(sep).join('/')
     const matchingGuide = config.subguides.find((guide) => sourceRelativePath.startsWith(`${guide.path}/`))
-    const guideRelativePath = matchingGuide ? sourceRelativePath.slice(matchingGuide.path.length + 1) : ''
-    const isTopLevelGroup = Boolean(guideRelativePath && !guideRelativePath.includes('/'))
     if (!sidebarConfig.labels || typeof sidebarConfig.labels !== 'object' || Array.isArray(sidebarConfig.labels)) {
       throw new Error(`sidebar.json must define a labels object by language: ${join(sourcePath, 'sidebar.json')}`)
     }
@@ -188,17 +184,14 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
         throw new Error(`sidebar.json needs a non-empty labels.${language}: ${join(sourcePath, 'sidebar.json')}`)
       }
     }
-    if (sidebarConfig.icon != null && typeof sidebarConfig.icon !== 'string') {
-      throw new Error(`sidebar.json icon must be a path relative to that file: ${join(sourcePath, 'sidebar.json')}`)
-    }
-    if (sidebarConfig.icon && !isTopLevelGroup) {
-      throw new Error(`sidebar.json icons are only allowed on top-level guide groups: ${join(sourcePath, 'sidebar.json')}`)
+    if (typeof sidebarConfig.icon !== 'string' || !sidebarConfig.icon.trim()) {
+      throw new Error(`sidebar.json must define an icon path relative to that file: ${join(sourcePath, 'sidebar.json')}`)
     }
     sidebarConfigurations.set(outputRelativePath, {
       labels: sidebarConfig.labels,
-      icon: sidebarConfig.icon ? resolve(sourcePath, sidebarConfig.icon) : null,
+      icon: resolve(sourcePath, sidebarConfig.icon),
     })
-    if (sidebarConfig.icon) sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
+    sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
   }
   if (sourcePath !== sourceRoot) directories.push({ sourcePath, outputPath, entries })
   for (const entry of entries) {

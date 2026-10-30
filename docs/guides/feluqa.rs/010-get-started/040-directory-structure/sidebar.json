@@ -2,5 +2,6 @@
   "labels": {
     "en": "Directory Structure",
     "fr": "Structure des dossiers"
-  }
+  },
+  "icon": "sidebar-icon.svg"
 }
