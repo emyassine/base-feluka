@@ -1,10 +1,12 @@
 Mainline design source
 ======================
 
-The Hero and Features section structure in `MainlineHero.vue` and
-`MainlineGuideBlocks.vue` is ported from the Mainline Next.js template by
-shadcnblocks.com. The source was adapted to Vue and VitePress; content and
-routes were replaced with documentation-specific material.
+The Hero, Features, Resource Allocation, FAQ, and Footer call-to-action
+sections in the Vue blocks in this directory are ports of corresponding
+Mainline Next.js template blocks by shadcnblocks.com. Their layouts and
+Tailwind utility styling are retained where applicable; React/Next.js glue,
+template-specific product claims, and inapplicable sample data are omitted.
+Home copy and route data are supplied by `docs/guides/index.en.md`.
 
 Source: https://github.com/shadcnblocks/mainline-nextjs-template
 Template: https://www.shadcnblocks.com/template/mainline

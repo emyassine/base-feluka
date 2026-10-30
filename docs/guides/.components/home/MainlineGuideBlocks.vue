@@ -1,30 +1,9 @@
 <script setup lang="ts">
-const sections = [
-  {
-    title: 'Start building',
-    description: 'Set up the toolchain, learn the application structure, and follow the implementation guides.',
-    links: [
-      { label: 'Get started', href: '/get-started/' },
-      { label: 'Learn by building', href: '/learn/' },
-    ],
-  },
-  {
-    title: 'Understand the platform',
-    description: 'Read the product direction, runtime model, compilation approach, and workspace architecture.',
-    links: [
-      { label: 'Product guide', href: '/get-started/introduction/' },
-      { label: 'Internals', href: '/feluqa-internals/' },
-    ],
-  },
-  {
-    title: 'Contribute',
-    description: 'Find the contributor guidance and current implementation status before changing the framework.',
-    links: [
-      { label: 'Agent guidance', href: '/agents/' },
-      { label: 'Contribution guide', href: '/prologue/contribution-guide' },
-    ],
-  },
-]
+defineProps<{ content: {
+  title: string
+  copy: string
+  sections: Array<{ title: string; description: string; links: Array<{ label: string; href: string }> }>
+} }>()
 </script>
 
 <template>
@@ -38,15 +17,15 @@ const sections = [
 
       <div class="mx-auto mt-10 grid max-w-4xl items-center gap-3 md:gap-0 lg:mt-24 lg:grid-cols-2">
         <h2 class="text-2xl tracking-tight md:text-4xl lg:text-5xl">
-          Find your way through the guides
+          {{ content.title }}
         </h2>
         <p class="text-muted-foreground leading-snug">
-          Practical entry points for building with the framework, understanding its design, and contributing to its development.
+          {{ content.copy }}
         </p>
       </div>
 
       <div class="bg-card text-card-foreground mt-8 grid overflow-hidden rounded-3xl border shadow-sm md:mt-12 lg:mt-20 lg:grid-cols-3">
-        <article v-for="(section, sectionIndex) in sections" :key="section.title" class="relative flex min-w-0 flex-col p-5 md:p-6">
+        <article v-for="(section, sectionIndex) in content.sections" :key="section.title" class="relative flex min-w-0 flex-col p-5 md:p-6">
           <div class="mb-5 md:mb-8">
             <h3 class="font-display max-w-60 text-2xl leading-tight font-bold tracking-tight">{{ section.title }}</h3>
             <p class="text-muted-foreground mt-3 text-sm leading-relaxed">{{ section.description }}</p>
@@ -61,8 +40,8 @@ const sections = [
               </a>
             </li>
           </ul>
-          <div v-if="sectionIndex < sections.length - 1" class="absolute inset-y-0 right-0 hidden w-px bg-[repeating-linear-gradient(180deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(180deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground lg:block" aria-hidden="true"></div>
-          <div v-if="sectionIndex < sections.length - 1" class="absolute inset-x-0 bottom-0 block h-px bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(90deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground lg:hidden" aria-hidden="true"></div>
+          <div v-if="sectionIndex < content.sections.length - 1" class="absolute inset-y-0 right-0 hidden w-px bg-[repeating-linear-gradient(180deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(180deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground lg:block" aria-hidden="true"></div>
+          <div v-if="sectionIndex < content.sections.length - 1" class="absolute inset-x-0 bottom-0 block h-px w-full bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(90deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground lg:hidden" aria-hidden="true"></div>
         </article>
       </div>
     </div>

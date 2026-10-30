@@ -153,7 +153,8 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
 }
 
 function navigation(language = defaultLanguage): any[] {
- const guideLinks = site.subguides.map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
+ const collectionSources = new Set(generatedCollections.map((collection: { sourcePath: string }) => collection.sourcePath))
+ const guideLinks = site.subguides.filter((guide: { path: string }) => !collectionSources.has(guide.path)).map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
   const uri = guide.uri
   const base = routeBase(guide.path)
   const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `/${language}`
@@ -170,9 +171,9 @@ function navigation(language = defaultLanguage): any[] {
  }))
  return [...guideLinks, ...collectionLinks]
 }
-function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
+function localizedSidebars(language = defaultLanguage): Record<string, any> {
   const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
-  return Object.fromEntries(site.subguides.flatMap((guide: { path: string; label: string; uri: { entry?: string; index?: string } }) => {
+  const guideSidebars = Object.fromEntries(site.subguides.flatMap((guide: { path: string; label: string; uri: { entry?: string; index?: string } }) => {
     const base = routeBase(guide.path)
     const route = base || guide.uri.entry || guide.uri.index?.replace(/\/$/, '') || ''
     const routeParts = route.split('/').filter(Boolean)
@@ -190,6 +191,8 @@ function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
       : [`/${prefix}${route}${route ? '/' : ''}`]
     return routes.map((path) => [path, sidebarItems])
   }))
+  const collectionSidebars = Object.fromEntries(generatedCollections.map((collection: { links: Record<string, string> }) => [collection.links[language] ?? collection.links[defaultLanguage], []]))
+  return { ...guideSidebars, ...collectionSidebars }
 }
 const sidebars = localizedSidebars()
 const localizedThemeConfig = Object.fromEntries(site.languages

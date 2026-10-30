@@ -3,11 +3,98 @@ sidebarTitle: "Home"
 icon: "badge-check"
 description: Guides for building applications, understanding the platform, and contributing to its development.
 layout: home
+home:
+  hero:
+    title: "One platform. Every application target."
+    lead: "A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes."
+    primary:
+      label: "Get started"
+      href: "/get-started/"
+    secondary:
+      label: "Explore the architecture"
+      href: "/feluqa-internals/"
+    points:
+      - title: "One shared foundation"
+        copy: "Compose a business module into a hosted application or a standalone workstation product."
+      - title: "Purpose-built runtimes"
+        copy: "Share schemas, tooling, and libraries while retaining distinct runtime profiles."
+      - title: "Current implementation"
+        copy: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished."
+  guides:
+    title: "Find your way through the guides"
+    copy: "Start building, explore platform architecture, or find the contribution guidance that fits your work."
+    sections:
+      - title: "Start building"
+        description: "Prepare the toolchain, learn the application structure, and follow practical guides."
+        links:
+          - label: "Get started"
+            href: "/get-started/"
+          - label: "Learn by building"
+            href: "/learn/"
+      - title: "Understand the platform"
+        description: "Read the product direction, runtime model, compilation approach, and workspace architecture."
+        links:
+          - label: "Product and audience"
+            href: "/get-started/introduction/product-and-audience"
+          - label: "Platform internals"
+            href: "/feluqa-internals/"
+      - title: "Contribute"
+        description: "Check the implementation status and contributor rules before changing the framework."
+        links:
+          - label: "Agent guidance"
+            href: "/agents/"
+          - label: "Contribution guide"
+            href: "/prologue/contribution-guide"
+  resource:
+    title: "A shared foundation, with purpose-built runtimes"
+    items:
+      - title: "Web delivery first."
+        description: "Web is the first product priority; its profile keeps server dependencies outside kernel and real-time crates."
+        linkLabel: "Read the web profile"
+        href: "/feluqa-internals/"
+      - title: "Separate target runtimes."
+        description: "Share tooling and contracts while keeping runtime profiles suited to each destination."
+        linkLabel: "Explore platform internals"
+        href: "/feluqa-internals/"
+      - title: "Portable path ownership."
+        description: "Context roots and portable paths define where an application owns its data."
+        linkLabel: "Read storage guidance"
+        href: "/storage/storage-backends-and-paths"
+      - title: "A built-in control panel."
+        description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work."
+        linkLabel: "Read the panel status"
+        href: "/get-started/frontend/system-panel"
+      - title: "Local-first operation."
+        description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open."
+        linkLabel: "Read the local-first direction"
+        href: "/feluqa-internals/"
+  faq:
+    title: "Questions about the platform?"
+    copy: "Read the guides for implementation details and the current status of the work."
+    items:
+      - question: "What is Feluqa?"
+        answer: "A proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development."
+      - question: "Where should I start?"
+        answer: "Start with Get started to understand the product direction, prepare an environment, and follow the application guides."
+      - question: "Is the complete platform available today?"
+        answer: "No. Selected framework foundations are implemented; dynamic module installation, complete runtime shells, and several product capabilities remain unfinished."
+  cta:
+    title: "Build with the current foundations"
+    copy: "Follow the guides, check what is implemented, and help move the framework forward."
+    action:
+      label: "Read the contribution guide"
+      href: "/prologue/contribution-guide"
 ---
 <div class="mainline-home">
 
-<MainlineHero />
+<MainlineHero :content="$frontmatter.home.hero" />
 
-<MainlineGuideBlocks />
+<MainlineGuideBlocks :content="$frontmatter.home.guides" />
+
+<MainlineResourceBlock :content="$frontmatter.home.resource" />
+
+<MainlineFaq :content="$frontmatter.home.faq" />
+
+<MainlineCta :content="$frontmatter.home.cta" />
 
 </div>

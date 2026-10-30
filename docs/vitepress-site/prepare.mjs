@@ -1,4 +1,5 @@
 import { access, cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
 import { existsSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -596,29 +597,42 @@ const generatedCollectionPages = new Set()
 for (const collection of collectionMetadata.values()) {
   const localizedTitles = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))]))
   const localizedDescriptions = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.description ?? collection.metadata.description, language)]))
-  const links = Object.fromEntries(config.languages.map((language) => [language, publicMarkdownLink(join(stagedPath(collection.sourceDirectory, language), 'index.md'))]))
-  generatedCollectionNavigation.push({ id: collection.id, path: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links })
+  const links = Object.fromEntries(config.languages.map((language) => {
+    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
+    return [language, `/${localePrefix}${collection.id}/`]
+  }))
+  generatedCollectionNavigation.push({ id: collection.id, path: collection.path, sourcePath: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links })
   const title = localizedTitles[defaultLanguage]
   for (const language of config.languages) {
-    const articles = records
-      .filter((record) => record.from.startsWith(`${collection.sourceDirectory}${sep}`)
-        && record.from.toLowerCase().endsWith('.md')
-        && sourceLanguage(record.from) === language.toLowerCase()
-        && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(record.from.slice(collection.sourceDirectory.length + 1)))
+    const localizedArticles = new Map()
+    for (const record of records.filter((candidate) => candidate.from.startsWith(`${collection.sourceDirectory}${sep}`)
+      && candidate.from.toLowerCase().endsWith('.md')
+      && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(candidate.from.slice(collection.sourceDirectory.length + 1)))) {
+      const recordLanguage = sourceLanguage(record.from)
+      if (recordLanguage !== defaultLanguage.toLowerCase() && recordLanguage !== language.toLowerCase()) continue
+      const relativeSource = relative(collection.sourceDirectory, record.from).split(sep).join('/')
+      const canonical = relativeSource.replace(/\.[a-z]{2,3}(?:-[A-Z]{2})?\.md$/i, '.md')
+      const current = localizedArticles.get(canonical)
+      if (!current || recordLanguage === language.toLowerCase()) localizedArticles.set(canonical, record)
+    }
+    const articles = [...localizedArticles.values()]
       .map((record) => {
         const markdown = readFileSync(record.from, 'utf8')
-        const title = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(record.from)
+        const articleTitle = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(record.from)
         const description = frontmatterScalar(markdown, 'description')
         const date = frontmatterScalar(markdown, 'date')
-        const category = frontmatterScalar(markdown, 'category')
-        return { title, description, date, category, url: publicMarkdownLink(record.to) }
+        const category = frontmatterScalar(markdown, 'category') || (collection.categoryEntries.length === 1 ? collection.categoryEntries[0].id : '')
+        const recordLanguage = sourceLanguage(record.from)
+        const target = recordLanguage === language.toLowerCase() ? record.to : stagedPath(record.from, language)
+        return { title: articleTitle, description, date, category, url: publicMarkdownLink(target) }
       })
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
-    const sourceIndex = join(collection.sourceDirectory, `index.${language}.md`)
-    const defaultIndex = join(collection.sourceDirectory, 'index.md')
-    if (existsSync(sourceIndex) || (language.toLowerCase() === defaultLanguage.toLowerCase() && existsSync(defaultIndex))) continue
-    const targetDirectory = stagedPath(collection.sourceDirectory, language)
+    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? [] : [language]
+    const targetDirectory = join(outputDirectory, ...localePrefix, collection.id)
     const target = join(targetDirectory, 'index.md')
+    if (records.some((record) => resolve(record.to) === resolve(target))) {
+      throw new Error(`Collection route /${collection.id}/ conflicts with a published Markdown page`)
+    }
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
@@ -944,6 +958,7 @@ for (const language of config.languages) {
         await access(sourceAsset)
         await mkdir(dirname(localizedAsset), { recursive: true })
         await copyIfChanged(sourceAsset, localizedAsset)
+        generatedFiles.add(localizedAsset)
       } catch (error) {
         if (error.code !== 'ENOENT') throw error
       }
