@@ -32,7 +32,7 @@ description: "The Numerimondes products and platforms that run on Numerimondes C
         <NmCard compact="true" icon="heroicon-o-cube" color="success">
             <template #heading>Webkernel — webkernelphp.com</template>
             <template #description>
-                Open-source PHP application framework for sovereign enterprise apps. See the <a href="/docs/oss/webkernel">product page</a>.
+                Open-source PHP application framework for sovereign enterprise apps. See the <a href="/numerimondes/docs/oss/webkernel">product page</a>.
             </template>
         </NmCard>
     </div>

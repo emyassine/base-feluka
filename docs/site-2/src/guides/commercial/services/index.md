@@ -2,12 +2,12 @@
 title: "Services"
 sidebarTitle: "Services"
 icon: "layout-grid"
-description: "Numerimondes — unit offers with closed scopes. Six core services, one product, tender support. Founder-led, real deliverables."
+description: "Numerimondes — unit offers with closed scopes. Consulting, delivery, managed cloud, and tender support for organizations. Founder-led, real deliverables."
 ---
 
 <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
     <span class="nm-eyebrow">Founder-led · Casablanca</span>
-    <h1 class="nm-headline">Six services. <span class="nm-headline-accent">Six distinct questions.</span></h1>
+    <h1 class="nm-headline">Services for the work <span class="nm-headline-accent">your business needs done.</span></h1>
     <p style="max-width: 42rem; margin: 1rem auto 0; opacity: 0.85;">
         Numerimondes is small on purpose: a founder, three people we trust completely, and a
         vetted network we bring in when a mission needs them.
@@ -74,15 +74,15 @@ Read the question, not the label.
 </div>
 
 
-## Not a service — a product
+## Managed cloud
 
 
 <div class="grid-container grid-cols-1" style="margin: 0 0 2rem;">
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-cloud" color="primary">
-            <template #heading><a href="/services/cloud" style="text-decoration:none;">Numerimondes Cloud</a></template>
+            <template #heading><a href="/services/cloud" style="text-decoration:none;">Numerimondes Cloud service</a></template>
             <template #description>
-                Server management and hosting resale — shared hosting, VPS, bare metal, or your own hardware, managed and invoiced directly by Numerimondes.
+                Managed hosting and server operations — shared hosting, VPS, bare metal, or your own hardware, managed and invoiced directly by Numerimondes.
                 <a href="/services/cloud">See Numerimondes Cloud →</a>
             </template>
         </NmCard>

@@ -1,32 +1,54 @@
 {
   "items": [
     {
-      "guide": "about",
-      "icon": "building-2"
+      "text": {"en": "Services", "fr": "Services"},
+      "icon": "briefcase-business",
+      "items": [
+        {"text": {"en": "All services", "fr": "Tous les services"}, "link": "/services/", "icon": "layout-grid"},
+        {"text": {"en": "Consulting and audit", "fr": "Conseil et audit"}, "link": "/services/consulting/", "icon": "message-circle"},
+        {"text": {"en": "Software and automation", "fr": "Logiciel et automatisation"}, "link": "/services/development/", "icon": "code-xml"},
+        {"text": {"en": "Intelligence", "fr": "Intelligence"}, "link": "/services/intelligence/", "icon": "cpu"},
+        {"text": {"en": "Cloud and infrastructure", "fr": "Cloud et infrastructure"}, "link": "/services/cloud/", "icon": "cloud"},
+        {"text": {"en": "Tender support", "fr": "Appui aux appels d’offres"}, "link": "/services/tender-support/", "icon": "file-check-2"}
+      ]
     },
     {
-      "guide": "product-docs",
-      "icon": "book-open"
+      "text": {"en": "Products", "fr": "Produits"},
+      "icon": "boxes",
+      "items": [
+        {"text": {"en": "Numerimondes documentation", "fr": "Documentation Numerimondes"}, "link": "/numerimondes/docs/", "icon": "book-open"},
+        {"text": {"en": "Webkernel", "fr": "Webkernel"}, "link": "/numerimondes/docs/oss/webkernel/", "icon": "box"},
+        {"text": {"en": "The Best Recruit", "fr": "The Best Recruit"}, "link": "/services/cloud/platforms/", "icon": "users-round"}
+      ]
     },
     {
-      "guide": "education",
-      "icon": "graduation-cap"
+      "text": {"en": "Insights", "fr": "Ressources"},
+      "icon": "lightbulb",
+      "items": [
+        {"text": {"en": "Research", "fr": "Recherche"}, "link": "/research/", "icon": "flask-conical"},
+        {"text": {"en": "Publications", "fr": "Publications"}, "link": "/research/publications/", "icon": "file-text"},
+        {"text": {"en": "Concepts", "fr": "Concepts"}, "link": "/concepts/", "icon": "lightbulb"},
+        {"text": {"en": "Education", "fr": "Formation"}, "link": "/education/", "icon": "graduation-cap"}
+      ]
     },
     {
-      "guide": "research",
-      "icon": "flask-conical"
+      "text": {"en": "Network", "fr": "Réseau"},
+      "icon": "users",
+      "items": [
+        {"text": {"en": "Partner framework", "fr": "Réseau de partenaires"}, "link": "/partnerships/", "icon": "handshake"},
+        {"text": {"en": "Become a partner", "fr": "Devenir partenaire"}, "link": "/partnerships/become-partner/", "icon": "user-round-plus"},
+        {"text": {"en": "Community", "fr": "Communauté"}, "link": "/community/", "icon": "messages-square"},
+        {"text": {"en": "Events", "fr": "Événements"}, "link": "/community/events/", "icon": "calendar-days"}
+      ]
     },
     {
-      "guide": "community",
-      "icon": "users"
-    },
-    {
-      "guide": "partnerships",
-      "icon": "handshake"
-    },
-    {
-      "collection": "concepts",
-      "icon": "lightbulb"
+      "text": {"en": "About", "fr": "À propos"},
+      "icon": "building-2",
+      "items": [
+        {"text": {"en": "Company", "fr": "Entreprise"}, "link": "/about/company/", "icon": "building-2"},
+        {"text": {"en": "Group", "fr": "Groupe"}, "link": "/about/company/group/", "icon": "network"},
+        {"text": {"en": "Contact", "fr": "Contact"}, "link": "/contact/", "icon": "mail"}
+      ]
     }
   ],
   "theme": "system",

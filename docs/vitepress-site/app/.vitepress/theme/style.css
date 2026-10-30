@@ -313,8 +313,8 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   height: 1em;
   flex: 0 0 1em;
   background-color: currentColor;
-  -webkit-mask: url('../../icons/lucide/clock.svg') center / contain no-repeat;
-  mask: url('../../icons/lucide/clock.svg') center / contain no-repeat;
+  -webkit-mask: url('../../../resources/icons/lucide/clock.svg') center / contain no-repeat;
+  mask: url('../../../resources/icons/lucide/clock.svg') center / contain no-repeat;
 }
 
 .VPDocFooter .pager-link .title.DocumentationPagerTitle {

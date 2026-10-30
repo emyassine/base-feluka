@@ -1,30 +1,58 @@
 ---
 title: "Sovereign technology for builders"
-sidebarTitle: "Sovereign technology for builders"
+sidebarTitle: "Accueil"
 icon: "home"
-description: "Numerimondes — Webkernel, services, Services, Education, Products, Research — Webkernel and more. Casablanca."
+layout: home
+description: "Design, operate, and retain control of your digital stack. From Casablanca, Numerimondes supports organizations from strategy through infrastructure."
+hero:
+  image:
+    src: ../../resources/assets/brand/numerimondes-hero.svg
+    alt: "Numerimondes digital infrastructure illustration"
+  name: Numerimondes
+  text: "Sovereign technology for builders"
+  tagline: "Design, operate, and retain control of your digital stack. From Casablanca, Numerimondes supports organizations from strategy through infrastructure."
+  actions:
+    - theme: brand
+      text: "Explore our services"
+      link: "/services/"
+    - theme: alt
+      text: "Discuss a partnership"
+      link: "/partnerships/become-partner/"
+features:
+  - title: "Advice and strategy"
+    details: "Make technology decisions with a clear, grounded roadmap."
+    link: "/services/consulting/"
+  - title: "Software engineering"
+    details: "Applications and integrations designed around your requirements."
+    link: "/services/development/"
+  - title: "Sovereign infrastructure"
+    details: "Hosting, automation, and private AI under your control."
+    link: "/services/infrastructure/"
+  - title: "The Best Recruit"
+    details: "A self-hosted HR and learning suite for recruitment and talent operations."
+    link: "/services/cloud/platforms/"
 ---
 
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+## Technology that serves the work
 
-    
+Numerimondes helps organizations make clear technology decisions, build software around their operations, automate repeatable work, and run the resulting systems with control over their data and infrastructure.
 
-    <span class="nm-eyebrow">World-class technology innovation</span>
-    <h1 class="nm-headline">Welcome to the&nbsp;
-        <a href="/about">
-            <span class="nm-headline-accent" x-tooltip="{ content: 'Clic and Learn More about Numerimondes', placement: 'bottom' }" style="display: inline-flex;">
-                Numerimondes&nbsp;
-                
-            </span>
-        </a>
-    </h1>
-    <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 15px;">
-        We architect solutions that return technology ownership to business owners—reducing costs, optimizing value creation, and smoothly transitioning away from external dependencies using automation, modular builds, and local <a href="/services/intelligence">Intelligence</a>.
-    </p>
-
-    
+<div class="nm-home-links">
+  <a href="/services/">Explore our services</a>
+  <a href="/partnerships/become-partner/">Join the partner framework</a>
+  <a href="/services/cloud/platforms/">Discover The Best Recruit</a>
 </div>
 
+## Services for the whole journey
 
+Start with an [operational audit](/services/audit/) or [consulting](/services/consulting/), then move into [software development](/services/development/), [automation](/services/automation/), [private intelligence](/services/intelligence/), or [managed cloud](/services/cloud/). We keep each engagement clear about its scope, owner, and deliverables.
 
+## A partner network built on useful work
 
+Our partner framework connects independent professionals with shared tools, introductions, training, and service opportunities. Partners keep their independent business and work under written, deal-specific terms. [Read about becoming a partner](/partnerships/become-partner/).
+
+## Products and ventures
+
+[The Best Recruit](/services/cloud/platforms/) is our self-hosted HR and learning suite, covering applicant tracking, learning management, and talent operations. Our products run on the infrastructure practices we offer to clients through [Numerimondes Cloud](/services/cloud/).
+
+For product and platform documentation, visit [Numerimondes documentation](/numerimondes/docs/).

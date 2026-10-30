@@ -1,26 +1,33 @@
 ---
-title: "تقنية سيادية لصنّاع المستقبل"
-sidebarTitle: "تقنية سيادية لصنّاع المستقبل"
+title: "تقنية سيادية لمن يبنون"
+sidebarTitle: "Accueil"
 icon: "home"
-description: "نوميرموند — Webkernel، خدمات، Services، تعليم، منتجات، بحث — Webkernel وأكثر. الدار البيضاء."
+layout: home
+description: "صمّموا منظومتكم الرقمية وشغّلوها مع الاحتفاظ بالتحكم الكامل. من الدار البيضاء، ترافق Numerimondes المؤسسات من الاستراتيجية إلى البنية التحتية."
+hero:
+  image:
+    src: ../../resources/assets/brand/numerimondes-hero.svg
+    alt: "Numerimondes digital infrastructure illustration"
+  name: Numerimondes
+  text: "تقنية سيادية لمن يبنون"
+  tagline: "صمّموا منظومتكم الرقمية وشغّلوها مع الاحتفاظ بالتحكم الكامل. من الدار البيضاء، ترافق Numerimondes المؤسسات من الاستراتيجية إلى البنية التحتية."
+  actions:
+    - theme: brand
+      text: "اكتشفوا خدماتنا"
+      link: "/services/"
+    - theme: alt
+      text: "عن Numerimondes"
+      link: "/about/"
+features:
+  - title: "الاستشارة والاستراتيجية"
+    details: "قرارات تقنية واضحة وخارطة طريق عملية."
+    link: "/services/consulting/"
+  - title: "هندسة البرمجيات"
+    details: "تطبيقات وتكاملات مصممة وفق احتياجاتكم."
+    link: "/services/development/"
+  - title: "بنية تحتية سيادية"
+    details: "استضافة وأتمتة وذكاء اصطناعي خاص تحت سيطرتكم."
+    link: "/services/infrastructure/"
 ---
 
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-    
-    <span class="nm-eyebrow">ابتكار تقني بمستوى عالمي</span>
-    <h1 class="nm-headline">مرحبًا بكم في&nbsp;
-        <a href="/about">
-            <span class="nm-headline-accent" x-tooltip="{ content: 'انقر لمعرفة المزيد عن نوميرموند', placement: 'bottom' }" style="display: inline-flex;">
-    العوالم الرقمية&nbsp;
-                
-            </span>
-        </a>
-    </h1>
-    <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 15px;" dir="rtl">
-        
-    </p>
-    
-</div>
-
-
-
+<NmTriptych alt="Numerimondes: conseil, ingénierie et infrastructure" />

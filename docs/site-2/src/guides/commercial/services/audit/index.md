@@ -91,7 +91,7 @@ PDF · **10–15 pages** for Level 1 · extended for Level 2
 
 ### Deliverable B — Restitution conference
 
-**1h30–2h**, on-site, in front of decision-makers and managers — guided walkthrough of the report, sector benchmark, live demonstration of [Webkernel](/docs/oss/webkernel) in a self-hosted environment, and a priced proposal for next steps.
+**1h30–2h**, on-site, in front of decision-makers and managers — guided walkthrough of the report, sector benchmark, live demonstration of [Webkernel](/numerimondes/docs/oss/webkernel) in a self-hosted environment, and a priced proposal for next steps.
 
 ### Deliverable C — Prioritised roadmap
 

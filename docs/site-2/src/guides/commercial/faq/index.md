@@ -10,7 +10,7 @@ description: "Frequently asked questions."
 :::md style="margin-bottom:3rem;"
 Here are a few frequently asked questions about our services and customer offers.
 
-For general information, view our subsites or our [documentation](/docs).
+For general information, view our subsites or our [documentation](/numerimondes/docs).
 
 For direct assistance, customers and partners should reach out to their contact person at Numerimondes.
 :::

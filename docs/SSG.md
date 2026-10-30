@@ -719,6 +719,14 @@ indexes and collection pages are emitted from their source locations. The
 current source does not implement a general route-conflict validator; that
 check is **PLANNED**. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`
 
+**Recommended site namespace.** When several sites or product documentation
+sets may share a hostname, a guide's canonical `uri.base` SHOULD begin with
+the owning site's stable public slug (for example, `/numerimondes/docs/`).
+The configured base is the route source of truth; navigation and internal links
+SHOULD point to it rather than maintaining duplicate aliases. This is a
+recommendation for portable route ownership, not a requirement that every
+single-site deployment add a redundant path segment.
+
 ## 9. Languages and fallbacks
 
 `lang.site.config.json` owns the configured languages, fallback language, and

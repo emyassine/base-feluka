@@ -11,8 +11,8 @@ Source-available enterprise foundation for builders who host and control their s
 
 ## Explore
 
-- [Documentation](/docs/oss/webkernel/docs/2.x/)
-- [Changelog](/docs/oss/webkernel/docs/2.x/changelog/)
-- [Roadmap](/docs/oss/webkernel/docs/2.x/roadmap/)
-- [Demo](/docs/oss/webkernel/docs/2.x/demo/)
-- [Showcase](/docs/oss/webkernel/docs/2.x/showcase/)
+- [Documentation](/numerimondes/docs/oss/webkernel/docs/2.x/)
+- [Changelog](/numerimondes/docs/oss/webkernel/docs/2.x/changelog/)
+- [Roadmap](/numerimondes/docs/oss/webkernel/docs/2.x/roadmap/)
+- [Demo](/numerimondes/docs/oss/webkernel/docs/2.x/demo/)
+- [Showcase](/numerimondes/docs/oss/webkernel/docs/2.x/showcase/)

@@ -99,7 +99,7 @@ We configure the server environment for each framework's specific requirements r
 - **Python** — Django (Gunicorn + Nginx + Celery), FastAPI (Uvicorn)
 - **Ruby** — Rails (Puma with Nginx reverse proxy)
 - **Java** — Spring Boot (JVM tuning + systemd service)
-- **Sovereign foundation** — [Webkernel](/docs/oss/webkernel), our own PHP-based enterprise framework
+- **Sovereign foundation** — [Webkernel](/numerimondes/docs/oss/webkernel), our own PHP-based enterprise framework
 
 ## Using something not listed?
 

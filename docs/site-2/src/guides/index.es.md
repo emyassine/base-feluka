@@ -1,26 +1,33 @@
 ---
-title: "Tecnología soberana para creadores"
-sidebarTitle: "Tecnología soberana para creadores"
+title: "Tecnología soberana para quienes construyen"
+sidebarTitle: "Accueil"
 icon: "home"
-description: "Numerimondes — Webkernel, servicios, Services, Educación, Productos, Investigación — Webkernel y más. Casablanca."
+layout: home
+description: "Diseñe y opere su cadena digital manteniendo el control. Desde Casablanca, Numerimondes acompaña a las organizaciones desde la estrategia hasta la infraestructura."
+hero:
+  image:
+    src: ../../resources/assets/brand/numerimondes-hero.svg
+    alt: "Numerimondes digital infrastructure illustration"
+  name: Numerimondes
+  text: "Tecnología soberana para quienes construyen"
+  tagline: "Diseñe y opere su cadena digital manteniendo el control. Desde Casablanca, Numerimondes acompaña a las organizaciones desde la estrategia hasta la infraestructura."
+  actions:
+    - theme: brand
+      text: "Descubra nuestros servicios"
+      link: "/services/"
+    - theme: alt
+      text: "Acerca de Numerimondes"
+      link: "/about/"
+features:
+  - title: "Asesoría y estrategia"
+    details: "Decisiones tecnológicas claras con una hoja de ruta concreta."
+    link: "/services/consulting/"
+  - title: "Ingeniería de software"
+    details: "Aplicaciones e integraciones diseñadas para sus necesidades."
+    link: "/services/development/"
+  - title: "Infraestructura soberana"
+    details: "Alojamiento, automatización e IA privada bajo su control."
+    link: "/services/infrastructure/"
 ---
 
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-    
-    <span class="nm-eyebrow">Innovación tecnológica de clase mundial</span>
-    <h1 class="nm-headline">Bienvenido a&nbsp;
-        <a href="/about">
-            <span class="nm-headline-accent" x-tooltip="{ content: 'Haz clic para saber más sobre Numerimondes', placement: 'bottom' }" style="display: inline-flex;">
-                Numerimondes&nbsp;
-                
-            </span>
-        </a>
-    </h1>
-    <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 15px;">
-        Desarrollo e integración de sistemas digitales independientes: soluciones integrales que abarcan desde la auditoría y la automatización hasta la infraestructura gestionada y la inteligencia local, asegurando continuidad y control operativo.
-    </p>
-    
-</div>
-
-
-
+<NmTriptych alt="Numerimondes: conseil, ingénierie et infrastructure" />
