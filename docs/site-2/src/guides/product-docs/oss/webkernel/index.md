@@ -11,8 +11,8 @@ Source-available enterprise foundation for builders who host and control their s
 
 ## Explore
 
-- [Documentation](/docs/oss/webkernel/docs/latest)
-- [Changelog](/docs/oss/webkernel/changelog)
-- [Roadmap](/docs/oss/webkernel/roadmap)
-- [Demo](/docs/oss/webkernel/demo)
-- [Showcase](/docs/oss/webkernel/showcase)
+- [Documentation](/docs/oss/webkernel/docs/2.x/)
+- [Changelog](/docs/oss/webkernel/docs/2.x/changelog/)
+- [Roadmap](/docs/oss/webkernel/docs/2.x/roadmap/)
+- [Demo](/docs/oss/webkernel/docs/2.x/demo/)
+- [Showcase](/docs/oss/webkernel/docs/2.x/showcase/)

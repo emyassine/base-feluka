@@ -494,11 +494,21 @@ A `reproducible` build MUST canonicalize or consistently serialize its own manif
 
 Diagnostics MUST identify code, severity, source file, location when available, affected site, human explanation, and optional suggested fix. Unknown configuration keys, duplicate routes, invalid references, unsupported components, unsafe paths, and offline violations MUST produce distinct codes.
 
-### 14.3 Conformance fixtures (PROPOSED)
+### 14.3 Development updates and build isolation (PROPOSED)
 
-A reference suite SHOULD contain at least: multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; unsupported framework component; component fallback; offline rerender/reload; no-dev-dependency static output; ZIP traversal checks; multi-site isolation; and canonical manifest comparisons.
+A development server MUST update only the affected page when an author changes one page's body. It MUST NOT issue a browser-wide `location.reload`, Vite `full-reload`, or equivalent navigation for a content-only edit. The active route MAY replace its page component in place; an inactive route MUST remain untouched and show the new content when next opened. Scroll position and the running application shell SHOULD be preserved.
 
-### 14.4 Validation layers
+Incremental preparation MUST retain unchanged generated files and their modification times. It MUST track the changed source page and its declared dependencies, then update only affected generated routes and assets. A change to a single page MUST NOT delete and recreate the complete generated source tree. Navigation or site-configuration changes MAY refresh the navigation configuration, but MUST NOT be misclassified as an ordinary page-body edit.
+
+An explicit production build MUST use generated-source and cache locations isolated from a concurrently running development server and from every other site. Starting a build MUST NOT cause dev-server reloads, remove files being served, or replace another site's caches. Build output publication MUST remain atomic within the selected site's output directory.
+
+Acceptance MUST be demonstrated by keeping two browser routes open, editing one page body, and confirming that only the tab displaying that route updates without a document navigation; the other tab and application shell remain live. A simultaneous build of that site MUST leave the dev server unchanged. The test SHOULD also edit a referenced asset and verify that only pages depending on it are invalidated.
+
+### 14.4 Conformance fixtures (PROPOSED)
+
+A reference suite SHOULD contain at least: multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; unsupported framework component; component fallback; offline rerender/reload; no-dev-dependency static output; ZIP traversal checks; multi-site isolation; incremental single-page HMR without document reload; concurrent build/dev isolation; and canonical manifest comparisons.
+
+### 14.5 Validation layers
 
 | Layer | Required questions |
 |---|---|

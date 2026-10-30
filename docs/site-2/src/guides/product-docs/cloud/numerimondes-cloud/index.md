@@ -13,6 +13,6 @@ Hosted platform and managed services.
 
 - [Features](/docs/cloud/numerimondes-cloud/features)
 - [Pricing](/docs/cloud/numerimondes-cloud/pricing)
-- [Docs](/docs/cloud/numerimondes-cloud/docs/latest)
+- [Docs](/docs/cloud/numerimondes-cloud/docs/latest/)
 - [Status](/docs/cloud/numerimondes-cloud/status)
 - [Changelog](/docs/cloud/numerimondes-cloud/changelog)

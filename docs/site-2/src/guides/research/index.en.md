@@ -12,7 +12,7 @@ Public thinking: **publications** (self-contained folders with optional attachme
 | Section | Intent |
 | --- | --- |
 | [Publications](/research/publications) | Essays, papers, guest pieces, market notes |
-| [Concepts](/concepts) | Atomic definitions (wiki / hover) |
+| [Concepts](/concepts/) | Atomic definitions (wiki / hover) |
 | [Lab](/research/lab) | Prototypes and demos |
 
 Commercial offers live under [Services](/services) and the rest of the site — research does not host a product catalog.

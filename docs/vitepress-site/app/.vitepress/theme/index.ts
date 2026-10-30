@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import { Fragment, h, nextTick, onBeforeUnmount, onMounted, ref, watch, type Component } from 'vue'
-import { useData, useRoute } from 'vitepress'
+import { useData, useRoute, useRouter } from 'vitepress'
 import guideColors from '@generated/guide-colors.json'
 import generatedFonts from '@generated/fonts.json'
 import siteContent from '@generated/site-content.json'
@@ -202,6 +202,29 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
 const MermaidLayout = {
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const refreshingRoutes = new Set<string>()
+    const normalizePagePath = (path: string) => path
+      .replace(/^\/+/, '')
+      .replace(/(?:^|\/)index(?:\.md)?$/, '')
+      .replace(/\.md$/, '')
+      .replace(/\/+$/, '')
+    const refreshChangedRoute = async ({ path }: { path: string }) => {
+      const changedRoute = normalizePagePath(path)
+      if (changedRoute !== normalizePagePath(route.data.relativePath) || refreshingRoutes.has(changedRoute)) return
+      refreshingRoutes.add(changedRoute)
+      const scrollPosition = window.scrollY
+      try {
+        await router.go(window.location.href)
+        requestAnimationFrame(() => window.scrollTo(0, scrollPosition))
+      } finally {
+        refreshingRoutes.delete(changedRoute)
+      }
+    }
+    if (import.meta.hot) {
+      import.meta.hot.on('spmpst:markdown-route-updated', refreshChangedRoute)
+      onBeforeUnmount(() => import.meta.hot?.off('spmpst:markdown-route-updated', refreshChangedRoute))
+    }
     const configuredLayoutSlots = () => {
       const content = siteContent as typeof siteContent & {
         languages?: string[]

@@ -14,7 +14,7 @@ Là où Numerimondes pense en public : **publications** longues, un glossaire de
 | Section | Intent |
 | --- | --- |
 | [Publications](/research/publications) | Essais, papiers, contributions invitées, notes de marché |
-| [Concepts](/concepts) | Définitions atomiques utilisées dans les articles |
+| [Concepts](/concepts/) | Définitions atomiques utilisées dans les articles |
 | [Lab](/research/lab) | Prototypes, démos, builds expérimentaux |
 
 Les offres commerciales vivent sous [Services](/services) et le reste du site — la recherche ne héberge pas de catalogue produit.

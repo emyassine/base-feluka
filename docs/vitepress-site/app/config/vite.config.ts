@@ -118,6 +118,30 @@ const siteViteConfig = {
   }],
 }
 
+// VitePress sends page-data HMR for Markdown, but its route-module graph can
+// fall back to a browser-wide full reload. Refresh only the active route's Vue
+// component instead; inactive pages are picked up naturally on navigation.
+siteViteConfig.plugins.push({
+  name: 'spmpst-markdown-route-hmr',
+  enforce: 'post',
+  handleHotUpdate(context: {
+    file: string
+    server: { ws: { send: (payload: { type: 'custom'; event: string; data: { path: string } }) => void } }
+  }) {
+    if (!context.file.endsWith('.md')) return
+    const localPath = relative(paths.generatedGuides, resolve(context.file)).split(sep).join('/')
+    if (!localPath || localPath === '..' || localPath.startsWith('../')) return
+
+    const routePath = `/${localPath.replace(/(?:^|\/)index\.md$/, '').replace(/\.md$/, '').replace(/\/$/, '')}`
+    context.server.ws.send({
+      type: 'custom',
+      event: 'spmpst:markdown-route-updated',
+      data: { path: routePath || '/' },
+    })
+    return []
+  },
+})
+
 export default defineConfig(async () => {
   const projectViteConfig = await loadProjectViteConfig()
   return mergeConfig(siteViteConfig, projectViteConfig)
