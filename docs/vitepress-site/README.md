@@ -15,11 +15,14 @@ legal/                    required third-party notices
 ```
 
 The registry's `sitesPaths` entries are resolved relative to this directory.
-Each declaration's `sourcePath`, optional `resourcesPath`, and `outputPath` are
-resolved relative to that declaration file. Each site can therefore own its
-own components, hooks, diagrams, icon and flag catalogues. The default Feluqa
-declaration reads `../docs`, uses this host's `resources/`, and builds to
-`../docs-output`, outside the documentation source tree.
+Each declaration's `sourcePath`, optional `resourcesPath`, optional
+`siteResourcesPath`, and `outputPath` are resolved relative to that declaration
+file. `resourcesPath` points to host-level shared resources such as icon and
+flag catalogues. `siteResourcesPath` points to resources owned by one site.
+The Feluqa declaration uses `sites/feluqa/resources/` for its components,
+hooks, and diagrams, while icons and flags stay in this host's `resources/`.
+It reads `../docs` and builds to `../docs-output`, outside the documentation
+source tree.
 
 ```sh
 npm install
@@ -32,7 +35,7 @@ site to use. Pass `--site <id>` for scripts and automation. To move `app/` to a
 different machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry
 path; resource and source roots continue to come from the selected declaration.
 
-`resources/components`, `resources/hooks`, and `resources/diagrams` are separate
-site-owned concerns. Icons and flags live in their own catalogues under
-`resources/`; they are not mixed into component or hook directories. Required
-third-party notices are kept under `legal/`, outside the application code.
+`sites/<site-id>/resources/components`, `hooks`, and `diagrams` remain specific
+to that site. Shared icons and flags live in separate catalogues under
+`resources/`. Required third-party notices are kept under `legal/`, outside
+the application code.

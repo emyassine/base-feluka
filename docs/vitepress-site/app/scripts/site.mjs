@@ -21,6 +21,7 @@ const env = {
   VITEPRESS_SITE_ROOT: site.sourceRoot,
   VITEPRESS_TRASH_DIR: trashDirectory,
   VITEPRESS_RESOURCES_DIR: process.env.VITEPRESS_RESOURCES_DIR ?? site.resourcesRoot,
+  VITEPRESS_SITE_RESOURCES_DIR: process.env.VITEPRESS_SITE_RESOURCES_DIR ?? site.siteResourcesRoot,
 }
 
 function run(binary, commandArgs, runEnv = env) {

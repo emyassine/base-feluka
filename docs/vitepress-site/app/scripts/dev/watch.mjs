@@ -11,6 +11,7 @@ const sitePaths = resolveSitePaths(siteDirectory)
 const sourceDirectory = resolve(sitePaths.sourceRoot, 'src')
 const siteConfigDirectory = resolve(sitePaths.sourceRoot, '.site')
 const resourceDirectory = sitePaths.resourcesDirectory
+const siteResourceDirectory = sitePaths.siteResourcesDirectory
 const sourceResourceDirectory = resolve(sitePaths.sourceRoot, 'resources')
 const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
@@ -54,6 +55,8 @@ async function structuralSignature() {
   await visit(siteConfigDirectory, siteConfigDirectory)
   hash.update('resources\0')
   await visit(resourceDirectory, resourceDirectory)
+  hash.update('site-resources\0')
+  if (existsSync(siteResourceDirectory)) await visit(siteResourceDirectory, siteResourceDirectory)
   if (existsSync(sourceResourceDirectory)) {
     hash.update('source-resources\0')
     await visit(sourceResourceDirectory, sourceResourceDirectory)

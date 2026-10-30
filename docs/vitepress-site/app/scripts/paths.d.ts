@@ -2,6 +2,7 @@ export interface SitePaths {
   appDirectory: string
   sourceRoot: string
   resourcesDirectory: string
+  siteResourcesDirectory: string
   trashDirectory: string
   generatedGuides: string
   generatedMetadata: string

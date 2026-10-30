@@ -216,9 +216,10 @@ adapter replaces references with validated file paths before rendering. Source:
 `docs/vitepress-site/app/scripts/spmpst/resources.mjs#parseResourceReference`
 and `docs/vitepress-site/app/scripts/preparation/resolve-resource.mjs#resolveVitepressResource`.
 
-Language flags and Mermaid settings are owned by the VitePress adapter under
-`docs/vitepress-site/resources/flags/` and
-`docs/vitepress-site/resources/diagrams/` respectively.
+Language flags are provided by the VitePress host under
+`docs/vitepress-site/resources/flags/`. Mermaid settings are Feluqa-site-owned
+at `docs/vitepress-site/sites/feluqa/resources/diagrams/`; another registered
+site can provide its own settings and diagrams.
 Mermaid rendering may generate light and dark variants. Source:
 `docs/vitepress-site/app/scripts/preparation/stages/transform-markdown.mjs#renderDiagram`
 

@@ -18,7 +18,7 @@ const layout = resolveLayout(siteDirectory)
 const paths = resolveSitePaths(siteDirectory)
 const loadedSite = loadSiteModelSync(layout)
 const siteConfiguration = toVitepressRuntime(loadedSite.model, loadedSite.targets.vitepress, layout)
-const componentDirectory = resolve(siteConfiguration.project?.components ?? resolve(paths.resourcesDirectory, 'components'))
+const componentDirectory = resolve(siteConfiguration.project?.components ?? resolve(paths.siteResourcesDirectory, 'components'))
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -47,7 +47,7 @@ const mimeTypes: Record<string, string> = {
 
 const siteViteConfig = {
   // Component-owned assets live under the configured component root.
-  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.treeRoot, paths.resourcesDirectory, componentDirectory])] } },
+  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.treeRoot, paths.resourcesDirectory, paths.siteResourcesDirectory, componentDirectory])] } },
   cacheDir: paths.vitepressCache,
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {

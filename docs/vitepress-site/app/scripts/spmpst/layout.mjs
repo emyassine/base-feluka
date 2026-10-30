@@ -6,6 +6,7 @@ export function resolveLayout(siteDirectory) {
   const guidesDir = resolve(treeRoot, 'src/guides')
   const resourcesDir = resolve(treeRoot, 'resources')
   const targetResourcesDir = resolve(process.env.VITEPRESS_RESOURCES_DIR ?? resolve(siteDirectory, '../resources'))
+  const siteResourcesDir = resolve(process.env.VITEPRESS_SITE_RESOURCES_DIR ?? resolve(siteDirectory, '../sites/feluqa/resources'))
   return {
     treeRoot,
     siteDir: resolve(treeRoot, '.site'),
@@ -13,9 +14,10 @@ export function resolveLayout(siteDirectory) {
     collectionsDir: resolve(treeRoot, 'src/collections'),
     resourcesDir,
     targetResourcesDir,
+    siteResourcesDir,
     flagsDir: resolve(targetResourcesDir, 'flags/language'),
     iconsDir: resolve(targetResourcesDir, 'icons'),
-    mermaidConfigPath: resolve(targetResourcesDir, 'diagrams/mermaid.json'),
+    mermaidConfigPath: resolve(siteResourcesDir, 'diagrams/mermaid.json'),
     configBase: treeRoot,
     version: 'spmpst',
   }

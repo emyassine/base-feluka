@@ -29,7 +29,7 @@ const styleFiles = configuredStyles.map((stylePath) => {
     throw new Error('Each styles entry must resolve to a CSS file inside VitePress resources')
   }
   const resolvedPath = resolve(stylePath)
-  const localPath = relative(layout.targetResourcesDir, resolvedPath)
+  const localPath = relative(layout.siteResourcesDir, resolvedPath)
   if (!localPath || localPath === '..' || localPath.startsWith(`..${sep}`) || extname(resolvedPath).toLowerCase() !== '.css') {
     throw new Error(`Invalid CSS path in styles: ${stylePath}`)
   }
@@ -201,10 +201,11 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
   if (typeof value !== 'string' || !value.trim()) {
     throw new Error(`project.${key} must be a non-empty directory path relative to the documentation tree`)
   }
-  const target = resolve(layout.targetResourcesDir, value)
-  const local = relative(layout.targetResourcesDir, target)
+  const resourceRoot = key === 'iconLibrary' ? layout.targetResourcesDir : layout.siteResourcesDir
+  const target = resolve(resourceRoot, value)
+  const local = relative(resourceRoot, target)
   if (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..')) {
-    throw new Error(`project.${key} must stay inside the VitePress resources directory`)
+    throw new Error(`project.${key} must stay inside its resource directory`)
   }
   let metadata
   try {
@@ -261,7 +262,10 @@ function resolveSidebarIcon(directory, iconPath, context) {
   const candidate = /\.svg$/i.test(iconPath) ? resolve(directory, iconPath) : findIcon(iconPath)
   const relativePath = candidate ? relative(sourceRoot, candidate) : '..'
   const inGuides = relativePath !== '..' && !relativePath.startsWith(`..${sep}`)
-  const inResources = candidate && relative(layout.targetResourcesDir, candidate) !== '..' && !relative(layout.targetResourcesDir, candidate).startsWith(`..${sep}`)
+  const inResources = candidate && [layout.targetResourcesDir, layout.siteResourcesDir].some((root) => {
+    const local = relative(root, candidate)
+    return local !== '..' && !local.startsWith(`..${sep}`)
+  })
   if (candidate && ((inGuides && existsSync(candidate)) || (inResources && existsSync(candidate)))) return candidate
   if (!reportedFallbacks.has(iconPath)) {
     process.stderr.write(`[icons] ${context}: "${iconPath}" not found; using "${iconFallbackName}".\n`)
@@ -393,7 +397,7 @@ function stagedPath(sourcePath, language = null) {
 /** INPUT DISCOVERY — copy assets and collect Markdown, sidebar, and route records. */
 /** ASSET STAGING — content-address assets and publish them to generated public roots. */
 async function copyAsset(sourceFile) {
-  const allowedRoots = [layout.guidesDir, layout.collectionsDir, layout.resourcesDir, layout.targetResourcesDir]
+  const allowedRoots = [layout.guidesDir, layout.collectionsDir, layout.resourcesDir, layout.targetResourcesDir, layout.siteResourcesDir]
   const insideAllowedRoot = allowedRoots.some((root) => {
     const path = relative(root, sourceFile)
     return path !== '..' && !path.startsWith(`..${sep}`)

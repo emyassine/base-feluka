@@ -3,7 +3,7 @@ export default {
   content: [
     './.vitepress/**/*.{vue,ts,js}',
     '../.trash/generated-guides/**/*.md',
-    '../resources/components/**/*.{vue,md}',
+    '../sites/feluqa/resources/components/**/*.{vue,md}',
     '../../src/guides/**/*.{vue,md}',
   ],
   corePlugins: {

@@ -22,8 +22,10 @@ export async function loadSites() {
         throw new Error(`${declarationPath}: ${key} must be a non-empty string`)
       }
     }
-    if (declaration.resourcesPath != null && (typeof declaration.resourcesPath !== 'string' || !declaration.resourcesPath.trim())) {
-      throw new Error(`${declarationPath}: resourcesPath must be a non-empty path when provided`)
+    for (const key of ['resourcesPath', 'siteResourcesPath']) {
+      if (declaration[key] != null && (typeof declaration[key] !== 'string' || !declaration[key].trim())) {
+        throw new Error(`${declarationPath}: ${key} must be a non-empty path when provided`)
+      }
     }
     const base = dirname(declarationPath)
     return {
@@ -33,6 +35,9 @@ export async function loadSites() {
       resourcesRoot: declaration.resourcesPath
         ? (isAbsolute(declaration.resourcesPath) ? declaration.resourcesPath : resolve(base, declaration.resourcesPath))
         : resolve(dirname(registryPath), 'resources'),
+      siteResourcesRoot: declaration.siteResourcesPath
+        ? (isAbsolute(declaration.siteResourcesPath) ? declaration.siteResourcesPath : resolve(base, declaration.siteResourcesPath))
+        : resolve(base, 'resources'),
       outputRoot: isAbsolute(declaration.outputPath) ? declaration.outputPath : resolve(base, declaration.outputPath),
     }
   }))

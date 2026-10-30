@@ -5,6 +5,7 @@ export interface SiteLayout {
   collectionsDir: string
   resourcesDir: string
   targetResourcesDir: string
+  siteResourcesDir: string
   flagsDir: string
   iconsDir: string
   mermaidConfigPath: string
