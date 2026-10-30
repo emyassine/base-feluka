@@ -26,6 +26,10 @@ type ReactDevText = {
   lead?: string
   detail?: string
   previewTitle?: string
+  previewSubtitle?: string
+  codeSnippet?: string
+  codeTitle?: string
+  contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
 }
 
@@ -65,6 +69,40 @@ function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
     node.children.forEach(visit)
   }
   visit(root)
+}
+
+function applyContentReplacements(root: ReactDevHtmlNode, replacements: Record<string, string>): void {
+  if (root.type === 'text') {
+    for (const [source, replacement] of Object.entries(replacements)) root.value = root.value.replaceAll(source, replacement)
+    return
+  }
+  if (root.type === 'element') {
+    for (const [name, value] of Object.entries(root.attrs)) {
+      if (typeof value !== 'string') continue
+      for (const [source, replacement] of Object.entries(replacements)) root.attrs[name] = value.replaceAll(source, replacement)
+    }
+  }
+  root.children.forEach((child) => applyContentReplacements(child, replacements))
+}
+
+function replaceCodeSnippet(root: ReactDevHtmlNode, source: string): void {
+  const blocks: Array<{ code: ReactDevHtmlNode; pre?: ReactDevHtmlNode }> = []
+  const visit = (node: ReactDevHtmlNode, parent?: ReactDevHtmlNode) => {
+    if (node.type !== 'element') return
+    if (node.tag === 'code' && typeof node.attrs.class === 'string' && node.attrs.class.includes('sp-pre-placeholder')) blocks.push({ code: node, pre: parent })
+    node.children.forEach((child) => visit(child, node))
+  }
+  visit(root)
+  const block = blocks[0]
+  if (!block || block.code.type !== 'element') return
+  if (block.pre?.type === 'element' && typeof block.pre.attrs.class === 'string') {
+    block.pre.attrs.class = block.pre.attrs.class.replace(/sp-(?:javascript|jsx|typescript|tsx|html|json|css)(?=\s|$)/, 'sp-rust')
+  }
+  const lines = source.replace(/\n$/, '').split('\n')
+  block.code.children = lines.map((line) => ({
+    type: 'element', tag: 'div', attrs: { class: 'cm-line' },
+    children: line ? [{ type: 'element', tag: 'span', attrs: { class: 'sp-syntax-plain' }, children: [{ type: 'text', value: line }] }] : [{ type: 'element', tag: 'br', attrs: {}, children: [] }],
+  }))
 }
 
 function iconNode(name: ReactDevIcon): VNode {
@@ -117,10 +155,14 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
 
 function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headingTag: 'h1' | 'h2' = 'h2'): VNode {
   const tree = JSON.parse(JSON.stringify(source)) as ReactDevHtmlNode
+  if (text.contentReplacements) applyContentReplacements(tree, text.contentReplacements)
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
+  if (text.codeSnippet !== undefined) replaceCodeSnippet(tree, text.codeSnippet)
+  if (text.codeTitle !== undefined) replaceElementText(tree, 'h3', text.codeTitle)
   if (text.previewTitle !== undefined) replaceElementText(tree, 'h1', text.previewTitle)
+  if (text.previewSubtitle !== undefined) replaceElementText(tree, 'p', text.previewSubtitle)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
 
@@ -131,13 +173,18 @@ export default defineComponent({
     lead: String,
     detail: String,
     previewTitle: { type: String, default: 'React Videos' },
+    previewSubtitle: String,
+    codeSnippet: String,
+    codeTitle: String,
+    contentReplacements: Object as PropType<Record<string, string>>,
     ctaLabel: { type: String, default: 'Add React to your page' },
     ctaHref: { type: String, default: 'https://react.dev/learn/add-react-to-an-existing-project' },
     ctaIcon: { type: String as PropType<ReactDevIcon>, default: 'code' },
   },
   setup(props) {
     return () => renderReactDevBlock(interactivity, {
-      title: props.title, lead: props.lead, detail: props.detail, previewTitle: props.previewTitle,
+      title: props.title, lead: props.lead, detail: props.detail, previewTitle: props.previewTitle, previewSubtitle: props.previewSubtitle,
+      codeSnippet: props.codeSnippet, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements,
       actions: [{ sourceLabel: 'Add React to your page', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'cta' }],
     })
   }
