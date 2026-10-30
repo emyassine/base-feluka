@@ -40,7 +40,8 @@
   },
   "theme": {
     "slots": {
-      "sidebar-nav-before": "BranchedSidebar"
+      "sidebar-nav-before": "BranchedSidebar",
+      "nav-bar-content-after": "CollectionArticleSubnav"
     }
   },
   "subguides": [

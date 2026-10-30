@@ -614,6 +614,15 @@ function humanize(value) {
   return value.split('/').at(-1).replace(/\.[a-z]{2,3}\.md$/i, '').replace(/\.[^.]+$/, '').replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
 
+function readingMetrics(markdown) {
+  const body = markdown.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/, '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+  const wordCount = body.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu)?.length ?? 0
+  return { wordCount, readingTime: Math.max(1, Math.ceil(wordCount / 200)) }
+}
+
 const generatedCollectionNavigation = []
 const generatedCollectionPages = new Set()
 for (const collection of collectionMetadata.values()) {
@@ -647,7 +656,8 @@ for (const collection of collectionMetadata.values()) {
         const category = frontmatterScalar(markdown, 'category') || (collection.categoryEntries.length === 1 ? collection.categoryEntries[0].id : '')
         const recordLanguage = sourceLanguage(record.from)
         const target = recordLanguage === language.toLowerCase() ? record.to : stagedPath(record.from, language)
-        return { title: articleTitle, description, date, category, url: publicMarkdownLink(target) }
+        const { wordCount, readingTime } = readingMetrics(markdown)
+        return { title: articleTitle, description, date, category, wordCount, readingTime, url: publicMarkdownLink(target) }
       })
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
@@ -860,7 +870,8 @@ await Promise.all(records.map(async (record) => {
   if (owningCollection?.layout === 'article') {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
     if (metadata && !/^collection:\s*/m.test(metadata[1])) {
-      markdown = markdown.replace(metadata[0], `---\n${metadata[1]}\ncollection: ${JSON.stringify(owningCollection.id)}\n---`)
+      const { wordCount, readingTime } = readingMetrics(markdown)
+      markdown = markdown.replace(metadata[0], `---\n${metadata[1]}\ncollection: ${JSON.stringify(owningCollection.id)}\nwordCount: ${wordCount}\nreadingTime: ${readingTime}\n---`)
     }
   }
   const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)

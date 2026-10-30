@@ -464,15 +464,16 @@ const MermaidLayout = {
       const locale = lang.value.toLowerCase().split('-')[0]
       return collection?.links[locale] ?? collection?.links.en ?? '/'
     }
+    const syncCollectionLayout = () => document.documentElement.classList.toggle('collection-article-layout', articleLayout())
+    onMounted(syncCollectionLayout)
+    const stopWatchingCollection = watch(() => frontmatter.value.collection, syncCollectionLayout, { flush: 'post' })
+    onBeforeUnmount(() => {
+      stopWatchingCollection()
+      document.documentElement.classList.remove('collection-article-layout')
+    })
     return () => h(DefaultTheme.Layout, null, {
       ...configuredLayoutSlots(),
-      'doc-before': () => h(Fragment, null, [
-        articleLayout() ? h('div', { class: 'collection-article-topbar' }, [
-          h((projectComponents as Record<string, Component>).CollectionArticleSubnav),
-          h(PageActions),
-        ]) : null,
-        h(DocumentationNotice, { notices: siteContent.documentationNotices }),
-      ]),
+      'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
         h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[lang.value.toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
       ]) : null,

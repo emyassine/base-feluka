@@ -8,7 +8,6 @@ date: 2026-10-30
 lastmod: 2026-10-30
 status: "Implemented"
 category: "building"
-readingTime: 2
 tags: [feluqa, application, article]
 ---
 

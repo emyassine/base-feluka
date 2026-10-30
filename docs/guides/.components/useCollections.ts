@@ -5,6 +5,8 @@ export interface CollectionArticle {
   description: string;
   date: string;
   category: string;
+  wordCount: number;
+  readingTime: number;
   url: string;
 }
 
