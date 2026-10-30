@@ -242,7 +242,7 @@
             "url": "/get-started/"
           },
           {
-            "label": "Feluqa’s Internals",
+            "label": "Internals",
             "description": "Explore runtime, workspace, and compile-time architecture.",
             "url": "/internals/"
           },
