@@ -41,7 +41,7 @@ const items = computed(() => sourceItems.value.flatMap((item) => {
         icon: iconFromText(child.text ?? ''),
       }]
     })
-    return children.length ? [{ label, children }] : []
+    return children.length ? [{ label, ...(item.link ? { value: item.link } : {}), children }] : []
   }
   const icon = iconFromText(item.text ?? '')
   return item.link ? [{ label, value: item.link, icon }] : []
@@ -49,8 +49,15 @@ const items = computed(() => sourceItems.value.flatMap((item) => {
 
 const normalizePath = (path: string) => path.replace(/index\.html$/, '').replace(/\.html$/, '').replace(/\/+$/, '') || '/'
 const activeLink = computed(() => normalizePath(route.path))
+const pathContainsRoute = (path: string) => {
+  const target = normalizePath(path)
+  return activeLink.value === target || activeLink.value.startsWith(`${target}/`)
+}
 const selectedLink = computed(() => items.value.flatMap((item) => item.children ?? [])
-  .find((child) => normalizePath(child.value) === activeLink.value)?.value ?? activeLink.value)
+  .find((child) => pathContainsRoute(child.value))?.value ?? activeLink.value)
+const openSection = computed(() => items.value.findIndex((item) =>
+  (item.value ? pathContainsRoute(item.value) : false) || item.children?.some((child) => pathContainsRoute(child.value)),
+))
 function navigate(path: string): void {
   void router.go(path)
 }
@@ -61,13 +68,13 @@ function navigate(path: string): void {
     <BranchedMenu
       :key="route.path"
       :items="items"
-      :default-open="items.map((_, index) => index)"
+      :default-open="openSection"
       :default-active="selectedLink"
       :width="248"
       :row-height="34"
       :indent="32"
       color="var(--vp-c-text-1)"
-      accent-color="var(--vp-c-text-1)"
+      accent-color="var(--vp-c-brand-1)"
       line-color="var(--vp-c-divider)"
       @select="(path: string) => navigate(path)"
     />
