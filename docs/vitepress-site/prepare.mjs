@@ -126,7 +126,6 @@ async function validateMarkdownIcons(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const file = join(directory, entry.name)
     if (entry.isDirectory()) {
-      if (entry.name.startsWith('.')) continue
       await validateMarkdownIcons(file)
       continue
     }

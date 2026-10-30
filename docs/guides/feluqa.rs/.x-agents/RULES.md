@@ -1,3 +1,7 @@
+---
+icon: "bot"
+---
+
 # Local Documentation Rules
 
 - Keep published guide pages focused on information readers need. Do not add
