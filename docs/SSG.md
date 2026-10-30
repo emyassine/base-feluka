@@ -45,7 +45,7 @@ SPMPST defines a durable authoring-and-distribution contract so that one source 
 ### 1.2 Design principles
 
 1. **Portability by construction.** Content, configuration, and logical resources are not required to embed a specific machine path, build host, or renderer API.
-2. **Server-rendered or pre-rendered HTML first.** A page's primary content MUST be available as meaningful HTML without requiring client-side JavaScript. Dynamic server rendering is an OPTIONAL deployment profile (§5), not a condition for static-site correctness.
+2. **HTML-first, with progressive interactivity.** A page's primary authored content MUST be available as meaningful HTML without requiring client-side JavaScript. Interactive features such as search, filtering, sorting, and menus MAY require JavaScript; the HTML-first rule does not require full feature parity with scripts disabled. Dynamic server rendering is an OPTIONAL deployment profile (§5), not a condition for static-site correctness.
 3. **Offline-first delivery.** A build claiming the Offline-Complete profile MUST function without external network access, as defined precisely in §6; an ordinary static deployment need not claim offline browsing before installation or caching.
 4. **Per-site isolation.** Distinct sites MUST have separate resolved configuration, build graphs, output destinations, manifests, and packaged assets.
 5. **Standards-forward extensibility.** Unknown valid HTML and future standard elements MUST pass through without an SPMPST core release, subject to explicit sanitization policy.
@@ -172,7 +172,9 @@ Parsing of Markdown MUST NOT treat arbitrary inline text as an executable direct
 
 ### 5.1 Universal HTML contract
 
-Every published page in the `static-html` and `server-rendered` profiles MUST deliver its primary readable content as HTML from the host without relying on browser-side JavaScript execution. The HTML output MUST preserve document semantics, accessible text, headings, links, forms, and media fallbacks to the extent supported by the source. It MUST NOT claim full interactivity without scripting where the feature actually requires it.
+Every published page in the `static-html` and `server-rendered` profiles MUST deliver its primary readable content as HTML from the host without relying on browser-side JavaScript execution. The HTML output MUST preserve document semantics, accessible text, headings, links, forms, and media fallbacks to the extent supported by the source. This requirement concerns reading and navigating authored content; it does not require interactive features to work with JavaScript disabled.
+
+Search, filtering, sorting, and similar controls MAY be implemented as client-side features, including on static sites. Their scripts MUST be declared under the script policy in §10.3. If a feature cannot run because JavaScript is disabled or unavailable, its controls MUST expose an accessible explanation or fallback, while the page's primary content remains readable. A static site is not required to provide a second, script-free implementation of client-side search.
 
 ### 5.2 Rendering modes (PROPOSED)
 
@@ -184,6 +186,8 @@ Every published page in the `static-html` and `server-rendered` profiles MUST de
 | `client-only` | browser execution | yes | not necessarily; forbidden for required core content in HTML-first profiles |
 
 **Requirement clarification:** “Always provide real-time server rendering” is interpreted as **always support the ability to select a request-time SSR target when an SSR-capable adapter and host are present**, while **always providing valid prerendered HTML for a static target**. A static ZIP cannot independently perform request-time SSR on a static hosting service. The runtime selection MUST be explicit, not simulated or implied.
+
+The JavaScript-disabled column describes access to primary page content, not complete feature parity. For example, a static documentation site MAY use a bundled local search index and JavaScript search interface without requiring a server-side search endpoint.
 
 ### 5.3 Freshness and cache policy
 
