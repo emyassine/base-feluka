@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import heroImage from './assets/hero.webp'
+import SideRays from './SideRays.vue'
 
 defineProps<{
   title: string
@@ -14,8 +15,24 @@ defineProps<{
 </script>
 
 <template>
-  <section class="py-28 lg:py-32 lg:pt-44">
-    <div class="container flex flex-col justify-between gap-8 md:gap-14 lg:flex-row lg:gap-20">
+  <section class="relative isolate py-28 lg:py-32 lg:pt-44">
+    <div class="pointer-events-none absolute inset-x-0 top-0 z-0 h-[440px] overflow-hidden md:h-[500px] lg:h-[600px]" aria-hidden="true">
+      <SideRays
+        :speed="2.5"
+        ray-color1="var(--vp-c-brand-1)"
+        ray-color2="var(--vp-c-brand-2)"
+        :intensity="2"
+        :spread="2"
+        origin="top-right"
+        :tilt="0"
+        :saturation="1.5"
+        :blend="0.75"
+        :falloff="1.6"
+        :opacity="0.48"
+      />
+    </div>
+
+    <div class="container relative z-10 flex flex-col justify-between gap-8 md:gap-14 lg:flex-row lg:gap-20">
       <div class="flex-1">
         <h1 class="text-foreground max-w-160 !text-3xl !tracking-tight md:!text-4xl lg:!text-5xl xl:whitespace-nowrap">
           {{ title }}
@@ -43,7 +60,7 @@ defineProps<{
       </div>
     </div>
 
-    <div class="mt-12 max-lg:ml-6 max-lg:h-[550px] max-lg:overflow-hidden md:mt-20 lg:container lg:mt-24">
+    <div class="relative z-10 mt-12 max-lg:ml-6 max-lg:h-[550px] max-lg:overflow-hidden md:mt-20 lg:container lg:mt-24">
       <div class="relative h-[793px] w-full overflow-hidden rounded-2xl shadow-lg max-lg:rounded-tr-none">
         <img :src="heroImage" :alt="heroAlt" class="h-full w-full object-cover object-left-top" />
       </div>

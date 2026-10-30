@@ -1,10 +1,12 @@
 import { createReadStream, existsSync, readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadConfigFromFile, mergeConfig } from 'vite'
 
 const siteDirectory = fileURLToPath(new URL('.', import.meta.url))
 const projectDirectory = resolve(siteDirectory, '../guides')
+const siteRequire = createRequire(join(siteDirectory, 'package.json'))
 const siteConfiguration = JSON.parse(readFileSync(join(projectDirectory, 'vitepress.site.config.json'), 'utf8'))
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
@@ -42,6 +44,21 @@ const siteViteConfig = {
   },
   publicDir: publicDirectory,
   plugins: [{
+    name: 'resolve-guide-component-dependencies',
+    enforce: 'pre' as const,
+    resolveId(source: string, importer?: string) {
+      if (!importer || source.startsWith('.') || source.startsWith('/') || source.startsWith('node:')) return null
+      if (source === 'vue' || source.startsWith('vue/') || source === 'vitepress') return null
+      const importerPath = importer.split(/[?#]/, 1)[0]
+      const guideRelativePath = relative(projectDirectory, importerPath)
+      if (guideRelativePath === '..' || guideRelativePath.startsWith(`..${sep}`)) return null
+      try {
+        return siteRequire.resolve(source)
+      } catch {
+        return null
+      }
+    },
+  }, {
     name: 'generated-public-assets',
     configureServer(server: { middlewares: { use: (handler: (request: any, response: any, next: () => void) => void) => void } }) {
       server.middlewares.use((request, response, next) => {

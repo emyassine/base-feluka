@@ -14,5 +14,8 @@
     "postcss": "^8.5.32",
     "tailwindcss": "^3.4.19",
     "vitepress": "^1.6.4"
+  },
+  "dependencies": {
+    "ogl": "^1.0.11"
   }
 }
