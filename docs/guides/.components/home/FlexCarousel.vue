@@ -1483,7 +1483,7 @@ watch(modalOpen, (open) => {
     <div class="relative mt-8 w-screen left-1/2 -translate-x-1/2 overflow-x-hidden md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative min-h-[750px] w-full outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
+        class="relative min-h-[750px] w-full max-w-full overflow-x-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
         :class="className"
         :style="{ '--flex-carousel-half': half }"
         role="region"
@@ -1503,14 +1503,6 @@ watch(modalOpen, (open) => {
             {{ current.title || current.alt }}
             <span v-if="current.subtitle" class="opacity-60 font-normal">{{ current.subtitle }}</span>
           </span>
-          <button
-            v-if="showCardButton && current?.href"
-            @click.stop="performAction()"
-            class="mt-4 inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium shadow-md !text-foreground !no-underline hover:bg-background/80"
-          >
-            {{ cardButtonLabel }}
-            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-          </button>
           <span
             class="inline-flex items-center gap-[3px] opacity-50 data-[hidden]:opacity-0 tabular-nums text-[12px] leading-none transition-opacity duration-[400ms]"
             :data-hidden="focusOpen ? '' : undefined"
@@ -1521,6 +1513,19 @@ watch(modalOpen, (open) => {
           </span>
         </div>
         <div class="sr-only" aria-live="polite" aria-atomic="true">{{ `${label}, ${active + 1} of ${list.length}` }}</div>
+
+        <div
+          v-if="showCardButton && current?.href"
+          class="absolute bottom-16 left-1/2 -translate-x-1/2 flex justify-center w-full"
+        >
+          <a
+            :href="current.href"
+            class="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/30 bg-black/45 backdrop-blur-md px-7 py-3 text-sm font-semibold text-white hover:bg-black/60 no-underline shadow-xl transition-all"
+          >
+            {{ cardButtonLabel || current.title }}
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -1538,13 +1543,13 @@ watch(modalOpen, (open) => {
           <button
             v-if="list.length > 1"
             @click="prevModalItem"
-            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
             aria-label="Previous image"
           >‹</button>
           <div class="flex-1 flex flex-col items-center gap-4 px-2 text-center">
             <button
               @click="closeModal"
-              class="absolute top-4 right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+              class="absolute top-4 right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
               aria-label="Close gallery"
             >×</button>
             <img
@@ -1566,7 +1571,7 @@ watch(modalOpen, (open) => {
           <button
             v-if="list.length > 1"
             @click="nextModalItem"
-            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
             aria-label="Next image"
           >›</button>
         </div>

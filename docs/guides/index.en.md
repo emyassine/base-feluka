@@ -67,7 +67,7 @@ layout: home
     action-label="Start building"
     action-href="/get-started/"
     preset="ribbon"
-    :card-height="0.7"
+    :card-height="0.3"
     :gap="16"
     autoplay
     :dispersion="0.7"
