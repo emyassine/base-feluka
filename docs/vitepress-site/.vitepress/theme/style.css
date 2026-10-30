@@ -191,6 +191,16 @@
   mask: url('../../icons/lucide/clock.svg') center / contain no-repeat;
 }
 
+.VPDocFooter .pager-link .title.DocumentationPagerTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.VPDocFooter .pager-link.next .title.DocumentationPagerTitle {
+  justify-content: flex-end;
+}
+
 .vp-doc .mermaid-figure {
   position: relative;
   max-width: 100%;

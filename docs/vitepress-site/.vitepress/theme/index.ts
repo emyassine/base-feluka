@@ -4,6 +4,7 @@ import { useData, useRoute } from 'vitepress'
 import guideColors from '../generated/guide-colors.json'
 import generatedFonts from '../generated/fonts.json'
 import siteContent from '../generated/site-content.json'
+import sidebarPageIcons from '../generated/sidebar-page-icons.json'
 import { DocumentationLastModified, DocumentationNotice } from '../generated/theme'
 import { projectComponents, registerProjectComponents } from '../generated/components'
 import './tailwind.css'
@@ -169,6 +170,40 @@ function createIcon(name: 'in' | 'out' | 'expand' | 'close'): SVGSVGElement {
     svg.append(path)
   }
   return svg
+}
+
+function normalizePagerPath(path: string): string {
+  return path.replace(/\/index(?:\.html)?$/, '').replace(/\.html$/, '').replace(/\/+$/, '') || '/'
+}
+
+function installPagerIcons(): void {
+  const icons = sidebarPageIcons as Record<string, string>
+  const iconsByPath = new Map(Object.entries(icons).map(([path, icon]) => [normalizePagerPath(path), `/${icon.replace(/^\/+/, '')}`] as const))
+  document.querySelectorAll<HTMLAnchorElement>('.VPDocFooter .pager-link').forEach((link) => {
+    const title = link.querySelector<HTMLElement>('.title')
+    if (!title) return
+    const path = normalizePagerPath(new URL(link.href, window.location.href).pathname)
+    const iconUrl = iconsByPath.get(path)
+    let icon = title.querySelector<HTMLElement>('.DocumentationPagerIcon')
+    if (title.querySelector('.sidebar-group-icon:not(.DocumentationPagerIcon)')) {
+      icon?.remove()
+      title.classList.remove('DocumentationPagerTitle')
+      return
+    }
+    if (!iconUrl) {
+      icon?.remove()
+      title.classList.remove('DocumentationPagerTitle')
+      return
+    }
+    if (!icon) {
+      icon = document.createElement('span')
+      icon.className = 'sidebar-group-icon DocumentationPagerIcon'
+      icon.setAttribute('aria-hidden', 'true')
+      title.prepend(icon)
+    }
+    icon.style.setProperty('--sidebar-group-icon-url', `url("${iconUrl}")`)
+    title.classList.add('DocumentationPagerTitle')
+  })
 }
 
 function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expand' | 'close'): HTMLButtonElement {
@@ -398,17 +433,22 @@ const MermaidLayout = {
     openDiagram(figure)
   }
 
+  const installPageEnhancements = () => {
+    installFigures()
+    installPagerIcons()
+  }
+
   onMounted(() => {
     applyGuideColors()
     document.addEventListener('click', handleClick)
     document.addEventListener('keydown', handleKeydown)
-    observer = new MutationObserver(installFigures)
+    observer = new MutationObserver(installPageEnhancements)
     observer.observe(document.body, { childList: true, subtree: true })
     themeObserver = new MutationObserver(() => { applyGuideColors(); syncDiagramTheme() })
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    void nextTick(installFigures)
+    void nextTick(installPageEnhancements)
   })
-  const stopWatchingRoute = watch(() => route.path, () => void nextTick(() => { applyGuideColors(); installFigures() }), { flush: 'post' })
+  const stopWatchingRoute = watch(() => route.path, () => void nextTick(() => { applyGuideColors(); installPageEnhancements() }), { flush: 'post' })
   onBeforeUnmount(() => {
     stopWatchingRoute()
     observer?.disconnect()
