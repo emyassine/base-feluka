@@ -1397,54 +1397,56 @@ const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 5
 </script>
 
 <template>
-  <section class="mx-auto w-full max-w-7xl px-6 py-20 sm:px-8 lg:py-24">
-    <header v-if="title || description || (actionLabel && actionHref)" class="mb-8 flex flex-col gap-5 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
-      <div class="max-w-2xl space-y-2">
-        <h2 v-if="title" class="!m-0 !text-2xl !font-semibold !tracking-tight md:!text-3xl">{{ title }}</h2>
-        <p v-if="description" class="!m-0 max-w-xl text-sm leading-6 text-muted-foreground md:text-base">{{ description }}</p>
+  <section class="w-full overflow-hidden py-28 lg:py-32">
+    <div class="container">
+      <div class="space-y-4">
+        <h2 v-if="title" class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
+        <p v-if="description" class="text-muted-foreground max-w-md leading-snug">{{ description }}</p>
+        <a
+          v-if="actionLabel && actionHref"
+          :href="actionHref"
+          class="inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium shadow-md !text-foreground !no-underline"
+        >
+          {{ actionLabel }}
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
       </div>
-      <a
-        v-if="actionLabel && actionHref"
-        :href="actionHref"
-        class="inline-flex h-9 shrink-0 items-center justify-center gap-2 self-start rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground no-underline transition-colors hover:bg-muted sm:self-auto"
-      >
-        {{ actionLabel }}
-        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-      </a>
-    </header>
-  <div
-    ref="containerRef"
-    class="relative h-[420px] w-full overflow-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:h-[500px]"
-    :class="className"
-    :style="{ '--flex-carousel-half': half }"
-    role="region"
-    aria-roledescription="carousel"
-    :aria-label="title || 'Image carousel'"
-    tabindex="0"
-  >
-    <div
-      v-if="captions && current && revealed"
-      class="absolute inset-x-0 flex flex-col top-[calc(50%_+_var(--flex-carousel-half)_*_var(--flex-carousel-lift,1)_+_22px)] items-center gap-1.5 px-4 text-center animate-[flex-carousel-reveal_900ms_ease_both] motion-reduce:animate-none pointer-events-none"
-      aria-hidden="true"
-    >
-      <span
-        :key="active"
-        class="flex flex-col items-center max-w-full font-medium text-[15px] leading-[1.35] animate-[flex-carousel-title_520ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
-      >
-        {{ current.title || current.alt }}
-        <span v-if="current.subtitle" class="opacity-60 font-normal">{{ current.subtitle }}</span>
-      </span>
-      <span
-        class="inline-flex items-center gap-[3px] opacity-50 data-[hidden]:opacity-0 tabular-nums text-[12px] leading-none transition-opacity duration-[400ms]"
-        :data-hidden="focusOpen ? '' : undefined"
-      >
-        <Digits :value="active + 1" />
-        <span class="opacity-60">/</span>
-        <span>{{ String(list.length).padStart(2, '0') }}</span>
-      </span>
     </div>
-    <div class="sr-only" aria-live="polite" aria-atomic="true">{{ `${label}, ${active + 1} of ${list.length}` }}</div>
-  </div>
+    <div class="relative mt-8 w-full md:mt-12 lg:mt-20">
+      <div
+        ref="containerRef"
+        class="relative h-[420px] w-full overflow-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:h-[500px]"
+        :class="className"
+        :style="{ '--flex-carousel-half': half }"
+        role="region"
+        aria-roledescription="carousel"
+        :aria-label="title || 'Image carousel'"
+        tabindex="0"
+      >
+        <div
+          v-if="captions && current && revealed"
+          class="absolute inset-x-0 flex flex-col top-[calc(50%_+_var(--flex-carousel-half)_*_var(--flex-carousel-lift,1)_+_22px)] items-center gap-1.5 px-4 text-center animate-[flex-carousel-reveal_900ms_ease_both] motion-reduce:animate-none pointer-events-none"
+          aria-hidden="true"
+        >
+          <span
+            :key="active"
+            class="flex flex-col items-center max-w-full font-medium text-[15px] leading-[1.35] animate-[flex-carousel-title_520ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
+          >
+            {{ current.title || current.alt }}
+            <span v-if="current.subtitle" class="opacity-60 font-normal">{{ current.subtitle }}</span>
+          </span>
+          <span
+            class="inline-flex items-center gap-[3px] opacity-50 data-[hidden]:opacity-0 tabular-nums text-[12px] leading-none transition-opacity duration-[400ms]"
+            :data-hidden="focusOpen ? '' : undefined"
+          >
+            <Digits :value="active + 1" />
+            <span class="opacity-60">/</span>
+            <span>{{ String(list.length).padStart(2, '0') }}</span>
+          </span>
+        </div>
+        <div class="sr-only" aria-live="polite" aria-atomic="true">{{ `${label}, ${active + 1} of ${list.length}` }}</div>
+      </div>
+    </div>
   </section>
 </template>
 
