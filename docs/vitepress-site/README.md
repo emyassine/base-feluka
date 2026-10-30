@@ -27,12 +27,20 @@ npm run docs:serve
 npm run docs:build
 ```
 
-Run `./serve.sh` to start every registered site at once. It assigns distinct
-available ports beginning at 4173 and prints each site's URL and id. Add a
-site declaration to `vitepress-site.json` when that site's tree is ready; the
-interactive npm command asks which site to use when several are registered.
-Pass `--site <id>` for scripts and automation. To move `app/` to a different
-machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry path.
+`serve.sh` can run selected sites on separate available ports or build them:
+
+```sh
+./serve.sh --list
+./serve.sh --sites=site-1,site-2
+./serve.sh --sites=site-1
+./serve.sh --sites=site-1 --build
+```
+
+It prints each running site's URL and id. Without `--sites`, it asks which
+registered sites to use in a terminal and selects all sites in non-interactive
+mode. The npm commands accept `--site <id>` for one site. To move `app/` to a
+different machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry
+path.
 
 Site declarations live with their owning sites. The host registry only lists
 those declarations; it does not duplicate site content. Required third-party
