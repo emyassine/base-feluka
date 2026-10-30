@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import footerImage from './../../.art/feluqa-footer-white-transteinted.png'
+import footerImage from '../../feluqa.rs/.art/feluqa-footer-white-transteinted.png'
 
 defineProps<{
   title: string
