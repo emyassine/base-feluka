@@ -29,10 +29,10 @@ onBeforeUnmount(() => fontStyle?.remove())
 </script>
 
 <template>
-  <div class="mainline-home">
-    <div class="mainline-home__top"><slot name="top" /></div>
+  <div class="docs-home">
+    <div class="docs-home__top"><slot name="top" /></div>
     <slot name="middle" />
-    <div class="mainline-home__bottom"><slot name="bottom" /></div>
+    <div class="docs-home__bottom"><slot name="bottom" /></div>
     <slot name="footer" />
   </div>
 </template>

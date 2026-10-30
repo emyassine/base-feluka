@@ -11,7 +11,7 @@
     }
   },
   "styles": [
-    ".components/home/mainline-home.css"
+    ".components/home/docs-home.css"
   ],
   "guidesPath": ".",
   "indexPath": "index.en.md",
