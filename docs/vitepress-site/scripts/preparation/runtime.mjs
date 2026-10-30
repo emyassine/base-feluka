@@ -1,0 +1,43 @@
+export function toVitepressRuntime(model, target, layout) {
+  const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
+  const locales = model.locales
+  const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...locales[language].seo }]))
+  const searchLabels = { root: locales[defaultLanguage].search }
+  for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = locales[language].search
+  const publicFiles = Object.fromEntries(Object.entries(model.publicFiles).map(([name, text]) => [name, text.replace(/\n$/, '')]))
+  return {
+    site: model.site,
+    guidesPath: 'src/guides',
+    indexPath: `src/guides/index.${defaultLanguage}.md`,
+    subguides: model.subguides,
+    languages: model.languages,
+    fallbackLanguage: model.fallbackLanguage,
+    topbar: { items: model.items, language: model.selector, theme: model.theme },
+    collections: (model.collections ?? []).map(({ dir, ...collection }) => ({ ...collection, path: dir ?? collection.id })),
+    fonts: model.fonts,
+    logo: model.logo,
+    ogImages: model.ogImages,
+    mermaid: model.mermaid,
+    socialLinks: model.socialLinks,
+    languageLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.label])),
+    languageMenuLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.menuLabel])),
+    fallbackNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.fallbackNotice])),
+    search: { ...target.search, labels: searchLabels },
+    outline: { labels: Object.fromEntries(model.languages.map((language) => [language, locales[language].outline.label])), ...target.outline },
+    footer: Object.fromEntries(model.languages.map((language) => [language, locales[language].footer])),
+    documentationNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].notices])),
+    seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
+    publicFiles,
+    uiStrings: Object.fromEntries(model.languages.map((language) => [language, locales[language].ui])),
+    styles: target.styles,
+    theme: target.theme,
+    markdown: target.markdown,
+    outputDir: target.outputDir,
+    project: {
+      ...target.project,
+      iconLibrary: 'resources/icons',
+      iconFallback: model.iconFallback,
+      mermaidConfig: 'resources/diagrams/mermaid.json',
+    },
+  }
+}

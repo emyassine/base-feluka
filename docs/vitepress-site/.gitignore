@@ -7,3 +7,4 @@ config/*.timestamp-*.mjs
 .generated-guides/
 .generated-guides.md
 .build.lock
+.refactor/

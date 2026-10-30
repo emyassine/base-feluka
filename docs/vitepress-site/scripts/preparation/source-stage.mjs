@@ -2,6 +2,11 @@ import { access, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/p
 import { existsSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { createHash } from 'node:crypto'
+import { resolveLayout } from '../spmpst/layout.mjs'
+import { loadSiteModelSync } from '../spmpst/config/index.mjs'
+import { toVitepressRuntime } from './runtime.mjs'
+import { isDefaultLanguage, localePrefix } from '../spmpst/routing.mjs'
+import { copyIfChanged, writeIfChanged } from '../spmpst/fs-utils.mjs'
 
 
 /** SOURCE DISCOVERY PHASE
@@ -9,13 +14,15 @@ import { createHash } from 'node:crypto'
  * and collect route/sidebar/frontmatter records for later compilation phases.
  */
 export async function prepareSources(siteDirectory) {
-const configDirectory = resolve(siteDirectory, '../guides')
-const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
+const layout = resolveLayout(siteDirectory)
+const configDirectory = layout.configBase
+const loadedConfig = loadSiteModelSync(layout)
+const config = toVitepressRuntime(loadedConfig.model, loadedConfig.targets.vitepress, layout)
 const configuredStyles = config.styles ?? []
-if (!Array.isArray(configuredStyles)) throw new Error('styles must be an array of CSS paths in vitepress.site.config.json')
+if (!Array.isArray(configuredStyles)) throw new Error('styles must be an array of CSS paths in .site/targets/vitepress.target.config.json')
 const styleFiles = configuredStyles.map((stylePath) => {
   if (typeof stylePath !== 'string' || !stylePath.trim() || stylePath.startsWith('/') || stylePath.startsWith('\\')) {
-    throw new Error('Each styles entry must be a relative CSS path inside guides')
+    throw new Error('Each styles entry must be a relative CSS path inside resources')
   }
   const resolvedPath = resolve(configDirectory, stylePath)
   const localPath = relative(configDirectory, resolvedPath)
@@ -27,14 +34,14 @@ const styleFiles = configuredStyles.map((stylePath) => {
 })
 if (new Set(styleFiles).size !== styleFiles.length) throw new Error('styles contains duplicate CSS paths')
 const configuredCollections = config.collections ?? []
-if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in vitepress.site.config.json')
+if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in .site/collections.site.config.json')
 const collectionIds = new Set()
 const collectionPaths = new Set()
 const collections = configuredCollections.map((collection) => {
   if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
     throw new Error('Each collections entry must be an object with id and path')
   }
-  const { id, path, title, description, layout, indexLayout = 'list', categoryFile = 'category.json' } = collection
+  const { id, path, title, description, layout: collectionLayout, indexLayout = 'list', categoryFile = 'category.json' } = collection
   if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
     throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
   }
@@ -42,11 +49,10 @@ const collections = configuredCollections.map((collection) => {
     throw new Error(`Collection ${id} path must be a non-hidden relative path inside guides`)
   }
   const normalizedPath = path.split(/[\\/]/).filter(Boolean).join('/')
-  const externalCollection = normalizedPath.startsWith('../collections/')
-  const safePath = normalizedPath.replace(/^\.\.\//, '')
+  const safePath = normalizedPath
   if (!normalizedPath || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(safePath)
-    || normalizedPath.split('/').some((part, index) => part.startsWith('.') && !(externalCollection && index === 0 && part === '..'))) {
-    throw new Error(`Collection ${id} path must be relative to guides or ../collections`)
+    || normalizedPath.split('/').some((part) => part.startsWith('.'))) {
+    throw new Error(`Collection ${id} dir must be a non-hidden relative path inside src/collections`)
   }
   if (collectionPaths.has(normalizedPath)) throw new Error(`Duplicate collection path: ${normalizedPath}`)
   if (typeof categoryFile !== 'string' || !/^[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
@@ -63,7 +69,7 @@ const collections = configuredCollections.map((collection) => {
   if (description !== undefined && typeof description !== 'string' && (typeof description !== 'object' || Array.isArray(description) || description === null)) {
     throw new Error(`Collection ${id} description must be a string or localized object`)
   }
-  if (layout !== undefined && !['article', 'doc'].includes(layout)) {
+  if (collectionLayout !== undefined && !['article', 'doc'].includes(collectionLayout)) {
     throw new Error(`Collection ${id} layout must be article or doc`)
   }
   if (!['list', 'spotlight'].includes(indexLayout)) {
@@ -71,7 +77,7 @@ const collections = configuredCollections.map((collection) => {
   }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, layout, indexLayout, categoryFile, sourceDirectory: resolve(configDirectory, normalizedPath) }
+  return { id, path: normalizedPath, title, description, layout: collectionLayout, indexLayout, categoryFile, sourceDirectory: resolve(layout.collectionsDir, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -85,16 +91,16 @@ function themeSlots(value, context) {
   return value
 }
 if (config.theme != null && (typeof config.theme !== 'object' || Array.isArray(config.theme))) {
-  throw new Error('theme must be an object in vitepress.site.config.json')
+  throw new Error('theme must be an object in .site/targets/vitepress.target.config.json')
 }
-const siteThemeSlots = themeSlots(config.theme?.slots, 'vitepress.site.config.json')
+const siteThemeSlots = themeSlots(config.theme?.slots, '.site/targets/vitepress.target.config.json')
 if (!Array.isArray(config.languages) || !config.languages.length || config.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(config.languages).size !== config.languages.length) {
   throw new Error('languages must be a non-empty array of unique locale codes')
 }
 const defaultLanguage = config.fallbackLanguage ?? config.languages[0]
 if (!config.languages.includes(defaultLanguage)) throw new Error('fallbackLanguage must be listed in languages')
 const topbar = config.topbar ?? {}
-if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in vitepress.site.config.json')
+if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in .site/topbar.site.config.json')
 if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].includes(topbar.theme)) {
   throw new Error('topbar.theme must be switch, system, light, or dark')
 }
@@ -189,12 +195,12 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
     continue
   }
   if (typeof value !== 'string' || !value.trim()) {
-    throw new Error(`project.${key} must be a non-empty directory path relative to the guides directory`)
+    throw new Error(`project.${key} must be a non-empty directory path relative to the documentation tree`)
   }
   const target = resolve(configDirectory, value)
   const local = relative(configDirectory, target)
-  if (key !== 'iconLibrary' && (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..'))) {
-    throw new Error(`project.${key} must stay inside the guides directory`)
+  if (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..')) {
+    throw new Error(`project.${key} must stay inside the documentation tree`)
   }
   let metadata
   try {
@@ -207,10 +213,10 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
   }
   projectDirectories[key] = target
 }
-const mermaidConfigPath = resolve(configDirectory, projectConfig.mermaidConfig ?? '.config/vitepress/mermaid.json')
+const mermaidConfigPath = resolve(configDirectory, projectConfig.mermaidConfig ?? 'resources/diagrams/mermaid.json')
 const mermaidRelativePath = relative(configDirectory, mermaidConfigPath)
 if (!mermaidRelativePath || mermaidRelativePath === '..' || mermaidRelativePath.startsWith(`..${sep}`)) {
-  throw new Error('project.mermaidConfig must resolve to a file inside the guides directory')
+  throw new Error('project.mermaidConfig must resolve to a file inside the documentation tree')
 }
 if (!existsSync(mermaidConfigPath) || !(await stat(mermaidConfigPath)).isFile()) {
   throw new Error(`Configured Mermaid JSON file does not exist: ${mermaidConfigPath}`)
@@ -242,9 +248,11 @@ function resolveIcon(name, context) {
   return iconFallbackPath
 }
 function resolveSidebarIcon(directory, iconPath, context) {
-  const candidate = resolve(directory, iconPath)
-  const relativePath = relative(sourceRoot, candidate)
-  if (relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && existsSync(candidate)) return candidate
+  const candidate = /\.svg$/i.test(iconPath) ? resolve(directory, iconPath) : findIcon(iconPath)
+  const relativePath = candidate ? relative(sourceRoot, candidate) : '..'
+  const inGuides = relativePath !== '..' && !relativePath.startsWith(`..${sep}`)
+  const inResources = candidate && relative(layout.resourcesDir, candidate) !== '..' && !relative(layout.resourcesDir, candidate).startsWith(`..${sep}`)
+  if (candidate && ((inGuides && existsSync(candidate)) || (inResources && existsSync(candidate)))) return candidate
   if (!reportedFallbacks.has(iconPath)) {
     process.stderr.write(`[icons] ${context}: "${iconPath}" not found; using "${iconFallbackName}".\n`)
     reportedFallbacks.add(iconPath)
@@ -288,7 +296,7 @@ let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+[.-]/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const sourceLanguage = (path) => path.match(/\.([a-z]{2,3}(?:-[A-Z]{2})?)\.md$/i)?.[1]?.toLowerCase() ?? defaultLanguage.toLowerCase()
-const sourceRoot = resolve(configDirectory, config.guidesPath)
+const sourceRoot = layout.guidesDir
 const collectionMetadata = new Map()
 
 function localizedValue(value, language, fallback = '') {
@@ -298,10 +306,9 @@ function localizedValue(value, language, fallback = '') {
 }
 
 for (const collection of collections) {
-  const relativeToSource = relative(sourceRoot, collection.sourceDirectory)
-  const isInsideGuides = relativeToSource !== '..' && !relativeToSource.startsWith(`..${sep}`)
-  const isDocsCollection = relativeToSource.startsWith(`..${sep}collections${sep}`)
-  if ((!isInsideGuides && !isDocsCollection) || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
+  const relativeToCollections = relative(layout.collectionsDir, collection.sourceDirectory)
+  const isInsideCollections = relativeToCollections !== '..' && !relativeToCollections.startsWith(`..${sep}`)
+  if (!isInsideCollections || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
     throw new Error(`Collection ${collection.id} path must point to an existing directory: ${collection.path}`)
   }
   const metadataPath = join(collection.sourceDirectory, collection.categoryFile)
@@ -331,6 +338,7 @@ for (const collection of collections) {
 /** SOURCE VALIDATION — enforce frontmatter icon and configured library contracts. */
 async function validateMarkdownIcons(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'sidebar.json' || entry.name === 'guide.config.json' || collections.some((collection) => entry.name === collection.categoryFile && collection.sourceDirectory === directory)) continue
     const file = join(directory, entry.name)
     if (entry.isDirectory()) {
       await validateMarkdownIcons(file)
@@ -351,57 +359,36 @@ function stagedPath(sourcePath, language = null) {
   const sourceRelative = relative(sourceRoot, sourcePath).split(sep).join('/')
   const isMarkdown = sourcePath.toLowerCase().endsWith('.md')
   const locale = (language ?? (isMarkdown ? sourceLanguage(sourcePath) : defaultLanguage)).toLowerCase()
-  const localePrefix = locale === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [locale]
+  const localeParts = localePrefix(locale, defaultLanguage, prefixDefaultLanguage, { lowercase: true })
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
-  const collection = collections.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  const collection = collections.find(({ sourceDirectory }) => sourcePath === sourceDirectory || sourcePath.startsWith(`${sourceDirectory}${sep}`))
   if (collection) {
-    const local = sourceRelative === collection.path ? '' : sourceRelative.slice(collection.path.length + 1)
+    const local = relative(collection.sourceDirectory, sourcePath).split(sep).join('/')
     const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
-    return join(outputDirectory, ...localePrefix, collection.id, ...parts)
+    return join(outputDirectory, ...localeParts, collection.id, ...parts)
   }
   if (!guide) {
     const parts = sourceRelative.split('/')
-    return join(outputDirectory, ...localePrefix, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
+    return join(outputDirectory, ...localeParts, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
   }
   const uri = guideUris.get(guide.path)
   const local = sourceRelative === guide.path ? '' : sourceRelative.slice(guide.path.length + 1)
   const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
   if (parts.length === 1 && parts[0] === 'index.md' && uri.index) parts.splice(0, 1, ...uri.index.replace(/\/$/, '').split('/'), 'index.md')
   const base = uri.base.replace(/^\/+|\/+$/g, '')
-  return join(outputDirectory, ...localePrefix, ...[base, ...parts].filter(Boolean).flatMap((part) => part.split('/')))
-}
-
-async function copyIfChanged(source, target) {
-  const content = await readFile(source)
-  let current
-  try { current = await readFile(target) }
-  catch (error) { if (error.code !== 'ENOENT') throw error }
-  if (current?.equals(content)) return false
-  await mkdir(dirname(target), { recursive: true })
-  await writeFile(target, content)
-  return true
-}
-
-async function writeIfChanged(target, content) {
-  const buffer = Buffer.isBuffer(content) ? content : Buffer.from(content)
-  let current
-  try { current = await readFile(target) }
-  catch (error) { if (error.code !== 'ENOENT') throw error }
-  if (current?.equals(buffer)) return false
-  await mkdir(dirname(target), { recursive: true })
-  await writeFile(target, buffer)
-  return true
+  return join(outputDirectory, ...localeParts, ...[base, ...parts].filter(Boolean).flatMap((part) => part.split('/')))
 }
 
 /** INPUT DISCOVERY — copy assets and collect Markdown, sidebar, and route records. */
 /** ASSET STAGING — content-address assets and publish them to generated public roots. */
 async function copyAsset(sourceFile) {
-  const sourceRelativePath = relative(sourceRoot, sourceFile)
-  const iconRelativePath = projectDirectories.iconLibrary ? relative(projectDirectories.iconLibrary, sourceFile) : '..'
-  const inGuides = sourceRelativePath !== '..' && !sourceRelativePath.startsWith(`..${sep}`)
-  const inIconLibrary = iconRelativePath !== '..' && !iconRelativePath.startsWith(`..${sep}`)
-  if (!inGuides && !inIconLibrary) {
-    throw new Error(`Asset path is outside the guides and configured icon library: ${sourceFile}`)
+  const allowedRoots = [layout.guidesDir, layout.collectionsDir, layout.resourcesDir]
+  const insideAllowedRoot = allowedRoots.some((root) => {
+    const path = relative(root, sourceFile)
+    return path !== '..' && !path.startsWith(`..${sep}`)
+  })
+  if (!insideAllowedRoot) {
+    throw new Error(`Asset path is outside src/guides, src/collections, and resources: ${sourceFile}`)
   }
   const bytes = await readFile(sourceFile)
   const assetName = `${createHash('sha256').update(bytes).digest('hex')}${extname(sourceFile).toLowerCase()}`
@@ -433,8 +420,9 @@ function publicMarkdownLink(outputPath) {
 }
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
+  await mkdir(outputPath, { recursive: true })
   const entries = (await readdir(sourcePath, { withFileTypes: true }))
-    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json'
+    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'guide.config.json' && entry.name !== 'sidebar.json'
       && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile))
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
@@ -475,7 +463,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     navigationOrder[orderPath] = entry.name
     if (entry.isDirectory()) {
       for (const language of config.languages) {
-        if (language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage) continue
+        if (isDefaultLanguage(language, defaultLanguage) && !prefixDefaultLanguage) continue
         navigationOrder[`${language}/${orderPath}`] = entry.name
       }
     }
@@ -539,7 +527,7 @@ await writeIfChanged(join(generatedDirectory, 'navigation-order.json'), JSON.str
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 if (topbar.language?.showFlags) {
   for (const language of config.languages) {
-    const source = join(siteDirectory, 'flags', 'language', `${language.toLowerCase()}.svg`)
+    const source = join(layout.flagsDir, `${language.toLowerCase()}.svg`)
     if (!existsSync(source)) throw new Error(`Missing language flag for ${language}: ${source}`)
     const target = join(outputDirectory, 'public', 'flags', 'language', `${language.toLowerCase()}.svg`)
     await mkdir(dirname(target), { recursive: true })

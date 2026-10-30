@@ -3,8 +3,8 @@ export default {
   content: [
     './.vitepress/**/*.{vue,ts,js}',
     './.generated-guides/**/*.md',
-    '../guides/.config/components/**/*.{vue,md}',
-    '../guides/**/*.{vue,md}',
+    '../resources/targets/vitepress/components/**/*.{vue,md}',
+    '../src/guides/**/*.{vue,md}',
   ],
   corePlugins: {
     preflight: false,

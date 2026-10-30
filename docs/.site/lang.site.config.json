@@ -1,0 +1,13 @@
+{
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "fallbackLanguage": "en",
+  "selector": {
+    "showSelector": true,
+    "prefixDefaultLanguage": false,
+    "showFlags": true
+  },
+  "$schema": "./schema/lang.schema.json"
+}

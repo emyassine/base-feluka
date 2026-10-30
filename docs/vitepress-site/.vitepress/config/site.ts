@@ -58,7 +58,7 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   themeConfig: {
     nav: navigation(),
     locales: localizedThemeConfig,
-    langMenuLabel: siteConfig.languageMenuLabels?.[defaultLanguage] ?? 'Change language',
+    langMenuLabel: siteConfig.languageMenuLabels?.[defaultLanguage],
     socialLinks: site.socialLinks ?? [],
     sidebar: sidebars,
     search: { provider: siteConfig.search.provider, options: {
@@ -74,7 +74,7 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
         return env.frontmatter?.search === false || excluded ? '' : html
       },
     } },
-    outline: { label: siteConfig.outline.labels[siteConfig.languages[0]] ?? siteConfig.outline.labels.root, level: siteConfig.outline.level },
+    outline: { label: siteConfig.outline.labels[defaultLanguage], level: siteConfig.outline.level },
     aside: true,
     footer: siteConfig.footer?.[siteConfig.languages[0]] ?? siteConfig.footer?.root,
     logo: {

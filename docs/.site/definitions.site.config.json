@@ -1,0 +1,71 @@
+{
+  "site": {
+    "name": "Feluqa",
+    "description": "Feluqa Documentation"
+  },
+  "subguides": [
+    {
+      "path": "feluqa.rs",
+      "label": "Basics",
+      "labels": {
+        "en": "Basics",
+        "fr": "Bases"
+      },
+      "uri": {
+        "base": "/",
+        "entry": "get-started",
+        "index": "feluqa/"
+      }
+    },
+    {
+      "path": "sdui",
+      "label": "sdui",
+      "labels": {
+        "en": "SDUI",
+        "fr": "SDUI"
+      },
+      "uri": {
+        "base": "/sdui/",
+        "entry": "get-started"
+      }
+    },
+    {
+      "path": "internals",
+      "label": "Architecture",
+      "labels": {
+        "en": "Architecture",
+        "fr": "Architecture"
+      },
+      "uri": {
+        "base": "/internals/",
+        "entry": "get-started"
+      }
+    },
+    {
+      "path": "x-agents",
+      "label": "Agents",
+      "labels": {
+        "en": "Agents",
+        "fr": "Agents"
+      },
+      "uri": {
+        "base": "/agents/",
+        "entry": "get-started"
+      }
+    },
+    {
+      "path": "learn",
+      "label": "Learn",
+      "labels": {
+        "en": "Learn",
+        "fr": "Apprendre"
+      },
+      "uri": {
+        "base": "/learn/",
+        "entry": "get-started"
+      }
+    }
+  ],
+  "iconFallback": "circle-help",
+  "$schema": "./schema/definitions.schema.json"
+}

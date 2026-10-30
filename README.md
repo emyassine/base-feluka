@@ -9,6 +9,8 @@ targets. Web delivery is the current priority.
 
 - [Documentation](docs-new/00.index.en.md): the single index for the developer guides
   and technical references, from app creation to the current roadmap.
+- [SPMPST specification](docs/SSG.md): the draft standard for the documentation
+  source tree and static site adapters.
 - [Contributor instructions](AGENTS.md): repository boundaries, Rust rules
   and validation commands.
 

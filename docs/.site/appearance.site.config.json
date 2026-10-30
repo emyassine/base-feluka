@@ -1,0 +1,56 @@
+{
+  "fonts": {
+    "body": {
+      "family": "Manrope",
+      "src": "resources/assets/fonts/manrope-latin.woff2",
+      "weight": "200 800"
+    },
+    "heading": {
+      "family": "DM Sans",
+      "src": "resources/assets/fonts/DM-Sans-Variable.ttf",
+      "weight": "100 1000"
+    }
+  },
+  "logo": {
+    "light": "resources/assets/brand/feluqa.svg",
+    "dark": "resources/assets/brand/feluqa.svg",
+    "alt": "Feluqa",
+    "height": "3rem",
+    "extraStyle": ""
+  },
+  "ogImages": [
+    "resources/assets/brand/og-feluqa.png"
+  ],
+  "mermaid": {
+    "flowchartPalette": [
+      {
+        "fill": "#a8b9ff",
+        "text": "#1c2447",
+        "stroke": "#667fd3"
+      },
+      {
+        "fill": "#a9e8d0",
+        "text": "#163b31",
+        "stroke": "#4e9d80"
+      },
+      {
+        "fill": "#ffc2d4",
+        "text": "#492435",
+        "stroke": "#cb6688"
+      },
+      {
+        "fill": "#ffe09b",
+        "text": "#493713",
+        "stroke": "#c58b2a"
+      },
+      {
+        "fill": "#cbbaff",
+        "text": "#332658",
+        "stroke": "#8c6fd0"
+      }
+    ],
+    "nodeBorderWidth": "1.5px",
+    "darkMessageTextColor": "#f1f3fc"
+  },
+  "$schema": "./schema/appearance.schema.json"
+}

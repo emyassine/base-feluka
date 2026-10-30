@@ -5,6 +5,8 @@
   "scripts": {
     "docs:prepare": "node scripts/preparation/pipeline.mjs",
     "docs:build": "npm run docs:prepare && vitepress build",
+    "docs:check": "node scripts/dev/docs-check.mjs",
+    "docs:new": "node scripts/dev/docs-new.mjs",
     "docs:clean": "./clean.sh"
   },
   "devDependencies": {

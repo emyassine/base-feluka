@@ -1,0 +1,40 @@
+{
+  "outputDir": "build",
+  "project": {
+    "components": "resources/targets/vitepress/components",
+    "hooks": "resources/targets/vitepress/hooks"
+  },
+  "styles": [
+    "resources/targets/vitepress/components/home/docs-home.css",
+    "resources/targets/vitepress/components/components.css"
+  ],
+  "theme": {
+    "slots": {
+      "sidebar-nav-before": "BranchedSidebar",
+      "nav-bar-content-after": "CollectionArticleSubnav"
+    }
+  },
+  "markdown": {
+    "lineNumbers": true,
+    "image": {
+      "lazyLoad": true
+    }
+  },
+  "search": {
+    "provider": "local",
+    "miniSearch": {
+      "fuzzy": 0.2,
+      "prefix": true,
+      "boost": {
+        "title": 4,
+        "text": 2,
+        "titles": 1
+      }
+    },
+    "excludePaths": []
+  },
+  "outline": {
+    "level": "deep"
+  },
+  "$schema": "../schema/vitepress-target.schema.json"
+}

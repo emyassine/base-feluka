@@ -1,0 +1,43 @@
+{
+  "items": [
+    {
+      "text": {
+        "en": "Docs",
+        "fr": "Docs"
+      },
+      "items": [
+        {
+          "guide": "feluqa.rs",
+          "icon": "book-open"
+        },
+        {
+          "guide": "sdui",
+          "icon": "square-terminal"
+        },
+        {
+          "guide": "internals",
+          "icon": "code-xml"
+        }
+      ]
+    },
+    {
+      "guide": "x-agents"
+    },
+    {
+      "guide": "learn"
+    },
+    {
+      "text": {
+        "en": "Explore",
+        "fr": "Explorer"
+      },
+      "items": [
+        {
+          "collection": "articles"
+        }
+      ]
+    }
+  ],
+  "theme": "switch",
+  "$schema": "./schema/topbar.schema.json"
+}

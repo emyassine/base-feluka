@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": { "$schema": { "type": "string" }, "siteUrl": { "type": ["string", "null"], "format": "uri" }, "path": { "type": "string" }, "icon": { "type": "string" } },
+  "additionalProperties": false
+}

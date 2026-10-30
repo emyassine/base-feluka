@@ -6,7 +6,8 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const guidesDirectory = resolve(siteDirectory, '../guides')
+const guidesDirectory = resolve(siteDirectory, '../src/guides')
+const siteConfigDirectory = resolve(siteDirectory, '../.site')
 const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
 const ignoredDirectories = new Set(['node_modules', '.git', '.generated-guides', 'build'])
@@ -21,14 +22,14 @@ function log(message) {
 
 async function structuralSignature() {
   const hash = createHash('sha256')
-  async function visit(directory) {
+  async function visit(directory, root) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue
       const path = join(directory, entry.name)
-      const relativePath = relative(guidesDirectory, path).split(sep).join('/')
+      const relativePath = relative(root, path).split(sep).join('/')
       if (entry.isDirectory()) {
         hash.update(`dir:${relativePath}\0`)
-        await visit(path)
+        await visit(path, root)
         continue
       }
       if (entry.name === 'README.md') continue
@@ -43,7 +44,10 @@ async function structuralSignature() {
       }
     }
   }
-  await visit(guidesDirectory)
+  hash.update('guides\0')
+  await visit(guidesDirectory, guidesDirectory)
+  hash.update('site-config\0')
+  await visit(siteConfigDirectory, siteConfigDirectory)
   return hash.digest('hex')
 }
 
@@ -99,13 +103,16 @@ try {
     if (path.includes('/.generated-guides/') || path.startsWith('.generated-guides/')) return
     schedule(path)
   }))
+  watchers.push(await watchFs(siteConfigDirectory, { recursive: true }, (_event, filename) => {
+    schedule(`.site/${filename?.toString() || '(unknown config path)'}`)
+  }))
 } catch (error) {
   for (const watcher of watchers) watcher.close()
   throw new Error(`Unable to watch the documentation sources on this platform: ${error.message}`)
 }
 
 let signature = await structuralSignature()
-log(`Watching guide sources, JSON configuration, and assets for changes.`)
+log(`Watching guide sources, .site configuration, and assets for changes.`)
 
 async function shutdown() {
   if (stopping) return

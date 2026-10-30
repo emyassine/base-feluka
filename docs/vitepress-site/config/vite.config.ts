@@ -3,12 +3,17 @@ import { createRequire } from 'node:module'
 import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadConfigFromFile, mergeConfig, searchForWorkspaceRoot } from 'vite'
+import { loadSiteModelSync } from '../scripts/spmpst/config/index.mjs'
+import { resolveLayout } from '../scripts/spmpst/layout.mjs'
+import { toVitepressRuntime } from '../scripts/preparation/runtime.mjs'
 
 const siteDirectory = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const projectDirectory = resolve(siteDirectory, '../guides')
+const projectDirectory = resolve(siteDirectory, '..')
 const siteRequire = createRequire(join(siteDirectory, 'package.json'))
-const siteConfiguration = JSON.parse(readFileSync(join(projectDirectory, 'vitepress.site.config.json'), 'utf8'))
-const componentDirectory = resolve(projectDirectory, siteConfiguration.project?.components ?? '.config/components')
+const layout = resolveLayout(siteDirectory)
+const loadedSite = loadSiteModelSync(layout)
+const siteConfiguration = toVitepressRuntime(loadedSite.model, loadedSite.targets.vitepress, layout)
+const componentDirectory = resolve(projectDirectory, siteConfiguration.project?.components ?? 'resources/targets/vitepress/components')
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -54,8 +59,8 @@ const siteViteConfig = {
       if (!importer || source.startsWith('.') || source.startsWith('/') || source.startsWith('node:')) return null
       if (source === 'vue' || source.startsWith('vue/') || source === 'vitepress') return null
       const importerPath = importer.split(/[?#]/, 1)[0]
-      const guideRelativePath = relative(projectDirectory, importerPath)
-      if (guideRelativePath === '..' || guideRelativePath.startsWith(`..${sep}`)) return null
+      const componentRelativePath = relative(componentDirectory, importerPath)
+      if (componentRelativePath === '..' || componentRelativePath.startsWith(`..${sep}`) || componentRelativePath.startsWith(sep)) return null
       try {
         return siteRequire.resolve(source)
       } catch {

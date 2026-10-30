@@ -1,4 +1,4 @@
-/** Typed contract for docs/guides/vitepress.site.config.json. */
+/** Renderer configuration assembled from the SPMPST model. */
 export type LocalizedText = string | Record<string, string>
 
 export interface SiteConfig {
@@ -107,7 +107,7 @@ export interface SeoConfig {
   }>
 }
 
-/** Typed contract for each guide's vitepress.config.json. */
+/** Typed contract for each guide's guide.config.json. */
 export interface GuideConfig {
   title: string
   favicon: string

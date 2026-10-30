@@ -1,0 +1,83 @@
+{
+  "language": {
+    "label": "English",
+    "menuLabel": "Change language",
+    "fallbackNotice": "This page is not available in {requested}. Showing the {fallback} version."
+  },
+  "ui": {
+    "emptyCollection": "No published content yet."
+  },
+  "search": {
+    "buttonText": "Search",
+    "buttonAriaLabel": "Search documentation",
+    "displayDetails": "Display detailed list",
+    "resetButtonTitle": "Reset search",
+    "backButtonTitle": "Close search",
+    "noResultsText": "No results",
+    "selectText": "Select",
+    "selectKeyAriaLabel": "Enter",
+    "navigateText": "Navigate",
+    "navigateUpKeyAriaLabel": "Arrow up",
+    "navigateDownKeyAriaLabel": "Arrow down",
+    "closeText": "Close",
+    "closeKeyAriaLabel": "Escape"
+  },
+  "outline": {
+    "label": "On this page"
+  },
+  "footer": {
+    "message": "Questions? Read the <a href=\"/faq/\">quick answers</a>.",
+    "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+  },
+  "notices": {
+    "exploringTitle": "Under exploration",
+    "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",
+    "validatedTitle": "Validated",
+    "validated": "The information on this page has been verified and reflects the current baseline.",
+    "fallbackTitle": "Language availability"
+  },
+  "seo": {
+    "quickLinksTitle": "Popular guides",
+    "faqTitle": "Quick answers",
+    "quickLinks": [
+      {
+        "label": "Get started",
+        "description": "Understand Feluqa and build a first application.",
+        "url": "/get-started/"
+      },
+      {
+        "label": "Internals",
+        "description": "Explore runtime, workspace, and compile-time architecture.",
+        "url": "/internals/"
+      },
+      {
+        "label": "Agents",
+        "description": "Read contribution guidance for AI coding agents.",
+        "url": "/agents/"
+      },
+      {
+        "label": "Learn",
+        "description": "Follow practical application tutorials.",
+        "url": "/learn/"
+      }
+    ],
+    "faq": [
+      {
+        "question": "What is Feluqa?",
+        "answer": "Feluqa is a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development."
+      },
+      {
+        "question": "Where should I start?",
+        "answer": "Start with Get started to understand the current product direction, set up a development environment, and follow the application guides."
+      },
+      {
+        "question": "Is the complete platform available today?",
+        "answer": "No. The repository provides selected framework foundations, while several target capabilities such as dynamic module installation and complete runtime shells remain in active development."
+      }
+    ],
+    "pageTitle": "Feluqa FAQ",
+    "pageNavTitle": "FAQ",
+    "description": "Frequently asked questions and links to the Feluqa documentation guides."
+  },
+  "$schema": "../schema/locale.schema.json"
+}

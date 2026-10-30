@@ -4,6 +4,7 @@ import type { GuideConfig, SiteConfig } from '../types/site-config'
 /** File-loading port. The composition root selects a Node implementation; other
  * adapters can provide memory-backed or generated config for tooling. */
 export interface SiteConfigSource {
+  readSiteConfig(siteDirectory: string): SiteConfig
   readJson<T>(path: string): T
   readJsonOr<T>(path: string, fallback: T): T
 }
@@ -34,8 +35,8 @@ export function loadSiteRuntimeContext(
   source: SiteConfigSource,
   outputOverride = process.env.DOCS_OUTPUT_DIR,
 ): SiteRuntimeContext {
-  const configDirectory = resolve(siteDirectory, '../guides')
-  const siteConfig = source.readJson<SiteConfig>(join(configDirectory, 'vitepress.site.config.json'))
+  const configDirectory = resolve(siteDirectory, '..')
+  const siteConfig = source.readSiteConfig(siteDirectory)
   const generatedDirectory = join(siteDirectory, '.generated-guides')
   const generatedMetadata = join(siteDirectory, '.vitepress/generated')
   const sidebarMetadata = source.readJsonOr(join(generatedMetadata, 'sidebar.json'), {})
@@ -51,7 +52,7 @@ export function loadSiteRuntimeContext(
     ? resolve(outputOverride)
     : resolve(configDirectory, siteConfig.outputDir)
   const guideConfigs = Object.fromEntries(siteConfig.subguides.map((guide) => {
-    const path = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
+    const path = resolve(sourceDirectory, guide.path, 'guide.config.json')
     return [guide.path, { path, config: source.readJson<GuideConfig>(path) }]
   }))
 

@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, rm } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
 import { existsSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
+import { isDefaultLanguage, localePrefix } from '../spmpst/routing.mjs'
 
 
 /** CONFIGURATION AND CONTENT COMPILATION PHASE
@@ -114,7 +115,7 @@ async function prepareFonts(fonts, configPath) {
 
 /** CONFIG COMPILATION — resolve per-site/per-guide fonts, logos, styles and theme hooks. */
 const generatedFonts = {
-  site: await prepareFonts(config.fonts, join(configDirectory, 'vitepress.site.config.json')),
+  site: await prepareFonts(config.fonts, join(configDirectory, 'site-model.config.json')),
   guides: {},
 }
 const generatedGuideColors = {}
@@ -122,10 +123,10 @@ const generatedOgImages = {}
 const generatedGuideKeys = new Map()
 const generatedGuideThemeSlots = new Map()
 const siteLogo = config.logo ?? {}
-const siteOgImages = await prepareOgImages(config.ogImages ?? [], join(configDirectory, 'vitepress.site.config.json'))
+const siteOgImages = await prepareOgImages(config.ogImages ?? [], join(configDirectory, 'site-model.config.json'))
 generatedOgImages.root = siteOgImages
 for (const guide of config.subguides) {
-  const guideConfigPath = resolve(sourceRoot, guide.path, 'vitepress.config.json')
+  const guideConfigPath = resolve(sourceRoot, guide.path, 'guide.config.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   if (guideConfig.theme != null && (typeof guideConfig.theme !== 'object' || Array.isArray(guideConfig.theme))) {
     throw new Error(`theme must be an object in ${guideConfigPath}`)
@@ -168,7 +169,7 @@ for (const guide of config.subguides) {
     ...(guideConfig.colors ?? {}),
     logoLight: await logoAsset('light'),
     logoDark: await logoAsset('dark'),
-    logoAlt: logo.alt ?? site.name,
+    logoAlt: logo.alt ?? config.site?.name ?? '',
     ...(logo.width ? { logoWidth: logo.width.trim() } : {}),
     ...(logo.height ? { logoHeight: logo.height.trim() } : {}),
     ...(logo.extraStyle ? { logoExtraStyle: logo.extraStyle.trim() } : {}),
@@ -215,8 +216,8 @@ for (const collection of collectionMetadata.values()) {
   const localizedTitles = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))]))
   const localizedDescriptions = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.description ?? collection.metadata.description, language)]))
   const links = Object.fromEntries(config.languages.map((language) => {
-    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? '' : `${language}/`
-    return [language, `/${localePrefix}${collection.id}/`]
+    const localeSegment = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
+    return [language, `/${localeSegment ? `${localeSegment}/` : ''}${collection.id}/`]
   }))
   const categoriesByLanguage = Object.fromEntries(config.languages.map((language) => [language, collection.categoryEntries.map((category) => ({
     id: category.id,
@@ -231,7 +232,7 @@ for (const collection of collectionMetadata.values()) {
       && candidate.from.toLowerCase().endsWith('.md')
       && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(candidate.from.slice(collection.sourceDirectory.length + 1)))) {
       const recordLanguage = sourceLanguage(record.from)
-      if (recordLanguage !== defaultLanguage.toLowerCase() && recordLanguage !== language.toLowerCase()) continue
+      if (!isDefaultLanguage(recordLanguage, defaultLanguage) && recordLanguage.toLowerCase() !== language.toLowerCase()) continue
       const relativeSource = relative(collection.sourceDirectory, record.from).split(sep).join('/')
       const canonical = relativeSource.replace(/\.[a-z]{2,3}(?:-[A-Z]{2})?\.md$/i, '.md')
       const current = localizedArticles.get(canonical)
@@ -251,8 +252,8 @@ for (const collection of collectionMetadata.values()) {
       })
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
-    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [language]
-    const targetDirectory = join(outputDirectory, ...localePrefix, collection.id)
+    const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)
+    const targetDirectory = join(outputDirectory, ...localeSegments, collection.id)
     const target = join(targetDirectory, 'index.md')
     if (records.some((record) => resolve(record.to) === resolve(target))) {
       throw new Error(`Collection route /${collection.id}/ conflicts with a published Markdown page`)
@@ -280,7 +281,7 @@ for (const collection of collectionMetadata.values()) {
         if (items.length) lines.push('')
       }
     }
-    if (!articles.length) lines.push(language.toLowerCase().startsWith('fr') ? 'Aucun contenu publié pour le moment.' : 'No published content yet.', '')
+    if (!articles.length) lines.push(config.uiStrings?.[language]?.emptyCollection ?? config.uiStrings?.[defaultLanguage]?.emptyCollection ?? '', '')
     await mkdir(targetDirectory, { recursive: true })
     generatedFiles.add(target)
     generatedCollectionPages.add(target)
@@ -302,7 +303,7 @@ const moduleSpecifier = (target, keepExtension = false) => {
 }
 
 const configuredStylesSource = [
-  '// Generated by scripts/preparation/pipeline.mjs from styles in vitepress.site.config.json. Do not edit.',
+  '// Generated by scripts/preparation/pipeline.mjs from .site target styles. Do not edit.',
   ...styleFiles.map((styleFile) => `import '${moduleSpecifier(styleFile, true)}'`),
 ].join('\n')
 await writeIfChanged(join(generatedDirectory, 'configured-styles.ts'), `${configuredStylesSource}\n`)
@@ -348,9 +349,9 @@ function validateThemeSlotComponents(slots, context) {
     }
   }
 }
-validateThemeSlotComponents(siteThemeSlots, 'vitepress.site.config.json')
+validateThemeSlotComponents(siteThemeSlots, '.site/targets/vitepress.target.config.json')
 for (const [guidePath, slots] of generatedGuideThemeSlots) {
-  validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'vitepress.config.json'))
+  validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'guide.config.json'))
 }
 
 const generatedGuideThemeSlotsByRoute = {}

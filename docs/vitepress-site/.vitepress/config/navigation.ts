@@ -150,7 +150,7 @@ function iconSource(icon: string, link?: string): string | undefined {
     return `/${inherited.replace(/^\/+/, '')}`
   }
   if (!icon) return undefined
-  const library = resolve(siteDirectory, '../guides', site.project?.iconLibrary ?? '')
+  const library = resolve(siteDirectory, '..', site.project?.iconLibrary ?? '')
   const families = ['lucide', 'custom', 'heroicons', 'simple-icons']
   const candidates = icon.includes('/') ? [resolve(library, `${icon}.svg`)] : families.map((family) => resolve(library, family, `${icon}.svg`))
   const source = candidates.find((candidate) => candidate.startsWith(`${library}/`) && existsSync(candidate))
@@ -247,9 +247,9 @@ const localizedThemeConfig = Object.fromEntries(site.languages
   .map((language: string) => [language, {
     nav: navigation(language),
     sidebar: localizedSidebars(language),
-    outline: { label: siteConfig.outline.labels[language] ?? siteConfig.outline.labels[defaultLanguage] ?? 'On this page' },
+    outline: { label: siteConfig.outline.labels[language] ?? siteConfig.outline.labels[defaultLanguage] },
     footer: siteConfig.footer?.[language] ?? siteConfig.footer?.[defaultLanguage],
-    langMenuLabel: siteConfig.languageMenuLabels?.[language] ?? 'Change language',
+    langMenuLabel: siteConfig.languageMenuLabels?.[language],
   }]))
 // VitePress merges theme config from `locales[lang].themeConfig`, so translated
 // navigation and sidebars belong on the locale entries, not in `themeConfig.locales`.
