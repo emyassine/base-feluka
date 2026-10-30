@@ -97,15 +97,15 @@ layout: home
 	action-href="/prologue/contribution-guide"
 	:navigation='[
 		{ name: "Product", href: "/#feature-modern-teams" },
-		{ name: "About Us", href: "/about" },
-		{ name: "Pricing", href: "/pricing" },
+		{ name: "About Us", href: "https://numerimondes.com", external: true },
+		{ name: "Pricing", href: "https://numerimondes.com", external: true },
 		{ name: "FAQ", href: "/faq" },
-		{ name: "Contact", href: "/contact" },
+		{ name: "Contact", href: "https://numerimondes.com", external: true },
 		{ name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
 		{ name: "LinkedIn", href: "#", external: true }
 	]'
 	legal-label="Privacy Policy"
-	legal-href="/privacy"
+	legal-href="https://numerimondes.com"
 	logo-alt="Feluqa"
 />
 </MainlineHomeLayout>

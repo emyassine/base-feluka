@@ -5,7 +5,7 @@
 ## Guides
 
 - [Feluqa](/get-started/) — product direction, setup, and application development.
-- [Feluqa’s Internals](/feluqa-internals/) — runtime, workspace, and compile-time architecture.
+- [Feluqa’s Internals](/internals/) — runtime, workspace, and compile-time architecture.
 - [Agents](/agents/) — contribution guidance for AI coding agents.
 - [Learn](/learn/) — practical application tutorials.
 

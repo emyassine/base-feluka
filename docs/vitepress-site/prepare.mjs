@@ -297,6 +297,12 @@ function stagedPath(sourcePath, language = null) {
   const locale = (language ?? (isMarkdown ? sourceLanguage(sourcePath) : defaultLanguage)).toLowerCase()
   const localePrefix = locale === defaultLanguage.toLowerCase() ? [] : [locale]
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  const collection = collections.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  if (collection) {
+    const local = sourceRelative === collection.path ? '' : sourceRelative.slice(collection.path.length + 1)
+    const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
+    return join(outputDirectory, ...localePrefix, collection.id, ...parts)
+  }
   if (!guide) {
     const parts = sourceRelative.split('/')
     return join(outputDirectory, ...localePrefix, ...parts.map((part, index) => index === parts.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)))
@@ -413,6 +419,7 @@ for (const guide of config.subguides) {
 if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 await scan(sourceRoot, outputDirectory)
+for (const collection of collections) await scan(sourceRoot, outputDirectory, collection.sourceDirectory, join(outputDirectory, collection.id))
 for (const directory of directories) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
@@ -1126,7 +1133,7 @@ for (const directory of [...directories].reverse()) {
           : childPage
         const nextTarget = firstLeaf ?? childPage
         const childLink = `/${relative(outputDirectory, nextTarget).replace(/\\/g, '/').replace(/\.md$/, '')}`
-        const next = `next: { text: ${JSON.stringify(titleOf(nextTarget))}, link: ${JSON.stringify(childLink)} }`
+        const next = `next: { text: "Overview", link: ${JSON.stringify(childLink)} }`
         return frontmatter.replace(/\n---$/, `\n${next}\n---`)
       })
       generatedMarkdown.add(indexPath)
@@ -1146,17 +1153,6 @@ for (const directory of [...directories].reverse()) {
       } else {
         markdown = `---\nsearch: false\n---\n\n${markdown}`
       }
-      if (isGuideEntry) markdown = markdown.replace(/^---\n([\s\S]*?)\n---/, (frontmatter) => {
-        const directoryPage = childPage.endsWith(`${sep}index.md`)
-        const childDirectory = directoryPage ? childPage.slice(0, -`${sep}index.md`.length) : null
-        const firstLeaf = childDirectory
-          ? defaultPageRecords.find(({ to }) => to.startsWith(`${childDirectory}${sep}`) && !to.endsWith(`${sep}index.md`))?.to
-          : childPage
-        const nextTarget = firstLeaf ?? childPage
-        const childLink = `/${relative(outputDirectory, nextTarget).replace(/\\/g, '/').replace(/\.md$/, '')}`
-        const next = `next: { text: ${JSON.stringify(titleOf(nextTarget))}, link: ${JSON.stringify(childLink)} }`
-        return frontmatter.replace(/\n---$/, `\n${next}\n---`)
-      })
       generatedMarkdown.add(noSlashAlias)
       generatedFiles.add(noSlashAlias)
       await writeIfChanged(noSlashAlias, markdown)
