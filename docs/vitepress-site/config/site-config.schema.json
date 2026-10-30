@@ -328,6 +328,9 @@
             },
             "prefixDefaultLanguage": {
               "type": "boolean"
+            },
+            "showFlags": {
+              "type": "boolean"
             }
           },
           "additionalProperties": false
@@ -502,6 +505,10 @@
             "guide": {
               "type": "string",
               "minLength": 1
+            },
+            "icon": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "additionalProperties": false
@@ -515,6 +522,10 @@
             "collection": {
               "type": "string",
               "minLength": 1
+            },
+            "icon": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "additionalProperties": false
@@ -526,6 +537,10 @@
               "$ref": "#/$defs/localized"
             },
             "link": {
+              "type": "string",
+              "minLength": 1
+            },
+            "icon": {
               "type": "string",
               "minLength": 1
             },

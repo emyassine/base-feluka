@@ -1,0 +1,20 @@
+import { ssrRenderAttrs } from "@vue/server-renderer";
+import "./vue.runtime.esm-bundler.PWx5r8ot.js";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+import { useSSRContext } from "@vue/runtime-dom";
+const __pageData = JSON.parse('{"title":"Feluqa’s Internals","description":"Source-level architecture and working guidance for contributors to Feluqa itself.","frontmatter":{"requestedLanguage":"fr","contentLanguage":"en","languageFallbackNotice":"Cette page n’est pas disponible en Français. La version en anglais est affichée.","sidebarTitle":"Internals","icon":"code-xml","title":"Feluqa’s Internals","description":"Source-level architecture and working guidance for contributors to Feluqa itself.","summary":"Collects the source-workspace structure, compile-time architecture, and engineering rules for people contributing to Feluqa itself.","date":"2026-10-29T00:00:00.000Z","lastmod":"2026-10-29T00:00:00.000Z","weight":0,"status":"Exploring","tags":["feluqa","contribution","source","architecture"],"draft":true,"author":{"name":"El Moumen Yassine","url":"https://numerimondes.com","linkedin":"https://www.linkedin.com/in/elmoumenyassine","email":"yassine@numerimondes.com"},"search":false,"prev":false,"next":{"text":"Workspaces","link":"/fr/internals/get-started/workspaces/workspaces-and-packages"}},"headers":[],"relativePath":"fr/internals/get-started/overview/index.md","filePath":"fr/internals/get-started/overview/index.md"}');
+const _sfc_main = { name: "fr/internals/get-started/overview/index.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="feluqa-s-internals" tabindex="-1">Feluqa’s Internals <a class="header-anchor" href="#feluqa-s-internals" aria-label="Permalink to &quot;Feluqa’s Internals&quot;">​</a></h1><p>This section is for people contributing to Feluqa&#39;s core software. It gathers the source workspace and package layout, compile-time implementation, and engineering rules for developers and AI agents working on Feluqa itself.</p><ul><li><a href="/fr/internals/get-started/workspaces/workspaces-and-packages">Workspaces and Packages</a></li><li><a href="/fr/internals/get-started/compile-time/compile-time-guarantees">What Moves to Compile Time</a></li><li><a href="/fr/internals/get-started/contributor-rules/rules-for-developers-and-agents">Rules for Developers and Agents</a></li><li><a href="/fr/internals/get-started/runtime/asynchronous-runtimes-by-target">Asynchronous Runtimes by Target</a>: async runtimes, target boundaries, and core-team runtime guidance.</li></ul></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("fr/internals/get-started/overview/index.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  index as default
+};

@@ -27,7 +27,7 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     generatedOgImages, defaultLanguage, outputDirectory, guideConfigs,
   } = context
   const navigationModel = navigationFactory({
-    site, siteConfig, defaultLanguage, generatedDirectory, sidebarMetadata,
+    site, siteConfig, siteDirectory, defaultLanguage, generatedDirectory, sidebarMetadata,
     sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs,
   })
   const {

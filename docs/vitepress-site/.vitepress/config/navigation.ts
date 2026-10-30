@@ -6,6 +6,7 @@ import type { GuideConfig, SiteConfig } from '../types/site-config'
 export interface NavigationInputs {
   site: SiteConfig
   siteConfig: SiteConfig
+  siteDirectory: string
   defaultLanguage: string
   generatedDirectory: string
   sidebarMetadata: Record<string, any>
@@ -16,7 +17,7 @@ export interface NavigationInputs {
 }
 
 export function createNavigation(inputs: NavigationInputs) {
-  const { site, siteConfig, defaultLanguage, generatedDirectory, sidebarMetadata,
+  const { site, siteConfig, siteDirectory, defaultLanguage, generatedDirectory, sidebarMetadata,
     sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs } = inputs
 // ROUTE AND SIDEBAR MODEL — translate generated Markdown paths into VitePress routes.
 const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
@@ -140,11 +141,33 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
   })
 }
 
+function iconSource(icon: string, link?: string): string | undefined {
+  if (icon === 'INHERIT') {
+    const normalized = link?.startsWith('/') ? link : `/${link ?? ''}`
+    const candidates = [normalized, normalized.replace(/\/$/, ''), `${normalized.replace(/\/$/, '')}/`]
+    const inherited = candidates.map((candidate) => sidebarPageIcons[candidate]).find(Boolean)
+    if (!inherited) throw new Error(`topbar icon INHERIT could not find page frontmatter icon for ${normalized}`)
+    return `/${inherited.replace(/^\/+/, '')}`
+  }
+  if (!icon) return undefined
+  const library = resolve(siteDirectory, '../guides', site.project?.iconLibrary ?? '')
+  const families = ['lucide', 'custom', 'heroicons', 'simple-icons']
+  const candidates = icon.includes('/') ? [resolve(library, `${icon}.svg`)] : families.map((family) => resolve(library, family, `${icon}.svg`))
+  const source = candidates.find((candidate) => candidate.startsWith(`${library}/`) && existsSync(candidate))
+  if (!source) throw new Error(`topbar icon not found in project.iconLibrary: ${icon}`)
+  return `data:image/svg+xml;base64,${readFileSync(source).toString('base64')}`
+}
+function itemText(label: string, icon?: string, link?: string): string {
+  const source = icon ? iconSource(icon, link) : undefined
+  return source
+    ? `<span class="docs-topbar-item"><img class="docs-topbar-icon" src="${escapeHtml(source)}" alt="" aria-hidden="true"><span>${escapeHtml(label)}</span></span>`
+    : escapeHtml(label)
+}
 function navigation(language = defaultLanguage): any[] {
   const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase()
     ? (site.topbar?.language?.prefixDefaultLanguage ? `/${language}` : '')
     : `/${language}`
-  const guideLink = (path: string) => {
+  const guideLink = (path: string, icon?: string) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
     if (!guide) throw new Error(`topbar references unknown subguide: ${path}`)
     const base = routeBase(path)
@@ -160,14 +183,14 @@ function navigation(language = defaultLanguage): any[] {
     const activeMatch = base
       ? `^${localePrefix}/${base}(?:/|$)`
       : `^${localePrefix}/(?!$)(?!(?:${otherRoots.join('|')})(?:/|$))`
-    return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
+    return { text: itemText(guide.labels?.[language] ?? guide.label, icon, link), link, activeMatch }
   }
-  const collectionLink = (id: string) => {
+  const collectionLink = (id: string, icon?: string) => {
     const collection = generatedCollections.find((entry: { id: string }) => entry.id === id)
     if (!collection) throw new Error(`topbar references unknown collection: ${id}`)
     const link = collection.links[language] ?? collection.links[defaultLanguage]
     return {
-      text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
+      text: itemText(collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, icon, link),
       link,
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
@@ -175,11 +198,13 @@ function navigation(language = defaultLanguage): any[] {
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
   const resolveItem = (item: any): any => {
-    if (item.guide) return guideLink(item.guide)
-    if (item.collection) return collectionLink(item.collection)
+    if (item.guide) return guideLink(item.guide, item.icon)
+    if (item.collection) return collectionLink(item.collection, item.icon)
+    const text = localize(item.text)
+    const link = item.link
     return {
-      ...(localize(item.text) ? { text: localize(item.text) } : {}),
-      ...(item.link ? { link: item.link } : {}),
+      ...(text ? { text: itemText(text, item.icon, link) } : {}),
+      ...(link ? { link } : {}),
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
       ...(item.target ? { target: item.target } : {}),
       ...(item.rel ? { rel: item.rel } : {}),
@@ -231,11 +256,14 @@ const localizedThemeConfig = Object.fromEntries(site.languages
 const showLanguageSelector = site.topbar?.language?.showSelector ?? true
 const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => {
   const isDefaultLanguage = language.toLowerCase() === defaultLanguage.toLowerCase()
+  const languageLabel = site.topbar?.language?.showFlags
+    ? `<span class="docs-language-label"><img src="/flags/language/${language.toLowerCase()}.svg" alt="" aria-hidden="true">${escapeHtml(site.languageLabels[language])}</span>`
+    : site.languageLabels[language]
   if (isDefaultLanguage && !site.topbar?.language?.prefixDefaultLanguage) {
-    return ['root', { label: showLanguageSelector ? site.languageLabels[language] : '', lang: language }]
+    return ['root', { label: showLanguageSelector ? languageLabel : '', lang: language }]
   }
   return [language, {
-    label: showLanguageSelector ? site.languageLabels[language] : '',
+    label: showLanguageSelector ? languageLabel : '',
     lang: language,
     link: `/${language}/`,
     themeConfig: localizedThemeConfig[language],

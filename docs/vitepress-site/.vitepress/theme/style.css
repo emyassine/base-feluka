@@ -1,3 +1,27 @@
+.docs-topbar-item,
+.docs-language-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.docs-topbar-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.docs-language-label img {
+  width: 18px;
+  height: 13px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.docs-language-flags .VPNavBarTranslations .title { display: none; }
+
 .VPDocAsideMeta {
   margin: 0 0 24px;
   color: var(--vp-c-text-1);

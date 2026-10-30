@@ -101,7 +101,7 @@ if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].include
 if (topbar.language != null && (typeof topbar.language !== 'object' || Array.isArray(topbar.language))) {
   throw new Error('topbar.language must be an object')
 }
-for (const key of ['showSelector', 'prefixDefaultLanguage']) {
+for (const key of ['showSelector', 'prefixDefaultLanguage', 'showFlags']) {
   if (topbar.language?.[key] !== undefined && typeof topbar.language[key] !== 'boolean') {
     throw new Error(`topbar.language.${key} must be a boolean`)
   }
@@ -109,17 +109,21 @@ for (const key of ['showSelector', 'prefixDefaultLanguage']) {
 const prefixDefaultLanguage = topbar.language?.prefixDefaultLanguage ?? false
 const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.path))
 const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
+const topbarIconPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
 function validateTopbarItems(items, location = 'topbar.items') {
   if (!Array.isArray(items)) throw new Error(`${location} must be an array`)
   for (const [index, item] of items.entries()) {
     const itemLocation = `${location}[${index}]`
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
+    if (item.icon !== undefined && (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon)))) {
+      throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
+    }
     if ('guide' in item) {
-      if (Object.keys(item).length !== 1 || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
       continue
     }
     if ('collection' in item) {
-      if (Object.keys(item).length !== 1 || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
+      if (Object.keys(item).some((key) => !['collection', 'icon'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
       continue
     }
     if (item.text !== undefined && typeof item.text !== 'string' && (!item.text || typeof item.text !== 'object' || Array.isArray(item.text))) {
@@ -533,6 +537,16 @@ for (const directory of directories) {
 }
 await writeIfChanged(join(generatedDirectory, 'navigation-order.json'), JSON.stringify(navigationOrder, null, 2))
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
+if (topbar.language?.showFlags) {
+  for (const language of config.languages) {
+    const source = join(siteDirectory, 'flags', 'language', `${language.toLowerCase()}.svg`)
+    if (!existsSync(source)) throw new Error(`Missing language flag for ${language}: ${source}`)
+    const target = join(outputDirectory, 'public', 'flags', 'language', `${language.toLowerCase()}.svg`)
+    await mkdir(dirname(target), { recursive: true })
+    generatedFiles.add(target)
+    await writeIfChanged(target, await readFile(source))
+  }
+}
 if (config.publicFiles !== undefined && (!config.publicFiles || typeof config.publicFiles !== 'object' || Array.isArray(config.publicFiles))) {
   throw new Error('publicFiles must be an object of root-level filenames and text contents')
 }

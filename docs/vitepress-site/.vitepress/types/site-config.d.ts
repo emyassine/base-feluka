@@ -44,16 +44,17 @@ export interface SiteConfig {
 
 export interface TopbarConfig {
   items?: TopbarItem[]
-  language?: { showSelector?: boolean; prefixDefaultLanguage?: boolean }
+  language?: { showSelector?: boolean; prefixDefaultLanguage?: boolean; showFlags?: boolean }
   theme?: 'switch' | 'system' | 'light' | 'dark'
 }
 
 export type TopbarItem =
-  | { guide: string }
-  | { collection: string }
+  | { guide: string; icon?: string }
+  | { collection: string; icon?: string }
   | {
       text?: LocalizedText
       link?: string
+      icon?: string
       activeMatch?: string
       target?: string
       rel?: string

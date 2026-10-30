@@ -234,6 +234,7 @@ const MermaidLayout = {
       const configured = guideColors as Record<string, Record<string, string>>
       const colors = configured[pathGuide] ?? Object.values(configured)[0] ?? {}
       const root = document.documentElement
+      root.classList.toggle('docs-language-flags', Boolean((siteContent as { showLanguageFlags?: boolean }).showLanguageFlags))
       for (const [key, property] of Object.entries(colorProperties)) {
         root.style.removeProperty(property)
         const value = colors[key]

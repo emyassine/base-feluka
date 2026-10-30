@@ -72,7 +72,8 @@
     ],
     "language": {
       "showSelector": true,
-      "prefixDefaultLanguage": false
+      "prefixDefaultLanguage": false,
+      "showFlags": true
     },
     "theme": "switch"
   },

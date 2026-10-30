@@ -370,6 +370,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   guidePaths: [...Object.keys(generatedGuideColors)],
   languages: config.languages,
   defaultLanguage,
+  showLanguageFlags: config.topbar?.language?.showFlags ?? false,
   themeSlots: { site: siteThemeSlots, guides: generatedGuideThemeSlotsByRoute },
   footer: config.footer ?? {},
   seo: config.seo ?? {},
