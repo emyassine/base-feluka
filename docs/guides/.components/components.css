@@ -3,7 +3,7 @@
   position: relative;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid color-mix(in srgb, var(--vp-c-text-1) 14%, var(--vp-c-divider));
   border-radius: 8px;
   padding: 1rem;
   background: transparent;
@@ -85,9 +85,10 @@ html.dark .feluqa-component-card {
 .feluqa-component-card__icon {
   width: 1.125rem;
   height: 1.125rem;
+  margin-top: 0.25rem;
   margin-bottom: 0.35rem;
   object-fit: contain;
-  opacity: 0.82;
+  opacity: 0.72;
 }
 
 html:not(.dark) .feluqa-component-card__icon {
@@ -96,15 +97,16 @@ html:not(.dark) .feluqa-component-card__icon {
 
 html.dark .feluqa-component-card__icon {
   filter: brightness(0) invert(1);
-  opacity: 0.94;
+  opacity: 0.82;
 }
 
 .feluqa-component-card__heading {
+  margin-top: 0.4rem;
   width: 100%;
 }
 
 .feluqa-component-card__heading h3 {
-  margin: 0;
+  margin-top: 0.25rem;
   border: 0;
   padding: 0;
   color: var(--vp-c-text-1);
@@ -117,14 +119,15 @@ html.dark .feluqa-component-card__icon {
   display: block;
   margin-top: auto;
   padding-top: 1rem;
-  color: color-mix(in srgb, var(--vp-brand-c-1, var(--vp-c-brand-1)) 72%, var(--vp-c-text-2));
+  color: color-mix(in srgb, var(--vp-brand-c-1, var(--vp-c-brand-1)) 86%, var(--vp-c-text-1));
   font-size: 0.6875rem;
+  font-weight: 600;
   line-height: 1.4;
 }
 
 .feluqa-component-card__description {
   margin: 0;
-  color: var(--vp-c-text-2);
+  color: color-mix(in srgb, var(--vp-c-text-1) 32%, var(--vp-c-text-2));
   font-size: 0.875rem;
   line-height: 1.65;
 }
