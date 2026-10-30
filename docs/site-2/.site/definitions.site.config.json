@@ -5,7 +5,19 @@
   },
   "subguides": [
     {
-      "path": "numerimondes.com/000-prologue",
+      "path": "001-commercial",
+      "label": "Commercial",
+      "labels": {
+        "en": "Commercial",
+        "fr": "Commercial"
+      },
+      "uri": {
+        "base": "/",
+        "index": "commercial/"
+      }
+    },
+    {
+      "path": "005-about",
       "label": "About",
       "labels": {
         "en": "About",
@@ -16,29 +28,18 @@
       }
     },
     {
-      "path": "numerimondes.com/010-services",
-      "label": "Services",
+      "path": "010-products",
+      "label": "Products",
       "labels": {
-        "en": "Services",
-        "fr": "Services"
-      },
-      "uri": {
-        "base": "/services/"
-      }
-    },
-    {
-      "path": "numerimondes.com/020-numerimondes/000-docs",
-      "label": "Numerimondes Docs",
-      "labels": {
-        "en": "Numerimondes Docs",
-        "fr": "Documentation Numerimondes"
+        "en": "Products",
+        "fr": "Produits"
       },
       "uri": {
         "base": "/numerimondes/docs/"
       }
     },
     {
-      "path": "numerimondes.com/030-education",
+      "path": "020-education",
       "label": "Education",
       "labels": {
         "en": "Education",
@@ -49,7 +50,7 @@
       }
     },
     {
-      "path": "numerimondes.com/040-research",
+      "path": "030-research",
       "label": "Research",
       "labels": {
         "en": "Research",
@@ -60,7 +61,7 @@
       }
     },
     {
-      "path": "numerimondes.com/050-community",
+      "path": "040-community",
       "label": "Community",
       "labels": {
         "en": "Community",
@@ -71,7 +72,7 @@
       }
     },
     {
-      "path": "numerimondes.com/060-partnerships",
+      "path": "050-partnerships",
       "label": "Partnerships",
       "labels": {
         "en": "Partnerships",
@@ -79,17 +80,6 @@
       },
       "uri": {
         "base": "/partnerships/"
-      }
-    },
-    {
-      "path": "numerimondes.com",
-      "label": "Numerimondes",
-      "labels": {
-        "en": "Numerimondes",
-        "fr": "Numerimondes"
-      },
-      "uri": {
-        "base": "/"
       }
     }
   ],
