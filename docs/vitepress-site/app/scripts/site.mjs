@@ -30,8 +30,8 @@ function run(binary, commandArgs, runEnv = env) {
   if (result.status !== 0) process.exit(result.status ?? 1)
 }
 
-function prepare() {
-  run(process.execPath, [join(appDirectory, 'scripts/preparation/pipeline.mjs')])
+function prepare(prepareEnv = env) {
+  run(process.execPath, [join(appDirectory, 'scripts/preparation/pipeline.mjs')], prepareEnv)
 }
 
 if (command === 'prepare') {
@@ -44,13 +44,20 @@ if (command === 'prepare') {
   }[command]
   run(process.execPath, [join(appDirectory, script), ...forwardedArgs()])
 } else if (command === 'build') {
-  prepare()
   await mkdir(dirname(site.outputRoot), { recursive: true })
   const stage = join(dirname(site.outputRoot), `.${basename(site.outputRoot)}.stage-${process.pid}`)
   const backup = join(dirname(site.outputRoot), `.${basename(site.outputRoot)}.backup-${process.pid}`)
   await rm(stage, { recursive: true, force: true })
-  const buildEnv = { ...env, DOCS_OUTPUT_DIR: stage }
+  // Keep a production build isolated from a concurrently running dev server.
+  // A normal preparation clears its generated Markdown tree, and sharing that
+  // tree with VitePress dev would trigger page reloads across every route.
+  const buildEnv = {
+    ...env,
+    DOCS_OUTPUT_DIR: stage,
+    VITEPRESS_TRASH_DIR: join(trashDirectory, 'build'),
+  }
   try {
+    prepare(buildEnv)
     run(vitepress, ['build'], buildEnv)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)
     try { await rename(site.outputRoot, backup) } catch (error) { if (error.code !== 'ENOENT') throw error }
