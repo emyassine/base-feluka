@@ -92,14 +92,7 @@ const homepageMarkup = localImages.reduce(
 
 <style>
 .react-home {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483000;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
   overflow-x: hidden;
-  overflow-y: auto;
   isolation: isolate;
   background: #fff;
   color: #404756;
@@ -109,5 +102,4 @@ const homepageMarkup = localImages.reduce(
 .react-home__content { min-height: 100%; }
 .react-home img { max-width: none; }
 .react-home a { cursor: pointer; }
-body:has(.react-home) { overflow: hidden; }
 </style>
