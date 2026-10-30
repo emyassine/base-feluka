@@ -418,7 +418,7 @@ const props = withDefaults(defineProps<FlexCarouselProps>(), {
   autoplay: false,
   interval: 4,
   captions: true,
-  captureWheel: false,
+  captureWheel: true,
   className: '',
   clickAction: 'navigate',
   showCardButton: false,
@@ -1139,7 +1139,7 @@ const mountScene = () => {
     if (visible && (animating || waiting || dirty || pointer.down)) raf = requestAnimationFrame(frame);
   };
 
-  const localPoint = (e: PointerEvent) => {
+  const localPoint = (e: { clientX: number; clientY: number }) => {
     const rect = container.getBoundingClientRect();
     return [e.clientX - rect.left, e.clientY - rect.top];
   };
@@ -1281,7 +1281,12 @@ const mountScene = () => {
 
   const onWheel = (e: WheelEvent) => {
     const s = settings;
-    if (!s || e.ctrlKey) return;
+    if (!s || e.ctrlKey || !s.captureWheel) return;
+    const [pointerX, pointerY] = localPoint(e);
+    const overCard = instances.some((instance) =>
+      pointerX >= instance.x0 && pointerX <= instance.x1 && pointerY >= instance.y0 && pointerY <= instance.y1
+    );
+    if (!overCard) return;
     let dx = e.deltaX;
     let dy = e.deltaY;
     if (e.shiftKey && Math.abs(dx) < Math.abs(dy)) {
@@ -1290,7 +1295,7 @@ const mountScene = () => {
     }
     const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? height : 1;
     const horizontal = Math.abs(dx) > Math.abs(dy);
-    if (!horizontal || !s.captureWheel) return;
+    // Only capture wheel input while the pointer is over a rendered card.
     e.preventDefault();
     skipIntro();
     interactedAt = performance.now();
