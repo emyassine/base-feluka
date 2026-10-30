@@ -177,7 +177,7 @@ function navigation(language = defaultLanguage): any[] {
       : `${localePrefix}/${base}${base ? '/' : ''}`
   const activeMatch = base
     ? `^${localePrefix}/${base}(?:/|$)`
-    : `^${localePrefix}/(?!(?:${[...site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)), ...generatedCollections.map((collection: { id: string }) => collection.id)].filter(Boolean).join('|')})(?:/|$))`
+    : `^${localePrefix}/(?!$)(?!(?:${[...site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)), ...generatedCollections.map((collection: { id: string }) => collection.id)].filter(Boolean).join('|')})(?:/|$))`
   return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
  })
  const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => {
