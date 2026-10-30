@@ -54,7 +54,7 @@ code or to product resources, and describe unavailable resources as planned.
 
 ## Available skills
 
-- [Writing Published Feluqa Documentation](030-skills/010-writing-docs.en.md): preserve
+- [Writing Published Feluqa Documentation](../030-skills/010-writing-docs.en.md): preserve
   product intent, use the canonical taxonomy, keep site content independent of
   local source files, and distinguish product direction from delivered behavior.
 

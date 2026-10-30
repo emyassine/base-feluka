@@ -33,6 +33,6 @@ that owns them. Shared tooling and contracts can support other targets, while
 each target keeps its own runtime profile. Dynamic module installation and
 complete standalone runtime shells are still unfinished.
 
-See [Create your first application](/learn/get-started/create-your-first-application) for
+See [Create your first application](/learn/get-started/first-application/create-your-first-application) for
 the longer learning path and [Feluqa’s internals](/internals/) for
 architecture details.

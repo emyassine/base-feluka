@@ -19,7 +19,7 @@ Naming: `[order]-folder/[order]-file.en.md`.
    major version to upgrade from.
 4. Explore [Components](000-prologue/040-batteries-included.en.md)
    capabilities and their current status.
-5. Read about the [complementary agent project](../x-agents/020-agentic-development/020-complementary-agent-project.en.md)
+5. Read about the [complementary agent project](../x-agents/010-get-started/020-agentic-development/020-complementary-agent-project.en.md)
    and its intended relationship with Feluqa.
 6. Begin learning Feluqa at
    [`010-get-started/000-introduction/010-introduction.en.md`](010-get-started/000-introduction/010-introduction.en.md),

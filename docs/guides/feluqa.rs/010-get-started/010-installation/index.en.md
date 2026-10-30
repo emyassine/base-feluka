@@ -18,7 +18,7 @@ author:
 ---
 # Prepare Your Development Environment
 
-> This is part two of [Create Your First Application](/learn/get-started/create-your-first-application).
+> This is part two of [Create Your First Application](/learn/get-started/first-application/create-your-first-application).
 
 ## Prepare the development environment
 
