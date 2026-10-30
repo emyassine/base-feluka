@@ -2,7 +2,6 @@
   "items": [
     {
       "text": {"en": "Services", "fr": "Services"},
-      "icon": "briefcase-business",
       "items": [
         {"text": {"en": "All services", "fr": "Tous les services"}, "link": "/services/", "icon": "layout-grid"},
         {"text": {"en": "Consulting and audit", "fr": "Conseil et audit"}, "link": "/services/consulting/", "icon": "message-circle"},
@@ -14,7 +13,6 @@
     },
     {
       "text": {"en": "Products", "fr": "Produits"},
-      "icon": "boxes",
       "items": [
         {"text": {"en": "Numerimondes documentation", "fr": "Documentation Numerimondes"}, "link": "/numerimondes/docs/", "icon": "book-open"},
         {"text": {"en": "Webkernel", "fr": "Webkernel"}, "link": "/numerimondes/docs/oss/webkernel/", "icon": "box"},
@@ -23,7 +21,6 @@
     },
     {
       "text": {"en": "Insights", "fr": "Ressources"},
-      "icon": "lightbulb",
       "items": [
         {"text": {"en": "Research", "fr": "Recherche"}, "link": "/research/", "icon": "flask-conical"},
         {"text": {"en": "Publications", "fr": "Publications"}, "link": "/research/publications/", "icon": "file-text"},
@@ -33,7 +30,6 @@
     },
     {
       "text": {"en": "Network", "fr": "Réseau"},
-      "icon": "users",
       "items": [
         {"text": {"en": "Partner framework", "fr": "Réseau de partenaires"}, "link": "/partnerships/", "icon": "handshake"},
         {"text": {"en": "Become a partner", "fr": "Devenir partenaire"}, "link": "/partnerships/become-partner/", "icon": "user-round-plus"},
@@ -43,7 +39,6 @@
     },
     {
       "text": {"en": "About", "fr": "À propos"},
-      "icon": "building-2",
       "items": [
         {"text": {"en": "Company", "fr": "Entreprise"}, "link": "/about/company/", "icon": "building-2"},
         {"text": {"en": "Group", "fr": "Groupe"}, "link": "/about/company/group/", "icon": "network"},
