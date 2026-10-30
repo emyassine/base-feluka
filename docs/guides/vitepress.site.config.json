@@ -41,6 +41,9 @@
   "project": {
     "components": ".config/components",
     "hooks": ".config/hooks",
+    "viteFsAllow": [
+      ".config/components/home/assets/react-home"
+    ],
     "iconLibrary": "../vitepress-site/icons",
     "iconFallback": "circle-help",
     "mermaidConfig": ".config/vitepress/mermaid.json"
