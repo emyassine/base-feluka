@@ -54,7 +54,7 @@
   "topbar": {
     "items": [
       {
-        "text": { "en": "Docs", "fr": "Docs" },
+        "text": { "en": "Basics", "fr": "Bases" },
         "items": [
           { "guide": "feluqa.rs" },
           { "guide": "sdui" },
