@@ -71,6 +71,7 @@ type ReactDevText = {
   title?: string
   lead?: string
   detail?: string
+  demoLabel?: string
   actions?: ReactDevAction[]
 }
 
@@ -110,6 +111,14 @@ function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
     node.children.forEach(visit)
   }
   visit(root)
+}
+
+function replaceTextValue(root: ReactDevHtmlNode, source: string, replacement: string): void {
+  if (root.type === 'text') {
+    root.value = root.value.replaceAll(source, replacement)
+    return
+  }
+  root.children.forEach((child) => replaceTextValue(child, source, replacement))
 }
 
 function iconNode(name: ReactDevIcon): VNode {
@@ -165,6 +174,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
+  if (text.demoLabel !== undefined) replaceTextValue(tree, 'React Conf', text.demoLabel)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
 
@@ -174,13 +184,14 @@ export default defineComponent({
     title: { type: String, default: 'Go full-stack with a framework' },
     lead: String,
     detail: String,
+    demoLabel: { type: String, default: 'React Conf' },
     ctaLabel: { type: String, default: 'Get started with a framework' },
     ctaHref: { type: String, default: 'https://react.dev/learn/creating-a-react-app' },
     ctaIcon: { type: String as PropType<ReactDevIcon>, default: 'framework' },
   },
   setup(props) {
     return () => renderReactDevBlock(framework, {
-      title: props.title, lead: props.lead, detail: props.detail,
+      title: props.title, lead: props.lead, detail: props.detail, demoLabel: props.demoLabel,
       actions: [{ sourceLabel: 'Get started with a framework', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'cta' }],
     })
   }

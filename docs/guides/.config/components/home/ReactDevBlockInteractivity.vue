@@ -25,6 +25,7 @@ type ReactDevText = {
   title?: string
   lead?: string
   detail?: string
+  previewTitle?: string
   actions?: ReactDevAction[]
 }
 
@@ -119,6 +120,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
+  if (text.previewTitle !== undefined) replaceElementText(tree, 'h1', text.previewTitle)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
 
@@ -128,13 +130,14 @@ export default defineComponent({
     title: { type: String, default: 'Add interactivity wherever you need it' },
     lead: String,
     detail: String,
+    previewTitle: { type: String, default: 'React Videos' },
     ctaLabel: { type: String, default: 'Add React to your page' },
     ctaHref: { type: String, default: 'https://react.dev/learn/add-react-to-an-existing-project' },
     ctaIcon: { type: String as PropType<ReactDevIcon>, default: 'code' },
   },
   setup(props) {
     return () => renderReactDevBlock(interactivity, {
-      title: props.title, lead: props.lead, detail: props.detail,
+      title: props.title, lead: props.lead, detail: props.detail, previewTitle: props.previewTitle,
       actions: [{ sourceLabel: 'Add React to your page', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'cta' }],
     })
   }

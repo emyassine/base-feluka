@@ -21,6 +21,22 @@ layout: home
       ]'
     />
 
+<MainlineLogos
+      title="Powering the world's best product teams."
+      subtitle="From next-gen startups to established enterprises."
+      :companies='[
+        { name: "Mercury", logo: "mercury", width: 143, height: 26, href: "https://mercury.com" },
+        { name: "Watershed", logo: "watershed", width: 154, height: 31, href: "https://watershed.com" },
+        { name: "Retool", logo: "retool", width: 113, height: 22, href: "https://retool.com" },
+        { name: "Descript", logo: "descript", width: 112, height: 27, href: "https://descript.com" },
+        { name: "Perplexity", logo: "perplexity", width: 141, height: 32, href: "https://perplexity.com" },
+        { name: "Monzo", logo: "monzo", width: 104, height: 18, href: "https://monzo.com" },
+        { name: "Ramp", logo: "ramp", width: 105, height: 28, href: "https://ramp.com" },
+        { name: "Raycast", logo: "raycast", width: 128, height: 33, href: "https://raycast.com" },
+        { name: "Arc", logo: "arc", width: 90, height: 28, href: "https://arc.com" }
+      ]'
+    />
+
 <ReactDevHome>
   <ReactDevBlockComponents
     title="Build applications from reusable components"
@@ -28,13 +44,14 @@ layout: home
     detail="The view compiler and selected application foundations are implemented. Dynamic module installation and the full UI integration remain in progress."
     markup-title="Choose a frontend for each target"
     markup-lead="Feluqa keeps application contracts separate from rendering, so a product can use the frontend that fits its target runtime."
-    markup-detail="The sample shows a React frontend. Feluqa targets Vue, React, and plain HTML; complete integration across those frontends is still in progress."
+    markup-detail="Feluqa is headless-first: its typed services and application contracts do not depend on a UI framework. Build with React or any frontend framework; Vue and plain HTML are also intended consumers. Complete frontend integrations remain in progress."
   />
 
   <ReactDevBlockInteractivity
     title="Add interactivity where the work happens"
     lead="Feluqa defines typed Live action contracts for interactive interfaces. Server actions own validation, authorization, and business behavior."
-    detail="This React demo illustrates client-side state. Feluqa's browser reconciliation and shared replay support are still under development."
+    detail="This code preview illustrates a React frontend integration; it is not Feluqa syntax. Feluqa is headless-first and designed to work with React or any frontend framework. Browser reconciliation and shared replay support remain under development."
+    preview-title="Feluqa frontend demo"
     cta-label="Explore panels and Live"
     cta-href="/get-started/frontend/panels"
     cta-icon="code"
@@ -43,7 +60,8 @@ layout: home
   <ReactDevBlockFramework
     title="Build inside an opinionated application framework"
     lead="Feluqa is opinionated: it gives each application a consistent structure, typed configuration, compiled views, route composition, and shared contracts. Teams build business modules within those conventions instead of assembling unrelated framework pieces."
-    detail="The code sample is a React example of server-side data composition, not Feluqa syntax. Feluqa routes are declared by their owning site, panel, or module and composed by the application. Composition currently uses statically compiled Rust; dynamic module installation, complete runtime shells, and standalone generated-app builds remain unfinished."
+    detail="The code preview illustrates frontend data composition; it is not Feluqa syntax. Feluqa routes are declared by their owning site, panel, or module and composed by the application. Composition currently uses statically compiled Rust; dynamic module installation, complete runtime shells, and standalone generated-app builds remain unfinished."
+    demo-label="Feluqa Demo"
     cta-label="Read the architecture"
     cta-href="/internals/"
     cta-icon="framework"
@@ -62,22 +80,6 @@ layout: home
     cta-icon="native"
   />
 </ReactDevHome>
-
-<MainlineLogos
-      title="Powering the world's best product teams."
-      subtitle="From next-gen startups to established enterprises."
-      :companies='[
-        { name: "Mercury", logo: "mercury", width: 143, height: 26, href: "https://mercury.com" },
-        { name: "Watershed", logo: "watershed", width: 154, height: 31, href: "https://watershed.com" },
-        { name: "Retool", logo: "retool", width: 113, height: 22, href: "https://retool.com" },
-        { name: "Descript", logo: "descript", width: 112, height: 27, href: "https://descript.com" },
-        { name: "Perplexity", logo: "perplexity", width: 141, height: 32, href: "https://perplexity.com" },
-        { name: "Monzo", logo: "monzo", width: 104, height: 18, href: "https://monzo.com" },
-        { name: "Ramp", logo: "ramp", width: 105, height: 28, href: "https://ramp.com" },
-        { name: "Raycast", logo: "raycast", width: 128, height: 33, href: "https://raycast.com" },
-        { name: "Arc", logo: "arc", width: 90, height: 28, href: "https://arc.com" }
-      ]'
-    />
 
 <MainlineGuideBlocks
       title="Find your way through the guides"
