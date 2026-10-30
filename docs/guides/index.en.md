@@ -42,6 +42,8 @@ layout: home
     :content='["Create user interfaces from components","Feluqa lets you build user interfaces out of individual pieces called components. Create your own Feluqa components like"," ","Thumbnail",", ","LikeButton",", and"," ","module",". Then combine them into entire screens, pages, and apps.","module.js","My module","module description","Whether you work on your own or with thousands of other developers, using Feluqa feels the same. It is designed to let you seamlessly combine components written by independent people, teams, and organizations."]'
     :markup-content='["Write components with code and markup","Feluqa components are JavaScript functions. Want to show some content conditionally? Use an ","if"," statement. Displaying a list? Try array ","map()",". Learning Feluqa is learning programming.","moduleList.js","3 modules","First module","module description","Second module","module description","Third module","module description","This markup syntax is called compiled view syntax. It is a JavaScript syntax extension popularized by Feluqa. Putting compiled view syntax markup close to related rendering logic makes Feluqa components easy to create, maintain, and delete."]'
     :preview-items='[{"title":"Inventory module","description":"Typed product view compiled by Feluqa"},{"title":"Order module","description":"Business workflow owned by the application"},{"title":"Customer module","description":"Reusable, typed application component"}]'
+    :code-lines='["use feluqa::view::View;","","pub struct ProductCard {","    pub name: String,","    pub price: Money,","}","","impl View for ProductCard {","    fn render(&self) -> Html {","        html! {","            <article class=\"product-card\">","                <h2>{ self.name }</h2>","                <p>{ self.price }</p>","            </article>","        }","    }","}"]'
+    :markup-code-lines='["use feluqa::view::View;","","pub struct ProductCatalog {","    pub products: Vec<Product>,","}","","impl View for ProductCatalog {","    fn render(&self) -> Html {","        html! {","            <section class=\"catalog\">","                { for self.products.iter().map(ProductCard::from) }","            </section>","        }","    }","}"]'
     preview-count-label="3 business modules"
     title="Compose product interfaces from typed views"
     lead="Build product pages from small, reusable view templates. Feluqa compiles `.view.rs` files into the application and keeps data and rendering responsibilities explicit."
@@ -58,6 +60,7 @@ layout: home
     search-placeholder="Search products"
     preview-count-label="5 catalog results"
     :preview-items='[{"title":"Product catalog","description":"Search products by name"},{"title":"Wireless sensor","description":"Connected inventory device"},{"title":"Gateway device","description":"Local network equipment"},{"title":"Temperature probe","description":"Typed catalog result"},{"title":"Workstation runtime","description":"Application target"}]'
+    :code-lines='["use feluqa::live::{Action, LiveContext};","","pub struct SearchProducts {","    pub query: String,","}","","impl Action for SearchProducts {","    type Output = Vec<ProductSummary>;","","    async fn handle(self, ctx: LiveContext) -> Result<Self::Output> {","        ctx.authz.require(\"catalog.read\").await?;","        ctx.catalog.search(self.query).await","    }","}"]'
     title="Connect interactive views to typed actions"
     lead="Feluqa Live defines typed action contracts. Server handlers validate input, authorize every action, and own business behavior regardless of which frontend sends the request."
     detail="The snippet illustrates Rust domain logic, not a complete Live handler. Browser reconciliation and shared replay support remain under development."
@@ -76,6 +79,7 @@ layout: home
     reload-label="Reload preview"
     :preview-options='["Feluqa Web Runtime","Feluqa Workstation Runtime"]'
     :preview-items='[{"title":"Hosted web application","description":"Routes, compiled views, and typed actions"},{"title":"Standalone workstation","description":"Dedicated application runtime"},{"title":"Local network host","description":"Serve nearby clients without Internet"},{"title":"Connected device module","description":"IoT and real-time application target"}]'
+    :code-lines='["[application]","name = \"bookstore\"","","[runtime]","profile = \"web\"","","[modules.catalog]","source = \"products/catalog\"","","[targets]","web = true","workstation = true","iot = true"]'
     search-placeholder="Search modules"
     title="Build within an opinionated application framework"
     lead="Feluqa gives every application a consistent structure for configuration, route composition, compiled views, and shared contracts. It provides conventions across the application lifecycle so teams can focus on business workflows."

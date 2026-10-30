@@ -51,6 +51,7 @@ function textContent(node: ReactDevHtmlNode): string {
 function replaceElementText(root: ReactDevHtmlNode, tagName: string, replacement: string, last = false): void {
   const matches: ReactDevHtmlNode[] = []
   const visit = (node: ReactDevHtmlNode) => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element') return
     if (node.tag === tagName) matches.push(node)
     node.children.forEach(visit)
@@ -63,6 +64,7 @@ function replaceElementText(root: ReactDevHtmlNode, tagName: string, replacement
 function replaceElementTextAt(root: ReactDevHtmlNode, tagName: string, index: number, replacement: string): void {
   const matches: ReactDevHtmlNode[] = []
   const visit = (node: ReactDevHtmlNode) => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element') return
     if (node.tag === tagName) matches.push(node)
     node.children.forEach(visit)
@@ -76,6 +78,7 @@ function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
   let headingFound = false
   let leadFound = false
   const visit = (node: ReactDevHtmlNode): void => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element' || leadFound) return
     if (node.tag === 'h1' || node.tag === 'h2') headingFound = true
     else if (headingFound && node.tag === 'p') {
@@ -91,6 +94,7 @@ function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
 function replaceCodeSnippet(root: ReactDevHtmlNode, source: string): void {
   const blocks: Array<{ code: ReactDevHtmlNode; pre?: ReactDevHtmlNode }> = []
   const visit = (node: ReactDevHtmlNode, parent?: ReactDevHtmlNode) => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element') return
     if (node.tag === 'code' && typeof node.attrs.class === 'string' && node.attrs.class.includes('sp-pre-placeholder')) blocks.push({ code: node, pre: parent })
     node.children.forEach((child) => visit(child, node))
@@ -181,7 +185,8 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.previewSubtitle !== undefined) replaceElementTextAt(tree, 'p', 1, text.previewSubtitle)
   if (text.searchPlaceholder !== undefined) {
     const visit = (node: ReactDevHtmlNode) => {
-      if (node.type !== 'element') return
+      if (node.type === 'fragment') { node.children.forEach(visit); return }
+    if (node.type !== 'element') return
       if (node.tag === 'input') node.attrs.placeholder = text.searchPlaceholder!
       node.children.forEach(visit)
     }
@@ -195,7 +200,8 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
       return node.children.some((child) => setText(child, tag, value))
     }
     const visit = (node: ReactDevHtmlNode) => {
-      if (node.type !== 'element') return
+      if (node.type === 'fragment') { node.children.forEach(visit); return }
+    if (node.type !== 'element') return
       node.children = node.children.filter((child) => {
         if (child.type === 'element' && child.attrs['data-hover'] === 'Video') {
           const item = text.previewItems?.[index++]

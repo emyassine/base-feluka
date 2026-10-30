@@ -59,6 +59,7 @@ function textContent(node: ReactDevHtmlNode): string {
 function replaceElementText(root: ReactDevHtmlNode, tagName: string, replacement: string, last = false): void {
   const matches: ReactDevHtmlNode[] = []
   const visit = (node: ReactDevHtmlNode) => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element') return
     if (node.tag === tagName) matches.push(node)
     node.children.forEach(visit)
@@ -72,6 +73,7 @@ function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
   let headingFound = false
   let leadFound = false
   const visit = (node: ReactDevHtmlNode): void => {
+    if (node.type === 'fragment') { node.children.forEach(visit); return }
     if (node.type !== 'element' || leadFound) return
     if (node.tag === 'h1' || node.tag === 'h2') headingFound = true
     else if (headingFound && node.tag === 'p') {
@@ -151,7 +153,8 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.imageAlts) {
     let index = 0
     const setAlts = (node: ReactDevHtmlNode) => {
-      if (node.type !== 'element') return
+      if (node.type === 'fragment') { node.children.forEach(setAlts); return }
+    if (node.type !== 'element') return
       if (node.tag === 'img' && 'alt' in node.attrs) node.attrs.alt = text.imageAlts?.[index++] ?? ''
       node.children.forEach(setAlts)
     }
