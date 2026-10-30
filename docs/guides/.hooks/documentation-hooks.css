@@ -1,9 +1,12 @@
-.FeluqaDocumentationNotices { display: grid; gap: 10px; margin: 0 0 24px; }
+.FeluqaDocumentationNotices { display: grid; gap: 12px; margin: 0 0 24px; }
 .FeluqaDocumentationNotices__fallback,
-.FeluqaDocumentationNotices__status { border: 1px solid var(--vp-c-divider); border-radius: 8px; padding: 12px 16px; color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); }
-.FeluqaDocumentationNotices__fallback { border-left: 3px solid var(--vp-c-brand-1); }
-.FeluqaDocumentationNotices__fallback strong { display: block; margin-bottom: 3px; font-size: 13px; }
-.FeluqaDocumentationNotices__fallback p { margin: 0; color: var(--vp-c-text-2); font-size: 14px; }
-.FeluqaDocumentationNotices__status.is-exploring { border-left: 3px solid var(--vp-c-warning-1); background: var(--vp-c-warning-soft); }
-.FeluqaDocumentationNotices__status.is-validated { border-left: 3px solid var(--vp-c-tip-1); background: var(--vp-c-tip-soft); }
+.FeluqaDocumentationNotices__status { display: flex; align-items: flex-start; gap: 14px; border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 16px 18px; color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); }
+.FeluqaDocumentationNotices__fallback { border-color: color-mix(in srgb, var(--vp-c-brand-1) 24%, var(--vp-c-divider)); background: color-mix(in srgb, var(--vp-c-brand-1) 6%, var(--vp-c-bg-soft)); }
+.FeluqaDocumentationNotices__status.is-exploring { border-color: color-mix(in srgb, var(--vp-c-warning-1) 24%, var(--vp-c-divider)); background: color-mix(in srgb, var(--vp-c-warning-1) 6%, var(--vp-c-bg-soft)); }
+.FeluqaDocumentationNotices__status.is-validated { border-color: color-mix(in srgb, var(--vp-c-tip-1) 24%, var(--vp-c-divider)); background: color-mix(in srgb, var(--vp-c-tip-1) 6%, var(--vp-c-bg-soft)); }
+.FeluqaDocumentationNotices__icon { display: inline-flex; width: 24px; height: 24px; flex: 0 0 24px; align-items: center; justify-content: center; margin-top: 1px; border: 2px solid currentColor; border-radius: 50%; color: var(--vp-c-brand-1); font-size: 15px; font-weight: 700; line-height: 1; }
+.FeluqaDocumentationNotices__status.is-exploring .FeluqaDocumentationNotices__icon { color: var(--vp-c-warning-1); }
+.FeluqaDocumentationNotices__status.is-validated .FeluqaDocumentationNotices__icon { color: var(--vp-c-tip-1); }
+.FeluqaDocumentationNotices strong { display: block; margin: 0 0 4px; color: var(--vp-c-text-1); font-size: 1rem; font-weight: 600; line-height: 1.5; }
+.FeluqaDocumentationNotices p { margin: 0; color: var(--vp-c-text-2); font-size: 0.875rem; line-height: 1.6; }
 .FeluqaLastModified { display: flex; gap: 6px; align-items: center; margin: 12px 0; color: var(--vp-c-text-2); font-size: 12px; }

@@ -38,14 +38,21 @@ export const DocumentationNotice = defineComponent({
           ? configured.validated ?? messages.validated
           : ''
       if (!fallbackNotice && !statusMessage) return null
+      const statusTitle = status === 'exploring'
+        ? language === 'fr' ? 'À l’étude' : 'Exploring'
+        : language === 'fr' ? 'Vérifié' : 'Validated'
       return h('div', { class: 'FeluqaDocumentationNotices', 'aria-live': 'polite' }, [
         fallbackNotice ? h('div', { class: 'FeluqaDocumentationNotices__fallback', role: 'note' }, [
-          h('strong', configured.fallbackTitle ?? messages.fallbackTitle), h('p', fallbackNotice),
+          h('span', { class: 'FeluqaDocumentationNotices__icon', 'aria-hidden': 'true' }, 'i'),
+          h('div', [h('strong', configured.fallbackTitle ?? messages.fallbackTitle), h('p', fallbackNotice)]),
         ]) : null,
         statusMessage ? h('div', {
           class: ['FeluqaDocumentationNotices__status', status === 'exploring' ? 'is-exploring' : 'is-validated'],
           role: status === 'exploring' ? 'status' : 'note',
-        }, statusMessage) : null,
+        }, [
+          h('span', { class: 'FeluqaDocumentationNotices__icon', 'aria-hidden': 'true' }, status === 'exploring' ? '!' : '✓'),
+          h('div', [h('strong', statusTitle), h('p', statusMessage)]),
+        ]) : null,
       ])
     }
   },
