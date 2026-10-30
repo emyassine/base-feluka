@@ -66,6 +66,18 @@
       }
     },
     {
+      "path": "sdui",
+      "label": "sdui",
+      "labels": {
+        "en": "SDUI",
+        "fr": "SDUI"
+      },
+      "uri": {
+        "base": "/sdui/",
+        "entry": "get-started"
+      }
+    },
+    {
       "path": "internals",
       "label": "Architecture",
       "labels": {
