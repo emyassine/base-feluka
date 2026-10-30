@@ -12,7 +12,7 @@ interface SidebarEntry {
 
 const route = useRoute()
 const router = useRouter()
-const { theme } = useData()
+const { theme, frontmatter } = useData()
 
 function plainText(value: string): string {
   return value.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim()
@@ -60,10 +60,23 @@ const pathContainsRoute = (path?: string) => {
   const target = normalizePath(path)
   return activeLink.value === target || activeLink.value.startsWith(`${target}/`)
 }
-const selectedLink = computed(() => items.value.flatMap((item) => item.children ?? [])
-  .find((child) => pathContainsRoute(child.value))?.value ?? items.value.find((item) => pathContainsRoute(item.value))?.value ?? activeLink.value)
+const selectedChild = computed(() => {
+  const children = items.value.flatMap((item) => item.children ?? [])
+  const routeChild = children.find((child) => pathContainsRoute(child.value))
+  if (routeChild) return routeChild
+
+  // Generated directory entry pages reuse their first child page's frontmatter.
+  // Use its sidebar title so the page still appears selected at the entry URL.
+  const entryTitle = frontmatter.value.search === false
+    ? plainText(String(frontmatter.value.sidebarTitle ?? ''))
+    : ''
+  return entryTitle ? children.find((child) => child.label === entryTitle) : undefined
+})
+const selectedLink = computed(() => selectedChild.value?.value
+  ?? items.value.find((item) => pathContainsRoute(item.value))?.value
+  ?? activeLink.value)
 const openSection = computed(() => items.value.findIndex((item) =>
-  item.children?.some((child) => pathContainsRoute(child.value)),
+  item.children?.some((child) => child.value === selectedLink.value || pathContainsRoute(child.value)),
 ))
 function navigate(path: string): void {
   void router.go(path)

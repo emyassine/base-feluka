@@ -37,7 +37,7 @@ defineProps<{
         <h1 class="docs-home__hero-title text-foreground max-w-160 text-balance !text-3xl !tracking-tight md:!text-4xl lg:!text-5xl">
           {{ title }}
         </h1>
-        <p class="text-muted-foreground mt-5 text-xl md:text-3xl md:leading-[1.35]">{{ lead }}</p>
+        <p class="docs-home__hero-lead text-muted-foreground mt-5 text-xl md:text-3xl">{{ lead }}</p>
         <div class="mt-8 flex flex-wrap items-center gap-4 lg:flex-nowrap">
           <a class="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium !text-primary-foreground !no-underline transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" :href="primaryHref">{{ primaryLabel }}</a>
           <a class="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium !text-foreground !no-underline shadow-sm transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" style="color: var(--vp-c-text-1)" :href="secondaryHref">

@@ -14,6 +14,12 @@
   font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
 }
 
+@media (min-width: 768px) {
+  .docs-home .docs-home__hero-lead {
+    line-height: 1.35;
+  }
+}
+
 .docs-home h1,
 .docs-home h2,
 .docs-home h3 {

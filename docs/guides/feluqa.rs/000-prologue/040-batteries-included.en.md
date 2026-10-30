@@ -1,14 +1,14 @@
 ---
-sidebarTitle: "Batteries Included"
+sidebarTitle: "Components"
 icon: "battery-charging"
-title: "Batteries Included"
+title: "Components"
 description: "The major capabilities Feluqa brings together, what is available today, and what remains a product direction."
-summary: "Introduces Feluqa's batteries-included approach across application foundations, asynchronous server execution, web and API services, identity and access control, data persistence, modules, panels, console tooling, live interactions, deployment, and agent workflows. It marks each area by implementation status, defines async, Tokio, Axum, and adapters, and identifies inertia-omega as an alpha integration lead rather than a selected dependency."
+summary: "Introduces the components Feluqa brings together across application foundations, asynchronous server execution, web and API services, identity and access control, data persistence, modules, panels, console tooling, live interactions, deployment, and agent workflows. It marks each area by implementation status and explains Feluqa's batteries-included approach."
 date: 2026-10-29
 lastmod: 2026-10-29
 weight: 4
 status: "Exploring"
-tags: [feluqa, batteries-included, capabilities, architecture]
+tags: [feluqa, components, capabilities, architecture]
 draft: true
 author:
   name: "El Moumen Yassine"
@@ -16,12 +16,12 @@ author:
   linkedin: "https://www.linkedin.com/in/elmoumenyassine"
   email: "yassine@numerimondes.com"
 ---
-# Batteries Included
+# Components
 
-Feluqa brings common application capabilities together so a team can focus on
-its Product's workflows. The direction is **batteries included, but
-removable**: capabilities should have clear contracts and be replaceable where
-an Application needs a different implementation.
+**Feluqa is all batteries included**: it brings common application capabilities
+together so a team can focus on its Product's workflows. These components should
+have clear contracts and be replaceable where an Application needs a different
+implementation.
 
 Feluqa's ambition is to become the standard all-in-one ecosystem for building
 Rust applications: the breadth of reusable components associated with

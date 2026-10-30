@@ -17,7 +17,7 @@ Naming: `[order]-folder/[order]-file.en.md`.
 3. Read the [`000-prologue/030-contribution-guide.en.md`](000-prologue/030-contribution-guide.en.md)
    before contributing. The Upgrade Guide is added when there is an earlier
    major version to upgrade from.
-4. Explore the [batteries included](000-prologue/040-batteries-included.en.md)
+4. Explore [Components](000-prologue/040-batteries-included.en.md)
    capabilities and their current status.
 5. Read about the [complementary agent project](../x-agents/020-agentic-development/020-complementary-agent-project.en.md)
    and its intended relationship with Feluqa.
