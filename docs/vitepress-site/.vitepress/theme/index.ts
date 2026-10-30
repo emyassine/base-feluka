@@ -9,6 +9,7 @@ import { DocumentationLastModified, DocumentationNotice } from '../generated/the
 import { projectComponents, registerProjectComponents } from '../generated/components'
 import './tailwind.css'
 import './style.css'
+import '../generated/configured-styles'
 
 const zoomStep = 0.25
 const minZoom = 0.75

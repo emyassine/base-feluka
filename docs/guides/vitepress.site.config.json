@@ -10,6 +10,9 @@
       "weight": "200 800"
     }
   },
+  "styles": [
+    ".components/home/mainline-home.css"
+  ],
   "guidesPath": ".",
   "indexPath": "index.en.md",
   "outputDir": "../build",
