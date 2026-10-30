@@ -25,4 +25,4 @@ engineering rules for developers and AI agents working on Feluqa itself.
 - [Workspaces and Packages](010-workspace-levels.en.md)
 - [What Moves to Compile Time](020-compile-time-guarantees.en.md)
 - [Rules for Developers and Agents](030-rules-for-developers-and-agents.en.md)
-- [Runtime Architecture](010-runtime-architecture/000-runtime-architecture.en.md): async runtimes, target boundaries, and core-team runtime guidance.
+- [Asynchronous Runtimes by Target](040-asynchronous-runtimes-by-target.en.md): async runtimes, target boundaries, and core-team runtime guidance.
