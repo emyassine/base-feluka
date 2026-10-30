@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import heroImage from './assets/hero.webp'
 import SideRays from './SideRays.vue'
+import FeluqaButton from '../FeluqaButton.vue'
 
 defineProps<{
   title: string
@@ -39,11 +40,11 @@ defineProps<{
         </h1>
         <p class="docs-home__hero-lead text-muted-foreground mt-5 text-xl md:text-3xl">{{ lead }}</p>
         <div class="mt-8 flex flex-wrap items-center gap-4 lg:flex-nowrap">
-          <a class="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium !text-primary-foreground !no-underline transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" :href="primaryHref">{{ primaryLabel }}</a>
-          <a class="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium !text-foreground !no-underline shadow-sm transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" style="color: var(--vp-c-text-1)" :href="secondaryHref">
+          <FeluqaButton tag="a" :href="primaryHref" color="primary">{{ primaryLabel }}</FeluqaButton>
+          <FeluqaButton tag="a" :href="secondaryHref" color="gray" outlined icon-position="after">
             {{ secondaryLabel }}
-            <svg class="size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-          </a>
+            <template #icon><svg class="size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></template>
+          </FeluqaButton>
         </div>
       </div>
 
