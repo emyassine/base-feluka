@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Mesh, Plane, Program, Renderer, RenderTarget, Texture, Triangle } from 'ogl';
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import CarouselAction from './CarouselAction.vue';
+import FeluqaButton from '../FeluqaButton.vue';
 
 type BendPreset = 'liquid' | 'ribbon' | 'vortex' | 'arch';
 type CurlMode = 'twist' | 'rise' | 'fall';
@@ -1521,7 +1521,7 @@ watch(modalOpen, (open) => {
           class="pointer-events-none absolute inset-0 z-10"
           :style="{ '--flex-card-half': `${Math.min(Math.max(cardHeight, 0.05), 1) * 50}%` }"
         >
-          <CarouselAction class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem)] -translate-x-1/2" :href="current.href" :label="current.actionLabel || cardButtonLabel || 'Discover'" />
+          <FeluqaButton variant="overlay" class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem)] -translate-x-1/2" :href="current.href" :label="current.actionLabel || cardButtonLabel || 'Discover'" />
         </div>
       </div>
     </div>
@@ -1556,7 +1556,7 @@ watch(modalOpen, (open) => {
             />
             <h3 class="text-xl font-bold text-white">{{ modalItem.title }}</h3>
             <p v-if="modalItem.subtitle" class="text-slate-300 text-sm leading-relaxed max-w-md">{{ modalItem.subtitle }}</p>
-            <CarouselAction
+            <FeluqaButton
               v-if="modalItem.href"
               :href="modalItem.href"
               class="mt-3"
