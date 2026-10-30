@@ -59,6 +59,10 @@ function publicPageUrl(file: string): string {
 function directoryLink(directory: string): string {
   return publicPagePath(join(directory, 'index.md'))
 }
+function hasSourceIndex(directory: string): boolean {
+  const indexKey = relative(generatedDirectory, join(directory, 'index.md')).replace(/\\/g, '/')
+  return Object.hasOwn(navigationOrder, indexKey)
+}
 const assetMime = (assetPath: string) => ({
   '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
@@ -131,7 +135,12 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
       const items = sidebar(path, root, language)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
       const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
-      return items.length ? [{ text: groupTitle(relativePath, fallback, language), link: directoryLink(path), collapsed: true, items }] : []
+      return items.length ? [{
+        text: groupTitle(relativePath, fallback, language),
+        ...(hasSourceIndex(path) ? { link: directoryLink(path) } : {}),
+        collapsed: true,
+        items,
+      }] : []
     }
     if (!entry.name.endsWith('.md')) return []
     if (entry.name === 'index.md') return []
