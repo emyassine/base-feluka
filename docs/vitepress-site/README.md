@@ -1,89 +1,38 @@
-# Documentation site tooling
+# VitePress site host
 
-`docs/src/` contains authored guides and collections. `docs/.site/` contains
-site configuration. `docs/resources/` contains referenced assets and the
-VitePress-specific components and hooks. This directory owns the renderer,
-preparation tools, and generated output.
-
-## Layout
+This directory is the site host and registry. It is not the documentation
+source tree. Site declarations point to independent SPMPST trees and output
+directories.
 
 ```text
-.vitepress/       VitePress entry, theme, generated metadata and config parts
-config/           Vite and CSS processor configuration
-scripts/
-  spmpst/          SSG-agnostic source-tree and configuration loader
-  preparation/    renderer adapter and pre-SSG preparation
-  dev/            output verification, content checks and source watcher
-  shared/         ordering helpers
+vitepress-site.json       registry of site declaration files
+sites/                    one declaration per site
+app/                      renderer, adapters, commands, and package manifest
+resources/                resources owned by this VitePress host
+.trash/                   generated Markdown, metadata, caches, and scratch data
+node_modules/              local dependencies
+legal/                    required third-party notices
 ```
 
-The configuration composition root selects the Node-backed SPMPST loader and
-passes its site model to the renderer adapter. Preparation reads the same model
-and compiles Markdown, metadata, assets, theme components, and Mermaid diagrams.
-
-## Source and configuration
-
-- `../.site/*.site.config.json`: site definitions, language policy, navigation,
-  collections, appearance, links, and SEO.
-- `../.site/locales/<language>.locale.json`: translated interface and SEO text.
-- `../.site/targets/vitepress.target.config.json`: renderer-specific settings.
-- `../.site/public/`: public text files copied into the generated site.
-- `../src/guides/<guide>/guide.config.json`: guide title, favicon, colors,
-  fonts, logos, and renderer theme slots.
-- `../src/guides/**/sidebar.json`: localized section labels and relative icons.
-- `../src/collections/<collection>/category.json`: localized categories and IDs.
-- `../resources/diagrams/mermaid.json`: Mermaid renderer settings.
-- Markdown frontmatter requires `icon` and `sidebarTitle` for published pages.
-
-Paths in site configuration are relative to `docs/`. Guide configuration paths
-are relative to that guide. Markdown links are relative to their Markdown file.
-The loader validates concern ownership, configured locales, and navigation
-references. The preparation pipeline validates renderer paths and source content.
-
-## Preparation pipeline
-
-```text
-docs/src + docs/.site + docs/resources
-                    │
-                    ▼
- scripts/preparation/pipeline.mjs
-  source-stage → content-stage → page/diagram rendering
-                    │
-                    ▼
-       .generated-guides/ + .vitepress/generated/
-                    │
-                    ▼
- VitePress config/theme → static rendering → docs/build/
-```
-
-VitePress-specific code lives under `docs/resources/targets/vitepress/`; the
-SPMPST loader under `scripts/spmpst/` has no dependency on the target adapter.
-`docs/SSG.md` defines the source-tree format and planned adapter boundary.
-
-## Generated output ownership
-
-| Output | Owner | Safe to regenerate |
-|---|---|---|
-| `.generated-guides/` | preparation | yes |
-| `.vitepress/generated/` | preparation | yes; generated TypeScript and JSON only |
-| `.vitepress/mermaid-cache/` | preparation | yes; renderer cache |
-| `docs/build/` | build script | yes; final static site, currently tracked by Git |
-
-Do not edit generated files. `clean.sh` removes generated output and caches; it
-also removes the tracked `docs/build/` tree. It does not remove `docs/src/` or
-`node_modules`.
-
-## Commands
+The registry's `sitesPaths` entries are resolved relative to this directory.
+Each declaration's `sourcePath`, optional `resourcesPath`, and `outputPath` are
+resolved relative to that declaration file. Each site can therefore own its
+own components, hooks, diagrams, icon and flag catalogues. The default Feluqa
+declaration reads `../docs`, uses this host's `resources/`, and builds to
+`../docs-output`, outside the documentation source tree.
 
 ```sh
-npm run docs:check
-npm run docs:prepare
+npm install
+npm run docs:serve
 npm run docs:build
-./serve.sh
-./preview.sh
-./clean.sh
 ```
 
-`docs:check -- --strict-i18n` treats missing inline translations as errors.
-VitePress is the current renderer. The future Feluqa Rust SSG adapter and its
-runtime are planned and are not implemented.
+When multiple declarations are registered, the interactive command asks which
+site to use. Pass `--site <id>` for scripts and automation. To move `app/` to a
+different machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry
+path; resource and source roots continue to come from the selected declaration.
+
+`resources/components`, `resources/hooks`, and `resources/diagrams` are separate
+site-owned concerns. Icons and flags live in their own catalogues under
+`resources/`; they are not mixed into component or hook directories. Required
+third-party notices are kept under `legal/`, outside the application code.

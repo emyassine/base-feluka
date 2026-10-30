@@ -15,6 +15,13 @@ documentation authors and static-site adapters. It defines authored Markdown,
 metadata, configuration, and referenced resources before site generation.
 SPMPST is not an SSG, a Markdown dialect, or a runtime component system.
 
+SPMPST provides the source-tree contract, configuration ownership and loading
+rules, portable routing and locale conventions, and logical resource-reference
+syntax. It does not ship an icon or flag catalogue, choose a renderer, bundle
+site-specific components, or dictate where an adapter is installed. An adapter
+resolves logical resource references against its selected site's resource
+catalogue and emits target-ready paths or URLs.
+
 The current implementation is the JavaScript reference loader and preparation
 pipeline. A Feluqa Rust SSG adapter is **PLANNED**.
 
@@ -49,20 +56,21 @@ currently enforced by a manifest.
 Human-authored tree       docs/{.site,src,resources}
            │
            ▼
-Shared site model          scripts/spmpst/ (target-neutral model)
+Shared site model          docs/vitepress-site/app/scripts/spmpst/ (target-neutral model)
            │
            ▼
-Target adapter             scripts/preparation/ + target resources
+Target adapter             docs/vitepress-site/app/scripts/preparation/ + target resources
            │
            ▼
 Rendered site              static pages and browser assets
 ```
 
-The source tree SHOULD remain usable by more than one adapter; target code
-belongs under `resources/targets/<target>/`. Source: `scripts/spmpst/layout.mjs#resolveLayout`
+The source tree SHOULD remain usable by more than one adapter. Target code and
+target-owned resources MAY be packaged with the adapter, outside that tree.
+Source: `docs/vitepress-site/README.md`
 
 The configuration loader MUST return target files as opaque data; target
-validation belongs to the consuming adapter. Source: `scripts/spmpst/config/assemble.mjs#assembleConfig`
+validation belongs to the consuming adapter. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
 
 ## 5. Directory layout and paths
 
@@ -78,50 +86,53 @@ docs/
 │   ├── guides/
 │   └── collections/
 └── resources/
-    ├── assets/
-    ├── diagrams/
-    ├── flags/
-    ├── icons/
-    └── targets/<target>/
+    └── assets/
 ```
+
+An adapter MAY keep target-owned catalogues beside its application rather than
+inside the source tree. The current VitePress host does this in
+`docs/vitepress-site/resources/`, with separate `icons/`, `flags/`,
+`components/`, `hooks/`, and `diagrams/` directories.
 
 The tree root MUST be the directory containing `.site/`; `SPMPST_ROOT` MAY
 override it for tooling. Source roots MUST use the fixed conventions shown
-above. Source: `scripts/spmpst/layout.mjs#resolveLayout`
+above. Source: `docs/vitepress-site/app/scripts/spmpst/layout.mjs#resolveLayout`
 
 Paths in `.site/` MUST be relative to the tree root, use `/`, and MUST NOT
 escape the root. Collection `dir` is relative to `src/collections` and defaults
 to its `id`. Guide config paths are relative to that guide. Markdown relative
-links are relative to their page. Source: `scripts/preparation/source-stage.mjs#prepareSources`
+links are relative to their page. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#prepareSources`
 
 Assets referenced from Markdown MAY come from `src/guides`, `src/collections`,
-or `resources`; paths outside those roots are rejected. Source: `scripts/preparation/source-stage.mjs#copyAsset`
+or source-tree `resources/`; adapter resources are referenced by logical
+SPMPST resource identifiers. Other paths are rejected. Source:
+`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#copyAsset`
 
 ## 6. Source file conventions
 
 Numeric prefixes such as `010-` and `020.` control navigation order and are
 removed from staged names. Language suffixes use `name.<lang>.md`, where the
 current language pattern is `[a-z]{2,3}(-[A-Z]{2})?`; a missing suffix is
-treated as the fallback language. Source: `scripts/preparation/source-stage.mjs#cleanDir`
+treated as the fallback language. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#cleanDir`
 
 Names beginning with `.` and files named `README.md` MUST NOT be published.
 `sidebar.json`, `guide.config.json`, and collection `category.json` are
-metadata, not pages. Source: `scripts/preparation/source-stage.mjs#scan`
+metadata, not pages. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#scan`
 
 `index.<language>.md` files provide localized directory indexes. The root
 fallback index is derived as `src/guides/index.<fallbackLanguage>.md`.
-Source: `scripts/preparation/runtime.mjs#toVitepressRuntime`
+Source: `docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
 
 ## 7. Frontmatter
 
 Every published page MUST define `icon` and `sidebarTitle`; `title` and
 `description` are recommended. Collection article pages may include `date` and
 `category`. Unknown frontmatter is preserved for the target, except fields
-rewritten by preparation. Source: `scripts/preparation/source-stage.mjs#scan`
+rewritten by preparation. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#scan`
 
 Preparation may add `requestedLanguage`, `contentLanguage`,
 `languageFallbackNotice`, `prev`, `next`, `search`, `collection`, `wordCount`,
-`readingTime`, and `collectionIndex`. Source: `scripts/preparation/pipeline.mjs#frontmatter preparation`
+`readingTime`, and `collectionIndex`. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#frontmatter preparation`
 
 ## 8. Routing
 
@@ -130,32 +141,32 @@ prefixes depend on `fallbackLanguage` and `selector.prefixDefaultLanguage`.
 Route segments are cleaned by removing numeric ordering prefixes. Directory
 indexes and collection pages are emitted from their source locations. The
 current source does not implement a general route-conflict validator; that
-check is **PLANNED**. Source: `scripts/preparation/source-stage.mjs#stagedPath`
+check is **PLANNED**. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`
 
 ## 9. Languages and fallbacks
 
 `lang.site.config.json` owns the configured languages, fallback language, and
 selector policy. Each configured language MUST have one
 `.site/locales/<language>.locale.json` bundle. Extra bundle files produce a
-warning. Source: `scripts/spmpst/config/assemble.mjs#assembleConfig`
+warning. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
 
 Localized inline objects are resolved using the requested language, then the
 fallback language, then the first string value. Missing inline translations
-warn normally and fail with `--strict-i18n`. Source: `scripts/preparation/source-stage.mjs#localizedValue`
+warn normally and fail with `--strict-i18n`. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#localizedValue`
 
 Fallback notice text uses `{requested}` and `{fallback}` placeholders where
 provided. The reference implementation currently validates `{requested}` for
-the notice string. Source: `scripts/preparation/source-stage.mjs#prepareSources`
+the notice string. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#prepareSources`
 
 ## 10. Collections
 
 Collection layout is `article` or `doc`; index layout is `list` or `spotlight`.
 `category.json` provides localized category names and IDs. Article word counts
 use whitespace-separated words and reading time rounds up at 200 words per
-minute. Source: `scripts/preparation/content-stage.mjs#readingMetrics`
+minute. Source: `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#readingMetrics`
 
 Category-specific routes are **PLANNED**. Current collection indexes and
-article metadata are generated by preparation. Source: `scripts/preparation/content-stage.mjs#collection compilation`
+article metadata are generated by preparation. Source: `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#collection compilation`
 
 ## 11. Site configuration
 
@@ -171,34 +182,55 @@ article metadata are generated by preparation. Source: `scripts/preparation/cont
 
 The loader MUST reject unknown concerns, unknown keys, and duplicate ownership;
 it MUST report a likely owner or spelling suggestion when available. `$schema`
-is ignored by the loader. Source: `scripts/spmpst/config/assemble.mjs#assembleConfig`
+is ignored by the loader. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
 
 Locale bundles MUST contain language, UI, search, outline, footer, notice, and
-SEO sections. Target files are opaque to the shared loader. Source: `scripts/spmpst/config/assemble.mjs#assembleConfig`
+SEO sections. Target files are opaque to the shared loader. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
 
-`public/*` files are emitted with one trailing newline removed. Source: `scripts/preparation/runtime.mjs#toVitepressRuntime`
+`public/*` files are emitted with one trailing newline removed. Source: `docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
 
 ## 12. Assets and resources
 
 Assets are copied to `__docs-assets/<sha256><extension>`; the current digest is
-SHA-256 of file bytes. Source: `scripts/preparation/source-stage.mjs#copyAsset`
+SHA-256 of file bytes. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#copyAsset`
 
-Icon names resolve against `lucide`, `custom`, `heroicons`, and `simple-icons`
-families; an unrecognized name uses the configured fallback. Sidebar icons may
-be paths relative to their directory. Source: `scripts/preparation/source-stage.mjs#findIcon`
+Icon IDs resolve against the selected adapter's icon catalogue; the current
+VitePress catalogue has `lucide`, `custom`, `heroicons`, and `simple-icons`
+families. An unrecognized icon uses the configured fallback. Sidebar icons may
+also be local SVG paths. Source:
+`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#findIcon`
 
-Language flags live under `resources/flags/language/`. Mermaid rendering reads
-`resources/diagrams/mermaid.json` and may generate light and dark variants.
-Source: `scripts/preparation/pipeline.mjs#renderDiagram`
+Portable JSON and frontmatter may use logical resource references:
+
+```text
+@spmpst::resources::icon::lucide/book-open
+@spmpst::resources::flag::language/fr
+@spmpst::resources::flag::catalog/countries/fr
+```
+
+The grammar is `@spmpst::resources::<kind>::<id>`. In v0.1, `kind` is `icon`
+or `flag`; `<id>` is a slash-separated Unicode path without `..`, normalized
+to NFC. SPMPST parses the reference and lets an adapter resolve it. The reference does not
+embed a machine path or require one global icon catalogue. The VitePress
+adapter replaces references with validated file paths before rendering. Source:
+`docs/vitepress-site/app/scripts/spmpst/resources.mjs#parseResourceReference`
+and `docs/vitepress-site/app/scripts/preparation/resolve-resource.mjs#resolveVitepressResource`.
+
+Language flags and Mermaid settings are owned by the VitePress adapter under
+`docs/vitepress-site/resources/flags/` and
+`docs/vitepress-site/resources/diagrams/` respectively.
+Mermaid rendering may generate light and dark variants. Source:
+`docs/vitepress-site/app/scripts/preparation/stages/transform-markdown.mjs#renderDiagram`
 
 ## 13. Pre-SSG pipeline
 
-The current pipeline orders source discovery, guide and collection compilation,
+The VitePress pipeline orders source discovery, guide and collection compilation,
 theme metadata emission, Markdown transforms, language fallback pages, SEO
-pages, directory indexes, pagination, and cleanup. Source: `scripts/preparation/pipeline.mjs#preparation entrypoint`
+pages, directory indexes, pagination, and cleanup. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#preparation entrypoint`
 
 Incremental preparation is enabled by `DOCS_PREPARE_INCREMENTAL=1`. Concurrent
-prepare processes serialize through `flock`. Source: `scripts/preparation/pipeline.mjs#lock handling`
+prepare processes serialize through `flock`. Source:
+`docs/vitepress-site/app/scripts/preparation/pipeline.mjs#lock handling`
 
 The output is deterministic for unchanged sources in the current baseline;
 incremental-cache portability is not separately guaranteed.
@@ -207,21 +239,23 @@ incremental-cache portability is not separately guaranteed.
 
 The portable output is staged Markdown plus content-addressed assets. Generated
 navigation, component registration, hook registration, styles, and theme files
-are adapter-specific. Source: `scripts/preparation/pipeline.mjs#preparation entrypoint`
+are adapter-specific. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#preparation entrypoint`
 
 ## 15. Target adapters
 
 An adapter maps the shared model and its own target config to renderer inputs.
-The current target is VitePress; target component and hook code is under
-`resources/targets/vitepress/`. The Feluqa Rust SSG adapter is **PLANNED**.
+The current target is VitePress; its components, hooks, and catalogues are
+under `docs/vitepress-site/resources/`. The Feluqa Rust SSG adapter is
+**PLANNED**.
 
 ## 16. Conformance
 
-Run `npm run docs:check` to validate configuration and source frontmatter. Run
-`node scripts/dev/verify.mjs compare` to compare generated snapshots using
-canonical JSON object-key order while preserving array order. A portable
-cross-adapter conformance fixture directory is **PLANNED**.
-Source: `scripts/dev/docs-check.mjs#validation` and `scripts/dev/verify.mjs#collect`
+Run `npm --prefix docs/vitepress-site run docs:check` to validate
+configuration and source frontmatter. Run
+`npm --prefix docs/vitepress-site run docs:verify` to compare generated
+snapshots using canonical JSON object-key order while preserving array order.
+A portable cross-adapter conformance fixture directory is **PLANNED**.
+Source: `docs/vitepress-site/app/scripts/dev/docs-check.mjs#validation` and `docs/vitepress-site/app/scripts/dev/verify.mjs#collect`
 
 ## 17. Planned features
 
@@ -246,17 +280,19 @@ contract. They are not promises of the shared SPMPST model:
 | Surface | Current location or output | Coupling |
 |---|---|---|
 | Theme slots | `.site/targets/vitepress.target.config.json` | Renderer slot names and theme component registration |
-| Components and hooks | `resources/targets/vitepress/` | Vue files, renderer hooks, generated imports |
+| Site registry | `docs/vitepress-site/vitepress-site.json` | Lists site declarations; paths are resolved relative to the registry |
+| Site resources | `docs/vitepress-site/resources/{components,hooks,diagrams,icons,flags}/` | Site-owned UI and resource catalogues, kept in separate directories |
 | Styles and renderer config | Target config and generated theme files | CSS, renderer theme API, Vite config |
 | Search and Markdown options | Target config | Renderer local search and Markdown plugin settings |
 | Emitted frontmatter | Staged Markdown | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
 | Embedded component tags | Authored Markdown | Vue component syntax such as `<CollectionSpotlightCards />` |
-| Generated modules | `.vitepress/generated/` | Component, hook, style, theme and collection imports |
+| Generated modules | `docs/vitepress-site/.trash/vitepress-generated/` | Component, hook, style, theme and collection imports |
 | CSS classes | Target components and styles | Renderer DOM and theme class names |
 
 This inventory describes current coupling, not a recommendation for other
-adapters. Source: `scripts/preparation/runtime.mjs#toVitepressRuntime` and
-`scripts/preparation/content-stage.mjs#prepareContent`.
+adapters. Source:
+`docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
+and `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#prepareContent`.
 
 ## Appendix B — Minimal tree and staged result
 
@@ -285,16 +321,16 @@ The guide config declares the route base `handbook`; the collection registry
 uses `id: "articles"` and its conventional source directory. With English as
 the fallback language and default-language prefixing disabled, the source page
 `src/guides/handbook/index.en.md` stages at
-`.generated-guides/handbook/index.md`, while its French translation stages at
-`.generated-guides/fr/handbook/index.md`. The collection pages are staged below
+`docs/vitepress-site/.trash/generated-guides/handbook/index.md`, while its French translation stages at
+`docs/vitepress-site/.trash/generated-guides/fr/handbook/index.md`. The collection pages are staged below
 their configured collection route. Content files retain their frontmatter and
 relative links are rewritten to staged locations. Exact collection pagination
 and target-generated modules depend on the renderer configuration.
 
 The example is illustrative; a complete runnable sample requires the
 mandatory fields in each concern file and locale bundle schema. Source:
-`scripts/spmpst/config/assemble.mjs#assembleConfig` and
-`scripts/preparation/source-stage.mjs#stagedPath`.
+`docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig` and
+`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`.
 
 ## Appendix A — VitePress-specific fields and behavior
 

@@ -1,12 +1,12 @@
 {
-  "outputDir": "build",
+  "outputDir": "../docs-output",
   "project": {
-    "components": "resources/targets/vitepress/components",
-    "hooks": "resources/targets/vitepress/hooks"
+    "components": "components",
+    "hooks": "hooks"
   },
   "styles": [
-    "resources/targets/vitepress/components/home/docs-home.css",
-    "resources/targets/vitepress/components/components.css"
+    "components/home/docs-home.css",
+    "components/components.css"
   ],
   "theme": {
     "slots": {

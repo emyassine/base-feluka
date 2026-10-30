@@ -1,0 +1,7 @@
+{
+  "id": "feluqa-docs",
+  "name": "Feluqa documentation",
+  "sourcePath": "../..",
+  "resourcesPath": "../resources",
+  "outputPath": "../../../docs-output"
+}
