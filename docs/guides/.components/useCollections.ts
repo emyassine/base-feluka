@@ -18,6 +18,7 @@ export interface ContentCollection {
   links: Record<string, string>;
   layout: 'article' | 'doc';
   indexLayout: 'list' | 'spotlight';
+  categories: Record<string, Array<{ id: string; label: string }>>;
   articles: Record<string, CollectionArticle[]>;
 }
 

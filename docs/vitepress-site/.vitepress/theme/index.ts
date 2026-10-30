@@ -66,9 +66,9 @@ async function copyText(text: string): Promise<void> {
 
 const PageActions = {
   setup() {
-    const { lang } = useData()
+    const { lang, frontmatter } = useData()
     const open = ref(false)
-    const isFrench = () => lang.value.toLowerCase().startsWith('fr')
+    const isFrench = () => String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().startsWith('fr')
     const labels = () => isFrench()
       ? { title: 'À propos de cette page', trigger: 'Markdown', copyLink: 'Copier le lien de la page', copyMarkdown: 'Copier en Markdown', chatgpt: 'Demander à ChatGPT', claude: 'Demander à Claude', copied: 'Copié' }
       : { title: 'About this page', trigger: 'Markdown', copyLink: 'Copy page link', copyMarkdown: 'Copy as markdown', chatgpt: 'Ask ChatGPT', claude: 'Ask Claude', copied: 'Copied' }
@@ -104,7 +104,8 @@ const PageActions = {
         h('div', { class: 'meta-box' }, [
           h('div', { class: 'meta-row VPLlmsPageActions' }, [
             h('button', { class: 'page-actions__trigger', type: 'button', 'aria-haspopup': 'menu', 'aria-expanded': String(open.value), onClick: () => { open.value = !open.value } }, [
-              h('span', { class: 'page-actions__file-icon', 'aria-hidden': 'true' }, '▤'), h('span', text.trigger), h('span', { class: 'page-actions__caret', 'aria-hidden': 'true' }, '⌄'),
+              h('span', { class: 'page-actions__file-icon', 'aria-hidden': 'true' }, [h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8' }, [h('path', { d: 'M7 3.75h7l4 4V20.25H7z' }), h('path', { d: 'M14 3.75v4h4M9.5 12h6M9.5 15.5h6' })])]),
+              h('span', text.trigger), h('span', { class: 'page-actions__caret', 'aria-hidden': 'true' }, [h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8' }, [h('path', { d: 'm7 10 5 5 5-5' })])]),
             ]),
             open.value ? h('div', { class: 'page-actions__menu', role: 'menu' }, [
               action(text.copyLink, () => copyText(pageUrl())),
@@ -461,24 +462,24 @@ const MermaidLayout = {
     const articleLayout = () => collectionForPage()?.layout === 'article'
     const articleCollectionLink = () => {
       const collection = collectionForPage()
-      const locale = lang.value.toLowerCase().split('-')[0]
+      const locale = String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]
       return collection?.links[locale] ?? collection?.links.en ?? '/'
     }
-    const syncCollectionLayout = () => document.documentElement.classList.toggle('collection-article-layout', articleLayout())
-    onMounted(syncCollectionLayout)
-    const stopWatchingCollection = watch(() => frontmatter.value.collection, syncCollectionLayout, { flush: 'post' })
-    onBeforeUnmount(() => {
-      stopWatchingCollection()
-      document.documentElement.classList.remove('collection-article-layout')
-    })
-    return () => h(DefaultTheme.Layout, null, {
-      ...configuredLayoutSlots(),
+    return () => {
+      const layoutSlots = configuredLayoutSlots()
+      const configuredSubnav = layoutSlots['nav-bar-content-after']
+      return h(DefaultTheme.Layout, null, {
+      ...layoutSlots,
+      'nav-bar-content-after': () => articleLayout() && configuredSubnav
+        ? h(Fragment, null, [configuredSubnav(), h('div', { class: 'collection-article-actions' }, [h(PageActions)])])
+        : configuredSubnav?.(),
       'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
-        h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[lang.value.toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
+        h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
       ]) : null,
       'aside-outline-before': () => h(Fragment, null, [articleLayout() ? null : h(PageActions), h(DocumentationLastModified)]),
-    })
+      })
+    }
   },
 }
 

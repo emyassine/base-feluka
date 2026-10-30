@@ -632,7 +632,11 @@ for (const collection of collectionMetadata.values()) {
     const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
     return [language, `/${localePrefix}${collection.id}/`]
   }))
-  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, layout: collection.layout ?? 'doc', indexLayout: collection.indexLayout, titles: localizedTitles, descriptions: localizedDescriptions, links, articles: {} }
+  const categoriesByLanguage = Object.fromEntries(config.languages.map((language) => [language, collection.categoryEntries.map((category) => ({
+    id: category.id,
+    label: localizedValue(category.label ?? category.title, language, category.id),
+  }))]))
+  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, layout: collection.layout ?? 'doc', indexLayout: collection.indexLayout, titles: localizedTitles, descriptions: localizedDescriptions, links, categories: categoriesByLanguage, articles: {} }
   generatedCollectionNavigation.push(collectionRecord)
   const title = localizedTitles[defaultLanguage]
   for (const language of config.languages) {
