@@ -1,0 +1,938 @@
+# Feluqa Docs → SPMPST Refactor — Execution Brief for Luna (v2)
+
+> Audience: Codex "Luna 6 Medium".
+> Repository: `/home/yassine/Projects/Rust/feluqa`
+> **SPMPST** = **S**tandard **P**ortable **M**arkdown **P**re-**S**SG **T**ree — the SSG-agnostic documentation tree format that Feluqa will later consume with its own Rust SSG. VitePress is only the first *target adapter*.
+> Hard constraint: **the front end (Vue components, CSS, hooks, rendered pages, URLs) and every generated output must stay the same.** Only source layout, config layout, code structure and documentation change.
+
+---
+
+## 0. Operating rules (read first, obey strictly)
+
+Luna tends to stop before everything is finished and ticked. These rules exist to prevent that.
+
+1. **Branch.** Create `refactor/spmpst` from `main`. Commit after every numbered task (`P1.4`, `P3.7`, …). Commit message: `docs-refactor(P1.4): <what>`.
+2. **Progress ledger.** Create `docs/vitepress-site/.refactor/PROGRESS.md` from **Appendix A**. Add `.refactor/` to `docs/vitepress-site/.gitignore`. Tick `[x]` **only after the task's Verify step passes**. Update the ledger after every task, not at the end.
+3. **Do not end your turn while any task is unticked.** Valid reasons to stop: (a) every ledger task is ticked and the Definition of Done (section 11) is green, or (b) a real blocker.
+   - On a blocker: write it to `.refactor/BLOCKERS.md`, **skip to the next independent task**, come back later.
+   - Never stop between phases to ask for confirmation. Never write "I can continue if you want".
+4. **Ambiguity.** Pick the default stated in this document, record it in `.refactor/DECISIONS.md` (one line each), keep going.
+5. **Context running low.** Save the ledger, then keep working. On resume, read `.refactor/PROGRESS.md`, `DECISIONS.md`, `BLOCKERS.md` first. Do not stop to summarize.
+6. **Move, don't rewrite.** Every extraction is **verbatim** code movement first. Behavior changes happen only in explicitly listed tasks (defect fixes, section 8, and the path-base changes of Phase 5), each in its own commit.
+7. **Verification is mandatory.** After every task touching `scripts/**`, `.vitepress/config/**`, `docs/**` structure or config: run `node scripts/dev/verify.mjs compare` (created in P0.2). It must report **0 added / 0 removed / 0 changed**, except for entries explicitly allowed by this document (Phase 5 text-path updates, see P5.6).
+8. **No new runtime dependencies.** Node built-ins and what is already in `package.json` only.
+9. **Keep error messages** of existing validations (same wording), adding the offending file path / JSON pointer. The only allowed wording change: file names (`vitepress.site.config.json` → the new `.site/…` file, `vitepress.config.json` → `guide.config.json`).
+10. **Agnostic zone rule.** Nothing under `scripts/spmpst/**` may contain the strings `vitepress`, `vite`, `vue` (case-insensitive) in code, keys, messages or comments. Checked in the Definition of Done by `grep`.
+11. **Final answer** must contain the final report (section 11.3) with the ticked ledger and the outputs of the final commands. Never end with a summary while tasks remain.
+
+---
+
+## 1. Goals, non-goals, frozen contract
+
+### 1.1 Goals
+
+- G1. **New source layout** (the SPMPST layout):
+  ```
+  docs/
+  ├── SSG.md          ← the SPMPST specification (written by Luna, P6.1)
+  ├── .site/          ← all site configuration (concern files, locale bundles, public files, target files)
+  ├── src/            ← all authored content: guides/ and collections/
+  └── resources/      ← everything referenced by content but that is not content: assets, icons, flags, diagrams, target-bound components
+  ```
+- G2. Replace the monolithic, VitePress-named `vitepress.site.config.json` by **concern files** `docs/.site/<concern>.site.config.json` with **one owner per key**, plus **one locale bundle per language**. Anything VitePress-specific moves to `docs/.site/targets/vitepress.target.config.json` (opaque to the SPMPST core).
+- G3. **Stop scattering language data**: language policy in one file, all per-language strings in `locales/<lang>.locale.json`.
+- G4. **SSG-agnostic naming and conventions.** Config files, keys, folder names and error messages of the SPMPST core must not mention VitePress. Per-guide `vitepress.config.json` becomes `guide.config.json`.
+- G5. **One shared loader** (agnostic, JS reference implementation under `scripts/spmpst/`) used by the pipeline and by the VitePress config adapter, plus a small **VitePress adapter** that turns the agnostic model + target file into the *exact legacy runtime object* the existing stage code and `site.ts` expect.
+- G6. Break `source-stage.mjs`, `content-stage.mjs`, `pipeline.mjs` into named stages and shared helpers.
+- G7. **Convention over configuration**: the layout is fixed by the standard (`src/guides`, `src/collections`, `resources/icons`, …) so most path keys disappear from config.
+- G8. Write **`docs/SSG.md`**, the SPMPST v0.1 specification, derived from the real code behavior (section 10).
+- G9. Ergonomics: `docs:new`, `docs:check`, JSON Schemas, icon names instead of duplicated `sidebar-icon.svg`.
+
+### 1.2 Non-goals (do NOT do these in this run)
+
+- No change to any `.vue`, `.css`, `documentation-*.ts` content except **path-only** edits forced by a file move (P5.6).
+- No change to published URLs, routes, generated Markdown (except documented text-path updates, P5.6), or `.vitepress/generated/*` content.
+- Do **not** implement collection category pages, concepts hover, or footer links (section 9 = design notes only).
+- Do **not** write the Rust SSG. Do **not** rename `docs/vitepress-site/` (future: `docs/targets/vitepress/`).
+- Do **not** rename frontmatter keys in content (`sidebarTitle`, `icon`, …). Vocabulary renames are SPMPST v0.2 ("naming debt", section 10).
+- Do **not** move or rename `feluqa.rs/000-art/**` (published at `/art/…`, may be referenced by the front end) or any Markdown content other than what P5.6 lists.
+
+### 1.3 Frozen contract
+
+| Artifact | Rule |
+|---|---|
+| `docs/vitepress-site/.generated-guides/**` | byte-identical (exceptions: P5.6 allow-list) |
+| `docs/vitepress-site/.vitepress/generated/*.json` | **semantically** identical: parsed JSON with sorted object keys; **array order must match** |
+| `docs/vitepress-site/.vitepress/generated/*.ts` | byte-identical |
+| Return shape of `loadSiteRuntimeContext()` | identical |
+| Legacy runtime config object consumed by stage code | identical until P5.4; afterwards only path-valued keys listed in Appendix C may change |
+
+### 1.4 Layering (the architecture this refactor creates)
+
+```
+Layer 1  SPMPST source tree      docs/{.site, src, resources}        agnostic, authored by humans
+Layer 2  SPMPST site model       scripts/spmpst/config/…             agnostic loader → `model` + opaque `targets`
+Layer 3  Target adapter          scripts/preparation/** + .vitepress  VitePress today; Feluqa Rust SSG later
+```
+The adapter turns `model + targets.vitepress` into the legacy runtime object (`runtime.mjs`, section 4.3). A future adapter reads the same model.
+
+---
+
+## 2. Current-state audit (facts from the code)
+
+### 2.1 Config readers today
+- `scripts/preparation/pipeline.mjs` → `prepareSources(siteDirectory)` (`source-stage.mjs`) reads `docs/guides/vitepress.site.config.json` and validates ~15 option families inline.
+- `.vitepress/config/context.ts` → `loadSiteRuntimeContext()` re-reads the same JSON through a Node adapter; `site.ts` composes the VitePress config.
+- Per-guide `vitepress.config.json` is read in `content-stage.mjs`. Per-directory `sidebar.json` (`labels` per language + `icon`) is read in `scan()`.
+- `source-stage.mjs` hard-codes `join(siteDirectory, 'flags', 'language', …)` and `../guides`; collections must live in `../collections/…`.
+
+### 2.2 Language data scattered in the monolith
+
+| Runtime key | Shape | Problem |
+|---|---|---|
+| `languageLabels`, `languageMenuLabels`, `fallbackNotices` | `{en, fr}` top level | per-language, three separate keys |
+| `languageMenuLabel` | string | duplicate of `languageMenuLabels` |
+| `topbar.language` | `{showSelector, prefixDefaultLanguage, showFlags}` | language *policy* hidden under `topbar` |
+| `search.labels` | `{root, fr}` | per-language, `root` = default language |
+| `outline.labels`, `footer`, `documentationNotices` | per-language | scattered |
+| `seo.locales` | per-language with `icon` repeated | scattered + duplicated |
+| `topbar.items[].text`, `collections[].title/description`, `subguides[].labels` | inline `{en, fr}` | legitimate (stay inline, next to the entity) |
+| hard-coded in `content-stage.mjs` | `'Aucun contenu publié pour le moment.'` / `'No published content yet.'` | strings in code |
+| hard-coded in `pipeline.mjs` | `'Frequently asked questions'`, `'Popular guides'`, `'Quick answers'`, `'FAQ'` fallbacks | strings in code |
+
+### 2.3 VitePress-isms inside the "site" config (they move to the target file)
+`theme.slots` (VitePress theme slot names), `project.components`, `project.hooks`, `project.viteConfig`, `styles` (CSS for the VitePress theme), `markdown.lineNumbers`, `markdown.image.lazyLoad`, `search.provider` + `miniSearch` + `excludePaths` (VitePress local search), `outline.level`, `outputDir`. Also: guide-level `theme.slots` in `vitepress.config.json`.
+Emitted frontmatter/Markdown that is target-bound (stays, but is inventoried in SSG.md): `layout`, `sidebar: false`, `aside: false`, `collectionIndex`, `prev`/`next`, `search: false`, `lang`, Vue tags such as `<CollectionSpotlightCards … />`.
+
+### 2.4 File-system mess
+- Theme code, brand assets and fonts live in `docs/guides/.config/`; brand files also in `feluqa.rs/.art/`; art SVGs in `feluqa.rs/000-art/`. Icon library and flags live inside the VitePress app (`docs/vitepress-site/icons`, `flags/language`).
+- Junk directory: `docs/guides/feluqa.rs/Projects/Rust/feluqa` (accidental absolute-path tree).
+- Notes scattered: `docs/__notes`, `docs/___notes2`, `feluqa.rs/__notes`, `feluqa.rs/030-security/__notes`.
+- `docs/guides/.site` exists and is empty.
+- Every directory has `sidebar-icon.svg` + `sidebar.json`.
+
+### 2.5 Code structure problems
+- `prepareSources` / `prepareContent` pass ~40 names through one flat object; `pipeline.mjs` destructures the same list twice and holds ~450 lines of top-level `await`.
+- The locale-prefix expression `language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [language]` is copy-pasted 10+ times (sometimes lowercased, sometimes not).
+- The frontmatter regex `/^---\s*\n([\s\S]*?)\n---/` and key insertion/removal logic are duplicated 8+ times.
+- Validations throw on the first error.
+- `copyAsset` only allows files inside the guides dir or the icon library (so Markdown in collections cannot reference assets).
+
+---
+
+## 3. Target architecture
+
+### 3.1 Target tree
+
+```
+docs/
+├── SSG.md                                 # SPMPST v0.1 specification (P6.1)
+├── .notes/                                # was docs/__notes, docs/___notes2 (content preserved)
+├── .site/                                 # ALL site configuration — no content, no code
+│   ├── definitions.site.config.json       # site identity, guides registry, iconFallback
+│   ├── lang.site.config.json              # language POLICY only
+│   ├── topbar.site.config.json            # header items + color-mode switch
+│   ├── collections.site.config.json       # collections registry
+│   ├── appearance.site.config.json        # fonts, logo, ogImages, mermaid palette
+│   ├── links.site.config.json             # socialLinks (footer links reserved, section 9)
+│   ├── seo.site.config.json               # siteUrl, path, icon
+│   ├── locales/
+│   │   ├── en.locale.json                 # ALL English strings
+│   │   └── fr.locale.json                 # ALL French strings
+│   ├── public/
+│   │   ├── llms.txt   humans.txt   robots.txt
+│   ├── targets/
+│   │   └── vitepress.target.config.json   # everything VitePress-specific (opaque to the core)
+│   ├── schema/                            # JSON Schemas (P6.3)
+│   └── README.md
+├── src/                                   # AUTHORED CONTENT ONLY
+│   ├── guides/
+│   │   ├── index.en.md   index.fr.md      # root index (derived name: index.<defaultLanguage>.md)
+│   │   ├── feluqa.rs/   (guide.config.json, .art/, .x-agents/, numbered sections …)
+│   │   ├── internals/   learn/   sdui/   x-agents/    (each with guide.config.json)
+│   └── collections/
+│       └── articles/    (category.json, *.md)
+├── resources/                             # referenced by content/config, not content
+│   ├── assets/                            # site-level assets
+│   │   ├── brand/                         # logo, og images
+│   │   └── fonts/
+│   ├── icons/                             # icon library (was docs/vitepress-site/icons)
+│   ├── flags/language/                    # language flags (was docs/vitepress-site/flags/language)
+│   ├── diagrams/mermaid.json              # was guides/.config/vitepress/mermaid.json
+│   └── targets/
+│       └── vitepress/                     # TARGET-BOUND code (uses VitePress classes/slots)
+│           ├── components/                # Vue SFCs + CSS (was guides/.config/components)
+│           └── hooks/                     # was guides/.config/hooks
+├── build/                                 # generated, gitignored
+└── vitepress-site/                        # the VitePress target app (location unchanged in this run)
+    ├── scripts/
+    │   ├── spmpst/                        # AGNOSTIC core (section 3.3)
+    │   ├── preparation/                   # VitePress adapter + pre-SSG stages
+    │   ├── dev/                           # verify, check, new
+    │   └── shared/navigation-order.mjs    # unchanged
+    └── .vitepress/ …
+```
+
+Decision (log in `DECISIONS.md`): target-bound code is nested under `resources/targets/vitepress/` instead of a flat `resources/vueFiles/`, so the dependency on VitePress is visible in the path and a future `resources/targets/feluqa-ssg/` can sit next to it. If the owner prefers a flat folder it is a one-line constant in `layout.mjs`.
+
+### 3.2 Path rules (these become normative in SSG.md)
+1. The **tree root** is `docs/` (the directory containing `.site/`). Override with env `SPMPST_ROOT` for tests.
+2. The layout is **fixed by convention**: `src/guides`, `src/collections`, `resources/{assets,icons,flags,diagrams}`, `resources/targets/<target>/…`, `.site/…`.
+3. Every path inside `.site/**` is **relative to the tree root**, uses `/`, and **must not contain `..`**.
+4. Collection directories are relative to `src/collections` (default: the collection `id`).
+5. Paths inside `guide.config.json` are relative to **that guide's directory**; `sidebar.json` `icon` is relative to **its directory** or is an **icon-library name**; Markdown relative links are relative to the **Markdown file**.
+6. Assets may be referenced only from inside `src/` or `resources/`.
+7. Names starting with `.` and files named `README.md` are never published as content; `sidebar.json`, `guide.config.json` and a collection's `category.json` are metadata, not pages.
+
+### 3.3 Code layout
+
+```
+docs/vitepress-site/scripts/
+├── spmpst/                          # AGNOSTIC core — rule 10 applies (no "vitepress"/"vite"/"vue" strings)
+│   ├── layout.mjs                   # resolveLayout(siteDirectory): treeRoot, guidesDir, collectionsDir, resourcesDir, siteDir, flagsDir, iconsDir, mermaidConfigPath, configBase
+│   ├── config/
+│   │   ├── index.mjs                # loadSiteModelSync(layout) → { model, targets, sources, warnings }
+│   │   ├── registry.mjs             # concern → file → owned keys (single source of truth)
+│   │   ├── discover.mjs             # finds *.site.config.json, locales/*, public/*, targets/*
+│   │   ├── assemble.mjs             # concern files + bundles → model
+│   │   ├── errors.mjs               # ConfigError(file, pointer, message), ErrorCollector
+│   │   └── validate/                # definitions, lang, topbar, collections, appearance, links, seo, locale
+│   ├── fs-utils.mjs                 # writeIfChanged, copyIfChanged
+│   ├── frontmatter.mjs              # extract / getScalar / setKeys / removeKeys / ensureKey
+│   ├── routing.mjs                  # isDefaultLanguage, localePrefix, stagedPath factory, publicUrl, publicMarkdownLink
+│   ├── icons.mjs                    # findIcon / resolveIcon / resolveSidebarIcon
+│   └── assets.mjs                   # copyAsset (allowed roots: src/guides, src/collections, resources)
+├── preparation/                     # VitePress adapter v0 (still contains the pre-SSG stages)
+│   ├── pipeline.mjs                 # orchestrator only (<= 80 lines): flock → load → adapt → stages → report
+│   ├── context.mjs                  # createPreparationContext()
+│   ├── runtime.mjs                  # toVitepressRuntime(model, vitepressTarget, layout) → legacy runtime object
+│   ├── target-validate.mjs          # validates vitepress.target.config.json (theme slots, styles, search, markdown, …)
+│   └── stages/
+│       ├── discover-sources.mjs     compile-guides.mjs     compile-collections.mjs
+│       ├── emit-theme-adapters.mjs  transform-markdown.mjs language-fallbacks.mjs
+│       ├── seo-pages.mjs            directory-indexes.mjs  pager.mjs   cleanup.mjs
+└── dev/
+    ├── verify.mjs  verify-config.mjs  split-site-config.mjs (one-time)  convert-paths.mjs (one-time)
+    ├── docs-check.mjs  docs-new.mjs  dedupe-sidebar-icons.mjs (one-time)
+```
+`pipeline.mjs` keeps its path (referenced by `package.json`). `source-stage.mjs` and `content-stage.mjs` are deleted at P3.13. The agnostic core must be relocatable later (e.g. `docs/tools/spmpst/`) with no code change besides import paths.
+
+---
+
+## 4. Config design
+
+### 4.1 Ownership registry (ends the "scattered" problem)
+
+`registry.mjs` is the single source of truth. The loader rejects: a key in the wrong file (`"<key>" belongs in <owner>.site.config.json, not in <file>`), an unknown key (with a "did you mean" suggestion, Levenshtein ≤ 2, implemented inline), an unknown `*.site.config.json` name, a missing mandatory file. A top-level `$schema` key is ignored everywhere.
+
+```js
+// scripts/spmpst/config/registry.mjs
+export const CONCERNS = {
+  definitions: { required: true,  keys: ['site', 'subguides', 'iconFallback' /* + transitional: guidesPath, indexPath, project */] },
+  lang:        { required: true,  keys: ['languages', 'fallbackLanguage', 'selector'] },
+  topbar:      { required: false, keys: ['items', 'theme'] },
+  collections: { required: false, keys: ['collections'] },
+  appearance:  { required: false, keys: ['fonts', 'logo', 'ogImages', 'mermaid'] },
+  links:       { required: false, keys: ['socialLinks'] },
+  seo:         { required: false, keys: ['siteUrl', 'path', 'icon'] },
+}
+// Target files: .site/targets/<name>.target.config.json — loaded as opaque JSON into `targets[name]`; validated ONLY by the adapter.
+// Adding a concern (e.g. "concepts") = one registry entry + one validator file. Nothing else.
+```
+
+### 4.2 Locale bundle rule
+
+`.site/locales/<lang>.locale.json` holds **every string that depends on the language and is not attached to a single entity**. Entity names (topbar item text, collection title/description, subguide `labels`) stay **inline `{ "en": …, "fr": … }`** next to the entity.
+
+Bundle schema (all sections required unless stated):
+
+```jsonc
+{
+  "language": { "label": "English", "menuLabel": "Change language",
+                "fallbackNotice": "This page is not available in {requested}. Showing the {fallback} version." },
+  "ui":       { "emptyCollection": "No published content yet." },
+  "search":   { /* exactly the current search.labels object for that language */ },
+  "outline":  { "label": "On this page" },
+  "footer":   { "message": "…", "copyright": "…" },
+  "notices":  { "exploringTitle": "…", "exploring": "…", "validatedTitle": "…", "validated": "…", "fallbackTitle": "…" },
+  "seo":      { "quickLinksTitle": "…", "faqTitle": "…", "quickLinks": [ … ], "faq": [ … ],
+                "pageTitle": "…", "pageNavTitle": "…", "description": "…" }   // required when quickLinks or faq is non-empty (replaces hard-coded English fallbacks, D4)
+}
+```
+
+### 4.3 Model → legacy runtime object (frozen consumer contract)
+
+`runtime.mjs` (`toVitepressRuntime`) must produce **exactly** the object the stage code and `site.ts` read today. This table is the spec:
+
+| Runtime path (legacy) | Built from |
+|---|---|
+| `site`, `subguides` | `definitions` |
+| `languages`, `fallbackLanguage` | `lang` |
+| `topbar.language` | `lang.selector` |
+| `topbar.items`, `topbar.theme` | `topbar` |
+| `collections` | `collections` (Phase 5: `path` is synthesized, see Appendix C) |
+| `fonts`, `logo`, `ogImages`, `mermaid` | `appearance` |
+| `socialLinks` | `links` |
+| `languageLabels[lang]` | `bundle[lang].language.label` |
+| `languageMenuLabels[lang]` | `bundle[lang].language.menuLabel` |
+| `languageMenuLabel` (singular) | `bundle[defaultLang].language.menuLabel` — only if D2 finds a consumer; the splitter asserts it equals the legacy value |
+| `fallbackNotices[lang]` | `bundle[lang].language.fallbackNotice` |
+| `search.labels.root` | `bundle[fallbackLanguage].search` |
+| `search.labels[lang]` (non-default) | `bundle[lang].search` |
+| `outline.labels[lang]` | `bundle[lang].outline.label` |
+| `footer[lang]` | `bundle[lang].footer` |
+| `documentationNotices[lang]` | `bundle[lang].notices` |
+| `seo.siteUrl`, `seo.path` | `seo` |
+| `seo.locales[lang]` | `{ icon: seo.icon, ...bundle[lang].seo }` |
+| `publicFiles[name]` | contents of `.site/public/<name>` (strip exactly one trailing `\n`) |
+| `uiStrings[lang]` *(new key)* | `bundle[lang].ui` |
+| `search.provider`, `search.miniSearch`, `search.excludePaths` | **target** `search` |
+| `outline.level` | **target** `outline.level` |
+| `markdown` | **target** `markdown` |
+| `styles`, `theme` | **target** `styles`, `theme` |
+| `outputDir` | **target** `outputDir` |
+| `project.components`, `project.hooks`, `project.viteConfig` | **target** (transitional); derived from layout in Phase 5 |
+| `project.iconLibrary`, `project.iconFallback`, `project.mermaidConfig` | `definitions.project` (transitional); derived from layout + `definitions.iconFallback` in Phase 5 |
+| `guidesPath`, `indexPath` | `definitions` (transitional); derived (`src/guides`, `index.<fallbackLanguage>.md`) in Phase 5 |
+
+Arrays are order-sensitive and must be preserved: `languages`, `subguides`, `topbar.items`, `collections`, `socialLinks`, `styles`, `quickLinks`, `faq`. Object key order is irrelevant (the verifier canonicalizes JSON). `uiStrings` is the **only** allowed new key (register it in `.refactor/allowed-config-diffs.json`).
+
+> Before relying on `search.labels.root`, open `.vitepress/config/site.ts` and confirm that `root` means the default locale. If not, record the truth in `DECISIONS.md` and adjust only `runtime.mjs`, never the consumer.
+
+### 4.4 Final-state file contents (what Phase 5 ends with)
+
+`.site/definitions.site.config.json`
+```json
+{
+  "site": { "name": "Feluqa", "description": "Feluqa Documentation" },
+  "iconFallback": "circle-help",
+  "subguides": [
+    { "path": "feluqa.rs", "label": "Basics", "labels": { "en": "Basics", "fr": "Bases" },
+      "uri": { "base": "/", "entry": "get-started", "index": "feluqa/" } },
+    { "path": "sdui", "label": "sdui", "labels": { "en": "SDUI", "fr": "SDUI" },
+      "uri": { "base": "/sdui/", "entry": "get-started" } },
+    { "path": "internals", "label": "Architecture", "labels": { "en": "Architecture", "fr": "Architecture" },
+      "uri": { "base": "/internals/", "entry": "get-started" } },
+    { "path": "x-agents", "label": "Agents", "labels": { "en": "Agents", "fr": "Agents" },
+      "uri": { "base": "/agents/", "entry": "get-started" } },
+    { "path": "learn", "label": "Learn", "labels": { "en": "Learn", "fr": "Apprendre" },
+      "uri": { "base": "/learn/", "entry": "get-started" } }
+  ]
+}
+```
+(`label` / `uri.entry` stay until D2 proves them unused.)
+
+`.site/lang.site.config.json`
+```json
+{
+  "languages": ["en", "fr"],
+  "fallbackLanguage": "en",
+  "selector": { "showSelector": true, "prefixDefaultLanguage": false, "showFlags": true }
+}
+```
+
+`.site/topbar.site.config.json`
+```json
+{
+  "items": [
+    { "text": { "en": "Docs", "fr": "Docs" },
+      "items": [
+        { "guide": "feluqa.rs", "icon": "book-open" },
+        { "guide": "sdui", "icon": "square-terminal" },
+        { "guide": "internals", "icon": "code-xml" }
+      ] },
+    { "guide": "x-agents" },
+    { "guide": "learn" },
+    { "text": { "en": "Explore", "fr": "Explorer" }, "items": [ { "collection": "articles" } ] }
+  ],
+  "theme": "switch"
+}
+```
+
+`.site/collections.site.config.json`
+```json
+{
+  "collections": [
+    { "id": "articles", "layout": "article", "indexLayout": "spotlight",
+      "title": { "en": "Articles", "fr": "Articles" },
+      "description": { "en": "Short articles about building with Feluqa.",
+                       "fr": "Articles courts sur la création avec Feluqa." } }
+  ]
+}
+```
+(optional keys: `dir` (default = `id`), `categoryFile` (default `category.json`).)
+
+`.site/appearance.site.config.json`
+```json
+{
+  "fonts": {
+    "body":    { "family": "Manrope", "src": "resources/assets/fonts/manrope-latin.woff2", "weight": "200 800" },
+    "heading": { "family": "DM Sans", "src": "resources/assets/fonts/DM-Sans-Variable.ttf", "weight": "100 1000" }
+  },
+  "logo": { "light": "resources/assets/brand/feluqa.svg", "dark": "resources/assets/brand/feluqa.svg",
+            "alt": "Feluqa", "height": "3rem", "extraStyle": "" },
+  "ogImages": [ "resources/assets/brand/og-feluqa.png" ],
+  "mermaid": { "flowchartPalette": [ /* 5 entries, verbatim from the legacy file */ ],
+               "nodeBorderWidth": "1.5px", "darkMessageTextColor": "#f1f3fc" }
+}
+```
+
+`.site/links.site.config.json` → `{ "socialLinks": [ …verbatim… ] }`
+`.site/seo.site.config.json` → `{ "siteUrl": null, "path": "faq", "icon": "circle-help" }`
+
+`.site/targets/vitepress.target.config.json`
+```json
+{
+  "outputDir": "build",
+  "styles": [
+    "resources/targets/vitepress/components/home/docs-home.css",
+    "resources/targets/vitepress/components/components.css"
+  ],
+  "theme": { "slots": { "sidebar-nav-before": "BranchedSidebar", "nav-bar-content-after": "CollectionArticleSubnav" } },
+  "markdown": { "lineNumbers": true, "image": { "lazyLoad": true } },
+  "search": { "provider": "local",
+              "miniSearch": { "fuzzy": 0.2, "prefix": true, "boost": { "title": 4, "text": 2, "titles": 1 } },
+              "excludePaths": [] },
+  "outline": { "level": "deep" }
+}
+```
+(optional: `"viteConfig": "<tree-root-relative .js/.mjs/.ts path>"`.)
+
+`.site/locales/en.locale.json` (shape; the splitter generates both bundles from the legacy file — never hand-copy)
+```json
+{
+  "language": {
+    "label": "English",
+    "menuLabel": "Change language",
+    "fallbackNotice": "This page is not available in {requested}. Showing the {fallback} version."
+  },
+  "ui": { "emptyCollection": "No published content yet." },
+  "search": {
+    "buttonText": "Search", "buttonAriaLabel": "Search documentation", "displayDetails": "Display detailed list",
+    "resetButtonTitle": "Reset search", "backButtonTitle": "Close search", "noResultsText": "No results",
+    "selectText": "Select", "selectKeyAriaLabel": "Enter", "navigateText": "Navigate",
+    "navigateUpKeyAriaLabel": "Arrow up", "navigateDownKeyAriaLabel": "Arrow down",
+    "closeText": "Close", "closeKeyAriaLabel": "Escape"
+  },
+  "outline": { "label": "On this page" },
+  "footer": {
+    "message": "Questions? Read the <a href=\"/faq/\">quick answers</a>.",
+    "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
+  },
+  "notices": {
+    "exploringTitle": "Under exploration",
+    "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",
+    "validatedTitle": "Validated",
+    "validated": "The information on this page has been verified and reflects the current baseline.",
+    "fallbackTitle": "Language availability"
+  },
+  "seo": {
+    "quickLinksTitle": "Popular guides",
+    "faqTitle": "Quick answers",
+    "quickLinks": [
+      { "label": "Get started", "description": "Understand Feluqa and build a first application.", "url": "/get-started/" },
+      { "label": "Internals", "description": "Explore runtime, workspace, and compile-time architecture.", "url": "/internals/" },
+      { "label": "Agents", "description": "Read contribution guidance for AI coding agents.", "url": "/agents/" },
+      { "label": "Learn", "description": "Follow practical application tutorials.", "url": "/learn/" }
+    ],
+    "faq": [
+      { "question": "What is Feluqa?", "answer": "Feluqa is a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development." },
+      { "question": "Where should I start?", "answer": "Start with Get started to understand the current product direction, set up a development environment, and follow the application guides." },
+      { "question": "Is the complete platform available today?", "answer": "No. The repository provides selected framework foundations, while several target capabilities such as dynamic module installation and complete runtime shells remain in active development." }
+    ],
+    "pageTitle": "Feluqa FAQ",
+    "pageNavTitle": "FAQ",
+    "description": "Frequently asked questions and links to the Feluqa documentation guides."
+  }
+}
+```
+`fr.locale.json`: identical key structure; values come from the legacy `fr` entries (`languageLabels.fr`, `languageMenuLabels.fr`, `fallbackNotices.fr`, `search.labels.fr`, `outline.labels.fr`, `footer.fr`, `documentationNotices.fr`, `seo.locales.fr` minus `icon`), plus `ui.emptyCollection = "Aucun contenu publié pour le moment."`.
+
+### 4.5 Transitional (Phases 1–4) vs final (Phase 5)
+During Phases 1–4 the physical tree is still the legacy one (`docs/guides`, `docs/collections`, `docs/guides/.config`). The concern files already live at their final place `docs/.site/`, but **path-valued options keep their legacy values and legacy base** (paths relative to `docs/guides`), and `definitions` still carries `guidesPath`, `indexPath`, `project.*`; `collections[].path` still has `../collections/articles`. `layout.mjs` exposes `configBase` (= `docs/guides` until P5.4, then = tree root). Appendix C lists every value converted in Phase 5.
+
+### 4.6 Loader contract
+```js
+// scripts/spmpst/config/index.mjs  (agnostic)
+export function loadSiteModelSync(layout, options = {}) {
+  // returns { model, targets, sources, warnings }
+  //   model    : merge of concern files + `locales` (per-language bundles) + `publicFiles`
+  //   targets  : { <name>: <raw parsed JSON of .site/targets/<name>.target.config.json> }  (opaque)
+  //   sources  : absolute paths of every file read (dev-server watching)
+  //   warnings : non-fatal findings
+}
+// scripts/preparation/runtime.mjs  (VitePress adapter)
+export function toVitepressRuntime(model, vitepressTarget, layout) { /* section 4.3 */ }
+```
+Order: discover → parse JSON (errors carry file path) → ownership check → per-concern validation → one bundle per language in `lang.languages` (missing = error, extra = warning) → bundle validation → assemble model → cross-file validation (topbar `guide`/`collection` references, `seo.icon` exists, `selector` booleans) → return. Errors are collected and thrown **together** (Phase 2); Phase 1 may throw on the first.
+
+---
+
+## 5. Task list (execute in order; tick in the ledger)
+
+Conventions: **Files** = what to create/edit. **Verify** = commands that must pass before ticking. "baseline" = the snapshot from P0.
+
+### Phase 0 — Safety net (no behavior change)
+
+**P0.1 Prepare.**
+- Create branch `refactor/spmpst`.
+- Read in full before changing anything (not provided to the author of this brief): `docs/vitepress-site/package.json`, `.vitepress/config/context.ts`, `.vitepress/config/site.ts`, the Node adapter used by `loadSiteRuntimeContext()`, `scripts/shared/navigation-order.mjs`, `docs/vitepress-site/.gitignore`, `docs/guides/.config/components/useCollections.ts`.
+- Write to `.refactor/DECISIONS.md`: `node -v`, package manager, the npm scripts that run prepare/dev/build, **how dev reload currently reacts to config and content changes** (what is watched: `../guides`? the JSON? which path strings), and the list of `grep -rn "docs/guides\|docs/collections\|vitepress.site.config\|vitepress.config.json\|\.config/" /home/yassine/Projects/Rust/feluqa --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=target` hits **outside** `docs/guides/**` (root README, `.github`, scripts, Cargo files, `AGENTS`-style files).
+- **Verify:** notes exist; no source file changed.
+
+**P0.2 Create `scripts/dev/verify.mjs`.** CLI `node scripts/dev/verify.mjs record|compare`.
+- Runs the prepare step (`node scripts/preparation/pipeline.mjs`, non-incremental) first.
+- Walks `.generated-guides/` and `.vitepress/generated/`; per file `sha256`. For `*.json`: parse and re-serialize with **recursively sorted object keys** (arrays untouched) before hashing.
+- `record`: stores hashes in `.refactor/baseline.json` and a full copy of both trees in `.refactor/baseline-tree/`.
+- `compare`: prints `added / removed / changed`; for the first 5 changed text files prints `diff -u` against the baseline copy; reads `.refactor/allowed-output-diffs.json` (`[{ "path": "...", "reason": "..." }]`, empty at start); exit 1 on any non-allowed difference, 2 on tool error.
+- **Verify:** `record` then immediately `compare` → 0/0/0.
+
+**P0.3 Record the legacy config.** Create `scripts/dev/verify-config.mjs` with `record`: parse `docs/guides/vitepress.site.config.json`, store canonical JSON (sorted object keys, arrays ordered) in `.refactor/baseline-config.json`. Run it **now**.
+
+**P0.4 Determinism check.** `record`, then two more pipeline runs each followed by `compare`. If any file differs between identical runs, exclude it in `verify.mjs` with a one-line justification in `DECISIONS.md`. Record the number of built pages.
+
+**P0.5 Ledger.** Create `.refactor/PROGRESS.md` from Appendix A; add `.refactor/` to `.gitignore`.
+
+### Phase 1 — Agnostic loader + concern split (stage logic untouched)
+
+**P1.1 Layout resolver.** Create `scripts/spmpst/layout.mjs`: `resolveLayout(siteDirectory)` returning `{ treeRoot, siteDir, guidesDir, collectionsDir, resourcesDir, flagsDir, iconsDir, mermaidConfigPath, configBase, version }`. `treeRoot = process.env.SPMPST_ROOT ?? resolve(siteDirectory, '..')`; `siteDir = treeRoot/.site` (final). While `version === 'legacy'`: `guidesDir = treeRoot/guides`, `collectionsDir = treeRoot/collections`, `configBase = guidesDir`, `flagsDir = siteDirectory/flags/language`, `iconsDir`/`mermaidConfigPath` come from the (transitional) config. Replace every `resolve(siteDirectory, '../guides')` and hard-coded flags path in `source-stage.mjs` by the layout object. **Verify:** `compare` 0/0/0.
+
+**P1.2 Loader skeleton.** Create `scripts/spmpst/config/{index,registry,discover,errors}.mjs` (agnostic; rule 10). `discover` lists `.site/*.site.config.json` (non-recursive, sorted), `.site/locales/*.locale.json`, `.site/public/*`, `.site/targets/*.target.config.json`. **Verify:** `node -e "import('./scripts/spmpst/config/index.mjs')"` loads.
+
+**P1.3 Assembler + adapter.** Create `config/assemble.mjs` (model) and `preparation/runtime.mjs` (`toVitepressRuntime`, table 4.3, transitional rows included). **Verify:** exercised by P1.5.
+
+**P1.4 One-time splitter.** Create `scripts/dev/split-site-config.mjs`. It reads `docs/guides/vitepress.site.config.json` and **writes**, by programmatic extraction, every file of section 4.4 **with transitional values** (section 4.5):
+- `definitions`: `site`, `guidesPath`, `indexPath`, `project.{iconLibrary, iconFallback, mermaidConfig}`, `subguides` (verbatim).
+- `lang`: `languages`, `fallbackLanguage`, `selector` (= `topbar.language`).
+- `topbar`: `items`, `theme`. `collections`: `collections` (verbatim, with legacy `path`). `appearance`: `fonts`, `logo`, `ogImages`, `mermaid`. `links`: `socialLinks`.
+- `seo`: `siteUrl`, `path`, `icon` — **assert** every `seo.locales.*.icon` is identical, else stop and log.
+- `targets/vitepress.target.config.json`: `outputDir`, `project.{components, hooks, viteConfig}`, `styles`, `theme`, `markdown`, `search.{provider, miniSearch, excludePaths}`, `outline.level`.
+- `locales/<lang>.locale.json` per language per section 4.2 (`search.labels.root` → default language; assert that `search.labels` keys are `root` + non-default languages).
+- `public/<name>` from `publicFiles` (content + `\n`).
+- Assert `languageMenuLabel` (singular) equals `languageMenuLabels[fallbackLanguage]`; if not, log in `DECISIONS.md` and keep it as an extra `definitions` key (transitional).
+- Refuses to overwrite existing files unless `--force`.
+**Verify:** files exist; `docs/.site/README.md` NOT yet created.
+
+**P1.5 Equivalence check.** Implement `verify-config.mjs compare`: load via `loadSiteModelSync` + `toVitepressRuntime`, canonicalize, deep-compare to `.refactor/baseline-config.json`. Allowed differences in `.refactor/allowed-config-diffs.json` (start with exactly `uiStrings`). **Verify:** passes.
+
+**P1.6 Switch the pipeline reader.** In `source-stage.mjs` replace `JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))` by `toVitepressRuntime(...loadSiteModelSync(layout)...)`. Error messages that said `vitepress.site.config.json` now say `.site/<concern>.site.config.json`/`.site/targets/vitepress.target.config.json` (loader supplies file+pointer). **Keep the resolution anchor for relative assets** exactly as before: `prepareFonts(config.fonts, join(layout.configBase, 'vitepress.site.config.json'))` must still resolve relative to `layout.configBase` (a synthetic path inside `configBase` is passed; note it in `DECISIONS.md`; removed in P5.4). **Verify:** `compare` 0/0/0.
+
+**P1.7 Switch the VitePress reader.** Make the Node adapter behind `loadSiteRuntimeContext()` call the same two functions. TypeScript importing `.mjs`: add a sibling `.d.ts` declaration (do not loosen `tsconfig`). Returned context shape unchanged. **Verify:** type-check script (if any) passes; `compare` 0/0/0; production build exits 0.
+
+**P1.8 Dev-server watching.** Edits to `docs/.site/**` (concern files, locales, public, targets) must trigger the same reload behavior legacy config edits did, using `sources` from the loader and the mechanism documented in P0.1. **Verify:** start dev, toggle `selector.showFlags` in `lang.site.config.json`, observe reload, revert.
+
+**P1.9 Full compare.** `verify.mjs compare` 0/0/0 and `verify-config.mjs compare` pass.
+
+**P1.10 Remove the legacy file and the splitter.** `git rm docs/guides/vitepress.site.config.json scripts/dev/split-site-config.mjs`; `git rm -r docs/guides/.site` if empty. Update every reference found by `grep -rn "vitepress.site.config.json"` across the repo (docs content under `src`-to-be, `.x-agents/*.md`, READMEs, `package.json`). References inside **published** Markdown change generated output → add each to `.refactor/allowed-output-diffs.json` with reason "path mention updated" (see P5.6 for the allow-list rules). **Verify:** `compare` clean (modulo allow-list).
+
+**P1.11 Public files.** Confirm `publicFiles` come from `.site/public/*`. **Verify:** generated `public/llms.txt|humans.txt|robots.txt` byte-identical.
+
+### Phase 2 — Validation extraction and error quality
+
+**P2.1 Move validations (verbatim).** Cut each validation family from `source-stage.mjs` into validators — agnostic ones in `spmpst/config/validate/*.mjs`, target ones (theme slots, `styles`, `search`, `markdown`, `outline`, `outputDir`, `project.components|hooks|viteConfig`) in `preparation/target-validate.mjs`. They first operate on the same runtime-shaped values (move, don't rewrite). Filesystem-touching checks (`existsSync`, `stat`) stay in the `discover-sources` stage or in `target-validate.mjs`, **never** in `spmpst/config/validate` (those are pure shape checks). **Verify:** `compare` 0/0/0; break one option per family and confirm the original wording appears (with the new file name).
+
+**P2.2 Aggregated errors.** `ErrorCollector`; one `ConfigError` lists all problems with `file` + JSON pointer (e.g. `.site/topbar.site.config.json#/items/1/guide`). **Verify:** break two unrelated options; both reported in one run.
+
+**P2.3 Unknown-key / ownership detection** (section 4.1). **Verify:** put `languages` in `topbar.site.config.json` → error naming `lang.site.config.json`; misspell `colections` → suggestion.
+
+**P2.4 Cross-file and i18n checks.** Errors: unknown `guide`/`collection` reference in topbar; missing locale bundle for a configured language; bundle for a language not in `lang.languages` → warning. **Warnings** (preserving the legacy `localizedValue` fallback): any inline localized object missing a configured language. `--strict-i18n` makes them errors (D7 covered here). **Verify:** `compare` 0/0/0; record the current warnings in `DECISIONS.md`.
+
+**P2.5 `docs:check`.** Create `scripts/dev/docs-check.mjs` (load + all validators + read-only content checks: every page has `icon` and `sidebarTitle`; every non-trivial directory has `sidebar.json`; collection route conflicts). Add npm script `docs:check`. **Verify:** exits 0 on the repo; exits 1 with readable output when a `sidebar.json` is temporarily removed.
+
+### Phase 3 — Stage extraction (verbatim movement)
+
+Create `preparation/context.mjs` exporting `createPreparationContext(config, layout, siteDirectory)` that returns the **same flat object** the stages use today (names unchanged this phase). Extract one stage per task; after **each**: `compare` 0/0/0 and commit.
+
+| Task | New file | Moves (from) | Adds to ctx |
+|---|---|---|---|
+| P3.1 | `context.mjs` | helpers `cleanDir`, `cleanFile`, `sourceLanguage`, `localizedValue`, `stagedPath`, `publicPagePath`, `publicUrl`, `publicMarkdownLink`, `copyIfChanged`, `writeIfChanged`, `copyAsset`, icon helpers; empty registries (`records`, `routeMap`, `generatedFiles`, `navigationOrder`, `sidebarConfigurations`, `sidebarIconSources`, `sidebarPageIcons`, `directories`, `guideUris`, `collectionMetadata`) | helpers + registries |
+| P3.2 | `stages/discover-sources.mjs` | collection metadata read, `validateMarkdownIcons`, `scan()`, default-language index copy, directory `sidebar.json` requirement check, `navigation-order.json`, language flags copy, public files writing (`source-stage.mjs`) | fills registries |
+| P3.3 | `stages/compile-guides.mjs` | `prepareOgImages`, `prepareFonts`, the per-guide loop, root-guide color propagation (`content-stage.mjs`) | `generatedFonts`, `generatedGuideColors`, `generatedOgImages`, `generatedGuideThemeSlots`, `generatedGuideKeys` |
+| P3.4 | `stages/compile-collections.mjs` | `frontmatterScalar`, `humanize`, `readingMetrics`, collection loop, `collections.json` | `generatedCollectionNavigation`, `generatedCollectionPages`, `generatedMarkdown` |
+| P3.5 | `stages/emit-theme-adapters.mjs` | `fonts.json`/`guide-colors.json`/`og-images.json` writes, `configured-styles.ts`, `collectVueFiles`, `componentName`, `components.ts`, theme-slot validation, `site-content.json`, `theme.ts`, `hooks.ts`, `sidebar.json` | — |
+| P3.6 | `stages/transform-markdown.mjs` | `renderDiagram`, `colorizeFlowchart`, `createDarkVariant`, the big `Promise.all(records.map(...))` (renderer queue stays module-local) | `diagramsCached`, `diagramsRendered` |
+| P3.7 | `stages/language-fallbacks.mjs` | `defaultPageRecords`, `defaultRouteUrls`, fallback-page loop | `generatedMarkdown` |
+| P3.8 | `stages/seo-pages.mjs` | SEO page generation, `sidebar-page-icons.json` write | `generatedSeoPages` |
+| P3.9 | `stages/directory-indexes.mjs` | the `for (const directory of [...directories].reverse())` loop | `generatedMarkdown` |
+| P3.10 | `stages/pager.mjs` | `hasSourceIndex`, `routeRoot`, `foreignRootKeys`, `orderedPageEntries`, `readingOrder`, `pagerTarget`, pager loops, the "pager false" sweep | — |
+| P3.11 | `stages/cleanup.mjs` | `removeStale` + the final `process.stdout.write(...)` | — |
+| P3.12 | `pipeline.mjs` | orchestrator ≤ 80 lines: flock re-spawn block (**verbatim**) → load model → `toVitepressRuntime` → context → stages P3.2…P3.11 in order → report. The `indexPath` check becomes `assertIndexPath(ctx)` right after P3.5 | |
+| P3.13 | delete `source-stage.mjs`, `content-stage.mjs` | | |
+
+**Order is load-bearing:** sources → guides → collections → theme adapters → `assertIndexPath` → markdown transform → language fallbacks → SEO pages → directory indexes → pager → pager-less sweep → cleanup.
+
+Stage template:
+```js
+// scripts/preparation/stages/<name>.mjs
+/** <ONE-LINE PURPOSE>. Reads: <ctx names>. Writes: <files/ctx names>. */
+export async function run<Name>(ctx) {
+  const { /* only what this stage uses */ } = ctx
+  // verbatim moved code
+}
+```
+
+### Phase 4 — Shared helpers and defect fixes
+
+**P4.1** `spmpst/fs-utils.mjs`: move `writeIfChanged`, `copyIfChanged`. **P4.2** `spmpst/frontmatter.mjs` (`extract`, `getScalar`, `setKeys`, `removeKeys`, `ensureKey`) replacing the 8+ inline regex copies (same regexes, byte-identical output). **P4.3** `spmpst/routing.mjs` (`isDefaultLanguage`, `localePrefix(lang, ctx, { lowercase })`): replace every copy-pasted prefix expression, **preserving per call site** whether the old code lowercased (identical for `en`/`fr`; log each site, D5). **P4.4** `spmpst/icons.mjs`, `spmpst/assets.mjs`: relocate icon/asset helpers out of `context.mjs`. **Verify each:** `compare` 0/0/0.
+
+**P4.5 Defect fixes** (section 8) — one commit each: D1, D2, D3, D4, D5, D6, D8, D9. **Verify:** `compare` 0/0/0 after each (none changes current output).
+
+### Phase 5 — Relocation to the SPMPST layout
+
+P5.3 → P5.6 form one **verification unit**: the pipeline is expected to be broken between them; run `compare` only after P5.6.
+
+**P5.1 Junk and notes.**
+- Inspect `docs/guides/feluqa.rs/Projects/` (`find`, `git status`). Only empty dirs/untracked leftovers → remove. Tracked files → `BLOCKERS.md`, skip.
+- `git mv docs/__notes docs/.notes/__notes`; `git mv docs/___notes2 docs/.notes/___notes2` (delete if empty). For `feluqa.rs/__notes`, `030-security/__notes`: if they contain Markdown, rename to `.notes` (dot-dirs are skipped by `scan()`); if empty, remove; never delete non-empty notes.
+**Verify:** `compare` 0/0/0 (these directories are not published).
+
+**P5.2 Reference inventory.** Write `.refactor/path-references.md`: every occurrence (file:line) of `docs/guides`, `docs/collections`, `.config/`, `vitepress.config.json`, `vitepress-site/icons`, `flags/language`, `../guides`, `../collections`, `.art/` in: `scripts/**`, `.vitepress/**`, `package.json`, `.github/**`, repo root files, `docs/**` (including `.x-agents/*.md` and published Markdown), and **import/URL paths inside every `.vue`/`.css`/`.ts` file under `.config/components` and `.config/hooks`** that leave their own tree (e.g. `../../../feluqa.rs/000-art/...`, `url(...)`, `import ... from`). This is the worklist for P5.6. **Verify:** file exists and is non-empty.
+
+**P5.3 Physical move (`git mv`, one commit).**
+```
+docs/guides                            → docs/src/guides
+docs/collections                       → docs/src/collections
+docs/src/guides/.config/components     → docs/resources/targets/vitepress/components
+docs/src/guides/.config/hooks          → docs/resources/targets/vitepress/hooks
+docs/src/guides/.config/art/*          → docs/resources/assets/          (brand/, fonts/)
+docs/src/guides/.config/vitepress/mermaid.json → docs/resources/diagrams/mermaid.json
+docs/vitepress-site/icons              → docs/resources/icons            (see guard below)
+docs/vitepress-site/flags/language     → docs/resources/flags/language
+```
+Then delete the now-empty `docs/src/guides/.config`, `docs/src/guides/.site`.
+*Guard for icons/flags:* if `grep` in `.vitepress/**`, `package.json`, components shows another consumer of `vitepress-site/icons` or `flags/` besides the pipeline, update that consumer; if impossible without a front-end change, **leave that directory in place**, record it in `DECISIONS.md` and keep a `layout` override for it.
+
+**P5.4 Flip the layout and adapt the code.**
+- `layout.mjs`: `version = 'spmpst'`; `guidesDir = treeRoot/src/guides`; `collectionsDir = treeRoot/src/collections`; `configBase = treeRoot`; `iconsDir = resources/icons`; `flagsDir = resources/flags/language`; `mermaidConfigPath = resources/diagrams/mermaid.json`. Remove the `legacy` branch only at P5.9.
+- `assets.copyAsset`: allowed roots become `src/guides`, `src/collections`, `resources` (this also lets collection Markdown reference assets — D10).
+- Collections: runtime `collection.sourceDirectory = collectionsDir/<dir ?? id>`; runtime `collection.path` is **synthesized** as `relative(guidesDir, sourceDirectory)` (= `../collections/articles`) so the existing `stagedPath` logic keeps working; the old "path must start with `../collections/`" validation is replaced by "`dir` is a plain relative name without `..`".
+- Derived values in `runtime.mjs`: `guidesPath` = `relative(configBase, guidesDir)` semantics replaced by direct use of `layout.guidesDir`; `indexPath` = `index.<fallbackLanguage>.md` in `guidesDir`; `project.iconLibrary|mermaidConfig|components|hooks` from layout; `project.iconFallback` from `definitions.iconFallback`.
+- Rename the per-guide file `vitepress.config.json` → `guide.config.json` everywhere: code (`scan()` exclusion list, per-guide loop in `compile-guides.mjs`, error messages), and `git mv` each of the five files. A guide-level `theme` key moves to `targets.vitepress.theme` (accepted by `target-validate.mjs`); none exists today.
+- Remove the P1.6 synthetic anchor path.
+
+**P5.5 Convert config values.** Create and run `scripts/dev/convert-paths.mjs` applying **Appendix C** to `.site/*.site.config.json` and `.site/targets/vitepress.target.config.json` (idempotent; prints a diff table). Delete transitional keys (`guidesPath`, `indexPath`, `project`, `collections[].path`) and hoist `iconFallback`. Update the registry's transitional keys accordingly.
+
+**P5.6 Fix references and verify.**
+- Work through `.refactor/path-references.md` item by item. In `.vue`/`.css`/`.ts` only **path strings** may change (imports crossing the moved boundary, `url()` references); show the final `git diff --stat` for those files — no other line may change.
+- Update dev-server watching and `package.json` scripts for `docs/src/**` and `docs/.site/**`; update CI/workflow/README/agent files found in P0.1.
+- Published Markdown that mentions the old paths (e.g. `x-agents/…/010-writing-docs.en.md`, guide READMEs) is updated **textually only**; each changed published page must be listed in `.refactor/allowed-output-diffs.json` with reason `"path mention updated"`, and `compare` must then show **only** allowed files as changed, with diffs consisting solely of path strings. Unpublished docs (`.x-agents/*.md`, READMEs) are updated too (they are not in the snapshot).
+- **Verify:** `verify.mjs compare` → no non-allowed difference; production build exits 0; dev server starts.
+
+**P5.7 Brand assets and fonts (guarded).** Move `feluqa.rs/.art/feluqa.svg` and `feluqa.rs/.art/og-feluqa.png` to `resources/assets/brand/` (resolve name collisions with the moved `art/brand/` folder by inspecting it first), update `appearance.logo`/`ogImages`. `grep` for references (`.art/feluqa.svg`, `.art/og-feluqa.png`) in Markdown frontmatter/body and components: update path strings, or if a reference cannot be updated without a front-end change, **copy instead of move** and log it. Move `DM-Sans-Variable.ttf` from `resources/targets/vitepress/components/home/assets/fonts/` to `resources/assets/fonts/` only if no component/CSS references it (grep); otherwise leave it and point `appearance.fonts.heading.src` at its current place. **Verify:** `compare` clean.
+
+**P5.8 Sidebar icons by name.**
+1. Extend `resolveSidebarIcon(directory, iconValue, context)`: a value ending in `.svg` is a path (existing behavior); any other value is an icon-library name resolved through `findIcon`/`resolveIcon`.
+2. Create `scripts/dev/dedupe-sidebar-icons.mjs` (one-time): hash each `sidebar-icon.svg`, compare with every SVG in `resources/icons`; on an exact byte match rewrite that directory's `sidebar.json` `icon` to the library name and `git rm` the local SVG. Print replaced/kept.
+**Verify:** `compare` clean (identical bytes → identical hashed asset names). Report counts.
+
+**P5.9 Remove transitional code.** Delete the `legacy` layout branch, the transitional keys in `registry.mjs`, `convert-paths.mjs`, and any `configBase` leftovers; re-record the config baseline as `.refactor/baseline-config-v1.json` (post-migration runtime object) for later phases. **Verify:** `compare` clean.
+
+**P5.10 `.site/README.md`** — folder map, how to add a language / guide / collection / string, naming rule `<concern>.site.config.json`, ownership rule, path rules (3.2). **Verify:** `docs:check` passes.
+
+### Phase 6 — SSG.md and ergonomics
+
+**P6.1 Write `docs/SSG.md`** — the SPMPST v0.1 specification, following **section 10** exactly. **Verify:** every required heading present; every normative rule has a "Source:" line pointing to a file/function or is marked `PLANNED`; no mention of VitePress outside the sections "Target adapters" and "VitePress-isms inventory".
+
+**P6.2 VitePress-isms inventory.** Using `grep` over `scripts/preparation/**`, generated Markdown samples and `resources/targets/vitepress/**`, build the table in SSG.md's appendix (config keys, frontmatter keys emitted, Markdown/Vue tags emitted, generated data files, CSS class coupling). Seed: section 2.3.
+
+**P6.3 JSON Schemas.** `.site/schema/<concern>.schema.json` (draft-07, hand-written, mirroring the validators) and `"$schema": "./schema/<concern>.schema.json"` in each concern file (target file: `../schema/vitepress.target.schema.json`). **Verify:** `compare` clean.
+
+**P6.4 `docs:new`.** `scripts/dev/docs-new.mjs` + npm script:
+- `docs:new locale <code> --label "<Native name>"` → appends to `lang.languages`, creates `locales/<code>.locale.json` as a copy of the default bundle with `"TODO"` markers, prints what remains.
+- `docs:new guide <path> --base /<base>/ --label-en "…" --label-fr "…"` → creates `src/guides/<path>/` with `guide.config.json`, an `index.<defaultLang>.md` (with required `icon` + `sidebarTitle`), appends to `definitions.subguides`.
+- `docs:new collection <id> --layout article|doc --index list|spotlight` → creates `src/collections/<id>/category.json`, appends to `collections.site.config.json`.
+- `docs:new section <guide>/<dir>` → creates the directory with `sidebar.json` (labels for every configured language) and a first page.
+- Idempotent (refuse to overwrite), 2-space JSON + trailing newline, finishes by running `docs:check`.
+
+**P6.5 npm scripts.** `docs:check`, `docs:new`, `docs:verify` (= `node scripts/dev/verify.mjs compare`). Existing scripts keep working.
+
+**P6.6 Contributor notes.** Add the "Where does X live?" table (section 7.1) to `.site/README.md` and link `docs/SSG.md` from the repo's docs entry point (not inside a published guide unless it carries `icon` + `sidebarTitle`).
+
+---
+
+## 6. Verification tooling — exact behavior
+
+### 6.1 `verify.mjs`
+- Working directory: `docs/vitepress-site`. Roots: `.generated-guides`, `.vitepress/generated`. Hash key = path relative to `docs/vitepress-site`.
+- JSON canonicalization: `JSON.stringify(sortKeysDeep(parsed), null, 2)`; arrays keep order.
+- Exit codes: `0` identical (modulo allow-list), `1` differences, `2` tool error.
+- Output example:
+```
+added:   0
+removed: 0
+changed: 1
+  ~ .vitepress/generated/site-content.json
+--- baseline
++++ current
+@@ …
+```
+
+### 6.2 `verify-config.mjs`
+- `record` (P0.3): legacy JSON → canonical JSON.
+- `compare` (P1.5): `toVitepressRuntime(loadSiteModelSync(layout))` → canonical → deep diff by JSON pointer, minus `.refactor/allowed-config-diffs.json`. After P5.9 it compares against `baseline-config-v1.json`.
+
+### 6.3 Manual smoke tests (end of each phase)
+1. Dev script; open `/`, `/fr/`, `/internals/`, `/learn/`, `/articles/`, `/faq/`, `/fr/faq/`; no console errors; flags and logo visible.
+2. Production build exit code 0; page count equals the P0.4 record.
+
+---
+
+## 7. Conventions after the refactor
+
+### 7.1 "Where does X live?"
+
+| I want to… | Edit |
+|---|---|
+| Add/rename a guide | `.site/definitions.site.config.json` → `subguides` + create `src/guides/<guide>/` (`docs:new guide`) |
+| Add a language | `.site/lang.site.config.json` (`languages`) + new `.site/locales/<code>.locale.json` (`docs:new locale`) |
+| Change any UI string (search, footer, notices, FAQ, outline, fallback notice) | `.site/locales/<lang>.locale.json` |
+| Rename a topbar item / collection / guide label | inline `{ en, fr }` next to the entity |
+| Add a collection | `.site/collections.site.config.json` + `src/collections/<id>/` (`docs:new collection`) |
+| Change fonts, logo, og images, Mermaid palette | `.site/appearance.site.config.json` (+ files in `resources/assets/`) |
+| Change social links | `.site/links.site.config.json` |
+| Edit `robots.txt` / `llms.txt` / `humans.txt` | `.site/public/*.txt` |
+| Change search engine tuning, Markdown options, theme slots, CSS list, output dir | `.site/targets/vitepress.target.config.json` |
+| Add a Vue component / hook | `resources/targets/vitepress/components`, `…/hooks` |
+| Add an icon / a flag | `resources/icons/<family>/<name>.svg`, `resources/flags/language/<lang>.svg` |
+| Guide-level colors, favicon, fonts, logo override | `src/guides/<guide>/guide.config.json` |
+| Sidebar label/icon of a directory | `src/guides/<guide>/<dir>/sidebar.json` (`"icon"`: library name or `.svg` path) |
+
+### 7.2 Do-not-touch list (this run)
+- `src/guides/feluqa.rs/000-art/**` (published at `/art/…`).
+- All Markdown content except the textual path updates of P5.6 and the `icon` value in `sidebar.json` (P5.8).
+- `.vue`/`.css`/`documentation-*.ts` content except path strings (P5.6).
+- The `flock` re-spawn block in `pipeline.mjs`.
+- Frontmatter key names.
+
+---
+
+## 8. Defect register (found while reading the code)
+
+Fixed in **P4.5**, one commit each, after extraction. All are listed in the final report.
+
+| ID | Where | Defect | Fix |
+|---|---|---|---|
+| D1 | `content-stage.mjs` per-guide loop: `logoAlt: logo.alt ?? site.name` | `site` is not declared in that module → `ReferenceError` as soon as a logo has no `alt` | `config.site?.name ?? ''` |
+| D2 | config | `label` (subguides), `languageMenuLabel` (singular), `uri.entry`, `outputDir` appear unused by the pipeline | `grep -rn` across `docs/vitepress-site` (`.vitepress/**`, components, scripts). Unused everywhere → remove from files, registry and `runtime.mjs`; used → keep and document the consumer in `DECISIONS.md` |
+| D3 | `pipeline.mjs` SEO block: `defaultSeoLocale = config.languages[0]…` | ignores `fallbackLanguage` and `prefixDefaultLanguage`, unlike all other code | use `isDefaultLanguage()`/`localePrefix()` |
+| D4 | `content-stage.mjs` `'Aucun contenu publié…'`; `pipeline.mjs` English fallbacks for FAQ titles | hard-coded, language-specific strings in code (`startsWith('fr')` switch) | `uiStrings[lang].emptyCollection` (fallback: default-language bundle); FAQ titles required in the bundle `seo` section (loader error otherwise) |
+| D5 | locale-prefix expression | sometimes `language`, sometimes `language.toLowerCase()` → inconsistent for codes like `pt-BR` | centralize in `routing.mjs`; **preserve** each call site's behavior via the `lowercase` option; log every site |
+| D6 | `source-stage.mjs` `validateMarkdownIcons()` | walks dot-directories and `README.md` while `scan()` skips them (e.g. `.x-agents/*.md` must carry an `icon` though never published) | mirror `scan()` filtering (skip names starting with `.`, `README.md`, `sidebar.json`, `guide.config.json`, collection category files) |
+| D7 | `pipeline.mjs` `Object.entries(seoLocales)` | generates FAQ pages for any key, even a language not in `languages` | loader error (P2.4) |
+| D8 | `pipeline.mjs` | dead imports (`stat`, `readdir`, …) and duplicated 40-name destructure | remove after extraction |
+| D9 | `source-stage.mjs` flags copy | `join(siteDirectory, 'flags', 'language', …)` hard-coded inside the VitePress app | `layout.flagsDir` |
+| D10 | `copyAsset` allowed roots | cannot copy assets referenced from collection Markdown | allowed roots = `src/guides`, `src/collections`, `resources` (done in P5.4) |
+
+---
+
+## 9. Design notes for planned features (DO NOT implement now)
+
+### 9.1 Collection category pages
+Target URLs `<base>/<collection>/<category>/<slug>`; collection definition gains `"categoryPages": true`. Impacts: `stagedPath()` for collections (category segment from frontmatter `category` or the `category.json` entry), `compile-collections.mjs` (emit `/<id>/<category>/index.md`), `collections.json` (`categoryLinks`), route-conflict check with `/<id>/<slug>`.
+
+### 9.2 Concepts (hover definitions)
+New concern `concepts` = registry entry + `concepts.site.config.json` (`{ "directory": "concepts" }`) + `src/concepts/<id>.<lang>.md`. A new stage `compile-concepts.mjs` emits `.vitepress/generated/concepts.json` (id → localized title/summary/link); a markdown-it plugin in the target wraps `[[concept-id]]` into the hover component (target-bound, under `resources/targets/vitepress/`). The SPMPST side only defines the source format and the model entry.
+
+### 9.3 Footer links
+Reserve in `links.site.config.json`:
+```json
+{ "socialLinks": [ … ],
+  "footerLinks": [ { "title": { "en": "Product", "fr": "Produit" },
+                     "items": [ { "label": { "en": "Get started", "fr": "Bien démarrer" }, "link": "/get-started/" } ] } ] }
+```
+Runtime path `footer.links` emitted into `site-content.json`; requires a front-end component → separate task. In this run: accept the key as optional in registry/schema, no output change when absent.
+
+### 9.4 Feluqa Rust SSG
+A second adapter consumes `model` (+ its own `.site/targets/feluqa.target.config.json`). Portability requirements recorded in SSG.md: sha256 content hashing for assets, canonical JSON, deterministic ordering (`sortNavigationEntries`), no dependency on JS regex semantics beyond the documented patterns.
+
+---
+
+## 10. `docs/SSG.md` — required specification (P6.1)
+
+Write in English, RFC 2119 keywords (MUST/SHOULD/MAY), SPMPST **v0.1 (draft)**. Derive every rule from the real code (`scripts/spmpst/**`, `scripts/preparation/**`); each normative rule ends with `Source: <file>#<function or section>`; anything not implemented is labelled **PLANNED**. Required outline:
+
+1. **Purpose and scope** — what SPMPST is, who consumes it (human authors, SSG adapters), what it is not.
+2. **Status and versioning** — v0.1; how breaking changes will be numbered.
+3. **Terminology** — tree root, guide, subguide, section, page, collection, category, locale, bundle, concern file, target, adapter, staged tree.
+4. **Layers** — the three layers of section 1.4 with a diagram.
+5. **Directory layout** — the fixed layout of section 3.1 and path rules of section 3.2.
+6. **Source file conventions**
+   - ordering prefixes (`NNN-`, removed by `cleanDir`/`cleanFile`),
+   - language suffix `name.<lang>.md` (`[a-z]{2,3}(-[A-Z]{2})?`; no suffix = default language),
+   - ignored entries (dot-names, `README.md`), metadata files (`sidebar.json`, `guide.config.json`, `category.json`),
+   - `index` pages and generated indexes.
+7. **Frontmatter** — required keys (`icon`, `sidebarTitle`), recommended keys (`title`, `description`), collection keys (`date`, `category`), pass-through rule (unknown keys are preserved for the target), generated keys (`requestedLanguage`, `contentLanguage`, `languageFallbackNotice`, `prev`, `next`, `search`, `collection`, `wordCount`, `readingTime`, `collectionIndex`).
+8. **Routing** — guide `uri` (`base`, `index`, `entry`), locale prefixing and `prefixDefaultLanguage`, route cleaning, no-slash aliases, collection routes, conflicts.
+9. **Languages and fallbacks** — language policy file, locale bundles, fallback pages and notice placeholders (`{requested}`, `{fallback}`), inline localized objects and their fallback order.
+10. **Collections** — `layout` (`article`|`doc`), `indexLayout` (`list`|`spotlight`), `category.json`, reading metrics (200 words/minute rule from `readingMetrics`), generated index pages.
+11. **Site configuration** — every concern file (keys, types, defaults, ownership table), locale bundle schema, public files, target files (opaque), ownership/validation behavior, error format.
+12. **Assets and resources** — content-hashed assets (`__docs-assets/<sha256><ext>`), allowed roots, icon library resolution (families `lucide`, `custom`, `heroicons`, `simple-icons`, name pattern, fallback), sidebar icon rule (`.svg` path vs name), flags, Mermaid config and diagram rendering (light + dark variants, automatic flowchart palette when no `classDef`), fonts.
+13. **Pre-SSG processing pipeline** — the ordered stages (section 5 / Phase 3 table), what each guarantees, inputs and outputs, determinism guarantees, incremental mode (`DOCS_PREPARE_INCREMENTAL`), locking (`flock`).
+14. **Output contract** — the staged portable Markdown tree and the generated data files; which are portable and which are target-specific.
+15. **Target adapters** — adapter responsibilities, the model/target split, the VitePress adapter (mapping table of section 4.3), plan for the Feluqa Rust SSG adapter.
+16. **Conformance** — how to check a tree (`docs:check`), how to check an implementation (snapshot comparison with canonical JSON), **PLANNED**: fixtures under a conformance directory.
+17. **Planned features** — section 9 (category pages, concepts, footer links).
+18. **Naming debt (candidates for v0.2)** — at least: `subguides` → `guides`, drop `subguides[].label`, `sidebarTitle` → neutral navigation title key, `topbar` → `header`, `uri.entry` meaning, `documentationNotices` → `notices`, VitePress-style frontmatter flags (`sidebar: false`, `aside: false`) → neutral layout keys.
+19. **Appendix A — VitePress-isms inventory** (P6.2).
+20. **Appendix B — Examples** — a minimal tree (one guide, two languages, one collection) with the exact files and the resulting staged tree.
+
+SSG.md lives at `docs/SSG.md` (outside `src/`), so it is not published by the pipeline and needs no `icon`/`sidebarTitle`.
+
+---
+
+## 11. Definition of Done and final report
+
+### 11.1 Definition of Done (all must be true)
+- [ ] Every task in the ledger is ticked.
+- [ ] `node scripts/dev/verify.mjs compare` → no non-allowed difference; `.refactor/allowed-output-diffs.json` contains only "path mention updated" entries.
+- [ ] `node scripts/dev/verify-config.mjs compare` passes (allow-list: `uiStrings` only, plus Appendix C path-valued keys before P5.9).
+- [ ] `npm run docs:check` exits 0 (also report the `--strict-i18n` result).
+- [ ] Production build succeeds; dev server starts and reloads on changes under `docs/.site/**` and `docs/src/**`.
+- [ ] `docs/vitepress-site` contains no `source-stage.mjs`, `content-stage.mjs`, `split-site-config.mjs`, `convert-paths.mjs`; `docs/guides`, `docs/collections` and `docs/src/guides/.config` no longer exist.
+- [ ] `find docs -maxdepth 2 -not -path '*/node_modules*' -not -path '*/.git/*'` matches section 3.1 (print it).
+- [ ] `grep -rniE "vitepress|vite|vue" docs/vitepress-site/scripts/spmpst` prints nothing.
+- [ ] `grep -rn "vitepress.site.config.json\|vitepress.config.json\|docs/guides\|\.config/components" /home/yassine/Projects/Rust/feluqa --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=target --exclude-dir=.refactor` prints nothing (or only justified lines).
+- [ ] `pipeline.mjs` ≤ 80 lines; no stage file > 300 lines (otherwise split and note it).
+- [ ] `docs/SSG.md` exists and satisfies section 10.
+- [ ] `git status` clean on the branch; all commits follow the convention.
+
+### 11.2 Commands to run last (paste outputs in the report)
+```
+node scripts/dev/verify.mjs compare
+node scripts/dev/verify-config.mjs compare
+npm run docs:check
+wc -l scripts/preparation/pipeline.mjs scripts/preparation/stages/*.mjs
+find docs -maxdepth 2 -not -path '*/node_modules*' -not -path '*/.git/*' | sort
+grep -rniE "vitepress|vite|vue" docs/vitepress-site/scripts/spmpst
+git log --oneline main..HEAD
+```
+
+### 11.3 Final report template (your last message)
+1. Ledger (all ticked) — paste `PROGRESS.md`.
+2. Outputs of 11.2.
+3. Defects D1…D10 with commit hashes; D2 outcome (keys removed/kept and why).
+4. Moves/deletions summary (counts) including P5.8 `replaced / kept` icons and P5.7 decisions (moved vs copied).
+5. `DECISIONS.md` and `BLOCKERS.md` contents.
+6. Published pages whose text changed (P5.6 allow-list) with a one-line reason each.
+7. Anything intentionally not done, with the reason.
+
+---
+
+## Appendix A — Progress ledger (copy to `.refactor/PROGRESS.md`)
+
+```
+# SPMPST refactor ledger  (tick only after Verify passes)
+
+## Phase 0 — Safety net
+- [ ] P0.1 Branch + read unseen files + notes (+ external reference grep)
+- [ ] P0.2 verify.mjs (record/compare, allow-list)
+- [ ] P0.3 baseline-config recorded
+- [ ] P0.4 determinism check + page count
+- [ ] P0.5 ledger + .gitignore
+
+## Phase 1 — Agnostic loader + concern split
+- [ ] P1.1 layout.mjs (legacy mode) wired into source-stage
+- [ ] P1.2 loader skeleton (agnostic)
+- [ ] P1.3 assemble.mjs + runtime.mjs
+- [ ] P1.4 one-time splitter run (concern files + locales + public + target)
+- [ ] P1.5 verify-config compare green
+- [ ] P1.6 pipeline reads via loader
+- [ ] P1.7 VitePress adapter reads via loader
+- [ ] P1.8 dev watch of docs/.site/**
+- [ ] P1.9 full compare green
+- [ ] P1.10 legacy file + splitter removed, references updated
+- [ ] P1.11 public files from .site/public
+
+## Phase 2 — Validation
+- [ ] P2.1 validators extracted (verbatim; agnostic vs target)
+- [ ] P2.2 aggregated errors
+- [ ] P2.3 unknown-key / ownership detection
+- [ ] P2.4 cross-file + i18n checks (+ --strict-i18n)
+- [ ] P2.5 docs:check
+
+## Phase 3 — Stages
+- [ ] P3.1 context.mjs
+- [ ] P3.2 discover-sources
+- [ ] P3.3 compile-guides
+- [ ] P3.4 compile-collections
+- [ ] P3.5 emit-theme-adapters
+- [ ] P3.6 transform-markdown
+- [ ] P3.7 language-fallbacks
+- [ ] P3.8 seo-pages
+- [ ] P3.9 directory-indexes
+- [ ] P3.10 pager
+- [ ] P3.11 cleanup
+- [ ] P3.12 pipeline.mjs orchestrator (<= 80 lines)
+- [ ] P3.13 old stage files deleted
+
+## Phase 4 — Helpers + defects
+- [ ] P4.1 fs-utils
+- [ ] P4.2 frontmatter
+- [ ] P4.3 routing (localePrefix)
+- [ ] P4.4 icons + assets helpers
+- [ ] P4.5 D1 site.name
+- [ ] P4.5 D2 unused keys (decision recorded)
+- [ ] P4.5 D3 seo default locale
+- [ ] P4.5 D4 hard-coded strings -> bundle
+- [ ] P4.5 D5 prefix casing (per call site)
+- [ ] P4.5 D6 validateMarkdownIcons scope
+- [ ] P4.5 D8 dead imports
+- [ ] P4.5 D9 flags dir via layout
+
+## Phase 5 — SPMPST layout
+- [ ] P5.1 junk tree + notes consolidated
+- [ ] P5.2 path-reference inventory
+- [ ] P5.3 physical move (git mv)
+- [ ] P5.4 layout flipped + code adapted (+ guide.config.json rename, D10)
+- [ ] P5.5 config values converted (Appendix C)
+- [ ] P5.6 references fixed + compare clean (allow-list only)
+- [ ] P5.7 brand assets + fonts (guarded)
+- [ ] P5.8 sidebar icons by name + dedupe
+- [ ] P5.9 transitional code removed + baseline-config-v1
+- [ ] P5.10 .site/README.md
+
+## Phase 6 — SSG.md + ergonomics
+- [ ] P6.1 docs/SSG.md (section 10)
+- [ ] P6.2 VitePress-isms inventory in SSG.md
+- [ ] P6.3 JSON Schemas + $schema keys
+- [ ] P6.4 docs:new (locale, guide, collection, section)
+- [ ] P6.5 npm scripts
+- [ ] P6.6 contributor notes
+
+## Final
+- [ ] Definition of Done (section 11.1) all green
+- [ ] Final report posted (section 11.3)
+```
+
+## Appendix B — Reminders for the common failure modes
+
+- You *will* want to stop after Phase 1 because "the config is split". **Phase 1 is one seventh of the job.** Continue.
+- You *will* be tempted to "improve" code while moving it. Don't. Verbatim first, `compare` green, then defect fixes in their own commits.
+- If `compare` fails, **never** edit the baseline to make it pass. Find the cause. The only legitimate allowances are the documented allow-lists.
+- Hand-copying JSON is forbidden; use the splitter / converter / dedupe scripts so no value is lost.
+- Phase 5 P5.3–P5.6 is one unit: the pipeline is broken in the middle on purpose; do not stop there.
+- If a task seems impossible without changing the front end, log it in `BLOCKERS.md` and move on.
+- `docs/SSG.md` is a deliverable, not a nice-to-have: write it from the code, not from memory.
+
+## Appendix C — Path conversion table (Phase 5, applied by `convert-paths.mjs`)
+
+| File → key | Phases 1–4 value (base: `docs/guides`) | Phase 5 value (base: tree root `docs/`) |
+|---|---|---|
+| `definitions` → `guidesPath` | `"."` | removed (fixed: `src/guides`) |
+| `definitions` → `indexPath` | `"index.en.md"` | removed (derived: `index.<fallbackLanguage>.md` in `src/guides`) |
+| `definitions` → `project.iconLibrary` | `"../vitepress-site/icons"` | removed (fixed: `resources/icons`) |
+| `definitions` → `project.mermaidConfig` | `".config/vitepress/mermaid.json"` | removed (fixed: `resources/diagrams/mermaid.json`) |
+| `definitions` → `project.iconFallback` | `"circle-help"` | hoisted to top-level `iconFallback` |
+| `target` → `project.components` | `".config/components"` | removed (fixed: `resources/targets/vitepress/components`) |
+| `target` → `project.hooks` | `".config/hooks"` | removed (fixed: `resources/targets/vitepress/hooks`) |
+| `target` → `outputDir` | `"../build"` | `"build"` |
+| `target` → `styles[0]` | `".config/components/home/docs-home.css"` | `"resources/targets/vitepress/components/home/docs-home.css"` |
+| `target` → `styles[1]` | `".config/components/components.css"` | `"resources/targets/vitepress/components/components.css"` |
+| `appearance` → `fonts.body.src` | `".config/art/fonts/manrope-latin.woff2"` | `"resources/assets/fonts/manrope-latin.woff2"` |
+| `appearance` → `fonts.heading.src` | `".config/components/home/assets/fonts/DM-Sans-Variable.ttf"` | `"resources/assets/fonts/DM-Sans-Variable.ttf"` (P5.7) or `"resources/targets/vitepress/components/home/assets/fonts/DM-Sans-Variable.ttf"` if left in place |
+| `appearance` → `logo.light`, `logo.dark` | `"feluqa.rs/.art/feluqa.svg"` | `"resources/assets/brand/feluqa.svg"` (P5.7; else `"src/guides/feluqa.rs/.art/feluqa.svg"`) |
+| `appearance` → `ogImages[0]` | `"feluqa.rs/.art/og-feluqa.png"` | `"resources/assets/brand/og-feluqa.png"` (P5.7; else `"src/guides/feluqa.rs/.art/og-feluqa.png"`) |
+| `collections` → `[articles].path` | `"../collections/articles"` | removed (`dir` defaults to `id`) |
+| `guide.config.json` (per guide) | file `vitepress.config.json`; optional `theme` key | file `guide.config.json`; `theme` → `targets.vitepress.theme` |
+
+Everything else (content, `sidebar.json`, `category.json`, per-guide relative paths such as `favicon`) keeps its value.
