@@ -43,21 +43,12 @@ layout: home
     lead="Build product pages from small, reusable view templates. Feluqa compiles `.view.rs` files into the application and keeps data and rendering responsibilities explicit."
     detail="The view compiler is implemented. Shared UI contracts and a complete accessible component catalogue are still being integrated."
     code-title="resources/views/catalog/product-card.view.rs"
-    :code-snippet='`@rs
-let name = product.name();
-let price = product.formatted_price();
-@endrs
-<article class="product-card">
-  <h2>{{ name }}</h2>
-  <p>{{ price }}</p>
-</article>`'
+    :code-lines='["@rs", "let name = product.name();", "let price = product.formatted_price();", "@endrs", "<article class=\"product-card\">", "  <h2>{{ name }}</h2>", "  <p>{{ price }}</p>", "</article>"]'
     markup-title="Keep the frontend independent"
     markup-lead="Feluqa is headless-first: application contracts and services do not depend on a UI framework."
     markup-detail="Feluqa is meant to work with React or any frontend framework. Vue and plain HTML are also intended consumers; complete frontend integrations remain in progress."
     markup-code-title="resources/views/catalog/index.view.rs"
-    :markup-code-snippet='`@foreach (product in products)
-  @include("catalog::product-card", { product })
-@endforeach`'
+    :markup-code-lines='["@foreach (product in products)", "  @include(\"catalog::product-card\", product = product)", "@endforeach"]'
     :content-replacements='{
       "Video.js": "resources/views/catalog/product-card.view.rs",
       "VideoList.js": "resources/views/catalog/index.view.rs",
@@ -77,14 +68,7 @@ let price = product.formatted_price();
     preview-title="Live product search"
     preview-subtitle="Search a catalog through a typed action"
     code-title="crates/catalog/src/search.rs"
-    :code-snippet='`#[derive(Debug)]
-pub struct ProductSearch {
-    pub query: String,
-}
-
-pub fn matches_query(name: &str, query: &str) -> bool {
-    name.to_lowercase().contains(&query.to_lowercase())
-}`'
+    :code-lines='["#[derive(Debug)]", "pub struct ProductSearch {", "    pub query: String,", "}", "", "pub fn matches_query(name: &str, query: &str) -> bool {", "    name.to_lowercase().contains(&query.to_lowercase())", "}"]'
     cta-label="Explore panels and Live"
     cta-href="/get-started/frontend/panels"
     cta-icon="code"
@@ -105,9 +89,7 @@ pub fn matches_query(name: &str, query: &str) -> bool {
     detail="Application composition is selected in `feluqa.toml` and compiled statically today. Dynamic module installation, complete runtime shells, and standalone generated-app builds remain unfinished."
     demo-label="Feluqa showcase"
     code-title="feluqa.toml"
-    :code-snippet='`[app]
-name = "Bookstore"
-profile = "web"`'
+    :code-lines='["[app]", "name = \"Bookstore\"", "profile = \"web\""]'
     cta-label="Read the architecture"
     cta-href="/internals/"
     cta-icon="framework"

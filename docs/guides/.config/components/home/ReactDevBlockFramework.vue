@@ -72,7 +72,7 @@ type ReactDevText = {
   lead?: string
   detail?: string
   demoLabel?: string
-  codeSnippet?: string
+  codeLines?: string[]
   codeTitle?: string
   contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
@@ -213,7 +213,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
   if (text.demoLabel !== undefined) replaceTextValue(tree, 'React Conf', text.demoLabel)
-  if (text.codeSnippet !== undefined) replaceCodeSnippet(tree, text.codeSnippet)
+  if (text.codeLines !== undefined) replaceCodeSnippet(tree, text.codeLines.join('\n'))
   if (text.codeTitle !== undefined) replaceElementText(tree, 'h3', text.codeTitle)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
@@ -225,7 +225,7 @@ export default defineComponent({
     lead: String,
     detail: String,
     demoLabel: { type: String, default: 'React Conf' },
-    codeSnippet: String,
+    codeLines: Array as PropType<string[]>,
     codeTitle: String,
     contentReplacements: Object as PropType<Record<string, string>>,
     ctaLabel: { type: String, default: 'Get started with a framework' },
@@ -235,7 +235,7 @@ export default defineComponent({
   setup(props) {
     return () => renderReactDevBlock(framework, {
       title: props.title, lead: props.lead, detail: props.detail, demoLabel: props.demoLabel,
-      codeSnippet: props.codeSnippet, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements,
+      codeLines: props.codeLines, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements,
       actions: [{ sourceLabel: 'Get started with a framework', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'cta' }],
     })
   }

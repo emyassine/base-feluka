@@ -25,7 +25,7 @@ type ReactDevText = {
   title?: string
   lead?: string
   detail?: string
-  codeSnippet?: string
+  codeLines?: string[]
   codeTitle?: string
   contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
@@ -159,7 +159,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
-  if (text.codeSnippet !== undefined) replaceCodeSnippet(tree, text.codeSnippet)
+  if (text.codeLines !== undefined) replaceCodeSnippet(tree, text.codeLines.join('\n'))
   if (text.codeTitle !== undefined) replaceElementText(tree, 'h3', text.codeTitle)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
@@ -173,16 +173,16 @@ export default defineComponent({
     markupTitle: { type: String, default: 'Write components with code and markup' },
     markupLead: String,
     markupDetail: String,
-    codeSnippet: String,
+    codeLines: Array as PropType<string[]>,
     codeTitle: String,
-    markupCodeSnippet: String,
+    markupCodeLines: Array as PropType<string[]>,
     markupCodeTitle: String,
     contentReplacements: Object as PropType<Record<string, string>>,
   },
   setup(props) {
     return () => h(Fragment, null, [
-      renderReactDevBlock(components, { title: props.title, lead: props.lead, detail: props.detail, codeSnippet: props.codeSnippet, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements }),
-      renderReactDevBlock(markup, { title: props.markupTitle, lead: props.markupLead, detail: props.markupDetail, codeSnippet: props.markupCodeSnippet, codeTitle: props.markupCodeTitle, contentReplacements: props.contentReplacements }),
+      renderReactDevBlock(components, { title: props.title, lead: props.lead, detail: props.detail, codeLines: props.codeLines, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements }),
+      renderReactDevBlock(markup, { title: props.markupTitle, lead: props.markupLead, detail: props.markupDetail, codeLines: props.markupCodeLines, codeTitle: props.markupCodeTitle, contentReplacements: props.contentReplacements }),
     ])
   }
 })

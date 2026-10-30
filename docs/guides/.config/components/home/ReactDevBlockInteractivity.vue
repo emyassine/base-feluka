@@ -27,7 +27,7 @@ type ReactDevText = {
   detail?: string
   previewTitle?: string
   previewSubtitle?: string
-  codeSnippet?: string
+  codeLines?: string[]
   codeTitle?: string
   contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
@@ -171,7 +171,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
-  if (text.codeSnippet !== undefined) replaceCodeSnippet(tree, text.codeSnippet)
+  if (text.codeLines !== undefined) replaceCodeSnippet(tree, text.codeLines.join('\n'))
   if (text.codeTitle !== undefined) replaceElementText(tree, 'h3', text.codeTitle)
   if (text.previewTitle !== undefined) replaceElementText(tree, 'h1', text.previewTitle)
   if (text.previewSubtitle !== undefined) replaceElementTextAt(tree, 'p', 1, text.previewSubtitle)
@@ -186,7 +186,7 @@ export default defineComponent({
     detail: String,
     previewTitle: { type: String, default: 'React Videos' },
     previewSubtitle: String,
-    codeSnippet: String,
+    codeLines: Array as PropType<string[]>,
     codeTitle: String,
     contentReplacements: Object as PropType<Record<string, string>>,
     ctaLabel: { type: String, default: 'Add React to your page' },
@@ -196,7 +196,7 @@ export default defineComponent({
   setup(props) {
     return () => renderReactDevBlock(interactivity, {
       title: props.title, lead: props.lead, detail: props.detail, previewTitle: props.previewTitle, previewSubtitle: props.previewSubtitle,
-      codeSnippet: props.codeSnippet, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements,
+      codeLines: props.codeLines, codeTitle: props.codeTitle, contentReplacements: props.contentReplacements,
       actions: [{ sourceLabel: 'Add React to your page', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'cta' }],
     })
   }
