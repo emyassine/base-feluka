@@ -4,7 +4,9 @@
     "menuLabel": "Change language",
     "fallbackNotice": "This page is not available in {requested}. Showing the {fallback} version."
   },
-  "ui": { "emptyCollection": "No content published yet." },
+  "ui": {
+    "emptyCollection": "No content published yet."
+  },
   "search": {
     "buttonText": "Search",
     "buttonAriaLabel": "Search this site",
@@ -20,7 +22,9 @@
     "closeText": "Close",
     "closeKeyAriaLabel": "Escape"
   },
-  "outline": { "label": "On this page" },
+  "outline": {
+    "label": "On this page"
+  },
   "footer": {
     "message": "Get in touch at <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>.",
     "copyright": "Numerimondes SARL AU"
@@ -35,7 +39,7 @@
   "seo": {
     "pageTitle": "Numerimondes",
     "pageNavTitle": "Numerimondes",
-    "description": "Numerimondes is the company behind Feluqa, a software platform under active development."
+    "description": "Sovereign enterprise technology. Built to last. Casablanca."
   },
   "$schema": "../schema/locale.schema.json"
 }

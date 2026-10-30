@@ -1,6 +1,33 @@
 {
   "items": [
-    { "guide": "company" }
+    {
+      "guide": "about",
+      "icon": "building-2"
+    },
+    {
+      "guide": "product-docs",
+      "icon": "book-open"
+    },
+    {
+      "guide": "education",
+      "icon": "graduation-cap"
+    },
+    {
+      "guide": "research",
+      "icon": "flask-conical"
+    },
+    {
+      "guide": "community",
+      "icon": "users"
+    },
+    {
+      "guide": "partnerships",
+      "icon": "handshake"
+    },
+    {
+      "collection": "concepts",
+      "icon": "lightbulb"
+    }
   ],
   "theme": "system",
   "$schema": "./schema/topbar.schema.json"

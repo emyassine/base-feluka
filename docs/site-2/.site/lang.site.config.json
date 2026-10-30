@@ -1,6 +1,11 @@
 {
-  "languages": ["en", "fr"],
-  "fallbackLanguage": "en",
+  "languages": [
+    "fr",
+    "en",
+    "ar",
+    "es"
+  ],
+  "fallbackLanguage": "fr",
   "selector": {
     "showSelector": true,
     "prefixDefaultLanguage": false,

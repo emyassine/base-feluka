@@ -4,38 +4,42 @@
     "menuLabel": "Changer de langue",
     "fallbackNotice": "Cette page n’est pas disponible en {requested}. La version {fallback} est affichée."
   },
-  "ui": { "emptyCollection": "Aucun contenu publié pour le moment." },
+  "ui": {
+    "emptyCollection": "No content published yet."
+  },
   "search": {
     "buttonText": "Rechercher",
-    "buttonAriaLabel": "Rechercher sur ce site",
-    "displayDetails": "Afficher les détails",
-    "resetButtonTitle": "Réinitialiser",
-    "backButtonTitle": "Fermer la recherche",
+    "buttonAriaLabel": "Rechercher this site",
+    "displayDetails": "Display details",
+    "resetButtonTitle": "Reset search",
+    "backButtonTitle": "Close search",
     "noResultsText": "Aucun résultat",
-    "selectText": "Sélectionner",
-    "selectKeyAriaLabel": "Entrée",
-    "navigateText": "Naviguer",
-    "navigateUpKeyAriaLabel": "Flèche vers le haut",
-    "navigateDownKeyAriaLabel": "Flèche vers le bas",
-    "closeText": "Fermer",
-    "closeKeyAriaLabel": "Échap"
+    "selectText": "Select",
+    "selectKeyAriaLabel": "Enter",
+    "navigateText": "Navigate",
+    "navigateUpKeyAriaLabel": "Arrow up",
+    "navigateDownKeyAriaLabel": "Arrow down",
+    "closeText": "Close",
+    "closeKeyAriaLabel": "Escape"
   },
-  "outline": { "label": "Sur cette page" },
+  "outline": {
+    "label": "On this page"
+  },
   "footer": {
     "message": "Contactez-nous à <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>.",
     "copyright": "Numerimondes SARL AU"
   },
   "notices": {
-    "exploringTitle": "En cours",
+    "exploringTitle": "In progress",
     "exploring": "Ces informations sont en préparation et peuvent évoluer.",
-    "validatedTitle": "Vérifié",
+    "validatedTitle": "Verified",
     "validated": "Ces informations ont été vérifiées.",
-    "fallbackTitle": "Disponibilité linguistique"
+    "fallbackTitle": "Language availability"
   },
   "seo": {
     "pageTitle": "Numerimondes",
     "pageNavTitle": "Numerimondes",
-    "description": "Numerimondes est l’entreprise à l’origine de Feluqa, une plateforme logicielle en cours de développement."
+    "description": "Technologie d’entreprise souveraine. Conçue pour durer. Casablanca."
   },
   "$schema": "../schema/locale.schema.json"
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Dopaminergic closure",
+    "family": "Neurobiology & Cognitive Mechanics",
+    "summary": "The neural settling that occurs when a predicted work outcome is actually completed — the open loop closes.",
+    "url": "/concepts/dopaminergic-closure"
+  },
+  {
+    "title": "Kardashev Scale",
+    "family": "Physics & Technological Paradigms",
+    "summary": "A ladder of civilization technological level based on how much energy a society can harness and direct.",
+    "url": "/concepts/kardashev-scale"
+  },
+  {
+    "title": "Labour-market signals",
+    "family": "Economics & Labour Markets",
+    "summary": "Observable indicators — vacancies, wages, time-to-hire — used as noisy instruments on skill demand.",
+    "url": "/concepts/labour-market-signals"
+  },
+  {
+    "title": "Skill obsolescence",
+    "family": "Economics & Labour Markets",
+    "summary": "The decay rate of a skill’s market value under automation, platform change, and institutional lag.",
+    "url": "/concepts/skill-obsolescence"
+  },
+  {
+    "title": "Task completion",
+    "family": "Neurobiology & Cognitive Mechanics",
+    "summary": "An explicit, verifiable end state for a unit of work — not pause, handoff, or “almost”.",
+    "url": "/concepts/task-completion"
+  },
+  {
+    "title": "Technological acceleration",
+    "family": "Physics & Technological Paradigms",
+    "summary": "The compounding rate at which tools, energy systems, and knowledge close the loop from discovery to deployment.",
+    "url": "/concepts/technological-acceleration"
+  }
+]

@@ -2,19 +2,36 @@
   "outputDir": "../../docs-output/numerimondes",
   "project": {
     "components": "components",
-    "hooks": "hooks"
+    "hooks": "hooks",
+    "iconLibrary": "icons"
   },
-  "styles": [],
-  "theme": { "slots": {} },
+  "styles": [
+    "components/numerimondes.css"
+  ],
+  "theme": {
+    "slots": {}
+  },
   "markdown": {
     "lineNumbers": true,
-    "image": { "lazyLoad": true }
+    "image": {
+      "lazyLoad": true
+    }
   },
   "search": {
     "provider": "local",
-    "miniSearch": {},
+    "miniSearch": {
+      "fuzzy": 0.2,
+      "prefix": true,
+      "boost": {
+        "title": 4,
+        "text": 2,
+        "titles": 1
+      }
+    },
     "excludePaths": []
   },
-  "outline": { "level": "deep" },
+  "outline": {
+    "level": "deep"
+  },
   "$schema": "../schema/vitepress-target.schema.json"
 }

@@ -1,0 +1,343 @@
+/**
+ * Numerimondes site CSS (file).
+ * Injected via MdSiteGeneratorPlugin HEAD render hook when listed in
+ * config numerimondes-website.assets.css as "resources/css/site.css".
+ * Module-relative .css files are inlined as <style> (no public publish step).
+ *
+ * Tailwind utilities for MD body classes (flex, gap-*, …) come from the host
+ * Vite theme (`resources/css/app.css` via panel ->viteTheme). Do not re-import
+ * tailwindcss here — site.css is chrome + .nm-* only.
+ */
+
+/*
+ * Content-only type scale — NOT on html (sidebar would grow too).
+ * Default preset = L (1.125 × SITE_FONT_SCALE 1.01). Matches site-xp defaults.
+ * Filament/Tailwind use rem → scale via zoom on .fi-main only.
+ */
+.fi-main {
+    zoom: 1.13625;
+}
+
+/* Page shell tweaks scoped to this site
+reserved for site-wide chrome beyond MD prose / footer */
+
+h1, h2, h3, h4 {
+    font-weight:unset !important;
+}
+
+    @keyframes nm-shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+    }
+
+    .nm-eyebrow {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary-500);
+    margin-bottom: 0.75rem;
+    }
+
+    .nm-headline {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--gray-900);
+    margin: 0 0 1.75rem;
+    }
+    .dark .nm-headline { color: var(--gray-50); }
+
+    .nm-headline-accent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.12em;
+    font-weight: unset !important;
+    white-space: nowrap;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-300), var(--primary-500));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: nm-shimmer 4s linear infinite;
+    }
+
+    /*
+     * Stroke/fill icons can't use background-clip:text (that only paints text glyphs).
+     * Paint the glyph itself via currentColor — no box behind the icon.
+     */
+    .nm-headline-accent :is(svg, .fi-icon) {
+    width: 0.85em !important;
+    height: 0.85em !important;
+    margin: 0 !important;
+    flex-shrink: 0;
+    display: block;
+    -webkit-text-fill-color: initial;
+    color: var(--primary-400);
+    animation: nm-headline-accent-icon 4s linear infinite;
+    }
+
+    .nm-headline-accent :is(svg, .fi-icon) [stroke] {
+    stroke: currentColor !important;
+    }
+
+    .nm-headline-accent :is(svg, .fi-icon) [fill]:not([fill="none"]) {
+    fill: currentColor !important;
+    }
+
+    @keyframes nm-headline-accent-icon {
+    0%, 100% { color: var(--primary-500); }
+    50%       { color: var(--primary-300); }
+    }
+
+    .nm-video {
+    position: relative;
+    border-radius: var(--radius-lg, 0.75rem);
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background: var(--gray-950);
+    margin: 2rem 0 0.5rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    }
+    .dark .nm-video { box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+    .nm-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .nm-video__thumb {
+    position: absolute; inset: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #08120a 0%, #0e1108 60%, #14100a 100%);
+    }
+    .nm-video__mark {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.05; pointer-events: none;
+    }
+    .nm-play {
+    position: relative; z-index: 2;
+    width: 3.5rem; height: 3.5rem; border-radius: 50%;
+    background: var(--primary-500);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--primary-500) 40%, transparent);
+    }
+    .nm-play:hover { transform: scale(1.07); background: var(--primary-400); }
+    .nm-play__icon {
+    width: 0; height: 0;
+    border-style: solid; border-width: 8px 0 8px 14px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 3px;
+    }
+    .nm-video__caption {
+    font-size: 0.72rem; color: var(--gray-400);
+    margin: 0.5rem 0 0; letter-spacing: 0.03em;
+    }
+
+    .nm-poles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+    }
+    @media (min-width: 768px) {
+    .nm-poles { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+    .nm-poles { grid-template-columns: 1fr; }
+    }
+
+    .nm-pole {
+    border-radius: var(--radius-lg, 0.75rem);
+    border: 1px solid var(--gray-200);
+    background: var(--gray-50);
+    padding: 1.1rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .nm-pole:hover {
+    border-color: var(--primary-300);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .dark .nm-pole {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+    }
+    .dark .nm-pole:hover { border-color: var(--primary-700); }
+
+    .nm-pole__title {
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--gray-900); margin: 0 0 0.5rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    }
+    .dark .nm-pole__title { color: var(--gray-100); }
+    .nm-pole__title svg {
+    width: 1rem; height: 1rem;
+    color: var(--primary-500); flex-shrink: 0;
+    }
+    .nm-pole__list {
+    list-style: none; padding: 0; margin: 0;
+    }
+    .nm-pole__item {
+    font-size: 0.76rem; color: var(--gray-500); line-height: 1.55;
+    padding: 0.15rem 0;
+    display: flex; align-items: baseline; gap: 0.4rem;
+    }
+    .nm-pole__item::before {
+    content: '';
+    display: inline-block; flex-shrink: 0;
+    width: 3px; height: 3px; border-radius: 50%;
+    background: var(--primary-400);
+    margin-top: 0.45rem;
+    }
+
+    .nm-founder {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: var(--radius-lg, 0.75rem);
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    margin-top: 1rem;
+    }
+    .dark .nm-founder { border-color: var(--gray-700); }
+    @media (max-width: 600px) {
+    .nm-founder { grid-template-columns: 1fr; }
+    }
+
+    .nm-founder__img {
+    background: linear-gradient(160deg, var(--gray-800) 0%, var(--gray-950) 100%);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 280px;
+    position: relative; overflow: hidden;
+    text-decoration: none;
+    }
+    .nm-founder__img-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1rem 1.1rem 0.85rem;
+    background: linear-gradient(0deg, rgba(0,0,0,0.65) 0%, transparent 100%);
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
+    display: flex; align-items: center; gap: 0.35rem;
+    }
+    .nm-founder__img-label svg {
+    width: 0.75rem; height: 0.75rem;
+    }
+    .nm-founder__monogram {
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.07);
+    letter-spacing: -0.05em;
+    user-select: none;
+    line-height: 1;
+    }
+
+    .nm-founder__body {
+    padding: 1.5rem;
+    background: var(--gray-50);
+    display: flex; flex-direction: column; justify-content: center;
+    }
+    .dark .nm-founder__body { background: var(--gray-800); }
+
+    .nm-founder__name {
+    font-size: 1.05rem; font-weight: 800;
+    letter-spacing: -0.02em; color: var(--gray-900);
+    margin: 0 0 0.2rem;
+    }
+    .dark .nm-founder__name { color: var(--gray-100); }
+    .nm-founder__role {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--primary-500);
+    margin: 0 0 1rem;
+    }
+    .nm-founder__bio {
+    font-size: 0.84rem; color: var(--gray-600); line-height: 1.75;
+    margin: 0 0 1rem;
+    }
+    .dark .nm-founder__bio { color: var(--gray-400); }
+    .nm-founder__quote {
+    border-left: 2px solid var(--primary-500);
+    padding-left: 0.875rem;
+    font-size: 0.82rem; font-style: italic;
+    color: var(--gray-500); line-height: 1.75; margin: 0;
+    }
+    .dark .nm-founder__quote { color: var(--gray-400); }
+
+    .nm-cta-wrap .fi-empty-state { padding: 2.5rem; }
+
+/* ── Topbar site search (→ /solutions/search) ─────────────────────────── */
+.nm-topbar-search {
+    display: flex;
+    align-items: center;
+    margin-inline-end: 0.5rem;
+}
+.nm-topbar-search__field {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: min(14rem, 42vw);
+    height: 2.25rem;
+    padding: 0 0.45rem 0 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--gray-500) 28%, transparent);
+    background: color-mix(in srgb, var(--gray-500) 6%, transparent);
+}
+@media (min-width: 1024px) {
+    .nm-topbar-search__field {
+        width: 15rem;
+    }
+}
+.dark .nm-topbar-search__field {
+    border-color: color-mix(in srgb, var(--gray-400) 22%, transparent);
+    background: color-mix(in srgb, var(--gray-900) 40%, transparent);
+}
+.nm-topbar-search--active .nm-topbar-search__field,
+.nm-topbar-search__field:focus-within {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-500) 35%, transparent);
+}
+.nm-topbar-search__icon {
+    flex-shrink: 0;
+    opacity: 0.55;
+}
+.nm-topbar-search__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    outline: none;
+    font-size: 0.8125rem;
+    color: inherit;
+    padding: 0;
+}
+.nm-topbar-search__input::placeholder {
+    opacity: 0.55;
+}
+.nm-topbar-search__filters {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.35rem;
+    color: inherit;
+    opacity: 0.55;
+    text-decoration: none;
+}
+.nm-topbar-search__filters:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--gray-500) 12%, transparent);
+}
+.nm-topbar-search .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Live site map → <x-webkernel::site.toc-book /> (styles live in the component) */

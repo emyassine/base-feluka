@@ -1,26 +1,26 @@
 ---
-sidebarTitle: "Accueil"
-icon: "building-2"
-description: "Numerimondes est l’entreprise à l’origine de Feluqa, une plateforme logicielle en cours de développement."
-layout: home
-hero:
-  name: Numerimondes
-  text: L’entreprise derrière Feluqa
-  tagline: Une entreprise indépendante de logiciels qui accompagne une plateforme en développement.
-  actions:
-    - theme: brand
-      text: À propos de Numerimondes
-      link: /company/
-    - theme: alt
-      text: Contact
-      link: mailto:contact@numerimondes.com
-features:
-  - title: Feluqa
-    details: Numerimondes possède et accompagne la plateforme logicielle Feluqa.
-  - title: Entreprise
-    details: Numerimondes SARL AU.
-  - title: Contact
-    details: Écrivez à contact@numerimondes.com.
+title: "Technologie souveraine pour les bâtisseurs"
+sidebarTitle: "Technologie souveraine pour les bâtisseurs"
+icon: "home"
+description: "Numerimondes — Webkernel, services, Services, Éducation, Produits, Recherche — Webkernel et plus. Casablanca."
 ---
 
-Numerimondes est une entreprise indépendante de logiciels. Ce site présente l’entreprise et ses produits.
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    
+    <span class="nm-eyebrow">Innovation technologique de classe mondiale</span>
+    <h1 class="nm-headline">Bienvenue chez&nbsp;
+        <a href="/about">
+            <span class="nm-headline-accent" x-tooltip="{ content: 'Cliquez pour en savoir plus sur Numerimondes', placement: 'bottom' }" style="display: inline-flex;">
+                Numerimondes&nbsp;
+                
+            </span>
+        </a>
+    </h1>
+    <p style="color: #888; max-width: 600px; margin: 0 auto; font-size: 15px;">
+        Conception et gestion d'infrastructures numériques souveraines de bout en bout : du conseil à l'ingénierie sur mesure, de l'automatisation des opérations à l'IA privée, pour garantir l'indépendance totale de la chaîne technologique.
+    </p>
+    
+</div>
+
+
+

@@ -1,14 +1,100 @@
 {
   "site": {
     "name": "Numerimondes",
-    "description": "Numerimondes is the company behind Feluqa, a software platform under active development."
+    "description": "Sovereign enterprise technology. Built to last. Casablanca."
   },
   "subguides": [
     {
-      "path": "company",
-      "label": "Company",
-      "labels": { "en": "Company", "fr": "Entreprise" },
-      "uri": { "base": "/company/", "index": "company/" }
+      "path": "commercial",
+      "label": "Commercial",
+      "labels": {
+        "en": "Commercial",
+        "fr": "Commercial",
+        "es": "Commercial",
+        "ar": "Commercial"
+      },
+      "uri": {
+        "base": "/",
+        "index": "commercial/"
+      }
+    },
+    {
+      "path": "about",
+      "label": "About",
+      "labels": {
+        "en": "About",
+        "fr": "À propos",
+        "es": "Acerca de",
+        "ar": "About"
+      },
+      "uri": {
+        "base": "/about/"
+      }
+    },
+    {
+      "path": "product-docs",
+      "label": "Documentation",
+      "labels": {
+        "en": "Documentation",
+        "fr": "Documentation",
+        "es": "Documentación",
+        "ar": "Documentation"
+      },
+      "uri": {
+        "base": "/docs/"
+      }
+    },
+    {
+      "path": "education",
+      "label": "Education",
+      "labels": {
+        "en": "Education",
+        "fr": "Éducation",
+        "es": "Educación",
+        "ar": "Education"
+      },
+      "uri": {
+        "base": "/education/"
+      }
+    },
+    {
+      "path": "research",
+      "label": "Research",
+      "labels": {
+        "en": "Research",
+        "fr": "Recherche",
+        "es": "Investigación",
+        "ar": "Research"
+      },
+      "uri": {
+        "base": "/research/"
+      }
+    },
+    {
+      "path": "community",
+      "label": "Community",
+      "labels": {
+        "en": "Community",
+        "fr": "Communauté",
+        "es": "Comunidad",
+        "ar": "Community"
+      },
+      "uri": {
+        "base": "/community/"
+      }
+    },
+    {
+      "path": "partnerships",
+      "label": "Partnerships",
+      "labels": {
+        "en": "Partnerships",
+        "fr": "Partenariats",
+        "es": "Alianzas",
+        "ar": "Partnerships"
+      },
+      "uri": {
+        "base": "/partnerships/"
+      }
     }
   ],
   "iconFallback": "circle-help",

@@ -1,4 +1,23 @@
 {
-  "collections": [],
+  "collections": [
+    {
+      "id": "concepts",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": {
+        "en": "Concepts",
+        "fr": "Concepts",
+        "ar": "مفاهيم",
+        "es": "Conceptos"
+      },
+      "description": {
+        "en": "Atomic definitions used across research publications.",
+        "fr": "Définitions atomiques utilisées dans les publications de recherche.",
+        "ar": "تعريفات أساسية مستخدمة في المنشورات البحثية.",
+        "es": "Definiciones atómicas utilizadas en publicaciones de investigación."
+      },
+      "dir": "concepts"
+    }
+  ],
   "$schema": "./schema/collections.schema.json"
 }
