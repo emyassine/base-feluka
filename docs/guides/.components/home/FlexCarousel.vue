@@ -1543,7 +1543,7 @@ watch(modalOpen, (open) => {
           class="pointer-events-none absolute inset-0 z-10"
           :style="{ '--flex-card-half': `${Math.min(Math.max(cardHeight, 0.05), 1) * 50}%` }"
         >
-          <FeluqaButton tag="a" color="gray" outlined size="lg" class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem_-_var(--flex-canvas-offset))] -translate-x-1/2 !border-white/40 !bg-black/70 !text-white backdrop-blur-md" :href="current.href" icon-position="after">
+          <FeluqaButton tag="a" color="dark" size="lg" class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem_-_var(--flex-canvas-offset))] -translate-x-1/2 backdrop-blur-md" :href="current.href" icon-position="after">
             {{ current.actionLabel || cardButtonLabel || 'Discover' }}
             <template #icon><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></template>
           </FeluqaButton>
@@ -1581,7 +1581,7 @@ watch(modalOpen, (open) => {
             />
             <h3 class="text-xl font-bold text-white">{{ modalItem.title }}</h3>
             <p v-if="modalItem.subtitle" class="text-slate-300 text-sm leading-relaxed max-w-md">{{ modalItem.subtitle }}</p>
-            <FeluqaButton v-if="modalItem.href" tag="a" :href="modalItem.href" class="mt-3" icon-position="after">
+            <FeluqaButton v-if="modalItem.href" tag="a" color="dark" :href="modalItem.href" class="mt-3" icon-position="after">
               {{ modalItem.actionLabel || cardButtonLabel || 'Discover' }}
               <template #icon><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></template>
             </FeluqaButton>

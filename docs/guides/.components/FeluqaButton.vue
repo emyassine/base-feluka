@@ -2,7 +2,7 @@
 withDefaults(defineProps<{
   tag?: 'button' | 'a'; href?: string; type?: 'button' | 'submit' | 'reset';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger';
+  color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark';
   outlined?: boolean; iconPosition?: 'before' | 'after'; tooltip?: string;
   badge?: string | number; badgeColor?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger';
 }>(), { tag: 'button', type: 'button', size: 'md', color: 'primary', iconPosition: 'before', badgeColor: 'primary' });
@@ -25,6 +25,8 @@ withDefaults(defineProps<{
 .color-primary { background:var(--vp-c-brand-1); color:var(--vp-c-white)!important; }.color-primary:hover { opacity:.88; }
 .color-gray { background:var(--vp-c-bg-soft); color:var(--vp-c-text-1)!important; border-color:var(--vp-c-divider); }.color-gray:hover { background:var(--vp-c-bg-mute); }
 .color-info,.color-success,.color-warning,.color-danger { background:var(--vp-c-brand-1); color:var(--vp-c-white)!important; }
+.color-dark { background:#18181b; color:#fff!important; border-color:rgb(255 255 255 / .28); }
+.color-dark:hover { background:#27272a; }
 .outlined { background:transparent; color:var(--vp-c-text-1)!important; border-color:currentColor; }
 .color-primary.outlined { color:var(--vp-c-brand-1)!important; }.color-gray.outlined { border-color:var(--vp-c-divider); }
 .button-icon { display:inline-flex; width:1em; height:1em; align-items:center; justify-content:center; }.button-badge { border-radius:999px; padding:.2rem .4rem; font-size:.7em; background:rgb(255 255 255 / .2); }
