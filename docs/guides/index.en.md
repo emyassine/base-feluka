@@ -21,6 +21,48 @@ layout: home
       ]'
     />
 
+<ReactDevHome>
+  <ReactDevBlockComponents
+    title="Build applications from reusable components"
+    lead="Feluqa gives applications a consistent structure for composing modules, typed views, and shared contracts into complete products."
+    detail="The view compiler and selected application foundations are implemented. Dynamic module installation and the full UI integration remain in progress."
+    markup-title="Choose a frontend for each target"
+    markup-lead="Feluqa keeps application contracts separate from rendering, so a product can use the frontend that fits its target runtime."
+    markup-detail="The sample shows a React frontend. Feluqa targets Vue, React, and plain HTML; complete integration across those frontends is still in progress."
+  />
+
+  <ReactDevBlockInteractivity
+    title="Add interactivity where the work happens"
+    lead="Feluqa defines typed Live action contracts for interactive interfaces. Server actions own validation, authorization, and business behavior."
+    detail="This React demo illustrates client-side state. Feluqa's browser reconciliation and shared replay support are still under development."
+    cta-label="Explore panels and Live"
+    cta-href="/get-started/frontend/panels"
+    cta-icon="code"
+  />
+
+  <ReactDevBlockFramework
+    title="Build inside an opinionated application framework"
+    lead="Feluqa is opinionated: it gives each application a consistent structure, typed configuration, compiled views, route composition, and shared contracts. Teams build business modules within those conventions instead of assembling unrelated framework pieces."
+    detail="The code sample is a React example of server-side data composition, not Feluqa syntax. Feluqa routes are declared by their owning site, panel, or module and composed by the application. Composition currently uses statically compiled Rust; dynamic module installation, complete runtime shells, and standalone generated-app builds remain unfinished."
+    cta-label="Read the architecture"
+    cta-href="/internals/"
+    cta-icon="framework"
+  />
+
+  <ReactDevBlockPlatforms
+    title="Build for the platform you need"
+    lead="Feluqa is designed around one namespace and SDK with separate runtimes for hosted web apps, standalone workstation products, mobile, games, APIs, and real-time systems."
+    detail="Web delivery is the first priority. Local hosting for nearby clients without Internet is a product requirement; desktop storage, synchronization, and conflict behavior remain open work."
+    web-title="A web runtime with clear ownership"
+    web-detail="Feluqa's web profile composes routes from their owning sites, panels, and modules. Web delivery is the first product priority."
+    native-title="Purpose-built workstation and mobile targets"
+    native-detail="Feluqa targets standalone workstation and mobile applications with dedicated runtime profiles. Workstation storage and offline synchronization design remain open."
+    cta-label="Explore target platforms"
+    cta-href="/internals/"
+    cta-icon="native"
+  />
+</ReactDevHome>
+
 <MainlineLogos
       title="Powering the world's best product teams."
       subtitle="From next-gen startups to established enterprises."
