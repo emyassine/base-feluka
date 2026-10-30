@@ -14,7 +14,7 @@ function localizeReactAssets(value: string): string {
 type ReactDevIcon = 'arrow' | 'code' | 'framework' | 'native' | 'news'
 
 type ReactDevAction = {
-  sourceLabel: string
+  sourceHref: string
   label: string
   href: string
   icon?: ReactDevIcon
@@ -25,8 +25,8 @@ type ReactDevText = {
   title?: string
   lead?: string
   detail?: string
-  contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
+  content?: string[]
 }
 
 type ReactDevHtmlNode =
@@ -34,7 +34,7 @@ type ReactDevHtmlNode =
   | { type: 'element'; tag: string; attrs: Record<string, string | boolean>; children: ReactDevHtmlNode[] }
   | { type: 'text'; value: string }
 
-const hero = {"type":"fragment","children":[{"type":"element","tag":"div","attrs":{"class":"mx-5 mt-12 lg:mt-24 mb-20 lg:mb-32 flex flex-col justify-center"},"children":[{"type":"element","tag":"div","attrs":{"class":"uwu-visible flex justify-center"},"children":[{"type":"element","tag":"img","attrs":{"alt":"logo by @sawaratsuki1004","data-nimg":"1","decoding":"async","height":"160","loading":"eager","src":"/react-home/images/uwu.png","style":"color:transparent","title":"logo by @sawaratsuki1004","width":"313"},"children":[]}]},{"type":"element","tag":"svg","attrs":{"class":"uwu-hidden mt-4 mb-3 text-brand dark:text-brand-dark w-24 lg:w-28 self-center text-sm me-0 flex origin-center transition-all ease-in-out","fill":"none","height":"100%","viewBox":"-10.5 -9.45 21 18.9","width":"100%","xmlns":"http://www.w3.org/2000/svg"},"children":[{"type":"element","tag":"circle","attrs":{"cx":"0","cy":"0","fill":"currentColor","r":"2"},"children":[]},{"type":"element","tag":"g","attrs":{"fill":"none","stroke":"currentColor","stroke-width":"1"},"children":[{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5"},"children":[]},{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5","transform":"rotate(60)"},"children":[]},{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5","transform":"rotate(120)"},"children":[]}]}]},{"type":"element","tag":"h1","attrs":{"class":"uwu-hidden text-5xl font-display lg:text-6xl self-center flex font-semibold leading-snug text-primary dark:text-primary-dark"},"children":[{"type":"text","value":"React"}]},{"type":"element","tag":"p","attrs":{"class":"text-4xl font-display max-w-lg md:max-w-full py-1 text-center text-secondary dark:text-primary-dark leading-snug self-center"},"children":[{"type":"text","value":"The library for web and native user interfaces"}]},{"type":"element","tag":"div","attrs":{"class":"mt-5 self-center flex gap-2 w-full sm:w-auto flex-col sm:flex-row"},"children":[{"type":"element","tag":"a","attrs":{"aria-label":"Learn React","class":"w-full sm:w-auto justify-center active:scale-[.98] transition-transform inline-flex font-bold items-center outline-none focus:outline-none focus-visible:outline focus-visible:outline-link focus:outline-offset-2 focus-visible:dark:focus:outline-link-dark leading-snug bg-link text-white dark:bg-brand-dark dark:text-gray-90 hover:bg-opacity-80 text-lg py-3 rounded-full px-4 sm:px-6","href":"https://react.dev/learn","target":"_self"},"children":[{"type":"text","value":"Learn React"}]},{"type":"element","tag":"a","attrs":{"aria-label":"API Reference","class":"w-full sm:w-auto justify-center active:scale-[.98] transition-transform inline-flex font-bold items-center outline-none focus:outline-none focus-visible:outline focus-visible:outline-link focus:outline-offset-2 focus-visible:dark:focus:outline-link-dark leading-snug text-primary dark:text-primary-dark shadow-secondary-button-stroke dark:shadow-secondary-button-stroke-dark hover:bg-gray-40/5 active:bg-gray-40/10 hover:dark:bg-gray-60/5 active:dark:bg-gray-60/10 text-lg py-3 rounded-full px-4 sm:px-6","href":"https://react.dev/reference/react","target":"_self"},"children":[{"type":"text","value":"API Reference"}]}]}]}]} as ReactDevHtmlNode
+const hero = {"type":"fragment","children":[{"type":"element","tag":"div","attrs":{"class":"mx-5 mt-12 lg:mt-24 mb-20 lg:mb-32 flex flex-col justify-center"},"children":[{"type":"element","tag":"div","attrs":{"class":"uwu-visible flex justify-center"},"children":[{"type":"element","tag":"img","attrs":{"alt":"logo by @sawaratsuki1004","data-nimg":"1","decoding":"async","height":"160","loading":"eager","src":"/react-home/images/uwu.png","style":"color:transparent","title":"logo by @sawaratsuki1004","width":"313"},"children":[]}]},{"type":"element","tag":"svg","attrs":{"class":"uwu-hidden mt-4 mb-3 text-brand dark:text-brand-dark w-24 lg:w-28 self-center text-sm me-0 flex origin-center transition-all ease-in-out","fill":"none","height":"100%","viewBox":"-10.5 -9.45 21 18.9","width":"100%","xmlns":"http://www.w3.org/2000/svg"},"children":[{"type":"element","tag":"circle","attrs":{"cx":"0","cy":"0","fill":"currentColor","r":"2"},"children":[]},{"type":"element","tag":"g","attrs":{"fill":"none","stroke":"currentColor","stroke-width":"1"},"children":[{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5"},"children":[]},{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5","transform":"rotate(60)"},"children":[]},{"type":"element","tag":"ellipse","attrs":{"rx":"10","ry":"4.5","transform":"rotate(120)"},"children":[]}]}]},{"type":"element","tag":"h1","attrs":{"class":"uwu-hidden text-5xl font-display lg:text-6xl self-center flex font-semibold leading-snug text-primary dark:text-primary-dark"},"children":[{"type":"text","value":""}]},{"type":"element","tag":"p","attrs":{"class":"text-4xl font-display max-w-lg md:max-w-full py-1 text-center text-secondary dark:text-primary-dark leading-snug self-center"},"children":[{"type":"text","value":""}]},{"type":"element","tag":"div","attrs":{"class":"mt-5 self-center flex gap-2 w-full sm:w-auto flex-col sm:flex-row"},"children":[{"type":"element","tag":"a","attrs":{"aria-label":"","class":"w-full sm:w-auto justify-center active:scale-[.98] transition-transform inline-flex font-bold items-center outline-none focus:outline-none focus-visible:outline focus-visible:outline-link focus:outline-offset-2 focus-visible:dark:focus:outline-link-dark leading-snug bg-link text-white dark:bg-brand-dark dark:text-gray-90 hover:bg-opacity-80 text-lg py-3 rounded-full px-4 sm:px-6","href":"https://react.dev/learn","target":"_self"},"children":[{"type":"text","value":""}]},{"type":"element","tag":"a","attrs":{"aria-label":"API Reference","class":"w-full sm:w-auto justify-center active:scale-[.98] transition-transform inline-flex font-bold items-center outline-none focus:outline-none focus-visible:outline focus-visible:outline-link focus:outline-offset-2 focus-visible:dark:focus:outline-link-dark leading-snug text-primary dark:text-primary-dark shadow-secondary-button-stroke dark:shadow-secondary-button-stroke-dark hover:bg-gray-40/5 active:bg-gray-40/10 hover:dark:bg-gray-60/5 active:dark:bg-gray-60/10 text-lg py-3 rounded-full px-4 sm:px-6","href":"https://react.dev/reference/react","target":"_self"},"children":[{"type":"text","value":""}]}]}]}]} as ReactDevHtmlNode
 function textContent(node: ReactDevHtmlNode): string {
   return node.type === 'text' ? node.value : node.children.map(textContent).join('')
 }
@@ -89,7 +89,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   }
   if (node.tag === 'a') {
     const label = textContent(node).replace(/\s+/g, ' ').trim()
-    const action = actions.find((item) => item.sourceLabel === label || item.label === label)
+    const action = actions.find((item) => item.sourceHref === node.attrs.href)
     if (action) {
       const primary = action.style === 'primary'
       return h(FeluqaButton, {
@@ -115,23 +115,19 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   return h(node.tag, attrs, children)
 }
 
-function applyContentReplacements(root: ReactDevHtmlNode, replacements: Record<string, string>): void {
-  if (root.type === 'text') {
-    for (const [source, replacement] of Object.entries(replacements)) root.value = root.value.replaceAll(source, replacement)
-    return
+function injectContent(root: ReactDevHtmlNode, content?: string[]): void {
+  let index = 0
+  const visit = (node: ReactDevHtmlNode, inCode = false): void => {
+    if (node.type === 'text') { if (!inCode) node.value = content?.[index++] ?? ''; return }
+    const code = node.type === 'element' && node.tag === 'code' && String(node.attrs.class ?? '').includes('sp-pre-placeholder')
+    node.children.forEach((child) => visit(child, inCode || code))
   }
-  if (root.type === 'element') {
-    for (const [name, value] of Object.entries(root.attrs)) {
-      if (typeof value !== 'string') continue
-      for (const [source, replacement] of Object.entries(replacements)) root.attrs[name] = value.replaceAll(source, replacement)
-    }
-  }
-  root.children.forEach((child) => applyContentReplacements(child, replacements))
+  visit(root)
 }
 
 function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headingTag: 'h1' | 'h2' = 'h2'): VNode {
   const tree = JSON.parse(JSON.stringify(source)) as ReactDevHtmlNode
-  if (text.contentReplacements) applyContentReplacements(tree, text.contentReplacements)
+  injectContent(tree, text.content)
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
@@ -141,23 +137,22 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
 export default defineComponent({
   name: 'ReactDevBlockHero',
   props: {
-    title: { type: String, default: 'React' },
-    lead: { type: String, default: 'The library for web and native user interfaces' },
-    primaryLabel: { type: String, default: 'Learn React' },
-    primaryHref: { type: String, default: 'https://react.dev/learn' },
+    title: String,
+    content: Array as PropType<string[]>,
+    lead: String,
+    primaryLabel: String,
+    primaryHref: String,
     primaryIcon: String as PropType<ReactDevIcon>,
-    secondaryLabel: { type: String, default: 'API Reference' },
-    secondaryHref: { type: String, default: 'https://react.dev/reference/react' },
+    secondaryLabel: String,
+    secondaryHref: String,
     secondaryIcon: String as PropType<ReactDevIcon>,
-    contentReplacements: Object as PropType<Record<string, string>>,
   },
   setup(props) {
     return () => renderReactDevBlock(hero, {
-      title: props.title, lead: props.lead,
-      contentReplacements: props.contentReplacements,
-      actions: [
-        { sourceLabel: 'Learn React', label: props.primaryLabel, href: props.primaryHref, icon: props.primaryIcon, style: 'primary' },
-        { sourceLabel: 'API Reference', label: props.secondaryLabel, href: props.secondaryHref, icon: props.secondaryIcon, style: 'secondary' },
+      title: props.title, lead: props.lead, content: props.content,
+            actions: [
+        { sourceHref: 'https://react.dev/learn', label: props.primaryLabel, href: props.primaryHref, icon: props.primaryIcon, style: 'primary' },
+        { sourceHref: 'https://react.dev/reference/react', label: props.secondaryLabel, href: props.secondaryHref, icon: props.secondaryIcon, style: 'secondary' },
       ],
     }, 'h1')
   }
