@@ -1,0 +1,7 @@
+{
+  "items": [
+    { "guide": "company" }
+  ],
+  "theme": "system",
+  "$schema": "./schema/topbar.schema.json"
+}

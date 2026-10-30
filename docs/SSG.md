@@ -34,7 +34,8 @@ currently enforced by a manifest.
 
 ## 3. Terminology
 
-- **Tree root**: directory containing `.site/`; currently `docs/`.
+- **Tree root**: directory containing `.site/`; the Feluqa site is currently
+  `docs/site-1/`.
 - **Guide**: independently routed documentation collection under `src/guides/`.
 - **Subguide**: a guide registered in the `subguides` configuration array.
 - **Section**: a directory of pages within a guide.
@@ -53,7 +54,7 @@ currently enforced by a manifest.
 ## 4. Layers
 
 ```text
-Human-authored tree       docs/{.site,src,resources}
+Human-authored tree       docs/site-1/{.site,src,resources}
            │
            ▼
 Shared site model          docs/vitepress-site/app/scripts/spmpst/ (target-neutral model)
@@ -75,7 +76,7 @@ validation belongs to the consuming adapter. Source: `docs/vitepress-site/app/sc
 ## 5. Directory layout and paths
 
 ```text
-docs/
+docs/site-1/
 ├── .site/
 │   ├── *.site.config.json
 │   ├── locales/*.locale.json
@@ -89,10 +90,10 @@ docs/
     └── assets/
 ```
 
-An adapter MAY keep target-owned catalogues beside its application rather than
-inside the source tree. The current VitePress host does this in
-`docs/vitepress-site/resources/`, with separate `icons/`, `flags/`,
-`components/`, `hooks/`, and `diagrams/` directories.
+An adapter MAY keep shared target catalogues beside its application rather
+than inside the source tree. The current VitePress host keeps shared `icons/`
+and `flags/` in `docs/vitepress-site/resources/`; Feluqa-owned `components/`,
+`hooks/`, and `diagrams/` stay in `docs/site-1/resources/`.
 
 The tree root MUST be the directory containing `.site/`; `SPMPST_ROOT` MAY
 override it for tooling. Source roots MUST use the fixed conventions shown
@@ -218,8 +219,8 @@ and `docs/vitepress-site/app/scripts/preparation/resolve-resource.mjs#resolveVit
 
 Language flags are provided by the VitePress host under
 `docs/vitepress-site/resources/flags/`. Mermaid settings are Feluqa-site-owned
-at `docs/vitepress-site/sites/feluqa/resources/diagrams/`; another registered
-site can provide its own settings and diagrams.
+at `docs/site-1/resources/diagrams/`; another registered site can provide its own
+settings and diagrams with its source tree.
 Mermaid rendering may generate light and dark variants. Source:
 `docs/vitepress-site/app/scripts/preparation/stages/transform-markdown.mjs#renderDiagram`
 
@@ -282,12 +283,14 @@ contract. They are not promises of the shared SPMPST model:
 |---|---|---|
 | Theme slots | `.site/targets/vitepress.target.config.json` | Renderer slot names and theme component registration |
 | Site registry | `docs/vitepress-site/vitepress-site.json` | Lists site declarations; paths are resolved relative to the registry |
-| Site resources | `docs/vitepress-site/resources/{components,hooks,diagrams,icons,flags}/` | Site-owned UI and resource catalogues, kept in separate directories |
+| Site declaration | `docs/site-1/.site/vitepress-site.json` | Points the host registry to the Feluqa source tree |
+| Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` | Feluqa-owned components, hooks, diagrams |
+| Shared resources | `docs/vitepress-site/resources/{icons,flags}/` | Host-level icon and flag catalogues |
 | Styles and renderer config | Target config and generated theme files | CSS, renderer theme API, Vite config |
 | Search and Markdown options | Target config | Renderer local search and Markdown plugin settings |
 | Emitted frontmatter | Staged Markdown | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
 | Embedded component tags | Authored Markdown | Vue component syntax such as `<CollectionSpotlightCards />` |
-| Generated modules | `docs/vitepress-site/.trash/vitepress-generated/` | Component, hook, style, theme and collection imports |
+| Generated modules | `docs/vitepress-site/.trash/feluqa-docs/vitepress-generated/` | Component, hook, style, theme and collection imports |
 | CSS classes | Target components and styles | Renderer DOM and theme class names |
 
 This inventory describes current coupling, not a recommendation for other
@@ -322,8 +325,8 @@ The guide config declares the route base `handbook`; the collection registry
 uses `id: "articles"` and its conventional source directory. With English as
 the fallback language and default-language prefixing disabled, the source page
 `src/guides/handbook/index.en.md` stages at
-`docs/vitepress-site/.trash/generated-guides/handbook/index.md`, while its French translation stages at
-`docs/vitepress-site/.trash/generated-guides/fr/handbook/index.md`. The collection pages are staged below
+`docs/vitepress-site/.trash/feluqa-docs/generated-guides/handbook/index.md`, while its French translation stages at
+`docs/vitepress-site/.trash/feluqa-docs/generated-guides/fr/handbook/index.md`. The collection pages are staged below
 their configured collection route. Content files retain their frontmatter and
 relative links are rewritten to staged locations. Exact collection pagination
 and target-generated modules depend on the renderer configuration.

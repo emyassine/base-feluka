@@ -8,7 +8,7 @@ const [command, ...args] = process.argv.slice(2)
 const option = (name) => args.includes(name) ? args[args.indexOf(name) + 1] : undefined
 const forwardedArgs = () => args.filter((argument, index) => argument !== '--site' && args[index - 1] !== '--site')
 const site = await selectSite(option('--site'))
-const trashDirectory = resolve(process.env.VITEPRESS_TRASH_DIR ?? resolve(appDirectory, '../.trash'))
+const trashDirectory = resolve(process.env.VITEPRESS_TRASH_DIR ?? resolve(appDirectory, '../.trash', site.id))
 const localVitepress = resolve(appDirectory, 'node_modules/.bin/vitepress')
 const hostVitepress = resolve(appDirectory, '../node_modules/.bin/vitepress')
 const vitepress = existsSync(localVitepress) ? localVitepress : hostVitepress

@@ -3,14 +3,16 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
+import { resolveSitePaths } from '../paths.mjs'
 
 const site = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
+const paths = resolveSitePaths(site)
 const refactor = join(site, '../.trash/refactor')
 const baseline = join(refactor, 'baseline.json')
 const baselineTree = join(refactor, 'baseline-tree')
 const roots = [
-  { path: '../.trash/generated-guides', snapshot: '.generated-guides' },
-  { path: '../.trash/vitepress-generated', snapshot: '.vitepress/generated' },
+  { path: paths.generatedGuides, snapshot: '.generated-guides' },
+  { path: paths.generatedMetadata, snapshot: '.vitepress/generated' },
 ]
 
 function canonical(value) {
@@ -29,12 +31,12 @@ async function collect() {
         else {
           let bytes = await readFile(path)
           if (path.endsWith('.json')) bytes = Buffer.from(`${JSON.stringify(canonical(JSON.parse(bytes.toString('utf8'))), null, 2)}\n`)
-          const local = relative(join(site, root), path).split('\\').join('/')
+          const local = relative(root, path).split('\\').join('/')
           files[`${snapshot}/${local}`] = createHash('sha256').update(bytes).digest('hex')
         }
       }
     }
-    await visit(join(site, root))
+    await visit(root)
   }
   return files
 }

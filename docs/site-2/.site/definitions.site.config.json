@@ -1,0 +1,16 @@
+{
+  "site": {
+    "name": "Numerimondes",
+    "description": "Numerimondes is the company behind Feluqa, a software platform under active development."
+  },
+  "subguides": [
+    {
+      "path": "company",
+      "label": "Company",
+      "labels": { "en": "Company", "fr": "Entreprise" },
+      "uri": { "base": "/company/", "index": "company/" }
+    }
+  ],
+  "iconFallback": "circle-help",
+  "$schema": "./schema/definitions.schema.json"
+}

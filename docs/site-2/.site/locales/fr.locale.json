@@ -1,0 +1,41 @@
+{
+  "language": {
+    "label": "Français",
+    "menuLabel": "Changer de langue",
+    "fallbackNotice": "Cette page n’est pas disponible en {requested}. La version {fallback} est affichée."
+  },
+  "ui": { "emptyCollection": "Aucun contenu publié pour le moment." },
+  "search": {
+    "buttonText": "Rechercher",
+    "buttonAriaLabel": "Rechercher sur ce site",
+    "displayDetails": "Afficher les détails",
+    "resetButtonTitle": "Réinitialiser",
+    "backButtonTitle": "Fermer la recherche",
+    "noResultsText": "Aucun résultat",
+    "selectText": "Sélectionner",
+    "selectKeyAriaLabel": "Entrée",
+    "navigateText": "Naviguer",
+    "navigateUpKeyAriaLabel": "Flèche vers le haut",
+    "navigateDownKeyAriaLabel": "Flèche vers le bas",
+    "closeText": "Fermer",
+    "closeKeyAriaLabel": "Échap"
+  },
+  "outline": { "label": "Sur cette page" },
+  "footer": {
+    "message": "Contactez-nous à <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>.",
+    "copyright": "Numerimondes SARL AU"
+  },
+  "notices": {
+    "exploringTitle": "En cours",
+    "exploring": "Ces informations sont en préparation et peuvent évoluer.",
+    "validatedTitle": "Vérifié",
+    "validated": "Ces informations ont été vérifiées.",
+    "fallbackTitle": "Disponibilité linguistique"
+  },
+  "seo": {
+    "pageTitle": "Numerimondes",
+    "pageNavTitle": "Numerimondes",
+    "description": "Numerimondes est l’entreprise à l’origine de Feluqa, une plateforme logicielle en cours de développement."
+  },
+  "$schema": "../schema/locale.schema.json"
+}

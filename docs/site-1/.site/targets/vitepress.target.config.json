@@ -1,5 +1,5 @@
 {
-  "outputDir": "../docs-output",
+  "outputDir": "../../docs-output/feluqa-docs",
   "project": {
     "components": "components",
     "hooks": "hooks"

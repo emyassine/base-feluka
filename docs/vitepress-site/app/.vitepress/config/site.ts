@@ -1,7 +1,7 @@
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { transformDocumentationHead } from '../../../.trash/vitepress-generated/hooks'
+import jiti from 'jiti'
 import { createNavigation } from './navigation'
 import { createTransformHead } from './head'
 import { loadSiteRuntimeContext, type SiteConfigSource } from './context'
@@ -16,6 +16,12 @@ export interface SiteConfigCompositionDependencies {
   navigationFactory: typeof createNavigation
   headFactory: typeof createTransformHead
   seoHeadTransform: (options: DocumentationSeoOptions) => unknown[][]
+}
+
+const sitePaths = resolveSitePaths(resolve(dirname(fileURLToPath(import.meta.url)), '../..'))
+const loadSiteModule = jiti(import.meta.url, { moduleCache: false })
+const { transformDocumentationHead } = loadSiteModule(join(sitePaths.generatedMetadata, 'hooks.ts')) as {
+  transformDocumentationHead: (options: DocumentationSeoOptions) => unknown[][]
 }
 
 /** Assemble VitePress from independently constructed data, navigation, and head providers. */

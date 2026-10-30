@@ -1,10 +1,10 @@
 import { resolve } from 'node:path'
 
 export function resolveSitePaths(appDirectory) {
-  const trashDirectory = resolve(process.env.VITEPRESS_TRASH_DIR ?? resolve(appDirectory, '../.trash'))
+  const sourceRoot = resolve(process.env.SPMPST_ROOT ?? process.cwd())
+  const trashDirectory = resolve(process.env.VITEPRESS_TRASH_DIR ?? resolve(appDirectory, '../.trash', process.env.VITEPRESS_SITE_ID ?? 'unselected-site'))
   const resourcesDirectory = resolve(process.env.VITEPRESS_RESOURCES_DIR ?? resolve(appDirectory, '../resources'))
-  const siteResourcesDirectory = resolve(process.env.VITEPRESS_SITE_RESOURCES_DIR ?? resolve(appDirectory, '../sites/feluqa/resources'))
-  const sourceRoot = resolve(process.env.SPMPST_ROOT ?? resolve(appDirectory, '../../'))
+  const siteResourcesDirectory = resolve(process.env.VITEPRESS_SITE_RESOURCES_DIR ?? resolve(sourceRoot, 'resources'))
   return {
     appDirectory,
     sourceRoot,

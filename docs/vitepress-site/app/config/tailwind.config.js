@@ -1,10 +1,19 @@
+import { resolve } from 'node:path'
+
+const sourceRoot = process.env.SPMPST_ROOT
+const siteResourcesRoot = process.env.VITEPRESS_SITE_RESOURCES_DIR
+const trashRoot = process.env.VITEPRESS_TRASH_DIR
+if (!sourceRoot || !siteResourcesRoot || !trashRoot) {
+  throw new Error('Tailwind requires a site selected through vitepress-site.json')
+}
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './.vitepress/**/*.{vue,ts,js}',
-    '../.trash/generated-guides/**/*.md',
-    '../sites/feluqa/resources/components/**/*.{vue,md}',
-    '../../src/guides/**/*.{vue,md}',
+    resolve(process.cwd(), '.vitepress/**/*.{vue,ts,js}'),
+    resolve(trashRoot, 'generated-guides/**/*.md'),
+    resolve(siteResourcesRoot, 'components/**/*.{vue,md}'),
+    resolve(sourceRoot, 'src/guides/**/*.{vue,md}'),
   ],
   corePlugins: {
     preflight: false,

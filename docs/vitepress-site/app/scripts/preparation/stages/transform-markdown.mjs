@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { access, cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { execFile as execFileCallback } from 'node:child_process'
@@ -17,7 +17,7 @@ async function renderDiagram(source, svg) {
   if (activeRenderers >= 3) await new Promise((resume) => rendererQueue.push(resume))
   activeRenderers += 1
   try {
-    await execFile(join(siteDirectory, 'node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-c', mermaidConfigPath, '-q'])
+    await execFile(join(siteDirectory, '../node_modules/.bin/mmdc'), ['-i', source, '-o', svg, '-b', 'transparent', '-c', mermaidConfigPath, '-q'])
   } finally {
     activeRenderers -= 1
     rendererQueue.shift()?.()

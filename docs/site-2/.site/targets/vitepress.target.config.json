@@ -1,0 +1,20 @@
+{
+  "outputDir": "../../docs-output/numerimondes",
+  "project": {
+    "components": "components",
+    "hooks": "hooks"
+  },
+  "styles": [],
+  "theme": { "slots": {} },
+  "markdown": {
+    "lineNumbers": true,
+    "image": { "lazyLoad": true }
+  },
+  "search": {
+    "provider": "local",
+    "miniSearch": {},
+    "excludePaths": []
+  },
+  "outline": { "level": "deep" },
+  "$schema": "../schema/vitepress-target.schema.json"
+}

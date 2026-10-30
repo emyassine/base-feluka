@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "outputDir": { "type": "string" },
+    "project": { "type": "object" },
+    "styles": { "type": "array", "items": { "type": "string" } },
+    "theme": { "type": "object" },
+    "markdown": { "type": "object" },
+    "search": { "type": "object" },
+    "outline": { "type": "object" }
+  },
+  "additionalProperties": false
+}

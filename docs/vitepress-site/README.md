@@ -1,14 +1,12 @@
 # VitePress site host
 
-This directory is the site host and registry. It is not the documentation
-source tree. Site declarations point to independent SPMPST trees and output
-directories.
+This directory contains the shared VitePress host and site registry. The
+actual site sources live in sibling site directories such as `../site-1/`.
 
 ```text
 vitepress-site.json       registry of site declaration files
-sites/                    one declaration per site
 app/                      renderer, adapters, commands, and package manifest
-resources/                resources owned by this VitePress host
+resources/                shared icon and flag catalogues
 .trash/                   generated Markdown, metadata, caches, and scratch data
 node_modules/              local dependencies
 legal/                    required third-party notices
@@ -17,12 +15,11 @@ legal/                    required third-party notices
 The registry's `sitesPaths` entries are resolved relative to this directory.
 Each declaration's `sourcePath`, optional `resourcesPath`, optional
 `siteResourcesPath`, and `outputPath` are resolved relative to that declaration
-file. `resourcesPath` points to host-level shared resources such as icon and
-flag catalogues. `siteResourcesPath` points to resources owned by one site.
-The Feluqa declaration uses `sites/feluqa/resources/` for its components,
-hooks, and diagrams, while icons and flags stay in this host's `resources/`.
-It reads `../docs` and builds to `../docs-output`, outside the documentation
-source tree.
+file. `../site-1/` contains Feluqa's `.site/`, `src/`, and `resources/`.
+Its components, hooks, and diagrams stay with that site; shared icons and flags
+stay in this host's `resources/`. `../site-2/` contains the Numerimondes
+English/French starter site. Each build writes outside its site tree under
+`docs-output/<site-id>/`.
 
 ```sh
 npm install
@@ -30,12 +27,13 @@ npm run docs:serve
 npm run docs:build
 ```
 
-When multiple declarations are registered, the interactive command asks which
-site to use. Pass `--site <id>` for scripts and automation. To move `app/` to a
-different machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry
-path; resource and source roots continue to come from the selected declaration.
+Run `./serve.sh` to start every registered site at once. It assigns distinct
+available ports beginning at 4173 and prints each site's URL and id. Add a
+site declaration to `vitepress-site.json` when that site's tree is ready; the
+interactive npm command asks which site to use when several are registered.
+Pass `--site <id>` for scripts and automation. To move `app/` to a different
+machine or directory, set `VITEPRESS_SITE_MANIFEST` to the registry path.
 
-`sites/<site-id>/resources/components`, `hooks`, and `diagrams` remain specific
-to that site. Shared icons and flags live in separate catalogues under
-`resources/`. Required third-party notices are kept under `legal/`, outside
-the application code.
+Site declarations live with their owning sites. The host registry only lists
+those declarations; it does not duplicate site content. Required third-party
+notices are kept under `legal/`, outside the application code.

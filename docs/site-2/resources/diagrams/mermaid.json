@@ -1,0 +1,20 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "background": "#ffffff",
+    "darkMode": false,
+    "fontFamily": "ui-sans-serif, system-ui, sans-serif",
+    "fontSize": "15px",
+    "textColor": "#172033",
+    "lineColor": "#2563eb",
+    "primaryColor": "#dbeafe",
+    "primaryTextColor": "#172554",
+    "primaryBorderColor": "#2563eb",
+    "secondaryColor": "#dcfce7",
+    "secondaryTextColor": "#14532d",
+    "secondaryBorderColor": "#16a34a",
+    "tertiaryColor": "#fef3c7",
+    "tertiaryTextColor": "#713f12",
+    "tertiaryBorderColor": "#d97706"
+  }
+}
