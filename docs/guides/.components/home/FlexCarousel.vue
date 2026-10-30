@@ -1480,10 +1480,10 @@ watch(modalOpen, (open) => {
         </a>
       </div>
     </div>
-    <div class="relative mt-8 w-full md:mt-12 lg:mt-20">
+    <div class="relative mt-8 w-screen left-1/2 -translate-x-1/2 overflow-x-hidden md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative h-[560px] w-full outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:h-[700px]"
+        class="relative min-h-[750px] w-full outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
         :class="className"
         :style="{ '--flex-carousel-half': half }"
         role="region"
