@@ -1,12 +1,14 @@
 Mainline design source
 ======================
 
-The Hero, Features, Resource Allocation, FAQ, and Footer call-to-action
-sections in the Vue blocks in this directory are ports of corresponding
-Mainline Next.js template blocks by shadcnblocks.com. Their layouts and
-Tailwind utility styling are retained where applicable; React/Next.js glue,
-template-specific product claims, and inapplicable sample data are omitted.
-Home copy and route data are supplied by `docs/guides/index.en.md`.
+The Hero, Logos, Features, Resource Allocation, Testimonials, Pricing, FAQ,
+and Footer sections in the Vue blocks in this directory are ports of the
+Mainline Next.js template by shadcnblocks.com. The home page uses the source
+template's sample copy and visual assets as requested. Component data is
+provided directly as Vue props from `docs/guides/index.en.md`.
+
+Images under `assets/` are copied from the original template's `public/`
+directory and remain visual placeholders from that template.
 
 Source: https://github.com/shadcnblocks/mainline-nextjs-template
 Template: https://www.shadcnblocks.com/template/mainline
@@ -44,3 +46,7 @@ You may use this Software, including for commercial purposes, provided that
 you do not sell the template itself in its original or substantially
 unmodified form. This restriction is intended solely to prevent reselling the
 template as-is or close to it without meaningful customization or added value.
+
+The bundled DM Sans and Inter font files are licensed under the SIL Open Font
+License 1.1. Their complete license texts are in `assets/fonts/OFL-DM-Sans.txt`
+and `assets/fonts/OFL-Inter.txt`.

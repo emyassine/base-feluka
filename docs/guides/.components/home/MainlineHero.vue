@@ -8,7 +8,8 @@ defineProps<{
   primaryHref: string
   secondaryLabel: string
   secondaryHref: string
-  points: Array<{ title: string; copy: string }>
+  heroAlt: string
+  points: Array<{ title: string; description: string }>
 }>()
 </script>
 
@@ -16,7 +17,7 @@ defineProps<{
   <section class="py-28 lg:py-32 lg:pt-44">
     <div class="container flex flex-col justify-between gap-8 md:gap-14 lg:flex-row lg:gap-20">
       <div class="flex-1">
-        <h1 class="text-foreground max-w-160 text-3xl tracking-tight md:text-4xl lg:text-5xl xl:whitespace-nowrap">
+        <h1 class="text-foreground max-w-160 !text-3xl !tracking-tight md:!text-4xl lg:!text-5xl xl:whitespace-nowrap">
           {{ title }}
         </h1>
         <p class="text-muted-foreground mt-5 text-xl md:text-3xl">{{ lead }}</p>
@@ -35,8 +36,8 @@ defineProps<{
         <div v-for="point in points" :key="point.title" class="flex gap-3 lg:gap-5">
           <svg class="text-foreground mt-1 size-4 shrink-0 lg:size-5" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
           <div>
-            <h2 class="text-foreground font-semibold">{{ point.title }}</h2>
-            <p class="text-muted-foreground max-w-xs text-sm leading-relaxed">{{ point.copy }}</p>
+            <h2 class="text-foreground !text-base !font-semibold !leading-6">{{ point.title }}</h2>
+            <p class="text-muted-foreground max-w-xs text-sm leading-relaxed">{{ point.description }}</p>
           </div>
         </div>
       </div>
@@ -44,7 +45,7 @@ defineProps<{
 
     <div class="mt-12 max-lg:ml-6 max-lg:h-[550px] max-lg:overflow-hidden md:mt-20 lg:container lg:mt-24">
       <div class="relative h-[793px] w-full overflow-hidden rounded-2xl shadow-lg max-lg:rounded-tr-none">
-        <img :src="heroImage" alt="Mainline template placeholder: project board interface" class="h-full w-full object-cover object-left-top" />
+        <img :src="heroImage" :alt="heroAlt" class="h-full w-full object-cover object-left-top" />
       </div>
     </div>
   </section>

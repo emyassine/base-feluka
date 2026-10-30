@@ -1,22 +1,36 @@
 <script setup lang="ts">
-defineProps<{ content: {
+import footerImage from './../../.art/feluqa-footer-white-transteinted.png'
+
+defineProps<{
   title: string
-  copy: string
-  action: { label: string; href: string }
-} }>()
+  description: string
+  actionLabel: string
+  actionHref: string
+  navigation: Array<{ name: string; href: string; external?: boolean }>
+  legalLabel: string
+  legalHref: string
+  logoAlt: string
+}>()
 </script>
 
 <template>
-  <section class="flex flex-col items-center gap-14 border-t border-border py-28 lg:py-32">
+  <footer class="flex flex-col items-center gap-14 pt-28 lg:pt-32">
     <div class="container space-y-3 text-center">
-      <h2 class="text-2xl tracking-tight md:text-4xl lg:text-5xl">{{ content.title }}</h2>
-      <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ content.copy }}</p>
-      <div>
-        <a class="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-medium !text-primary-foreground !no-underline transition-opacity hover:opacity-85" :href="content.action.href">
-          {{ content.action.label }}
-          <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
-        </a>
-      </div>
+      <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
+      <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
+      <div><a :href="actionHref" class="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium !text-primary-foreground !no-underline">{{ actionLabel }}</a></div>
     </div>
-  </section>
+    <nav class="container flex flex-col items-center gap-4">
+      <ul class="flex list-none flex-wrap items-center justify-center gap-6 p-0">
+        <li v-for="item in navigation" :key="item.name">
+          <a :href="item.href" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noreferrer' : undefined" class="flex items-center gap-0.5 font-medium !text-foreground !no-underline transition-opacity hover:opacity-75">
+            {{ item.name }}
+            <svg v-if="item.external" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+          </a>
+        </li>
+      </ul>
+      <ul class="flex list-none items-center justify-center p-0"><li><a :href="legalHref" class="text-muted-foreground text-sm !no-underline transition-opacity hover:opacity-75">{{ legalLabel }}</a></li></ul>
+    </nav>
+    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="footerImage" :alt="logoAlt" class="w-full" /></div>
+  </footer>
 </template>
