@@ -441,7 +441,7 @@ const list = computed(() => (props.items && props.items.length ? props.items : D
 const itemsKey = computed(() => list.value.map(item => item.src).join('|'));
 
 let settings: Settings | null = null;
-let engine: { wake: () => void; setItems: (items: FlexCarouselItem[]) => void } | null = null;
+let engine: { wake: () => void; resize: () => void; setItems: (items: FlexCarouselItem[]) => void } | null = null;
 
 const pick = <K extends keyof PresetValues>(key: K): PresetValues[K] => {
   const value = props[key] as PresetValues[K] | undefined;
@@ -474,6 +474,7 @@ watch(
       interval: props.interval,
       captureWheel: props.captureWheel
     };
+    engine?.resize();
     engine?.wake();
   },
   { immediate: true }
@@ -504,7 +505,7 @@ const mountScene = () => {
   canvas.style.display = 'block';
   canvas.style.position = 'absolute';
   canvas.style.insetInline = '0';
-  canvas.style.top = '-300px';
+  canvas.style.top = '0';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.setAttribute('aria-hidden', 'true');
@@ -865,6 +866,10 @@ const mountScene = () => {
   const resize = () => {
     width = Math.max(1, container.clientWidth);
     height = Math.max(1, container.clientHeight);
+    const cardFraction = Math.min(Math.max(settings?.cardHeight ?? props.cardHeight, 0.05), 1);
+    const canvasOffset = Math.max(0, (height * (1 - cardFraction)) / 2 - 24);
+    canvas.style.top = `${-canvasOffset}px`;
+    container.style.setProperty('--flex-canvas-offset', `${canvasOffset}px`);
     renderer.dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
     renderer.setSize(width, height);
     target.setSize(Math.max(2, Math.round(width * renderer.dpr)), Math.max(2, Math.round(height * renderer.dpr)));
@@ -1398,6 +1403,7 @@ const mountScene = () => {
       dirty = true;
       start();
     },
+    resize,
     setItems
   };
 
@@ -1501,9 +1507,9 @@ watch(modalOpen, (open) => {
     <div class="relative mt-8 w-full max-w-full overflow-x-clip overflow-y-visible md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative min-h-[750px] w-full max-w-full overflow-x-clip overflow-y-visible outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-auto touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
+        class="relative min-h-[550px] w-full max-w-full overflow-x-clip overflow-y-visible outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-auto touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[650px]"
         :class="className"
-        :style="{ '--flex-carousel-half': half, '--flex-canvas-offset': '300px' }"
+        :style="{ '--flex-carousel-half': half }"
         role="region"
         aria-roledescription="carousel"
         :aria-label="title || 'Image carousel'"
