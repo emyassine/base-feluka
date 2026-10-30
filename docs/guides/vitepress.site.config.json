@@ -53,19 +53,19 @@
   },
   "topbar": {
     "items": [
-    {
-      "text": { "en": "Docs", "fr": "Docs" },
-      "items": [
-     	{ "guide": "feluqa.rs" },
-       { "guide": "sdui" },
-       { "guide": "internals" },
-       { "guide": "x-agents" },
-      ]
-    },
+      {
+        "text": { "en": "Docs", "fr": "Docs" },
+        "items": [
+          { "guide": "feluqa.rs" },
+          { "guide": "sdui" },
+          { "guide": "internals" }
+        ]
+      },
+      { "guide": "x-agents" },
+      { "guide": "learn" },
       {
         "text": { "en": "Explore", "fr": "Explorer" },
         "items": [
-          { "guide": "learn" },
           { "collection": "articles" }
         ]
       }
