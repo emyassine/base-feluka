@@ -6,7 +6,6 @@ layout: home
 ---
 
 <MainlineHomeLayout>
-<template #default>
 <MainlineHero
       title="One platform for every application target."
       lead="A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes."
@@ -109,5 +108,4 @@ layout: home
 	legal-href="/privacy"
 	logo-alt="Feluqa"
 />
-</template>
 </MainlineHomeLayout>
