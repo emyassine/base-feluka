@@ -16,7 +16,8 @@
   "project": {
     "components": ".components",
     "hooks": ".hooks",
-    "iconLibrary": "../vitepress-site/icons/lucide"
+    "iconLibrary": "../vitepress-site/icons",
+    "iconFallback": "circle-help"
   },
   "subguides": [
     {

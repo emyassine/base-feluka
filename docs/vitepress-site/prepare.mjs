@@ -94,6 +94,42 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
   }
   projectDirectories[key] = target
 }
+const iconFamilies = ['lucide', 'custom', 'heroicons', 'simple-icons']
+const iconNamePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
+const reportedFallbacks = new Set()
+function findIcon(name) {
+  if (!projectDirectories.iconLibrary || !iconNamePattern.test(name)) return null
+  const candidates = name.includes('/')
+    ? [resolve(projectDirectories.iconLibrary, `${name}.svg`)]
+    : iconFamilies.map((family) => resolve(projectDirectories.iconLibrary, family, `${name}.svg`))
+  for (const candidate of candidates) {
+    const relativePath = relative(projectDirectories.iconLibrary, candidate)
+    if (!relativePath.startsWith(`..${sep}`) && relativePath !== '..' && existsSync(candidate)) return candidate
+  }
+  return null
+}
+const iconFallbackName = projectConfig.iconFallback ?? 'circle-help'
+const iconFallbackPath = findIcon(iconFallbackName)
+if (!iconFallbackPath) throw new Error(`project.iconFallback "${iconFallbackName}" was not found in project.iconLibrary`)
+function resolveIcon(name, context) {
+  const icon = findIcon(name)
+  if (icon) return icon
+  if (!reportedFallbacks.has(name)) {
+    process.stderr.write(`[icons] ${context}: "${name}" not found; using "${iconFallbackName}".\n`)
+    reportedFallbacks.add(name)
+  }
+  return iconFallbackPath
+}
+function resolveSidebarIcon(directory, iconPath, context) {
+  const candidate = resolve(directory, iconPath)
+  const relativePath = relative(sourceRoot, candidate)
+  if (relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && existsSync(candidate)) return candidate
+  if (!reportedFallbacks.has(iconPath)) {
+    process.stderr.write(`[icons] ${context}: "${iconPath}" not found; using "${iconFallbackName}".\n`)
+    reportedFallbacks.add(iconPath)
+  }
+  return iconFallbackPath
+}
 if (projectConfig.viteConfig != null && (typeof projectConfig.viteConfig !== 'string' || !/\.(?:[cm]?[jt]s)$/.test(projectConfig.viteConfig) || projectConfig.viteConfig.startsWith('/') || projectConfig.viteConfig.split('/').includes('..'))) {
   throw new Error('project.viteConfig must be a relative .js, .mjs, .cjs, .ts, .mts, or .cts path')
 }
@@ -132,14 +168,10 @@ async function validateMarkdownIcons(directory) {
     if (!entry.isFile() || extname(entry.name).toLowerCase() !== '.md') continue
     const source = await readFile(file, 'utf8')
     const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---/)
-    const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*)["']?\s*$/m)?.[1]
+    const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?)["']?\s*$/m)?.[1]
     if (!icon) throw new Error(`Every Markdown file must define a valid icon in frontmatter: ${file}`)
     if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate Markdown icons: ${file}`)
-    const iconPath = resolve(projectDirectories.iconLibrary, `${icon}.svg`)
-    const iconRelative = relative(projectDirectories.iconLibrary, iconPath)
-    if (iconRelative.startsWith(`..${sep}`) || iconRelative === '..' || !existsSync(iconPath)) {
-      throw new Error(`Markdown icon "${icon}" has no SVG in project.iconLibrary: ${file}`)
-    }
+    resolveIcon(icon, file)
   }
 }
 
@@ -209,11 +241,12 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     if (typeof sidebarConfig.icon !== 'string' || !sidebarConfig.icon.trim()) {
       throw new Error(`sidebar.json must define an icon path relative to that file: ${join(sourcePath, 'sidebar.json')}`)
     }
+    const iconPath = resolveSidebarIcon(sourcePath, sidebarConfig.icon, join(sourcePath, 'sidebar.json'))
     sidebarConfigurations.set(outputRelativePath, {
       labels: sidebarConfig.labels,
-      icon: resolve(sourcePath, sidebarConfig.icon),
+      icon: iconPath,
     })
-    sidebarIconSources.add(resolve(sourcePath, sidebarConfig.icon))
+    sidebarIconSources.add(iconPath)
   }
   if (sourcePath !== sourceRoot) directories.push({ sourcePath, outputPath, entries })
   for (const entry of entries) {
@@ -236,14 +269,10 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
       if (extname(entry.name).toLowerCase() === '.md') {
         const markdown = await readFile(from, 'utf8')
         const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
-        const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*)["']?\s*$/m)?.[1]
+        const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?)["']?\s*$/m)?.[1]
         if (!icon) throw new Error(`Every published Markdown page must define a valid icon: ${from}`)
         if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate page icons: ${from}`)
-        const iconPath = resolve(projectDirectories.iconLibrary, `${icon}.svg`)
-        const iconRelative = relative(projectDirectories.iconLibrary, iconPath)
-        if (iconRelative.startsWith(`..${sep}`) || iconRelative === '..' || !existsSync(iconPath)) {
-          throw new Error(`Page icon "${icon}" has no SVG in project.iconLibrary: ${from}`)
-        }
+        const iconPath = resolveIcon(icon, from)
         const iconAsset = await copyAsset(iconPath)
         sidebarPageIcons[publicMarkdownLink(to)] = iconAsset
         records.push({ from, to, sourceRoot, icon, iconAsset })
@@ -750,13 +779,10 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   const quickLinks = (locale.quickLinks ?? []).map((link) => `- [${link.label}](${link.url}) — ${link.description}`).join('\n')
   const answers = (locale.faq ?? []).map((item) => `### ${item.question}\n\n${item.answer}`).join('\n\n')
   const icon = locale.icon
-  if (typeof icon !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(icon)) {
+  if (typeof icon !== 'string' || !iconNamePattern.test(icon)) {
     throw new Error(`seo.locales.${language}.icon must name an SVG in project.iconLibrary`)
   }
-  const iconPath = resolve(projectDirectories.iconLibrary ?? '', `${icon}.svg`)
-  if (!projectDirectories.iconLibrary || !existsSync(iconPath)) {
-    throw new Error(`seo.locales.${language}.icon "${icon}" has no SVG in project.iconLibrary`)
-  }
+  const iconPath = resolveIcon(icon, `seo.locales.${language}`)
   const iconAsset = await copyAsset(iconPath)
   const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle ?? 'FAQ')}\nicon: ${JSON.stringify(icon)}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle ?? 'Popular guides'}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle ?? 'Quick answers'}\n\n${answers}\n` : ''}`
   sidebarPageIcons[publicMarkdownLink(indexPath)] = iconAsset
