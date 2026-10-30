@@ -19,7 +19,7 @@ Naming: `[order]-folder/[order]-file.en.md`.
    major version to upgrade from.
 4. Explore [Components](000-prologue/040-batteries-included.en.md)
    capabilities and their current status.
-5. Read about the [complementary agent project](../x-agents/010-get-started/020-agentic-development/020-complementary-agent-project.en.md)
+5. Read about the [complementary agent project](../x-agents/get-started/agentic-development/complementary-agent-project)
    and its intended relationship with Feluqa.
 6. Begin learning Feluqa at
    [`010-get-started/000-introduction/010-introduction.en.md`](010-get-started/000-introduction/010-introduction.en.md),
@@ -29,5 +29,5 @@ Naming: `[order]-folder/[order]-file.en.md`.
 Contributors to Feluqa itself can start with the
 [Core Contribution guide](../internals/get-started/010-overview/010-internals-overview.en.md).
 
-AI-agent skills are maintained separately in [`../x-agents/010-get-started/000-agents-overview.en.md`](../x-agents/010-get-started/000-agents-overview.en.md)
+AI-agent skills are maintained separately in [`../x-agents/get-started/overview/agents-overview`](../x-agents/get-started/overview/agents-overview)
 and are introduced by the Contribution Guide.

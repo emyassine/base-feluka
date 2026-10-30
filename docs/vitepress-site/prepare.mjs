@@ -52,8 +52,11 @@ const collections = configuredCollections.map((collection) => {
     throw new Error(`Collection ${id} path must be a non-hidden relative path inside guides`)
   }
   const normalizedPath = path.split(/[\\/]/).filter(Boolean).join('/')
-  if (!normalizedPath || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(normalizedPath) || normalizedPath.split('/').some((part) => part === '.' || part === '..' || part.startsWith('.'))) {
-    throw new Error(`Collection ${id} path must be a non-hidden relative path inside guides`)
+  const externalCollection = normalizedPath.startsWith('../collections/')
+  const safePath = normalizedPath.replace(/^\.\.\//, '')
+  if (!normalizedPath || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(safePath)
+    || normalizedPath.split('/').some((part, index) => part.startsWith('.') && !(externalCollection && index === 0 && part === '..'))) {
+    throw new Error(`Collection ${id} path must be relative to guides or ../collections`)
   }
   if (collectionPaths.has(normalizedPath)) throw new Error(`Duplicate collection path: ${normalizedPath}`)
   if (typeof categoryFile !== 'string' || !/^[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
@@ -78,7 +81,7 @@ const collections = configuredCollections.map((collection) => {
   }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, layout, indexLayout, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
+  return { id, path: normalizedPath, title, description, layout, indexLayout, categoryFile, sourceDirectory: resolve(configDirectory, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -242,8 +245,10 @@ function localizedValue(value, language, fallback = '') {
 
 for (const collection of collections) {
   const relativeToSource = relative(sourceRoot, collection.sourceDirectory)
-  if (relativeToSource === '..' || relativeToSource.startsWith(`..${sep}`) || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
-    throw new Error(`Collection ${collection.id} path must point to an existing directory under guides: ${collection.path}`)
+  const isInsideGuides = relativeToSource !== '..' && !relativeToSource.startsWith(`..${sep}`)
+  const isDocsCollection = relativeToSource.startsWith(`..${sep}collections${sep}`)
+  if ((!isInsideGuides && !isDocsCollection) || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
+    throw new Error(`Collection ${collection.id} path must point to an existing directory: ${collection.path}`)
   }
   const metadataPath = join(collection.sourceDirectory, collection.categoryFile)
   let metadata = {}
@@ -1073,6 +1078,8 @@ for (const directory of [...directories].reverse()) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   if (!guide) continue
+  const relativeGuidePath = sourceRelative.slice(guide.path.length).replace(/^\//, '')
+  const isGuideEntry = relativeGuidePath.split('/').map(cleanFile).join('/') === guide.uri.entry
   const sourceNames = Object.fromEntries(directory.entries.map((entry) => [entry.name, entry.name]))
   const sortedEntries = sortNavigationEntries(directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name)), sourceNames)
   for (const language of config.languages) {
@@ -1111,6 +1118,17 @@ for (const directory of [...directories].reverse()) {
       } else {
         markdown = `---\nsearch: false\n---\n\n${markdown}`
       }
+      if (isGuideEntry) markdown = markdown.replace(/^---\n([\s\S]*?)\n---/, (frontmatter) => {
+        const directoryPage = childPage.endsWith(`${sep}index.md`)
+        const childDirectory = directoryPage ? childPage.slice(0, -`${sep}index.md`.length) : null
+        const firstLeaf = childDirectory
+          ? defaultPageRecords.find(({ to }) => to.startsWith(`${childDirectory}${sep}`) && !to.endsWith(`${sep}index.md`))?.to
+          : childPage
+        const nextTarget = firstLeaf ?? childPage
+        const childLink = `/${relative(outputDirectory, nextTarget).replace(/\\/g, '/').replace(/\.md$/, '')}`
+        const next = `next: { text: ${JSON.stringify(titleOf(nextTarget))}, link: ${JSON.stringify(childLink)} }`
+        return frontmatter.replace(/\n---$/, `\n${next}\n---`)
+      })
       generatedMarkdown.add(indexPath)
       generatedFiles.add(indexPath)
       await writeIfChanged(indexPath, markdown)
@@ -1128,6 +1146,17 @@ for (const directory of [...directories].reverse()) {
       } else {
         markdown = `---\nsearch: false\n---\n\n${markdown}`
       }
+      if (isGuideEntry) markdown = markdown.replace(/^---\n([\s\S]*?)\n---/, (frontmatter) => {
+        const directoryPage = childPage.endsWith(`${sep}index.md`)
+        const childDirectory = directoryPage ? childPage.slice(0, -`${sep}index.md`.length) : null
+        const firstLeaf = childDirectory
+          ? defaultPageRecords.find(({ to }) => to.startsWith(`${childDirectory}${sep}`) && !to.endsWith(`${sep}index.md`))?.to
+          : childPage
+        const nextTarget = firstLeaf ?? childPage
+        const childLink = `/${relative(outputDirectory, nextTarget).replace(/\\/g, '/').replace(/\.md$/, '')}`
+        const next = `next: { text: ${JSON.stringify(titleOf(nextTarget))}, link: ${JSON.stringify(childLink)} }`
+        return frontmatter.replace(/\n---$/, `\n${next}\n---`)
+      })
       generatedMarkdown.add(noSlashAlias)
       generatedFiles.add(noSlashAlias)
       await writeIfChanged(noSlashAlias, markdown)

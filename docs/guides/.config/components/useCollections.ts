@@ -1,4 +1,4 @@
-import collections from '../../vitepress-site/.vitepress/generated/collections.json';
+import collections from '../../../vitepress-site/.vitepress/generated/collections.json';
 
 export interface CollectionArticle {
   title: string;

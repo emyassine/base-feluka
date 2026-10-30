@@ -175,4 +175,4 @@ Hello CLI
 
 ## Continue
 
-Next, [build the weather watcher](030-build-the-weather-watcher.en.md).
+Next, [build the weather watcher](/learn/get-started/weather-watcher/build-the-weather-watcher).

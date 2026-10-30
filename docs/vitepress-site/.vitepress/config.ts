@@ -163,7 +163,10 @@ function navigation(language = defaultLanguage): any[] {
     : uri.index && !base
       ? `${localePrefix}/${uri.index}`
       : `${localePrefix}/${base}${base ? '/' : ''}`
-  return { text: guide.labels?.[language] ?? guide.label, link }
+  const activeMatch = base
+    ? `^${localePrefix}/${base}/`
+    : `^${localePrefix}/(?!(?:${site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)).filter(Boolean).join('|')})(?:/|$))`
+  return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
  })
  const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => ({
   text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,

@@ -53,7 +53,7 @@ These published guides provide contributors with an entry point to that work.
 
 ## Skills for AI agents
 
-Feluqa also maintains [`x-agents`](../../x-agents/010-get-started/000-agents-overview.en.md), a collection
+Feluqa also maintains [`x-agents`](/agents/get-started/overview/agents-overview), a collection
 of skills for AI agents working with Feluqa. Skills provide reusable,
 task-specific workflows. They supplement the relevant contribution and
 technical guides; they do not replace the applicable engineering rules.

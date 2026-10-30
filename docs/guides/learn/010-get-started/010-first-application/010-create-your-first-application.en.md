@@ -75,7 +75,7 @@ local protocol; one application does not depend on the other's executable.
 
 1. [Prepare your development environment](/get-started/installation/): install the Rust toolchain and target dependencies, then choose an editor.
 2. [How a Feluqa CLI is structured](/get-started/directory-structure/cli-structure): learn how the binary, console, profiles, and command handlers fit together.
-3. [Program 0: Hello CLI](020-program-0-hello-cli.en.md): write a command that prints `Hello CLI`.
-4. [Build the weather watcher](030-build-the-weather-watcher.en.md): extend the first command into a useful local service with weather checks and email notifications.
+3. [Program 0: Hello CLI](/learn/get-started/hello-cli/program-0-hello-cli): write a command that prints `Hello CLI`.
+4. [Build the weather watcher](/learn/get-started/weather-watcher/build-the-weather-watcher): extend the first command into a useful local service with weather checks and email notifications.
 5. [Choose an application profile or starter kit](/get-started/starter-kits/application-profiles-and-starter-kits): distinguish the selected profile, executable binary, and Rust compilation target.
 

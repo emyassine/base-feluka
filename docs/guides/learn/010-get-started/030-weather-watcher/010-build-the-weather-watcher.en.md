@@ -62,7 +62,7 @@ rather than available commands.
 
 ## Previous step
 
-Start with [Program 0: Hello CLI](020-program-0-hello-cli.en.md).
+Start with [Program 0: Hello CLI](/learn/get-started/hello-cli/program-0-hello-cli).
 
 ## Next step
 
