@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import './react-home.css'
 </script>
 
 <template>
-  <div class="react-home font-text font-medium antialiased text-lg bg-wash dark:bg-wash-dark text-secondary dark:text-secondary-dark leading-base">
+  <div class="react-home">
     <slot />
   </div>
 </template>
@@ -14,8 +13,14 @@ import './react-home.css'
   isolation: isolate;
   background: #fff;
   color: #404756;
+  font-family: 'Optimistic Text', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+html.dark .react-home { background: #1c1e21; color: #bfc3c9; }
 
 .react-home img { max-width: none; }
 .react-home a { cursor: pointer; }
