@@ -59,14 +59,14 @@
       }
     },
     {
-      "path": "feluqa-internals",
+      "path": "internals",
       "label": "Feluqa’s Internals",
       "labels": {
         "en": "Feluqa’s Internals",
         "fr": "Les internes de Feluqa"
       },
       "uri": {
-        "base": "/feluqa-internals/"
+        "base": "/internals/"
       }
     },
     {
@@ -205,7 +205,7 @@
     "extraStyle": ""
   },
   "publicFiles": {
-    "llms.txt": "# Feluqa Documentation\n\n> Documentation for Feluqa, a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.\n\n## Guides\n\n- [Feluqa](/get-started/) — product direction, setup, and application development.\n- [Feluqa’s Internals](/feluqa-internals/) — runtime, workspace, and compile-time architecture.\n- [Agents](/agents/) — contribution guidance for AI coding agents.\n- [Learn](/learn/) — practical application tutorials.\n\n## Documentation status\n\nTreat pages marked Exploring as provisional and pages marked Target as planned product direction. Do not describe planned capabilities as implemented.",
+    "llms.txt": "# Feluqa Documentation\n\n> Documentation for Feluqa, a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.\n\n## Guides\n\n- [Feluqa](/get-started/) — product direction, setup, and application development.\n- [Feluqa’s Internals](/internals/) — runtime, workspace, and compile-time architecture.\n- [Agents](/agents/) — contribution guidance for AI coding agents.\n- [Learn](/learn/) — practical application tutorials.\n\n## Documentation status\n\nTreat pages marked Exploring as provisional and pages marked Target as planned product direction. Do not describe planned capabilities as implemented.",
     "humans.txt": "/* TEAM */\nOwner: Numerimondes\nWebsite: https://numerimondes.com\nGitHub: https://github.com/emyassine/base-feluka\n\n/* SITE */\nFeluqa Documentation\nBuilt with VitePress.",
     "robots.txt": "User-agent: *\nAllow: /"
   },
@@ -244,7 +244,7 @@
           {
             "label": "Feluqa’s Internals",
             "description": "Explore runtime, workspace, and compile-time architecture.",
-            "url": "/feluqa-internals/"
+            "url": "/internals/"
           },
           {
             "label": "Agents",
@@ -288,7 +288,7 @@
           {
             "label": "Les internes de Feluqa",
             "description": "Explorer l’architecture du runtime, du workspace et de la compilation.",
-            "url": "/fr/feluqa-internals/"
+            "url": "/fr/internals/"
           },
           {
             "label": "Agents",

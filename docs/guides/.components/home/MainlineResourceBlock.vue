@@ -10,14 +10,16 @@ import word from './assets/logos/word.svg'
 import monday from './assets/logos/monday.svg'
 import drive from './assets/logos/drive.svg'
 import asana from './assets/logos/asana.svg'
+import FeluqaButton from '../FeluqaButton.vue'
 
 defineProps<{
   title: string
   items: Array<{
     title: string
     description: string
-    linkLabel: string
-    href: string
+    linkLabel?: string
+    href?: string
+    icon?: string
     imageAlt?: string
   }>
 }>()
@@ -36,10 +38,10 @@ const featureImages = [graveyardImage, discussionsImage, notificationsImage]
           <article v-for="(item, index) in items.slice(0, 2)" :key="item.title" class="relative flex flex-1 flex-col justify-between px-0 py-6 md:px-6 md:py-8">
             <div class="mb-5 text-balance md:mb-8">
               <h3 class="inline !text-base !leading-6 !font-semibold">{{ item.title }}&nbsp;</h3><span class="text-muted-foreground">{{ item.description }}</span>
-              <a :href="item.href" class="mt-3 inline-flex items-center gap-1 text-sm font-medium !text-foreground !no-underline hover:text-primary">
+              <FeluqaButton v-if="item.href && item.linkLabel" tag="a" :href="item.href" color="gray" outlined size="sm" class="mt-3" icon-position="after">
                 {{ item.linkLabel }}
-                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-              </a>
+                <template #icon><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></template>
+              </FeluqaButton>
             </div>
             <div v-if="index === 0" class="grid grid-cols-1 gap-4">
               <img :src="templateImage" :alt="item.imageAlt" width="495" height="186" class="object-contain object-left-top" />
@@ -70,10 +72,10 @@ const featureImages = [graveyardImage, discussionsImage, notificationsImage]
             <div v-else class="image-container grid flex-1 place-items-center gap-4 md:-translate-y-3">
               <img :src="featureImages[index]" :alt="item.imageAlt" width="320" height="103" class="object-contain object-left-top" />
             </div>
-            <a :href="item.href" class="mt-3 inline-flex items-center gap-1 text-sm font-medium !text-foreground !no-underline hover:text-primary">
+            <FeluqaButton v-if="item.href && item.linkLabel" tag="a" :href="item.href" color="gray" outlined size="sm" class="mt-3" icon-position="after">
               {{ item.linkLabel }}
-              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-            </a>
+              <template #icon><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></template>
+            </FeluqaButton>
             <div v-if="index < 2" class="absolute inset-y-0 right-0 hidden w-px bg-[repeating-linear-gradient(180deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(180deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground md:block"></div>
             <div v-if="index < 2" class="absolute inset-x-0 bottom-0 block h-px bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(90deg,transparent,black_20%,black_80%,transparent)] text-muted-foreground md:hidden"></div>
           </article>

@@ -34,5 +34,5 @@ each target keeps its own runtime profile. Dynamic module installation and
 complete standalone runtime shells are still unfinished.
 
 See [Create your first application](/learn/create-your-first-application) for
-the longer learning path and [Feluqa’s internals](/feluqa-internals/) for
+the longer learning path and [Feluqa’s internals](/internals/) for
 architecture details.

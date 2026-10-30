@@ -103,7 +103,7 @@ them. Contact Feluqa through [GitHub](https://github.com/feluqa/) to discuss
 your idea. Maintainers will work with you on scope, access, and contribution
 terms before work is incorporated. See the
 [Contribution Guide](030-contribution-guide.en.md) for how to get started and
-[Core Contribution](../../feluqa-internals/index.en.md) for engineering
+[Core Contribution](../../internals/index.en.md) for engineering
 guidance. The Feluqa Platform remains proprietary; agreed terms make clear how
 your contribution may be used in proprietary or open-source components.
 

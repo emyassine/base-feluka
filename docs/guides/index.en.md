@@ -13,7 +13,7 @@ layout: home
       primary-label="Get started"
       primary-href="/get-started/"
       secondary-label="Explore the architecture"
-      secondary-href="/feluqa-internals/"
+      secondary-href="/internals/"
       hero-alt="hero"
       :points='[
         { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product." },
@@ -43,7 +43,7 @@ layout: home
       description="Start building, explore platform architecture, or find the contribution guidance that fits your work."
       :items='[
         { title: "Start building", description: "Prepare the toolchain, learn the application structure, and follow practical guides.", image: "triage-card", links: [{ label: "Get started", href: "/get-started/" }, { label: "Learn by building", href: "/learn/" }] },
-        { title: "Understand the platform", description: "Read the product direction, runtime model, compilation approach, and workspace architecture.", image: "cycle-card", links: [{ label: "Product and audience", href: "/get-started/introduction/product-and-audience" }, { label: "Platform internals", href: "/feluqa-internals/" }] },
+        { title: "Understand the platform", description: "Read the product direction, runtime model, compilation approach, and workspace architecture.", image: "cycle-card", links: [{ label: "Product and audience", href: "/get-started/introduction/product-and-audience" }, { label: "Platform internals", href: "/internals/" }] },
         { title: "Contribute", description: "Check the implementation status and contributor rules before changing the framework.", image: "overview-card", links: [{ label: "Agent guidance", href: "/agents/" }, { label: "Contribution guide", href: "/prologue/contribution-guide" }] }
       ]'
     />
@@ -52,10 +52,10 @@ layout: home
       title="A shared foundation, with purpose-built runtimes"
       :items='[
         { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
-        { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/feluqa-internals/" },
+        { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/internals/" },
         { title: "Portable path ownership.", description: "Context roots and portable paths define where an application owns its data.", linkLabel: "Read storage guidance", href: "/storage/storage-backends-and-paths", imageAlt: "Portable path ownership" },
         { title: "A built-in control panel.", description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work.", linkLabel: "Read the panel status", href: "/get-started/frontend/system-panel", imageAlt: "System control panel" },
-        { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/feluqa-internals/", imageAlt: "Local-first application" }
+        { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/internals/", imageAlt: "Local-first application" }
       ]'
     />
 
@@ -71,7 +71,7 @@ layout: home
     show-card-button
     :items='[
       { src: "https://images.unsplash.com/photo-1737071371043-761e02b1ef95?w=1200&q=80&auto=format&fit=max", alt: "Abstract chrome sculpture", title: "Start building", actionLabel: "Get started", subtitle: "Toolchain, app structure, and practical guides.", href: "/get-started/" },
-      { src: "https://images.unsplash.com/photo-1693645325828-62cd35c8da8f?w=1200&q=80&auto=format&fit=max", alt: "A figure in a minimal studio", title: "Platform architecture", actionLabel: "Explore architecture", subtitle: "Product direction, runtimes, and workspace design.", href: "/feluqa-internals/" },
+      { src: "https://images.unsplash.com/photo-1693645325828-62cd35c8da8f?w=1200&q=80&auto=format&fit=max", alt: "A figure in a minimal studio", title: "Platform architecture", actionLabel: "Explore architecture", subtitle: "Product direction, runtimes, and workspace design.", href: "/internals/" },
       { src: "https://images.unsplash.com/photo-1739056238917-d89cd05c48d5?w=1200&q=80&auto=format&fit=max", alt: "A sculptural liquid-metal form", title: "Implementation status", actionLabel: "View implementation", subtitle: "See the current foundations and remaining work.", href: "/agents/" },
       { src: "https://images.unsplash.com/photo-1747191092806-c7da11881986?w=1200&q=80&auto=format&fit=max", alt: "A clay study sculpture", title: "Contribute", actionLabel: "Read contribution guide", subtitle: "Read the contributor guidance before making changes.", href: "/prologue/contribution-guide" },
       { src: "https://images.unsplash.com/photo-1770249196550-ff6c641165cb?w=1200&q=80&auto=format&fit=max", alt: "A chrome humanoid sculpture", title: "Workstation runtime", actionLabel: "Explore workstation apps", subtitle: "Standalone apps with dedicated runtime profiles.", href: "/get-started/" },

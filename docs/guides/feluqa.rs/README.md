@@ -27,7 +27,7 @@ Naming: `[order]-folder/[order]-file.en.md`.
    and the [learning guides](010-get-started/060-learning/010-create-your-first-application.en.md).
 
 Contributors to Feluqa itself can start with the
-[Core Contribution guide](../feluqa-internals/index.en.md).
+[Core Contribution guide](../internals/index.en.md).
 
 AI-agent skills are maintained separately in [`../x-agents/000.index.en.md`](../x-agents/000.index.en.md)
 and are introduced by the Contribution Guide.

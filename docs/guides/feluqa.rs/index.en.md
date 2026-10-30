@@ -18,5 +18,5 @@ Choose a section to continue.
 
 ## Contribute to Feluqa
 
-- [Core contribution](/feluqa-internals/): explore workspaces, runtimes, compile-time guarantees, and contributor rules.
+- [Core contribution](/internals/): explore workspaces, runtimes, compile-time guarantees, and contributor rules.
 - [Prologue](/prologue/release-notes): read the release notes, license, contribution guide, and capabilities overview.
