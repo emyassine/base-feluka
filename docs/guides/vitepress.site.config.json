@@ -54,7 +54,7 @@
   "topbar": {
     "items": [
       {
-        "text": { "en": "Basics", "fr": "Bases" },
+        "text": { "en": "Docs", "fr": "Docs" },
         "items": [
           { "guide": "feluqa.rs" },
           { "guide": "sdui" },
@@ -79,10 +79,10 @@
   "subguides": [
     {
       "path": "feluqa.rs",
-      "label": "Docs",
+      "label": "Basics",
       "labels": {
-        "en": "Docs",
-        "fr": "Docs"
+        "en": "Basics",
+        "fr": "Bases"
       },
       "uri": {
         "base": "/",
