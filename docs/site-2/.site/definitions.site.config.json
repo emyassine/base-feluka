@@ -5,95 +5,91 @@
   },
   "subguides": [
     {
-      "path": "commercial",
-      "label": "Commercial",
-      "labels": {
-        "en": "Commercial",
-        "fr": "Commercial",
-        "es": "Commercial",
-        "ar": "Commercial"
-      },
-      "uri": {
-        "base": "/",
-        "index": "commercial/"
-      }
-    },
-    {
-      "path": "about",
+      "path": "numerimondes.com/000-prologue",
       "label": "About",
       "labels": {
         "en": "About",
-        "fr": "À propos",
-        "es": "Acerca de",
-        "ar": "About"
+        "fr": "À propos"
       },
       "uri": {
         "base": "/about/"
       }
     },
     {
-      "path": "product-docs",
-      "label": "Documentation",
+      "path": "numerimondes.com/010-services",
+      "label": "Services",
       "labels": {
-        "en": "Documentation",
-        "fr": "Documentation",
-        "es": "Documentación",
-        "ar": "Documentation"
+        "en": "Services",
+        "fr": "Services"
+      },
+      "uri": {
+        "base": "/services/"
+      }
+    },
+    {
+      "path": "numerimondes.com/020-numerimondes/000-docs",
+      "label": "Numerimondes Docs",
+      "labels": {
+        "en": "Numerimondes Docs",
+        "fr": "Documentation Numerimondes"
       },
       "uri": {
         "base": "/numerimondes/docs/"
       }
     },
     {
-      "path": "education",
+      "path": "numerimondes.com/030-education",
       "label": "Education",
       "labels": {
         "en": "Education",
-        "fr": "Éducation",
-        "es": "Educación",
-        "ar": "Education"
+        "fr": "Formation"
       },
       "uri": {
         "base": "/education/"
       }
     },
     {
-      "path": "research",
+      "path": "numerimondes.com/040-research",
       "label": "Research",
       "labels": {
         "en": "Research",
-        "fr": "Recherche",
-        "es": "Investigación",
-        "ar": "Research"
+        "fr": "Recherche"
       },
       "uri": {
         "base": "/research/"
       }
     },
     {
-      "path": "community",
+      "path": "numerimondes.com/050-community",
       "label": "Community",
       "labels": {
         "en": "Community",
-        "fr": "Communauté",
-        "es": "Comunidad",
-        "ar": "Community"
+        "fr": "Communauté"
       },
       "uri": {
         "base": "/community/"
       }
     },
     {
-      "path": "partnerships",
+      "path": "numerimondes.com/060-partnerships",
       "label": "Partnerships",
       "labels": {
         "en": "Partnerships",
-        "fr": "Partenariats",
-        "es": "Alianzas",
-        "ar": "Partnerships"
+        "fr": "Partenariats"
       },
       "uri": {
         "base": "/partnerships/"
+      }
+    },
+    {
+      "path": "numerimondes.com",
+      "label": "Numerimondes",
+      "labels": {
+        "en": "Numerimondes",
+        "fr": "Numerimondes"
+      },
+      "uri": {
+        "base": "/"
       }
     }
   ],

@@ -691,6 +691,17 @@ removed from staged names. Language suffixes use `name.<lang>.md`, where the
 current language pattern is `[a-z]{2,3}(-[A-Z]{2})?`; a missing suffix is
 treated as the fallback language. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#cleanDir`
 
+**Recommended source naming.** A guide SHOULD use a stable, site- or
+product-qualified directory name (for example, `feluqa.rs/` or
+`numerimondes.com/`) so ownership is clear in a multi-site workspace. Guide
+sections and nested directories SHOULD use three-digit numeric order prefixes
+such as `000-prologue/` and `010-services/`. Authored Markdown pages SHOULD
+use the same prefix before a descriptive slug and language suffix, such as
+`010-release-notes.en.md`. A directory index MAY use a prefixed index name such
+as `000-index.en.md`; preparation removes the numeric prefix and emits the
+normal `index.md` route. This naming is a recommendation, not a restriction on
+valid SPMPST trees.
+
 Names beginning with `.` and files named `README.md` MUST NOT be published.
 `sidebar.json`, `guide.config.json`, and collection `category.json` are
 metadata, not pages. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#scan`
@@ -719,13 +730,6 @@ indexes and collection pages are emitted from their source locations. The
 current source does not implement a general route-conflict validator; that
 check is **PLANNED**. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`
 
-**Recommended site namespace.** When several sites or product documentation
-sets may share a hostname, a guide's canonical `uri.base` SHOULD begin with
-the owning site's stable public slug (for example, `/numerimondes/docs/`).
-The configured base is the route source of truth; navigation and internal links
-SHOULD point to it rather than maintaining duplicate aliases. This is a
-recommendation for portable route ownership, not a requirement that every
-single-site deployment add a redundant path segment.
 
 ## 9. Languages and fallbacks
 

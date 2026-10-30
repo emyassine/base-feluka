@@ -17,7 +17,7 @@ try {
     const entries = await readdir(directory, { withFileTypes: true })
     const visible = entries.filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md')
     const markdown = visible.filter((entry) => entry.isFile() && extname(entry.name).toLowerCase() === '.md')
-    const hasNonIndexPage = markdown.some((entry) => !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
+    const hasNonIndexPage = markdown.some((entry) => !/^(?:\d+[-.])?index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
     if (hasNonIndexPage && !collection) {
       try { await stat(join(directory, 'sidebar.json')) }
       catch { errors.push(`${relative(layout.treeRoot, directory)}: missing sidebar.json`) }

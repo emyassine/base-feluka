@@ -440,7 +440,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'guide.config.json' && entry.name !== 'sidebar.json'
       && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile))
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
-  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
+  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^(?:\d+[-.])?index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
   try {
     sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
@@ -533,7 +533,7 @@ for (const directory of directories) {
   if (!guide || sourceRelative === guide.path) continue
   const hasPublishedMarkdown = records.some(({ from }) => from.startsWith(`${directory.sourcePath}${sep}`))
   const navigationEntries = directory.entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
-  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
+  const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^(?:\d+[-.])?index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   const outputRelative = relative(outputDirectory, stagedPath(directory.sourcePath)).split(sep).join('/')
   if (hasPublishedMarkdown && !indexOnly && !sidebarConfigurations.has(outputRelative)) {
     throw new Error(`Every documentation subdirectory needs sidebar.json with localized labels: ${join(directory.sourcePath, 'sidebar.json')}`)
