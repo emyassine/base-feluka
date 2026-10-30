@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Mesh, Plane, Program, Renderer, RenderTarget, Texture, Triangle } from 'ogl';
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import CarouselAction from './CarouselAction.vue';
 
 type BendPreset = 'liquid' | 'ribbon' | 'vortex' | 'arch';
 type CurlMode = 'twist' | 'rise' | 'fall';
@@ -416,7 +417,7 @@ const props = withDefaults(defineProps<FlexCarouselProps>(), {
   autoplay: false,
   interval: 4,
   captions: true,
-  captureWheel: true,
+  captureWheel: false,
   className: '',
   clickAction: 'navigate',
   showCardButton: false,
@@ -1288,7 +1289,7 @@ const mountScene = () => {
     }
     const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? height : 1;
     const horizontal = Math.abs(dx) > Math.abs(dy);
-    if (!horizontal && !s.captureWheel) return;
+    if (!horizontal || !s.captureWheel) return;
     e.preventDefault();
     skipIntro();
     interactedAt = performance.now();
@@ -1516,15 +1517,9 @@ watch(modalOpen, (open) => {
 
         <div
           v-if="showCardButton && current?.href"
-          class="absolute bottom-16 left-1/2 -translate-x-1/2 flex justify-center w-full"
+          class="pointer-events-none absolute inset-0 z-10 flex items-end justify-center p-6 sm:p-10"
         >
-          <a
-            :href="current.href"
-            class="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/30 bg-black/45 backdrop-blur-md px-7 py-3 text-sm font-semibold text-white hover:bg-black/60 no-underline shadow-xl transition-all"
-          >
-            {{ cardButtonLabel || current.title }}
-            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-          </a>
+          <CarouselAction class="pointer-events-auto" :href="current.href" :label="cardButtonLabel || current.title || 'Open image'" />
         </div>
       </div>
     </div>
@@ -1543,13 +1538,13 @@ watch(modalOpen, (open) => {
           <button
             v-if="list.length > 1"
             @click="prevModalItem"
-            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
+            class="z-20 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/70 text-white shadow-xl hover:bg-black transition-colors"
             aria-label="Previous image"
           >‹</button>
           <div class="flex-1 flex flex-col items-center gap-4 px-2 text-center">
             <button
               @click="closeModal"
-              class="absolute top-4 right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
+              class="absolute right-0 top-0 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/75 text-white shadow-xl hover:bg-black transition-colors"
               aria-label="Close gallery"
             >×</button>
             <img
@@ -1562,7 +1557,7 @@ watch(modalOpen, (open) => {
             <a
               v-if="modalItem.href"
               :href="modalItem.href"
-              class="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-white px-4 py-2 text-sm font-semibold text-foreground shadow-xl hover:bg-slate-50 no-underline"
+              class="mt-3 inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/25 bg-black/70 px-7 py-3 text-sm font-semibold text-white shadow-xl hover:bg-black no-underline"
             >
               Open page
               <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
@@ -1571,7 +1566,7 @@ watch(modalOpen, (open) => {
           <button
             v-if="list.length > 1"
             @click="nextModalItem"
-            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl hover:bg-gray-100 transition-colors"
+            class="z-20 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/70 text-white shadow-xl hover:bg-black transition-colors"
             aria-label="Next image"
           >›</button>
         </div>
