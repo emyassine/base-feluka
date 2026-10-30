@@ -64,6 +64,11 @@
   background: linear-gradient(180deg, var(--vp-c-bg) 0%, var(--vp-c-bg) 72%, color-mix(in srgb, var(--vp-c-brand-1) 12%, var(--vp-c-bg)) 100%);
 }
 
+.docs-home__rays {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%);
+}
+
 body:has(.docs-home) .VPFooter {
   display: none;
 }

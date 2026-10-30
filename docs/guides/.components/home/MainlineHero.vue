@@ -16,7 +16,7 @@ defineProps<{
 
 <template>
   <section class="relative isolate py-28 lg:py-32 lg:pt-44">
-    <div class="pointer-events-none absolute inset-x-0 top-0 z-0 h-[440px] overflow-hidden md:h-[500px] lg:h-[600px]" aria-hidden="true">
+    <div class="docs-home__rays pointer-events-none absolute inset-x-0 top-0 z-0 h-[440px] overflow-hidden md:h-[500px] lg:h-[600px]" aria-hidden="true">
       <SideRays
         :speed="2.5"
         ray-color1="var(--vp-c-brand-1)"
