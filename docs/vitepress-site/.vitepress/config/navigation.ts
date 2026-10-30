@@ -160,7 +160,7 @@ function iconSource(icon: string, link?: string): string | undefined {
 function itemText(label: string, icon?: string, link?: string): string {
   const source = icon ? iconSource(icon, link) : undefined
   return source
-    ? `<span class="docs-topbar-item"><img class="docs-topbar-icon" src="${escapeHtml(source)}" alt="" aria-hidden="true"><span>${escapeHtml(label)}</span></span>`
+    ? `<span class="docs-topbar-item"><span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span><span>${escapeHtml(label)}</span></span>`
     : escapeHtml(label)
 }
 function navigation(language = defaultLanguage): any[] {

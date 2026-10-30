@@ -9,15 +9,18 @@
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
-  object-fit: contain;
+  background-color: currentColor;
+  mask: var(--docs-topbar-icon-url) center / contain no-repeat;
+  -webkit-mask: var(--docs-topbar-icon-url) center / contain no-repeat;
 }
 
 .docs-language-label img {
   width: 18px;
-  height: 13px;
+  height: 18px;
   flex: 0 0 auto;
-  object-fit: cover;
-  border-radius: 2px;
+  object-fit: contain;
+  background: var(--vp-c-bg);
+  border-radius: 50%;
 }
 
 .docs-language-flags .VPNavBarTranslations .title { display: none; }
