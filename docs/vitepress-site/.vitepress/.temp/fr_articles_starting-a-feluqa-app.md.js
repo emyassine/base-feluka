@@ -1,0 +1,20 @@
+import { ssrRenderAttrs } from "@vue/server-renderer";
+import "./vue.runtime.esm-bundler.PWx5r8ot.js";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+import { useSSRContext } from "@vue/runtime-dom";
+const __pageData = JSON.parse('{"title":"A practical way to start a Feluqa app","description":"A concise starting point for shaping a Feluqa application around a real workflow and a chosen runtime.","frontmatter":{"requestedLanguage":"fr","contentLanguage":"en","languageFallbackNotice":"Cette page n’est pas disponible en Français. La version en anglais est affichée.","sidebarTitle":"Starting an app","title":"A practical way to start a Feluqa app","icon":"square-terminal","description":"A concise starting point for shaping a Feluqa application around a real workflow and a chosen runtime.","summary":"Suggests a brief, use-case-led way to begin a Feluqa application while distinguishing current tools from unfinished target capabilities.","date":"2026-10-30T00:00:00.000Z","lastmod":"2026-10-30T00:00:00.000Z","status":"Implemented","category":"building","tags":["feluqa","application","article"],"collection":"articles","wordCount":159,"readingTime":1,"sidebar":false,"aside":false,"prev":false,"next":false},"headers":[],"relativePath":"fr/articles/starting-a-feluqa-app.md","filePath":"fr/articles/starting-a-feluqa-app.md"}');
+const _sfc_main = { name: "fr/articles/starting-a-feluqa-app.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="a-practical-way-to-start-a-feluqa-app" tabindex="-1">A practical way to start a Feluqa app <a class="header-anchor" href="#a-practical-way-to-start-a-feluqa-app" aria-label="Permalink to &quot;A practical way to start a Feluqa app&quot;">​</a></h1><h2 id="start-with-a-workflow" tabindex="-1">Start with a workflow <a class="header-anchor" href="#start-with-a-workflow" aria-label="Permalink to &quot;Start with a workflow&quot;">​</a></h2><p>There is no single application shape that fits every Feluqa project. Start with the workflow the application should support and the devices that need to use it. That gives the project a concrete target without assuming a runtime in advance.</p><h2 id="use-the-current-scaffold" tabindex="-1">Use the current scaffold <a class="header-anchor" href="#use-the-current-scaffold" aria-label="Permalink to &quot;Use the current scaffold&quot;">​</a></h2><p>For a current web application, <code>feluqa new &lt;name&gt; --profile web</code> creates the available scaffold. Its composition root selects statically compiled Rust modules through <code>feluqa.toml</code>. Keep business operations in services, and enforce authorization on each server action.</p><h2 id="grow-with-the-module-that-owns-the-work" tabindex="-1">Grow with the module that owns the work <a class="header-anchor" href="#grow-with-the-module-that-owns-the-work" aria-label="Permalink to &quot;Grow with the module that owns the work&quot;">​</a></h2><p>As the application grows, keep its routes, data, and behavior with the module that owns them. Shared tooling and contracts can support other targets, while each target keeps its own runtime profile. Dynamic module installation and complete standalone runtime shells are still unfinished.</p><p>See <a href="/fr/learn/get-started/first-application/create-your-first-application">Create your first application</a> for the longer learning path and <a href="/fr/internals/">Feluqa’s internals</a> for architecture details.</p></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("fr/articles/starting-a-feluqa-app.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const startingAFeluqaApp = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  startingAFeluqaApp as default
+};

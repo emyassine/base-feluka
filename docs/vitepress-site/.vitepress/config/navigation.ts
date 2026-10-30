@@ -1,0 +1,221 @@
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { dirname, extname, join, relative, resolve } from 'node:path'
+import { sortNavigationEntries } from '../../scripts/shared/navigation-order.mjs'
+import type { GuideConfig, SiteConfig } from '../types/site-config'
+
+export interface NavigationInputs {
+  site: SiteConfig
+  siteConfig: SiteConfig
+  defaultLanguage: string
+  generatedDirectory: string
+  sidebarMetadata: Record<string, any>
+  sidebarPageIcons: Record<string, string>
+  navigationOrder: Record<string, string>
+  generatedCollections: any[]
+  guideConfigs: Record<string, { path: string; config: GuideConfig }>
+}
+
+export function createNavigation(inputs: NavigationInputs) {
+  const { site, siteConfig, defaultLanguage, generatedDirectory, sidebarMetadata,
+    sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs } = inputs
+// ROUTE AND SIDEBAR MODEL — translate generated Markdown paths into VitePress routes.
+const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
+const defaultSeoLocale = site.languages[0].toLowerCase().split('-')[0]
+const seoSidebarRoots = Object.keys(site.seo?.locales ?? {}).map((language: string) => {
+  const seoPath = site.seo.path ?? 'faq'
+  return (language.toLowerCase() === defaultSeoLocale ? seoPath : `${language}/${seoPath}`).split('/')[0]
+})
+const subguideRootPaths = new Set([...site.subguides.flatMap((guide: { path: string; uri: { index?: string } }) => [
+  routeBase(guide.path).split('/').filter(Boolean)[0],
+  guide.uri.index?.split('/').filter(Boolean)[0],
+]).filter(Boolean), ...generatedCollections.map((collection: { id: string }) => collection.id), ...seoSidebarRoots])
+function publicPagePath(file: string): string {
+  const sourceRelative = relative(generatedDirectory, file).replace(/\\/g, '/')
+  const target = sourceRelative
+  if (target === 'index.md') return '/'
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  return `/${target.replace(/\.md$/, '')}`
+}
+function publicPageUrl(file: string): string {
+  const target = relative(generatedDirectory, file).replace(/\\/g, '/')
+  if (target === 'index.md') return '/'
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  return `/${target.replace(/\.md$/, '')}`
+}
+function directoryLink(directory: string): string {
+  return publicPagePath(join(directory, 'index.md'))
+}
+function hasSourceIndex(directory: string): boolean {
+  const indexKey = relative(generatedDirectory, join(directory, 'index.md')).replace(/\\/g, '/')
+  if (Object.hasOwn(navigationOrder, indexKey)) return true
+  const [first, ...rest] = indexKey.split('/')
+  return rest.length > 0
+    && site.languages.some((language: string) => language.toLowerCase() === first)
+    && Object.hasOwn(navigationOrder, rest.join('/'))
+}
+const assetMime = (assetPath: string) => ({
+  '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
+  '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
+}[extname(assetPath).toLowerCase()] ?? 'application/octet-stream')
+function assetDataUri(configPath: string, assetPath: string): string {
+  if (/^(?:https?:|data:)/i.test(assetPath)) return assetPath
+  const resolvedAsset = resolve(dirname(configPath), assetPath)
+  const data = readFileSync(resolvedAsset).toString('base64')
+  return `data:${assetMime(resolvedAsset)};base64,${data}`
+}
+const primaryGuide = site.subguides[0]
+const primaryGuideConfig = guideConfigs[primaryGuide.path]
+const primaryConfig = primaryGuideConfig.config
+
+function titleOf(file: string): string {
+  const source = readFileSync(file, 'utf8')
+  const title = source.match(/^sidebarTitle:\s*["']?(.+?)["']?\s*$/m)?.[1]
+  if (!title) throw new Error(`Every published Markdown page must define sidebarTitle: ${file}`)
+  return title
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  })[character]!)
+}
+
+function iconTitle(label: string, icon: string): string {
+  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(icon)}')" aria-hidden="true"></span><span>${label}</span></span>`
+}
+
+function groupTitle(path: string, fallback: string, language = defaultLanguage): string {
+  const metadata = sidebarMetadata[path]
+  const label = metadata?.labels?.[language] ?? metadata?.labels?.[defaultLanguage] ?? fallback
+  const escapedLabel = escapeHtml(label)
+  if (!metadata?.icon) return escapedLabel
+  return iconTitle(escapedLabel, metadata.icon)
+}
+
+function pageTitle(file: string): string {
+  const title = escapeHtml(titleOf(file))
+  const icon = sidebarPageIcons[publicPageUrl(file)]
+  if (typeof icon !== 'string' || !icon) throw new Error(`No compiled sidebar icon for ${file}`)
+  return iconTitle(title, icon)
+}
+
+function ordered<T extends { name: string }>(directory: string, entries: T[]): T[] {
+  const sourceNames: Record<string, string> = {}
+  for (const entry of entries) {
+    const key = relative(generatedDirectory, join(directory, entry.name)).replace(/\\/g, '/')
+    sourceNames[entry.name] = navigationOrder[key] ?? entry.name
+  }
+  return sortNavigationEntries(entries, sourceNames)
+}
+
+function sidebar(directory: string, root = directory, language = defaultLanguage): any[] {
+  return ordered(directory, readdirSync(directory, { withFileTypes: true })).flatMap((entry) => {
+    const path = join(directory, entry.name)
+    if (entry.isDirectory()) {
+      if (directory === root && subguideRootPaths.has(entry.name)) return []
+      const childEntries = readdirSync(path, { withFileTypes: true }).filter((child) => !child.name.startsWith('.'))
+      const pageEntries = childEntries.filter((child) => child.isDirectory() || (
+        child.name.endsWith('.md') && (child.name !== 'index.md' || hasSourceIndex(path))
+      ))
+      const onlyPage = pageEntries.length === 1 && !pageEntries[0].isDirectory() && pageEntries[0].name.endsWith('.md')
+      if (onlyPage) {
+        const pagePath = join(path, pageEntries[0].name)
+        return [{ text: pageTitle(pagePath), link: publicPagePath(pagePath) }]
+      }
+      const items = sidebar(path, root, language)
+      const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
+      const fallback = entry.name.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
+      return items.length ? [{
+        text: groupTitle(relativePath, fallback, language),
+        ...(hasSourceIndex(path) ? { link: directoryLink(path) } : {}),
+        collapsed: true,
+        items,
+      }] : []
+    }
+    if (!entry.name.endsWith('.md')) return []
+    if (entry.name === 'index.md') return []
+    if (existsSync(join(directory, entry.name.slice(0, -'.md'.length)))) return []
+    const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
+    return [{ text: pageTitle(path), link: publicPagePath(path) }]
+  })
+}
+
+function navigation(language = defaultLanguage): any[] {
+ const collectionSources = new Set(generatedCollections.map((collection: { sourcePath: string }) => collection.sourcePath))
+ const guideLinks = site.subguides.filter((guide: { path: string }) => !collectionSources.has(guide.path)).map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
+  const uri = guide.uri
+  const base = routeBase(guide.path)
+  const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `/${language}`
+  const link = uri.entry
+    ? `${localePrefix}/${[base, uri.entry].filter(Boolean).join('/')}/`
+    : uri.index && !base
+      ? `${localePrefix}/${uri.index}`
+      : `${localePrefix}/${base}${base ? '/' : ''}`
+  const activeMatch = base
+    ? `^${localePrefix}/${base}(?:/|$)`
+    : `^${localePrefix}/(?!$)(?!(?:${[...site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)), ...generatedCollections.map((collection: { id: string }) => collection.id)].filter(Boolean).join('|')})(?:/|$))`
+  return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
+ })
+ const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => {
+  const link = collection.links[language] ?? collection.links[defaultLanguage]
+  return {
+    text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
+    link,
+    activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+  }
+ })
+ return [...guideLinks, ...collectionLinks]
+}
+function localizedSidebars(language = defaultLanguage): Record<string, any> {
+  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
+  const guideSidebars = Object.fromEntries(site.subguides.flatMap((guide: { path: string; label: string; uri: { entry?: string; index?: string } }) => {
+    const base = routeBase(guide.path)
+    const route = base || guide.uri.entry || guide.uri.index?.replace(/\/$/, '') || ''
+    const routeParts = route.split('/').filter(Boolean)
+    const isRootGuide = !base && Boolean(guide.uri.entry)
+    const directory = isRootGuide
+      ? join(generatedDirectory, prefix)
+      : join(generatedDirectory, prefix, ...routeParts)
+    const items = sidebar(directory, directory, language)
+    const guideIndex = base ? join(directory, 'index.md') : ''
+    const sidebarItems = guideIndex && existsSync(guideIndex) && hasSourceIndex(directory)
+      ? [{ text: escapeHtml(titleOf(guideIndex)), link: publicPagePath(guideIndex), collapsed: false, items }]
+      : items
+    const routes = isRootGuide
+      ? [`/${prefix}`, `/${prefix}${route}/`]
+      : [`/${prefix}${route}${route ? '/' : ''}`]
+    return routes.map((path) => [path, sidebarItems])
+  }))
+  const collectionSidebars = Object.fromEntries(generatedCollections.map((collection: { links: Record<string, string> }) => [collection.links[language] ?? collection.links[defaultLanguage], []]))
+  return { ...guideSidebars, ...collectionSidebars }
+}
+const sidebars = localizedSidebars()
+// LOCALE CONFIG — VitePress locale entries share the generated route/sidebar model.
+const localizedThemeConfig = Object.fromEntries(site.languages
+  .filter((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase())
+  .map((language: string) => [language, {
+    nav: navigation(language),
+    sidebar: localizedSidebars(language),
+    outline: { label: siteConfig.outline.labels[language] ?? siteConfig.outline.labels[defaultLanguage] ?? 'On this page' },
+    footer: siteConfig.footer?.[language] ?? siteConfig.footer?.[defaultLanguage],
+    langMenuLabel: siteConfig.languageMenuLabels?.[language] ?? 'Change language',
+  }]))
+// VitePress merges theme config from `locales[lang].themeConfig`, so translated
+// navigation and sidebars belong on the locale entries, not in `themeConfig.locales`.
+const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => [
+  language.toLowerCase() === defaultLanguage.toLowerCase() ? 'root' : language,
+  {
+    label: site.languageLabels[language],
+    lang: language,
+    ...(language.toLowerCase() === defaultLanguage.toLowerCase()
+      ? {}
+      : { link: `/${language}/`, themeConfig: localizedThemeConfig[language] }),
+  },
+]))
+
+
+  return {
+    navigation, sidebars, localizedThemeConfig, vitepressLocales, routeBase, assetMime,
+    assetDataUri, primaryGuide, primaryGuideConfig, primaryConfig, defaultSeoLocale,
+  }
+}

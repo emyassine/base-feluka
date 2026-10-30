@@ -1,0 +1,227 @@
+import "./vue.runtime.esm-bundler.PWx5r8ot.js";
+import { ssrRenderAttrs, ssrRenderComponent } from "@vue/server-renderer";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+import { resolveComponent, withCtx, createVNode, useSSRContext } from "@vue/runtime-dom";
+const __pageData = JSON.parse('{"title":"","description":"Guides for building applications, understanding the platform, and contributing to its development.","frontmatter":{"requestedLanguage":"fr","contentLanguage":"en","languageFallbackNotice":"Cette page n’est pas disponible en Français. La version en anglais est affichée.","sidebarTitle":"Home","icon":"badge-check","description":"Guides for building applications, understanding the platform, and contributing to its development.","layout":"home","prev":false,"next":false},"headers":[],"relativePath":"fr/index.md","filePath":"fr/index.md"}');
+const _sfc_main = { name: "fr/index.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainlineHomeLayout = resolveComponent("MainlineHomeLayout");
+  const _component_MainlineHero = resolveComponent("MainlineHero");
+  const _component_MainlineLogos = resolveComponent("MainlineLogos");
+  const _component_MainlineGuideBlocks = resolveComponent("MainlineGuideBlocks");
+  const _component_MainlineResourceBlock = resolveComponent("MainlineResourceBlock");
+  const _component_FlexCarousel = resolveComponent("FlexCarousel");
+  const _component_MainlineFaq = resolveComponent("MainlineFaq");
+  const _component_MainlineCta = resolveComponent("MainlineCta");
+  _push(`<div${ssrRenderAttrs(_attrs)}>`);
+  _push(ssrRenderComponent(_component_MainlineHomeLayout, null, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_MainlineHero, {
+          title: "One platform for every application target.",
+          lead: "A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes.",
+          "primary-label": "Get started",
+          "primary-href": "/get-started/",
+          "secondary-label": "Explore the architecture",
+          "secondary-href": "/internals/",
+          "hero-alt": "hero",
+          points: [
+            { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product." },
+            { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles." },
+            { title: "Current implementation", description: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished." }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_MainlineLogos, {
+          title: "Powering the world's best product teams.",
+          subtitle: "From next-gen startups to established enterprises.",
+          companies: [
+            { name: "Mercury", logo: "mercury", width: 143, height: 26, href: "https://mercury.com" },
+            { name: "Watershed", logo: "watershed", width: 154, height: 31, href: "https://watershed.com" },
+            { name: "Retool", logo: "retool", width: 113, height: 22, href: "https://retool.com" },
+            { name: "Descript", logo: "descript", width: 112, height: 27, href: "https://descript.com" },
+            { name: "Perplexity", logo: "perplexity", width: 141, height: 32, href: "https://perplexity.com" },
+            { name: "Monzo", logo: "monzo", width: 104, height: 18, href: "https://monzo.com" },
+            { name: "Ramp", logo: "ramp", width: 105, height: 28, href: "https://ramp.com" },
+            { name: "Raycast", logo: "raycast", width: 128, height: 33, href: "https://raycast.com" },
+            { name: "Arc", logo: "arc", width: 90, height: 28, href: "https://arc.com" }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_MainlineGuideBlocks, {
+          title: "Find your way through the guides",
+          description: "Start building, explore platform architecture, or find the contribution guidance that fits your work.",
+          items: [
+            { title: "Start building", description: "Prepare the toolchain, learn the application structure, and follow practical guides.", image: "triage-card", links: [{ label: "Get started", href: "/get-started/" }, { label: "Learn by building", href: "/learn/" }] },
+            { title: "Understand the platform", description: "Read the product direction, runtime model, compilation approach, and workspace architecture.", image: "cycle-card", links: [{ label: "Product and audience", href: "/get-started/introduction/product-and-audience" }, { label: "Platform internals", href: "/internals/" }] },
+            { title: "Contribute", description: "Check the implementation status and contributor rules before changing the framework.", image: "overview-card", links: [{ label: "Agent guidance", href: "/agents/" }, { label: "Contribution guide", href: "/prologue/contribution-guide" }] }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_MainlineResourceBlock, {
+          title: "A shared foundation, with purpose-built runtimes",
+          items: [
+            { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
+            { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/internals/" },
+            { title: "Portable path ownership.", description: "Context roots and portable paths define where an application owns its data.", linkLabel: "Read storage guidance", href: "/storage/storage-backends-and-paths", imageAlt: "Portable path ownership" },
+            { title: "A built-in control panel.", description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work.", linkLabel: "Read the panel status", href: "/get-started/frontend/system-panel", imageAlt: "System control panel" },
+            { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/internals/", imageAlt: "Local-first application" }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_FlexCarousel, {
+          title: "Explore Feluqa",
+          description: "Follow practical guides, understand the platform direction, and check what is implemented today.",
+          preset: "ribbon",
+          "card-height": 0.46,
+          gap: 16,
+          autoplay: "",
+          dispersion: 0.7,
+          "click-action": "modal",
+          "show-card-button": "",
+          items: [
+            { src: "https://images.unsplash.com/photo-1737071371043-761e02b1ef95?w=1200&q=80&auto=format&fit=max", alt: "Abstract chrome sculpture", title: "Start building", actionLabel: "Get started", subtitle: "Toolchain, app structure, and practical guides.", href: "/get-started/" },
+            { src: "https://images.unsplash.com/photo-1693645325828-62cd35c8da8f?w=1200&q=80&auto=format&fit=max", alt: "A figure in a minimal studio", title: "Platform architecture", actionLabel: "Explore architecture", subtitle: "Product direction, runtimes, and workspace design.", href: "/internals/" },
+            { src: "https://images.unsplash.com/photo-1739056238917-d89cd05c48d5?w=1200&q=80&auto=format&fit=max", alt: "A sculptural liquid-metal form", title: "Implementation status", actionLabel: "View implementation", subtitle: "See the current foundations and remaining work.", href: "/agents/" },
+            { src: "https://images.unsplash.com/photo-1747191092806-c7da11881986?w=1200&q=80&auto=format&fit=max", alt: "A clay study sculpture", title: "Contribute", actionLabel: "Read contribution guide", subtitle: "Read the contributor guidance before making changes.", href: "/prologue/contribution-guide" },
+            { src: "https://images.unsplash.com/photo-1770249196550-ff6c641165cb?w=1200&q=80&auto=format&fit=max", alt: "A chrome humanoid sculpture", title: "Workstation runtime", actionLabel: "Explore workstation apps", subtitle: "Standalone apps with dedicated runtime profiles.", href: "/get-started/" },
+            { src: "https://images.unsplash.com/photo-1787181875088-087d612262a7?w=1200&q=80&auto=format&fit=max", alt: "A black textured sculpture with an opening at its center", title: "System Control Panel", actionLabel: "Explore the control panel", subtitle: "Manage modules and context roots from the built-in panel.", href: "/get-started/frontend/system-panel" }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_MainlineFaq, {
+          title: "Ask your Questions",
+          lead: "Read the guides for implementation details and the current status of the work.",
+          items: [
+            { question: "What is Feluqa?", answer: "A proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development." },
+            { question: "Where should I start?", answer: "Start with Get started to understand the product direction, prepare an environment, and follow the application guides." },
+            { question: "Is the complete platform available today?", answer: "No. Selected framework foundations are implemented; dynamic module installation, complete runtime shells, and several product capabilities remain unfinished." }
+          ]
+        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_MainlineCta, {
+          title: "Build with the current foundations",
+          description: "Follow the guides, check what is implemented, and help move the framework forward.",
+          "action-label": "Read the contribution guide",
+          "action-href": "/prologue/contribution-guide",
+          navigation: [
+            { name: "Product", href: "/#feature-modern-teams" },
+            { name: "About Us", href: "https://numerimondes.com", external: true },
+            { name: "Pricing", href: "https://numerimondes.com", external: true },
+            { name: "FAQ", href: "/faq" },
+            { name: "Contact", href: "https://numerimondes.com", external: true },
+            { name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
+            { name: "LinkedIn", href: "#", external: true }
+          ],
+          "legal-label": "Privacy Policy",
+          "legal-href": "https://numerimondes.com",
+          "logo-alt": "Feluqa"
+        }, null, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_MainlineHero, {
+            title: "One platform for every application target.",
+            lead: "A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes.",
+            "primary-label": "Get started",
+            "primary-href": "/get-started/",
+            "secondary-label": "Explore the architecture",
+            "secondary-href": "/internals/",
+            "hero-alt": "hero",
+            points: [
+              { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product." },
+              { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles." },
+              { title: "Current implementation", description: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished." }
+            ]
+          }),
+          createVNode(_component_MainlineLogos, {
+            title: "Powering the world's best product teams.",
+            subtitle: "From next-gen startups to established enterprises.",
+            companies: [
+              { name: "Mercury", logo: "mercury", width: 143, height: 26, href: "https://mercury.com" },
+              { name: "Watershed", logo: "watershed", width: 154, height: 31, href: "https://watershed.com" },
+              { name: "Retool", logo: "retool", width: 113, height: 22, href: "https://retool.com" },
+              { name: "Descript", logo: "descript", width: 112, height: 27, href: "https://descript.com" },
+              { name: "Perplexity", logo: "perplexity", width: 141, height: 32, href: "https://perplexity.com" },
+              { name: "Monzo", logo: "monzo", width: 104, height: 18, href: "https://monzo.com" },
+              { name: "Ramp", logo: "ramp", width: 105, height: 28, href: "https://ramp.com" },
+              { name: "Raycast", logo: "raycast", width: 128, height: 33, href: "https://raycast.com" },
+              { name: "Arc", logo: "arc", width: 90, height: 28, href: "https://arc.com" }
+            ]
+          }),
+          createVNode(_component_MainlineGuideBlocks, {
+            title: "Find your way through the guides",
+            description: "Start building, explore platform architecture, or find the contribution guidance that fits your work.",
+            items: [
+              { title: "Start building", description: "Prepare the toolchain, learn the application structure, and follow practical guides.", image: "triage-card", links: [{ label: "Get started", href: "/get-started/" }, { label: "Learn by building", href: "/learn/" }] },
+              { title: "Understand the platform", description: "Read the product direction, runtime model, compilation approach, and workspace architecture.", image: "cycle-card", links: [{ label: "Product and audience", href: "/get-started/introduction/product-and-audience" }, { label: "Platform internals", href: "/internals/" }] },
+              { title: "Contribute", description: "Check the implementation status and contributor rules before changing the framework.", image: "overview-card", links: [{ label: "Agent guidance", href: "/agents/" }, { label: "Contribution guide", href: "/prologue/contribution-guide" }] }
+            ]
+          }),
+          createVNode(_component_MainlineResourceBlock, {
+            title: "A shared foundation, with purpose-built runtimes",
+            items: [
+              { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
+              { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/internals/" },
+              { title: "Portable path ownership.", description: "Context roots and portable paths define where an application owns its data.", linkLabel: "Read storage guidance", href: "/storage/storage-backends-and-paths", imageAlt: "Portable path ownership" },
+              { title: "A built-in control panel.", description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work.", linkLabel: "Read the panel status", href: "/get-started/frontend/system-panel", imageAlt: "System control panel" },
+              { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/internals/", imageAlt: "Local-first application" }
+            ]
+          }),
+          createVNode(_component_FlexCarousel, {
+            title: "Explore Feluqa",
+            description: "Follow practical guides, understand the platform direction, and check what is implemented today.",
+            preset: "ribbon",
+            "card-height": 0.46,
+            gap: 16,
+            autoplay: "",
+            dispersion: 0.7,
+            "click-action": "modal",
+            "show-card-button": "",
+            items: [
+              { src: "https://images.unsplash.com/photo-1737071371043-761e02b1ef95?w=1200&q=80&auto=format&fit=max", alt: "Abstract chrome sculpture", title: "Start building", actionLabel: "Get started", subtitle: "Toolchain, app structure, and practical guides.", href: "/get-started/" },
+              { src: "https://images.unsplash.com/photo-1693645325828-62cd35c8da8f?w=1200&q=80&auto=format&fit=max", alt: "A figure in a minimal studio", title: "Platform architecture", actionLabel: "Explore architecture", subtitle: "Product direction, runtimes, and workspace design.", href: "/internals/" },
+              { src: "https://images.unsplash.com/photo-1739056238917-d89cd05c48d5?w=1200&q=80&auto=format&fit=max", alt: "A sculptural liquid-metal form", title: "Implementation status", actionLabel: "View implementation", subtitle: "See the current foundations and remaining work.", href: "/agents/" },
+              { src: "https://images.unsplash.com/photo-1747191092806-c7da11881986?w=1200&q=80&auto=format&fit=max", alt: "A clay study sculpture", title: "Contribute", actionLabel: "Read contribution guide", subtitle: "Read the contributor guidance before making changes.", href: "/prologue/contribution-guide" },
+              { src: "https://images.unsplash.com/photo-1770249196550-ff6c641165cb?w=1200&q=80&auto=format&fit=max", alt: "A chrome humanoid sculpture", title: "Workstation runtime", actionLabel: "Explore workstation apps", subtitle: "Standalone apps with dedicated runtime profiles.", href: "/get-started/" },
+              { src: "https://images.unsplash.com/photo-1787181875088-087d612262a7?w=1200&q=80&auto=format&fit=max", alt: "A black textured sculpture with an opening at its center", title: "System Control Panel", actionLabel: "Explore the control panel", subtitle: "Manage modules and context roots from the built-in panel.", href: "/get-started/frontend/system-panel" }
+            ]
+          }),
+          createVNode(_component_MainlineFaq, {
+            title: "Ask your Questions",
+            lead: "Read the guides for implementation details and the current status of the work.",
+            items: [
+              { question: "What is Feluqa?", answer: "A proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development." },
+              { question: "Where should I start?", answer: "Start with Get started to understand the product direction, prepare an environment, and follow the application guides." },
+              { question: "Is the complete platform available today?", answer: "No. Selected framework foundations are implemented; dynamic module installation, complete runtime shells, and several product capabilities remain unfinished." }
+            ]
+          }),
+          createVNode(_component_MainlineCta, {
+            title: "Build with the current foundations",
+            description: "Follow the guides, check what is implemented, and help move the framework forward.",
+            "action-label": "Read the contribution guide",
+            "action-href": "/prologue/contribution-guide",
+            navigation: [
+              { name: "Product", href: "/#feature-modern-teams" },
+              { name: "About Us", href: "https://numerimondes.com", external: true },
+              { name: "Pricing", href: "https://numerimondes.com", external: true },
+              { name: "FAQ", href: "/faq" },
+              { name: "Contact", href: "https://numerimondes.com", external: true },
+              { name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
+              { name: "LinkedIn", href: "#", external: true }
+            ],
+            "legal-label": "Privacy Policy",
+            "legal-href": "https://numerimondes.com",
+            "logo-alt": "Feluqa"
+          })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("fr/index.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  index as default
+};

@@ -9,6 +9,7 @@ VitePress adapter, build tools, and generated outputs. `build.sh`, `serve.sh`,
 ```text
 .vitepress/       VitePress discovery entry, theme, generated metadata, config parts
 config/           Vite and CSS processor configuration
+.vitepress/config/ config source port, Node adapter, navigation and SEO/head providers
 scripts/
   preparation/    pipeline orchestrator plus source and content stages
   dev/            source watcher and incremental preparation
@@ -22,6 +23,12 @@ The root is reserved for runnable commands, package metadata, notices and this
 guide. Preparation lives in `scripts/preparation/`; the watcher lives in
 `scripts/dev/watch.mjs`. Put new implementation files in the directory that
 owns their job.
+
+`.vitepress/config/site.ts` is the composition root. It selects the Node
+configuration source and generated SEO hook, then supplies them to navigation
+and page-head builders. Those builders receive explicit inputs; they do not
+read process-wide files or construct their own dependencies. A generic IoC
+container is unnecessary for this static VitePress config.
 
 ## Pipeline
 
