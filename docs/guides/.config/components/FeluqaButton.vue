@@ -143,7 +143,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: transform .2s cubic-bezier(.2,.75,.25,1), background-color .18s, color .18s, border-color .18s, opacity .18s, box-shadow .2s ease;
+  transition: background-color .18s, color .18s, border-color .18s, opacity .18s, box-shadow .2s ease;
 }
 .feluqa-button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
 .feluqa-button.has-text-color { color: var(--button-text)!important; }
@@ -181,9 +181,8 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   mask-composite: exclude;
 }
 .feluqa-button > span { position: relative; z-index: 1; }
-.feluqa-button:hover:not(:disabled):not(.is-disabled) { transform: translateY(-1px) scale(1.015); box-shadow: 0 5px 16px rgb(0 0 0 / .18); }
+.feluqa-button:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 5px 16px rgb(0 0 0 / .18); }
 .feluqa-button.is-hovered::after { filter: drop-shadow(0 0 3px var(--button-line)); }
-.feluqa-button:active:not(:disabled):not(.is-disabled) { transform: translateY(0) scale(.985); }
 .feluqa-button.is-hovered.is-auto-animated::after { opacity: var(--button-intensity); }
 .size-xs { min-height: 1.75rem; padding: .35rem .55rem; font-size: .75rem; }
 .size-sm { min-height: 2rem; padding: .45rem .75rem; font-size: .8125rem; }
@@ -204,7 +203,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .button-badge { border-radius: 999px; padding: .2rem .4rem; font-size: .7em; background: rgb(255 255 255 / .2); }
 .is-disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
-  .feluqa-button { transition: none; transform: none!important; }
+  .feluqa-button { transition: none; }
   .feluqa-button.is-hovered.is-auto-animated::after { opacity: 0; filter: none; }
 }
 </style>
