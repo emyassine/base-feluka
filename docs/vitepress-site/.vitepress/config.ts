@@ -325,15 +325,15 @@ export default defineConfig({
     const fonts = { ...generatedFonts.site, ...(guide ? generatedFonts.guides[guide.path] : {}) }
     const fontFaces: string[] = []
     const fontDeclarations: string[] = []
-    for (const role of ['body', 'code']) {
+    for (const role of ['body', 'heading', 'code']) {
       const font = fonts[role]
       if (!font) continue
       const family = JSON.stringify(font.family)
       const fallback = font.fallback
-      const property = role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono'
+      const property = role === 'body' ? '--vp-font-family-base' : role === 'heading' ? '--vp-font-family-heading' : '--vp-font-family-mono'
       fontDeclarations.push(`${property}: ${family}, ${fallback};`)
       if (font.src) {
-        fontFaces.push(`@font-face { font-family: ${family}; src: url(${JSON.stringify(font.src)}) format('woff2'); font-style: ${font.style}; font-weight: ${font.weight}; font-display: swap; }`)
+        fontFaces.push(`@font-face { font-family: ${family}; src: url(${JSON.stringify(font.src)}) format('${font.format}'); font-style: ${font.style}; font-weight: ${font.weight}; font-display: swap; }`)
       }
     }
     if (fontDeclarations.length || fontFaces.length) {

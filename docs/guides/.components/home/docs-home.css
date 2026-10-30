@@ -1,13 +1,17 @@
 .docs-home {
   color: var(--vp-c-text-1);
-  font-family: 'Mainline Inter', Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--vp-font-family-base);
   width: 100%;
 }
 
 .docs-home h1,
 .docs-home h2,
 .docs-home .font-display {
-  font-family: 'Mainline DM Sans', 'DM Sans', Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
+}
+
+.docs-home .docs-home__hero-title {
+  font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
 }
 
 .docs-home h1,

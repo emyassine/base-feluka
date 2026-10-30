@@ -286,14 +286,14 @@ const MermaidLayout = {
       const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }
       const fonts = { ...fontConfig.site, ...(fontConfig.guides[pathGuide] ?? {}) }
       const fontRules: string[] = []
-      for (const role of ['body', 'code']) {
-        root.style.removeProperty(role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono')
+      for (const role of ['body', 'heading', 'code']) {
+        const property = role === 'body' ? '--vp-font-family-base' : role === 'heading' ? '--vp-font-family-heading' : '--vp-font-family-mono'
+        root.style.removeProperty(property)
         const font = fonts[role]
         if (!font) continue
         const family = JSON.stringify(font.family)
-        const property = role === 'body' ? '--vp-font-family-base' : '--vp-font-family-mono'
         root.style.setProperty(property, `${family}, ${font.fallback}`)
-        if (font.src) fontRules.push(`@font-face{font-family:${family};src:url(${JSON.stringify(font.src)}) format('woff2');font-style:${font.style};font-weight:${font.weight};font-display:swap}`)
+        if (font.src) fontRules.push(`@font-face{font-family:${family};src:url(${JSON.stringify(font.src)}) format('${font.format}');font-style:${font.style};font-weight:${font.weight};font-display:swap}`)
       }
       let fontStyle = document.getElementById('configured-fonts')
       if (!fontStyle) {

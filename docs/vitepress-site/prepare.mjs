@@ -465,7 +465,7 @@ async function prepareFonts(fonts, configPath) {
     throw new Error(`fonts must be an object in ${configPath}`)
   }
   const prepared = {}
-  for (const role of ['body', 'code']) {
+  for (const role of ['body', 'heading', 'code']) {
     const font = fonts[role]
     if (font == null) continue
     if (typeof font !== 'object' || Array.isArray(font)) {
@@ -475,8 +475,8 @@ async function prepareFonts(fonts, configPath) {
     if (typeof family !== 'string' || !/^[\p{L}\p{N} _-]+$/u.test(family.trim())) {
       throw new Error(`fonts.${role}.family must be a plain font family name in ${configPath}`)
     }
-    if (src != null && (typeof src !== 'string' || extname(src).toLowerCase() !== '.woff2')) {
-      throw new Error(`fonts.${role}.src must be a relative WOFF2 path in ${configPath}`)
+    if (src != null && (typeof src !== 'string' || !['.woff2', '.ttf', '.otf'].includes(extname(src).toLowerCase()))) {
+      throw new Error(`fonts.${role}.src must be a relative WOFF2, TTF, or OTF path in ${configPath}`)
     }
     if (!(typeof weight === 'number' && weight >= 1 && weight <= 1000) && !(typeof weight === 'string' && /^\d{1,4}(?:\s+\d{1,4})?$/.test(weight))) {
       throw new Error(`fonts.${role}.weight must be a number or range such as "400 700" in ${configPath}`)
@@ -491,13 +491,14 @@ async function prepareFonts(fonts, configPath) {
     prepared[role] = {
       family: family.trim(),
       src: source ? `/${await copyAsset(source)}` : null,
+      format: source ? ({ '.woff2': 'woff2', '.ttf': 'truetype', '.otf': 'opentype' }[extname(source).toLowerCase()]) : null,
       weight: String(weight),
       style,
-      fallback: fallback ?? (role === 'body' ? 'ui-sans-serif, system-ui, sans-serif' : 'ui-monospace, monospace'),
+      fallback: fallback ?? (role === 'code' ? 'ui-monospace, monospace' : 'ui-sans-serif, system-ui, sans-serif'),
     }
   }
   for (const role of Object.keys(fonts)) {
-    if (!['body', 'code'].includes(role)) throw new Error(`Unknown font role fonts.${role} in ${configPath}; use body or code`)
+    if (!['body', 'heading', 'code'].includes(role)) throw new Error(`Unknown font role fonts.${role} in ${configPath}; use body, heading, or code`)
   }
   return prepared
 }

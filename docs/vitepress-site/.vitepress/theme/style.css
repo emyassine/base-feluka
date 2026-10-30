@@ -361,3 +361,14 @@
   object-fit: contain;
   object-position: left center;
 }
+/* Optional site-wide heading family configured with fonts.heading. */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4,
+.vp-doc h5,
+.vp-doc h6,
+.VPHero .name,
+.VPHero .text {
+  font-family: var(--vp-font-family-heading, inherit);
+}

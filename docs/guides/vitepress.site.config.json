@@ -8,6 +8,11 @@
       "family": "Manrope",
       "src": ".art/fonts/manrope-latin.woff2",
       "weight": "200 800"
+    },
+    "heading": {
+      "family": "DM Sans",
+      "src": ".components/home/assets/fonts/DM-Sans-Variable.ttf",
+      "weight": "100 1000"
     }
   },
   "styles": [
