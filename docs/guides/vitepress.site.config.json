@@ -47,10 +47,10 @@
   "subguides": [
     {
       "path": "feluqa.rs",
-      "label": "Feluqa",
+      "label": "Docs",
       "labels": {
-        "en": "Feluqa",
-        "fr": "Feluqa"
+        "en": "Docs",
+        "fr": "Docs"
       },
       "uri": {
         "base": "/",
