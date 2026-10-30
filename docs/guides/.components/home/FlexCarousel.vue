@@ -1556,14 +1556,12 @@ watch(modalOpen, (open) => {
             />
             <h3 class="text-xl font-bold text-white">{{ modalItem.title }}</h3>
             <p v-if="modalItem.subtitle" class="text-slate-300 text-sm leading-relaxed max-w-md">{{ modalItem.subtitle }}</p>
-            <a
+            <CarouselAction
               v-if="modalItem.href"
               :href="modalItem.href"
-              class="mt-3 inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/25 bg-black/70 px-7 py-3 text-sm font-semibold text-white shadow-xl hover:bg-black no-underline"
-            >
-              Open page
-              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
-            </a>
+              class="mt-3"
+              :label="modalItem.actionLabel || cardButtonLabel || 'Discover'"
+            />
           </div>
           <button
             v-if="list.length > 1"
