@@ -1,0 +1,35 @@
+---
+sidebarTitle: "Home"
+icon: "badge-check"
+description: Feluqa developer documentation for applications, modules, and platform contributors.
+layout: home
+hero:
+  name: Feluqa
+  text: Build applications with one platform
+  tagline: Guides for building, extending, and contributing to Feluqa.
+  image:
+    src: ./feluqa.rs/.art/feluqa-docs-hero.svg
+    alt: Feluqa platform modules connected through a shared foundation
+  actions:
+    - theme: brand
+      text: Get started
+      link: /get-started/
+    - theme: alt
+      text: Feluqa’s Internals
+      link: /feluqa-internals/
+features:
+  - icon: 📘
+    title: Get started
+    details: Learn the Feluqa product model, prepare a development environment, and build an application.
+  - icon: 🧩
+    title: Build with modules
+    details: Explore application structure, panels, resources, storage, and deployment.
+  - icon: 🛠️
+    title: Contribute to Feluqa
+    details: Read the workspace, runtime, compilation, and contributor guides.
+  - icon: 🌱
+    title: Learn
+    details: Follow hands-on tutorials from your first application to a local service.
+    link: /learn/
+    linkText: Open learning guides
+---

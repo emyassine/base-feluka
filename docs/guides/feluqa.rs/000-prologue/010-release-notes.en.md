@@ -57,9 +57,9 @@ is not necessarily the latest stable Rust version.
 
 ## Current Development Baseline
 
-Feluqa is currently at `0.2.0`, and its development compiler baseline is
-Rust `1.88`. This documentation line covers package versions `<=1.0.0`. Cargo's
-package `version` field stores one exact version; a range belongs in a
-dependency requirement, not in that field. These development values are not a
-published release or a support commitment. The release cadence, verified
-release-wide MSRV, and support periods remain to be established.
+Feluqa is currently at `0.2.0`, and its development compiler baseline is Rust `1.88`.
+
+- This documentation line covers package versions `<=1.0.0`.
+- Cargo's package `version` field stores one exact version; a range belongs in a dependency requirement, not in that field. These development values are not a published release or a support commitment.
+
+The release cadence, verified release-wide MSRV, and support periods remain to be established.

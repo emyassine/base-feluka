@@ -1,1 +1,26 @@
-Still lacks collections (articles, research)
+Still lacks collections (articles, research).
+
+Reference to review: [Scalar](https://www.shadcnblocks.com/template/scalar) is an excellent article layout.
+
+Collection support should be declared in `vitepress.site.config.json`, so each documentation site can opt into collections such as articles or research:
+
+```json
+{
+  "collections": [
+    { "id": "collection-1-id", "path": "path-1/" },
+    { "id": "collection-2-id", "path": "path-2/" }
+  ]
+}
+```
+
+Collection folders should own their metadata files, such as `category.json`, alongside their content. Keep the site generator agnostic: a site opts into collections through its config, while collection metadata and content stay in the configured folders. This is a design note only; implementation is pending while template research continues.
+
+## Visual and implementation references
+
+- [Vite landing hero source](https://github.com/vitejs/vite/blob/main/docs/.vitepress/theme/landing/Hero.vue): two-column VitePress/Vue hero, install-command tabs, original Rive animation, clear paired actions. Reuse the original source/assets only if selected; do not recreate the animation or its styling.
+- [Vite aside sponsors source](https://github.com/vitejs/vite/blob/main/docs/.vitepress/theme/components/AsideSponsors.vue): ViteConf callout and sponsor block, populated through a composable and `VPDocAsideSponsors`. Reference for a compact sidebar promo block.
+- [Vue.js site](https://vuejs.org/) and [Vue docs source](https://github.com/vuejs/docs): inspect the official VitePress theme and reusable layout patterns as further references.
+- [Scalar](https://www.shadcnblocks.com/template/scalar): preferred article/research visual reference. It is a paid Next.js/Astro template; its Astro edition uses Astro content collections and Markdown/MDX. Visual reference only until licensing/source and exact porting scope are approved.
+- [Mainline](https://www.shadcnblocks.com/template/mainline): preferred home visual reference. Use original source as the basis and preserve its markup/layout, CSS, JS, and components during any Vue port; never reconstruct them.
+
+These are research references only. No implementation has been authorized yet; continue collecting references before choosing and porting blocks.
