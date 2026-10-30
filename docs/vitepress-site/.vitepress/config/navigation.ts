@@ -141,33 +141,59 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
 }
 
 function navigation(language = defaultLanguage): any[] {
- const collectionSources = new Set(generatedCollections.map((collection: { sourcePath: string }) => collection.sourcePath))
- const guideLinks = site.subguides.filter((guide: { path: string }) => !collectionSources.has(guide.path)).map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
-  const uri = guide.uri
-  const base = routeBase(guide.path)
-  const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `/${language}`
-  const link = uri.entry
-    ? `${localePrefix}/${[base, uri.entry].filter(Boolean).join('/')}/`
-    : uri.index && !base
-      ? `${localePrefix}/${uri.index}`
-      : `${localePrefix}/${base}${base ? '/' : ''}`
-  const activeMatch = base
-    ? `^${localePrefix}/${base}(?:/|$)`
-    : `^${localePrefix}/(?!$)(?!(?:${[...site.subguides.filter((other: { path: string; uri: { base: string } }) => other.path !== guide.path).map((other: { uri: { base: string } }) => routeBase(other.path)), ...generatedCollections.map((collection: { id: string }) => collection.id)].filter(Boolean).join('|')})(?:/|$))`
-  return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
- })
- const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => {
-  const link = collection.links[language] ?? collection.links[defaultLanguage]
-  return {
-    text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
-    link,
-    activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+  const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase()
+    ? (site.topbar?.language?.prefixDefaultLanguage ? `/${language}` : '')
+    : `/${language}`
+  const guideLink = (path: string) => {
+    const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
+    if (!guide) throw new Error(`topbar references unknown subguide: ${path}`)
+    const base = routeBase(path)
+    const link = guide.uri.entry
+      ? `${localePrefix}/${[base, guide.uri.entry].filter(Boolean).join('/')}/`
+      : guide.uri.index && !base
+        ? `${localePrefix}/${guide.uri.index}`
+        : `${localePrefix}/${base}${base ? '/' : ''}`
+    const otherRoots = [
+      ...site.subguides.filter((other: { path: string }) => other.path !== path).map((other: { path: string }) => routeBase(other.path)),
+      ...generatedCollections.map((collection: { id: string }) => collection.id),
+    ].filter(Boolean)
+    const activeMatch = base
+      ? `^${localePrefix}/${base}(?:/|$)`
+      : `^${localePrefix}/(?!$)(?!(?:${otherRoots.join('|')})(?:/|$))`
+    return { text: guide.labels?.[language] ?? guide.label, link, activeMatch }
   }
- })
- return [...guideLinks, ...collectionLinks]
+  const collectionLink = (id: string) => {
+    const collection = generatedCollections.find((entry: { id: string }) => entry.id === id)
+    if (!collection) throw new Error(`topbar references unknown collection: ${id}`)
+    const link = collection.links[language] ?? collection.links[defaultLanguage]
+    return {
+      text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
+      link,
+      activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+    }
+  }
+  const localize = (value: string | Record<string, string> | undefined) =>
+    typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
+  const resolveItem = (item: any): any => {
+    if (item.guide) return guideLink(item.guide)
+    if (item.collection) return collectionLink(item.collection)
+    return {
+      ...(localize(item.text) ? { text: localize(item.text) } : {}),
+      ...(item.link ? { link: item.link } : {}),
+      ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
+      ...(item.target ? { target: item.target } : {}),
+      ...(item.rel ? { rel: item.rel } : {}),
+      ...(item.items ? { items: item.items.map(resolveItem) } : {}),
+    }
+  }
+  const configuredItems = site.topbar?.items
+    ?? [...site.subguides.map((guide: { path: string }) => ({ guide: guide.path })), ...generatedCollections.map((collection: { id: string }) => ({ collection: collection.id }))]
+  return configuredItems.map(resolveItem)
 }
 function localizedSidebars(language = defaultLanguage): Record<string, any> {
-  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
+  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase()
+    ? (site.topbar?.language?.prefixDefaultLanguage ? `${language}/` : '')
+    : `${language}/`
   const guideSidebars = Object.fromEntries(site.subguides.flatMap((guide: { path: string; label: string; uri: { entry?: string; index?: string } }) => {
     const base = routeBase(guide.path)
     const route = base || guide.uri.entry || guide.uri.index?.replace(/\/$/, '') || ''
@@ -192,7 +218,7 @@ function localizedSidebars(language = defaultLanguage): Record<string, any> {
 const sidebars = localizedSidebars()
 // LOCALE CONFIG — VitePress locale entries share the generated route/sidebar model.
 const localizedThemeConfig = Object.fromEntries(site.languages
-  .filter((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase())
+  .filter((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase() || site.topbar?.language?.prefixDefaultLanguage)
   .map((language: string) => [language, {
     nav: navigation(language),
     sidebar: localizedSidebars(language),
@@ -202,16 +228,19 @@ const localizedThemeConfig = Object.fromEntries(site.languages
   }]))
 // VitePress merges theme config from `locales[lang].themeConfig`, so translated
 // navigation and sidebars belong on the locale entries, not in `themeConfig.locales`.
-const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => [
-  language.toLowerCase() === defaultLanguage.toLowerCase() ? 'root' : language,
-  {
-    label: site.languageLabels[language],
+const showLanguageSelector = site.topbar?.language?.showSelector ?? true
+const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => {
+  const isDefaultLanguage = language.toLowerCase() === defaultLanguage.toLowerCase()
+  if (isDefaultLanguage && !site.topbar?.language?.prefixDefaultLanguage) {
+    return ['root', { label: showLanguageSelector ? site.languageLabels[language] : '', lang: language }]
+  }
+  return [language, {
+    label: showLanguageSelector ? site.languageLabels[language] : '',
     lang: language,
-    ...(language.toLowerCase() === defaultLanguage.toLowerCase()
-      ? {}
-      : { link: `/${language}/`, themeConfig: localizedThemeConfig[language] }),
-  },
-]))
+    link: `/${language}/`,
+    themeConfig: localizedThemeConfig[language],
+  }]
+}))
 
 
   return {

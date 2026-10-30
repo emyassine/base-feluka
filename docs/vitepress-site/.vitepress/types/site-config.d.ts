@@ -23,6 +23,7 @@ export interface SiteConfig {
     darkMessageTextColor?: string
   }
   theme?: { slots?: Record<string, string | null> }
+  topbar?: TopbarConfig
   subguides: SubguideConfig[]
   languages: string[]
   fallbackLanguage?: string
@@ -40,6 +41,24 @@ export interface SiteConfig {
   documentationNotices?: Record<string, unknown>
   seo?: SeoConfig
 }
+
+export interface TopbarConfig {
+  items?: TopbarItem[]
+  language?: { showSelector?: boolean; prefixDefaultLanguage?: boolean }
+  theme?: 'switch' | 'system' | 'light' | 'dark'
+}
+
+export type TopbarItem =
+  | { guide: string }
+  | { collection: string }
+  | {
+      text?: LocalizedText
+      link?: string
+      activeMatch?: string
+      target?: string
+      rel?: string
+      items?: TopbarItem[]
+    }
 
 export interface SubguideConfig {
   path: string

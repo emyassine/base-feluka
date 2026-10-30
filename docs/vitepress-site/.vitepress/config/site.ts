@@ -43,7 +43,9 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   })
   return defineConfig({
   title: siteConfig.site.name,
+  lang: defaultLanguage,
   locales: vitepressLocales,
+  appearance: ({ switch: true, system: 'force-auto', light: false, dark: 'force-dark' } as const)[siteConfig.topbar?.theme ?? 'switch'],
   head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
   srcDir: '.generated-guides',
   outDir: outputDirectory,

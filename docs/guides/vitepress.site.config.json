@@ -51,6 +51,31 @@
       "nav-bar-content-after": "CollectionArticleSubnav"
     }
   },
+  "topbar": {
+    "items": [
+    {
+      "text": { "en": "Docs", "fr": "Docs" },
+      "items": [
+     	{ "guide": "feluqa.rs" },
+       { "guide": "sdui" },
+       { "guide": "internals" },
+       { "guide": "x-agents" },
+      ]
+    },
+      {
+        "text": { "en": "Explore", "fr": "Explorer" },
+        "items": [
+          { "guide": "learn" },
+          { "collection": "articles" }
+        ]
+      }
+    ],
+    "language": {
+      "showSelector": true,
+      "prefixDefaultLanguage": false
+    },
+    "theme": "switch"
+  },
   "subguides": [
     {
       "path": "feluqa.rs",

@@ -21,6 +21,7 @@ export async function prepareContent(ctx) {
     siteThemeSlots,
     themeSlots,
     defaultLanguage,
+    prefixDefaultLanguage,
     projectConfig,
     projectDirectories,
     findIcon,
@@ -214,7 +215,7 @@ for (const collection of collectionMetadata.values()) {
   const localizedTitles = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))]))
   const localizedDescriptions = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.description ?? collection.metadata.description, language)]))
   const links = Object.fromEntries(config.languages.map((language) => {
-    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
+    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? '' : `${language}/`
     return [language, `/${localePrefix}${collection.id}/`]
   }))
   const categoriesByLanguage = Object.fromEntries(config.languages.map((language) => [language, collection.categoryEntries.map((category) => ({
@@ -250,7 +251,7 @@ for (const collection of collectionMetadata.values()) {
       })
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
-    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? [] : [language]
+    const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [language]
     const targetDirectory = join(outputDirectory, ...localePrefix, collection.id)
     const target = join(targetDirectory, 'index.md')
     if (records.some((record) => resolve(record.to) === resolve(target))) {

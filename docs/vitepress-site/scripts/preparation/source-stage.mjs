@@ -93,6 +93,47 @@ if (!Array.isArray(config.languages) || !config.languages.length || config.langu
 }
 const defaultLanguage = config.fallbackLanguage ?? config.languages[0]
 if (!config.languages.includes(defaultLanguage)) throw new Error('fallbackLanguage must be listed in languages')
+const topbar = config.topbar ?? {}
+if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in vitepress.site.config.json')
+if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].includes(topbar.theme)) {
+  throw new Error('topbar.theme must be switch, system, light, or dark')
+}
+if (topbar.language != null && (typeof topbar.language !== 'object' || Array.isArray(topbar.language))) {
+  throw new Error('topbar.language must be an object')
+}
+for (const key of ['showSelector', 'prefixDefaultLanguage']) {
+  if (topbar.language?.[key] !== undefined && typeof topbar.language[key] !== 'boolean') {
+    throw new Error(`topbar.language.${key} must be a boolean`)
+  }
+}
+const prefixDefaultLanguage = topbar.language?.prefixDefaultLanguage ?? false
+const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.path))
+const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
+function validateTopbarItems(items, location = 'topbar.items') {
+  if (!Array.isArray(items)) throw new Error(`${location} must be an array`)
+  for (const [index, item] of items.entries()) {
+    const itemLocation = `${location}[${index}]`
+    if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
+    if ('guide' in item) {
+      if (Object.keys(item).length !== 1 || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      continue
+    }
+    if ('collection' in item) {
+      if (Object.keys(item).length !== 1 || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
+      continue
+    }
+    if (item.text !== undefined && typeof item.text !== 'string' && (!item.text || typeof item.text !== 'object' || Array.isArray(item.text))) {
+      throw new Error(`${itemLocation}.text must be text or an object of translated text`)
+    }
+    if (item.items !== undefined) {
+      if (item.link !== undefined) throw new Error(`${itemLocation} cannot have both link and items; a dropdown title is a button`)
+      validateTopbarItems(item.items, `${itemLocation}.items`)
+    } else if (typeof item.link !== 'string' || !item.link.trim()) {
+      throw new Error(`${itemLocation} must reference a guide or collection, define a link, or contain dropdown items`)
+    }
+  }
+}
+if (topbar.items !== undefined) validateTopbarItems(topbar.items)
 for (const language of config.languages) {
   if (typeof config.languageLabels?.[language] !== 'string' || !config.languageLabels[language].trim()) {
     throw new Error(`languageLabels.${language} must be a non-empty string`)
@@ -306,7 +347,7 @@ function stagedPath(sourcePath, language = null) {
   const sourceRelative = relative(sourceRoot, sourcePath).split(sep).join('/')
   const isMarkdown = sourcePath.toLowerCase().endsWith('.md')
   const locale = (language ?? (isMarkdown ? sourceLanguage(sourcePath) : defaultLanguage)).toLowerCase()
-  const localePrefix = locale === defaultLanguage.toLowerCase() ? [] : [locale]
+  const localePrefix = locale === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [locale]
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   const collection = collections.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
   if (collection) {
@@ -430,7 +471,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     navigationOrder[orderPath] = entry.name
     if (entry.isDirectory()) {
       for (const language of config.languages) {
-        if (language.toLowerCase() === defaultLanguage.toLowerCase()) continue
+        if (language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage) continue
         navigationOrder[`${language}/${orderPath}`] = entry.name
       }
     }
@@ -470,6 +511,14 @@ if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 await scan(sourceRoot, outputDirectory)
 for (const collection of collections) await scan(sourceRoot, outputDirectory, collection.sourceDirectory, join(outputDirectory, collection.id))
+if (prefixDefaultLanguage) {
+  const localizedIndex = join(outputDirectory, defaultLanguage.toLowerCase(), 'index.md')
+  const rootIndex = join(outputDirectory, 'index.md')
+  try { await access(localizedIndex) }
+  catch { throw new Error(`Default-language index was not generated at ${localizedIndex}`) }
+  await copyIfChanged(localizedIndex, rootIndex)
+  generatedFiles.add(rootIndex)
+}
 for (const directory of directories) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')
   const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
@@ -498,6 +547,6 @@ for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
 
 
   return {
-    configDirectory, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, diagramsCached, diagramsRendered
+    configDirectory, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, diagramsCached, diagramsRendered
   }
 }

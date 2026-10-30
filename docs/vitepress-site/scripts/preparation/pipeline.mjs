@@ -55,6 +55,7 @@ const {
   routeMap,
   generatedFiles,
   navigationOrder,
+  prefixDefaultLanguage,
   sidebarConfigurations,
   sidebarIconSources,
   sidebarPageIcons,
@@ -90,7 +91,8 @@ const {
 } = contentState
 
 const configuredIndex = resolve(configDirectory, config.indexPath)
-if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== join(outputDirectory, 'index.md')) {
+const configuredIndexOutput = join(outputDirectory, ...(prefixDefaultLanguage ? [defaultLanguage.toLowerCase()] : []), 'index.md')
+if (!routeMap.has(configuredIndex) || routeMap.get(configuredIndex) !== configuredIndexOutput) {
   throw new Error(`indexPath must point to the guides root index, which is compiled to index.md: ${config.indexPath}`)
 }
 let activeRenderers = 0
@@ -414,7 +416,7 @@ const foreignRootKeys = new Set([
   ...collections.map((collection) => collection.id),
   ...Object.keys(config.seo?.locales ?? {}).map((language) => {
     const seoPath = config.seo.path ?? 'faq'
-    return (language.toLowerCase() === defaultLanguage.toLowerCase().split('-')[0] ? seoPath : `${language}/${seoPath}`).split('/')[0]
+    return (language.toLowerCase() === defaultLanguage.toLowerCase().split('-')[0] && !prefixDefaultLanguage ? seoPath : `${language}/${seoPath}`).split('/')[0]
   }),
 ])
 
@@ -429,7 +431,7 @@ async function orderedPageEntries(directory) {
 }
 
 async function readingOrder(guide, language) {
-  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? [] : [language.toLowerCase()]
+  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [language.toLowerCase()]
   const root = join(outputDirectory, ...prefix, ...routeRoot(guide))
   const order = []
   const add = (file) => { if (generatedMarkdown.has(file)) order.push(file) }
@@ -468,7 +470,7 @@ function pagerTarget(file) {
 
 const pagedFiles = new Set()
 for (const language of config.languages) {
-  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? [] : [language.toLowerCase()]
+  const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() && !prefixDefaultLanguage ? [] : [language.toLowerCase()]
   for (const guide of config.subguides) {
     const order = await readingOrder(guide, language)
     if (!order.length) continue

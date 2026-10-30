@@ -33,7 +33,9 @@ export function createTransformHead(dependencies: HeadDependencies) {
   return function transformHead({ page, pageData, title, description }: HeadTransformInput): unknown[][] {
     // HEAD ADAPTER — per-guide favicon, SEO, structured data, colors, and font faces.
     const pageParts = page.replace(/^\/+/, '').split('/')
-    const normalizedPage = site.languages.some((language: string) => language.toLowerCase() !== defaultLanguage.toLowerCase() && language.toLowerCase() === pageParts[0].toLowerCase())
+    const normalizedPage = site.languages.some((language: string) =>
+      (language.toLowerCase() !== defaultLanguage.toLowerCase() || siteConfig.topbar?.language?.prefixDefaultLanguage)
+      && language.toLowerCase() === pageParts[0].toLowerCase())
       ? pageParts.slice(1).join('/')
       : pageParts.join('/')
     const guide = site.subguides.find((entry: { path: string }) => {
