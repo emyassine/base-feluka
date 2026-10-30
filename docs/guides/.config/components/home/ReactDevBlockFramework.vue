@@ -140,10 +140,12 @@ function replaceCodeSnippet(root: ReactDevHtmlNode, source: string): void {
   if (!block || block.code.type !== 'element') return
   if (block.pre?.type === 'element' && typeof block.pre.attrs.class === 'string') {
     block.pre.attrs.class = block.pre.attrs.class.replace(/sp-(?:javascript|jsx|typescript|tsx|html|json|css)(?=\s|$)/, 'sp-rust')
+    block.pre.attrs.style = 'display:block;box-sizing:border-box;min-height:216px;overflow:auto'
   }
+  block.code.attrs.style = 'display:block;box-sizing:border-box;min-height:216px;width:max-content;min-width:100%;white-space:pre;color:var(--sp-syntax-color-plain,currentColor)'
   const lines = source.replace(/\n$/, '').split('\n')
   block.code.children = lines.map((line) => ({
-    type: 'element', tag: 'div', attrs: { class: 'cm-line' },
+    type: 'element', tag: 'div', attrs: { class: 'cm-line', style: 'display:block;min-height:24px;line-height:24px;white-space:pre' },
     children: line ? [{ type: 'element', tag: 'span', attrs: { class: 'sp-syntax-plain' }, children: [{ type: 'text', value: line }] }] : [{ type: 'element', tag: 'br', attrs: {}, children: [] }],
   }))
 }
