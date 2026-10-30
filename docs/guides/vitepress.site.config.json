@@ -60,10 +60,10 @@
     },
     {
       "path": "internals",
-      "label": "Feluqa’s Internals",
+      "label": "SDK",
       "labels": {
-        "en": "Feluqa’s Internals",
-        "fr": "Les internes de Feluqa"
+        "en": "SDK",
+        "fr": "SDK"
       },
       "uri": {
         "base": "/internals/",
@@ -78,7 +78,8 @@
         "fr": "Agents"
       },
       "uri": {
-        "base": "/agents/"
+        "base": "/agents/",
+        "entry": "get-started"
       }
     },
     {
@@ -89,7 +90,8 @@
         "fr": "Apprendre"
       },
       "uri": {
-        "base": "/learn/"
+        "base": "/learn/",
+        "entry": "get-started"
       }
     }
   ],

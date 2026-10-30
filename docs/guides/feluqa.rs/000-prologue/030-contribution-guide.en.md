@@ -28,7 +28,7 @@ Maintainers will work with you on scope and implementation, arrange access,
 and agree the terms for your contribution before incorporating it. Read
 [Build with Feluqa](020-licence.en.md) for the licensing model and contribution
 terms. For source-level engineering guidance, see
-[Core Contribution](../../internals/get-started/000-internals-overview.en.md).
+[Core Contribution](../../internals/get-started/010-overview/010-internals-overview.en.md).
 
 Organisations interested in building a Product or contributing to Feluqa's
 developer tools (SDK) with their own engineering team can also use the contact
@@ -48,12 +48,12 @@ options.
   existing failures.
 
 The source-level engineering rules are collected in the
-[Core Contribution](../../internals/get-started/000-internals-overview.en.md) section.
+[Core Contribution](../../internals/get-started/010-overview/010-internals-overview.en.md) section.
 These published guides provide contributors with an entry point to that work.
 
 ## Skills for AI agents
 
-Feluqa also maintains [`x-agents`](../../x-agents/000.index.en.md), a collection
+Feluqa also maintains [`x-agents`](../../x-agents/010-get-started/000-agents-overview.en.md), a collection
 of skills for AI agents working with Feluqa. Skills provide reusable,
 task-specific workflows. They supplement the relevant contribution and
 technical guides; they do not replace the applicable engineering rules.

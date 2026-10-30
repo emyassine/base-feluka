@@ -50,7 +50,7 @@ so readers can tell the difference.
 - [Architecture overview](040-architecture-overview.en.md): see how source code,
   modules, build artifacts, runtime components, and deployment targets fit
   together.
-- [Create your first application](/learn/create-your-first-application): see
+- [Create your first application](/learn/get-started/create-your-first-application): see
   the planned path from project setup to a useful running application.
 
 ## Continue reading

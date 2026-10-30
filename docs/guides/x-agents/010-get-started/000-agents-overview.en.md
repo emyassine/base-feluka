@@ -1,0 +1,63 @@
+---
+sidebarTitle: "Agents"
+icon: "bot"
+title: "AI Agent Skills"
+description: "An index of reusable skills for AI agents contributing to Feluqa."
+summary: "Introduces reusable skills for AI agents working on Feluqa, explains how they relate to project instructions and product guides, and lists the documentation-writing skill. It also defines a portable, gitignored `.x-agents/` directory at the root of a documentation working area for local rules and planning notes."
+date: 2026-10-29
+lastmod: 2026-10-29
+weight: 0
+status: "Exploring"
+tags: [feluqa, agents, skills]
+draft: true
+author:
+  name: "El Moumen Yassine"
+  url: "https://numerimondes.com"
+  linkedin: "https://www.linkedin.com/in/elmoumenyassine"
+  email: "yassine@numerimondes.com"
+---
+# AI Agent Skills
+
+This guide collects reusable skills for AI agents working on Feluqa. Each
+skill describes a focused workflow for a recurring task, such as changing
+documentation or validating a subsystem.
+
+Skills supplement applicable project instructions and relevant product or
+technical guides. They do not override those instructions, change the
+implementation status of a feature, or replace required review and validation.
+
+## Local documentation rules
+
+An agent may keep local rules, working notes, and planning documents in a
+`.x-agents/` directory at the root of its working area:
+
+```text
+<working-area-root>/.x-agents/RULES.md
+<working-area-root>/.x-agents/<other-local-file-or-folder>/
+```
+
+For example, the working root for this guide collection is
+`docs/guides/feluqa.rs/`, so its local agent material belongs in
+`docs/guides/feluqa.rs/.x-agents/`. Put shared local conventions in
+`RULES.md`; use additional portable Markdown files for focused rules, working
+notes, and plans. Add the path to the working repository's `.gitignore` so
+these local files are not committed or published as guide pages. Keep canonical,
+reader-facing product and technical guidance in the published documentation
+tree. Follow the project owner's instructions when material is intended to be
+shared.
+
+## Documentation for the published site
+
+Write documentation as standalone site content. Do not link to local source
+files using relative paths; refer instead to files distributed with source
+code or to product resources, and describe unavailable resources as planned.
+
+## Available skills
+
+- [Writing Published Feluqa Documentation](030-skills/010-writing-docs.en.md): preserve
+  product intent, use the canonical taxonomy, keep site content independent of
+  local source files, and distinguish product direction from delivered behavior.
+
+Add a skill when a task has a repeatable workflow that benefits from dedicated
+instructions; keep general project rules in `AGENTS.md` and link to them
+instead of copying them into every skill.
