@@ -421,7 +421,7 @@ const props = withDefaults(defineProps<FlexCarouselProps>(), {
   className: '',
   clickAction: 'navigate',
   showCardButton: false,
-  cardButtonLabel: 'Open image'
+  cardButtonLabel: ''
 });
 
 const emit = defineEmits<{
