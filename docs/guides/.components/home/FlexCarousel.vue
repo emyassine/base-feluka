@@ -57,6 +57,9 @@ interface FlexCarouselProps {
   captions?: boolean;
   captureWheel?: boolean;
   className?: string;
+  clickAction?: 'navigate' | 'modal';
+  showCardButton?: boolean;
+  cardButtonLabel?: string;
 }
 
 interface Settings extends PresetValues {
@@ -414,7 +417,10 @@ const props = withDefaults(defineProps<FlexCarouselProps>(), {
   interval: 4,
   captions: true,
   captureWheel: true,
-  className: ''
+  className: '',
+  clickAction: 'navigate',
+  showCardButton: false,
+  cardButtonLabel: 'Open image'
 });
 
 const emit = defineEmits<{
@@ -426,6 +432,8 @@ const containerRef = ref<HTMLDivElement | null>(null);
 const active = ref(0);
 const revealed = ref(false);
 const focusOpen = ref(false);
+const modalOpen = ref(false);
+const modalIndex = ref(0);
 
 const list = computed(() => (props.items && props.items.length ? props.items : DEFAULT_ITEMS));
 const itemsKey = computed(() => list.value.map(item => item.src).join('|'));
@@ -459,7 +467,7 @@ watch(
       liquid: pick('liquid'),
       followCursor: pick('followCursor'),
       squeeze: props.squeeze,
-      focusOnClick: props.focusOnClick,
+      focusOnClick: props.focusOnClick && !props.showCardButton,
       autoplay: props.autoplay,
       interval: props.interval,
       captureWheel: props.captureWheel
@@ -1136,6 +1144,8 @@ const mountScene = () => {
 
   const onPointerDown = (e: PointerEvent) => {
     if (e.button !== undefined && e.button > 0) return;
+    const target = e.target;
+    if (target !== container && target !== canvas) return;
     skipIntro();
     const [x, y] = localPoint(e);
     pointer.down = true;
@@ -1199,6 +1209,8 @@ const mountScene = () => {
 
   const onPointerUp = (e: PointerEvent) => {
     if (!pointer.down || e.pointerId !== pointer.id) return;
+    const target = e.target;
+    if (target !== container && target !== canvas) return;
     pointer.down = false;
     container.removeAttribute('data-dragging');
     const s = settings;
@@ -1225,10 +1237,16 @@ const mountScene = () => {
     const [x, y] = localPoint(e);
     const hit = instances.find(inst => x >= inst.x0 && x <= inst.x1 && y >= inst.y0 && y <= inst.y1);
     const selectedItem = hit ? list.value[hit.index] : undefined;
-    if (selectedItem?.href) {
+    if (selectedItem) {
       emit('select', hit.index, selectedItem);
-      window.location.assign(selectedItem.href);
-      return;
+      if (props.clickAction === 'modal') {
+        openModal(hit.index);
+        return;
+      }
+      if (selectedItem.href) {
+        window.location.assign(selectedItem.href);
+        return;
+      }
     }
     if (closeFocus() || !hit) return;
     if (hit.index === activeIndex && Math.abs(goal - pos) < 2) {
@@ -1313,9 +1331,15 @@ const mountScene = () => {
       if (activeIndex < 0) return;
       const selectedItem = list.value[activeIndex];
       emit('select', activeIndex, selectedItem);
-      if (selectedItem?.href) {
-        window.location.assign(selectedItem.href);
-        return;
+      if (selectedItem) {
+        if (props.clickAction === 'modal') {
+          openModal(activeIndex);
+          return;
+        }
+        if (selectedItem.href) {
+          window.location.assign(selectedItem.href);
+          return;
+        }
       }
       if (closeFocus()) return;
       if (s.focusOnClick) openFocus(activeIndex);
@@ -1394,10 +1418,54 @@ const label = computed(() =>
   current.value ? current.value.title || current.value.alt || `Image ${active.value + 1}` : ''
 );
 const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 50}%`);
+
+const modalItem = computed(() => list.value[modalIndex.value] || list.value[0]);
+
+const openModal = (index = active.value) => {
+  modalIndex.value = ((index % list.value.length) + list.value.length) % list.value.length;
+  modalOpen.value = true;
+};
+const closeModal = () => {
+  modalOpen.value = false;
+};
+const prevModalItem = () => {
+  modalIndex.value = (modalIndex.value - 1 + list.value.length) % list.value.length;
+};
+const nextModalItem = () => {
+  modalIndex.value = (modalIndex.value + 1) % list.value.length;
+};
+
+const performAction = (index = active.value) => {
+  const item = list.value[index];
+  if (!item) return;
+  emit('select', index, item);
+  if (props.clickAction === 'modal') {
+    openModal(index);
+    return;
+  }
+  if (item.href) {
+    window.location.assign(item.href);
+  }
+};
+
+let docKeyListener: ((e: KeyboardEvent) => void) | null = null;
+watch(modalOpen, (open) => {
+  if (open) {
+    docKeyListener = (e) => {
+      if (e.key === 'Escape') closeModal();
+      else if (e.key === 'ArrowLeft') prevModalItem();
+      else if (e.key === 'ArrowRight') nextModalItem();
+    };
+    document.addEventListener('keydown', docKeyListener);
+  } else if (docKeyListener) {
+    document.removeEventListener('keydown', docKeyListener);
+    docKeyListener = null;
+  }
+});
 </script>
 
 <template>
-  <section class="w-full overflow-hidden py-28 lg:py-32">
+  <section class="w-full py-28 lg:py-32">
     <div class="container">
       <div class="space-y-4">
         <h2 v-if="title" class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
@@ -1415,7 +1483,7 @@ const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 5
     <div class="relative mt-8 w-full md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative h-[420px] w-full overflow-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:h-[500px]"
+        class="relative h-[560px] w-full outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:h-[700px]"
         :class="className"
         :style="{ '--flex-carousel-half': half }"
         role="region"
@@ -1435,6 +1503,14 @@ const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 5
             {{ current.title || current.alt }}
             <span v-if="current.subtitle" class="opacity-60 font-normal">{{ current.subtitle }}</span>
           </span>
+          <button
+            v-if="showCardButton && current?.href"
+            @click.stop="performAction()"
+            class="mt-4 inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium shadow-md !text-foreground !no-underline hover:bg-background/80"
+          >
+            {{ cardButtonLabel }}
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+          </button>
           <span
             class="inline-flex items-center gap-[3px] opacity-50 data-[hidden]:opacity-0 tabular-nums text-[12px] leading-none transition-opacity duration-[400ms]"
             :data-hidden="focusOpen ? '' : undefined"
@@ -1447,6 +1523,55 @@ const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 5
         <div class="sr-only" aria-live="polite" aria-atomic="true">{{ `${label}, ${active + 1} of ${list.length}` }}</div>
       </div>
     </div>
+
+    <teleport to="body">
+      <div
+        v-if="modalOpen && modalItem"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+        @click.self="closeModal"
+        aria-modal="true"
+        role="dialog"
+        aria-label="Image gallery"
+      >
+        <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" aria-hidden="true" />
+        <div class="relative z-10 flex w-full max-w-3xl items-center gap-4">
+          <button
+            v-if="list.length > 1"
+            @click="prevModalItem"
+            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+            aria-label="Previous image"
+          >‹</button>
+          <div class="flex-1 flex flex-col items-center gap-4 px-2 text-center">
+            <button
+              @click="closeModal"
+              class="absolute top-4 right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+              aria-label="Close gallery"
+            >×</button>
+            <img
+              :src="modalItem.src"
+              :alt="modalItem.alt || ''"
+              class="w-full max-w-md max-h-[70vh] rounded-2xl border border-white/10 bg-white/5 shadow-2xl object-contain animate-[flex-carousel-modal-fade_500ms_ease_both]"
+            />
+            <h3 class="text-xl font-bold text-white">{{ modalItem.title }}</h3>
+            <p v-if="modalItem.subtitle" class="text-slate-300 text-sm leading-relaxed max-w-md">{{ modalItem.subtitle }}</p>
+            <a
+              v-if="modalItem.href"
+              :href="modalItem.href"
+              class="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-white px-4 py-2 text-sm font-semibold text-foreground shadow-xl hover:bg-slate-50 no-underline"
+            >
+              Open page
+              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            </a>
+          </div>
+          <button
+            v-if="list.length > 1"
+            @click="nextModalItem"
+            class="z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl hover:bg-white transition-colors"
+            aria-label="Next image"
+          >›</button>
+        </div>
+      </div>
+    </teleport>
   </section>
 </template>
 
@@ -1467,6 +1592,16 @@ const half = computed(() => `${Math.min(Math.max(props.cardHeight, 0.05), 1) * 5
   }
   to {
     opacity: 1;
+  }
+}
+@keyframes flex-carousel-modal-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 </style>
