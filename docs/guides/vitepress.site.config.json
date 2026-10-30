@@ -23,6 +23,12 @@
   "indexPath": "index.en.md",
   "outputDir": "../build",
   "collections": [
+    {
+      "id": "articles",
+      "path": "articles",
+      "title": { "en": "Articles", "fr": "Articles" },
+      "description": { "en": "Short articles about building with Feluqa.", "fr": "Articles courts sur la création avec Feluqa." }
+    }
   ],
   "project": {
     "components": ".components",

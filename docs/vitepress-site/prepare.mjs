@@ -617,7 +617,8 @@ for (const collection of collectionMetadata.values()) {
     const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
     return [language, `/${localePrefix}${collection.id}/`]
   }))
-  generatedCollectionNavigation.push({ id: collection.id, path: collection.path, sourcePath: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links })
+  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links, articles: {} }
+  generatedCollectionNavigation.push(collectionRecord)
   const title = localizedTitles[defaultLanguage]
   for (const language of config.languages) {
     const localizedArticles = new Map()
@@ -643,6 +644,7 @@ for (const collection of collectionMetadata.values()) {
         return { title: articleTitle, description, date, category, url: publicMarkdownLink(target) }
       })
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
+    collectionRecord.articles[language] = articles
     const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? [] : [language]
     const targetDirectory = join(outputDirectory, ...localePrefix, collection.id)
     const target = join(targetDirectory, 'index.md')

@@ -1,0 +1,10 @@
+{
+  "title": { "en": "Articles", "fr": "Articles" },
+  "description": {
+    "en": "Short, standalone articles about building with Feluqa.",
+    "fr": "Articles courts et autonomes sur la création avec Feluqa."
+  },
+  "categories": [
+    { "id": "building", "label": { "en": "Building apps", "fr": "Créer des applications" } }
+  ]
+}
