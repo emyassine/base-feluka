@@ -56,18 +56,44 @@ does not promise that every battery is finished or replaceable yet.
 
 ### Application and runtime foundation
 
-<VPTeamMembers size="small" :members="foundation" />
+<div class="feluqa-components-grid">
+  <SpotlightCard v-for="component in foundation" :key="component.name" class="feluqa-component-card">
+    <img class="feluqa-component-card__icon" :src="component.avatar" alt="" aria-hidden="true" />
+    <div class="feluqa-component-card__heading">
+      <h3>{{ component.name }}</h3>
+    </div>
+    <p class="feluqa-component-card__description">{{ component.desc }}</p>
+    <span class="feluqa-component-card__status">{{ component.title }}</span>
+  </SpotlightCard>
+</div>
 
 ### Platform and data services
 
-<VPTeamMembers size="small" :members="platform" />
+<div class="feluqa-components-grid">
+  <SpotlightCard v-for="component in platform" :key="component.name" class="feluqa-component-card">
+    <img class="feluqa-component-card__icon" :src="component.avatar" alt="" aria-hidden="true" />
+    <div class="feluqa-component-card__heading">
+      <h3>{{ component.name }}</h3>
+    </div>
+    <p class="feluqa-component-card__description">{{ component.desc }}</p>
+    <span class="feluqa-component-card__status">{{ component.title }}</span>
+  </SpotlightCard>
+</div>
 
 ### Development, extension, and operations
 
-<VPTeamMembers size="small" :members="operations" />
+<div class="feluqa-components-grid">
+  <SpotlightCard v-for="component in operations" :key="component.name" class="feluqa-component-card">
+    <img class="feluqa-component-card__icon" :src="component.avatar" alt="" aria-hidden="true" />
+    <div class="feluqa-component-card__heading">
+      <h3>{{ component.name }}</h3>
+    </div>
+    <p class="feluqa-component-card__description">{{ component.desc }}</p>
+    <span class="feluqa-component-card__status">{{ component.title }}</span>
+  </SpotlightCard>
+</div>
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
 import applicationIcon from '../art/batteries-included/code-xml.svg'
 import asyncIcon from '../art/batteries-included/timer.svg'
 import webIcon from '../art/batteries-included/server-cog.svg'

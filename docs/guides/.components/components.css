@@ -1,0 +1,113 @@
+.spotlight-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--vp-c-text-1) 9%, transparent);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  background: var(--vp-c-bg-soft);
+  transition: border-color 240ms ease, background-color 240ms ease, transform 240ms ease;
+}
+
+html.dark .spotlight-card {
+  border-color: rgba(205, 226, 210, 0.09);
+  background: #101510;
+}
+
+.spotlight-card:hover {
+  border-color: color-mix(in srgb, #4ade80 36%, var(--vp-c-divider));
+  transform: translateY(-2px);
+}
+
+.spotlight-card__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 350ms ease;
+}
+
+.spotlight-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  height: 100%;
+}
+
+.feluqa-components-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 3rem;
+}
+
+.feluqa-component-card {
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+html.dark .feluqa-component-card {
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.015);
+}
+
+.feluqa-component-card__icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-bottom: 0.75rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.feluqa-component-card__heading {
+  width: 100%;
+}
+
+.feluqa-component-card__heading h3 {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  color: var(--vp-c-text-1);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.feluqa-component-card__status {
+  display: block;
+  margin-top: auto;
+  padding-top: 1.25rem;
+  color: color-mix(in srgb, #4ade80 70%, var(--vp-c-text-2));
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.feluqa-component-card__description {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 680px) {
+  .feluqa-components-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .feluqa-component-card {
+    min-height: 15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .spotlight-card {
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+  }
+}
