@@ -111,7 +111,6 @@ const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } a
         :data-active="hasActive(item) || undefined"
         @click="toggle(index)"
       >
-        <span v-if="item.icon" class="branched-menu-icon" :style="iconStyle(item.icon)" aria-hidden="true" />
         <span>{{ item.label }}</span>
       </button>
       <button
@@ -136,7 +135,6 @@ const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } a
             :data-active="hasActive(child) || undefined"
             @click="toggleChild(child)"
           >
-            <span v-if="child.icon" class="branched-menu-icon" :style="iconStyle(child.icon)" aria-hidden="true" />
             <span>{{ child.label }}</span>
           </button>
           <button
@@ -181,7 +179,9 @@ const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } a
   max-width: min(var(--bm-w), 100%);
   padding-left: 14px;
   color: var(--bm-ink);
-  font: var(--bm-font)/1.25 inherit;
+  font-family: inherit;
+  font-size: var(--bm-font);
+  line-height: 1.25;
 }
 
 .branched-menu::before {
@@ -218,10 +218,23 @@ const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } a
   font-weight: 500;
 }
 
+.branch-heading.branch-leaf {
+  font-size: calc(var(--bm-font) - 1px);
+  font-weight: 400;
+}
+
 .branch-row {
   position: relative;
   min-height: var(--bm-row);
   padding: 4px 0 4px 12px;
+}
+
+.branch-row:not(.branch-toggle) {
+  font-size: calc(var(--bm-font) - 1px);
+}
+
+.branch-toggle {
+  font-size: var(--bm-font);
 }
 
 .branch-row::before {
