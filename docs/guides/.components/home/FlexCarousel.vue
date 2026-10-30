@@ -537,6 +537,17 @@ const mountScene = () => {
     minFilter: gl.LINEAR_MIPMAP_LINEAR,
     magFilter: gl.LINEAR
   });
+  const hitPixel = new Uint8Array(4);
+
+  const isRenderedCardPixel = (x: number, y: number) => {
+    const px = Math.floor(x * renderer.dpr);
+    const py = target.height - 1 - Math.floor(y * renderer.dpr);
+    if (px < 0 || py < 0 || px >= target.width || py >= target.height) return false;
+    renderer.bindFramebuffer(target);
+    gl.readPixels(px, py, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, hitPixel);
+    renderer.bindFramebuffer();
+    return hitPixel[3] > 0;
+  };
 
   const lensUniforms = {
     tScene: { value: target.texture },
@@ -1283,10 +1294,7 @@ const mountScene = () => {
     const s = settings;
     if (!s || e.ctrlKey || !s.captureWheel) return;
     const [pointerX, pointerY] = localPoint(e);
-    const overCard = instances.some((instance) =>
-      pointerX >= instance.x0 && pointerX <= instance.x1 && pointerY >= instance.y0 && pointerY <= instance.y1
-    );
-    if (!overCard) return;
+    if (!isRenderedCardPixel(pointerX, pointerY)) return;
     let dx = e.deltaX;
     let dy = e.deltaY;
     if (e.shiftKey && Math.abs(dx) < Math.abs(dy)) {
@@ -1490,7 +1498,7 @@ watch(modalOpen, (open) => {
     <div class="relative mt-8 w-full max-w-full overflow-x-clip md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative min-h-[750px] w-full max-w-full overflow-x-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-contain touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
+        class="relative min-h-[750px] w-full max-w-full overflow-x-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-auto touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
         :class="className"
         :style="{ '--flex-carousel-half': half }"
         role="region"
