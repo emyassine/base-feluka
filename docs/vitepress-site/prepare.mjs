@@ -69,7 +69,7 @@ if (typeof projectConfig !== 'object' || Array.isArray(projectConfig)) {
   throw new Error('project must be an object when configured')
 }
 const projectDirectories = {}
-for (const key of ['components', 'hooks']) {
+for (const key of ['components', 'hooks', 'iconLibrary']) {
   const value = projectConfig[key]
   if (value == null) {
     projectDirectories[key] = null
@@ -111,6 +111,7 @@ const generatedFiles = new Set()
 const navigationOrder = {}
 const sidebarConfigurations = new Map()
 const sidebarIconSources = new Set()
+const sidebarPageIcons = {}
 const directories = []
 const guideUris = new Map()
 let diagramsCached = 0
@@ -211,7 +212,21 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
       if (sidebarIconSources.has(resolve(from))) continue
       await mkdir(dirname(to), { recursive: true })
       routeMap.set(resolve(from), to)
-      if (extname(entry.name).toLowerCase() === '.md') records.push({ from, to, sourceRoot })
+      if (extname(entry.name).toLowerCase() === '.md') {
+        const markdown = await readFile(from, 'utf8')
+        const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+        const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*)["']?\s*$/m)?.[1]
+        if (!icon) throw new Error(`Every published Markdown page must define a valid icon: ${from}`)
+        if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate page icons: ${from}`)
+        const iconPath = resolve(projectDirectories.iconLibrary, `${icon}.svg`)
+        const iconRelative = relative(projectDirectories.iconLibrary, iconPath)
+        if (iconRelative.startsWith(`..${sep}`) || iconRelative === '..' || !existsSync(iconPath)) {
+          throw new Error(`Page icon "${icon}" has no SVG in project.iconLibrary: ${from}`)
+        }
+        const iconAsset = await copyAsset(iconPath)
+        sidebarPageIcons[publicMarkdownLink(to)] = iconAsset
+        records.push({ from, to, sourceRoot, icon, iconAsset })
+      }
       else {
         generatedFiles.add(to)
         await copyIfChanged(from, to)
@@ -655,6 +670,7 @@ for (const language of config.languages) {
   for (const record of defaultPageRecords) {
     const localizedTarget = stagedPath(record.from, language)
     if (generatedMarkdown.has(localizedTarget)) continue
+    sidebarPageIcons[publicMarkdownLink(localizedTarget)] = record.iconAsset
     let markdown = await readFile(record.to, 'utf8')
     if (/^---\s*\n/.test(markdown)) {
       const end = markdown.indexOf('\n---', 4)
@@ -707,7 +723,18 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   const description = locale.description ?? locale.faqTitle ?? title
   const quickLinks = (locale.quickLinks ?? []).map((link) => `- [${link.label}](${link.url}) — ${link.description}`).join('\n')
   const answers = (locale.faq ?? []).map((item) => `### ${item.question}\n\n${item.answer}`).join('\n\n')
-  const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle ?? 'FAQ')}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle ?? 'Popular guides'}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle ?? 'Quick answers'}\n\n${answers}\n` : ''}`
+  const icon = locale.icon
+  if (typeof icon !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(icon)) {
+    throw new Error(`seo.locales.${language}.icon must name an SVG in project.iconLibrary`)
+  }
+  const iconPath = resolve(projectDirectories.iconLibrary ?? '', `${icon}.svg`)
+  if (!projectDirectories.iconLibrary || !existsSync(iconPath)) {
+    throw new Error(`seo.locales.${language}.icon "${icon}" has no SVG in project.iconLibrary`)
+  }
+  const iconAsset = await copyAsset(iconPath)
+  const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle ?? 'FAQ')}\nicon: ${JSON.stringify(icon)}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle ?? 'Popular guides'}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle ?? 'Quick answers'}\n\n${answers}\n` : ''}`
+  sidebarPageIcons[publicMarkdownLink(indexPath)] = iconAsset
+  sidebarPageIcons[publicMarkdownLink(noSlashAlias)] = iconAsset
   generatedMarkdown.add(indexPath)
   generatedFiles.add(indexPath)
   await writeIfChanged(indexPath, content)
@@ -716,6 +743,8 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   await writeIfChanged(noSlashAlias, content.replace(/\n---\n/, '\nsearch: false\n---\n'))
   generatedSeoPages += 1
 }
+
+await writeIfChanged(join(generatedDirectory, 'sidebar-page-icons.json'), JSON.stringify(sidebarPageIcons, null, 2))
 
 for (const directory of [...directories].reverse()) {
   const sourceRelative = relative(sourceRoot, directory.sourcePath).split(sep).join('/')

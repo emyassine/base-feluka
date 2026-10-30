@@ -1,5 +1,6 @@
 ---
 sidebarTitle: "Home"
+icon: "house"
 title: "Feluqa"
 description: "Feluqa developer documentation for applications, modules, and platform contributors. One namespace across web, workstation, mobile, APIs, and real-time systems."
 layout: home

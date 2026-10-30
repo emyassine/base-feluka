@@ -15,7 +15,8 @@
   "outputDir": "../build",
   "project": {
     "components": ".components",
-    "hooks": ".hooks"
+    "hooks": ".hooks",
+    "iconLibrary": ".components/icons/lucide"
   },
   "subguides": [
     {
