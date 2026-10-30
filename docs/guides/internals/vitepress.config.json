@@ -1,7 +1,7 @@
 {
   "title": "Internals",
   "showSiteTitle": false,
-  "favicon": "../../feluqa.rs/.art/favicon.png",
+  "favicon": "../feluqa.rs/.art/favicon.png",
   "colors": {
     "primary": "oklch(68% .28 300)",
     "secondary": "oklch(76% .24 275)",
