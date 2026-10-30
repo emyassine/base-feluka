@@ -13,6 +13,8 @@ const generatedDirectory = join(siteDirectory, '.generated-guides')
 const generatedMetadata = join(siteDirectory, '.vitepress/generated')
 const sidebarMetadataPath = join(generatedMetadata, 'sidebar.json')
 const sidebarMetadata = existsSync(sidebarMetadataPath) ? JSON.parse(readFileSync(sidebarMetadataPath, 'utf8')) : {}
+const sidebarPageIconsPath = join(generatedMetadata, 'sidebar-page-icons.json')
+const sidebarPageIcons = existsSync(sidebarPageIconsPath) ? JSON.parse(readFileSync(sidebarPageIconsPath, 'utf8')) : {}
 const navigationOrderPath = join(generatedMetadata, 'navigation-order.json')
 const navigationOrder = existsSync(navigationOrderPath) ? JSON.parse(readFileSync(navigationOrderPath, 'utf8')) : {}
 const generatedFontPath = join(generatedMetadata, 'fonts.json')
@@ -48,6 +50,12 @@ function publicPagePath(file: string): string {
   if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
   return `/${target.replace(/\.md$/, '')}`
 }
+function publicPageUrl(file: string): string {
+  const target = relative(generatedDirectory, file).replace(/\\/g, '/')
+  if (target === 'index.md') return '/'
+  if (target.endsWith('/index.md')) return `/${target.slice(0, -'index.md'.length)}`
+  return `/${target.replace(/\.md$/, '')}`
+}
 function directoryLink(directory: string): string {
   return publicPagePath(join(directory, 'index.md'))
 }
@@ -78,12 +86,23 @@ function escapeHtml(value: string): string {
   })[character]!)
 }
 
+function iconTitle(label: string, icon: string): string {
+  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(icon)}')" aria-hidden="true"></span><span>${label}</span></span>`
+}
+
 function groupTitle(path: string, fallback: string, language = defaultLanguage): string {
   const metadata = sidebarMetadata[path]
   const label = metadata?.labels?.[language] ?? metadata?.labels?.[defaultLanguage] ?? fallback
   const escapedLabel = escapeHtml(label)
   if (!metadata?.icon) return escapedLabel
-  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(metadata.icon)}')" aria-hidden="true"></span><span>${escapedLabel}</span></span>`
+  return iconTitle(escapedLabel, metadata.icon)
+}
+
+function pageTitle(file: string): string {
+  const title = escapeHtml(titleOf(file))
+  const icon = sidebarPageIcons[publicPageUrl(file)]
+  if (typeof icon !== 'string' || !icon) throw new Error(`No compiled sidebar icon for ${file}`)
+  return iconTitle(title, icon)
 }
 
 function ordered<T extends { name: string }>(directory: string, entries: T[]): T[] {
@@ -118,7 +137,7 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
     if (entry.name === 'index.md') return []
     if (existsSync(join(directory, entry.name.slice(0, -'.md'.length)))) return []
     const clean = relative(generatedDirectory, path).replace(/\\/g, '/').replace(/\.md$/, '').replace(/\/index$/, '')
-    return [{ text: escapeHtml(titleOf(path)), link: publicPagePath(path) }]
+    return [{ text: pageTitle(path), link: publicPagePath(path) }]
   })
 }
 

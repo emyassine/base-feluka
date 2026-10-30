@@ -1,3 +1,7 @@
+---
+icon: "book-open"
+---
+
 # Feluqa documentation (English)
 
 This structure is stable across major documentation versions. Each major

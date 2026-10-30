@@ -80,7 +80,7 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
   }
   const target = resolve(configDirectory, value)
   const local = relative(configDirectory, target)
-  if (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..')) {
+  if (key !== 'iconLibrary' && (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..'))) {
     throw new Error(`project.${key} must stay inside the guides directory`)
   }
   let metadata
@@ -121,6 +121,28 @@ const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i,
 const sourceLanguage = (path) => path.match(/\.([a-z]{2,3}(?:-[A-Z]{2})?)\.md$/i)?.[1]?.toLowerCase() ?? defaultLanguage.toLowerCase()
 const execFile = promisify(execFileCallback)
 const sourceRoot = resolve(configDirectory, config.guidesPath)
+
+async function validateMarkdownIcons(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const file = join(directory, entry.name)
+    if (entry.isDirectory()) {
+      if (entry.name.startsWith('.')) continue
+      await validateMarkdownIcons(file)
+      continue
+    }
+    if (!entry.isFile() || extname(entry.name).toLowerCase() !== '.md') continue
+    const source = await readFile(file, 'utf8')
+    const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---/)
+    const icon = frontmatter?.[1].match(/^icon:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*)["']?\s*$/m)?.[1]
+    if (!icon) throw new Error(`Every Markdown file must define a valid icon in frontmatter: ${file}`)
+    if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate Markdown icons: ${file}`)
+    const iconPath = resolve(projectDirectories.iconLibrary, `${icon}.svg`)
+    const iconRelative = relative(projectDirectories.iconLibrary, iconPath)
+    if (iconRelative.startsWith(`..${sep}`) || iconRelative === '..' || !existsSync(iconPath)) {
+      throw new Error(`Markdown icon "${icon}" has no SVG in project.iconLibrary: ${file}`)
+    }
+  }
+}
 
 function stagedPath(sourcePath, language = null) {
   const sourceRelative = relative(sourceRoot, sourcePath).split(sep).join('/')
@@ -235,6 +257,8 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
   }
 }
 
+await validateMarkdownIcons(sourceRoot)
+
 for (const guide of config.subguides) {
   if (!guide.uri || typeof guide.uri !== 'object' || Array.isArray(guide.uri) || typeof guide.uri.base !== 'string' || !/^\/(?:[A-Za-z0-9._~-]+\/)*$/.test(guide.uri.base)) {
     throw new Error(`Each subguides entry must define uri.base as an absolute path ending in /: ${guide.path}`)
@@ -272,8 +296,11 @@ for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
 
 async function copyAsset(sourceFile) {
   const sourceRelativePath = relative(sourceRoot, sourceFile)
-  if (sourceRelativePath === '..' || sourceRelativePath.startsWith(`..${sep}`)) {
-    throw new Error(`Asset path escapes docs/guides: ${sourceFile}`)
+  const iconRelativePath = projectDirectories.iconLibrary ? relative(projectDirectories.iconLibrary, sourceFile) : '..'
+  const inGuides = sourceRelativePath !== '..' && !sourceRelativePath.startsWith(`..${sep}`)
+  const inIconLibrary = iconRelativePath !== '..' && !iconRelativePath.startsWith(`..${sep}`)
+  if (!inGuides && !inIconLibrary) {
+    throw new Error(`Asset path is outside the guides and configured icon library: ${sourceFile}`)
   }
   const bytes = await readFile(sourceFile)
   const assetName = `${createHash('sha256').update(bytes).digest('hex')}${extname(sourceFile).toLowerCase()}`

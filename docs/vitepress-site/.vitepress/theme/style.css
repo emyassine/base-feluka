@@ -175,6 +175,22 @@
   line-height: 1;
 }
 
+.FeluqaLastModified {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.FeluqaLastModified__icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 1em;
+  background-color: currentColor;
+  -webkit-mask: url('../../icons/lucide/clock.svg') center / contain no-repeat;
+  mask: url('../../icons/lucide/clock.svg') center / contain no-repeat;
+}
+
 .vp-doc .mermaid-figure {
   position: relative;
   max-width: 100%;

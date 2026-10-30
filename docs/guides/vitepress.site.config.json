@@ -16,7 +16,7 @@
   "project": {
     "components": ".components",
     "hooks": ".hooks",
-    "iconLibrary": ".components/icons/lucide"
+    "iconLibrary": "../vitepress-site/icons/lucide"
   },
   "subguides": [
     {
@@ -201,6 +201,7 @@
   "seo": {
     "locales": {
       "en": {
+        "icon": "circle-help",
         "quickLinksTitle": "Popular guides",
         "faqTitle": "Quick answers",
         "quickLinks": [
@@ -244,6 +245,7 @@
         "description": "Frequently asked questions and links to the Feluqa documentation guides."
       },
       "fr": {
+        "icon": "circle-help",
         "quickLinksTitle": "Guides populaires",
         "faqTitle": "Réponses rapides",
         "quickLinks": [

@@ -63,7 +63,7 @@ export const DocumentationLastModified = defineComponent({
       const locale = languageFor(lang.value) === 'fr' ? 'fr-FR' : 'en-US'
       const label = languageFor(lang.value) === 'fr' ? strings.fr.lastModified : strings.en.lastModified
       return h('p', { class: 'FeluqaLastModified' }, [
-        h('span', { 'aria-hidden': 'true' }, '◷'),
+        h('span', { class: 'FeluqaLastModified__icon', 'aria-hidden': 'true' }),
         `${label} : `,
         h('time', { datetime: date.toISOString() }, new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(date)),
       ])

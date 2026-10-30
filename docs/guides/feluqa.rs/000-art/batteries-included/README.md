@@ -1,3 +1,7 @@
+---
+icon: "shapes"
+---
+
 # Prologue artwork
 
 These Lucide SVGs illustrate the capability areas in the Batteries Included
