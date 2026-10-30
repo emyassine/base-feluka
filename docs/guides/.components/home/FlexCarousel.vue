@@ -1305,13 +1305,13 @@ const mountScene = () => {
     const s = settings;
     if (!s) return;
     const m = metrics(s);
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    if (e.key === 'ArrowRight') {
       e.preventDefault();
       skipIntro();
       closeFocus();
       interactedAt = performance.now();
       step(m, 1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       skipIntro();
       closeFocus();
@@ -1520,7 +1520,7 @@ watch(modalOpen, (open) => {
           class="pointer-events-none absolute inset-0 z-10"
           :style="{ '--flex-card-half': `${Math.min(Math.max(cardHeight, 0.05), 1) * 50}%` }"
         >
-          <CarouselAction class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem)] -translate-x-1/2" :href="current.href" :label="cardButtonLabel || current.title || 'Open image'" />
+          <CarouselAction class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem)] -translate-x-1/2" :href="current.href" :label="current.title || cardButtonLabel || 'Open'" />
         </div>
       </div>
     </div>
