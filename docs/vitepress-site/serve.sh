@@ -30,13 +30,13 @@ if [[ ! -x "$site_dir/node_modules/.bin/vitepress" ]]; then
 fi
 
 printf '[serve] Preparing guides and cached Mermaid diagrams\n'
-node "$site_dir/prepare.mjs"
+node "$site_dir/scripts/preparation/pipeline.mjs"
 printf '[serve] Starting VitePress dev server at http://%s:%s/\n' "$host" "$port"
 printf '[serve] Markdown and asset edits hot reload; navigation/config edits reload VitePress. Ctrl+C stops both processes.\n'
 
 (cd "$site_dir" && exec ./node_modules/.bin/vitepress dev --host "$host" --port "$port" --strictPort) &
 vitepress_pid=$!
-(cd "$site_dir" && exec node watch.mjs) &
+(cd "$site_dir" && exec node scripts/dev/watch.mjs) &
 watcher_pid=$!
 
 shutdown() {

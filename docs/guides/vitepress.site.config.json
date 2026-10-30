@@ -28,15 +28,22 @@
       "path": "../collections/articles",
       "layout": "article",
       "indexLayout": "spotlight",
-      "title": { "en": "Articles", "fr": "Articles" },
-      "description": { "en": "Short articles about building with Feluqa.", "fr": "Articles courts sur la création avec Feluqa." }
+      "title": {
+        "en": "Articles",
+        "fr": "Articles"
+      },
+      "description": {
+        "en": "Short articles about building with Feluqa.",
+        "fr": "Articles courts sur la création avec Feluqa."
+      }
     }
   ],
   "project": {
     "components": ".config/components",
     "hooks": ".config/hooks",
     "iconLibrary": "../vitepress-site/icons",
-    "iconFallback": "circle-help"
+    "iconFallback": "circle-help",
+    "mermaidConfig": ".config/vitepress/mermaid.json"
   },
   "theme": {
     "slots": {
@@ -215,23 +222,22 @@
   "ogImages": [
     "feluqa.rs/.art/og-feluqa.png"
   ],
-    "documentationNotices": {
-      "en": {
-        "exploringTitle": "Under exploration",
-        "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",
-        "validatedTitle": "Validated",
-        "validated": "The information on this page has been verified and reflects the current baseline.",
-        "fallbackTitle": "Language availability"
-      },
-      "fr": {
-        "exploringTitle": "En cours d'exploration",
-        "exploring": "Cette page présente une idée ou une proposition encore à l'étude, susceptible de faire l'objet de modifications.",
-        "validatedTitle": "Validé",
-        "validated": "Les informations contenues sur cette page sont vérifiées et conformes à la version actuelle.",
-        "fallbackTitle": "Disponibilité linguistique"
-      }
+  "documentationNotices": {
+    "en": {
+      "exploringTitle": "Under exploration",
+      "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",
+      "validatedTitle": "Validated",
+      "validated": "The information on this page has been verified and reflects the current baseline.",
+      "fallbackTitle": "Language availability"
+    },
+    "fr": {
+      "exploringTitle": "En cours d'exploration",
+      "exploring": "Cette page présente une idée ou une proposition encore à l'étude, susceptible de faire l'objet de modifications.",
+      "validatedTitle": "Validé",
+      "validated": "Les informations contenues sur cette page sont vérifiées et conformes à la version actuelle.",
+      "fallbackTitle": "Disponibilité linguistique"
     }
-  ,
+  },
   "seo": {
     "locales": {
       "en": {
@@ -325,5 +331,36 @@
     },
     "siteUrl": null,
     "path": "faq"
+  },
+  "mermaid": {
+    "flowchartPalette": [
+      {
+        "fill": "#a8b9ff",
+        "text": "#1c2447",
+        "stroke": "#667fd3"
+      },
+      {
+        "fill": "#a9e8d0",
+        "text": "#163b31",
+        "stroke": "#4e9d80"
+      },
+      {
+        "fill": "#ffc2d4",
+        "text": "#492435",
+        "stroke": "#cb6688"
+      },
+      {
+        "fill": "#ffe09b",
+        "text": "#493713",
+        "stroke": "#c58b2a"
+      },
+      {
+        "fill": "#cbbaff",
+        "text": "#332658",
+        "stroke": "#8c6fd0"
+      }
+    ],
+    "nodeBorderWidth": "1.5px",
+    "darkMessageTextColor": "#f1f3fc"
   }
 }

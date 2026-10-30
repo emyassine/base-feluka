@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { sortNavigationEntries } from '../navigation-order.mjs'
+import { sortNavigationEntries } from './navigation-order.mjs'
 
 test('sorts numeric prefixes numerically across mixed files and folders', () => {
   const entries = [

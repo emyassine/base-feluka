@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "docs:prepare": "node prepare.mjs",
-    "docs:build": "npm run docs:prepare && vitepress build"
+    "docs:prepare": "node scripts/preparation/pipeline.mjs",
+    "docs:build": "npm run docs:prepare && vitepress build",
+    "docs:clean": "./clean.sh"
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.2",

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:feluqa:docs:vitepress-site:site-config:v1",
+  "title": "Documentation site configuration",
+  "description": "Contract for docs/guides/vitepress.site.config.json. Paths are resolved from docs/guides unless a field says otherwise.",
+  "type": "object",
+  "required": ["site", "guidesPath", "indexPath", "outputDir", "subguides", "languages", "languageLabels", "search", "outline", "mermaid"],
+  "properties": {
+    "site": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string", "minLength": 1 }, "description": { "type": "string" } }, "additionalProperties": true },
+    "guidesPath": { "type": "string", "minLength": 1 },
+    "indexPath": { "type": "string", "minLength": 1 },
+    "outputDir": { "type": "string", "minLength": 1 },
+    "styles": { "type": "array", "items": { "type": "string", "pattern": "\\.css$" }, "uniqueItems": true },
+    "fonts": { "$ref": "#/$defs/fonts" },
+    "collections": { "type": "array", "items": { "$ref": "#/$defs/collection" } },
+    "project": { "type": "object", "properties": { "components": { "type": "string" }, "hooks": { "type": "string" }, "iconLibrary": { "type": "string" }, "iconFallback": { "type": "string" }, "viteConfig": { "type": "string" }, "mermaidConfig": { "type": "string" } }, "additionalProperties": false },
+    "mermaid": { "type": "object", "required": ["flowchartPalette"], "properties": { "flowchartPalette": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["fill", "text", "stroke"], "properties": { "fill": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "text": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "stroke": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" } }, "additionalProperties": false } }, "nodeBorderWidth": { "type": "string", "pattern": "^\\d+(?:\\.\\d+)?px$" }, "darkMessageTextColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" } }, "additionalProperties": false },
+    "theme": { "type": "object", "properties": { "slots": { "type": "object", "additionalProperties": { "type": ["string", "null"] } } }, "additionalProperties": true },
+    "subguides": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/subguide" } },
+    "languages": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$" } },
+    "fallbackLanguage": { "type": "string" },
+    "languageLabels": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } },
+    "languageMenuLabels": { "type": "object", "additionalProperties": { "type": "string" } },
+    "fallbackNotices": { "type": "object", "additionalProperties": { "type": "string", "pattern": "\\{requested\\}" } },
+    "socialLinks": { "type": "array", "items": { "type": "object", "required": ["icon", "link"], "properties": { "icon": { "oneOf": [{ "type": "string" }, { "type": "object", "required": ["svg"], "properties": { "svg": { "type": "string" } } }] }, "link": { "type": "string", "minLength": 1 }, "ariaLabel": { "type": "string" } }, "additionalProperties": true } },
+    "search": { "type": "object", "required": ["provider", "labels"], "properties": { "provider": { "const": "local" }, "miniSearch": { "type": "object" }, "labels": { "type": "object" }, "excludePaths": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": true },
+    "outline": { "type": "object", "required": ["labels"], "properties": { "labels": { "type": "object", "additionalProperties": { "type": "string" } }, "level": { "oneOf": [{ "type": "integer", "minimum": 1, "maximum": 6 }, { "const": "deep" }] } }, "additionalProperties": true },
+    "seo": { "type": "object", "properties": { "siteUrl": { "type": ["string", "null"] }, "path": { "type": "string" }, "locales": { "type": "object" } }, "additionalProperties": true },
+    "ogImages": { "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }] },
+    "publicFiles": { "type": "object", "additionalProperties": { "type": "string" } }
+  },
+  "$defs": {
+    "localized": { "oneOf": [{ "type": "string" }, { "type": "object", "additionalProperties": { "type": "string" } }] },
+    "collection": { "type": "object", "required": ["id", "path"], "properties": { "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }, "path": { "type": "string", "minLength": 1 }, "title": { "$ref": "#/$defs/localized" }, "description": { "$ref": "#/$defs/localized" }, "layout": { "enum": ["article", "doc"] }, "indexLayout": { "enum": ["list", "spotlight"] }, "categoryFile": { "type": "string", "pattern": "^[A-Za-z0-9_-]+\\.json$" } }, "additionalProperties": true },
+    "subguide": { "type": "object", "required": ["path", "label", "uri"], "properties": { "path": { "type": "string" }, "label": { "type": "string" }, "labels": { "type": "object", "additionalProperties": { "type": "string" } }, "uri": { "type": "object", "required": ["base"], "properties": { "base": { "type": "string", "pattern": "^/" }, "entry": { "type": "string" }, "index": { "type": "string" } }, "additionalProperties": false } }, "additionalProperties": true },
+    "fonts": { "type": "object", "properties": { "body": { "$ref": "#/$defs/font" }, "heading": { "$ref": "#/$defs/font" }, "code": { "$ref": "#/$defs/font" } }, "additionalProperties": false },
+    "font": { "type": "object", "required": ["family"], "properties": { "family": { "type": "string" }, "src": { "type": "string" }, "weight": { "oneOf": [{ "type": "number", "minimum": 1, "maximum": 1000 }, { "type": "string" }] }, "style": { "enum": ["normal", "italic"] }, "fallback": { "type": "string" } }, "additionalProperties": false }
+  },
+  "additionalProperties": true
+}

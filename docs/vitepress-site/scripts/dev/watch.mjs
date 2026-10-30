@@ -5,11 +5,10 @@ import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const siteDirectory = dirname(fileURLToPath(import.meta.url))
+const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const guidesDirectory = resolve(siteDirectory, '../guides')
-const prepareScript = join(siteDirectory, 'prepare.mjs')
+const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
-const mermaidConfig = join(siteDirectory, '.vitepress/mermaid-config.json')
 const ignoredDirectories = new Set(['node_modules', '.git', '.generated-guides', 'build'])
 const pendingPaths = new Set()
 let debounceTimer
@@ -34,7 +33,7 @@ async function structuralSignature() {
       }
       if (entry.name === 'README.md') continue
       hash.update(`file:${relativePath}\0`)
-      if (entry.name === 'sidebar.json' || entry.name === 'vitepress.config.json' || entry.name === 'vitepress.site.config.json') {
+      if (entry.name.endsWith('.json')) {
         hash.update(await readFile(path))
       } else if (extname(entry.name).toLowerCase() === '.md') {
         const source = await readFile(path, 'utf8')
@@ -100,14 +99,13 @@ try {
     if (path.includes('/.generated-guides/') || path.startsWith('.generated-guides/')) return
     schedule(path)
   }))
-  watchers.push(await watchFs(mermaidConfig, () => schedule('vitepress-site/.vitepress/mermaid-config.json')))
 } catch (error) {
   for (const watcher of watchers) watcher.close()
   throw new Error(`Unable to watch the documentation sources on this platform: ${error.message}`)
 }
 
 let signature = await structuralSignature()
-log(`Watching ${guidesDirectory} and Mermaid configuration for changes.`)
+log(`Watching guide sources, JSON configuration, and assets for changes.`)
 
 async function shutdown() {
   if (stopping) return

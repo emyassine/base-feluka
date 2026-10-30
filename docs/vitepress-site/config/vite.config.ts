@@ -4,7 +4,7 @@ import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadConfigFromFile, mergeConfig } from 'vite'
 
-const siteDirectory = fileURLToPath(new URL('.', import.meta.url))
+const siteDirectory = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const projectDirectory = resolve(siteDirectory, '../guides')
 const siteRequire = createRequire(join(siteDirectory, 'package.json'))
 const siteConfiguration = JSON.parse(readFileSync(join(projectDirectory, 'vitepress.site.config.json'), 'utf8'))
@@ -35,6 +35,7 @@ const mimeTypes: Record<string, string> = {
 }
 
 const siteViteConfig = {
+  css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {
     alias: [
       { find: /^vue$/, replacement: resolve(siteDirectory, 'node_modules/vue/dist/vue.runtime.esm-bundler.js') },

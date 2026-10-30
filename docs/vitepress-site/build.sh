@@ -21,12 +21,12 @@ if [[ ! -d "$site_dir/node_modules/vitepress" ]]; then
 fi
 
 stage 'Preparing guides and rendering uncached Mermaid diagrams'
-DOCS_PREPARE_LOCK_HELD=1 node "$site_dir/prepare.mjs"
+DOCS_PREPARE_LOCK_HELD=1 node "$site_dir/scripts/preparation/pipeline.mjs"
 stage 'Building VitePress client site with native local search'
 (cd "$site_dir" && DOCS_OUTPUT_DIR="$stage_dir" npm exec vitepress build -- --base /)
 test -f "$stage_dir/index.html"
 stage 'Checking generated local links'
-node "$site_dir/check-file-links.mjs" "$stage_dir"
+node "$site_dir/scripts/build/check-file-links.mjs" "$stage_dir"
 
 if [[ -d "$output_dir/assets" ]]; then
   for asset_directory in assets __docs-assets mermaid; do

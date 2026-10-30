@@ -2,6 +2,8 @@ node_modules/
 .vitepress/cache/
 .vitepress/mermaid-cache/
 .vitepress/generated/
+.vitepress/config/*.timestamp-*.mjs
+config/*.timestamp-*.mjs
 .generated-guides/
 .generated-guides.md
 .build.lock
