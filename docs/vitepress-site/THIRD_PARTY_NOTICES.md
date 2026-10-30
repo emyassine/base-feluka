@@ -27,3 +27,14 @@ restrict using them inside this site.
 
 - Source: https://tailwindcss.com
 - License: MIT
+
+## React.dev home page snapshot
+
+- Source: https://react.dev/ and https://github.com/reactjs/react.dev
+- Copyright (c) Meta Platforms, Inc. and affiliates.
+- The rendered home page snapshot is licensed under CC BY 4.0; license text is in
+  `third-party/REACT-DOCS-LICENSE.md`.
+- The captured homepage HTML is rendered by a Vue component; its stylesheet,
+  fonts, and image assets are stored in `public/react-home/`.
+- The snapshot was taken on 2026-10-30. Links in the captured page still lead to
+  their original React.dev destinations.

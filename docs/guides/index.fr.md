@@ -1,9 +1,9 @@
 ---
-sidebarTitle: "Accueil"
+sidebarTitle: "React"
 icon: "badge-check"
-title: "Feluqa — une fondation, plusieurs runtimes"
-description: "Découvrez les fondations Rust de Feluqa, ses vues compilées et sa direction multi-cible."
+title: "React"
+description: "The library for web and native user interfaces"
 layout: home
 ---
 
-<MainlineCodeTour lang="fr" />
+<ReactDevHome />
