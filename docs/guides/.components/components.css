@@ -4,8 +4,8 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 1.5rem;
-  padding: 2rem;
+  border-radius: 8px;
+  padding: 1rem;
   background: transparent;
   transition: border-color 320ms ease, background-color 520ms ease, box-shadow 520ms ease, transform 240ms ease;
 }
@@ -66,8 +66,8 @@
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin: 1.5rem 0 3rem;
+  gap: 1rem;
+  margin: 1.25rem 0 4rem;
 }
 
 .feluqa-component-card {
@@ -142,8 +142,8 @@ html.dark .feluqa-component-card__icon {
 
 @media (max-width: 640px) {
   .spotlight-card {
-    border-radius: 1.25rem;
-    padding: 1.5rem;
+    border-radius: 8px;
+    padding: 1rem;
   }
 }
 
