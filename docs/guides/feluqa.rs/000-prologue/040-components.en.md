@@ -107,23 +107,23 @@ import deploymentIcon from '../art/batteries-included/cloud-cog.svg'
 import agentsIcon from '../art/batteries-included/bot.svg'
 
 const foundation = [
-  { avatar: applicationIcon, name: 'Application foundation', title: 'In progress', desc: 'SDK, compile-time checks, and application metadata establish shared contracts. Application composition is still being completed.' },
-  { avatar: asyncIcon, name: 'Async execution', title: 'Server foundation', desc: 'The server profile uses Tokio for asynchronous tasks, network I/O, and timers.' },
-  { avatar: webIcon, name: 'Web and APIs', title: 'Available; evolving', desc: 'Axum handles HTTP routing with Tower services and middleware. Inertia support remains a possible future integration.' },
+  { avatar: applicationIcon, name: 'Application foundation', title: 'In progress', desc: 'The SDK, compile-time checks, and application metadata define shared contracts for composition. Application composition is still being completed.' },
+  { avatar: asyncIcon, name: 'Async execution', title: 'Server foundation', desc: 'The server profile uses Tokio for asynchronous tasks, network I/O, and timers. Separate runtimes for other targets remain product work.' },
+  { avatar: webIcon, name: 'Web and APIs', title: 'Available; evolving', desc: 'Axum handles HTTP routing, with Tower providing services and middleware. An Inertia adapter remains a possible future integration.' },
 ]
 
 const platform = [
-  { avatar: identityIcon, name: 'Identity and access', title: 'Foundations available', desc: 'Accounts, roles, server-side sessions, CSRF, tenant identities, and audit persistence are available. The complete System Panel is unfinished.' },
-  { avatar: dataIcon, name: 'Data persistence', title: 'Available foundations', desc: 'SQLite and PostgreSQL support uses SeaORM, named pools, and embedded migrations. Backup and restore need release qualification.' },
-  { avatar: panelsIcon, name: 'Panels and resources', title: 'Integration in progress', desc: 'The panel catalogue and typed UI schemas provide shared contracts. The full System Panel and UI integration remain incomplete.' },
-  { avatar: liveIcon, name: 'Live actions', title: 'Typed dispatch available', desc: 'Signed, typed actions are supported. Browser reconciliation and shared replay protection remain unfinished.' },
+  { avatar: identityIcon, name: 'Identity and access', title: 'Foundations available', desc: 'Available foundations cover accounts, roles, server-side sessions, CSRF, tenant identities, and audit persistence. The System Panel is unfinished.' },
+  { avatar: dataIcon, name: 'Data persistence', title: 'Available foundations', desc: 'SeaORM supports SQLite and PostgreSQL through named pools and embedded migrations. Backup and restore still need release qualification.' },
+  { avatar: panelsIcon, name: 'Panels and resources', title: 'Integration in progress', desc: 'The panel catalogue and typed UI schemas define shared contracts for product interfaces. Full System Panel and UI integration remain unfinished.' },
+  { avatar: liveIcon, name: 'Live actions', title: 'Typed dispatch available', desc: 'Signed, typed actions support server-side dispatch for Live interactions. Browser reconciliation and shared replay protection are still unfinished.' },
 ]
 
 const operations = [
-  { avatar: modulesIcon, name: 'Modules', title: 'Static composition', desc: 'Applications compose statically compiled Rust modules. Dynamic installation, upgrades, and removal remain product goals.' },
-  { avatar: consoleIcon, name: 'Console and CLI', title: 'Available; evolving', desc: 'The CLI and console framework provide project commands, named binaries, profiles, and handlers.' },
-  { avatar: deploymentIcon, name: 'Deployment', title: 'Product target', desc: 'Standalone builds, deployment, rollback, backup, and restore are not yet a qualified end-to-end path.' },
-  { avatar: agentsIcon, name: 'Agent workflows', title: 'Product direction', desc: 'Agents should inspect, propose, validate, and package changes through explicit, reviewable steps. The complete workflow is not available yet.' },
+  { avatar: modulesIcon, name: 'Modules', title: 'Static composition', desc: 'Applications currently compose statically compiled Rust modules. Dynamic installation, upgrades, and removal remain future product capabilities.' },
+  { avatar: consoleIcon, name: 'Console and CLI', title: 'Available; evolving', desc: 'The CLI and console framework provide project commands, named binaries, profiles, and handlers. The developer experience continues to evolve.' },
+  { avatar: deploymentIcon, name: 'Deployment', title: 'Product target', desc: 'Standalone builds, deployment, rollback, backup, and restore are product goals. A release-qualified end-to-end path is not available yet.' },
+  { avatar: agentsIcon, name: 'Agent workflows', title: 'Product direction', desc: 'The planned workflow lets agents inspect, propose, validate, and package changes for review. A complete end-to-end workflow remains unavailable.' },
 ]
 </script>
 Each area above is labelled with its current status. Feluqa's implementation
