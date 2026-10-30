@@ -6,7 +6,7 @@ layout: home
 ---
 
 <MainlineHomeLayout>
-<template #top>
+<template #default>
 <MainlineHero
       title="One platform for every application target."
       lead="A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes."
@@ -58,9 +58,7 @@ layout: home
         { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/feluqa-internals/", imageAlt: "Local-first application" }
       ]'
     />
-</template>
 
-<template #middle>
 <FlexCarousel
     title="Explore Feluqa"
     description="Follow practical guides, understand the platform direction, and check what is implemented today."
@@ -80,9 +78,7 @@ layout: home
       { src: "https://images.unsplash.com/photo-1787181875088-087d612262a7?w=1200&q=80&auto=format&fit=max", alt: "A black textured sculpture with an opening at its center", title: "System Control Panel", actionLabel: "Explore the control panel", subtitle: "Manage modules and context roots from the built-in panel.", href: "/get-started/frontend/system-panel" }
     ]'
   />
-</template>
 
-<template #bottom>
 
 
 <MainlineFaq
@@ -94,26 +90,24 @@ layout: home
         { question: "Is the complete platform available today?", answer: "No. Selected framework foundations are implemented; dynamic module installation, complete runtime shells, and several product capabilities remain unfinished." }
       ]'
     />
-</template>
 
-<template #footer>
-	  <MainlineCta
-	    title="Build with the current foundations"
-	    description="Follow the guides, check what is implemented, and help move the framework forward."
-	    action-label="Read the contribution guide"
-	    action-href="/prologue/contribution-guide"
-	    :navigation='[
-	      { name: "Product", href: "/#feature-modern-teams" },
-	      { name: "About Us", href: "/about" },
-	      { name: "Pricing", href: "/pricing" },
-	      { name: "FAQ", href: "/faq" },
-	      { name: "Contact", href: "/contact" },
-	      { name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
-	      { name: "LinkedIn", href: "#", external: true }
-	    ]'
-	    legal-label="Privacy Policy"
-	    legal-href="/privacy"
-	    logo-alt="Feluqa"
-	  />
+<MainlineCta
+	title="Build with the current foundations"
+	description="Follow the guides, check what is implemented, and help move the framework forward."
+	action-label="Read the contribution guide"
+	action-href="/prologue/contribution-guide"
+	:navigation='[
+		{ name: "Product", href: "/#feature-modern-teams" },
+		{ name: "About Us", href: "/about" },
+		{ name: "Pricing", href: "/pricing" },
+		{ name: "FAQ", href: "/faq" },
+		{ name: "Contact", href: "/contact" },
+		{ name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
+		{ name: "LinkedIn", href: "#", external: true }
+	]'
+	legal-label="Privacy Policy"
+	legal-href="/privacy"
+	logo-alt="Feluqa"
+/>
 </template>
 </MainlineHomeLayout>
