@@ -124,13 +124,13 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
     if (entry.isDirectory()) {
       if (directory === root && subguideRootPaths.has(entry.name)) return []
       const childEntries = readdirSync(path, { withFileTypes: true }).filter((child) => !child.name.startsWith('.'))
-      const pageEntries = childEntries.filter((child) => child.isDirectory() || child.name.endsWith('.md'))
-      const onlyIndex = pageEntries.length === 1 && !pageEntries[0].isDirectory() && pageEntries[0].name === 'index.md'
-      if (onlyIndex) {
-        const indexPath = join(path, 'index.md')
-        const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')
-        const fallback = titleOf(indexPath)
-        return [{ text: groupTitle(relativePath, fallback, language), link: publicPagePath(indexPath) }]
+      const pageEntries = childEntries.filter((child) => child.isDirectory() || (
+        child.name.endsWith('.md') && (child.name !== 'index.md' || hasSourceIndex(path))
+      ))
+      const onlyPage = pageEntries.length === 1 && !pageEntries[0].isDirectory() && pageEntries[0].name.endsWith('.md')
+      if (onlyPage) {
+        const pagePath = join(path, pageEntries[0].name)
+        return [{ text: pageTitle(pagePath), link: publicPagePath(pagePath) }]
       }
       const items = sidebar(path, root, language)
       const relativePath = relative(generatedDirectory, path).replace(/\\/g, '/')

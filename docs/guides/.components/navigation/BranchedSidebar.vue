@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter, useData } from 'vitepress'
 import BranchedMenu from './BranchedMenu.vue'
-import type { BranchedMenuItem } from './BranchedMenu.vue'
+import type { BranchedMenuChild, BranchedMenuItem } from './BranchedMenu.vue'
 
 interface SidebarEntry {
   text?: string
@@ -22,17 +22,21 @@ function iconFromText(value: string): string | undefined {
   return value.match(/--sidebar-group-icon-url:\s*url\((?:'|")?([^'")]+)(?:'|")?\)/)?.[1]
 }
 
+function pageItems(entries: SidebarEntry[]): BranchedMenuChild[] {
+  return entries.flatMap((entry) => {
+    if (entry.items?.length) return pageItems(entry.items)
+    if (!entry.link) return []
+    return [{ value: entry.link, label: plainText(entry.text ?? entry.link), icon: iconFromText(entry.text ?? '') }]
+  })
+}
+
 function toMenuItem(entry: SidebarEntry): BranchedMenuItem | null {
   const label = plainText(entry.text ?? entry.link ?? '')
-  const icon = iconFromText(entry.text ?? '')
   if (entry.items?.length) {
-    const children = entry.items.flatMap((child) => {
-      const item = toMenuItem(child)
-      return item ? [item] : []
-    })
-    return children.length ? { label, ...(entry.link ? { value: entry.link } : {}), ...(icon ? { icon } : {}), children } : null
+    const children = pageItems(entry.items)
+    return children.length ? { label, children } : null
   }
-  return entry.link ? { label, value: entry.link, ...(icon ? { icon } : {}) } : null
+  return entry.link ? { label, value: entry.link, icon: iconFromText(entry.text ?? '') } : null
 }
 
 const sourceItems = computed<SidebarEntry[]>(() => {
@@ -56,22 +60,10 @@ const pathContainsRoute = (path?: string) => {
   const target = normalizePath(path)
   return activeLink.value === target || activeLink.value.startsWith(`${target}/`)
 }
-function findSelected(items: BranchedMenuItem[]): string | undefined {
-  for (const item of items) {
-    if (item.children?.length) {
-      const child = findSelected(item.children)
-      if (child) return child
-    } else if (item.value && pathContainsRoute(item.value)) {
-      return item.value
-    }
-  }
-  return undefined
-}
-const selectedLink = computed(() => findSelected(items.value) ?? activeLink.value)
+const selectedLink = computed(() => items.value.flatMap((item) => item.children ?? [])
+  .find((child) => pathContainsRoute(child.value))?.value ?? items.value.find((item) => pathContainsRoute(item.value))?.value ?? activeLink.value)
 const openSection = computed(() => items.value.findIndex((item) =>
-  (item.value ? pathContainsRoute(item.value) : false) || Boolean(item.children?.some((child) =>
-    (child.value ? pathContainsRoute(child.value) : false) || (child.children?.length ? findSelected([child]) : false),
-  )),
+  item.children?.some((child) => pathContainsRoute(child.value)),
 ))
 function navigate(path: string): void {
   void router.go(path)
