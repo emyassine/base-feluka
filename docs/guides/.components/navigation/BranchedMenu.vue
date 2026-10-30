@@ -1,241 +1,171 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, type CSSProperties } from 'vue';
-
-export interface BranchedMenuChild {
-  value: string;
-  label: string;
-  icon?: string;
-}
+import { computed, ref, watch, type CSSProperties } from 'vue'
 
 export interface BranchedMenuItem {
-  label: string;
-  value?: string;
-  icon?: string;
-  children?: BranchedMenuChild[];
+  label: string
+  value?: string
+  icon?: string
+  children?: BranchedMenuItem[]
 }
 
 interface BranchedMenuProps {
-  items?: BranchedMenuItem[];
-  defaultOpen?: number | number[];
-  defaultActive?: string;
-  color?: string;
-  accentColor?: string;
-  lineColor?: string;
-  width?: number;
-  rowHeight?: number;
-  indent?: number;
-  trunk?: number;
-  radius?: number;
-  lineWidth?: number;
-  fontSize?: number;
-  drawDuration?: number;
-  foldDuration?: number;
-  className?: string;
+  items?: BranchedMenuItem[]
+  defaultOpen?: number | number[]
+  defaultActive?: string
+  color?: string
+  accentColor?: string
+  lineColor?: string
+  width?: number
+  rowHeight?: number
+  indent?: number
+  fontSize?: number
+  foldDuration?: number
+  className?: string
 }
 
-const PAD = 6;
-const MARK = 16;
-
-const toSet = (open: number | number[]) => new Set(Array.isArray(open) ? open : open >= 0 ? [open] : []);
+defineOptions({ name: 'BranchedMenu' })
 
 const props = withDefaults(defineProps<BranchedMenuProps>(), {
-  items: undefined,
-  defaultOpen: 0,
+  items: () => [],
+  defaultOpen: -1,
   defaultActive: '',
   color: '#f5f5f5',
   accentColor: '#f5f5f5',
   lineColor: '#3f3f46',
   width: 240,
   rowHeight: 36,
-  indent: 40,
-  trunk: 14,
-  radius: 10,
-  lineWidth: 1.5,
+  indent: 24,
   fontSize: 14,
-  drawDuration: 400,
-  foldDuration: 300,
-  className: ''
-});
+  foldDuration: 250,
+  className: '',
+})
 
 const emit = defineEmits<{
-  select: [value: string, item: BranchedMenuChild | BranchedMenuItem];
-  toggle: [index: number, open: boolean];
-}>();
+  select: [value: string, item: BranchedMenuItem]
+  toggle: [index: number, open: boolean]
+}>()
 
-const menuItems = computed(() => props.items ?? []);
-const open = ref<Set<number>>(toSet(props.defaultOpen));
-const active = ref(
-  props.defaultActive ||
-    (menuItems.value.find((it, i) => it.children && toSet(props.defaultOpen).has(i))?.children?.[0]?.value ?? '')
-);
+function hasActive(item: BranchedMenuItem): boolean {
+  return item.value === props.defaultActive || Boolean(item.children?.some(hasActive))
+}
 
-const navRef = ref<HTMLElement | null>(null);
-const markerRef = ref<HTMLSpanElement | null>(null);
-const heads: (HTMLButtonElement | null)[] = [];
-let resizeObserver: ResizeObserver | null = null;
+function initialOpen(): Set<number> {
+  const indices = Array.isArray(props.defaultOpen)
+    ? props.defaultOpen
+    : props.defaultOpen >= 0 ? [props.defaultOpen] : []
+  return new Set(props.items.flatMap((item, index) =>
+    item.children && (indices.includes(index) || hasActive(item)) ? [index] : []
+  ))
+}
 
-const activeSection = computed(() =>
-  menuItems.value.findIndex(it => it.children?.some(kid => kid.value === active.value))
-);
-const markerShown = computed(() => activeSection.value >= 0 && open.value.has(activeSection.value));
+const open = ref(initialOpen())
+const openChildren = ref(new Set(props.items.flatMap((item) => item.children?.filter(hasActive).map((child) => child.value ?? child.label) ?? [])))
+watch(() => [props.items, props.defaultActive, props.defaultOpen], () => {
+  open.value = initialOpen()
+  openChildren.value = new Set(props.items.flatMap((item) => item.children?.filter(hasActive).map((child) => child.value ?? child.label) ?? []))
+})
 
-const place = (glide: boolean) => {
-  const m = markerRef.value;
-  const el = heads[activeSection.value];
-  if (!m) return;
-  const on = markerShown.value && el;
-  if (!glide) m.style.transition = 'none';
-  if (on) m.style.top = `${el.offsetTop + (el.offsetHeight - MARK) / 2}px`;
-  m.toggleAttribute('data-on', Boolean(on));
-  if (!glide) {
-    void m.offsetHeight;
-    m.style.transition = '';
-  }
-};
+function toggle(index: number): void {
+  const next = new Set(open.value)
+  const isOpen = !next.has(index)
+  if (isOpen) next.add(index)
+  else next.delete(index)
+  open.value = next
+  emit('toggle', index, isOpen)
+}
 
-const bindMarker = () => {
-  resizeObserver?.disconnect();
-  place(true);
-  let first = true;
-  resizeObserver = new ResizeObserver(() => {
-    if (first) {
-      first = false;
-      return;
-    }
-    place(false);
-  });
-  if (navRef.value) resizeObserver.observe(navRef.value);
-};
+function select(item: BranchedMenuItem): void {
+  if (item.value) emit('select', item.value, item)
+}
 
-onMounted(bindMarker);
-onUnmounted(() => resizeObserver?.disconnect());
-watch(() => [activeSection.value, markerShown.value, menuItems.value, props.fontSize, props.rowHeight], bindMarker, {
-  flush: 'post'
-});
+function toggleChild(child: BranchedMenuItem): void {
+  const key = child.value ?? child.label
+  const next = new Set(openChildren.value)
+  if (next.has(key)) next.delete(key)
+  else next.add(key)
+  openChildren.value = next
+}
 
-const select = (value: string, item: BranchedMenuChild | BranchedMenuItem) => {
-  active.value = value;
-  emit('select', value, item);
-};
-const toggle = (i: number) => {
-  const next = new Set(open.value);
-  const isOpen = !next.has(i);
-  if (isOpen) next.add(i);
-  else next.delete(i);
-  open.value = next;
-  emit('toggle', i, isOpen);
-};
-
-const r = computed(() => Math.min(props.radius, props.rowHeight / 2 - 2));
-const endX = computed(() => props.indent - 8);
-const rowY = (k: number) => PAD + k * props.rowHeight + props.rowHeight / 2;
-const branch = (k: number) =>
-  `M ${props.trunk} ${rowY(k) - r.value} A ${r.value} ${r.value} 0 0 0 ${props.trunk + r.value} ${rowY(k)} H ${endX.value}`;
-const reach = (k: number) =>
-  `M ${props.trunk} 0 V ${rowY(k) - r.value} A ${r.value} ${r.value} 0 0 0 ${props.trunk + r.value} ${rowY(k)} H ${endX.value}`;
-const length = (k: number) => rowY(k) - r.value + (Math.PI * r.value) / 2 + (endX.value - props.trunk - r.value);
-const trunkPath = (count: number) => `M ${props.trunk} 0 V ${rowY(count - 1) - r.value}`;
-
-const navStyle = computed(
-  () =>
-    ({
-      '--bm-w': `${props.width}px`,
-      '--bm-ink': props.color,
-      '--bm-accent': props.accentColor,
-      '--bm-line': props.lineColor,
-      '--bm-font': `${props.fontSize}px`,
-      '--bm-row': `${props.rowHeight}px`,
-      '--bm-indent': `${props.indent}px`,
-      '--bm-line-w': props.lineWidth,
-      '--bm-draw': `${props.drawDuration}ms`,
-      '--bm-muted': `color-mix(in srgb, ${props.color} 55%, transparent)`,
-      '--bm-fold': `${props.foldDuration}ms`
-    }) as CSSProperties
-);
+const style = computed(() => ({
+  '--bm-w': `${props.width}px`,
+  '--bm-ink': props.color,
+  '--bm-accent': props.accentColor,
+  '--bm-line': props.lineColor,
+  '--bm-font': `${props.fontSize}px`,
+  '--bm-row': `${props.rowHeight}px`,
+  '--bm-indent': `${props.indent}px`,
+  '--bm-fold': `${props.foldDuration}ms`,
+}) as CSSProperties)
 
 const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } as CSSProperties) : undefined
 </script>
 
 <template>
-  <nav
-    ref="navRef"
-    class="before:top-2 before:bottom-0 before:left-0 before:absolute relative flex flex-col pl-3.5 before:rounded-[1px] w-full before:w-0.5 max-w-[min(var(--bm-w),100%)] before:content-[''] leading-[1.2] [color:var(--bm-ink)] [font-family:inherit] [font-size:var(--bm-font)] before:[background:linear-gradient(to_bottom,var(--bm-line)_0%,var(--bm-line)_55%,transparent_100%)]"
-    :class="className"
-    :style="navStyle"
-  >
-    <span
-      ref="markerRef"
-      class="-top-px left-0 z-[1] absolute opacity-0 data-[on]:opacity-100 rounded-[1px] w-0.5 h-4 [background:var(--bm-accent)] [transition:top_220ms_cubic-bezier(0.23,1,0.32,1),opacity_150ms_ease] motion-reduce:[transition:opacity_150ms_ease]"
-      aria-hidden="true"
-    />
-    <div
-      v-for="(item, i) in menuItems"
-      :key="item.value ?? item.label"
-      class="group/section flex flex-col"
-      :data-open="item.children && open.has(i) ? '' : undefined"
-    >
+  <nav class="branched-menu" :class="className" :style="style">
+    <div v-for="(item, index) in items" :key="item.value ?? item.label" class="branch">
       <button
-        :ref="el => (heads[i] = el as HTMLButtonElement | null)"
+        v-if="item.children?.length"
         type="button"
-        class="block whitespace-nowrap bg-transparent m-0 py-[9px] border-0 outline-none font-medium text-left cursor-pointer [color:var(--bm-muted)] [font-family:inherit] [font-size:calc(var(--bm-font)+1px)] [-webkit-tap-highlight-color:transparent] [transition:color_200ms_ease] group-data-[open]/section:[color:var(--bm-ink)] data-[active]:[color:var(--bm-ink)] hover:[color:var(--bm-ink)]"
-        :aria-expanded="item.children ? open.has(i) : undefined"
-        :aria-current="!item.children && (item.value ?? item.label) === active ? 'true' : undefined"
-        :data-active="!item.children && (item.value ?? item.label) === active ? '' : undefined"
-        @click="item.children ? toggle(i) : select(item.value ?? item.label, item)"
+        class="branch-heading"
+        :aria-expanded="open.has(index)"
+        :data-active="hasActive(item) || undefined"
+        @click="toggle(index)"
       >
         <span v-if="item.icon" class="branched-menu-icon" :style="iconStyle(item.icon)" aria-hidden="true" />
-        {{ item.label }}
+        <span>{{ item.label }}</span>
       </button>
-      <div
-        v-if="item.children"
-        class="grid motion-reduce:transition-none [grid-template-rows:0fr] group-data-[open]/section:[grid-template-rows:1fr] [transition:grid-template-rows_var(--bm-fold)_cubic-bezier(0.23,1,0.32,1)]"
+      <button
+        v-else
+        type="button"
+        class="branch-heading branch-leaf"
+        :aria-current="item.value === defaultActive ? 'page' : undefined"
+        :data-active="item.value === defaultActive || undefined"
+        @click="select(item)"
       >
-        <div class="min-h-0 overflow-hidden">
-          <div
-            class="box-border relative py-1.5"
-            :style="{ height: `${PAD * 2 + item.children.length * rowHeight}px` }"
+        <span v-if="item.icon" class="branched-menu-icon" :style="iconStyle(item.icon)" aria-hidden="true" />
+        <span>{{ item.label }}</span>
+      </button>
+
+      <div v-if="item.children?.length" v-show="open.has(index)" class="branch-children">
+        <div v-for="child in item.children" :key="child.value ?? child.label" class="branch-child">
+          <button
+            v-if="child.children?.length"
+            type="button"
+            class="branch-row branch-toggle"
+            :aria-expanded="openChildren.has(child.value ?? child.label)"
+            :data-active="hasActive(child) || undefined"
+            @click="toggleChild(child)"
           >
-            <svg
-              class="top-0 left-0 absolute opacity-0 group-data-[open]/section:opacity-100 overflow-visible pointer-events-none [transition:opacity_200ms_ease] group-data-[open]/section:[transition:opacity_250ms_ease_100ms]"
-              :width="indent"
-              :height="PAD * 2 + item.children.length * rowHeight"
-              aria-hidden="true"
-            >
-              <path
-                class="fill-none [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:var(--bm-line-w)] [stroke:var(--bm-line)]"
-                :d="trunkPath(item.children.length)"
-              />
-              <path
-                v-for="(kid, k) in item.children"
-                :key="`line-${kid.value}`"
-                class="fill-none [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:var(--bm-line-w)] [stroke:var(--bm-line)]"
-                :d="branch(k)"
-              />
-              <path
-                v-for="(kid, k) in item.children"
-                :key="`reach-${kid.value}`"
-                class="fill-none motion-reduce:transition-none [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:var(--bm-line-w)] [stroke:var(--bm-accent)] [transition:stroke-dashoffset_var(--bm-draw)_cubic-bezier(0.23,1,0.32,1)]"
-                :d="reach(k)"
-                :style="{
-                  strokeDasharray: length(k),
-                  strokeDashoffset: kid.value === active ? 0 : length(k)
-                }"
-              />
-            </svg>
-            <button
-              v-for="kid in item.children"
-              :key="kid.value"
-              type="button"
-              class="box-border flex items-center gap-2 bg-transparent m-0 py-0 pr-0 border-0 outline-none w-full data-[active]:font-medium text-left cursor-pointer [height:var(--bm-row)] [padding-left:var(--bm-indent)] [color:var(--bm-muted)] [font-family:inherit] [-webkit-tap-highlight-color:transparent] [transition:color_200ms_ease] hover:[color:var(--bm-ink)] data-[active]:[color:var(--bm-accent)]"
-              :aria-current="kid.value === active ? 'true' : undefined"
-              :data-active="kid.value === active ? '' : undefined"
-              :tabindex="open.has(i) ? 0 : -1"
-              @click="select(kid.value, kid)"
-            >
-              <span v-if="kid.icon" class="branched-menu-icon" :style="iconStyle(kid.icon)" aria-hidden="true" />
-              <span class="block overflow-hidden text-ellipsis whitespace-nowrap">{{ kid.label }}</span>
-            </button>
-          </div>
+            <span v-if="child.icon" class="branched-menu-icon" :style="iconStyle(child.icon)" aria-hidden="true" />
+            <span>{{ child.label }}</span>
+          </button>
+          <button
+            v-else
+            type="button"
+            class="branch-row"
+            :aria-current="child.value === defaultActive ? 'page' : undefined"
+            :data-active="child.value === defaultActive || undefined"
+            @click="select(child)"
+          >
+            <span v-if="child.icon" class="branched-menu-icon" :style="iconStyle(child.icon)" aria-hidden="true" />
+            <span>{{ child.label }}</span>
+          </button>
+          <BranchedMenu
+            v-if="child.children?.length && openChildren.has(child.value ?? child.label)"
+            :items="child.children"
+            :default-active="defaultActive"
+            :default-open="child.children.findIndex(hasActive)"
+            :color="color"
+            :accent-color="accentColor"
+            :line-color="lineColor"
+            :width="width"
+            :row-height="rowHeight"
+            :indent="indent"
+            :font-size="fontSize"
+            :fold-duration="foldDuration"
+            class-name="branched-menu-nested"
+            @select="(value, selected) => emit('select', value, selected)"
+          />
         </div>
       </div>
     </div>
@@ -243,6 +173,112 @@ const iconStyle = (icon?: string) => icon ? ({ '--bm-icon': `url("${icon}")` } a
 </template>
 
 <style scoped>
+.branched-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: min(var(--bm-w), 100%);
+  padding-left: 14px;
+  color: var(--bm-ink);
+  font: var(--bm-font)/1.25 inherit;
+}
+
+.branched-menu::before {
+  position: absolute;
+  top: 8px;
+  bottom: 0;
+  left: 0;
+  width: 1.5px;
+  border-radius: 1px;
+  background: linear-gradient(to bottom, var(--bm-line) 0%, var(--bm-line) 55%, transparent 100%);
+  content: '';
+}
+
+.branch-heading,
+.branch-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--bm-ink) 55%, transparent);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.branch-heading {
+  min-height: var(--bm-row);
+  padding: 7px 0;
+  font-size: calc(var(--bm-font) + 1px);
+  font-weight: 500;
+}
+
+.branch-row {
+  position: relative;
+  min-height: var(--bm-row);
+  padding: 4px 0 4px 12px;
+}
+
+.branch-row::before {
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 10px;
+  height: 50%;
+  border-bottom: 1.5px solid var(--bm-line);
+  border-left: 1.5px solid var(--bm-line);
+  border-bottom-left-radius: 10px;
+  content: '';
+}
+
+.branch-heading:hover,
+.branch-row:hover,
+.branch-heading[data-active],
+.branch-row[data-active] {
+  color: var(--bm-ink);
+}
+
+.branch-row[data-active] {
+  color: var(--bm-accent);
+  font-weight: 500;
+}
+
+.branch-children {
+  margin-left: 14px;
+  padding: 4px 0 6px 12px;
+  border-left: 1.5px solid var(--bm-line);
+}
+
+.branch-child {
+  position: relative;
+}
+
+.branch-child::before {
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 10px;
+  height: 50%;
+  border-bottom: 1.5px solid var(--bm-line);
+  border-left: 1.5px solid var(--bm-line);
+  border-bottom-left-radius: 10px;
+  content: '';
+}
+
+.branched-menu-nested {
+  margin: 0 0 4px 10px;
+  padding-left: 10px;
+}
+
+.branched-menu-nested::before {
+  display: none;
+}
+
 .branched-menu-icon {
   display: inline-block;
   width: 16px;

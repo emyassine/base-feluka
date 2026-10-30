@@ -165,15 +165,23 @@ function navigation(language = defaultLanguage): any[] {
 }
 function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
   const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
-  return Object.fromEntries(site.subguides.map((guide: { path: string; label: string }) => {
+  return Object.fromEntries(site.subguides.flatMap((guide: { path: string; label: string; uri: { entry?: string; index?: string } }) => {
     const base = routeBase(guide.path)
-    const directory = join(generatedDirectory, prefix, ...base.split('/').filter(Boolean))
+    const route = base || guide.uri.entry || guide.uri.index?.replace(/\/$/, '') || ''
+    const routeParts = route.split('/').filter(Boolean)
+    const isRootGuide = !base && Boolean(guide.uri.entry)
+    const directory = isRootGuide
+      ? join(generatedDirectory, prefix)
+      : join(generatedDirectory, prefix, ...routeParts)
     const items = sidebar(directory, directory, language)
     const guideIndex = base ? join(directory, 'index.md') : ''
-    const sidebarItems = guideIndex && existsSync(guideIndex)
+    const sidebarItems = guideIndex && existsSync(guideIndex) && hasSourceIndex(directory)
       ? [{ text: escapeHtml(titleOf(guideIndex)), link: publicPagePath(guideIndex), collapsed: false, items }]
       : items
-    return [`/${prefix}${base}${base ? '/' : ''}`, sidebarItems]
+    const routes = isRootGuide
+      ? [`/${prefix}`, `/${prefix}${route}/`]
+      : [`/${prefix}${route}${route ? '/' : ''}`]
+    return routes.map((path) => [path, sidebarItems])
   }))
 }
 const sidebars = localizedSidebars()
