@@ -56,9 +56,9 @@
       {
         "text": { "en": "Docs", "fr": "Docs" },
         "items": [
-          { "guide": "feluqa.rs" },
-          { "guide": "sdui" },
-          { "guide": "internals" }
+          { "guide": "feluqa.rs", "icon": "book-open" },
+          { "guide": "sdui", "icon": "square-terminal" },
+          { "guide": "internals", "icon": "code-xml" }
         ]
       },
       { "guide": "x-agents" },
