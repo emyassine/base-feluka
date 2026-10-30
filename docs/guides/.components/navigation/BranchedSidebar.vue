@@ -51,10 +51,6 @@ const normalizePath = (path: string) => path.replace(/index\.html$/, '').replace
 const activeLink = computed(() => normalizePath(route.path))
 const selectedLink = computed(() => items.value.flatMap((item) => item.children ?? [])
   .find((child) => normalizePath(child.value) === activeLink.value)?.value ?? activeLink.value)
-const openSection = computed(() => items.value.findIndex((item) =>
-  item.children?.some((child) => normalizePath(child.value) === activeLink.value),
-))
-
 function navigate(path: string): void {
   void router.go(path)
 }
@@ -65,7 +61,7 @@ function navigate(path: string): void {
     <BranchedMenu
       :key="route.path"
       :items="items"
-      :default-open="openSection"
+      :default-open="items.map((_, index) => index)"
       :default-active="selectedLink"
       :width="248"
       :row-height="34"
