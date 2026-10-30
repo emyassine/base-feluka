@@ -502,6 +502,9 @@ const mountScene = () => {
   gl.clearColor(0, 0, 0, 0);
   const canvas = gl.canvas;
   canvas.style.display = 'block';
+  canvas.style.position = 'absolute';
+  canvas.style.insetInline = '0';
+  canvas.style.top = '-300px';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.setAttribute('aria-hidden', 'true');
@@ -1151,7 +1154,7 @@ const mountScene = () => {
   };
 
   const localPoint = (e: { clientX: number; clientY: number }) => {
-    const rect = container.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     return [e.clientX - rect.left, e.clientY - rect.top];
   };
 
@@ -1495,12 +1498,12 @@ watch(modalOpen, (open) => {
         </a>
       </div>
     </div>
-    <div class="relative mt-8 w-full max-w-full overflow-x-clip md:mt-12 lg:mt-20">
+    <div class="relative mt-8 w-full max-w-full overflow-x-clip overflow-y-visible md:mt-12 lg:mt-20">
       <div
         ref="containerRef"
-        class="relative min-h-[750px] w-full max-w-full overflow-x-hidden outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-auto touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
+        class="relative min-h-[750px] w-full max-w-full overflow-x-clip overflow-y-visible outline-none focus-visible:shadow-[inset_0_0_0_2px_rgba(128,128,140,0.55)] overscroll-auto touch-pan-y cursor-grab data-[dragging]:cursor-grabbing data-[hover=close]:cursor-zoom-out data-[hover=open]:cursor-zoom-in select-none [-webkit-tap-highlight-color:transparent] sm:min-h-[950px]"
         :class="className"
-        :style="{ '--flex-carousel-half': half }"
+        :style="{ '--flex-carousel-half': half, '--flex-canvas-offset': '300px' }"
         role="region"
         aria-roledescription="carousel"
         :aria-label="title || 'Image carousel'"
@@ -1508,7 +1511,7 @@ watch(modalOpen, (open) => {
       >
         <div
           v-if="captions && current && revealed"
-          class="absolute inset-x-0 flex flex-col top-[calc(50%_+_var(--flex-carousel-half)_*_var(--flex-carousel-lift,1)_+_22px)] items-center gap-1.5 px-4 text-center animate-[flex-carousel-reveal_900ms_ease_both] motion-reduce:animate-none pointer-events-none"
+          class="absolute inset-x-0 flex flex-col top-[calc(50%_+_var(--flex-carousel-half)_*_var(--flex-carousel-lift,1)_+_22px_-_var(--flex-canvas-offset))] items-center gap-1.5 px-4 text-center animate-[flex-carousel-reveal_900ms_ease_both] motion-reduce:animate-none pointer-events-none"
           aria-hidden="true"
         >
           <span
@@ -1534,7 +1537,7 @@ watch(modalOpen, (open) => {
           class="pointer-events-none absolute inset-0 z-10"
           :style="{ '--flex-card-half': `${Math.min(Math.max(cardHeight, 0.05), 1) * 50}%` }"
         >
-          <FeluqaButton tag="a" color="gray" outlined size="lg" class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem)] -translate-x-1/2 !border-white/40 !bg-black/70 !text-white backdrop-blur-md" :href="current.href" icon-position="after">
+          <FeluqaButton tag="a" color="gray" outlined size="lg" class="pointer-events-auto absolute left-1/2 top-[calc(50%_+_var(--flex-card-half)_-_4.5rem_-_var(--flex-canvas-offset))] -translate-x-1/2 !border-white/40 !bg-black/70 !text-white backdrop-blur-md" :href="current.href" icon-position="after">
             {{ current.actionLabel || cardButtonLabel || 'Discover' }}
             <template #icon><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></template>
           </FeluqaButton>

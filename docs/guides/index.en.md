@@ -64,8 +64,6 @@ layout: home
 <FlexCarousel
     title="Explore Feluqa"
     description="Follow practical guides, understand the platform direction, and check what is implemented today."
-    action-label="Start building"
-    action-href="/get-started/"
     preset="ribbon"
     :card-height="0.3"
     :gap="16"
