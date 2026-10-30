@@ -44,7 +44,7 @@ const collections = configuredCollections.map((collection) => {
   if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
     throw new Error('Each collections entry must be an object with id and path')
   }
-  const { id, path, title, description, layout, categoryFile = 'category.json' } = collection
+  const { id, path, title, description, layout, indexLayout = 'list', categoryFile = 'category.json' } = collection
   if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
     throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
   }
@@ -73,9 +73,12 @@ const collections = configuredCollections.map((collection) => {
   if (layout !== undefined && !['article', 'doc'].includes(layout)) {
     throw new Error(`Collection ${id} layout must be article or doc`)
   }
+  if (!['list', 'spotlight'].includes(indexLayout)) {
+    throw new Error(`Collection ${id} indexLayout must be list or spotlight`)
+  }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, layout, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
+  return { id, path: normalizedPath, title, description, layout, indexLayout, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -620,7 +623,7 @@ for (const collection of collectionMetadata.values()) {
     const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`
     return [language, `/${localePrefix}${collection.id}/`]
   }))
-  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links, articles: {} }
+  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, layout: collection.layout ?? 'doc', indexLayout: collection.indexLayout, titles: localizedTitles, descriptions: localizedDescriptions, links, articles: {} }
   generatedCollectionNavigation.push(collectionRecord)
   const title = localizedTitles[defaultLanguage]
   for (const language of config.languages) {
@@ -657,21 +660,25 @@ for (const collection of collectionMetadata.values()) {
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
-    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `---`, '', `# ${localizedTitle}`, '']
+    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `collectionIndex: ${JSON.stringify(collection.id)}`, `---`, '', `# ${localizedTitle}`, '']
     if (localizedDescription) lines.push(localizedDescription, '')
-    const grouped = new Map()
-    for (const article of articles) {
-      const key = article.category || ''
-      if (!grouped.has(key)) grouped.set(key, [])
-      grouped.get(key).push(article)
-    }
-    for (const [category, items] of grouped) {
-      if (category) lines.push(`## ${categories.get(category) ?? category}`, '')
-      for (const article of items) {
-        const suffix = [article.date, article.description].filter(Boolean).join(' — ')
-        lines.push(`- [${article.title}](${article.url})${suffix ? ` — ${suffix}` : ''}`)
+    if (collection.indexLayout === 'spotlight') {
+      lines.push(`<CollectionSpotlightCards collection-id="${collection.id}" />`, '')
+    } else {
+      const grouped = new Map()
+      for (const article of articles) {
+        const key = article.category || ''
+        if (!grouped.has(key)) grouped.set(key, [])
+        grouped.get(key).push(article)
       }
-      if (items.length) lines.push('')
+      for (const [category, items] of grouped) {
+        if (category) lines.push(`## ${categories.get(category) ?? category}`, '')
+        for (const article of items) {
+          const suffix = [article.date, article.description].filter(Boolean).join(' — ')
+          lines.push(`- [${article.title}](${article.url})${suffix ? ` — ${suffix}` : ''}`)
+        }
+        if (items.length) lines.push('')
+      }
     }
     if (!articles.length) lines.push(language.toLowerCase().startsWith('fr') ? 'Aucun contenu publié pour le moment.' : 'No published content yet.', '')
     await mkdir(targetDirectory, { recursive: true })

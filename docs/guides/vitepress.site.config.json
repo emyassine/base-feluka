@@ -27,6 +27,7 @@
       "id": "articles",
       "path": "articles",
       "layout": "article",
+      "indexLayout": "spotlight",
       "title": { "en": "Articles", "fr": "Articles" },
       "description": { "en": "Short articles about building with Feluqa.", "fr": "Articles courts sur la création avec Feluqa." }
     }

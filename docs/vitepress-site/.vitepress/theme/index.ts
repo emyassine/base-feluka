@@ -5,6 +5,7 @@ import guideColors from '../generated/guide-colors.json'
 import generatedFonts from '../generated/fonts.json'
 import siteContent from '../generated/site-content.json'
 import sidebarPageIcons from '../generated/sidebar-page-icons.json'
+import generatedCollections from '../generated/collections.json'
 import { DocumentationLastModified, DocumentationNotice } from '../generated/theme'
 import { projectComponents, registerProjectComponents } from '../generated/components'
 import './tailwind.css'
@@ -115,31 +116,6 @@ const PageActions = {
         ]),
       ])
     }
-  },
-}
-
-const CollectionArticleHeader = {
-  setup() {
-    const { frontmatter, lang } = useData()
-    const backLabel = () => lang.value.toLowerCase().startsWith('fr') ? '← Articles' : '← Articles'
-    return () => h('div', { class: 'collection-article-header' }, [
-      h('a', { class: 'collection-article-back', href: lang.value.toLowerCase().startsWith('fr') ? '/fr/articles/' : '/articles/' }, backLabel()),
-      h('div', { class: 'collection-article-meta' }, [
-        frontmatter.value.date ? h('time', { datetime: frontmatter.value.date }, frontmatter.value.date) : null,
-        frontmatter.value.author?.name ? h('span', frontmatter.value.author.name) : null,
-        frontmatter.value.readingTime ? h('span', lang.value.toLowerCase().startsWith('fr') ? `${frontmatter.value.readingTime} min de lecture` : `${frontmatter.value.readingTime} min read`) : null,
-      ]),
-      h(PageActions),
-    ])
-  },
-}
-
-const CollectionArticleFooter = {
-  setup() {
-    const { lang } = useData()
-    return () => h('nav', { class: 'collection-article-footer', 'aria-label': lang.value.toLowerCase().startsWith('fr') ? 'Navigation des articles' : 'Article navigation' }, [
-      h('a', { href: lang.value.toLowerCase().startsWith('fr') ? '/fr/articles/' : '/articles/' }, lang.value.toLowerCase().startsWith('fr') ? 'Parcourir tous les articles →' : 'Browse all articles →'),
-    ])
   },
 }
 
@@ -479,13 +455,28 @@ const MermaidLayout = {
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
-    const { frontmatter } = useData()
-    const isCollectionArticle = () => typeof frontmatter.value.collection === 'string'
+    const { frontmatter, lang } = useData()
+    const collectionForPage = () => (generatedCollections as Array<{ id: string; layout: string; links: Record<string, string>; titles: Record<string, string> }>)
+      .find((collection) => collection.id === frontmatter.value.collection)
+    const articleLayout = () => collectionForPage()?.layout === 'article'
+    const articleCollectionLink = () => {
+      const collection = collectionForPage()
+      const locale = lang.value.toLowerCase().split('-')[0]
+      return collection?.links[locale] ?? collection?.links.en ?? '/'
+    }
     return () => h(DefaultTheme.Layout, null, {
       ...configuredLayoutSlots(),
-      'doc-before': () => h(Fragment, null, [isCollectionArticle() ? h(CollectionArticleHeader) : null, h(DocumentationNotice, { notices: siteContent.documentationNotices })]),
-      'doc-after': () => isCollectionArticle() ? h(CollectionArticleFooter) : null,
-      'aside-outline-before': () => h(Fragment, null, [isCollectionArticle() ? null : h(PageActions), h(DocumentationLastModified)]),
+      'doc-before': () => h(Fragment, null, [
+        articleLayout() ? h('div', { class: 'collection-article-topbar' }, [
+          h((projectComponents as Record<string, Component>).CollectionArticleSubnav),
+          h(PageActions),
+        ]) : null,
+        h(DocumentationNotice, { notices: siteContent.documentationNotices }),
+      ]),
+      'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
+        h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[lang.value.toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
+      ]) : null,
+      'aside-outline-before': () => h(Fragment, null, [articleLayout() ? null : h(PageActions), h(DocumentationLastModified)]),
     })
   },
 }

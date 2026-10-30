@@ -14,6 +14,8 @@ export interface ContentCollection {
   titles: Record<string, string>;
   descriptions: Record<string, string>;
   links: Record<string, string>;
+  layout: 'article' | 'doc';
+  indexLayout: 'list' | 'spotlight';
   articles: Record<string, CollectionArticle[]>;
 }
 
@@ -28,7 +30,7 @@ export function queryCollection(
   predicate: (article: CollectionArticle) => boolean,
   locale = 'en'
 ): CollectionArticle[] {
-  const collection = useCollection(id, locale);
+  const collection = useCollection(id);
   const articles = collection?.articles[locale] ?? collection?.articles.en ?? [];
   return articles.filter(predicate);
 }
