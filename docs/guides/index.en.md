@@ -61,19 +61,16 @@ layout: home
 </template>
 
 <template #middle>
-<MainlineTestimonials
-    title="Trusted by product builders"
-    description="Mainline is built on the habits that make the best product teams successful: staying focused, moving quickly, and always aiming for high-quality work."
-    action-label="Read our Customer Stories"
+<FlexCarousel
+    title="Explore Feluqa"
+    description="Follow practical guides, understand the platform direction, and check what is implemented today."
+    action-label="Start building"
+    action-href="/get-started/"
     :items='[
-      { quote: "We\u0027re misusing Mainline as a CRM and it still works!", author: "Amy Chase", role: "PM", company: "Mercury Finance", image: "amy-chase" },
-      { quote: "I was able to replace 80% of my team with Mainline bots.", author: "Jonas Kotara", role: "Lead Engineer", company: "Mercury Finance", image: "jonas-kotara" },
-      { quote: "Founder Mode is hard enough without having a really nice PM app.", author: "Kevin Yam", role: "Founder", company: "Mercury Finance", image: "kevin-yam" },
-      { quote: "I can use the tool as a substitute from my PM.", author: "Kundo Marta", role: "Founder", company: "Mercury Finance", image: "kundo-marta" },
-      { quote: "We\u0027re misusing Mainline as a CRM and it still works!", author: "Amy Chase", role: "PM", company: "Mercury Finance", image: "amy-chase" },
-      { quote: "I was able to replace 80% of my team with Mainline bots.", author: "Jonas Kotara", role: "Lead Engineer", company: "Mercury Finance", image: "jonas-kotara" },
-      { quote: "Founder Mode is hard enough without having a really nice PM app.", author: "Kevin Yam", role: "Founder", company: "Mercury Finance", image: "kevin-yam" },
-      { quote: "I can use the tool as a substitute from my PM.", author: "Kundo Marta", role: "Founder", company: "Mercury Finance", image: "kundo-marta" }
+      { src: "https://images.unsplash.com/photo-1737071371043-761e02b1ef95?w=1200&q=80&auto=format&fit=max", alt: "Abstract chrome sculpture", title: "Start building", subtitle: "Toolchain, app structure, and practical guides.", href: "/get-started/" },
+      { src: "https://images.unsplash.com/photo-1693645325828-62cd35c8da8f?w=1200&q=80&auto=format&fit=max", alt: "A figure in a minimal studio", title: "Platform architecture", subtitle: "Product direction, runtimes, and workspace design.", href: "/feluqa-internals/" },
+      { src: "https://images.unsplash.com/photo-1739056238917-d89cd05c48d5?w=1200&q=80&auto=format&fit=max", alt: "A sculptural liquid-metal form", title: "Implementation status", subtitle: "See the current foundations and remaining work.", href: "/agents/" },
+      { src: "https://images.unsplash.com/photo-1747191092806-c7da11881986?w=1200&q=80&auto=format&fit=max", alt: "A clay study sculpture", title: "Contribute", subtitle: "Read the contributor guidance before making changes.", href: "/prologue/contribution-guide" }
     ]'
   />
 </template>
