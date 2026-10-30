@@ -3,15 +3,19 @@ import { useData } from 'vitepress'
 
 const strings = {
   en: {
-    exploring: 'This page describes an area that is still being explored.',
-    validated: 'The information on this page has been validated.',
+    exploringTitle: 'Under exploration',
+    exploring: 'This page presents ideas or proposals that are still under discussion and subject to change.',
+    validatedTitle: 'Validated',
+    validated: 'The information on this page has been verified and reflects the current state of the project.',
     fallbackTitle: 'Language availability',
     lastModified: 'Last updated',
   },
   fr: {
-    exploring: 'Cette page décrit un sujet encore à l’étude.',
-    validated: 'Les informations de cette page ont été vérifiées.',
-    fallbackTitle: 'Disponibilité linguistique',
+    exploringTitle: "En cours d'exploration",
+    exploring: "Cette page présente des idées ou des propositions encore à l'étude et susceptibles d'évoluer.",
+    validatedTitle: 'Validé',
+    validated: 'Les informations contenues sur cette page ont été vérifiées et reflètent l’état actuel du projet.',
+    fallbackTitle: 'Disponibilité des langues',
     lastModified: 'Dernière mise à jour',
   },
 } as const
@@ -39,8 +43,8 @@ export const DocumentationNotice = defineComponent({
           : ''
       if (!fallbackNotice && !statusMessage) return null
       const statusTitle = status === 'exploring'
-        ? language === 'fr' ? 'À l’étude' : 'Exploring'
-        : language === 'fr' ? 'Vérifié' : 'Validated'
+        ? (language === 'fr' ? 'Spécification / Proposition' : 'Proposal / Draft')
+        : (language === 'fr' ? 'Spécifié / Validé' : 'Validated');
       return h('div', { class: 'FeluqaDocumentationNotices', 'aria-live': 'polite' }, [
         fallbackNotice ? h('div', { class: 'FeluqaDocumentationNotices__fallback', role: 'note' }, [
           h('span', { class: 'FeluqaDocumentationNotices__icon', 'aria-hidden': 'true' }, 'i'),
@@ -77,4 +81,3 @@ export const DocumentationLastModified = defineComponent({
     }
   },
 })
-

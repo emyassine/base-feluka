@@ -40,6 +40,7 @@ function toMenuItem(entry: SidebarEntry): BranchedMenuItem | null {
 }
 
 const sourceItems = computed<SidebarEntry[]>(() => {
+  if (frontmatter.value.sidebar === false) return []
   const sidebar = theme.value.sidebar
   if (Array.isArray(sidebar)) return sidebar as SidebarEntry[]
   if (!sidebar || typeof sidebar !== 'object') return []
@@ -84,7 +85,7 @@ function navigate(path: string): void {
 </script>
 
 <template>
-  <div v-if="items.length" class="branched-sidebar">
+  <div v-if="frontmatter.sidebar !== false && items.length" class="branched-sidebar">
     <BranchedMenu
       :key="route.path"
       :items="items"

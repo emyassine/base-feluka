@@ -212,18 +212,23 @@
   "ogImages": [
     "feluqa.rs/.art/og-feluqa.png"
   ],
-  "documentationNotices": {
-    "en": {
-      "exploring": "This page describes an area that is still being explored.",
-      "validated": "The information on this page has been validated.",
-      "fallbackTitle": "Language availability"
-    },
-    "fr": {
-      "exploring": "Cette page décrit un sujet encore à l’étude.",
-      "validated": "Les informations de cette page ont été vérifiées.",
-      "fallbackTitle": "Disponibilité linguistique"
+    "documentationNotices": {
+      "en": {
+        "exploringTitle": "Under exploration",
+        "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",
+        "validatedTitle": "Validated",
+        "validated": "The information on this page has been verified and reflects the current baseline.",
+        "fallbackTitle": "Language availability"
+      },
+      "fr": {
+        "exploringTitle": "En cours d'exploration",
+        "exploring": "Cette page présente une idée ou une proposition encore à l'étude, susceptible de faire l'objet de modifications.",
+        "validatedTitle": "Validé",
+        "validated": "Les informations contenues sur cette page sont vérifiées et conformes à la version actuelle.",
+        "fallbackTitle": "Disponibilité linguistique"
+      }
     }
-  },
+  ,
   "seo": {
     "locales": {
       "en": {

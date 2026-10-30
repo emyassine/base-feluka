@@ -674,7 +674,7 @@ for (const collection of collectionMetadata.values()) {
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
-    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `collectionIndex: ${JSON.stringify(collection.id)}`, `---`, '', `# ${localizedTitle}`, '']
+    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '', `# ${localizedTitle}`, '']
     if (localizedDescription) lines.push(localizedDescription, '')
     if (collection.indexLayout === 'spotlight') {
       lines.push(`<CollectionSpotlightCards collection-id="${collection.id}" />`, '')
@@ -871,11 +871,18 @@ await mkdir(mermaidCache, { recursive: true })
 await Promise.all(records.map(async (record) => {
   let markdown = await readFile(record.from, 'utf8')
   const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
-  if (owningCollection?.layout === 'article') {
+  if (owningCollection) {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
-    if (metadata && !/^collection:\s*/m.test(metadata[1])) {
-      const { wordCount, readingTime } = readingMetrics(markdown)
-      markdown = markdown.replace(metadata[0], `---\n${metadata[1]}\ncollection: ${JSON.stringify(owningCollection.id)}\nwordCount: ${wordCount}\nreadingTime: ${readingTime}\n---`)
+    if (metadata) {
+      const frontmatter = metadata[1].split('\n').filter((line) => !/^(?:sidebar|aside):\s*/.test(line))
+      if (owningCollection.layout === 'article') {
+        const { wordCount, readingTime } = readingMetrics(markdown)
+        if (!/^collection:\s*/m.test(metadata[1])) frontmatter.push(`collection: ${JSON.stringify(owningCollection.id)}`)
+        if (!/^wordCount:\s*/m.test(metadata[1])) frontmatter.push(`wordCount: ${wordCount}`)
+        if (!/^readingTime:\s*/m.test(metadata[1])) frontmatter.push(`readingTime: ${readingTime}`)
+      }
+      frontmatter.push('sidebar: false', 'aside: false')
+      markdown = markdown.replace(metadata[0], `---\n${frontmatter.join('\n')}\n---`)
     }
   }
   const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
