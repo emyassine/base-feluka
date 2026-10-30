@@ -17,6 +17,8 @@ const sidebarPageIconsPath = join(generatedMetadata, 'sidebar-page-icons.json')
 const sidebarPageIcons = existsSync(sidebarPageIconsPath) ? JSON.parse(readFileSync(sidebarPageIconsPath, 'utf8')) : {}
 const navigationOrderPath = join(generatedMetadata, 'navigation-order.json')
 const navigationOrder = existsSync(navigationOrderPath) ? JSON.parse(readFileSync(navigationOrderPath, 'utf8')) : {}
+const generatedCollectionsPath = join(generatedMetadata, 'collections.json')
+const generatedCollections = existsSync(generatedCollectionsPath) ? JSON.parse(readFileSync(generatedCollectionsPath, 'utf8')) : []
 const generatedFontPath = join(generatedMetadata, 'fonts.json')
 const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
 const generatedGuideColorsPath = join(generatedMetadata, 'guide-colors.json')
@@ -151,7 +153,7 @@ function sidebar(directory: string, root = directory, language = defaultLanguage
 }
 
 function navigation(language = defaultLanguage): any[] {
- return site.subguides.map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
+ const guideLinks = site.subguides.map((guide: { path: string; label: string; labels?: Record<string, string> }) => {
   const uri = guide.uri
   const base = routeBase(guide.path)
   const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `/${language}`
@@ -162,6 +164,11 @@ function navigation(language = defaultLanguage): any[] {
       : `${localePrefix}/${base}${base ? '/' : ''}`
   return { text: guide.labels?.[language] ?? guide.label, link }
  })
+ const collectionLinks = generatedCollections.map((collection: { id: string; titles: Record<string, string>; links: Record<string, string> }) => ({
+  text: collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id,
+  link: collection.links[language] ?? collection.links[defaultLanguage],
+ }))
+ return [...guideLinks, ...collectionLinks]
 }
 function localizedSidebars(language = defaultLanguage): Record<string, any[]> {
   const prefix = language.toLowerCase() === defaultLanguage.toLowerCase() ? '' : `${language}/`

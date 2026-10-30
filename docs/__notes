@@ -2,7 +2,7 @@ Still lacks collections (articles, research).
 
 Reference to review: [Scalar](https://www.shadcnblocks.com/template/scalar) is an excellent article layout.
 
-Collection support should be declared in `vitepress.site.config.json`, so each documentation site can opt into collections such as articles or research:
+Collection support is declared in `vitepress.site.config.json`, so each documentation site can opt into collections such as articles or research:
 
 ```json
 {
@@ -21,6 +21,11 @@ Collection folders should own their metadata files, such as `category.json`, alo
 - [Vite aside sponsors source](https://github.com/vitejs/vite/blob/main/docs/.vitepress/theme/components/AsideSponsors.vue): ViteConf callout and sponsor block, populated through a composable and `VPDocAsideSponsors`. Reference for a compact sidebar promo block.
 - [Vue.js site](https://vuejs.org/) and [Vue docs source](https://github.com/vuejs/docs): inspect the official VitePress theme and reusable layout patterns as further references.
 - [Scalar](https://www.shadcnblocks.com/template/scalar): preferred article/research visual reference. It is a paid Next.js/Astro template; its Astro edition uses Astro content collections and Markdown/MDX. Visual reference only until licensing/source and exact porting scope are approved.
-- [Mainline](https://www.shadcnblocks.com/template/mainline): preferred home visual reference. Use original source as the basis and preserve its markup/layout, CSS, JS, and components during any Vue port; never reconstruct them.
+- [Mainline](https://www.shadcnblocks.com/template/mainline): selected home visual source. Its public repository is free to download and uses an MIT license with a Commons Clause restriction. Vue blocks port the source layout and utility-class styling; retain the attribution and license in `.components/home/THIRD_PARTY_NOTICES.txt`.
 
-These are research references only. No implementation has been authorized yet; continue collecting references before choosing and porting blocks.
+## Implemented from these notes
+
+- The landing page uses two Vue blocks ported from Mainline's Hero and Features layouts. Home content uses the real guide entry points and states target-platform status honestly. It uses the active VitePress color tokens and does not use generated artwork, Vite's brand-specific animation, or invented sponsor content.
+- The site generator accepts optional `collections` entries `{ "id": "articles", "path": "articles/" }`. The folder can contain a `category.json` object with localized `title`, `description`, and `categories` entries (`id`, `label`). Markdown pages use `sidebarTitle`, optional `description`, `date`, and `category` frontmatter. The generator adds a localized collection index where a source index is absent and adds each collection to the site navigation. Content and metadata remain under the configured guides root.
+- Scalar remains a paid visual reference. Its source has not been acquired, so its blocks and styling were not copied or reconstructed. The collection plumbing is ready; a Scalar-based Vue port still requires licensed source material.
+- Vite's Hero animation and ViteConf sponsor callout remain references only: both contain Vite-specific branding/assets or require actual event/sponsor data. They are not copied into this site.

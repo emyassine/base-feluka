@@ -1,0 +1,44 @@
+Mainline design source
+======================
+
+The Hero and Features section structure in `MainlineHero.vue` and
+`MainlineGuideBlocks.vue` is ported from the Mainline Next.js template by
+shadcnblocks.com. The source was adapted to Vue and VitePress; content and
+routes were replaced with documentation-specific material.
+
+Source: https://github.com/shadcnblocks/mainline-nextjs-template
+Template: https://www.shadcnblocks.com/template/mainline
+
+The source repository's license is MIT with a Commons Clause condition. The
+copyright notice and license terms are reproduced below. The Commons Clause
+restricts selling the template itself in its original or substantially
+unmodified form.
+
+MIT + Commons Clause License Condition v1.0
+
+Copyright (c) 2025 shadcnblocks.com - Rob Austin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Commons Clause Restriction
+
+You may use this Software, including for commercial purposes, provided that
+you do not sell the template itself in its original or substantially
+unmodified form. This restriction is intended solely to prevent reselling the
+template as-is or close to it without meaningful customization or added value.

@@ -20,6 +20,44 @@ if (process.env.DOCS_PREPARE_LOCK_HELD !== '1') {
 }
 const configDirectory = resolve(siteDirectory, '../guides')
 const config = JSON.parse(await readFile(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
+const configuredCollections = config.collections ?? []
+if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in vitepress.site.config.json')
+const collectionIds = new Set()
+const collectionPaths = new Set()
+const collections = configuredCollections.map((collection) => {
+  if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
+    throw new Error('Each collections entry must be an object with id and path')
+  }
+  const { id, path, title, description, categoryFile = 'category.json' } = collection
+  if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
+    throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
+  }
+  if (typeof path !== 'string' || !path.trim() || path.startsWith('/') || path.startsWith('\\')) {
+    throw new Error(`Collection ${id} path must be a non-hidden relative path inside guides`)
+  }
+  const normalizedPath = path.split(/[\\/]/).filter(Boolean).join('/')
+  if (!normalizedPath || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(normalizedPath) || normalizedPath.split('/').some((part) => part === '.' || part === '..' || part.startsWith('.'))) {
+    throw new Error(`Collection ${id} path must be a non-hidden relative path inside guides`)
+  }
+  if (collectionPaths.has(normalizedPath)) throw new Error(`Duplicate collection path: ${normalizedPath}`)
+  if (typeof categoryFile !== 'string' || !/^[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
+    throw new Error(`Collection ${id} categoryFile must be a root-level JSON filename`)
+  }
+  for (const existing of collectionPaths) {
+    if (normalizedPath.startsWith(`${existing}/`) || existing.startsWith(`${normalizedPath}/`)) {
+      throw new Error(`Collection paths may not overlap: ${existing} and ${normalizedPath}`)
+    }
+  }
+  if (title !== undefined && typeof title !== 'string' && (typeof title !== 'object' || Array.isArray(title) || title === null)) {
+    throw new Error(`Collection ${id} title must be a string or localized object`)
+  }
+  if (description !== undefined && typeof description !== 'string' && (typeof description !== 'object' || Array.isArray(description) || description === null)) {
+    throw new Error(`Collection ${id} description must be a string or localized object`)
+  }
+  collectionIds.add(id)
+  collectionPaths.add(normalizedPath)
+  return { id, path: normalizedPath, title, description, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
+})
 function themeSlots(value, context) {
   if (value == null) return {}
   if (typeof value !== 'object' || Array.isArray(value)) throw new Error(`theme.slots must be an object in ${context}`)
@@ -172,6 +210,42 @@ const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i,
 const sourceLanguage = (path) => path.match(/\.([a-z]{2,3}(?:-[A-Z]{2})?)\.md$/i)?.[1]?.toLowerCase() ?? defaultLanguage.toLowerCase()
 const execFile = promisify(execFileCallback)
 const sourceRoot = resolve(configDirectory, config.guidesPath)
+const collectionMetadata = new Map()
+
+function localizedValue(value, language, fallback = '') {
+  if (typeof value === 'string') return value
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return fallback
+  return value[language] ?? value[defaultLanguage] ?? Object.values(value).find((item) => typeof item === 'string') ?? fallback
+}
+
+for (const collection of collections) {
+  const relativeToSource = relative(sourceRoot, collection.sourceDirectory)
+  if (relativeToSource === '..' || relativeToSource.startsWith(`..${sep}`) || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
+    throw new Error(`Collection ${collection.id} path must point to an existing directory under guides: ${collection.path}`)
+  }
+  const metadataPath = join(collection.sourceDirectory, collection.categoryFile)
+  let metadata = {}
+  try {
+    metadata = JSON.parse(await readFile(metadataPath, 'utf8'))
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw new Error(`Invalid collection metadata ${metadataPath}: ${error.message}`)
+  }
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
+    throw new Error(`Collection metadata must be a JSON object: ${metadataPath}`)
+  }
+  const categoryEntries = metadata.categories ?? []
+  if (!Array.isArray(categoryEntries) || categoryEntries.some((category) => !category || typeof category !== 'object' || Array.isArray(category) || typeof category.id !== 'string')) {
+    throw new Error(`Collection ${collection.id} metadata categories must be objects with string ids: ${metadataPath}`)
+  }
+  const categoryIds = new Set()
+  for (const category of categoryEntries) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category.id) || categoryIds.has(category.id)) {
+      throw new Error(`Collection ${collection.id} has an invalid or duplicate category id in ${metadataPath}`)
+    }
+    categoryIds.add(category.id)
+  }
+  collectionMetadata.set(collection.id, { ...collection, metadata, categoryEntries })
+}
 
 async function validateMarkdownIcons(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -232,7 +306,8 @@ async function writeIfChanged(target, content) {
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   const entries = (await readdir(sourcePath, { withFileTypes: true }))
-    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json')
+    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'vitepress.config.json' && entry.name !== 'sidebar.json'
+      && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile))
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
@@ -503,7 +578,77 @@ function publicMarkdownLink(outputPath) {
   return `/${target.replace(/\.md$/, '')}`
 }
 
-const generatedMarkdown = new Set(records.map(({ to }) => to))
+function frontmatterScalar(markdown, key) {
+  const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/m)?.[1]
+  const match = frontmatter?.match(new RegExp(`^${key}:\\s*(.*?)\\s*$`, 'm'))
+  if (!match) return ''
+  const value = match[1]
+  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) return value.slice(1, -1)
+  return value
+}
+
+function humanize(value) {
+  return value.split('/').at(-1).replace(/\.[a-z]{2,3}\.md$/i, '').replace(/\.[^.]+$/, '').replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+}
+
+const generatedCollectionNavigation = []
+const generatedCollectionPages = new Set()
+for (const collection of collectionMetadata.values()) {
+  const localizedTitles = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))]))
+  const localizedDescriptions = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.description ?? collection.metadata.description, language)]))
+  const links = Object.fromEntries(config.languages.map((language) => [language, publicMarkdownLink(join(stagedPath(collection.sourceDirectory, language), 'index.md'))]))
+  generatedCollectionNavigation.push({ id: collection.id, path: collection.path, titles: localizedTitles, descriptions: localizedDescriptions, links })
+  const title = localizedTitles[defaultLanguage]
+  for (const language of config.languages) {
+    const articles = records
+      .filter((record) => record.from.startsWith(`${collection.sourceDirectory}${sep}`)
+        && record.from.toLowerCase().endsWith('.md')
+        && sourceLanguage(record.from) === language.toLowerCase()
+        && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(record.from.slice(collection.sourceDirectory.length + 1)))
+      .map((record) => {
+        const markdown = readFileSync(record.from, 'utf8')
+        const title = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(record.from)
+        const description = frontmatterScalar(markdown, 'description')
+        const date = frontmatterScalar(markdown, 'date')
+        const category = frontmatterScalar(markdown, 'category')
+        return { title, description, date, category, url: publicMarkdownLink(record.to) }
+      })
+      .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
+    const sourceIndex = join(collection.sourceDirectory, `index.${language}.md`)
+    const defaultIndex = join(collection.sourceDirectory, 'index.md')
+    if (existsSync(sourceIndex) || (language.toLowerCase() === defaultLanguage.toLowerCase() && existsSync(defaultIndex))) continue
+    const targetDirectory = stagedPath(collection.sourceDirectory, language)
+    const target = join(targetDirectory, 'index.md')
+    const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
+    const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
+    const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
+    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `---`, '', `# ${localizedTitle}`, '']
+    if (localizedDescription) lines.push(localizedDescription, '')
+    const grouped = new Map()
+    for (const article of articles) {
+      const key = article.category || ''
+      if (!grouped.has(key)) grouped.set(key, [])
+      grouped.get(key).push(article)
+    }
+    for (const [category, items] of grouped) {
+      if (category) lines.push(`## ${categories.get(category) ?? category}`, '')
+      for (const article of items) {
+        const suffix = [article.date, article.description].filter(Boolean).join(' — ')
+        lines.push(`- [${article.title}](${article.url})${suffix ? ` — ${suffix}` : ''}`)
+      }
+      if (items.length) lines.push('')
+    }
+    if (!articles.length) lines.push(language.toLowerCase().startsWith('fr') ? 'Aucun contenu publié pour le moment.' : 'No published content yet.', '')
+    await mkdir(targetDirectory, { recursive: true })
+    generatedFiles.add(target)
+    generatedCollectionPages.add(target)
+    await writeIfChanged(target, lines.join('\n'))
+  }
+}
+
+await writeIfChanged(join(generatedDirectory, 'collections.json'), JSON.stringify(generatedCollectionNavigation, null, 2))
+
+const generatedMarkdown = new Set([...records.map(({ to }) => to), ...generatedCollectionPages])
 await rm(join(generatedDirectory, 'rewrites.json'), { force: true })
 await writeIfChanged(join(generatedDirectory, 'fonts.json'), JSON.stringify(generatedFonts, null, 2))
 await writeIfChanged(join(generatedDirectory, 'guide-colors.json'), JSON.stringify(generatedGuideColors, null, 2))

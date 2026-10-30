@@ -13,6 +13,7 @@
   "guidesPath": ".",
   "indexPath": "index.en.md",
   "outputDir": "../build",
+  "collections": [],
   "project": {
     "components": ".components",
     "hooks": ".hooks",

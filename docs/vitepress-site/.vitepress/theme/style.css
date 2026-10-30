@@ -1,3 +1,7 @@
+header.VPNav .VPNavBar .wrapper > .container {
+  max-width: 1152px;
+}
+
 .VPDocAsideMeta {
   margin: 0 0 24px;
   color: var(--vp-c-text-1);
