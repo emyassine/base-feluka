@@ -8,8 +8,11 @@ date: 2026-10-30
 lastmod: 2026-10-30
 status: "Implemented"
 category: "building"
+readingTime: 2
 tags: [feluqa, application, article]
 ---
+
+# A practical way to start a Feluqa app
 
 There is no single application shape that fits every Feluqa project. Start with
 the workflow the application should support and the devices that need to use it.

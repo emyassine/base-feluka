@@ -44,7 +44,7 @@ const collections = configuredCollections.map((collection) => {
   if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
     throw new Error('Each collections entry must be an object with id and path')
   }
-  const { id, path, title, description, categoryFile = 'category.json' } = collection
+  const { id, path, title, description, layout, categoryFile = 'category.json' } = collection
   if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
     throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
   }
@@ -70,9 +70,12 @@ const collections = configuredCollections.map((collection) => {
   if (description !== undefined && typeof description !== 'string' && (typeof description !== 'object' || Array.isArray(description) || description === null)) {
     throw new Error(`Collection ${id} description must be a string or localized object`)
   }
+  if (layout !== undefined && !['article', 'doc'].includes(layout)) {
+    throw new Error(`Collection ${id} layout must be article or doc`)
+  }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
+  return { id, path: normalizedPath, title, description, layout, categoryFile, sourceDirectory: resolve(configDirectory, config.guidesPath, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -846,6 +849,13 @@ async function createDarkVariant(lightPath, darkPath) {
 await mkdir(mermaidCache, { recursive: true })
 await Promise.all(records.map(async (record) => {
   let markdown = await readFile(record.from, 'utf8')
+  const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
+  if (owningCollection?.layout === 'article') {
+    const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+    if (metadata && !/^collection:\s*/m.test(metadata[1])) {
+      markdown = markdown.replace(metadata[0], `---\n${metadata[1]}\ncollection: ${JSON.stringify(owningCollection.id)}\n---`)
+    }
+  }
   const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
   if (!frontmatter || !/^sidebarTitle:\s*.+$/m.test(frontmatter[1])) {
     throw new Error(`Every published Markdown page must define sidebarTitle: ${record.from}`)

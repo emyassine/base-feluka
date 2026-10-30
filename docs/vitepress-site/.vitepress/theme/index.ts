@@ -118,24 +118,28 @@ const PageActions = {
   },
 }
 
-const SidebarFooter = {
+const CollectionArticleHeader = {
   setup() {
     const { frontmatter, lang } = useData()
-    const route = useRoute()
-    return () => {
-      if (frontmatter.value.footer === false || frontmatter.value.layout === 'home') return null
-      const guidePath = route.path.split('/').filter(Boolean)[0]
-      if (!siteContent.guidePaths.includes(guidePath)) return null
-      const language = lang.value.toLowerCase().split('-')[0]
-      const footer = siteContent.footer[language] ?? siteContent.footer.root
-      if (!footer) return null
-      return h('footer', { class: 'DocumentationSidebarFooter' }, [
-        h('div', { class: 'DocumentationSidebarFooter__content' }, [
-          footer.message ? h('p', { class: 'message', innerHTML: footer.message }) : null,
-          footer.copyright ? h('p', { class: 'copyright', innerHTML: footer.copyright }) : null,
-        ]),
-      ])
-    }
+    const backLabel = () => lang.value.toLowerCase().startsWith('fr') ? '← Articles' : '← Articles'
+    return () => h('div', { class: 'collection-article-header' }, [
+      h('a', { class: 'collection-article-back', href: lang.value.toLowerCase().startsWith('fr') ? '/fr/articles/' : '/articles/' }, backLabel()),
+      h('div', { class: 'collection-article-meta' }, [
+        frontmatter.value.date ? h('time', { datetime: frontmatter.value.date }, frontmatter.value.date) : null,
+        frontmatter.value.author?.name ? h('span', frontmatter.value.author.name) : null,
+        frontmatter.value.readingTime ? h('span', lang.value.toLowerCase().startsWith('fr') ? `${frontmatter.value.readingTime} min de lecture` : `${frontmatter.value.readingTime} min read`) : null,
+      ]),
+      h(PageActions),
+    ])
+  },
+}
+
+const CollectionArticleFooter = {
+  setup() {
+    const { lang } = useData()
+    return () => h('nav', { class: 'collection-article-footer', 'aria-label': lang.value.toLowerCase().startsWith('fr') ? 'Navigation des articles' : 'Article navigation' }, [
+      h('a', { href: lang.value.toLowerCase().startsWith('fr') ? '/fr/articles/' : '/articles/' }, lang.value.toLowerCase().startsWith('fr') ? 'Parcourir tous les articles →' : 'Browse all articles →'),
+    ])
   },
 }
 
@@ -475,11 +479,13 @@ const MermaidLayout = {
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
+    const { frontmatter } = useData()
+    const isCollectionArticle = () => typeof frontmatter.value.collection === 'string'
     return () => h(DefaultTheme.Layout, null, {
       ...configuredLayoutSlots(),
-      'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
-      'aside-outline-before': () => h(Fragment, null, [h(PageActions), h(DocumentationLastModified)]),
-      'layout-bottom': () => h(SidebarFooter),
+      'doc-before': () => h(Fragment, null, [isCollectionArticle() ? h(CollectionArticleHeader) : null, h(DocumentationNotice, { notices: siteContent.documentationNotices })]),
+      'doc-after': () => isCollectionArticle() ? h(CollectionArticleFooter) : null,
+      'aside-outline-before': () => h(Fragment, null, [isCollectionArticle() ? null : h(PageActions), h(DocumentationLastModified)]),
     })
   },
 }

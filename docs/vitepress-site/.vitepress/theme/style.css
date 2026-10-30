@@ -3,6 +3,83 @@
   color: var(--vp-c-text-1);
 }
 
+#VPContent:has(.collection-article-header) .VPDoc .container {
+  max-width: 100%;
+  justify-content: center;
+}
+
+#VPContent:has(.collection-article-header) .VPDoc .content {
+  width: 100%;
+  max-width: 980px;
+}
+
+#VPContent:has(.collection-article-header) .VPDoc .content-container {
+  max-width: 700px;
+  margin-inline: auto;
+}
+
+#VPContent:has(.collection-article-header) .VPDoc .aside {
+  display: none;
+}
+
+.collection-article-header,
+.collection-article-footer {
+  width: min(100% - 48px, 700px);
+  margin-inline: auto;
+}
+
+.collection-article-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+
+.collection-article-back {
+  color: var(--vp-c-brand-1);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.collection-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+}
+
+.collection-article-header .VPDocAsideMeta {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.collection-article-header .VPDocAsideMeta .meta-title { display: none; }
+.collection-article-header .VPDocAsideMeta .meta-box { width: fit-content; }
+
+.collection-article-footer {
+  box-sizing: border-box;
+  margin-top: 48px;
+  padding: 28px 0;
+  border-top: 1px solid var(--vp-c-divider);
+  background-image: repeating-linear-gradient(135deg, transparent 0 9px, color-mix(in srgb, var(--vp-c-divider) 45%, transparent) 9px 10px);
+  background-size: 100% 36px;
+  background-repeat: no-repeat;
+  background-position: top;
+  font-size: 14px;
+}
+
+.collection-article-footer a { color: var(--vp-c-brand-1); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 640px) {
+  .collection-article-header { grid-template-columns: 1fr; }
+  .collection-article-meta { justify-content: flex-start; }
+}
+
 .VPDocAsideMeta .meta-title {
   margin: 0 0 12px;
   font-size: 14px;
@@ -18,40 +95,7 @@
 
 .VPDocAsideMeta .meta-row { position: relative; padding: 4px; }
 
-.DocumentationSidebarFooter {
-  position: relative;
-  z-index: var(--vp-z-index-footer);
-  margin: 24px 0 0 var(--vp-sidebar-width);
-  border-top: 1px solid var(--vp-c-divider);
-  padding: 24px 32px;
-  background: var(--vp-c-bg);
-}
-
-.DocumentationSidebarFooter__content {
-  max-width: var(--vp-layout-max-width);
-  margin: 0 auto;
-  text-align: center;
-}
-
-.DocumentationSidebarFooter p {
-  margin: 0;
-  color: var(--vp-c-text-2);
-  font-size: 14px;
-  line-height: 24px;
-}
-
-.DocumentationSidebarFooter p + p { margin-top: 4px; }
-
-.DocumentationSidebarFooter a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 #VPSidebarNav > .group { display: none; }
-
-@media (max-width: 959px) {
-  .DocumentationSidebarFooter { margin-left: 0; padding-right: 24px; padding-left: 24px; }
-}
 
 .page-actions__trigger {
   display: flex;
