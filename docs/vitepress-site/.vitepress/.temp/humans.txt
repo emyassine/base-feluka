@@ -1,8 +1,0 @@
-/* TEAM */
-Owner: Numerimondes
-Website: https://numerimondes.com
-GitHub: https://github.com/emyassine/base-feluka
-
-/* SITE */
-Feluqa Documentation
-Built with VitePress.
