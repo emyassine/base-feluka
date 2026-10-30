@@ -178,11 +178,11 @@
     }
   },
   "logo": {
-    "light": "feluqa.rs/.art/logo-lightmode.png",
-    "dark": "feluqa.rs/.art/logo-darkmode.png",
+    "light": "feluqa.rs/.art/feluqa.svg",
+    "dark": "feluqa.rs/.art/feluqa.svg",
     "alt": "Feluqa",
-    "height": "2.75rem",
-    "extraStyle": "padding: 0.2rem;"
+    "height": "3rem",
+    "extraStyle": ""
   },
   "publicFiles": {
     "llms.txt": "# Feluqa Documentation\n\n> Documentation for Feluqa, a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.\n\n## Guides\n\n- [Feluqa](/get-started/) — product direction, setup, and application development.\n- [Feluqa’s Internals](/feluqa-internals/) — runtime, workspace, and compile-time architecture.\n- [Agents](/agents/) — contribution guidance for AI coding agents.\n- [Learn](/learn/) — practical application tutorials.\n\n## Documentation status\n\nTreat pages marked Exploring as provisional and pages marked Target as planned product direction. Do not describe planned capabilities as implemented.",
