@@ -78,6 +78,8 @@ const items = computed(() => {
 .collection-filter-option:hover,.collection-filter-option[aria-checked='true'] { color:var(--vp-c-brand-1); background:var(--vp-c-default-soft); }
 .collection-spotlight-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr)); gap:18px; margin-top:28px; }
 .collection-spotlight-card { min-height:220px; }
+:deep(.collection-spotlight-card::before),:deep(.collection-spotlight-card .spotlight-card__glow) { display:none !important; }
+:deep(.collection-spotlight-card:hover),:deep(.collection-spotlight-card:focus-within) { border-color:color-mix(in srgb, var(--vp-c-text-1) 14%, var(--vp-c-divider)); background:transparent; box-shadow:none; transform:none; }
 .collection-spotlight-card__body { display:flex; height:100%; min-height:220px; flex-direction:column; align-items:flex-start; gap:12px; padding:24px; }
 .collection-spotlight-card__meta { display:flex; flex-wrap:wrap; gap:10px; color:var(--vp-c-text-2); font-size:12px; }
 .collection-spotlight-card__body h2 { margin:0; font-size:20px; }
