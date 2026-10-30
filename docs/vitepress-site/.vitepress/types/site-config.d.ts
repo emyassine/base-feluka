@@ -15,7 +15,6 @@ export interface SiteConfig {
     iconLibrary?: string
     iconFallback?: string
     viteConfig?: string
-    viteFsAllow?: string[]
     mermaidConfig?: string
   }
   mermaid: {

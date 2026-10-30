@@ -8,7 +8,7 @@ const siteDirectory = resolve(fileURLToPath(new URL('.', import.meta.url)), '..'
 const projectDirectory = resolve(siteDirectory, '../guides')
 const siteRequire = createRequire(join(siteDirectory, 'package.json'))
 const siteConfiguration = JSON.parse(readFileSync(join(projectDirectory, 'vitepress.site.config.json'), 'utf8'))
-const configuredViteFsAllow = (siteConfiguration.project?.viteFsAllow ?? []) as string[]
+const componentDirectory = resolve(projectDirectory, siteConfiguration.project?.components ?? '.config/components')
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -36,9 +36,8 @@ const mimeTypes: Record<string, string> = {
 }
 
 const siteViteConfig = {
-  // Extra filesystem roots are declared by the guide, alongside its other
-  // project integrations. Keep Vite's discovered workspace root by default.
-  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), ...configuredViteFsAllow.map((path) => resolve(projectDirectory, path))])] } },
+  // Component-owned assets live under the configured component root.
+  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), componentDirectory])] } },
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {
     alias: [
