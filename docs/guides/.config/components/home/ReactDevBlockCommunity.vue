@@ -41,6 +41,7 @@ type ReactDevText = {
   title?: string
   lead?: string
   detail?: string
+  contentReplacements?: Record<string, string>
   actions?: ReactDevAction[]
 }
 
@@ -104,7 +105,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   }
   if (node.tag === 'a') {
     const label = textContent(node).replace(/\s+/g, ' ').trim()
-    const action = actions.find((item) => item.sourceLabel === label)
+    const action = actions.find((item) => item.sourceLabel === label || item.label === label)
     if (action) {
       const primary = action.style === 'primary'
       return h(FeluqaButton, {
@@ -130,8 +131,23 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   return h(node.tag, attrs, children)
 }
 
+function applyContentReplacements(root: ReactDevHtmlNode, replacements: Record<string, string>): void {
+  if (root.type === 'text') {
+    for (const [source, replacement] of Object.entries(replacements)) root.value = root.value.replaceAll(source, replacement)
+    return
+  }
+  if (root.type === 'element') {
+    for (const [name, value] of Object.entries(root.attrs)) {
+      if (typeof value !== 'string') continue
+      for (const [source, replacement] of Object.entries(replacements)) root.attrs[name] = value.replaceAll(source, replacement)
+    }
+  }
+  root.children.forEach((child) => applyContentReplacements(child, replacements))
+}
+
 function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headingTag: 'h1' | 'h2' = 'h2'): VNode {
   const tree = JSON.parse(JSON.stringify(source)) as ReactDevHtmlNode
+  if (text.contentReplacements) applyContentReplacements(tree, text.contentReplacements)
   if (text.title !== undefined) replaceElementText(tree, headingTag, text.title)
   if (text.lead !== undefined) replaceLead(tree, text.lead)
   if (text.detail !== undefined) replaceElementText(tree, 'p', text.detail, true)
@@ -144,13 +160,14 @@ export default defineComponent({
     title: { type: String, default: 'Join a community of millions' },
     lead: String,
     detail: String,
+    contentReplacements: Object as PropType<Record<string, string>>,
     ctaLabel: { type: String, default: 'Get Started' },
     ctaHref: { type: String, default: 'https://react.dev/learn' },
     ctaIcon: String as PropType<ReactDevIcon>,
   },
   setup(props) {
     return () => renderReactDevBlock(community, {
-      title: props.title, lead: props.lead, detail: props.detail,
+      title: props.title, lead: props.lead, detail: props.detail, contentReplacements: props.contentReplacements,
       actions: [{ sourceLabel: 'Get Started', label: props.ctaLabel, href: props.ctaHref, icon: props.ctaIcon, style: 'primary' }],
     })
   }

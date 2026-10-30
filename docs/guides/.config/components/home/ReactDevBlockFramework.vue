@@ -180,7 +180,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   }
   if (node.tag === 'a') {
     const label = textContent(node).replace(/\s+/g, ' ').trim()
-    const action = actions.find((item) => item.sourceLabel === label)
+    const action = actions.find((item) => item.sourceLabel === label || item.label === label)
     if (action) {
       const primary = action.style === 'primary'
       return h(FeluqaButton, {

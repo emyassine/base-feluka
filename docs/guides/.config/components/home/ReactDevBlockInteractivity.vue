@@ -55,6 +55,18 @@ function replaceElementText(root: ReactDevHtmlNode, tagName: string, replacement
   if (node?.type === 'element') node.children = [{ type: 'text', value: replacement }]
 }
 
+function replaceElementTextAt(root: ReactDevHtmlNode, tagName: string, index: number, replacement: string): void {
+  const matches: ReactDevHtmlNode[] = []
+  const visit = (node: ReactDevHtmlNode) => {
+    if (node.type !== 'element') return
+    if (node.tag === tagName) matches.push(node)
+    node.children.forEach(visit)
+  }
+  visit(root)
+  const node = matches[index]
+  if (node?.type === 'element') node.children = [{ type: 'text', value: replacement }]
+}
+
 function replaceLead(root: ReactDevHtmlNode, replacement: string): void {
   let headingFound = false
   let leadFound = false
@@ -127,7 +139,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   }
   if (node.tag === 'a') {
     const label = textContent(node).replace(/\s+/g, ' ').trim()
-    const action = actions.find((item) => item.sourceLabel === label)
+    const action = actions.find((item) => item.sourceLabel === label || item.label === label)
     if (action) {
       const primary = action.style === 'primary'
       return h(FeluqaButton, {
@@ -162,7 +174,7 @@ function renderReactDevBlock(source: ReactDevHtmlNode, text: ReactDevText, headi
   if (text.codeSnippet !== undefined) replaceCodeSnippet(tree, text.codeSnippet)
   if (text.codeTitle !== undefined) replaceElementText(tree, 'h3', text.codeTitle)
   if (text.previewTitle !== undefined) replaceElementText(tree, 'h1', text.previewTitle)
-  if (text.previewSubtitle !== undefined) replaceElementText(tree, 'p', text.previewSubtitle)
+  if (text.previewSubtitle !== undefined) replaceElementTextAt(tree, 'p', 1, text.previewSubtitle)
   return h('div', { class: 'react-dev-block' }, renderNode(tree, text.actions ?? []))
 }
 

@@ -96,7 +96,7 @@ function replaceCodeSnippet(root: ReactDevHtmlNode, source: string): void {
   const block = blocks[0]
   if (!block || block.code.type !== 'element') return
   if (block.pre?.type === 'element' && typeof block.pre.attrs.class === 'string') {
-    block.pre.attrs.class = block.pre.attrs.class.replace(/sp-[a-z]+(?=\s|$)/, 'sp-rust')
+    block.pre.attrs.class = block.pre.attrs.class.replace(/sp-(?:javascript|jsx|typescript|tsx|html|json|css)(?=\s|$)/, 'sp-rust')
   }
   const lines = source.replace(/\n$/, '').split('\n')
   block.code.children = lines.map((line) => ({
@@ -127,7 +127,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
   }
   if (node.tag === 'a') {
     const label = textContent(node).replace(/\s+/g, ' ').trim()
-    const action = actions.find((item) => item.sourceLabel === label)
+    const action = actions.find((item) => item.sourceLabel === label || item.label === label)
     if (action) {
       const primary = action.style === 'primary'
       return h(FeluqaButton, {
