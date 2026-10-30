@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './home.css'
+import './editorial-template.css'
 
 interface HeroAction {
   label: string
@@ -20,52 +21,48 @@ withDefaults(
     lead: string
     actions: HeroAction[]
     facts?: HeroFact[]
-    image: string
-    imageAlt: string
-    imageCaption?: string
-    imageWidth?: number
-    imageHeight?: number
-    windowLabel?: string
   }>(),
   {
     status: '',
     accentIndex: 1,
     facts: () => [],
-    imageWidth: 1600,
-    imageHeight: 900,
     windowLabel: '',
   },
 )
+
+const tiles = [
+  [1, 1, 2, 1], [4, 2, 1, 2], [6, 1, 2, 1], [9, 2, 1, 2], [11, 1, 2, 1],
+  [14, 2, 2, 1], [17, 1, 1, 2], [20, 2, 2, 1], [23, 1, 2, 1],
+  [1, 5, 2, 1], [4, 4, 1, 2], [6, 6, 2, 1], [9, 5, 1, 2], [11, 6, 2, 1],
+  [14, 5, 2, 1], [17, 6, 1, 2], [20, 4, 2, 1], [23, 6, 2, 1],
+]
 </script>
 
 <template>
   <section class="fh-hero" aria-labelledby="fh-hero-title">
-    <div class="fh-container">
+    <div class="fh-hero__grid" aria-hidden="true">
+      <span
+        v-for="([column, row, width, height], index) in tiles"
+        :key="index"
+        :style="{ gridColumn: `${column} / span ${width}`, gridRow: `${row} / span ${height}` }"
+      />
+    </div>
+    <div class="fh-container fh-hero__content">
+      <div class="fh-hero__panel">
       <div class="fh-hero__meta">
         <p class="fh-eyebrow">
           <span class="fh-eyebrow__dot" aria-hidden="true"></span>
-          <VbShinyText
-            :text="eyebrow"
-            color="var(--fh-muted)"
-            shine-color="var(--fh-accent)"
-            :speed="6"
-            :spread="100"
-          />
+          {{ eyebrow }}
         </p>
         <p v-if="status" class="fh-hero__state">{{ status }}</p>
       </div>
 
       <h1 id="fh-hero-title" class="fh-display">
-        <VbBlurText
+        <span
           v-for="(line, index) in title"
           :key="line"
-          as="span"
-          :text="line"
-          :class-name="`fh-display__line${index === accentIndex ? ' fh-accent' : ''}`"
-          :delay="60"
-          :step-duration="0.5"
-          animate-by="words"
-        />
+          :class="`fh-display__line${index === accentIndex ? ' fh-accent' : ''}`"
+        >{{ line }}</span>
       </h1>
 
       <div class="fh-hero__row">
@@ -92,36 +89,8 @@ withDefaults(
           <span v-if="fact.suffix" class="fh-facts__tag">{{ fact.suffix }}</span>
         </li>
       </ul>
+      </div>
     </div>
 
-    <div class="fh-container fh-hero__stage">
-      <VbGlareHover
-        width="100%"
-        height="auto"
-        background="transparent"
-        border-color="transparent"
-        border-radius="16px"
-        glare-color="#ffffff"
-        :glare-opacity="0.14"
-        :glare-size="170"
-        :transition-duration="900"
-      >
-        <figure class="fh-shot">
-          <div class="fh-shot__bar" aria-hidden="true">
-            <span class="fh-shot__dots"><i></i><i></i><i></i></span>
-            <span v-if="windowLabel" class="fh-shot__url">{{ windowLabel }}</span>
-          </div>
-          <img
-            :src="image"
-            :alt="imageAlt"
-            :width="imageWidth"
-            :height="imageHeight"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <figcaption v-if="imageCaption" class="fh-shot__caption">{{ imageCaption }}</figcaption>
-        </figure>
-      </VbGlareHover>
-    </div>
   </section>
 </template>

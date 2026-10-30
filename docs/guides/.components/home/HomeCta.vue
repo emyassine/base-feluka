@@ -20,12 +20,10 @@ withDefaults(
     secondaryHref?: string
     legend?: LegendItem[]
     note?: string
-    spotlightColor?: string
   }>(),
   {
     accentIndex: 1,
     legend: () => [],
-    spotlightColor: 'rgba(232, 80, 63, 0.22)',
   },
 )
 </script>
@@ -33,7 +31,7 @@ withDefaults(
 <template>
   <section class="fh-section fh-cta" aria-labelledby="fh-cta-title">
     <div class="fh-container">
-      <VbSpotlightCard class-name="fh-cta__card" :spotlight-color="spotlightColor">
+      <div class="fh-cta__card">
         <div class="fh-cta__inner">
           <p class="fh-kicker fh-kicker--onDark">{{ kicker }}</p>
           <h2 id="fh-cta-title" class="fh-display fh-display--cta">
@@ -67,7 +65,7 @@ withDefaults(
 
           <p v-if="note" class="fh-cta__note">{{ note }}</p>
         </div>
-      </VbSpotlightCard>
+      </div>
     </div>
   </section>
 </template>

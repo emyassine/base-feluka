@@ -36,22 +36,22 @@ html.dark {
   --fh-explore: #a49daa;
 }
 
-.Layout.feluqa-home {
+.Layout.site-home {
   --vp-nav-bg-color: var(--fh-bg);
   background: var(--fh-bg);
   color: var(--fh-text);
 }
 
-.Layout.feluqa-home .VPHome {
+.Layout.site-home .VPHome {
   margin-bottom: 0;
 }
 
-.Layout.feluqa-home .VPContent.is-home {
+.Layout.site-home .VPContent.is-home {
   padding-top: 0;
   padding-bottom: 0;
 }
 
-.Layout.feluqa-home .VPNavBar {
+.Layout.site-home .VPNavBar {
   border-bottom: 1px solid var(--fh-line);
 }
 
@@ -327,9 +327,7 @@ html.dark {
   position: absolute;
   inset: -20% -10% auto;
   height: 70%;
-  background:
-    radial-gradient(60% 60% at 18% 0%, var(--fh-accent-soft), transparent 70%),
-    radial-gradient(40% 50% at 92% 18%, color-mix(in srgb, var(--fh-target) 9%, transparent), transparent 72%);
+  background: var(--fh-bg);
   pointer-events: none;
 }
 
@@ -363,7 +361,6 @@ html.dark {
   height: 6px;
   border-radius: 50%;
   background: var(--fh-accent);
-  box-shadow: 0 0 0 4px var(--fh-accent-soft);
 }
 
 .fh-hero__state {
@@ -662,15 +659,6 @@ html.dark .fh-shot {
   border-top: 1px solid var(--fh-line);
   background: #0b0a0c;
   color: #f5f2ee;
-}
-
-.fh-compose__aurora {
-  position: absolute;
-  inset: -12% -8% auto;
-  height: 82%;
-  opacity: 0.42;
-  filter: saturate(0.9);
-  pointer-events: none;
 }
 
 .fh-compose {

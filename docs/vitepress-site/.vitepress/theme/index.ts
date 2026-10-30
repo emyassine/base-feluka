@@ -1,16 +1,11 @@
 import DefaultTheme from 'vitepress/theme'
 import { Fragment, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
-import guideColors from '../generated-guide-colors.json'
-import generatedFonts from '../generated-fonts.json'
-import siteContent from '../generated-site-content.json'
-import { DocumentationLastModified, DocumentationNotice } from '../generated-theme'
-import { registerProjectComponents } from '../generated-components'
-import Aurora from './components/vuebits/Aurora.vue'
-import BlurText from './components/vuebits/BlurText.vue'
-import GlareHover from './components/vuebits/GlareHover.vue'
-import ShinyText from './components/vuebits/ShinyText.vue'
-import SpotlightCard from './components/vuebits/SpotlightCard.vue'
+import guideColors from '../generated/guide-colors.json'
+import generatedFonts from '../generated/fonts.json'
+import siteContent from '../generated/site-content.json'
+import { DocumentationLastModified, DocumentationNotice } from '../generated/theme'
+import { projectComponents, registerProjectComponents } from '../generated/components'
 import './tailwind.css'
 import './style.css'
 
@@ -132,8 +127,8 @@ const SidebarFooter = {
       const language = lang.value.toLowerCase().split('-')[0]
       const footer = siteContent.footer[language] ?? siteContent.footer.root
       if (!footer) return null
-      return h('footer', { class: 'FeluqaSidebarFooter' }, [
-        h('div', { class: 'FeluqaSidebarFooter__content' }, [
+      return h('footer', { class: 'DocumentationSidebarFooter' }, [
+        h('div', { class: 'DocumentationSidebarFooter__content' }, [
           footer.message ? h('p', { class: 'message', innerHTML: footer.message }) : null,
           footer.copyright ? h('p', { class: 'copyright', innerHTML: footer.copyright }) : null,
         ]),
@@ -212,14 +207,14 @@ const MermaidLayout = {
       }
       if (colors.primary && !colors.tertiary) root.style.setProperty('--vp-c-brand-3', 'var(--vp-c-brand-1)')
       if (colors.primary && !colors.soft) root.style.setProperty('--vp-c-brand-soft', 'color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent)')
-      root.style.removeProperty('--feluqa-nav-logo-width')
-      if (colors.logoWidth) root.style.setProperty('--feluqa-nav-logo-width', colors.logoWidth)
-      root.style.removeProperty('--feluqa-nav-logo-height')
-      if (colors.logoHeight) root.style.setProperty('--feluqa-nav-logo-height', colors.logoHeight)
-      let guideStyle = document.getElementById('feluqa-configured-guide-styles') as HTMLStyleElement | null
+      root.style.removeProperty('--docs-nav-logo-width')
+      if (colors.logoWidth) root.style.setProperty('--docs-nav-logo-width', colors.logoWidth)
+      root.style.removeProperty('--docs-nav-logo-height')
+      if (colors.logoHeight) root.style.setProperty('--docs-nav-logo-height', colors.logoHeight)
+      let guideStyle = document.getElementById('configured-guide-styles') as HTMLStyleElement | null
       if (!guideStyle) {
         guideStyle = document.createElement('style')
-        guideStyle.id = 'feluqa-configured-guide-styles'
+        guideStyle.id = 'configured-guide-styles'
         document.head.append(guideStyle)
       }
       const logoRules = colors.logoExtraStyle
@@ -247,19 +242,19 @@ const MermaidLayout = {
         root.style.setProperty(property, `${family}, ${font.fallback}`)
         if (font.src) fontRules.push(`@font-face{font-family:${family};src:url(${JSON.stringify(font.src)}) format('woff2');font-style:${font.style};font-weight:${font.weight};font-display:swap}`)
       }
-      let fontStyle = document.getElementById('feluqa-configured-fonts')
+      let fontStyle = document.getElementById('configured-fonts')
       if (!fontStyle) {
         fontStyle = document.createElement('style')
-        fontStyle.id = 'feluqa-configured-fonts'
+        fontStyle.id = 'configured-fonts'
         document.head.append(fontStyle)
       }
       fontStyle.textContent = fontRules.join('\n')
       if (colors.favicon) {
-        let icon = document.querySelector<HTMLLinkElement>('link[data-feluqa-favicon]')
+        let icon = document.querySelector<HTMLLinkElement>('link[data-configured-favicon]')
         if (!icon) {
           icon = document.createElement('link')
           icon.rel = 'icon'
-          icon.dataset.feluqaFavicon = ''
+          icon.dataset.configuredFavicon = ''
           document.head.append(icon)
         }
         icon.href = colors.favicon
@@ -423,6 +418,10 @@ const MermaidLayout = {
     dialog?.remove()
   })
     return () => h(DefaultTheme.Layout, null, {
+      'sidebar-nav-before': () => {
+        const SidebarNavigation = projectComponents.BranchedSidebar
+        return SidebarNavigation ? h(SidebarNavigation) : null
+      },
       'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'aside-outline-before': () => h(Fragment, null, [h(PageActions), h(DocumentationLastModified)]),
       'layout-bottom': () => h(SidebarFooter),
@@ -435,11 +434,6 @@ export default {
   Layout: MermaidLayout,
   enhanceApp(context: Parameters<NonNullable<typeof DefaultTheme.enhanceApp>>[0]) {
     DefaultTheme.enhanceApp?.(context)
-    context.app.component('VbAurora', Aurora)
-    context.app.component('VbBlurText', BlurText)
-    context.app.component('VbGlareHover', GlareHover)
-    context.app.component('VbShinyText', ShinyText)
-    context.app.component('VbSpotlightCard', SpotlightCard)
     registerProjectComponents(context.app)
   },
 }

@@ -52,7 +52,7 @@ async function runPrepare() {
   return new Promise((resolveResult) => {
     const child = spawn(process.execPath, [prepareScript], {
       cwd: siteDirectory,
-      env: { ...process.env, FELUQA_PREPARE_INCREMENTAL: '1' },
+      env: { ...process.env, DOCS_PREPARE_INCREMENTAL: '1' },
       stdio: 'inherit',
     })
     child.once('error', (error) => resolveResult({ code: 1, error }))

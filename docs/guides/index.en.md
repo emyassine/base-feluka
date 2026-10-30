@@ -4,30 +4,24 @@ title: "Feluqa"
 description: "Feluqa developer documentation for applications, modules, and platform contributors. One namespace across web, workstation, mobile, APIs, and real-time systems."
 layout: home
 markdownStyles: false
-pageClass: feluqa-home
+pageClass: site-home
 ---
 
 <HomeHero
-  eyebrow="Platform preview"
-  status="Under active development"
-  :title="['One namespace.', 'Every runtime.']"
+  eyebrow="A platform for business software"
+  status="Development preview · web first"
+  :title="['Shared contracts.', 'Separate runtimes.']"
   :accent-index="1"
-  lead="Feluqa is a Rust application platform for teams that ship web apps, standalone workstations, mobile clients, APIs and real-time systems from one codebase, one permission model and one SDK."
+  lead="Build the web product first. Keep shared contracts for workstation, mobile and local deployments as the platform expands."
   :actions="[
     { label: 'Start building', href: '/get-started/' },
     { label: 'Read the architecture', href: '/get-started/introduction/architecture-overview' }
   ]"
   :facts="[
-    { label: 'Rust workspace' },
-    { label: 'SQLite and PostgreSQL' },
-    { label: 'Local-first', suffix: 'target' }
+    { label: 'Rust' },
+    { label: 'Web first' },
+    { label: 'Local runtime', suffix: 'target' }
   ]"
-  image="/home/hero-product.jpg"
-  image-alt="Preview of the Feluqa System Control Panel showing orders, inventory and Live activity."
-  image-caption="System Control Panel · illustrative preview"
-  :image-width="1600"
-  :image-height="900"
-  window-label="bookstore.feluqa.local / operations / orders"
 />
 
 <HomeRuntimes
@@ -45,11 +39,6 @@ pageClass: feluqa-home
   kicker="Foundations"
   title="Foundations you can inspect, not a promise you have to trust."
   copy="The current repository ships selected framework foundations. Each line states its implementation status, so planned work is never presented as shipped behaviour."
-  image="/home/module-surfaces.jpg"
-  image-alt="Web, workstation and mobile surfaces composed from shared Feluqa module contracts."
-  image-caption="One contract surface · three runtime profiles"
-  :image-width="1200"
-  :image-height="1100"
   :items="[
     {
       index: '01',
@@ -139,11 +128,6 @@ pageClass: feluqa-home
     'No required external services',
     'Disconnected sync and conflict behaviour remain open design work'
   ]"
-  image="/home/local-first.jpg"
-  image-alt="A local host serving a browser, a workstation, a mobile client and field sensors."
-  image-caption="Local-first runtime · target architecture"
-  :image-width="1400"
-  :image-height="1000"
   link-label="Read the deployment guides"
   link-href="/get-started/"
 />

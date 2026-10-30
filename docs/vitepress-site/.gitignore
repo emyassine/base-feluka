@@ -1,6 +1,7 @@
 node_modules/
 .vitepress/cache/
 .vitepress/mermaid-cache/
-.vitepress/generated-sidebar.json
+.vitepress/generated/
 .generated-guides/
+.generated-guides.md
 .build.lock

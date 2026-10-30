@@ -18,7 +18,7 @@
 
 .VPDocAsideMeta .meta-row { position: relative; padding: 4px; }
 
-.FeluqaSidebarFooter {
+.DocumentationSidebarFooter {
   position: relative;
   z-index: var(--vp-z-index-footer);
   margin: 24px 0 0 var(--vp-sidebar-width);
@@ -27,28 +27,30 @@
   background: var(--vp-c-bg);
 }
 
-.FeluqaSidebarFooter__content {
+.DocumentationSidebarFooter__content {
   max-width: var(--vp-layout-max-width);
   margin: 0 auto;
   text-align: center;
 }
 
-.FeluqaSidebarFooter p {
+.DocumentationSidebarFooter p {
   margin: 0;
   color: var(--vp-c-text-2);
   font-size: 14px;
   line-height: 24px;
 }
 
-.FeluqaSidebarFooter p + p { margin-top: 4px; }
+.DocumentationSidebarFooter p + p { margin-top: 4px; }
 
-.FeluqaSidebarFooter a {
+.DocumentationSidebarFooter a {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
+#VPSidebarNav > .group { display: none; }
+
 @media (max-width: 959px) {
-  .FeluqaSidebarFooter { margin-left: 0; padding-right: 24px; padding-left: 24px; }
+  .DocumentationSidebarFooter { margin-left: 0; padding-right: 24px; padding-left: 24px; }
 }
 
 .page-actions__trigger {
@@ -326,8 +328,8 @@
 
 .VPNavBarTitle .logo {
   width: auto;
-  height: var(--feluqa-nav-logo-height, 2.5rem);
-  max-width: var(--feluqa-nav-logo-width, 100%);
+  height: var(--docs-nav-logo-height, 2.5rem);
+  max-width: var(--docs-nav-logo-width, 100%);
   max-height: calc(var(--vp-nav-height) - 20px);
   box-sizing: border-box;
   object-fit: contain;

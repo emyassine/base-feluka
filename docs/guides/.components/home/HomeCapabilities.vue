@@ -15,11 +15,6 @@ defineProps<{
   kicker: string
   title: string
   copy?: string
-  image: string
-  imageAlt: string
-  imageCaption?: string
-  imageWidth?: number
-  imageHeight?: number
   items: CapabilityItem[]
 }>()
 </script>
@@ -34,18 +29,6 @@ defineProps<{
       </header>
 
       <div class="fh-capabilities__body">
-        <figure class="fh-figure">
-          <img
-            :src="image"
-            :alt="imageAlt"
-            :width="imageWidth ?? 1200"
-            :height="imageHeight ?? 1100"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption v-if="imageCaption" class="fh-figure__caption">{{ imageCaption }}</figcaption>
-        </figure>
-
         <ol class="fh-index">
           <li v-for="item in items" :key="item.index" class="fh-index__row">
             <span class="fh-index__number" aria-hidden="true">{{ item.index }}</span>

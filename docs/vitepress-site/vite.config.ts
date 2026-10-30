@@ -24,7 +24,7 @@ async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
 }
 
 const publicDirectory = resolve(siteDirectory, '.generated-guides/public')
-const generatedGuideColors = JSON.parse(readFileSync(join(siteDirectory, '.vitepress/generated-guide-colors.json'), 'utf8'))
+const generatedGuideColors = JSON.parse(readFileSync(join(siteDirectory, '.vitepress/generated/guide-colors.json'), 'utf8'))
 const primaryFavicon = Object.values(generatedGuideColors)[0]?.favicon
 const mimeTypes: Record<string, string> = {
   '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
@@ -42,7 +42,7 @@ const siteViteConfig = {
   },
   publicDir: publicDirectory,
   plugins: [{
-    name: 'feluqa-generated-public-assets',
+    name: 'generated-public-assets',
     configureServer(server: { middlewares: { use: (handler: (request: any, response: any, next: () => void) => void) => void } }) {
       server.middlewares.use((request, response, next) => {
         let requestUrl: URL

@@ -8,19 +8,12 @@ withDefaults(
     accentIndex?: number
     copy: string
     bullets?: string[]
-    image: string
-    imageAlt: string
-    imageCaption?: string
-    imageWidth?: number
-    imageHeight?: number
     linkLabel?: string
     linkHref?: string
   }>(),
   {
     accentIndex: 1,
     bullets: () => [],
-    imageWidth: 1400,
-    imageHeight: 1000,
   },
 )
 </script>
@@ -50,17 +43,6 @@ withDefaults(
     </div>
 
     <div class="fh-container fh-local__stage">
-      <figure class="fh-figure fh-figure--wide">
-        <img
-          :src="image"
-          :alt="imageAlt"
-          :width="imageWidth"
-          :height="imageHeight"
-          loading="lazy"
-          decoding="async"
-        />
-        <figcaption v-if="imageCaption" class="fh-figure__caption">{{ imageCaption }}</figcaption>
-      </figure>
       <a v-if="linkLabel && linkHref" class="fh-link" :href="linkHref">
         {{ linkLabel }}
         <span aria-hidden="true">→</span>

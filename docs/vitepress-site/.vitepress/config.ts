@@ -3,28 +3,29 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { sortNavigationEntries } from '../navigation-order.mjs'
-import { transformDocumentationHead } from './generated-hooks'
+import { transformDocumentationHead } from './generated/hooks'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const configDirectory = resolve(siteDirectory, '../guides')
 const siteConfig = JSON.parse(readFileSync(join(configDirectory, 'vitepress.site.config.json'), 'utf8'))
 const site = siteConfig
 const generatedDirectory = join(siteDirectory, '.generated-guides')
-const sidebarMetadataPath = join(siteDirectory, '.vitepress/generated-sidebar.json')
+const generatedMetadata = join(siteDirectory, '.vitepress/generated')
+const sidebarMetadataPath = join(generatedMetadata, 'sidebar.json')
 const sidebarMetadata = existsSync(sidebarMetadataPath) ? JSON.parse(readFileSync(sidebarMetadataPath, 'utf8')) : {}
-const navigationOrderPath = join(siteDirectory, '.vitepress/generated-navigation-order.json')
+const navigationOrderPath = join(generatedMetadata, 'navigation-order.json')
 const navigationOrder = existsSync(navigationOrderPath) ? JSON.parse(readFileSync(navigationOrderPath, 'utf8')) : {}
-const generatedFontPath = join(siteDirectory, '.vitepress/generated-fonts.json')
+const generatedFontPath = join(generatedMetadata, 'fonts.json')
 const generatedFonts = existsSync(generatedFontPath) ? JSON.parse(readFileSync(generatedFontPath, 'utf8')) : { site: {}, guides: {} }
-const generatedGuideColorsPath = join(siteDirectory, '.vitepress/generated-guide-colors.json')
+const generatedGuideColorsPath = join(generatedMetadata, 'guide-colors.json')
 const generatedGuideColors = existsSync(generatedGuideColorsPath) ? JSON.parse(readFileSync(generatedGuideColorsPath, 'utf8')) : {}
-const generatedOgImages = existsSync(join(siteDirectory, '.vitepress/generated-og-images.json'))
-  ? JSON.parse(readFileSync(join(siteDirectory, '.vitepress/generated-og-images.json'), 'utf8'))
+const generatedOgImages = existsSync(join(generatedMetadata, 'og-images.json'))
+  ? JSON.parse(readFileSync(join(generatedMetadata, 'og-images.json'), 'utf8'))
   : {}
 const defaultLanguage = siteConfig.fallbackLanguage ?? siteConfig.languages[0]
 const sourceDirectory = resolve(configDirectory, site.guidesPath)
-const outputDirectory = process.env.FELUQA_DOCS_OUT_DIR
-  ? resolve(process.env.FELUQA_DOCS_OUT_DIR)
+const outputDirectory = process.env.DOCS_OUTPUT_DIR
+  ? resolve(process.env.DOCS_OUTPUT_DIR)
   : resolve(configDirectory, site.outputDir)
 const guideConfigs = Object.fromEntries(site.subguides.map((guide: { path: string }) => {
   const configPath = resolve(sourceDirectory, guide.path, 'vitepress.config.json')
@@ -186,9 +187,9 @@ export default defineConfig({
     const guideEntry = guide ? guideConfigs[guide.path] : primaryGuideConfig
     const head: any[] = []
     head.push(['link', { rel: 'icon', type: assetMime(guideEntry.config.favicon), href: assetDataUri(guideEntry.path, guideEntry.config.favicon) }])
-    const siteUrl = siteConfig.seo?.siteUrl ?? process.env.FELUQA_PUBLIC_URL
+    const siteUrl = siteConfig.seo?.siteUrl ?? process.env.DOCS_PUBLIC_URL
     if (siteUrl && !/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/.test(siteUrl)) {
-      throw new Error('seo.siteUrl or FELUQA_PUBLIC_URL must be an absolute HTTPS URL')
+      throw new Error('seo.siteUrl or DOCS_PUBLIC_URL must be an absolute HTTPS URL')
     }
     const guideRouteKey = guide ? routeBase(guide.path).split('/').filter(Boolean)[0] || 'root' : 'root'
     const seoHead = transformDocumentationHead({
@@ -317,7 +318,7 @@ export default defineConfig({
     logo: {
       light: generatedGuideColors.root?.logoLight,
       dark: generatedGuideColors.root?.logoDark,
-      alt: generatedGuideColors.root?.logoAlt ?? siteConfig.logo?.alt ?? 'Feluqa',
+      alt: generatedGuideColors.root?.logoAlt ?? siteConfig.logo?.alt ?? siteConfig.site?.name ?? 'Documentation',
     },
     siteTitle: primaryConfig.showSiteTitle ? primaryConfig.title : false,
   },

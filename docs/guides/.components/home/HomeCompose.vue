@@ -25,20 +25,14 @@ withDefaults(
     note?: string
     linkLabel?: string
     linkHref?: string
-    auroraColors?: string[]
   }>(),
   {
-    auroraColors: () => ['#0b0a0c', '#e8503f', '#0b0a0c'],
   },
 )
 </script>
 
 <template>
   <section class="fh-band fh-compose" aria-labelledby="fh-compose-title">
-    <div class="fh-compose__aurora" aria-hidden="true">
-      <VbAurora :color-stops="auroraColors" :amplitude="1.1" :blend="0.55" :speed="0.5" />
-    </div>
-
     <div class="fh-container fh-compose__grid">
       <div class="fh-compose__copy">
         <p class="fh-kicker fh-kicker--onDark">{{ kicker }}</p>
