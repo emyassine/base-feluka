@@ -210,14 +210,6 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   background: var(--vp-c-bg-soft);
 }
 
-.collection-spotlight-filters select {
-  width: auto;
-  max-width: min(220px, 100%);
-  padding-right: 30px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 @media (max-width: 959px) { .VPDocAsideMeta { display: none; } }
 
 * {

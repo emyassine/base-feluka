@@ -72,7 +72,7 @@ const PageActions = {
     const labels = () => isFrench()
       ? { title: 'À propos de cette page', trigger: 'Markdown', copyLink: 'Copier le lien de la page', copyMarkdown: 'Copier en Markdown', chatgpt: 'Demander à ChatGPT', claude: 'Demander à Claude', copied: 'Copié' }
       : { title: 'About this page', trigger: 'Markdown', copyLink: 'Copy page link', copyMarkdown: 'Copy as markdown', chatgpt: 'Ask ChatGPT', claude: 'Ask Claude', copied: 'Copied' }
-    const action = (label: string, run: () => void | Promise<void>) => h('button', { class: 'page-actions__item', type: 'button', role: 'menuitem', onClick: () => { void run(); open.value = false } }, label)
+    const action = (label: string, run: () => void | Promise<void>) => h('button', { class: 'page-actions__item item', type: 'button', role: 'menuitem', onClick: () => { void run(); open.value = false } }, label)
     const pageUrl = () => window.location.href
     const askUrl = (provider: 'chatgpt' | 'claude') => {
       const prompt = `${isFrench() ? 'Explique cette page de documentation' : 'Explain this documentation page'}: ${pageUrl()}`
@@ -107,11 +107,11 @@ const PageActions = {
               h('span', { class: 'page-actions__file-icon', 'aria-hidden': 'true' }, [h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8' }, [h('path', { d: 'M7 3.75h7l4 4V20.25H7z' }), h('path', { d: 'M14 3.75v4h4M9.5 12h6M9.5 15.5h6' })])]),
               h('span', text.trigger), h('span', { class: 'page-actions__caret', 'aria-hidden': 'true' }, [h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8' }, [h('path', { d: 'm7 10 5 5 5-5' })])]),
             ]),
-            open.value ? h('div', { class: 'page-actions__menu', role: 'menu' }, [
+            open.value ? h('div', { class: 'page-actions__menu VPMenu', role: 'menu' }, [
               action(text.copyLink, () => copyText(pageUrl())),
               action(text.copyMarkdown, copyMarkdown),
-              h('a', { class: 'page-actions__item', role: 'menuitem', href: askUrl('chatgpt'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.chatgpt),
-              h('a', { class: 'page-actions__item', role: 'menuitem', href: askUrl('claude'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.claude),
+              h('a', { class: 'page-actions__item item', role: 'menuitem', href: askUrl('chatgpt'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.chatgpt),
+              h('a', { class: 'page-actions__item item', role: 'menuitem', href: askUrl('claude'), target: '_blank', rel: 'noreferrer', onClick: () => { open.value = false } }, text.claude),
             ]) : null,
           ]),
         ]),
