@@ -1,0 +1,10 @@
+{
+  "title": { "en": "About Feluqa", "fr": "À propos de Feluqa" },
+  "description": {
+    "en": "About the platform and the people behind it.",
+    "fr": "La plateforme et les personnes qui la portent."
+  },
+  "categories": [
+    { "id": "about", "label": { "en": "About", "fr": "À propos" } }
+  ]
+}

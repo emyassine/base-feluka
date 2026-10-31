@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Legal notices",
+    "fr": "Mentions légales"
+  },
+  "description": {
+    "en": "Privacy, publisher identity, and legal information for Feluqa.",
+    "fr": "Confidentialité, identité de l’éditeur et informations juridiques sur Feluqa."
+  },
+  "categories": [
+    {
+      "id": "privacy",
+      "label": {
+        "en": "Privacy and data",
+        "fr": "Confidentialité et données"
+      }
+    },
+    {
+      "id": "company",
+      "label": {
+        "en": "Publisher",
+        "fr": "Éditeur"
+      }
+    }
+  ]
+}

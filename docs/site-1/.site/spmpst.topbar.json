@@ -33,18 +33,19 @@
     {
       "guide": "learn"
     },
-    {
-      "text": {
-        "en": "Explore",
-        "fr": "Explorer"
-      },
-      "items": [
-        {
-          "collection": "articles",
-          "icon": "@spmpst::icon::newspaper"
-        }
-      ]
-    }
+      {
+        "text": {
+          "en": "Resources",
+          "fr": "Ressources"
+        },
+        "icon": "@spmpst::icon::package",
+      "items": {
+        "source": "collections",
+        "pathPrefix": "resources",
+        "depth": "all",
+        "icon": true
+      }
+      }
   ],
   "theme": "switch",
   "$schema": "../public/api/schemas/topbar.schema.json"

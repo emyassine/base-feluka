@@ -29,7 +29,7 @@ const seoSidebarRoots = Object.keys(site.seo?.locales ?? {}).map((language: stri
 const subguideRootPaths = new Set([...site.subguides.flatMap((guide: { path: string; uri: { index?: string } }) => [
   routeBase(guide.path).split('/').filter(Boolean)[0],
   guide.uri.index?.split('/').filter(Boolean)[0],
-]).filter(Boolean), ...generatedCollections.map((collection: { id: string }) => collection.id), ...seoSidebarRoots])
+]).filter(Boolean), ...generatedCollections.map((collection: { route?: string; id: string }) => (collection.route ?? collection.id).split('/')[0]), ...seoSidebarRoots])
 function publicPagePath(file: string): string {
   const sourceRelative = relative(generatedDirectory, file).replace(/\\/g, '/')
   const target = sourceRelative
@@ -181,7 +181,7 @@ function navigation(language = defaultLanguage): any[] {
         : `${localePrefix}/${base}${base ? '/' : ''}`
     const otherRoots = [
       ...site.subguides.filter((other: { path: string }) => other.path !== path).map((other: { path: string }) => routeBase(other.path)),
-      ...generatedCollections.map((collection: { id: string }) => collection.id),
+      ...generatedCollections.map((collection: { route?: string; id: string }) => (collection.route ?? collection.id).split('/')[0]),
     ].filter(Boolean)
     const activeMatch = base
       ? `^${localePrefix}/${base}(?:/|$)`
@@ -238,6 +238,37 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean) => {
+    const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
+    return [...generatedCollections]
+      .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
+      .filter((collection: any) => {
+        const level = pathPrefix ? collection.path.split('/').length - pathPrefix.split('/').length : collection.path.split('/').length
+        return !selectedDepths || selectedDepths.has(level)
+      })
+      .sort((left: any, right: any) => left.path.localeCompare(right.path))
+      .map((collection: any) => {
+        const link = collection.links[language] ?? collection.links[defaultLanguage]
+        const route = collection.route ?? collection.id
+        const metadata = sidebarMetadata[route]
+        const icon = showIcons ? metadata?.icon : undefined
+        const articles = collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []
+        const items = articles.map((article: any) => {
+          const articleIcon = showIcons ? sidebarPageIcons[article.url] : undefined
+          return {
+            text: itemText(article.title, undefined, undefined, articleIcon ? `/${articleIcon.replace(/^\/+/, '')}` : undefined),
+            link: article.url,
+            ...(article.url ? { activeMatch: `^${article.url.replace(/\/+$/, '')}(?:/|$)` } : {}),
+          }
+        })
+        return {
+          text: itemText(metadata?.labels?.[language] ?? collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, undefined, link, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
+          link,
+          activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+          ...(items.length ? { items } : {}),
+        }
+      })
+  }
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
   const resolveItem = (item: any): any => {
@@ -267,9 +298,18 @@ function navigation(language = defaultLanguage): any[] {
       if (Array.isArray(item.items)) return { ...guide, items: item.items.map(resolveItem) }
       return guide
     }
+    if (item.items && !Array.isArray(item.items) && item.items.source === 'collections') {
+      const routePrefix = item.items.pathPrefix?.split('/').join('/')
+      const activeRoot = routePrefix ?? ''
+      return {
+        text: itemText(localize(item.text) ?? '', item.icon),
+        ...(item.activeMatch ? { activeMatch: item.activeMatch } : activeRoot ? { activeMatch: `^${localePrefix}/${activeRoot}(?:/|$)` } : {}),
+        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false),
+      }
+    }
     if (item.collection) return collectionLink(item.collection, item.icon)
     const text = localize(item.text)
-    const link = item.link
+    const link = localize(item.link)
     const external = typeof link === 'string' && /^(?:https?:)?\/\//i.test(link)
     const target = item.target ?? (external ? '_blank' : undefined)
     const rel = item.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)

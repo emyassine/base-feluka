@@ -23,6 +23,11 @@
           "dir": {
             "type": "string"
           },
+          "route": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$",
+            "description": "Optional public route relative to the site root; defaults to the collection id."
+          },
           "title": {
             "oneOf": [
               {
@@ -103,7 +108,7 @@
   },
   "default": {
     "collections": [],
-    "$schema": "../public/media/schemas/collections.schema.json",
+    "$schema": "{schemaRef}",
     "emptyCollection": {
       "en": "No content published yet."
     }

@@ -306,7 +306,7 @@ A basic site SHOULD need very little: a declaration, `definitions`, `lang` and `
 
 ### A11.4 Navigation menus
 
-A topbar item MAY declare `items` as a list for an authored submenu, or as a subguide selector:
+A topbar item MAY declare `items` as a list for an authored submenu, a subguide selector, or a collection selector:
 
 ```json
 {
@@ -315,9 +315,22 @@ A topbar item MAY declare `items` as a list for an authored submenu, or as a sub
 }
 ```
 
-For the selector, `source` MUST be `subguides` or `subguides no-guide-index`. Both enumerate descendant content directories of the selected guide that have `spmpst.sidebar.json`; they MUST NOT require those entries to be repeated in the topbar config. `subguides` includes the guide's own index as the first menu item when present. `subguides no-guide-index` omits that index. `depth` is one-based: `1` selects immediate child directories, an integer selects all levels up to that number, an array selects the listed levels, and an omitted value or `"all"` selects every level. A directory at an unselected level is omitted while selected descendants remain reachable in the nearest visible menu. `icon` defaults to `true`; when enabled, each generated item uses that directory's resolved `spmpst.sidebar.json` icon and localized labels. Generated entries follow the ordering rules in A6 and use their normalized public routes.
+For a subguide selector, `source` MUST be `subguides` or `subguides no-guide-index`. Both enumerate descendant content directories of the selected guide that have `spmpst.sidebar.json`; they MUST NOT require those entries to be repeated in the topbar config. `subguides` includes the guide's own index as the first menu item when present. `subguides no-guide-index` omits that index. `depth` is one-based: `1` selects immediate child directories, an integer selects all levels up to that number, an array selects the listed levels, and an omitted value or `"all"` selects every level. A directory at an unselected level is omitted while selected descendants remain reachable in the nearest visible menu. `icon` defaults to `true`; when enabled, each generated item uses that directory's resolved `spmpst.sidebar.json` icon and localized labels. Generated entries follow the ordering rules in A6 and use their normalized public routes.
 
-A topbar item MAY instead use an authored `text` and `link` for an external or internal destination. External HTTP(S) links default to `target: "_blank"` and `rel: "noopener noreferrer"`; a site MAY set `target` or `rel` explicitly. Internal links remain in the current tab unless configured otherwise. The reserved topbar icon value `INHERIT` reuses the linked page's frontmatter icon. Resource references such as `@spmpst::icon::...` resolve named icons; they do not enumerate content directories.
+For `source: "collections"`, the tool discovers configured collections whose source `dir` equals `pathPrefix` or begins with `pathPrefix/`. `pathPrefix` is optional and scopes discovery to a subtree of `src/collections`. Each discovered collection becomes a submenu using its localized title and generated public index link; its localized article pages appear below it. When enabled, icons come from the collection directory's `spmpst.sidebar.json` and the pages' compiled frontmatter icons. `depth` selects collection-directory depth relative to `pathPrefix`; `icon` defaults to `true`. This selector MUST NOT require collection IDs or article links to be repeated in the topbar.
+
+Collections MAY set `route` to a non-hidden relative public URL path. If omitted, the collection `id` remains its route. This lets independent collections publish beneath one public section, for example `resources/about` and `resources/legal`, while retaining stable collection IDs. A Resources menu can be declared once:
+
+```json
+{
+  "text": { "en": "Resources", "fr": "Ressources" },
+  "items": { "source": "collections", "pathPrefix": "resources", "depth": "all", "icon": true }
+}
+```
+
+Any configured collection below `src/collections/resources/` appears automatically, with its pages as children. Resources therefore remains a collection of collections and needs no guide declaration or manually maintained topbar links.
+
+A topbar item MAY instead use an authored `text` and `link` for an external or internal destination. `link` MAY be one string shared by all languages or an object with one destination for every configured language. External HTTP(S) links default to `target: "_blank"` and `rel: "noopener noreferrer"`; a site MAY set `target` or `rel` explicitly. Internal links remain in the current tab unless configured otherwise. The reserved topbar icon value `INHERIT` reuses the linked page's frontmatter icon. Resource references such as `@spmpst::icon::...` resolve named icons; they do not enumerate content directories.
 
 ## A12. Extensions
 

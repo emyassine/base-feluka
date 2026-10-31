@@ -45,7 +45,7 @@ const collections = configuredCollections.map((collection) => {
   if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
     throw new Error('Each collections entry must be an object with id and path')
   }
-  const { id, path, title, description, layout: collectionLayout, indexLayout = 'list', categoryFile = 'spmpst.category.json' } = collection
+  const { id, path, route, title, description, layout: collectionLayout, indexLayout = 'list', categoryFile = 'spmpst.category.json' } = collection
   if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
     throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
   }
@@ -59,6 +59,10 @@ const collections = configuredCollections.map((collection) => {
     throw new Error(`Collection ${id} dir must be a non-hidden relative path inside src/collections`)
   }
   if (collectionPaths.has(normalizedPath)) throw new Error(`Duplicate collection path: ${normalizedPath}`)
+  const normalizedRoute = route === undefined ? id : typeof route === 'string' ? route.split(/[\\/]/).filter(Boolean).join('/') : ''
+  if (typeof normalizedRoute !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(normalizedRoute) || normalizedRoute.split('/').some((part) => part.startsWith('.'))) {
+    throw new Error(`Collection ${id} route must be a non-hidden relative URL path`)
+  }
   if (typeof categoryFile !== 'string' || !/^spmpst\.[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
     throw new Error(`Collection ${id} categoryFile must be a root-level SPMPST metadata filename (spmpst.<name>.json)`)
   }
@@ -81,7 +85,7 @@ const collections = configuredCollections.map((collection) => {
   }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, layout: collectionLayout, indexLayout, categoryFile, sourceDirectory: resolve(layout.paths.collections, normalizedPath) }
+  return { id, path: normalizedPath, route: normalizedRoute, title, description, layout: collectionLayout, indexLayout, categoryFile, sourceDirectory: resolve(layout.paths.collections, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -120,14 +124,20 @@ const prefixDefaultLanguage = topbar.language?.prefixDefaultLanguage ?? false
 const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.path))
 const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
 const topbarIconPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
+function validLocalizedLink(value) {
+  if (typeof value === 'string') return Boolean(value.trim())
+  return value && typeof value === 'object' && !Array.isArray(value)
+    && config.languages.every((language) => typeof value[language] === 'string' && value[language].trim())
+}
 function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon'].includes(key))
-    || !['subguides', 'subguides no-guide-index'].includes(value.source)) {
-    throw new Error(`${location}.source must be "subguides" or "subguides no-guide-index" and may only define source, depth, and icon`)
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix'].includes(key))
+    || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
+    throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
+  if (value.source === 'collections' && value.pathPrefix !== undefined && (typeof value.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(value.pathPrefix))) throw new Error(`${location}.pathPrefix must be a relative collection path`)
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)
     && (!Array.isArray(value.depth) || value.depth.length === 0 || value.depth.some((depth) => !validDepth(depth)) || new Set(value.depth).size !== value.depth.length)) {
@@ -163,8 +173,9 @@ function validateTopbarItems(items, location = 'topbar.items') {
     }
     if (item.items !== undefined) {
       if (item.link !== undefined) throw new Error(`${itemLocation} cannot have both link and items; a dropdown title is a button`)
-      validateTopbarItems(item.items, `${itemLocation}.items`)
-    } else if (typeof item.link !== 'string' || !item.link.trim()) {
+      if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
+      else validateSubguideSelector(item.items, `${itemLocation}.items`)
+    } else if (!validLocalizedLink(item.link)) {
       throw new Error(`${itemLocation} must reference a guide or collection, define a link, or contain dropdown items`)
     }
   }
@@ -392,7 +403,7 @@ function stagedPath(sourcePath, language = null) {
   if (collection) {
     const local = relative(collection.sourceDirectory, sourcePath).split(sep).join('/')
     const parts = local ? local.split('/').map((part, index, all) => index === all.length - 1 && part.endsWith('.md') ? cleanFile(part) : cleanDir(part)) : []
-    return join(outputDirectory, ...localeParts, collection.id, ...parts)
+    return join(outputDirectory, ...localeParts, collection.route, ...parts)
   }
   if (!guide) {
     const parts = sourceRelative.split('/')
@@ -532,7 +543,7 @@ for (const guide of config.subguides) {
 if (!incremental) await rm(outputDirectory, { recursive: true, force: true })
 await mkdir(outputDirectory, { recursive: true })
 await scan(sourceRoot, outputDirectory)
-for (const collection of collections) await scan(sourceRoot, outputDirectory, collection.sourceDirectory, join(outputDirectory, collection.id))
+for (const collection of collections) await scan(sourceRoot, outputDirectory, collection.sourceDirectory, join(outputDirectory, collection.route))
 if (prefixDefaultLanguage) {
   const localizedIndex = join(outputDirectory, defaultLanguage.toLowerCase(), 'index.md')
   const rootIndex = join(outputDirectory, 'index.md')

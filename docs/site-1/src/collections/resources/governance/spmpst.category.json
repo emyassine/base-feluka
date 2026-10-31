@@ -1,0 +1,10 @@
+{
+  "title": { "en": "Governance", "fr": "Gouvernance" },
+  "description": {
+    "en": "Stewardship, contribution, and published commitments.",
+    "fr": "Gouvernance, contributions et engagements publiés."
+  },
+  "categories": [
+    { "id": "governance", "label": { "en": "Governance", "fr": "Gouvernance" } }
+  ]
+}

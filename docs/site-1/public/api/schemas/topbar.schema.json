@@ -18,7 +18,16 @@
               { "type": "object", "additionalProperties": { "type": "string" } }
             ]
           },
-          "link": { "type": "string" },
+          "link": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": { "type": "string", "minLength": 1 }
+              }
+            ]
+          },
           "icon": { "type": "string" },
           "target": { "type": "string" },
           "rel": { "type": "string" },
@@ -30,7 +39,8 @@
                 "type": "object",
                 "required": ["source"],
                 "properties": {
-                  "source": { "enum": ["subguides", "subguides no-guide-index"] },
+                  "source": { "enum": ["subguides", "subguides no-guide-index", "collections"] },
+                  "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
                   "depth": {
                     "oneOf": [
                       { "type": "string", "const": "all" },

@@ -220,13 +220,13 @@ for (const collection of collectionMetadata.values()) {
   const localizedDescriptions = Object.fromEntries(config.languages.map((language) => [language, localizedValue(collection.description ?? collection.metadata.description, language)]))
   const links = Object.fromEntries(config.languages.map((language) => {
     const localeSegment = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
-    return [language, `/${localeSegment ? `${localeSegment}/` : ''}${collection.id}/`]
+    return [language, `/${localeSegment ? `${localeSegment}/` : ''}${collection.route}/`]
   }))
   const categoriesByLanguage = Object.fromEntries(config.languages.map((language) => [language, collection.categoryEntries.map((category) => ({
     id: category.id,
     label: localizedValue(category.label ?? category.title, language, category.id),
   }))]))
-  const collectionRecord = { id: collection.id, path: collection.path, sourcePath: collection.path, layout: collection.layout ?? 'doc', indexLayout: collection.indexLayout, titles: localizedTitles, descriptions: localizedDescriptions, links, categories: categoriesByLanguage, articles: {} }
+  const collectionRecord = { id: collection.id, path: collection.path, route: collection.route, sourcePath: collection.path, layout: collection.layout ?? 'doc', indexLayout: collection.indexLayout, titles: localizedTitles, descriptions: localizedDescriptions, links, categories: categoriesByLanguage, articles: {} }
   generatedCollectionNavigation.push(collectionRecord)
   const title = localizedTitles[defaultLanguage]
   for (const language of config.languages) {
@@ -256,10 +256,10 @@ for (const collection of collectionMetadata.values()) {
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
     const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)
-    const targetDirectory = join(outputDirectory, ...localeSegments, collection.id)
+    const targetDirectory = join(outputDirectory, ...localeSegments, ...collection.route.split('/'))
     const target = join(targetDirectory, 'index.md')
     if (records.some((record) => resolve(record.to) === resolve(target))) {
-      throw new Error(`Collection route /${collection.id}/ conflicts with a published Markdown page`)
+      throw new Error(`Collection route /${collection.route}/ conflicts with a published Markdown page`)
     }
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
