@@ -21,7 +21,7 @@ const paths = layout.paths
 const configFiles = paths.configFiles
 const configDirectory = layout.paths.root
 const loadedConfig = loadSiteModelSync(layout)
-const config = toVitepressRuntime(loadedConfig.model, layout)
+const config = toVitepressRuntime(loadedConfig.model, layout, loadedConfig.concerns)
 const configuredStyles = config.styles ?? []
 if (!Array.isArray(configuredStyles)) throw new Error(`styles must be an array of CSS paths in ${configFiles.appearance}`)
 const styleFiles = configuredStyles.map((stylePath) => {

@@ -47,6 +47,7 @@
           "appearance": ".site/spmpst.appearance.json",
           "collections": ".site/spmpst.collections.json",
           "definitions": ".site/spmpst.definitions.json",
+          "footer": ".site/spmpst.footer.json",
           "lang": ".site/spmpst.lang.json",
           "layout": ".site/spmpst.layout.json",
           "links": ".site/spmpst.links.json",
@@ -157,6 +158,7 @@
             "appearance",
             "collections",
             "definitions",
+            "footer",
             "lang",
             "layout",
             "links",
@@ -210,6 +212,10 @@
             "topbar": {
               "type": "string",
               "default": ".site/spmpst.topbar.json"
+            },
+            "footer": {
+              "type": "string",
+              "default": ".site/spmpst.footer.json"
             }
           },
           "additionalProperties": false,
@@ -217,6 +223,7 @@
             "appearance": ".site/spmpst.appearance.json",
             "collections": ".site/spmpst.collections.json",
             "definitions": ".site/spmpst.definitions.json",
+            "footer": ".site/spmpst.footer.json",
             "lang": ".site/spmpst.lang.json",
             "layout": ".site/spmpst.layout.json",
             "links": ".site/spmpst.links.json",

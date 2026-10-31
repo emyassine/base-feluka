@@ -121,6 +121,7 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
+      "footer": ".site/spmpst.footer.json",
       "lang": ".site/spmpst.lang.json",
       "layout": ".site/spmpst.layout.json",
       "links": ".site/spmpst.links.json",
@@ -287,15 +288,18 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Languages | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
 | Navigation | `spmpst.topbar.json` | `items`, `theme` |
 | Collections | `spmpst.collections.json` | `collections` |
+| Footer content | `spmpst.footer.json` | `content` for the selected footer component |
 | Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | Links | `spmpst.links.json` | `socialLinks` |
 | SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon`, localized SEO fields |
 | Search | `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths` |
 | Markdown | `spmpst.markdown.json` | `lineNumbers`, `image` |
 | Outline | `spmpst.outline.json` | `level` |
-| Layout and footer | `spmpst.layout.json` | `footer`, semantic component placements; `layouts` and `rules` remain **PROPOSED** (§A13) |
+| Layout | `spmpst.layout.json` | footer component selection, semantic component placements; `layouts` and `rules` remain **PROPOSED** (§A13) |
 
-The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON and missing required files, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
+The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON and missing required files, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter. Every site MUST declare a footer concern file, even when its content is empty, so a configured footer component never needs to embed site copy or links in source.
+
+Components MUST be able to query any loaded core concern by a stable concern path through a typed adapter accessor, for example `config('footer.content.navigation')`. The accessor resolves localized text against the current page locale. Config values remain authored once in concern files, not in per-language component copies. The `@spmpst::config::<concern>.<path>` form is not a v0.1 reference kind; a future declarative-markup extension MAY define it. Component source code SHOULD use its typed config accessor.
 
 ### A11.2 Closed versus open
 
@@ -408,7 +412,7 @@ A port, cache directory or parallelism level is a preference of a machine or a u
 
 ## A13. Layout registry (PROPOSED)
 
-**CURRENT:** `.site/spmpst.layout.json` accepts a site-wide footer object with an optional component identifier and localized message/copyright text. The component identifier is opaque to SPMPST and resolved by the selected toolchain/adapter. **PROPOSED:** a declarative layout registry and page rules, so common cases need no code:
+**CURRENT:** `.site/spmpst.layout.json` selects a site-wide footer component, while `.site/spmpst.footer.json` supplies its localized content. The component identifier is opaque to SPMPST and resolved by the selected toolchain/adapter. **PROPOSED:** a declarative layout registry and page rules, so common cases need no code:
 
 ```json
 {
@@ -580,6 +584,7 @@ Full form (**CURRENT** for the VitePress host):
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
+      "footer": ".site/spmpst.footer.json",
       "lang": ".site/spmpst.lang.json",
       "layout": ".site/spmpst.layout.json",
       "links": ".site/spmpst.links.json",
@@ -792,7 +797,7 @@ Declaration (`docs/site-1/spmpst.json`):
 {
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
-  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "public/media", "schemas": "public/media/schemas", "public": "public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
+  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "public/media", "schemas": "public/media/schemas", "public": "public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "footer": ".site/spmpst.footer.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
   "engine": "toolchain",
   "toolchain": { "preset": "vitepress", "cwd": "toolchain", "install": { "command": "npm", "args": ["ci"], "when": "missing" }, "build": { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] }, "dev": { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] }, "network": "install-only" }
 }

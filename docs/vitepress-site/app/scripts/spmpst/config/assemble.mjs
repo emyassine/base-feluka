@@ -27,6 +27,7 @@ function suggestion(value, choices) {
 
 export function assembleConfig(layout, discovered, options = {}) {
   const model = {}
+  const concerns = {}
   const configFile = (name) => layout.paths.configFiles[name]
   const sources = []
   const collector = new ErrorCollector()
@@ -37,6 +38,7 @@ export function assembleConfig(layout, discovered, options = {}) {
     try { value = json(path, layout.paths.root) }
     catch (error) { collector.add(error.file, error.pointer, error.message.replace(` (${error.file}${error.pointer || ''})`, '')); continue }
     sources.push(path)
+    concerns[name] = Object.fromEntries(Object.entries(value).filter(([key]) => key !== '$schema'))
     for (const key of Object.keys(value)) {
       if (key === '$schema') continue
       if (!CONCERNS[name].includes(key)) {
@@ -79,6 +81,7 @@ export function assembleConfig(layout, discovered, options = {}) {
     ['search labels', model.searchLabels],
     ['outline label', model.label],
     ['collection empty-state copy', model.emptyCollection],
+    ['footer content', model.content],
     ['documentation notice hook', model.hooks?.documentationNotices],
     ['topbar items', model.items],
     ['collections', model.collections],
@@ -100,5 +103,5 @@ export function assembleConfig(layout, discovered, options = {}) {
     inspect(langs)
   }
   collector.throwIfAny()
-  return { model, sources, warnings: collector.warnings.map((warning) => warning.message), defaultLanguage: fallback }
+  return { model, concerns, sources, warnings: collector.warnings.map((warning) => warning.message), defaultLanguage: fallback }
 }

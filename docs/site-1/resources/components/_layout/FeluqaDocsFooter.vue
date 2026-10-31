@@ -1,28 +1,41 @@
 <script setup lang="ts">
 import MainlineCta from '../home/MainlineCta.vue'
+import { useSpmpstConfig } from '@spmpst/config'
 
-const navigation = [
-  { name: 'Product', href: '/#feature-modern-teams' },
-  { name: 'About Us', href: 'https://numerimondes.com', external: true },
-  { name: 'Pricing', href: 'https://numerimondes.com', external: true },
-  { name: 'FAQ', href: '/faq' },
-  { name: 'Contact', href: 'https://numerimondes.com', external: true },
-  { name: 'X.com', href: 'https://x.com/ausrobdev', external: true },
-  { name: 'LinkedIn', href: '#', external: true },
-]
+interface FooterContent {
+  title: string
+  description: string
+  actionLabel: string
+  actionHref: string
+  navigation: Array<{ name: string; href: string; external?: boolean }>
+  legalLabel: string
+  legalHref: string
+  logoAlt: string
+}
+
+const content = useSpmpstConfig<FooterContent>('footer.content')
 </script>
 
 <template>
   <div class="footer-deluqa-docs">
     <MainlineCta
-      title="Build with the current foundations"
-      description="Follow the guides, check what is implemented, and help move the framework forward."
-      action-label="Read the contribution guide"
-      action-href="/prologue/contribution-guide"
-      :navigation="navigation"
-      legal-label="Privacy Policy"
-      legal-href="https://numerimondes.com"
-      logo-alt="Feluqa"
+      :title="content.title"
+      :description="content.description"
+      :action-label="content.actionLabel"
+      :action-href="content.actionHref"
+      :navigation="content.navigation"
+      :legal-label="content.legalLabel"
+      :legal-href="content.legalHref"
+      :logo-alt="content.logoAlt"
     />
   </div>
 </template>
+
+<style>
+.footer-deluqa-docs {
+  width: 100%;
+  max-width: 1220px;
+  margin-inline: auto;
+  text-align: center;
+}
+</style>

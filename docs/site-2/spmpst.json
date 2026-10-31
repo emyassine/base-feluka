@@ -20,6 +20,7 @@
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
+      "footer": ".site/spmpst.footer.json",
       "lang": ".site/spmpst.lang.json",
       "layout": ".site/spmpst.layout.json",
       "links": ".site/spmpst.links.json",

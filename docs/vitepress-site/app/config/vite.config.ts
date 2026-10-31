@@ -57,6 +57,7 @@ const siteViteConfig = {
       { find: /^vitepress$/, replacement: resolve(dependencyDirectory, 'vitepress/dist/client/index.js') },
       { find: '@docs', replacement: layout.paths.root },
       { find: '@generated', replacement: paths.generatedMetadata },
+      { find: '@spmpst/config', replacement: resolve(paths.generatedMetadata, 'spmpst-config.ts') },
     ],
   },
   publicDir: publicDirectory,

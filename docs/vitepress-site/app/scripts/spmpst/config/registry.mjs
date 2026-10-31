@@ -3,6 +3,7 @@ export const CONCERNS = Object.freeze({
   lang: ['languages', 'fallbackLanguage', 'selector', 'language'],
   topbar: ['items', 'theme'],
   collections: ['collections', 'emptyCollection'],
+  footer: ['content'],
   appearance: ['fonts', 'logo', 'ogImages', 'styles', 'mermaid'],
   links: ['socialLinks'],
   seo: ['siteUrl', 'path', 'icon', 'pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq'],

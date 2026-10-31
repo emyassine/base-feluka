@@ -3,7 +3,7 @@ import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { resolveResourceReferences } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
 
-export function toVitepressRuntime(sourceModel, layout) {
+export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
   const guidesPath = relative(layout.paths.root, layout.paths.guides).split(sep).join('/')
@@ -40,6 +40,7 @@ export function toVitepressRuntime(sourceModel, layout) {
       : item.icon,
   }))
   return {
+    spmpstConfig: sourceConcerns,
     site: model.site,
     guidesPath,
     indexPath: `${guidesPath}/index.${defaultLanguage}.md`,

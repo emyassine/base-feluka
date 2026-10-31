@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <footer class="flex flex-col items-center gap-14 pt-8 lg:pt-10">
+  <footer class="flex w-full flex-col items-center gap-14 pt-8 text-center lg:pt-10">
     <div class="container space-y-3 text-center">
       <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
       <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
