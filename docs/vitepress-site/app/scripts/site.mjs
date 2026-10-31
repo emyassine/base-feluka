@@ -69,6 +69,27 @@ function runAction(action, runEnv = env) {
   if (result.status !== 0) process.exit(result.status ?? 1)
 }
 
+function xmlEscape(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
+}
+
+function uniquePages(pages) {
+  const byRoute = new Map()
+  for (const page of pages) {
+    const previous = byRoute.get(page.route)
+    if (!previous || page.lastmod > previous.lastmod) byRoute.set(page.route, page)
+  }
+  return [...byRoute.values()].sort((left, right) => left.route.localeCompare(right.route))
+}
+
+function markdownFrontmatterValue(source, key) {
+  const value = source.match(new RegExp(`^${key}:\\s*(.*?)\\s*$`, 'm'))?.[1]?.trim()
+  if (!value) return ''
+  return (value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))
+    ? value.slice(1, -1)
+    : value
+}
+
 async function writeSitemap(site, outputDirectory) {
   const seoPath = site.paths.configFiles.seo
   const seo = JSON.parse(await readFile(seoPath, 'utf8'))
@@ -90,9 +111,7 @@ async function writeSitemap(site, outputDirectory) {
     }
   }
   await visit(outputDirectory)
-  pages.sort((left, right) => left.route.localeCompare(right.route))
-  const escape = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-  const body = pages.map(({ route, lastmod }) => `  <url><loc>${escape(`${hostname}${route}`)}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')
+  const body = uniquePages(pages).map(({ route, lastmod }) => `  <url><loc>${xmlEscape(`${hostname}${route}`)}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>`).join('\n')
   await writeFile(join(outputDirectory, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`)
 }
 
@@ -114,16 +133,63 @@ async function writeEarlySitemap(site, markdownDirectory, outputFile) {
           ? '/'
           : `/${relativePath.replace(/\/index\.md$/, '').replace(/\.md$/, '')}`
         const modified = await stat(target)
-        pages.push({ route, lastmod: modified.mtime.toISOString() })
+        const source = await readFile(target, 'utf8')
+        pages.push({
+          route,
+          lastmod: modified.mtime.toISOString(),
+          title: markdownFrontmatterValue(source, 'title') || route,
+          description: markdownFrontmatterValue(source, 'description') || 'Feluqa documentation',
+        })
       }
     }
   }
   await visit(markdownDirectory)
-  pages.sort((left, right) => left.route.localeCompare(right.route))
-  const escape = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-  const body = pages.map(({ route, lastmod }) => `  <url><loc>${escape(`${hostname}${route}`)}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')
+  const body = uniquePages(pages).map(({ route, lastmod }) => `  <url><loc>${xmlEscape(`${hostname}${route}`)}</loc><lastmod>${lastmod}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>`).join('\n')
   await mkdir(dirname(outputFile), { recursive: true })
   await writeFile(outputFile, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`)
+}
+
+async function writeEarlyRss(site, markdownDirectory, outputFile) {
+  const seoPath = site.paths.configFiles.seo
+  const seo = JSON.parse(await readFile(seoPath, 'utf8'))
+  const hostname = typeof seo.siteUrl === 'string' ? seo.siteUrl.replace(/\/$/, '') : ''
+  if (!hostname) return
+
+  const pages = []
+  async function visit(directory) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const target = join(directory, entry.name)
+      if (entry.isDirectory()) {
+        if (entry.name !== 'public') await visit(target)
+      } else if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'README.md') {
+        const relativePath = relative(markdownDirectory, target).split(sep).join('/')
+        const route = relativePath === 'index.md'
+          ? '/'
+          : `/${relativePath.replace(/\/index\.md$/, '').replace(/\.md$/, '')}`
+        const modified = await stat(target)
+        const source = await readFile(target, 'utf8')
+        pages.push({
+          route,
+          lastmod: modified.mtime.toISOString(),
+          title: markdownFrontmatterValue(source, 'title') || route,
+          description: markdownFrontmatterValue(source, 'description') || 'Feluqa documentation',
+        })
+      }
+    }
+  }
+  await visit(markdownDirectory)
+  const feedPages = uniquePages(pages).sort((left, right) => right.lastmod.localeCompare(left.lastmod))
+  const channelTitle = site.name || 'Feluqa Documentation'
+  const channelDescription = 'Documentation for the Feluqa platform and unified namespace.'
+  const channelUrl = `${hostname}/`
+  const lastBuildDate = feedPages[0]?.lastmod ? new Date(feedPages[0].lastmod).toUTCString() : new Date().toUTCString()
+  const items = feedPages.map(({ route, lastmod, title, description }) => {
+    const url = `${hostname}${route}`
+    return `    <item>\n      <title>${xmlEscape(title)}</title>\n      <link>${xmlEscape(url)}</link>\n      <guid isPermaLink="true">${xmlEscape(url)}</guid>\n      <description>${xmlEscape(description)}</description>\n      <pubDate>${new Date(lastmod).toUTCString()}</pubDate>\n    </item>`
+  }).join('\n')
+  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>${xmlEscape(channelTitle)}</title>\n    <link>${xmlEscape(channelUrl)}</link>\n    <description>${xmlEscape(channelDescription)}</description>\n    <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n  </channel>\n</rss>\n`
+  await mkdir(dirname(outputFile), { recursive: true })
+  await writeFile(outputFile, body)
 }
 
 function installToolchain() {
@@ -146,6 +212,12 @@ async function ensureVitepressProject(projectRoot) {
       await symlink(resolve(appDirectory, '.vitepress', name), linkPath, name === 'config.ts' ? 'file' : 'dir')
     }
   }
+}
+
+async function ensurePreviewProject(projectRoot, outputDirectory) {
+  await ensureVitepressProject(projectRoot)
+  const distPath = join(projectRoot, '.vitepress', 'dist')
+  if (!existsSync(distPath)) await symlink(outputDirectory, distPath, 'dir')
 }
 
 if (command === 'prepare') {
@@ -183,10 +255,31 @@ if (command === 'prepare') {
     await writeEarlySitemap(
       site,
       join(trashDirectory, 'build/generated-guides'),
+      join(site.paths.output, 'sitemap.xml'),
+    )
+    await writeEarlyRss(
+      site,
+      join(trashDirectory, 'build/generated-guides'),
+      join(site.paths.output, 'rss.xml'),
+    )
+    await writeEarlySitemap(
+      site,
+      join(trashDirectory, 'build/generated-guides'),
+      join(trashDirectory, 'build/generated-guides', 'public', 'sitemap.xml'),
+    )
+    await writeEarlyRss(
+      site,
+      join(trashDirectory, 'build/generated-guides'),
+      join(trashDirectory, 'build/generated-guides', 'public', 'rss.xml'),
+    )
+    await writeEarlySitemap(
+      site,
+      join(trashDirectory, 'build/generated-guides'),
       join(stage, 'sitemap.xml'),
     )
     runAction(site.toolchain.build, buildEnv)
     await writeSitemap(site, stage)
+    await writeEarlyRss(site, join(trashDirectory, 'build/generated-guides'), join(stage, 'rss.xml'))
     await mkdir(join(stage, '.spmpst'), { recursive: true })
     await writeFile(join(stage, '.spmpst', 'build-timestamp'), `${new Date().toISOString()}\n`)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)
@@ -203,6 +296,16 @@ if (command === 'prepare') {
   installToolchain()
   await ensureVitepressProject(devProjectRoot)
   prepare()
+  await writeEarlySitemap(
+    site,
+    join(trashDirectory, 'generated-guides'),
+    join(trashDirectory, 'generated-guides', 'public', 'sitemap.xml'),
+  )
+  await writeEarlyRss(
+    site,
+    join(trashDirectory, 'generated-guides'),
+    join(trashDirectory, 'generated-guides', 'public', 'rss.xml'),
+  )
   const port = process.env.PORT ?? '4173'
   const devCommand = expandAction(site.toolchain.dev, env)
   const web = spawn(devCommand.command, devCommand.args, { cwd: site.toolchainCwd, env, stdio: 'inherit' })
@@ -215,9 +318,13 @@ if (command === 'prepare') {
   process.exit(typeof result === 'number' ? result : 0)
 } else if (command === 'preview') {
   run(process.execPath, [join(appDirectory, 'scripts/site.mjs'), 'build', '--site', site.id])
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, SPMPST_CACHE_DIR: join(trashDirectory, 'build'), SPMPST_GENERATED_DIR: resolve(trashDirectory, 'build/vitepress-project') })
+  const previewProject = resolve(trashDirectory, 'build/vitepress-project')
+  await ensurePreviewProject(previewProject, site.paths.output)
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, SPMPST_CACHE_DIR: join(trashDirectory, 'build'), SPMPST_GENERATED_DIR: previewProject })
 } else if (command === 'serve-build') {
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, SPMPST_CACHE_DIR: join(trashDirectory, 'build'), SPMPST_GENERATED_DIR: resolve(trashDirectory, 'build/vitepress-project') })
+  const previewProject = resolve(trashDirectory, 'build/vitepress-project')
+  await ensurePreviewProject(previewProject, site.paths.output)
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, SPMPST_CACHE_DIR: join(trashDirectory, 'build'), SPMPST_GENERATED_DIR: previewProject })
 } else if (command === 'watch') {
   const watcher = spawn(process.execPath, [join(appDirectory, 'scripts/dev/watch.mjs')], {
     cwd: appDirectory,

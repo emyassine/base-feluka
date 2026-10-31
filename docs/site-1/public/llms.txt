@@ -16,6 +16,7 @@
 ## Machine-readable resources
 
 - [Sitemap](/sitemap.xml) — generated index of the published documentation pages.
+- [RSS feed](/rss.xml) — machine-readable feed of documentation pages.
 - [API schemas](/api/schemas/) — schemas for site configuration and documentation resources.
 
 ## Documentation status
