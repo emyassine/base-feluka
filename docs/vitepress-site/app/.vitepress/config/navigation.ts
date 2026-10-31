@@ -259,9 +259,9 @@ const localizedThemeConfig = Object.fromEntries(site.languages
 const showLanguageSelector = site.topbar?.language?.showSelector ?? true
 const vitepressLocales = Object.fromEntries(site.languages.map((language: string) => {
   const isDefaultLanguage = language.toLowerCase() === defaultLanguage.toLowerCase()
-  const languageLabel = site.topbar?.language?.showFlags
-    ? `<span class="docs-language-label"><img src="/flags/language/${language.toLowerCase()}.svg" alt="" aria-hidden="true">${escapeHtml(site.languageLabels[language])}</span>`
-    : site.languageLabels[language]
+  // Locale labels are rendered as text by VitePress. Keep markup out of this
+  // field; the theme decorates the current locale and menu links with flags.
+  const languageLabel = site.languageLabels[language]
   if (isDefaultLanguage && !site.topbar?.language?.prefixDefaultLanguage) {
     return ['root', { label: showLanguageSelector ? languageLabel : '', lang: language }]
   }

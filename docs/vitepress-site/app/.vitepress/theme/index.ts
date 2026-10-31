@@ -188,6 +188,30 @@ function installPagerIcons(): void {
   })
 }
 
+function installLanguageFlags(): void {
+  const config = siteContent as { showLanguageFlags?: boolean; languages?: string[] }
+  if (!config.showLanguageFlags || !Array.isArray(config.languages)) return
+  const rules = config.languages.map((language) => {
+    const code = language.toLowerCase()
+    const url = `/flags/language/${code}.svg`
+    return `
+      html[lang="${code}"] .VPNavBarTranslations .title::before,
+      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span::before {
+        content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
+        background: url("${url}") center / contain no-repeat;
+      }
+      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span { display: inline-flex; align-items: center; gap: 8px; }
+    `
+  }).join('\n')
+  let style = document.getElementById('docs-language-flag-styles') as HTMLStyleElement | null
+  if (!style) {
+    style = document.createElement('style')
+    style.id = 'docs-language-flag-styles'
+    document.head.append(style)
+  }
+  style.textContent = rules
+}
+
 function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expand' | 'close'): HTMLButtonElement {
   const button = document.createElement('button')
   button.type = 'button'
@@ -439,6 +463,7 @@ const MermaidLayout = {
   }
 
   onMounted(() => {
+    installLanguageFlags()
     applyGuideColors()
     document.addEventListener('click', handleClick)
     document.addEventListener('keydown', handleKeydown)
