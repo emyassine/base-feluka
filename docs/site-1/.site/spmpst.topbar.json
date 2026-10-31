@@ -5,8 +5,8 @@
   },
     {
       "text": {
-        "en": "Docs",
-        "fr": "Docs"
+        "en": "Basics",
+        "fr": "Bases"
       },
       "items": [
       {
@@ -19,7 +19,7 @@
         },
         {
           "guide": "x-agents",
-          "icon": "@spmpst::icon::chip"
+          "icon": "@spmpst::icon::microchip"
         }
       ]
     },
@@ -33,7 +33,8 @@
       },
       "items": [
         {
-          "collection": "articles"
+          "collection": "articles",
+          "icon": "@spmpst::icon::newspaper"
         }
       ]
     }
