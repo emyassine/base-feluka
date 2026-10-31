@@ -4,7 +4,7 @@ import { resolveResourceReferences } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
 
 export function toVitepressRuntime(sourceModel, target, layout) {
-  const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout, sourceModel))
+  const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
   const locales = model.locales
   const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...locales[language].seo }]))
@@ -40,7 +40,6 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     documentationNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].notices])),
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     publicFiles,
-    resources: { icons: model.icons, flags: model.flags },
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, locales[language].ui])),
     styles: (target.styles ?? []).map((path) => resolve(layout.siteResourcesDir, path)),
     theme: target.theme,

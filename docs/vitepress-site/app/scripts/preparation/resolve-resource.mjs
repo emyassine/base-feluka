@@ -1,45 +1,42 @@
 import { existsSync, realpathSync, statSync } from 'node:fs'
 import { extname, relative, resolve, sep } from 'node:path'
 
-function sourceEntries(reference, config) {
-  const entries = config?.[reference.kind === 'icon' ? 'icons' : 'flags']?.sources ?? []
-  if (!Array.isArray(entries)) {
-    throw new Error(`The site resource config must define ${reference.kind}.sources as an ordered array`)
+const ICON_FAMILIES = ['lucide', 'heroicons', 'simple-icons', 'custom']
+
+function containedFile(root, id, kind) {
+  const extension = extname(id) ? '' : '.svg'
+  const target = resolve(root, `${id}${extension}`)
+  const local = relative(root, target)
+  if (local === '..' || local.startsWith(`..${sep}`) || local.split(sep).includes('..')) {
+    throw new Error(`${kind} reference escapes its resource registry: ${id}`)
   }
-  const slash = reference.id.indexOf('/')
-  if (slash > 0) {
-    if (reference.kind !== 'icon') throw new Error('Flag references use a country/language code without a site prefix')
-    const owner = reference.id.slice(0, slash)
-    const name = reference.id.slice(slash + 1)
-    const siteSources = config?.icons?.sites?.[owner]
-    if (!Array.isArray(siteSources) || !siteSources.length) throw new Error(`Unknown icon source site id "${owner}"`)
-    return siteSources.map((uri) => [owner, uri, name])
+  if (!existsSync(target) || !statSync(target).isFile()) return null
+  const canonicalRoot = realpathSync(root)
+  const canonicalTarget = realpathSync(target)
+  const canonicalRelative = relative(canonicalRoot, canonicalTarget)
+  if (canonicalRelative === '..' || canonicalRelative.startsWith(`..${sep}`)) {
+    throw new Error(`${kind} resource symlink escapes its registry: ${id}`)
   }
-  return entries.map(({ id = 'shared', uri }) => [id, uri, reference.id])
+  return canonicalTarget
 }
 
-export function resolveVitepressResource(reference, layout, config = {}) {
-  const extension = extname(reference.id) ? '' : '.svg'
-  const sources = sourceEntries(reference, config)
-  for (const [owner, source, name] of sources) {
-    if (typeof source !== 'string' || !source.trim()) throw new Error(`Invalid ${reference.kind} source "${owner}" in .site/spmpst.resources.json`)
-    if (/^https?:\/\//i.test(source)) {
-      throw new Error(`Remote ${reference.kind} source "${owner}" must be downloaded or vendored before this VitePress adapter can build it`)
+/** Resolve tool-owned icon/flag resources and site-owned media by logical ID. */
+export function resolveVitepressResource(reference, layout) {
+  if (reference.kind === 'media') {
+    const target = containedFile(resolve(layout.siteResourcesDir, 'media'), reference.id, 'media')
+    if (target) return target
+  } else if (reference.kind === 'flag') {
+    const target = containedFile(resolve(layout.targetResourcesDir, 'flags/language'), reference.id, 'flag')
+    if (target) return target
+  } else if (reference.kind === 'icon') {
+    const slash = reference.id.indexOf('/')
+    const family = slash > 0 ? reference.id.slice(0, slash) : null
+    const name = family ? reference.id.slice(slash + 1) : reference.id
+    for (const candidateFamily of family ? [family] : ICON_FAMILIES) {
+      if (!ICON_FAMILIES.includes(candidateFamily)) continue
+      const target = containedFile(resolve(layout.targetResourcesDir, 'icons', candidateFamily), name, 'icon')
+      if (target) return target
     }
-    const sourceRoot = resolve(layout.treeRoot, source)
-    const target = resolve(sourceRoot, `${name}${extension}`)
-    const local = relative(sourceRoot, target)
-    if (!local || local === '..' || local.startsWith(`..${sep}`) || local.split(sep).includes('..')) {
-      throw new Error(`${reference.kind} reference escapes configured source "${owner}": ${reference.id}`)
-    }
-    if (!existsSync(target) || !statSync(target).isFile()) continue
-    const canonicalRoot = realpathSync(sourceRoot)
-    const canonicalTarget = realpathSync(target)
-    const canonicalRelative = relative(canonicalRoot, canonicalTarget)
-    if (canonicalRelative === '..' || canonicalRelative.startsWith(`..${sep}`)) {
-      throw new Error(`${reference.kind} source symlink escapes configured source "${owner}": ${reference.id}`)
-    }
-    return canonicalTarget
   }
   throw new Error(`Unknown SPMPST resource reference: @spmpst::${reference.kind}::${reference.id}`)
 }

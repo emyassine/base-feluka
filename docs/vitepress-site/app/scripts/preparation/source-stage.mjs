@@ -230,8 +230,8 @@ function findIcon(name) {
   if (!projectDirectories.iconLibrary || typeof name !== 'string') return null
   const resource = parseResourceReference(name)
   if (resource) {
-    if (resource.kind !== 'icon') return null
-    return resolveVitepressResource(resource, layout, config.resources)
+    if (resource.kind !== 'icon' && resource.kind !== 'media') return null
+    return resolveVitepressResource(resource, layout)
   }
   if (isAbsolute(name)) {
     const local = relative(projectDirectories.iconLibrary, name)
@@ -558,7 +558,7 @@ if (topbar.language?.showFlags) {
   for (const language of config.languages) {
     const reference = resourceReference('flag', language.toLowerCase())
     const parsedReference = parseResourceReference(reference)
-    const source = resolveVitepressResource(parsedReference, layout, config.resources)
+    const source = resolveVitepressResource(parsedReference, layout)
     if (!existsSync(source)) throw new Error(`Missing language flag for ${language}: ${source}`)
     const target = join(outputDirectory, 'public', 'flags', 'language', `${language.toLowerCase()}.svg`)
     await mkdir(dirname(target), { recursive: true })

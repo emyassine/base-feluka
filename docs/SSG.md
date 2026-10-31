@@ -226,7 +226,6 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
 | Links | `spmpst.links.json` | `socialLinks` |
 | SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
-| Resources | `spmpst.resources.json` | ordered icon and flag sources; site-specific icon sources |
 | Layouts (**PROPOSED**) | `spmpst.layouts.json` | `layouts`, `rules` (§A13) |
 
 The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
@@ -332,43 +331,29 @@ A port, cache directory or parallelism level is a preference of a machine or a u
 
 ## A14. Resources, assets, and public files
 
-### A14.1 Logical icon and flag references
+### A14.1 Logical resource references
 
 Core references use short whole-string forms:
 
 ```text
 @spmpst::icon::<name>
-@spmpst::icon::<siteId>/<name>
+@spmpst::icon::<family>/<name>
 @spmpst::flag::<code>
+@spmpst::media::<name>
 ```
 
 Examples:
 
 ```text
 @spmpst::icon::book-open
-@spmpst::icon::feluqa-docs/prologue-book
+@spmpst::icon::lucide/book-open
 @spmpst::flag::fr
+@spmpst::media::icons/prologue-book
 ```
 
-`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. A site-qualified icon is resolved from that site's registered icon sources. An unqualified icon is resolved from the merged workspace registry; its deterministic resolution order is the ordered source array. Within a source, the logical name is the SVG basename without `.svg`. A flag code is resolved from the merged flag registry and MUST be unique in that workspace.
+`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's own `resources/media/` tree. The logical name is the relative SVG filename without `.svg`.
 
-Each site's `.site/spmpst.resources.json` declares ordered icon and flag sources. A source `uri` MAY be a local path relative to the site root or a version-pinned HTTPS collection URL. A conforming tool merges the declared sources into a build registry, indexes logical names, detects duplicate flag codes, and reports unresolved references as build errors. Remote collections are acquired during preparation or an explicit resource-sync step, cached, and bundled into static output; lookup during rendering MUST NOT make network requests. The core parses references into typed records and does not touch the filesystem.
-
-```json
-{
-  "icons": {
-    "sources": [
-      { "id": "lucide", "uri": "https://icons.example.test/lucide/0.468.0/" },
-      { "id": "feluqa-docs", "uri": "resources/icons/" }
-    ]
-  },
-  "flags": {
-    "sources": [
-      { "id": "language", "uri": "https://flags.example.test/language/1.2.0/" }
-    ]
-  }
-}
-```
+A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned images and SVGs live under `resources/media/` and use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). The adapter resolves media only inside the selected site tree. The core parses these references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
 
 Resolution applies at documented explicit points (configuration values, page `icon` frontmatter, sidebar icons, and language flags). It is **not** general text substitution in Markdown prose.
 
@@ -743,7 +728,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 
 ## C8. Resources in practice
 
-- `.site/spmpst.resources.json` declares ordered local source roots. The adapter resolves `@spmpst::icon::<name>` against those roots and `@spmpst::icon::<siteId>/<name>` against a registered site-specific root. `@spmpst::flag::<code>` resolves the code against configured flag roots. The current adapter does not download remote sources or merge source declarations across the entire workspace.
+- The conforming tool owns standard icon and flag catalogues. `@spmpst::icon::<name>` and `@spmpst::flag::<code>` resolve from those catalogues; `@spmpst::media::<name>` resolves under the selected site's `resources/media/` directory. Sites do not declare paths to shared tool resources.
 - Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `spmpst.sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), and topbar icons.
 - `copyAsset()` confines sources to allowed roots, names by SHA-256 plus extension, writes only on change.
 - Mermaid: palette-colored, rendered by `mmdc` with the site's JSON config, cached by hash of config and diagram text, emitted as light and dark SVG; the browser theme adds zoom/open and light/dark switching.
@@ -756,7 +741,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 
 ## C10. Current limits and remaining work in this stage
 
-The current stage is the Node/VitePress adapter described in this part. The direct filename migration and short logical icon/flag references are implemented: both sites use `.site/spmpst.resources.json`, authored icon names no longer expose collection paths or hashes, and loaders reject the previous metadata names. The adapter resolves local resource sources only. Remote URL acquisition and a workspace-wide merged resource index remain unfinished.
+The current stage is the Node/VitePress adapter described in this part. The direct filename migration and short logical icon, flag, and media references are implemented. Standard icons and flags resolve from the tool-owned catalogues; site media resolves only from the selected site tree. Sites no longer declare resource source paths. The adapter currently resolves local files; remote catalogue acquisition and richer conforming-tool registry diagnostics remain unfinished.
 
 The following work remains before this stage can claim the broader SPMPST tooling contract:
 
@@ -1001,7 +986,7 @@ The example uses the current SPMPST-owned filenames. With `fallbackLanguage: "en
 
 # Appendix 3: Change log
 
-- **0.1.0-draft.6 (2026-10-31):** replaced verbose resource references with `@spmpst::icon::...` and `@spmpst::flag::...`; specified site-declared icon/flag sources and the merged build-time registry; recorded remote-source acquisition as unfinished adapter work.
+- **0.1.0-draft.7 (2026-10-31):** made standard icons and flags tool-owned registry entries, added site-local `@spmpst::media::...`, and removed site resource manifests and cross-tree paths.
 - **0.1.0-draft.5 (2026-10-31):** documented remaining work for the current VitePress stage, including standardized declaration/toolchain support, schema enforcement, route/filesystem safety, extensions/layouts, conformance fixtures, and build evidence; recorded the `categoryFile` naming constraint and shared VitePress temporary-directory build collision.
 - **0.1.0-draft.4 (2026-10-31):** direct SPMPST filename migration in the VitePress host and both sites; no v0.1 filename aliases; current implementation examples and open decisions updated.
 - **0.1.0-draft.3 (2026-10-31):** standard made tool-neutral (§0.6); Kiln introduced as planned reference implementation in Part D (CLI moved there); SPMPST-0002 recast as a conformance contract with a minimal tool surface; extension mechanism added (§A12) and former companion specs turned into extensions (Part E); `spmpst.` file-naming rule (§A4.1); tool-specific settings kept out of the tree (§B12); inline `foreach` syntax rejected, site data model and optional `spmpst.templating` proposed (§A16, §E5); capability report replaces profiles (§B13).

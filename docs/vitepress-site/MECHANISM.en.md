@@ -159,7 +159,8 @@ Before invoking `site.mjs`, `serve.sh` passes an explicit site ID. `site.mjs` re
 `resolveLayout()` and `resolveSitePaths()` turn these into resolved roots. The implementation keeps three resource concepts separate:
 
 1. **Site source:** Markdown, config, source-relative images, and `site-root/resources/`.
-2. **Shared adapter resources:** host `resources/icons/` and `resources/flags/`.
+2. **Tool resources:** host `resources/icons/` and `resources/flags/`, owned and indexed by the conforming tool.
+3. **Site media:** selected site `resources/media/`, owned by that site and never configured through a host-relative path.
 3. **Generated/cache data:** `.trash/<site-id>/generated-guides/`, `vitepress-generated/`, Mermaid cache, and VitePress cache.
 
 The generated Markdown directory is VitePress `srcDir`; the output directory is VitePress `outDir`. The site source tree is not rewritten into the generated tree in place.
@@ -180,7 +181,7 @@ Dependencies are installed for the shared host (`npm install` from `docs/vitepre
 
 The package manifest and lockfile in this host define these versions. `serve.sh --preview` delegates HTTP serving to VitePress's static `serve()` API; it does not run a separate custom Express server.
 
-## 6. Resource references: short icon and flag names
+## 6. Resource references: tool icons and flags, site media
 
 ### Grammar and parser
 
@@ -188,40 +189,26 @@ The package manifest and lockfile in this host define these versions. `serve.sh 
 
 ```text
 @spmpst::icon::<name>
-@spmpst::icon::<siteId>/<name>
+@spmpst::icon::<family>/<name>
 @spmpst::flag::<code>
+@spmpst::media::<name>
 ```
 
 Names are logical IDs, not family paths or generated filenames. The parser validates the identifier, rejects empty, `.` and `..` path segments, and normalizes Unicode to NFC. `resolveResourceReferences(value, resolver)` walks arrays and objects and sends each parsed reference to the VitePress adapter.
 
-### Site-declared source registry
+### Tool catalogues and site media
 
-Each site declares ordered local icon/flag collection roots in `.site/spmpst.resources.json`. For example, Feluqa points at shared Lucide, Heroicons, Simple Icons, language flags, and its own named icon assets. The adapter searches the configured roots in order for an unqualified name. A site-qualified icon searches the source registered under that site ID. The logical name is the SVG filename without `.svg`.
+The conforming tool provides standard icon and flag catalogues. Sites reference them by logical name and do not configure catalogue paths. Family-qualified icon names select a tool family when needed; otherwise the adapter searches its documented family order.
 
-```json
-{
-  "icons": {
-    "sources": [
-      { "id": "lucide", "uri": "../vitepress-site/resources/icons/lucide" },
-      { "id": "feluqa-docs", "uri": "resources/icons" }
-    ]
-  },
-  "flags": {
-    "sources": [
-      { "id": "language", "uri": "../vitepress-site/resources/flags/language" }
-    ]
-  }
-}
-```
+Site-owned images and SVGs live under that site's `resources/media/` directory and use `@spmpst::media::<name>`, for example `@spmpst::media::icons/prologue-book`. This keeps every site self-contained while allowing custom visuals beside components, styles, and brand assets. The resolver confines media to this directory.
 
-Current VitePress adapter resolution is local-file only. It does not download remote collections or yet build one workspace-wide index from every site's declaration. Remote source acquisition and duplicate-name diagnostics remain work for the conforming tooling contract.
 
 ### Where resolution happens
 
 - Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model. Topbar icon paths are converted to embedded SVG data URLs; social-link icon paths become inline SVGs.
-- Markdown page `icon` frontmatter and `spmpst.sidebar.json` icons are resolved through the same configured source list and copied into generated assets. Missing page icons still use the configured fallback with a warning; a missing fallback is fatal.
+- Markdown page `icon` frontmatter and `spmpst.sidebar.json` icons are resolved through the tool catalogue or selected-site media root and copied into generated assets. Missing page icons still use the configured fallback with a warning; a missing fallback is fatal.
 - If language flags are enabled, source preparation creates `@spmpst::flag::<locale>` for each configured language and copies it to `generated-guides/public/flags/language/<locale>.svg`.
-- Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The parser does not rewrite arbitrary `@spmpst` text inside Markdown prose.
+- Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The parser does not rewrite arbitrary `@spmpst` text inside Markdown prose. Sites do not use `.site/spmpst.resources.json` and MUST NOT point at sibling tool directories.
 
 `copyAsset()` confines source files to allowed roots, names them by SHA-256 plus extension under `__docs-assets/`, and writes only when bytes change. This content hash is an internal output detail; authors use readable logical names.
 

@@ -1,4 +1,4 @@
-const RESOURCE_REFERENCE = /^@spmpst::(icon|flag)::([\p{L}\p{N}][\p{L}\p{N}._/-]*)$/u
+const RESOURCE_REFERENCE = /^@spmpst::(icon|flag|media)::([\p{L}\p{N}][\p{L}\p{N}._/-]*)$/u
 
 /** Parse a portable logical resource identifier without resolving it to a file. */
 export function parseResourceReference(value) {
