@@ -24,37 +24,15 @@ const lead = computed(() => `${description.value}`)
 const questions = computed(() => faqItems.value)
 </script>
 
-
 <div class="faq-page">
   <header class="faq-header">
     <h1>{{ title }}</h1>
     <p>{{ lead }}</p>
   </header>
 
-  <section
-    v-if="quickLinks && quickLinks.length"
-    class="faq-section faq-links"
-  >
-    <div class="faq-section-heading">
-      <h2>{{ quickLinksTitle }}</h2>
-    </div>
 
-    <div class="faq-link-grid">
-      <SpotlightCard
-        v-for="link in quickLinks"
-        :key="link.url"
-      >
-        <a :href="link.url">
-          <strong>{{ link.label }}</strong>
-          <p>{{ link.description }}</p>
-        </a>
-      </SpotlightCard>
-    </div>
-  </section>
 
   <section class="faq-section faq-answers">
-    <h2>{{ faqTitle }}</h2>
-
     <details
       v-for="item in questions"
       :key="item.question"
@@ -64,77 +42,41 @@ const questions = computed(() => faqItems.value)
       <p>{{ item.answer }}</p>
     </details>
   </section>
+</div>
+
+
 
 <style>
-	.faq-page {
-	  box-sizing: border-box;
-	  width: 100%;
-	  max-width: 760px;
-	  min-height: 100%;
-	  margin-inline: auto;
-	  padding: clamp(3rem, 8vh, 6rem) 1.5rem 6rem;
-	}
+.faq-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+}
 
-	.faq-header {
-	  margin-bottom: 3rem;
-	  text-align: center;
-	}
+.faq-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 
-	.faq-header h1 {
-	  margin: 0 0 1rem;
-	}
+.faq-header p {
+  margin-inline: auto;
+}
 
-	.faq-header p {
-	  max-width: 580px;
-	  margin-inline: auto;
-	  line-height: 1.7;
-	}
+.faq-section {
+  width: 100%;
+  margin-bottom: 3rem;
+}
 
-	.faq-section {
-	  width: 100%;
-	  margin-bottom: 3rem;
-	}
+.faq-section-heading {
+  margin-bottom: 1.5rem;
+}
 
-	.faq-section-heading {
-	  margin-bottom: 1.25rem;
-	}
 
-	.faq-link-grid {
-	  display: grid;
-	  grid-template-columns: repeat(2, minmax(0, 1fr));
-	  gap: 1rem;
-	}
-
-	.faq-link-grid a {
-	  display: block;
-	  height: 100%;
-	  text-decoration: none;
-	}
-
-	.faq-link-grid p {
-	  margin-bottom: 0;
-	}
-
-	.faq-answers h2 {
-	  margin-bottom: 1.5rem;
-	}
-
-	.faq-answers details {
-	  margin-bottom: 0.75rem;
-	}
-
-	@media (max-width: 640px) {
-	  .faq-page {
-	    padding: 3rem 1rem 4rem;
-	  }
-
-	  .faq-link-grid {
-	    grid-template-columns: 1fr;
-	  }
-
-	  .faq-header {
-	    margin-bottom: 2.5rem;
-	  }
-	}
+@media (max-width: 640px) {
+  .faq-page {
+    padding: 3rem 1rem;
+  }
+}
 </style>
-</div>
