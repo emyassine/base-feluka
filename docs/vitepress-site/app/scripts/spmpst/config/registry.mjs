@@ -6,4 +6,5 @@ export const CONCERNS = Object.freeze({
   appearance: ['fonts', 'logo', 'ogImages', 'mermaid'],
   links: ['socialLinks'],
   seo: ['siteUrl', 'path', 'icon'],
+  layout: ['layouts', 'rules', 'footer'],
 })

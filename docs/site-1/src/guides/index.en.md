@@ -163,22 +163,4 @@ layout: home
       ]'
     />
 
-<MainlineCta
-	title="Build with the current foundations"
-	description="Follow the guides, check what is implemented, and help move the framework forward."
-	action-label="Read the contribution guide"
-	action-href="/prologue/contribution-guide"
-	:navigation='[
-		{ name: "Product", href: "/#feature-modern-teams" },
-		{ name: "About Us", href: "https://numerimondes.com", external: true },
-		{ name: "Pricing", href: "https://numerimondes.com", external: true },
-		{ name: "FAQ", href: "/faq" },
-		{ name: "Contact", href: "https://numerimondes.com", external: true },
-		{ name: "Xwitter", href: "https://x.com/ausrobdev", external: true },
-		{ name: "LinkedIn", href: "#", external: true }
-	]'
-	legal-label="Privacy Policy"
-	legal-href="https://numerimondes.com"
-	logo-alt="Feluqa"
-/>
 </MainlineHomeLayout>

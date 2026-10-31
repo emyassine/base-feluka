@@ -10,10 +10,11 @@ inside `targets/`; `scripts/spmpst/` loads those files as opaque target data.
 | `spmpst.lang.json` | Language list, fallback language, and selector policy. |
 | `spmpst.topbar.json` | Navigation items and color-mode policy. |
 | `spmpst.collections.json` | Collection IDs, presentation, and source directory names. |
+| `spmpst.layout.json` | Layout registry, site-wide footer component, and localized footer text. |
 | `spmpst.appearance.json` | Fonts, logos, social preview images, and diagram palette. |
 | `spmpst.links.json` | Social links. |
 | `spmpst.seo.json` | Canonical site URL, SEO route, and icon. |
-| `locales/<language>.locale.json` | Localized UI, search, footer, notices, and SEO copy. |
+| `locales/<language>.locale.json` | Localized UI, search, notices, and SEO copy. |
 | `public/*` | Public text files copied into the rendered site. |
 | `targets/vitepress.target.config.json` | Renderer configuration; keep it separate from the target-neutral model. |
 

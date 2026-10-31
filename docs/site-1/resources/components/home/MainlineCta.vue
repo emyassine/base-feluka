@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <footer class="flex flex-col items-center gap-14 pt-28 lg:pt-32">
+  <footer class="flex flex-col items-center gap-14 pt-8 lg:pt-10">
     <div class="container space-y-3 text-center">
       <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
       <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
@@ -31,6 +31,6 @@ defineProps<{
       </ul>
       <ul class="flex list-none items-center justify-center p-0"><li><a :href="legalHref" class="text-muted-foreground text-sm !no-underline transition-opacity hover:opacity-75">{{ legalLabel }}</a></li></ul>
     </nav>
-    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="footerImage" :alt="logoAlt" class="w-full" /></div>
+    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="footerImage" :alt="logoAlt" class="mx-auto block w-full max-w-3xl" /></div>
   </footer>
 </template>

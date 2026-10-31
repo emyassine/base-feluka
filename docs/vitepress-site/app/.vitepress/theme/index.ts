@@ -247,6 +247,7 @@ const MermaidLayout = {
       const content = siteContent as typeof siteContent & {
         languages?: string[]
         defaultLanguage?: string
+        siteFooter?: string | null
         themeSlots?: { site?: Record<string, string | null>; guides?: Record<string, Record<string, string | null>> }
       }
       const themeSlots = content.themeSlots
@@ -254,6 +255,7 @@ const MermaidLayout = {
       const localized = segments.length > 1 && content.languages?.includes(segments[0]) && segments[0] !== content.defaultLanguage
       const routeKey = localized ? `${segments[0]}/${segments[1]}` : segments[0] ?? 'root'
       const slots = { ...themeSlots?.site, ...themeSlots?.guides?.[routeKey] }
+      if (content.siteFooter) slots['layout-bottom'] = content.siteFooter
       return Object.fromEntries(Object.entries(slots).map(([slot, name]) => [slot, () => {
         if (!name) return null
         const component = (projectComponents as Record<string, Component>)[name]

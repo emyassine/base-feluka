@@ -25,10 +25,6 @@
   "outline": {
     "label": "On this page"
   },
-  "footer": {
-    "message": "Questions? Read the <a href=\"/faq/\">quick answers</a>.",
-    "copyright": "Feluqa documentation - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
-  },
   "notices": {
     "exploringTitle": "Under exploration",
     "exploring": "This page describes an idea or proposal that is still under active discussion and subject to change.",

@@ -7,6 +7,12 @@ export function toVitepressRuntime(sourceModel, target, layout) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
   const locales = model.locales
+  const footer = model.footer ?? {}
+  const localizedFooterText = (value, language) => {
+    if (typeof value === 'string') return value
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
+    return value[language] ?? value[defaultLanguage] ?? Object.values(value).find((entry) => typeof entry === 'string')
+  }
   const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...locales[language].seo }]))
   const searchLabels = { root: locales[defaultLanguage].search }
   for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = locales[language].search
@@ -26,6 +32,7 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     fallbackLanguage: model.fallbackLanguage,
     topbar: { items: model.items, language: model.selector, theme: model.theme },
     collections: (model.collections ?? []).map(({ dir, ...collection }) => ({ ...collection, path: dir ?? collection.id })),
+    siteFooter: footer.component,
     fonts: model.fonts,
     logo: model.logo,
     ogImages: model.ogImages,
@@ -36,7 +43,11 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     fallbackNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.fallbackNotice])),
     search: { ...target.search, labels: searchLabels },
     outline: { labels: Object.fromEntries(model.languages.map((language) => [language, locales[language].outline.label])), ...target.outline },
-    footer: Object.fromEntries(model.languages.map((language) => [language, locales[language].footer])),
+    footer: Object.fromEntries(model.languages.map((language) => [language, Object.fromEntries(
+      ['message', 'copyright']
+        .map((key) => [key, localizedFooterText(footer[key], language)])
+        .filter(([, value]) => value !== undefined),
+    )])),
     documentationNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].notices])),
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     publicFiles,

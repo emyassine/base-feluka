@@ -1,0 +1,14 @@
+{
+  "$schema": "./schema/layout.schema.json",
+  "layouts": {},
+  "rules": [],
+  "footer": {
+    "component": "FeluqaDocsFooter",
+    "message": {
+      "en": ""
+    },
+    "copyright": {
+      "en": ""
+    }
+  }
+}

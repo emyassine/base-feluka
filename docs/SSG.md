@@ -166,6 +166,7 @@ SPMPST-owned data files carry the `spmpst.` prefix, so a file's name says who ow
 | `sidebar.json` | `spmpst.sidebar.json` | `src/**` (mixed with content) |
 | `guide.config.json` | `spmpst.guide.json` | `src/guides/**` |
 | `category.json` | `spmpst.category.json` | `src/collections/**` |
+| (new) site layouts and shell components | `spmpst.layout.json` | `.site/` |
 | (new) extension config | `spmpst.<name>.json` for standard extensions; `<reverse-domain-id>.json` otherwise | `.site/` |
 
 Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) are never prefixed. Locale bundles (`en.locale.json`) live in their own folder and are not prefixed. The VitePress host and both checked-in sites use these names. The migration is intentionally breaking; loaders reject the previous filenames.
@@ -202,7 +203,7 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 ## A9. Languages and fallbacks
 
 - `lang` owns `languages`, `fallbackLanguage`, `selector`. Each configured language MUST have exactly one locale bundle; extra bundles produce a warning.
-- Locale bundles MUST contain language, UI, search, outline, footer, notice and SEO sections.
+- Locale bundles MUST contain language, UI, search, outline, notice and SEO sections. Footer copy belongs to `spmpst.layout.json` and may be localized there.
 - Localized inline objects resolve: requested language, then fallback language, then first string value. Missing translations warn, and fail under strict i18n.
 - When a non-default translation is absent, a fallback page is generated from the default-language page and marked with `requestedLanguage`, `contentLanguage`, `languageFallbackNotice`. Notice templates use `{requested}` and `{fallback}` (the reference implementation currently validates `{requested}`).
 
@@ -308,7 +309,7 @@ A port, cache directory or parallelism level is a preference of a machine or a u
 
 ## A13. Layout registry (PROPOSED)
 
-**CURRENT:** layouts and page shells are selected through site hooks and renderer-shaped frontmatter (`layout`, `sidebar: false`, `aside: false`). **PROPOSED:** a declarative registry in configuration, so common cases need no code:
+**CURRENT:** `.site/spmpst.layout.json` accepts a site-wide footer object with an optional component identifier and localized message/copyright text. The component identifier is opaque to SPMPST and resolved by the selected toolchain/adapter. **PROPOSED:** a declarative layout registry and page rules, so common cases need no code:
 
 ```json
 {

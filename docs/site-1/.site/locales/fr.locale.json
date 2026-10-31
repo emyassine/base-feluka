@@ -25,10 +25,6 @@
   "outline": {
     "label": "Sur cette page"
   },
-  "footer": {
-    "message": "Des questions ? Consultez les <a href=\"/fr/faq/\">réponses rapides</a>.",
-    "copyright": "Documentation Feluqa - Copyright © <a href=\"https://numerimondes.com\">Numerimondes</a>"
-  },
   "notices": {
     "exploringTitle": "En cours d'exploration",
     "exploring": "Cette page présente une idée ou une proposition encore à l'étude, susceptible de faire l'objet de modifications.",

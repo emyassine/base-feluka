@@ -25,10 +25,6 @@
   "outline": {
     "label": "On this page"
   },
-  "footer": {
-    "message": "Get in touch at <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>.",
-    "copyright": "Numerimondes SARL AU"
-  },
   "notices": {
     "exploringTitle": "In progress",
     "exploring": "This information is being prepared and may change.",

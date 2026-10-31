@@ -1,0 +1,12 @@
+{
+  "$schema": "./schema/layout.schema.json",
+  "layouts": {},
+  "rules": [],
+  "footer": {
+    "message": {
+      "en": "Get in touch at <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>.",
+      "fr": "Contactez-nous à <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>."
+    },
+    "copyright": "Numerimondes SARL AU"
+  }
+}

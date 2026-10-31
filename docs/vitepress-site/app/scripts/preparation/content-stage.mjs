@@ -352,6 +352,9 @@ function validateThemeSlotComponents(slots, context) {
   }
 }
 validateThemeSlotComponents(siteThemeSlots, '.site/targets/vitepress.target.config.json')
+if (config.siteFooter != null && !componentNames.has(config.siteFooter)) {
+  throw new Error(`layout.footer references unknown project component "${config.siteFooter}" in .site/spmpst.layout.json`)
+}
 for (const [guidePath, slots] of generatedGuideThemeSlots) {
   validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'spmpst.guide.json'))
 }
@@ -375,6 +378,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   defaultLanguage,
   showLanguageFlags: config.topbar?.language?.showFlags ?? false,
   themeSlots: { site: siteThemeSlots, guides: generatedGuideThemeSlotsByRoute },
+  siteFooter: config.siteFooter ?? null,
   footer: config.footer ?? {},
   seo: config.seo ?? {},
   documentationNotices: config.documentationNotices ?? {},
