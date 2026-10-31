@@ -5,24 +5,18 @@
     },
     {
       "guide": "products",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
-      },
-      "menuTitle": { "en": "Products · Cards", "fr": "Produits · Cartes" },
-      "menuTemplate": ["mega.cards", ["title", "image", "icon", "description", "children"]]
-    },
-    {
-      "guide": "products",
-      "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products · Background", "fr": "Produits · Arrière-plan" },
-      "menuTemplate": ["mega.background", ["title", "image", "description", "children"]]
-    },
-    {
-      "guide": "products",
       "items": { "source": "subguides no-guide-index", "icon": true },
       "menuTitle": { "en": "Products · Background + icon", "fr": "Produits · Arrière-plan + icône" },
-      "menuTemplate": ["mega.background-icon", ["title", "image", "icon", "description", "children"]]
+      "menuTemplate": ["mega.background-icon", ["title", "image", "icon", "description", "children"], {
+        "mobileToo": false,
+        "maxItems": 2,
+        "more": {
+          "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+          "text": { "en": "Discover all our {number} products", "fr": "Découvrir nos {number} produits" },
+          "link": "/products/",
+          "position": "after"
+        }
+      }]
     },
     {
       "text": {

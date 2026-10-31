@@ -48,7 +48,18 @@ export interface TopbarConfig {
   theme?: 'switch' | 'system' | 'light' | 'dark'
 }
 
-export type MenuTemplate = [id: string, fields?: string[]]
+export interface MenuTemplateOptions {
+  mobileToo?: boolean
+  maxItems?: number
+  more?: {
+    image?: string
+    text?: LocalizedText
+    link?: string
+    position?: 'before' | 'after'
+  }
+}
+
+export type MenuTemplate = [id: string, fields?: string[], options?: MenuTemplateOptions]
 
 export type TopbarItem =
   | { guide: string; icon?: string; menuTitle?: LocalizedText; menuTemplate?: MenuTemplate }

@@ -1,20 +1,35 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { DefaultTheme } from 'vitepress/theme'
+import { useData } from 'vitepress'
 import NativeVPFlyout from 'vitepress/dist/client/theme-default/components/VPFlyout.vue'
+import NativeVPNavScreenMenuGroup from 'vitepress/dist/client/theme-default/components/VPNavScreenMenuGroup.vue'
 import { menuTemplates } from '@generated/theme'
 
 const props = defineProps<{
   item: DefaultTheme.NavItemWithChildren
-  menuTemplate?: [string, string[]]
+  menuTemplate?: [string, string[], { mobileToo?: boolean; maxItems?: number; more?: { image?: string; text?: string | Record<string, string>; link?: string; position?: 'before' | 'after' } }?]
+  screenMenu?: boolean
 }>()
 
-const template = computed<[string, string[]]>(() => props.menuTemplate ?? ['mega.cards', ['title', 'icon', 'image', 'description', 'children']])
+const { lang } = useData()
+const template = computed<[string, string[], { mobileToo?: boolean; maxItems?: number; more?: { image?: string; text?: string | Record<string, string>; link?: string; position?: 'before' | 'after' } }?]>(() => props.menuTemplate ?? ['mega.cards', ['title', 'icon', 'image', 'description', 'children'], {}])
 const fields = computed(() => new Set(template.value[1] ?? []))
 const layout = computed(() => (menuTemplates as Record<string, { layout?: string }>)[template.value[0]]?.layout ?? 'cards')
 const children = computed(() => props.item.items ?? [])
-// Temporary fixture: repeat the current catalog three times to preview a fuller menu.
-const displayChildren = computed(() => Array.from({ length: 3 }, () => children.value).flat())
+const options = computed(() => template.value[2] ?? {})
+const totalCount = computed(() => children.value.length)
+const displayChildren = computed(() => {
+  const repeated = Array.from({ length: 3 }, () => children.value).flat()
+  return options.value.maxItems ? repeated.slice(0, options.value.maxItems) : repeated
+})
+const more = computed(() => options.value.more)
+const mobileToo = computed(() => options.value.mobileToo !== false)
+const morePosition = computed(() => more.value?.position === 'before' ? 'before' : 'after')
+function localized(value: string | Record<string, string> | undefined): string {
+  if (typeof value === 'string') return value.replace('{number}', String(totalCount.value))
+  return (value?.[lang.value] ?? value?.en ?? Object.values(value ?? {})[0] ?? '').replace('{number}', String(totalCount.value))
+}
 const label = computed(() => text(props.item.text))
 
 function text(value: unknown): string {
@@ -29,7 +44,8 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
 </script>
 
 <template>
-  <NativeVPFlyout class="VPNavBarMenuGroup FeluqaMegaMenu" :button="String(props.item.text ?? '')">
+  <NativeVPNavScreenMenuGroup v-if="props.screenMenu && !mobileToo" :text="String(props.item.text ?? '')" :items="props.item.items ?? []" />
+  <NativeVPFlyout v-else class="VPNavBarMenuGroup FeluqaMegaMenu" :button="String(props.item.text ?? '')">
     <div class="FeluqaMegaMenu__body" role="menu">
       <div v-if="layout === 'cards'" class="FeluqaMegaMenu__cards">
         <a v-for="(child, index) in displayChildren" :key="`${href(child) ?? String(child.text)}-${index}`" :href="href(child)" class="FeluqaMegaMenu__card" role="menuitem">
@@ -57,9 +73,15 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
         <a v-for="(event, index) in displayChildren" :key="`${href(event) ?? String(event.text)}-${index}`" :href="href(event)" class="FeluqaMegaMenu__event"><strong>{{ field(event, 'date') }}</strong><span><b>{{ field(event, 'title') }}</b><small>{{ field(event, 'location') }}</small></span></a>
       </div>
       <div v-else-if="layout === 'background'" class="FeluqaMegaMenu__background-grid">
+        <a v-if="more && morePosition === 'before'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${more.image ?? ''})` }">
+          <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
+        </a>
         <a v-for="(child, index) in displayChildren" :key="`${href(child) ?? String(child.text)}-${index}`" :href="href(child)" class="FeluqaMegaMenu__background-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${String(field(child, 'image') ?? '')})` }">
           <img v-if="has('icon') && field(child, 'icon')" :src="String(field(child, 'icon'))" alt="" class="FeluqaMegaMenu__background-icon">
           <span><strong>{{ field(child, 'title') }}</strong><small>{{ field(child, 'description') }}</small></span>
+        </a>
+        <a v-if="more && morePosition === 'after'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${more.image ?? ''})` }">
+          <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
         </a>
       </div>
     </div>

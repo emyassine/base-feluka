@@ -125,11 +125,20 @@ const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.p
 const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
 const topbarIconPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
 function validateMenuTemplate(value, location) {
-  if (!Array.isArray(value) || value.length < 1 || value.length > 2 || typeof value[0] !== 'string' || !value[0].trim()) {
-    throw new Error(`${location} must be [templateId, fields]`)
+  if (!Array.isArray(value) || value.length < 1 || value.length > 3 || typeof value[0] !== 'string' || !value[0].trim()) {
+    throw new Error(`${location} must be [templateId, fields, options]`)
   }
   if (value[1] !== undefined && (!Array.isArray(value[1]) || value[1].some((field) => typeof field !== 'string' || !field.trim()))) {
     throw new Error(`${location}[1] must be an array of field names`)
+  }
+  if (value[2] !== undefined && (!value[2] || typeof value[2] !== 'object' || Array.isArray(value[2]))) {
+    throw new Error(`${location}[2] must be an options object`)
+  }
+  if (value[2]?.maxItems !== undefined && (!Number.isInteger(value[2].maxItems) || value[2].maxItems < 1)) {
+    throw new Error(`${location}[2].maxItems must be a positive integer`)
+  }
+  if (value[2]?.mobileToo !== undefined && typeof value[2].mobileToo !== 'boolean') {
+    throw new Error(`${location}[2].mobileToo must be a boolean`)
   }
 }
 function validLocalizedLink(value) {
