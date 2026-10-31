@@ -25,8 +25,8 @@ const questions = computed(() => faqItems.value)
 </script>
 
 <div class="faq-page">
-  <header class="faq-header">
-    <h1>{{ title }}</h1>
+  <header class="faq-header" style="margin-top:4rem;margin-bottom:5rem;">
+    <h1>Frequently Asked Questions</h1>
     <p>{{ lead }}</p>
   </header>
 
@@ -71,6 +71,42 @@ const questions = computed(() => faqItems.value)
 
 .faq-section-heading {
   margin-bottom: 1.5rem;
+}
+
+.faq-answers details {
+  overflow: hidden;
+}
+
+.faq-answers details > summary {
+  position: relative;
+  display: block;
+  padding: 1rem 1rem 1rem 2.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-block.details summary {
+    margin: 0;
+}
+.faq-answers details > summary::before {
+  position: absolute;
+  top: 1.3rem;
+  left: 1rem;
+  border-width: 0.4rem;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--vp-c-text-2);
+  content: '';
+  transform: rotate(0);
+  transform-origin: 0.2rem 50%;
+  transition: transform 0.25s ease;
+}
+
+.faq-answers details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.faq-answers details > summary::-webkit-details-marker {
+  display: none;
 }
 
 
