@@ -1,6 +1,7 @@
 export interface SiteLayout {
   treeRoot: string
   siteDir: string
+  publicDir: string
   guidesDir: string
   collectionsDir: string
   resourcesDir: string

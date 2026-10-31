@@ -28,7 +28,6 @@ export function toVitepressRuntime(sourceModel, layout) {
   const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...localizeTree(seoCopy, language) }]))
   const searchLabels = { root: localizeTree(model.searchLabels ?? {}, defaultLanguage) }
   for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = localizeTree(model.searchLabels ?? {}, language)
-  const publicFiles = Object.fromEntries(Object.entries(model.publicFiles).map(([name, text]) => [name, text.replace(/\n$/, '')]))
   const layoutComponentSlots = {
     ...(model.components?.sidebarNavigationBefore ? { 'sidebar-nav-before': model.components.sidebarNavigationBefore } : {}),
     ...(model.components?.navigationAfter ? { 'nav-bar-content-after': model.components.navigationAfter } : {}),
@@ -66,19 +65,17 @@ export function toVitepressRuntime(sourceModel, layout) {
     )])),
     documentationNotices: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.hooks?.documentationNotices ?? {}, language)])),
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
-    publicFiles,
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, { emptyCollection: localizeTree(model.emptyCollection ?? {}, language) }])),
-    styles: (model.styles ?? []).map((path) => resolve(layout.siteResourcesDir, path)),
+    styles: (model.styles ?? []).map((path) => resolve(layout.paths.resources, path)),
     theme: { slots: layoutComponentSlots },
     markdown: model.markdown,
-    outputDir: layout.outputDirectory,
+    outputDir: layout.paths.output,
     project: {
-      ...model.project,
-      iconLibrary: layout.iconsDir,
-      components: resolve(layout.siteResourcesDir, model.project?.components ?? 'components'),
-      hooks: resolve(layout.siteResourcesDir, model.project?.hooks ?? 'hooks'),
+      iconLibrary: layout.paths.icons,
+      components: layout.paths.components,
+      hooks: layout.paths.hooks,
       iconFallback: model.iconFallback,
-      mermaidConfig: layout.mermaidConfigPath,
+      mermaidConfig: layout.paths.mermaidConfig,
     },
   }
 }

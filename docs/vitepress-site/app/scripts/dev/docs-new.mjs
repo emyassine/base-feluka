@@ -11,19 +11,19 @@ const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const readJson = async (path) => JSON.parse(await readFile(path, 'utf8'))
 const writeJson = async (path, value) => writeFile(path, `${JSON.stringify(value, null, 2)}\n`)
 const humanize = (value) => value.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
-const languages = (await readJson(join(layout.siteDir, 'spmpst.lang.json'))).languages
-const fallback = (await readJson(join(layout.siteDir, 'spmpst.lang.json'))).fallbackLanguage ?? languages[0]
+const languages = (await readJson(layout.paths.configFiles.lang)).languages
+const fallback = (await readJson(layout.paths.configFiles.lang)).fallbackLanguage ?? languages[0]
 
 if (kind === 'locale' || kind === 'language') {
   const [language] = args
   if (!/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language ?? '')) fail('Usage: docs:new language <language-code>')
-  const langPath = join(layout.siteDir, 'spmpst.lang.json')
+  const langPath = layout.paths.configFiles.lang
   const lang = await readJson(langPath)
   if (lang.languages.includes(language)) fail(`Language already exists: ${language}`)
   lang.languages.push(language)
   await writeJson(langPath, lang)
-  for (const file of ['spmpst.lang.json', 'spmpst.search.json', 'spmpst.outline.json', 'spmpst.layout.json', 'spmpst.topbar.json', 'spmpst.collections.json', 'spmpst.definitions.json']) {
-    const path = join(layout.siteDir, file)
+  for (const file of ['lang', 'search', 'outline', 'layout', 'topbar', 'collections', 'definitions']) {
+    const path = layout.paths.configFiles[file]
     const value = await readJson(path)
     const translate = (node) => {
       if (!node || typeof node !== 'object') return
@@ -39,10 +39,10 @@ if (kind === 'locale' || kind === 'language') {
 } else if (kind === 'guide') {
   const [id] = args
   if (!slugPattern.test(id ?? '')) fail('Usage: docs:new guide <lowercase-slug>')
-  const definitionsPath = join(layout.siteDir, 'spmpst.definitions.json')
+  const definitionsPath = layout.paths.configFiles.definitions
   const definitions = await readJson(definitionsPath)
   if (definitions.subguides.some((guide) => guide.path === id)) fail(`Guide already registered: ${id}`)
-  const directory = join(layout.guidesDir, id)
+  const directory = join(layout.paths.guides, id)
   await mkdir(directory, { recursive: false })
   definitions.subguides.push({ path: id, label: humanize(id), labels: Object.fromEntries(languages.map((language) => [language, humanize(id)])), uri: { base: `/${id}/` } })
   await writeJson(definitionsPath, definitions)
@@ -52,10 +52,10 @@ if (kind === 'locale' || kind === 'language') {
 } else if (kind === 'collection') {
   const [id] = args
   if (!slugPattern.test(id ?? '')) fail('Usage: docs:new collection <lowercase-slug>')
-  const configPath = join(layout.siteDir, 'spmpst.collections.json')
+  const configPath = layout.paths.configFiles.collections
   const config = await readJson(configPath)
   if (config.collections.some((collection) => collection.id === id)) fail(`Collection already registered: ${id}`)
-  const directory = join(layout.collectionsDir, id)
+  const directory = join(layout.paths.collections, id)
   await mkdir(directory, { recursive: false })
   config.collections.push({ id, dir: id, layout: 'article', indexLayout: 'list', title: Object.fromEntries(languages.map((language) => [language, humanize(id)])), description: Object.fromEntries(languages.map((language) => [language, ''])) })
   await writeJson(configPath, config)
@@ -65,7 +65,7 @@ if (kind === 'locale' || kind === 'language') {
 } else if (kind === 'section') {
   const [guide, section] = args
   if (!slugPattern.test(guide ?? '') || !slugPattern.test(section ?? '')) fail('Usage: docs:new section <guide-slug> <section-slug>')
-  const guideDirectory = join(layout.guidesDir, guide)
+  const guideDirectory = join(layout.paths.guides, guide)
   const directory = join(guideDirectory, `010-${section}`)
   await mkdir(directory, { recursive: false })
   await writeJson(join(directory, 'spmpst.sidebar.json'), { labels: Object.fromEntries(languages.map((language) => [language, humanize(section)])), icon: 'lucide/book-open' })

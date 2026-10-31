@@ -7,7 +7,6 @@ import { defineConfig, loadConfigFromFile, mergeConfig, searchForWorkspaceRoot }
 import { loadSiteModelSync } from '../scripts/spmpst/config/index.mjs'
 import { resolveLayout } from '../scripts/spmpst/layout.mjs'
 import { toVitepressRuntime } from '../scripts/preparation/runtime.mjs'
-import { resolveSitePaths } from '../scripts/paths.mjs'
 
 const siteDirectory = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const projectDirectory = resolve(siteDirectory, '..')
@@ -16,10 +15,10 @@ const dependencyDirectory = existsSync(resolve(siteDirectory, 'node_modules/vite
   ? resolve(siteDirectory, 'node_modules')
   : resolve(siteDirectory, '../node_modules')
 const layout = resolveLayout(siteDirectory)
-const paths = resolveSitePaths(siteDirectory)
+const paths = layout.paths
 const loadedSite = loadSiteModelSync(layout)
 const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
-const componentDirectory = resolve(siteConfiguration.project?.components ?? resolve(paths.siteResourcesDirectory, 'components'))
+const componentDirectory = paths.components
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -48,7 +47,7 @@ const mimeTypes: Record<string, string> = {
 
 const siteViteConfig = {
   // Component-owned assets live under the configured component root.
-  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.treeRoot, paths.resourcesDirectory, paths.siteResourcesDirectory, componentDirectory])] } },
+  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.paths.root, paths.sharedResources, paths.resources, componentDirectory])] } },
   cacheDir: paths.vitepressCache,
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {
@@ -56,7 +55,7 @@ const siteViteConfig = {
       { find: /^vue$/, replacement: resolve(dependencyDirectory, 'vue/dist/vue.runtime.esm-bundler.js') },
       { find: /^vue\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vue')}/$1` },
       { find: /^vitepress$/, replacement: resolve(dependencyDirectory, 'vitepress/dist/client/index.js') },
-      { find: '@docs', replacement: layout.treeRoot },
+      { find: '@docs', replacement: layout.paths.root },
       { find: '@generated', replacement: paths.generatedMetadata },
     ],
   },

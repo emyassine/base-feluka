@@ -20,7 +20,7 @@ try {
     const hasNonIndexPage = markdown.some((entry) => !/^(?:\d+[-.])?index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
     if (hasNonIndexPage && !collection) {
       try { await stat(join(directory, 'spmpst.sidebar.json')) }
-      catch { errors.push(`${relative(layout.treeRoot, directory)}: missing spmpst.sidebar.json`) }
+      catch { errors.push(`${relative(layout.paths.root, directory)}: missing spmpst.sidebar.json`) }
     }
     for (const entry of visible) {
       const path = join(directory, entry.name)
@@ -28,13 +28,13 @@ try {
       else if (entry.isFile() && extname(entry.name).toLowerCase() === '.md') {
         const content = await readFile(path, 'utf8')
         const frontmatter = content.match(/^---\s*\n([\s\S]*?)\n---/)
-        if (!frontmatter) { errors.push(`${relative(layout.treeRoot, path)}: missing frontmatter`); continue }
-        for (const key of ['icon', 'sidebarTitle']) if (!new RegExp(`^${key}:\\s*.+$`, 'm').test(frontmatter[1])) errors.push(`${relative(layout.treeRoot, path)}: missing ${key}`)
+        if (!frontmatter) { errors.push(`${relative(layout.paths.root, path)}: missing frontmatter`); continue }
+        for (const key of ['icon', 'sidebarTitle']) if (!new RegExp(`^${key}:\\s*.+$`, 'm').test(frontmatter[1])) errors.push(`${relative(layout.paths.root, path)}: missing ${key}`)
       }
     }
   }
-  await visit(layout.guidesDir)
-  await visit(layout.collectionsDir, true)
+  await visit(layout.paths.guides)
+  await visit(layout.paths.collections, true)
 } catch (error) {
   if (error instanceof AggregateError) errors.push(...error.errors.map((item) => item.message))
   else errors.push(error.message)

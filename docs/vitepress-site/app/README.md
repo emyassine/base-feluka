@@ -27,4 +27,4 @@ npm run docs:check
 ```
 
 Set `VITEPRESS_SITE_MANIFEST` to use a registry outside this host. Set
-`VITEPRESS_SITE_ID` or pass `--site <id>` for non-interactive site selection.
+`SPMPST_SITE_ID` or pass `--site <id>` for non-interactive site selection.

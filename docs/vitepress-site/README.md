@@ -4,7 +4,7 @@ This directory contains the shared VitePress host and site registry. The
 actual site sources live in sibling site directories such as `../site-1/`.
 
 ```text
-spmpst.workspace.json     registry of site declaration files
+spmpst.workspace.json     registry of root site declarations
 app/                      renderer, adapters, commands, and package manifest
 resources/                shared icon and flag catalogues
 .trash/                   generated Markdown, metadata, caches, and scratch data
@@ -13,10 +13,12 @@ legal/                    required third-party notices
 ```
 
 The registry's `sitesPaths` entries are resolved relative to this directory.
-Each declaration's `sourcePath`, optional `resourcesPath`, optional
-`siteResourcesPath`, and `outputPath` are resolved relative to that declaration
-file. `../site-1/` contains Feluqa's `.site/`, `src/`, and `resources/`.
-Its components, hooks, and diagrams stay with that site; shared icons and flags
+Each root `spmpst.json` declares the complete `paths` registry relative to
+itself, including `.site/`, source roots, public files, resources, toolchain,
+and output. The host resolves this once as `SpmpstPaths` and passes the same
+object to preparation, VitePress configuration, and the declared actions.
+`../site-1/` contains Feluqa's `.site/`, `src/`, and `resources/`; its
+components, hooks, and diagrams stay with that site. Shared icons and flags
 stay in this host's `resources/`. `../site-2/` contains the Numerimondes
 English/French starter site. Each build writes outside its site tree under
 `docs-output/<site-id>/`.

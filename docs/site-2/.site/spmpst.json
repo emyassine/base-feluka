@@ -1,8 +1,0 @@
-{
-  "id": "numerimondes",
-  "name": "Numerimondes",
-  "sourcePath": "..",
-  "resourcesPath": "../../vitepress-site/resources",
-  "siteResourcesPath": "../resources",
-  "outputPath": "../../../docs-output/site-2"
-}

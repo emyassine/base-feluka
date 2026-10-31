@@ -85,35 +85,20 @@ if ((build && preview)); then
 fi
 
 mapfile -t sites < <(node --input-type=module - "$site_dir" "$requested_sites" "$list_sites" <<'NODE'
-import { readFile } from 'node:fs/promises'
-import { basename, dirname, isAbsolute, resolve } from 'node:path'
+import { basename, resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
 
 const root = process.argv[2]
 const requested = process.argv[3]
 const listMode = process.argv[4] === '1'
-const registryPath = process.env.VITEPRESS_SITE_MANIFEST
-  ? resolve(process.env.VITEPRESS_SITE_MANIFEST)
-  : resolve(root, 'spmpst.workspace.json')
-const registry = JSON.parse(await readFile(registryPath, 'utf8'))
-const sites = await Promise.all((registry.sitesPaths ?? []).map(async (entry) => {
-  const declarationPath = isAbsolute(entry) ? entry : resolve(dirname(registryPath), entry)
-  const declaration = JSON.parse(await readFile(declarationPath, 'utf8'))
-  if (!declaration.id) throw new Error(`${declarationPath}: missing site id`)
-  const sourceRoot = isAbsolute(declaration.sourcePath)
-    ? declaration.sourcePath
-    : resolve(dirname(declarationPath), declaration.sourcePath)
-  const outputRoot = declaration.outputPath
-    ? (isAbsolute(declaration.outputPath) ? declaration.outputPath : resolve(dirname(declarationPath), declaration.outputPath))
-    : ''
-  return {
-    ...declaration,
-    declarationPath,
-    sourceRoot,
-    outputRoot,
-    aliases: [declaration.id, declaration.name, basename(sourceRoot), basename(dirname(dirname(declarationPath)))].filter(Boolean),
-  }
+const { loadSites } = await import(pathToFileURL(resolve(root, 'app/scripts/site-registry.mjs')).href)
+const sites = (await loadSites()).map((site) => ({
+  ...site,
+  sourceRoot: site.paths.root,
+  outputRoot: site.paths.output,
+  aliases: [site.id, site.name, resolve(site.paths.root).split(/[\\/]/).pop()].filter(Boolean),
 }))
 if (sites.length === 0) throw new Error(`No sites are registered in ${registryPath}`)
 
@@ -171,11 +156,6 @@ if (( ${#sites[@]} == 0 )); then
   exit 1
 fi
 
-if [[ ! -x "$site_dir/node_modules/.bin/vitepress" ]]; then
-  error "Dependencies are missing. Run: npm --prefix \"$site_dir\" install"
-  exit 1
-fi
-
 if ((build)); then
   info "Building ${#sites[@]} selected site(s)."
   for entry in "${sites[@]}"; do
@@ -191,7 +171,7 @@ if ((preview)); then
   for entry in "${sites[@]}"; do
     IFS=$'\t' read -r site_id _ output_root <<<"$entry"
     if [[ -z "$output_root" ]]; then
-      error "Site $site_id has no outputPath in its declaration."
+      error "Site $site_id has no paths.output in its root spmpst.json."
       exit 1
     fi
     (cd -- "$site_dir" && node app/scripts/site.mjs build --site "$site_id")

@@ -3,7 +3,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { performance } from 'node:perf_hooks'
 import { prepareSources } from './source-stage.mjs'
-import { resolveSitePaths } from '../paths.mjs'
+import { resolveLayout } from '../spmpst/layout.mjs'
 import { prepareContent } from './content-stage.mjs'
 import { assertIndexPath, createPreparationContext } from './context.mjs'
 import { runTransformMarkdown } from './stages/transform-markdown.mjs'
@@ -14,10 +14,10 @@ import { runPager } from './stages/pager.mjs'
 import { runCleanup } from './stages/cleanup.mjs'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const paths = resolveSitePaths(siteDirectory)
-await mkdir(paths.trashDirectory, { recursive: true })
+const paths = resolveLayout(siteDirectory).paths
+await mkdir(paths.scratch, { recursive: true })
 
-const lockPath = join(paths.trashDirectory, 'prepare.lock')
+const lockPath = join(paths.scratch, 'prepare.lock')
 const lockOwner = join(lockPath, 'pid')
 const staleLockMilliseconds = 60_000
 

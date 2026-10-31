@@ -1,0 +1,71 @@
+{
+  "specVersion": "0.1",
+  "id": "numerimondes",
+  "name": "Numerimondes",
+  "paths": {
+    "root": ".",
+    "config": ".site",
+    "guides": "src/guides",
+    "collections": "src/collections",
+    "resources": "resources",
+    "sharedResources": "../vitepress-site/resources",
+    "assets": "resources/assets",
+    "components": "resources/components",
+    "diagrams": "resources/diagrams",
+    "hooks": "resources/hooks",
+    "media": "resources/media",
+    "schemas": "resources/media/schemas",
+    "public": ".site/public",
+    "configFiles": {
+      "appearance": ".site/spmpst.appearance.json",
+      "collections": ".site/spmpst.collections.json",
+      "definitions": ".site/spmpst.definitions.json",
+      "lang": ".site/spmpst.lang.json",
+      "layout": ".site/spmpst.layout.json",
+      "links": ".site/spmpst.links.json",
+      "markdown": ".site/spmpst.markdown.json",
+      "outline": ".site/spmpst.outline.json",
+      "search": ".site/spmpst.search.json",
+      "seo": ".site/spmpst.seo.json",
+      "topbar": ".site/spmpst.topbar.json"
+    },
+    "icons": "../vitepress-site/resources/icons",
+    "flags": "../vitepress-site/resources/flags",
+    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "toolchain": "../vitepress-site",
+    "output": "../../docs-output/site-2"
+  },
+  "extensions": {},
+  "engine": "toolchain",
+  "toolchain": {
+    "preset": "vitepress",
+    "cwd": "toolchain",
+    "install": {
+      "command": "npm",
+      "args": [
+        "ci"
+      ],
+      "when": "missing"
+    },
+    "build": {
+      "command": "./node_modules/.bin/vitepress",
+      "args": [
+        "build",
+        "{generatedDir}"
+      ]
+    },
+    "dev": {
+      "command": "./node_modules/.bin/vitepress",
+      "args": [
+        "dev",
+        "{generatedDir}",
+        "--host",
+        "{host}",
+        "--port",
+        "{port}",
+        "--strictPort"
+      ]
+    },
+    "network": "install-only"
+  }
+}

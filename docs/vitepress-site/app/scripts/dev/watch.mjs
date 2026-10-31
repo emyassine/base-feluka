@@ -4,15 +4,15 @@ import { spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { resolveSitePaths } from '../paths.mjs'
+import { resolveLayout } from '../spmpst/layout.mjs'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const sitePaths = resolveSitePaths(siteDirectory)
-const sourceDirectory = resolve(sitePaths.sourceRoot, 'src')
-const siteConfigDirectory = resolve(sitePaths.sourceRoot, '.site')
-const resourceDirectory = sitePaths.resourcesDirectory
-const siteResourceDirectory = sitePaths.siteResourcesDirectory
-const sourceResourceDirectory = resolve(sitePaths.sourceRoot, 'resources')
+const sitePaths = resolveLayout(siteDirectory).paths
+const sourceDirectory = resolve(sitePaths.root, 'src')
+const siteConfigDirectory = sitePaths.config
+const resourceDirectory = sitePaths.sharedResources
+const siteResourceDirectory = sitePaths.resources
+const sourceResourceDirectory = sitePaths.resources
 const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
 const siteScript = join(siteDirectory, 'scripts/site.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
@@ -73,7 +73,7 @@ async function structuralSignature() {
 async function runPrepare() {
   return new Promise((resolveResult) => {
     const child = buildMode
-      ? spawn(process.execPath, [siteScript, 'build', '--site', process.env.VITEPRESS_SITE_ID ?? ''], {
+      ? spawn(process.execPath, [siteScript, 'build', '--site', process.env.SPMPST_SITE_ID ?? ''], {
         cwd: siteDirectory,
         env: process.env,
         stdio: 'inherit',

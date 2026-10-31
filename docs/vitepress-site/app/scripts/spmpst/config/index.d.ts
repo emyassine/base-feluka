@@ -1,6 +1,5 @@
 export interface LoadedSiteModel {
   model: Record<string, any>
-  targets: Record<string, any>
   sources: string[]
   warnings: string[]
   defaultLanguage: string

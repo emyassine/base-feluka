@@ -28,21 +28,6 @@
     "iconFallback": {
       "type": "string"
     },
-    "project": {
-      "type": "object",
-      "properties": {
-        "components": {
-          "type": "string"
-        },
-        "hooks": {
-          "type": "string"
-        },
-        "viteConfig": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
     "subguides": {
       "type": "array",
       "items": {

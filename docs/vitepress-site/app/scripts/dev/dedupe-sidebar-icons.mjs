@@ -6,7 +6,7 @@ import { resolveLayout } from '../spmpst/layout.mjs'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const layout = resolveLayout(siteDirectory)
-const customDirectory = join(layout.iconsDir, 'custom')
+const customDirectory = join(layout.paths.icons, 'custom')
 await import('node:fs/promises').then(({ mkdir }) => mkdir(customDirectory, { recursive: true }))
 const registered = new Map()
 let replaced = 0
@@ -37,5 +37,5 @@ async function visit(directory) {
   }
 }
 
-await visit(layout.guidesDir)
+await visit(layout.paths.guides)
 process.stdout.write(`Sidebar icons: ${replaced} paths replaced by ${registered.size} shared named icons; ${kept} entries kept.\n`)

@@ -3,10 +3,10 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
-import { resolveSitePaths } from '../paths.mjs'
+import { resolveLayout } from '../spmpst/layout.mjs'
 
 const site = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const paths = resolveSitePaths(site)
+const paths = resolveLayout(site).paths
 const refactor = join(site, '../.trash/refactor')
 const baseline = join(refactor, 'baseline.json')
 const baselineTree = join(refactor, 'baseline-tree')

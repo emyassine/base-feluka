@@ -23,10 +23,10 @@ function containedFile(root, id, kind) {
 /** Resolve tool-owned icon/flag resources and site-owned media by logical ID. */
 export function resolveVitepressResource(reference, layout) {
   if (reference.kind === 'media') {
-    const target = containedFile(resolve(layout.siteResourcesDir, 'media'), reference.id, 'media')
+    const target = containedFile(layout.paths.media, reference.id, 'media')
     if (target) return target
   } else if (reference.kind === 'flag') {
-    const target = containedFile(resolve(layout.targetResourcesDir, 'flags/language'), reference.id, 'flag')
+    const target = containedFile(resolve(layout.paths.flags, 'language'), reference.id, 'flag')
     if (target) return target
   } else if (reference.kind === 'icon') {
     const slash = reference.id.indexOf('/')
@@ -34,7 +34,7 @@ export function resolveVitepressResource(reference, layout) {
     const name = family ? reference.id.slice(slash + 1) : reference.id
     for (const candidateFamily of family ? [family] : ICON_FAMILIES) {
       if (!ICON_FAMILIES.includes(candidateFamily)) continue
-      const target = containedFile(resolve(layout.targetResourcesDir, 'icons', candidateFamily), name, 'icon')
+      const target = containedFile(resolve(layout.paths.icons, candidateFamily), name, 'icon')
       if (target) return target
     }
   }

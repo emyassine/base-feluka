@@ -3,7 +3,6 @@ import { existsSync } from 'node:fs'
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { createHash } from 'node:crypto'
 import { resolveLayout } from '../spmpst/layout.mjs'
-import { resolveSitePaths } from '../paths.mjs'
 import { loadSiteModelSync } from '../spmpst/config/index.mjs'
 import { toVitepressRuntime } from './runtime.mjs'
 import { isDefaultLanguage, localePrefix } from '../spmpst/routing.mjs'
@@ -18,18 +17,19 @@ import { resolveVitepressResource } from './resolve-resource.mjs'
  */
 export async function prepareSources(siteDirectory) {
 const layout = resolveLayout(siteDirectory)
-const paths = resolveSitePaths(siteDirectory)
-const configDirectory = layout.configBase
+const paths = layout.paths
+const configFiles = paths.configFiles
+const configDirectory = layout.paths.root
 const loadedConfig = loadSiteModelSync(layout)
 const config = toVitepressRuntime(loadedConfig.model, layout)
 const configuredStyles = config.styles ?? []
-if (!Array.isArray(configuredStyles)) throw new Error('styles must be an array of CSS paths in .site/spmpst.appearance.json')
+if (!Array.isArray(configuredStyles)) throw new Error(`styles must be an array of CSS paths in ${configFiles.appearance}`)
 const styleFiles = configuredStyles.map((stylePath) => {
   if (typeof stylePath !== 'string' || !stylePath.trim()) {
     throw new Error('Each styles entry must resolve to a CSS file inside VitePress resources')
   }
   const resolvedPath = resolve(stylePath)
-  const localPath = relative(layout.siteResourcesDir, resolvedPath)
+  const localPath = relative(layout.paths.resources, resolvedPath)
   if (!localPath || localPath === '..' || localPath.startsWith(`..${sep}`) || extname(resolvedPath).toLowerCase() !== '.css') {
     throw new Error(`Invalid CSS path in styles: ${stylePath}`)
   }
@@ -38,7 +38,7 @@ const styleFiles = configuredStyles.map((stylePath) => {
 })
 if (new Set(styleFiles).size !== styleFiles.length) throw new Error('styles contains duplicate CSS paths')
 const configuredCollections = config.collections ?? []
-if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in .site/spmpst.collections.json')
+if (!Array.isArray(configuredCollections)) throw new Error(`collections must be an array in ${configFiles.collections}`)
 const collectionIds = new Set()
 const collectionPaths = new Set()
 const collections = configuredCollections.map((collection) => {
@@ -81,7 +81,7 @@ const collections = configuredCollections.map((collection) => {
   }
   collectionIds.add(id)
   collectionPaths.add(normalizedPath)
-  return { id, path: normalizedPath, title, description, layout: collectionLayout, indexLayout, categoryFile, sourceDirectory: resolve(layout.collectionsDir, normalizedPath) }
+  return { id, path: normalizedPath, title, description, layout: collectionLayout, indexLayout, categoryFile, sourceDirectory: resolve(layout.paths.collections, normalizedPath) }
 })
 function themeSlots(value, context) {
   if (value == null) return {}
@@ -95,16 +95,16 @@ function themeSlots(value, context) {
   return value
 }
 if (config.theme != null && (typeof config.theme !== 'object' || Array.isArray(config.theme))) {
-  throw new Error('theme must be an object derived from .site/spmpst.layout.json')
+  throw new Error(`theme must be an object derived from ${configFiles.layout}`)
 }
-const siteThemeSlots = themeSlots(config.theme?.slots, '.site/spmpst.layout.json')
+const siteThemeSlots = themeSlots(config.theme?.slots, configFiles.layout)
 if (!Array.isArray(config.languages) || !config.languages.length || config.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(config.languages).size !== config.languages.length) {
   throw new Error('languages must be a non-empty array of unique locale codes')
 }
 const defaultLanguage = config.fallbackLanguage ?? config.languages[0]
 if (!config.languages.includes(defaultLanguage)) throw new Error('fallbackLanguage must be listed in languages')
 const topbar = config.topbar ?? {}
-if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in .site/spmpst.topbar.json')
+if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error(`topbar must be an object in ${configFiles.topbar}`)
 if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].includes(topbar.theme)) {
   throw new Error('topbar.theme must be switch, system, light, or dark')
 }
@@ -188,38 +188,22 @@ if (config.seo?.locales != null) {
     }
   }
 }
-const projectConfig = config.project ?? {}
-if (typeof projectConfig !== 'object' || Array.isArray(projectConfig)) {
-  throw new Error('project must be an object when configured')
+const projectConfig = {}
+const projectDirectories = {
+  components: layout.paths.components,
+  hooks: layout.paths.hooks,
+  iconLibrary: layout.paths.icons,
 }
-const projectDirectories = {}
 for (const key of ['components', 'hooks', 'iconLibrary']) {
-  const value = projectConfig[key]
-  if (value == null) {
-    projectDirectories[key] = null
-    continue
-  }
-  if (typeof value !== 'string' || !value.trim()) {
-    throw new Error(`project.${key} must be a non-empty directory path relative to the documentation tree in .site/spmpst.definitions.json`)
-  }
-  const resourceRoot = key === 'iconLibrary' ? layout.targetResourcesDir : layout.siteResourcesDir
-  const target = resolve(resourceRoot, value)
-  const local = relative(resourceRoot, target)
-  if (!local || local.startsWith(`..${sep}`) || local === '..' || local.split(sep).includes('..')) {
-    throw new Error(`project.${key} must stay inside its resource directory`)
-  }
-  let metadata
+  const target = projectDirectories[key]
   try {
-    metadata = await stat(target)
-  } catch (error) {
-    if (error.code !== 'ENOENT') throw error
+    if (!(await stat(target)).isDirectory()) throw new Error('not a directory')
+  } catch {
+    const pathKey = key === 'iconLibrary' ? 'icons' : key
+    throw new Error(`Directory path was not found by the conforming tool: ${target}. Restore it, or update "paths.${pathKey}" in ${layout.paths.declaration}.`)
   }
-  if (!metadata?.isDirectory()) {
-    throw new Error(`project.${key} must point to an existing directory: ${value}`)
-  }
-  projectDirectories[key] = target
 }
-const mermaidConfigPath = layout.mermaidConfigPath
+const mermaidConfigPath = layout.paths.mermaidConfig
 if (!existsSync(mermaidConfigPath) || !(await stat(mermaidConfigPath)).isFile()) {
   throw new Error(`Configured Mermaid JSON file does not exist: ${mermaidConfigPath}`)
 }
@@ -247,9 +231,9 @@ function findIcon(name) {
   }
   return null
 }
-const iconFallbackName = projectConfig.iconFallback ?? 'circle-help'
+const iconFallbackName = config.iconFallback ?? 'circle-help'
 const iconFallbackPath = findIcon(iconFallbackName)
-if (!iconFallbackPath) throw new Error(`project.iconFallback "${iconFallbackName}" was not found in project.iconLibrary`)
+if (!iconFallbackPath) throw new Error(`iconFallback "${iconFallbackName}" was not found under paths.icons (${layout.paths.icons}); restore the icon or change iconFallback in ${configFiles.definitions}`)
 function resolveIcon(name, context) {
   const icon = findIcon(name)
   if (icon) return icon
@@ -263,7 +247,7 @@ function resolveSidebarIcon(directory, iconPath, context) {
   const candidate = /\.svg$/i.test(iconPath) ? resolve(directory, iconPath) : findIcon(iconPath)
   const relativePath = candidate ? relative(sourceRoot, candidate) : '..'
   const inGuides = relativePath !== '..' && !relativePath.startsWith(`..${sep}`)
-  const inResources = candidate && [layout.targetResourcesDir, layout.siteResourcesDir].some((root) => {
+  const inResources = candidate && [layout.paths.sharedResources, layout.paths.resources].some((root) => {
     const local = relative(root, candidate)
     return local !== '..' && !local.startsWith(`..${sep}`)
   })
@@ -274,10 +258,6 @@ function resolveSidebarIcon(directory, iconPath, context) {
   }
   return iconFallbackPath
 }
-if (projectConfig.viteConfig != null && (typeof projectConfig.viteConfig !== 'string' || !/\.(?:[cm]?[jt]s)$/.test(projectConfig.viteConfig) || projectConfig.viteConfig.startsWith('/') || projectConfig.viteConfig.split('/').includes('..'))) {
-  throw new Error('project.viteConfig must be a relative .js, .mjs, .cjs, .ts, .mts, or .cts path')
-}
-
 const outputDirectory = paths.generatedGuides
 const generatedDirectory = paths.generatedMetadata
 const mermaidCache = paths.mermaidCache
@@ -321,7 +301,7 @@ let diagramsRendered = 0
 const cleanDir = (s) => s.replace(/^\d+[.-]/, '')
 const cleanFile = (s) => s.replace(/^\d+[-.]/, '').replace(/\.[a-z]{2,3}\.md$/i, '.md')
 const sourceLanguage = (path) => path.match(/\.([a-z]{2,3}(?:-[A-Z]{2})?)\.md$/i)?.[1]?.toLowerCase() ?? defaultLanguage.toLowerCase()
-const sourceRoot = layout.guidesDir
+const sourceRoot = layout.paths.guides
 const collectionMetadata = new Map()
 
 function localizedValue(value, language, fallback = '') {
@@ -331,7 +311,7 @@ function localizedValue(value, language, fallback = '') {
 }
 
 for (const collection of collections) {
-  const relativeToCollections = relative(layout.collectionsDir, collection.sourceDirectory)
+  const relativeToCollections = relative(layout.paths.collections, collection.sourceDirectory)
   const isInsideCollections = relativeToCollections !== '..' && !relativeToCollections.startsWith(`..${sep}`)
   if (!isInsideCollections || !existsSync(collection.sourceDirectory) || !(await stat(collection.sourceDirectory)).isDirectory()) {
     throw new Error(`Collection ${collection.id} path must point to an existing directory: ${collection.path}`)
@@ -375,7 +355,7 @@ async function validateMarkdownIcons(directory) {
     const icon = frontmatter?.[1].match(/^icon:\s*(?:"([^"]+)"|'([^']+)'|([^\s#]+))\s*$/m)
     const iconValue = icon?.[1] ?? icon?.[2] ?? icon?.[3]
     if (!iconValue) throw new Error(`Every Markdown file must define a valid icon in frontmatter: ${file}`)
-    if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate Markdown icons: ${file}`)
+    if (!projectDirectories.iconLibrary) throw new Error(`paths.icons is required to validate Markdown icons in ${file}; set it in ${layout.paths.declaration}`)
     resolveIcon(iconValue, file)
   }
 }
@@ -410,7 +390,7 @@ function stagedPath(sourcePath, language = null) {
 async function copyAsset(sourceFile) {
   const cached = assetCache.get(sourceFile)
   if (cached) return cached
-  const allowedRoots = [layout.guidesDir, layout.collectionsDir, layout.resourcesDir, layout.targetResourcesDir, layout.siteResourcesDir]
+  const allowedRoots = [layout.paths.guides, layout.paths.collections, layout.paths.resources, layout.paths.sharedResources, layout.paths.resources]
   const insideAllowedRoot = allowedRoots.some((root) => {
     const path = relative(root, sourceFile)
     return path !== '..' && !path.startsWith(`..${sep}`)
@@ -508,7 +488,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
         const iconMatch = frontmatter?.[1].match(/^icon:\s*(?:"([^"]+)"|'([^']+)'|([^\s#]+))\s*$/m)
         const icon = iconMatch?.[1] ?? iconMatch?.[2] ?? iconMatch?.[3]
         if (!icon) throw new Error(`Every published Markdown page must define a valid icon: ${from}`)
-        if (!projectDirectories.iconLibrary) throw new Error(`project.iconLibrary is required to validate page icons: ${from}`)
+        if (!projectDirectories.iconLibrary) throw new Error(`paths.icons is required to validate page icons in ${from}; set it in ${layout.paths.declaration}`)
         const iconPath = resolveIcon(icon, from)
         const iconAsset = await copyAsset(iconPath)
         sidebarPageIcons[publicMarkdownLink(to)] = iconAsset
@@ -566,36 +546,34 @@ if (topbar.language?.showFlags) {
     await writeIfChanged(target, await readFile(source))
   }
 }
-if (config.publicFiles !== undefined && (!config.publicFiles || typeof config.publicFiles !== 'object' || Array.isArray(config.publicFiles))) {
-  throw new Error('publicFiles must be an object of root-level filenames and text contents')
-}
-// Publish site media at stable URLs as ordinary static files, preserving MIME by extension.
-async function publishMedia(source, relativePath = '') {
-  for (const entry of await readdir(source, { withFileTypes: true })) {
+// Publish the configured public source tree at the site URL root, preserving paths and file extensions.
+async function publishDirectory(source, destination, field, relativePath = '') {
+  let entries
+  try { entries = await readdir(source, { withFileTypes: true }) }
+  catch (error) {
+    if (error.code === 'ENOENT') throw new Error(`Path was not found by the conforming tool: ${source}. Restore it, or update "${field}" in ${layout.paths.declaration}.`)
+    throw error
+  }
+  for (const entry of entries) {
+    if (entry.name === '.gitkeep') continue
     const sourcePath = join(source, entry.name)
     const childPath = join(relativePath, entry.name)
-    if (entry.isSymbolicLink()) throw new Error(`Media symlinks are not allowed: ${sourcePath}`)
-    if (entry.isDirectory()) await publishMedia(sourcePath, childPath)
+    if (entry.isSymbolicLink()) throw new Error(`Symlink is not allowed in paths.${field}: ${sourcePath}. Keep files inside the site root, or change paths.${field} in ${layout.paths.declaration}.`)
+    if (entry.isDirectory()) await publishDirectory(sourcePath, destination, field, childPath)
     else if (entry.isFile()) {
-      const target = join(outputDirectory, 'public', 'media', childPath)
+      const target = join(destination, childPath)
       generatedFiles.add(target)
       await writeIfChanged(target, await readFile(sourcePath))
     }
   }
 }
-const mediaRoot = resolve(layout.siteResourcesDir, 'media')
-if (existsSync(mediaRoot)) await publishMedia(mediaRoot)
-for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
-  if (!/^[A-Za-z0-9._-]+\.txt$/.test(name) || typeof content !== 'string') {
-    throw new Error(`publicFiles.${name} must be a .txt filename with string content`)
-  }
-  const target = join(outputDirectory, 'public', name)
-  generatedFiles.add(target)
-  await writeIfChanged(target, content.endsWith('\n') ? content : `${content}\n`)
-}
+await publishDirectory(layout.paths.public, join(outputDirectory, 'public'), 'public')
+// Site media also has a stable namespaced URL, independent of whether paths.public points at it.
+const mediaRoot = layout.paths.media
+if (existsSync(mediaRoot)) await publishDirectory(mediaRoot, join(outputDirectory, 'public', 'media'), 'media')
 
 
   return {
-    configDirectory, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, diagramsCached, diagramsRendered
+    configDirectory, configFiles, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, diagramsCached, diagramsRendered
   }
 }

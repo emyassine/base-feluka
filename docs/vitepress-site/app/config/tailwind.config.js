@@ -1,9 +1,8 @@
 import { resolve } from 'node:path'
 
-const sourceRoot = process.env.SPMPST_ROOT
-const siteResourcesRoot = process.env.VITEPRESS_SITE_RESOURCES_DIR
-const trashRoot = process.env.VITEPRESS_TRASH_DIR
-if (!sourceRoot || !siteResourcesRoot || !trashRoot) {
+const paths = JSON.parse(process.env.SPMPST_PATHS ?? '{}')
+const generatedRoot = process.env.SPMPST_GENERATED_DIR
+if (!paths.root || !paths.guides || !paths.components || !generatedRoot) {
   throw new Error('Tailwind requires a site selected through spmpst.json')
 }
 
@@ -11,9 +10,9 @@ if (!sourceRoot || !siteResourcesRoot || !trashRoot) {
 export default {
   content: [
     resolve(process.cwd(), '.vitepress/**/*.{vue,ts,js}'),
-    resolve(trashRoot, 'generated-guides/**/*.md'),
-    resolve(siteResourcesRoot, 'components/**/*.{vue,md}'),
-    resolve(sourceRoot, 'src/guides/**/*.{vue,md}'),
+    resolve(generatedRoot, '../generated-guides/**/*.md'),
+    resolve(paths.components, '**/*.{vue,md}'),
+    resolve(paths.guides, '**/*.{vue,md}'),
   ],
   corePlugins: {
     preflight: false,

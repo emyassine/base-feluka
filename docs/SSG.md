@@ -84,7 +84,8 @@ The tree standard defines authored sources and configuration **before** site gen
 - **Page**: a Markdown source file that is not metadata or ignored content.
 - **Collection**: a registry entry whose Markdown files are prepared as a list or article feed.
 - **Category**: localized metadata from a collection's category file.
-- **Locale / Bundle**: a language code (`en`, `fr`) / a locale JSON file with language-specific copy.
+- **Locale / Translation**: a language code (`en`, `fr`) / a language value stored beside its property in the owning concern file.
+- **Locale / Bundle**: a language code (`en`, `fr`) / language-specific copy stored in its owning concern file.
 - **Concern file**: one configuration file with exactly one owner for each key.
 - **Extension**: an optional capability declared by an identifier (§A12).
 - **Layout**: a named page template selected for a page (§A13).
@@ -96,33 +97,77 @@ The tree standard defines authored sources and configuration **before** site gen
 
 ### A3.1 Site declaration
 
-Every site has a declaration file stored with its owner at `<tree-root>/.site/spmpst.json`. The current VitePress adapter uses the earlier host-specific declaration fields; the standardized `paths`, build contract (§B3), and extension declarations (§A12) remain proposed. Identity and path fields:
+Every site has one declaration file at `<tree-root>/spmpst.json`. The declaration is at the site root so it can register the locations of `.site/` and every other structural directory:
 
-| Field | Meaning |
-|---|---|
-| `id` | Stable, unique identifier; namespaces caches, scratch space and output. |
-| `name` | Human-readable label. |
-| `paths.source` | Tree root (contains `.site/`, `src/`, `resources/`). |
-| `paths.resources` | Site-owned resources (components, hooks, diagrams, assets). Default: `<source>/resources`. |
-| `paths.sharedResources` | Optional shared adapter catalogues (icons, flags). Default: tool-provided. |
-| `paths.output` | Final static output directory. Default: outside the source tree. |
+```json
+{
+  "id": "feluqa-docs",
+  "name": "Feluqa documentation",
+  "paths": {
+    "root": ".",
+    "config": ".site",
+    "guides": "src/guides",
+    "collections": "src/collections",
+    "resources": "resources",
+    "sharedResources": "../vitepress-site/resources",
+    "assets": "resources/assets",
+    "components": "resources/components",
+    "diagrams": "resources/diagrams",
+    "hooks": "resources/hooks",
+    "media": "resources/media",
+    "schemas": "resources/media/schemas",
+    "public": ".site/public",
+    "configFiles": {
+      "appearance": ".site/spmpst.appearance.json",
+      "collections": ".site/spmpst.collections.json",
+      "definitions": ".site/spmpst.definitions.json",
+      "lang": ".site/spmpst.lang.json",
+      "layout": ".site/spmpst.layout.json",
+      "links": ".site/spmpst.links.json",
+      "markdown": ".site/spmpst.markdown.json",
+      "outline": ".site/spmpst.outline.json",
+      "search": ".site/spmpst.search.json",
+      "seo": ".site/spmpst.seo.json",
+      "topbar": ".site/spmpst.topbar.json"
+    },
+    "icons": "../vitepress-site/resources/icons",
+    "flags": "../vitepress-site/resources/flags",
+    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "toolchain": "../vitepress-site",
+    "output": "../../docs-output/site-1"
+  },
+  "engine": "toolchain",
+  "toolchain": {
+    "preset": "vitepress",
+    "cwd": "toolchain",
+    "install": { "command": "npm", "args": ["ci"], "when": "missing" },
+    "build": { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] },
+    "dev": { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] },
+    "network": "install-only"
+  }
+}
+```
 
-All paths are relative to the directory containing the declaration (never the process working directory), use `/`, and MUST NOT escape their approved roots.
+Every value in `paths` resolves relative to the directory containing the root `spmpst.json`, never the process working directory. `paths.root` is the site root; `paths.config` selects configuration files; the other entries name all structural inputs, shared resources, toolchain, and output. `paths.public` selects the directory whose contents are copied to the site's public URL root. Thus `.site/public/robots.txt` is served at `<basePathOnline>/robots.txt`.
+
+`paths.public` is an explicit, configurable source directory. A site may point it to another directory inside its site root, for example `"resources/media"`; the contents of that selected directory are then served from `<basePathOnline>/`. Moving the directory means changing `paths.public` in the root `spmpst.json`. The public root is not inferred from directory names. Files are copied recursively, preserving relative paths and MIME-significant extensions.
+
+The conforming tool MUST validate configured structural paths and report the missing path, its purpose, the responsible declaration and field, and a concrete correction. For example: restore the missing directory at the reported location, or change `paths.guides` / `paths.root` in `spmpst.json`. This rule applies to every path the tool uses to read, write, publish, or execute site files.
 
 ### A3.2 Workspace registry and discovery
 
 ```json
 {
   "sitesPaths": [
-    "../site-1/.site/spmpst.json",
-    "../site-2/.site/spmpst.json"
+    "../site-1/spmpst.json",
+    "../site-2/spmpst.json"
   ]
 }
 ```
 
-**CURRENT:** `docs/vitepress-site/spmpst.workspace.json` points to `docs/site-N/.site/spmpst.json`; `VITEPRESS_SITE_MANIFEST` selects another registry; relative entries resolve from the registry directory. The current adapter requires this explicit workspace file and does not scan for sites.
+**CURRENT:** `docs/vitepress-site/spmpst.workspace.json` points to `docs/site-N/spmpst.json`; `VITEPRESS_SITE_MANIFEST` selects another registry; relative entries resolve from the registry directory. The current adapter requires this explicit workspace file and does not scan for sites.
 
-**PROPOSED:** a conforming tool finds `spmpst.workspace.json` by walking up from the current directory. The registry is the authority. When absent, a tool MAY scan immediate child directories for `*/.site/spmpst.json`. A tool MUST NOT require an implementation checkout path as a user argument.
+**PROPOSED:** a conforming tool finds `spmpst.workspace.json` by walking up from the current directory. The registry is the authority. When absent, a tool MAY scan immediate child directories for `*/spmpst.json`. A tool MUST NOT require an implementation checkout path as a user argument.
 
 ### A3.3 Site selection and aliases
 
@@ -134,23 +179,41 @@ A selected site's output, lock state, cache namespace, generated sources, resour
 
 ## A4. Directory layout and file naming
 
-```text
-<tree-root>/
-├── .site/
-│   ├── spmpst.json                    # declaration + build contract + extensions
-│   ├── spmpst.<concern>.json          # concern files
-│   ├── spmpst.<extension>.json      # configuration of a declared extension (§A12)
-│   ├── public/*                       # files served from the site URL root
+The checked-in site-1 tree is the reference for the current site structure and its ownership boundaries:
 
-│   └── targets/*.target.config.json   # adapter-owned, opaque to the core
+```text
+docs/site-1/                                      # site root selected by paths.root
+├── spmpst.json                                   # canonical paths + build/actions
+├── .archives/                                     # retained site archive; not an SPMPST input
+├── .site/
+│   ├── README.md
+│   ├── spmpst.<concern>.json                      # one config file per concern
+│   └── public/                                    # selected by paths.public
+│       ├── humans.txt                            # -> <basePathOnline>/humans.txt
+│       ├── llms.txt                              # -> <basePathOnline>/llms.txt
+│       └── robots.txt                            # -> <basePathOnline>/robots.txt
 ├── src/
 │   ├── guides/
+│   │   ├── index.en.md
+│   │   ├── index.fr.md
+│   │   ├── feluqa.rs/spmpst.guide.json
+│   │   ├── internals/spmpst.guide.json
+│   │   └── <guide>/<section>/spmpst.sidebar.json
 │   └── collections/
+│       └── articles/
+│           ├── spmpst.category.json
+│           └── <article>.<language>.md
 └── resources/
-    └── components/  hooks/  diagrams/  assets/   # site-owned
+    ├── assets/                                    # brand images and fonts
+    ├── components/                                # site Vue components; _layout/ has layout components
+    ├── diagrams/                                  # Mermaid configuration
+    ├── hooks/                                     # documentation hooks and SEO transforms
+    └── media/                                     # media published under <basePathOnline>/media/
+        ├── icons/*.svg
+        └── schemas/*.schema.json                  # -> <basePathOnline>/media/schemas/*.schema.json
 ```
 
-Source roots MUST use these fixed conventions. The tree root MUST be the directory containing `.site/`; `SPMPST_ROOT` MAY override it for tooling. Shared adapter catalogues (`icons/`, `flags/`) MAY live beside the adapter. **CURRENT:** the VitePress host keeps them in `docs/vitepress-site/resources/`; site-owned `components/`, `hooks/`, `diagrams/` stay in `docs/site-1/resources/`.
+The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, and `paths.resources` roots selected by its root manifest. The selected `paths.public` is the configurable public-directory source; its files are copied preserving relative paths to the root of the built site. Site-owned media remains under `paths.media` and is also available under `/media/<relative-path>`; when `paths.public` points at that directory, its selected public-root copy is an additional mapping. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
 
 Language variants live **together** in the same directory (`page.en.md`, `page.fr.md`). A separate directory tree per language MUST NOT be required.
 
@@ -160,7 +223,7 @@ SPMPST-owned data files carry the `spmpst.` prefix, so a file's name says who ow
 
 | Previous name | Current name | Location |
 |---|---|---|
-| `vitepress-site.json` | `spmpst.json` | `.site/` |
+| `vitepress-site.json` | `spmpst.json` | site root |
 | `<concern>.site.config.json` | `spmpst.<concern>.json` | `.site/` |
 | `sidebar.json` | `spmpst.sidebar.json` | `src/**` (mixed with content) |
 | `guide.config.json` | `spmpst.guide.json` | `src/guides/**` |
@@ -260,7 +323,7 @@ An extension MUST NOT redefine a core key or change the behaviour of an existing
 
 ### A12.3 Declaration
 
-In `.site/spmpst.json`:
+In the root `spmpst.json`:
 
 ```json
 {
@@ -366,7 +429,7 @@ Local assets referenced from Markdown or frontmatter are copied to content-addre
 
 ### A14.3 Public files
 
-Files in `.site/public/*` are published at the site URL root without any SPMPST change: `.site/public/robots.txt` becomes `/robots.txt`; use this for root-level discovery and verification files such as `llms.txt`, `humans.txt`, and `security.txt`. Use `resources/media/` for namespaced media such as images, downloads, and JSON data; `resources/media/data/catalog.json` becomes `/media/data/catalog.json`. These media URLs retain their extension and MIME type. **CURRENT:** `.site/public/` accepts root-level `.txt` files only and one trailing newline is removed on emission.
+The directory named by `paths.public` in root `spmpst.json` is copied recursively to the site URL root. With site-1's `paths.public: ".site/public"`, `.site/public/robots.txt` becomes `<basePathOnline>/robots.txt`; nested `.site/public/media/catalog.json` becomes `<basePathOnline>/media/catalog.json`. Put root-level discovery and verification files (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) there. A site may point `paths.public` at another directory inside its site root, including one that contains media. Files retain their relative paths and extensions for static MIME handling. `resources/media/` separately maps to `<basePathOnline>/media/<relative-path>`; if `paths.public` points there, this is an additional mapping.
 
 ## A15. HTML and Markdown passthrough
 
@@ -452,13 +515,13 @@ Every stage MUST emit machine-readable diagnostics for blocking failures. The pr
 
 ## B3. `spmpst.json`: declaration and build contract
 
-`.site/spmpst.json` holds everything a conforming tool needs to build the site, including the commands to execute for bundling. This keeps SPMPST agnostic of frontend frameworks: the site says **what to run**, the tool orchestrates it. Minimal form:
+`spmpst.json` at the site root holds everything a conforming tool needs to locate site files and build the site, including the commands to execute for bundling. This keeps SPMPST agnostic of frontend frameworks: the site says **where its files are and what to run**, the tool orchestrates it. A minimal declaration may omit optional paths only when the selected engine does not use them; every required path used by that engine MUST be declared in `paths`.
 
 ```json
 { "specVersion": "0.1", "id": "site-1", "name": "My docs" }
 ```
 
-Full form (**PROPOSED**; the current VitePress host realizes the same data through its registry, declaration and `site.mjs`):
+Full form (**CURRENT** for the VitePress host):
 
 ```json
 {
@@ -466,10 +529,37 @@ Full form (**PROPOSED**; the current VitePress host realizes the same data throu
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
   "paths": {
-    "source": "..",
-    "resources": "../resources",
-    "sharedResources": "../../vitepress-site/resources",
-    "output": "../../../docs-output/site-1"
+    "root": ".",
+    "config": ".site",
+    "guides": "src/guides",
+    "collections": "src/collections",
+    "resources": "resources",
+    "sharedResources": "../vitepress-site/resources",
+    "assets": "resources/assets",
+    "components": "resources/components",
+    "diagrams": "resources/diagrams",
+    "hooks": "resources/hooks",
+    "media": "resources/media",
+    "schemas": "resources/media/schemas",
+    "public": ".site/public",
+    "configFiles": {
+      "appearance": ".site/spmpst.appearance.json",
+      "collections": ".site/spmpst.collections.json",
+      "definitions": ".site/spmpst.definitions.json",
+      "lang": ".site/spmpst.lang.json",
+      "layout": ".site/spmpst.layout.json",
+      "links": ".site/spmpst.links.json",
+      "markdown": ".site/spmpst.markdown.json",
+      "outline": ".site/spmpst.outline.json",
+      "search": ".site/spmpst.search.json",
+      "seo": ".site/spmpst.seo.json",
+      "topbar": ".site/spmpst.topbar.json"
+    },
+    "icons": "../vitepress-site/resources/icons",
+    "flags": "../vitepress-site/resources/flags",
+    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "toolchain": "../vitepress-site",
+    "output": "../../docs-output/site-1"
   },
   "extensions": {
     "spmpst.seo-audit": { "version": "0.1", "required": false }
@@ -477,10 +567,10 @@ Full form (**PROPOSED**; the current VitePress host realizes the same data throu
   "engine": "toolchain",
   "toolchain": {
     "preset": "vitepress",
-    "cwd": "../../vitepress-site",
-    "install": { "command": "npm ci", "when": "missing" },
-    "build":   { "command": "vitepress build app" },
-    "dev":     { "command": "vitepress dev app --host {host} --port {port} --strictPort" },
+    "cwd": "toolchain",
+    "install": { "command": "npm", "args": ["ci"], "when": "missing" },
+    "build":   { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] },
+    "dev":     { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] },
     "network": "install-only"
   }
 }
@@ -491,20 +581,21 @@ Full form (**PROPOSED**; the current VitePress host realizes the same data throu
 | Field | Meaning |
 |---|---|
 | `engine` | `builtin` (PLANNED: native Markdown to HTML with a default shell, no JS toolchain) or `toolchain` (run site-declared commands). |
+| `paths` | The canonical `SpmpstPaths` registry. Every filesystem path consumed by the site adapter MUST come from this object; entries resolve relative to the root declaration. `configFiles` maps each concern key to its exact file. `root`, config, source roots, resources, public root, toolchain and output are explicit. A conforming adapter MUST NOT rediscover these locations from its current directory or framework conventions. |
 | `extensions` | Declarations per §A12.3. |
 | `toolchain.preset` | Named preset supplying defaults for `install`, `build`, `dev` (e.g. `vitepress`). Explicit fields override the preset. |
-| `toolchain.cwd` | Working directory for the commands, relative to the declaration. |
-| `toolchain.install` | Command to provision dependencies; `when`: `missing`, `always`, `never`. |
-| `toolchain.build` | Command(s) that read the prepared inputs and write static files to `{stageDir}`. |
-| `toolchain.dev` | Command for an interactive development server (OPTIONAL). |
+| `toolchain.cwd` | Key in `paths` naming the command working directory (for example `toolchain`). |
+| `toolchain.install` | Command and argument array to provision dependencies; `when`: `missing`, `always`, `never`. |
+| `toolchain.build` | Command and argument array that read prepared inputs and write static files to `{stageDir}`. |
+| `toolchain.dev` | Command and argument array for an interactive development server (OPTIONAL). |
 | `toolchain.network` | `none`, `install-only`, `full`; informs controls and reports. |
 | `toolchain.env` | Extra environment variables (secrets MUST NOT be copied into artifacts). |
 
 ### B3.2 Placeholders and environment
 
-Commands MAY use `{siteId}`, `{sourceDir}`, `{generatedDir}`, `{stageDir}`, `{outDir}`, `{cacheDir}`, `{host}`, `{port}`. A conforming tool exports to those commands `SPMPST_SITE_ID`, `SPMPST_ROOT`, `SPMPST_GENERATED_DIR`, `SPMPST_STAGE_DIR`, `SPMPST_OUT_DIR`, `SPMPST_CACHE_DIR`, `SPMPST_MODE` (`build`, `dev`, `preview`). These are the only variables the standard guarantees; adapters and sites MUST NOT depend on a tool-specific variable.
+Commands MAY use `{siteId}`, `{sourceDir}`, `{generatedDir}`, `{stageDir}`, `{outDir}`, `{cacheDir}`, `{host}`, `{port}`. A conforming tool exports `SPMPST_PATHS` as the resolved `SpmpstPaths` JSON object plus `SPMPST_SITE_ID`, `SPMPST_ROOT`, `SPMPST_GENERATED_DIR`, `SPMPST_STAGE_DIR`, `SPMPST_OUT_DIR`, `SPMPST_CACHE_DIR`, `SPMPST_MODE` (`build`, `dev`, `preview`). Adapter code MUST receive and consume that single resolved paths object; it MUST NOT reconstruct site paths from working directories, framework defaults, or a second registry.
 
-**CURRENT** equivalents set by `site.mjs`: `SPMPST_ROOT`, `DOCS_OUTPUT_DIR`, `VITEPRESS_SITE_ID`, `VITEPRESS_SITE_DECLARATION`, `VITEPRESS_SITE_ROOT`, `VITEPRESS_TRASH_DIR`, `VITEPRESS_RESOURCES_DIR`, `VITEPRESS_SITE_RESOURCES_DIR`, `HOST`, `PORT`.
+**CURRENT:** the VitePress host resolves `paths` once from the site-root manifest and passes it as `SPMPST_PATHS` into preparation, Vite configuration, and declared build/dev actions. `VITEPRESS_SITE_MANIFEST` remains a host-side selector for the workspace registry; it does not define site paths.
 
 ### B3.3 Contract with the output
 
@@ -620,7 +711,7 @@ The shared Node/VitePress host owns the CLI wrappers, preparation pipeline, Vite
 ```mermaid
 flowchart TD
     A[serve.sh] --> B[spmpst.workspace.json registry]
-    B --> C[site .site/spmpst.json]
+    B --> C[site root spmpst.json]
     C --> D[site tree + resource roots]
     D --> E[SPMPST config loader + VitePress runtime adapter]
     E --> F[preparation pipeline]
@@ -635,12 +726,12 @@ flowchart TD
 
 ## C2. Entry points
 
-There is no `docs/vitepress-site/server.sh`; the entry point is `serve.sh`. Smaller scripts under `app/bin/` delegate to `app/scripts/site.mjs`. npm commands: `docs:prepare`, `docs:build`, `docs:serve`, `docs:preview`, `docs:clean`, `docs:check`, `docs:new`, `docs:verify`, each calling `node app/scripts/site.mjs <command>`, selecting a site with `--site <id>` or `VITEPRESS_SITE_ID` (prompt if interactive, failure otherwise).
+There is no `docs/vitepress-site/server.sh`; the entry point is `serve.sh`. Smaller scripts under `app/bin/` delegate to `app/scripts/site.mjs`. npm commands: `docs:prepare`, `docs:build`, `docs:serve`, `docs:preview`, `docs:clean`, `docs:check`, `docs:new`, `docs:verify`, each calling `node app/scripts/site.mjs <command>`, selecting a site with `--site <id>` or `SPMPST_SITE_ID` (prompt if interactive, failure otherwise).
 
 | Invocation | Behaviour |
 |---|---|
 | `./serve.sh --list` | Print each site's ID, name, source and output directories; start nothing. Cannot combine with other modes. |
-| `./serve.sh --sites=site-1 --build` | Verify the VitePress executable exists, then `site.mjs build --site <id>` per site, sequentially. |
+| `./serve.sh --sites=site-1 --build` | Run each site’s declared build action through `site.mjs build --site <id>`, sequentially. |
 | `./serve.sh --sites=site-1` | Per site: `site.mjs serve`: full preparation, `vitepress dev`, plus a separate watcher. |
 | `./serve.sh --sites=site-1 --preview` | Build each site, then `site.mjs serve-build` (VitePress `serve()` on built output) plus `site.mjs watch` with `DOCS_WATCH_BUILD=1`. |
 | `node app/scripts/site.mjs preview --site <id>` | Build once and serve; no rebuild watcher. |
@@ -652,29 +743,28 @@ Ports start at `PORT` (default `4173`), `HOST` defaults to `127.0.0.1`. `--build
 Workspace registry `docs/vitepress-site/spmpst.workspace.json`:
 
 ```json
-{ "sitesPaths": ["../site-1/.site/spmpst.json", "../site-2/.site/spmpst.json"] }
+{ "sitesPaths": ["../site-1/spmpst.json", "../site-2/spmpst.json"] }
 ```
 
-Declaration (`docs/site-1/.site/spmpst.json`):
+Declaration (`docs/site-1/spmpst.json`):
 
 ```json
 {
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
-  "sourcePath": "..",
-  "resourcesPath": "../../vitepress-site/resources",
-  "siteResourcesPath": "../resources",
-  "outputPath": "../../../docs-output/site-1"
+  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "resources/media", "schemas": "resources/media/schemas", "public": ".site/public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
+  "engine": "toolchain",
+  "toolchain": { "preset": "vitepress", "cwd": "toolchain", "install": { "command": "npm", "args": ["ci"], "when": "missing" }, "build": { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] }, "dev": { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] }, "network": "install-only" }
 }
 ```
 
-Paths resolve from the declaration's directory. `resourcesPath` and `siteResourcesPath` are optional (defaults: host `resources/`, site-root `resources/`). The shell's lightweight reader uses ID, name, source and output; `site-registry.mjs` validates all fields. Normal commands set `DOCS_OUTPUT_DIR` from the declaration, temporarily replacing it with a staging path during builds.
+All declared paths resolve relative to the root manifest. The host validates each declared directory and file, then passes a single resolved `SpmpstPaths` object through preparation, VitePress configuration, build, and dev actions. Builds use a temporary staging path in the runtime environment while preserving the declared final `paths.output`.
 
-**Mapping to the tool-neutral model:** `sourcePath` → `paths.source`; `resourcesPath` → `paths.sharedResources`; `siteResourcesPath` → `paths.resources`; `outputPath` → `paths.output`; the toolchain is implicit (VitePress preset hard-wired in `site.mjs`).
+The old `sourcePath`, `resourcesPath`, `siteResourcesPath`, and `outputPath` fields have been removed. Their locations, plus config, public, component, hook, diagram, media, schema, icon, flag, Mermaid, toolchain, and output locations, are all explicit members of `paths`. Build and dev actions are declared under `toolchain` and executed as argument arrays.
 
 ## C4. Dependencies and delegation
 
-Dependencies are installed once for the host (`npm install` in `docs/vitepress-site/`); the wrapper does not install them and stops with a hint when the VitePress executable is missing.
+Dependencies are provisioned through each site's declared `toolchain.install` action when its policy says they are missing or must always be installed.
 
 | Tool | Delegated work |
 |---|---|
@@ -687,11 +777,11 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 ## C5. Static build lifecycle
 
 1. Shell validates options and resolves registry entries; no port in build mode.
-2. Check host dependencies (VitePress binary; `mmdc` for uncached Mermaid).
+2. Validate the manifest's structural paths and run its declared install action if required; `mmdc` renders uncached Mermaid diagrams.
 3. `node app/scripts/site.mjs build --site <id>`; the app registry re-resolves and validates the declaration.
-4. Derive site, shared-resource, site-resource, output and per-site trash roots; working directory is the host app directory.
-5. Create staging: `<output-parent>/tmp/<output-basename>.stage-<pid>` and a backup path. Preparation receives the stage as `DOCS_OUTPUT_DIR` and `<site-trash>/build` as `VITEPRESS_TRASH_DIR`.
-6. `prepareSources`: load and validate config, target settings, languages, guide/collection paths, project directories and theme slots; scan guides and collections; normalize prefixes and locale suffixes; map routes; collect frontmatter and sidebar records; verify labels and icons; copy assets; stage public files and optional flags.
+4. Resolve the declaration into one `SpmpstPaths`; working directory for host orchestration is the host app directory.
+5. Create staging: `<output-parent>/tmp/<output-basename>.stage-<pid>` and a backup path. Preparation and the declared action receive the stage through `SPMPST_PATHS.output`, `SPMPST_STAGE_DIR`, and `SPMPST_OUT_DIR`, with `<site-trash>/build` as `SPMPST_CACHE_DIR`.
+6. `prepareSources`: load configs from `paths.configFiles`, validate languages and guide/collection paths, scan sources, normalize prefixes and locale suffixes, map routes, collect frontmatter and sidebar records, verify labels and icons, copy assets, and stage public files.
 7. `prepareContent`: resolve logos, fonts, OG images; read guide configs; derive collection indexes and article metadata; register Vue SFCs; validate theme slots; emit generated JSON/TS modules (colors, fonts, collections, components, theme, hooks, styles, navigation, sidebar, SEO helpers).
 8. Ordered stages (§C7).
 9. VitePress loads `app/.vitepress/config.ts`, which builds navigation, sidebars, locales, head transforms; `app/config/vite.config.ts` aliases `@docs` (generated tree) and `@generated` (metadata), resolves site-component imports from host dependencies, serves generated public assets, provides generated-Markdown HMR in dev. A configured `project.viteConfig` or host-root Vite config is merged.
@@ -747,9 +837,9 @@ The current stage is the Node/VitePress adapter described in this part. The dire
 
 The following work remains before this stage can claim the broader SPMPST tooling contract:
 
-1. **Standard declaration and workspace model.** Replace the adapter-specific declaration fields (`sourcePath`, `resourcesPath`, `siteResourcesPath`, `outputPath`) with the standardized `paths` model, and define/validate the workspace registry shape. The adapter currently requires an explicit registry and does not search parent directories or discover sites.
-2. **Declared build contract.** Read `engine`, `toolchain`, install/build/dev commands, placeholders, and environment from `.site/spmpst.json`. Today `site.mjs` hard-codes the VitePress workflow and depends on host `node_modules`; a site cannot independently declare its toolchain.
-3. **Config schema enforcement.** Validate all concern, declaration, locale, target, and extension data against versioned schemas. The current loader has manual checks for core fields and passes target data to the VitePress adapter; it does not yet implement a complete versioned closed-schema contract.
+1. **Workspace discovery.** The adapter requires an explicit `spmpst.workspace.json` and does not search parent directories or discover sites.
+2. **Declared build contract details.** The adapter consumes declared install/build/dev commands and arguments. Preset resolution, complete placeholder/environment validation, and offline/network enforcement remain incomplete.
+3. **Config schema enforcement.** Validate all concern, declaration, locale, and extension data against versioned schemas. The current loader has manual checks for core fields; it does not yet implement a complete versioned closed-schema contract.
 4. **Route and filesystem safety.** Add whole-output route collision detection across authored pages, generated aliases/indexes, public files, localized fallbacks, and assets. Add conformance coverage for traversal and symlink escapes.
 5. **Extensions and layout registry.** Implement extension declaration/config validation and required/optional unknown-extension behavior, followed by the proposed renderer-neutral layout registry and adapter translation. Neither capability is implemented by the current host.
 6. **Portable conformance fixtures.** Build the shared cross-adapter fixture suite in §B14. `docs:check` and `docs:verify` remain VitePress-host checks rather than proof of conformance by another implementation.
@@ -791,7 +881,7 @@ These are stage backlog items, not completed behavior. The present implementatio
 | Surface | Location / output |
 |---|---|
 | Theme component placements | `.site/spmpst.layout.json`; the VitePress adapter maps semantic placements to its slots |
-| Site registry / declaration | `spmpst.workspace.json` (host) / `.site/spmpst.json` |
+| Site registry / declaration | `spmpst.workspace.json` (host) / root `spmpst.json` |
 | Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` |
 | Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
 | Styles, search, Markdown and outline options | SPMPST concern files, interpreted by the VitePress adapter |
@@ -818,7 +908,7 @@ Kiln-specific facts belong to **this part only**. Nothing in Part A or Part B de
 
 | Belongs to SPMPST (never says "kiln") | Belongs to Kiln |
 |---|---|
-| `.site/spmpst.json`, `spmpst.workspace.json`, all `spmpst.*.json` files | The `kiln` binary and its commands |
+| root `spmpst.json`, `spmpst.workspace.json`, all `spmpst.*.json` files | The `kiln` binary and its commands |
 | `@spmpst::...` references | Repository and crates (`kiln-core`, `kiln-md`, `kiln-serve`, ...) |
 | `SPMPST_ROOT`, `SPMPST_SITE_ID`, `SPMPST_OUT_DIR`, ... | Tool settings, e.g. `KILN_PORT`, `KILN_CACHE_DIR`, user config file outside any site |
 | Extension ids (`spmpst.*`, reverse-domain) | The cache location (outside the site tree) |

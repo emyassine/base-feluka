@@ -13,7 +13,7 @@ The data path is:
 ```mermaid
 flowchart TD
     A[docs/vitepress-site/serve.sh] --> B[spmpst.workspace.json registry]
-    B --> C[site .site/spmpst.json declaration]
+    B --> C[site root spmpst.json declaration]
     C --> D[site tree and resource roots]
     D --> E[SPMPST config loader and VitePress runtime adapter]
     E --> F[preparation pipeline]
@@ -32,7 +32,7 @@ flowchart TD
 
 There is no `docs/vitepress-site/server.sh` in the current tree. The top-level entry point is [serve.sh](serve.sh). It derives its own directory from the script path, so it can be called from another working directory. The smaller scripts under `app/bin/` delegate directly to `app/scripts/site.mjs`.
 
-The host also exposes npm commands in `package.json`: `docs:prepare`, `docs:build`, `docs:serve`, `docs:preview`, `docs:clean`, `docs:check`, `docs:new`, and `docs:verify`. These call `node app/scripts/site.mjs <command>`. They select a single site with `--site <id>` or `VITEPRESS_SITE_ID`; if there are multiple sites and neither is set, the command prompts interactively or fails in a non-interactive process.
+The host also exposes npm commands in `package.json`: `docs:prepare`, `docs:build`, `docs:serve`, `docs:preview`, `docs:clean`, `docs:check`, `docs:new`, and `docs:verify`. These call `node app/scripts/site.mjs <command>`. They select a single site with `--site <id>` or `SPMPST_SITE_ID`; if there are multiple sites and neither is set, the command prompts interactively or fails in a non-interactive process.
 
 ### `./serve.sh --list`
 
@@ -61,43 +61,37 @@ The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
 ```json
 {
   "sitesPaths": [
-    "../site-1/.site/spmpst.json",
-    "../site-2/.site/spmpst.json"
+    "../site-1/spmpst.json",
+    "../site-2/spmpst.json"
   ]
 }
 ```
 
 Each entry is a path to a site declaration. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
 
-The site declaration is a separate JSON object stored with its owner, for example `docs/site-1/.site/spmpst.json`:
+The site declaration is `docs/site-1/spmpst.json`. It owns one complete paths registry and the build/dev actions. See the checked-in [root manifest](../site-1/spmpst.json) for the full current shape.
 
-```json
-{
-  "id": "feluqa-docs",
-  "name": "Feluqa documentation",
-  "sourcePath": "..",
-  "resourcesPath": "../../vitepress-site/resources",
-  "siteResourcesPath": "../resources",
-  "outputPath": "../../../docs-output/site-1"
-}
-```
-
-Paths in the declaration are resolved relative to the directory containing that declaration, not relative to the host or process current directory:
+The host resolves `paths` once into `SpmpstPaths` and passes that value into preparation, VitePress configuration, and toolchain actions. Paths are not inferred from a framework root or process working directory:
 
 | Field | Meaning | Feluqa docs example |
 |---|---|---|
 | `id` | Stable selector used by internal commands and trash/cache names | `feluqa-docs` |
 | `name` | Human-readable label | `Feluqa documentation` |
-| `sourcePath` | Site root containing `.site/`, `src/`, and site `resources/` | `docs/site-1/` |
-| `resourcesPath` | Shared adapter catalogues (icons and flags) | `docs/vitepress-site/resources/` |
-| `siteResourcesPath` | Site-owned components, hooks, diagrams, and assets | `docs/site-1/resources/` |
-| `outputPath` | Final rendered static site directory | `docs-output/site-1/` |
+| `paths.root` | Site root | `docs/site-1/` |
+| `paths.config` | Site concern configs | `docs/site-1/.site/` |
+| `paths.configFiles` | Exact paths for every concern file | `docs/site-1/.site/spmpst.*.json` |
+| `paths.public` | Files copied to the URL root | `docs/site-1/.site/public/` |
+| `paths.resources` | Site-owned assets, components, hooks, and diagrams | `docs/site-1/resources/` |
+| `paths.sharedResources` | Shared adapter catalogues | `docs/vitepress-site/resources/` |
+| `paths.toolchain` | Host/toolchain working directory | `docs/vitepress-site/` |
+| `paths.output` | Final rendered static site directory | `docs-output/site-1/` |
+| `toolchain` | Declared install, build, and dev commands | `npm ci` and VitePress argument arrays |
 
-`resourcesPath` and `siteResourcesPath` are optional in the registry reader: they default to host `resources/` and site-root `resources/`, respectively. The shell's lightweight registry reader uses the ID, name, source, and output fields to choose sites; `site-registry.mjs` validates all fields and resolves all resource roots before running preparation.
+The conforming host validates every declared structural path and reports the missing path, its purpose, and the exact `paths.*` field in `spmpst.json` to change. `serve.sh` and `site-registry.mjs` read the same declaration.
 
 The current aliases accepted by `serve.sh --sites` include site ID, name, source directory basename (so `site-1` works although the ID is `feluqa-docs`), and one-based selection numbers. Internal app commands use the resolved site ID.
 
-Normal host commands set `DOCS_OUTPUT_DIR` from the site declaration. During a production build that environment value is temporarily replaced with a staging output path. The declaration is authoritative for the final destination.
+The root declaration owns the final output in `paths.output`. During a production build, the host passes the staging destination through `SPMPST_PATHS.output`, `SPMPST_STAGE_DIR`, and `SPMPST_OUT_DIR`.
 
 ## 4. Site tree and configuration data types
 
@@ -105,10 +99,10 @@ The current site trees use these SPMPST-owned metadata filenames:
 
 ```text
 site-root/
+├── spmpst.json
 ├── .site/
 │   ├── spmpst.<concern>.json
 │   ├── public/*
-│   └── targets/*.target.config.json
 ├── src/
 │   ├── guides/
 │   └── collections/
@@ -121,27 +115,27 @@ site-root/
 
 ### Concern files and ownership
 
-`config/discover.mjs` finds concern files, public files, and target configs. `config/assemble.mjs` reads and combines the core model. `config/registry.mjs` assigns keys to concern owners:
+`config/discover.mjs` reads the exact concern file paths from `SpmpstPaths.configFiles`. `config/assemble.mjs` reads and combines the core model. `config/registry.mjs` assigns keys to concern owners:
 
 | Concern file | Owned keys in the current loader |
 |---|---|
-| `spmpst.definitions.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
+| `spmpst.definitions.json` | `site`, `subguides`, `iconFallback` |
 | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector`, localized language labels |
 | `spmpst.topbar.json` | `items`, `theme` |
 | `spmpst.collections.json` | `collections`, `emptyCollection` |
 | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | `spmpst.links.json` | `socialLinks` |
 | `spmpst.seo.json` | `siteUrl`, `path`, `icon`, key-centric multilingual SEO fields |
-| `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths`, localized `labels` |
+| `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths`, key-centric `searchLabels` |
 | `spmpst.markdown.json` | `lineNumbers`, `image` |
 | `spmpst.outline.json` | `level`, localized `label` |
 | `spmpst.layout.json` | `footer`, semantic component placements, hook configuration and documentation notice copy |
 
-The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. The current VitePress adapter reads site behavior from the shared SPMPST model; neither checked-in site has a VitePress target config file.
+The loader reads the exact files named by `paths.configFiles`; it rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. The VitePress adapter reads site behavior from the shared SPMPST model.
 
-Localized strings live in their owning concerns: language labels in `spmpst.lang.json`, search labels in `spmpst.search.json`, outline label in `spmpst.outline.json`, empty collection copy in `spmpst.collections.json`, and documentation notice copy under `spmpst.layout.json` hook config. `spmpst.search.json` also supplies the site's search provider and provider options; the VitePress adapter reads `search.miniSearch` when it configures local search. `spmpst.seo.json` keeps SEO translations key-centric: each field has its language map, while FAQ and quick-link items keep their shared shape. `spmpst.layout.json` owns the site-wide footer and semantic component placements. `spmpst.markdown.json`, `spmpst.outline.json`, and `spmpst.appearance.json` hold site-wide rendering preferences and styles. The adapter maps those shared fields to VitePress options. `public/*` files are loaded as text and passed through as public text files. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
+Localized strings live in their owning concerns: language labels in `spmpst.lang.json`, search labels in `spmpst.search.json`, outline label in `spmpst.outline.json`, empty collection copy in `spmpst.collections.json`, and documentation notice copy under `spmpst.layout.json` hook config. `spmpst.search.json` also supplies the site's search provider and provider options; the VitePress adapter reads `search.miniSearch` when it configures local search. `spmpst.seo.json` keeps SEO translations key-centric: each field has its language map, while FAQ and quick-link items keep their shared shape. `spmpst.layout.json` owns the site-wide footer and semantic component placements. `spmpst.markdown.json`, `spmpst.outline.json`, and `spmpst.appearance.json` hold site-wide rendering preferences and styles. The adapter maps those shared fields to VitePress options. `paths.public` is copied recursively into the published URL root, preserving relative paths and file extensions so browsers receive the correct static media types. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
 
-The composed `SiteConfig` is the renderer-facing shape in `app/.vitepress/types/site-config.d.ts`: site identity, guides, locales, topbar, collections, styles, fonts, theme/project paths, search/outline/footer, SEO, public files, and Mermaid options. The Node config-source adapter supplies file reads; the VitePress composition root injects that source plus navigation and head-transform functions.
+The composed `SiteConfig` is the renderer-facing shape in `app/.vitepress/types/site-config.d.ts`: site identity, guides, locales, topbar, collections, styles, fonts, resolved component and hook paths, search/outline/footer, SEO, public files, and Mermaid options. The Node config-source adapter supplies file reads; the VitePress composition root injects that source plus navigation and head-transform functions.
 
 ## 5. Process environment and path ownership
 
@@ -149,17 +143,16 @@ Before invoking `site.mjs`, `serve.sh` passes an explicit site ID. `site.mjs` re
 
 | Variable | Value / purpose |
 |---|---|
-| `SPMPST_ROOT` | Selected site root; anchors `.site`, `src/guides`, `src/collections`, and site resources |
-| `DOCS_OUTPUT_DIR` | Selected final output, or isolated build staging output |
-| `VITEPRESS_SITE_ID` | Site identity for scratch/cache namespace and config |
-| `VITEPRESS_SITE_DECLARATION` | Resolved declaration file path |
-| `VITEPRESS_SITE_ROOT` | Selected site root (legacy/consumer context) |
-| `VITEPRESS_TRASH_DIR` | Per-site generated files/cache root; build mode uses a separate `build/` subdirectory |
-| `VITEPRESS_RESOURCES_DIR` | Shared host catalogue root |
-| `VITEPRESS_SITE_RESOURCES_DIR` | Selected site's resource root |
+| `SPMPST_PATHS` | Resolved `SpmpstPaths` object, including exact concern config file paths |
+| `SPMPST_DECLARATION` | Root `spmpst.json` path, used in actionable diagnostics |
+| `SPMPST_SITE_ID` | Site identity for scratch/cache namespace and config |
+| `SPMPST_ROOT` | Selected site root |
+| `SPMPST_GENERATED_DIR` | Isolated VitePress project root |
+| `SPMPST_STAGE_DIR` / `SPMPST_OUT_DIR` | Staging output during build; configured output in other modes |
+| `SPMPST_CACHE_DIR` | Per-site generated files/cache root; build mode uses a separate `build/` subdirectory |
 | `HOST`, `PORT` | Local dev or preview bind values |
 
-`resolveLayout()` and `resolveSitePaths()` turn these into resolved roots. The implementation keeps three resource concepts separate:
+The adapter resolves `SpmpstPaths` once and passes it to preparation, VitePress configuration, and declared actions. The implementation keeps three resource concepts separate:
 
 1. **Site source:** Markdown, config, source-relative images, and `site-root/resources/`.
 2. **Tool resources:** host `resources/icons/` and `resources/flags/`, owned and indexed by the conforming tool.
@@ -170,7 +163,7 @@ The generated Markdown directory is VitePress `srcDir`; the output directory is 
 
 ### Build dependencies and delegation
 
-Dependencies are installed for the shared host (`npm install` from `docs/vitepress-site/`); the current wrapper does not automatically install them. The shell checks for the VitePress executable and stops with an install hint if it is absent.
+Dependencies are provisioned through the site's declared `toolchain.install` action when its policy says they are missing or must always be installed.
 
 | Dependency/tool | Delegated work |
 |---|---|
@@ -223,11 +216,11 @@ The following is what `./serve.sh --sites=site-1 --build` currently delegates to
 2. **Check host dependencies.** The wrapper requires `docs/vitepress-site/node_modules/.bin/vitepress`; if missing it prints the `npm install` command and exits. `site.mjs` prefers the app-local VitePress binary, then the host-level binary. Mermaid rendering also expects the host-level `mmdc` binary.
 3. **Select site again in the app.** The shell invokes `node app/scripts/site.mjs build --site <id>`. The app registry resolves the declaration and validates required fields.
 4. **Construct paths/environment.** The app derives site, shared-resource, site-resource, output, and per-site trash roots. It fixes the working directory to the host app directory, not the user's shell directory.
-5. **Create isolated staging paths.** The final output's parent contains `tmp/<output-basename>.stage-<pid>` and a corresponding backup. Build preparation receives the stage as `DOCS_OUTPUT_DIR` and `<site-trash>/build` as `VITEPRESS_TRASH_DIR`. VitePress runs from a per-build project root under that build trash directory; dev uses a separate project root. Each therefore owns its internally fixed `.temp` directory as well as its generated tree and cache.
-6. **Prepare source (`prepareSources`).** Load/validate config; validate VitePress target settings, languages, guide/collection paths, project component/hook/icon directories and theme slots; scan guides and collections; normalize ordered directory/file prefixes; infer locale suffixes; map source paths to routes; collect frontmatter/sidebar records; verify required sidebar labels and icons; copy ordinary assets; stage public files and optional flags.
+5. **Create isolated staging paths.** The final output's parent contains `tmp/<output-basename>.stage-<pid>` and a corresponding backup. Build preparation and the declared build action receive the stage through `SPMPST_PATHS.output`, `SPMPST_STAGE_DIR`, and `SPMPST_OUT_DIR`, with `<site-trash>/build` as `SPMPST_CACHE_DIR`. VitePress runs from a per-build project root under that cache directory; dev uses a separate project root. Each therefore owns its internally fixed `.temp` directory as well as its generated tree and cache.
+6. **Prepare source (`prepareSources`).** Load/validate config; validate site config, languages, guide/collection paths, project component/hook/icon directories and theme slots; scan guides and collections; normalize ordered directory/file prefixes; infer locale suffixes; map source paths to routes; collect frontmatter/sidebar records; verify required sidebar labels and icons; copy ordinary assets; stage public files and optional flags.
 7. **Prepare content (`prepareContent`).** Resolve/copy logos, fonts and Open Graph images; read each guide config; derive localized collection indexes and article metadata; register discovered Vue SFCs; validate configured theme slots against discovered component names; emit generated JSON/TS modules for colors, fonts, collections, components, theme, hooks, styles, site content, navigation/sidebar metadata, and SEO helpers.
 8. **Run ordered preparation stages.** The pipeline transforms Markdown and local links/assets and renders Mermaid; creates missing locale fallback pages from the default-language page; generates configured SEO/FAQ pages; generates missing directory indexes/aliases; computes previous/next page frontmatter; removes stale generated files. Each stage writes through helpers that preserve unchanged bytes and preserve the pager-owned frontmatter block.
-9. **Load VitePress/Vite configuration.** VitePress reads `app/.vitepress/config.ts`, which re-exports the config composition root. It loads the generated site model and metadata, constructs navigation/sidebars/locales and head transforms, then uses `app/config/vite.config.ts`. Vite aliases `@docs` to the generated tree and `@generated` to generated metadata; the plugin resolves imports from site components using host dependencies, serves selected generated public assets, and provides generated-Markdown HMR behavior in dev. A configured `project.viteConfig` or host-root Vite config is merged if present.
+9. **Load VitePress/Vite configuration.** VitePress reads `app/.vitepress/config.ts`, which re-exports the config composition root. It loads the generated site model and metadata, constructs navigation/sidebars/locales and head transforms, then uses `app/config/vite.config.ts`. Vite aliases `@docs` to the generated tree and `@generated` to generated metadata; the plugin resolves imports from site components using host dependencies, serves selected generated public assets, and provides generated-Markdown HMR behavior in dev. The host-owned Vite config is loaded by the adapter.
 10. **Render static pages.** `vitepress build` compiles the client and server bundles, renders all routes, and writes static HTML/assets to the staging directory. Vite's chunk-size warning is reported; the warning is not suppressed by the current site Vite config.
 11. **Stamp and validate stage.** The command adds `.spmpst/build-timestamp` to staging and runs `check-file-links.mjs` against the staging tree. VitePress's HTML transform inserts a generated timestamp comment when each page is rendered.
 12. **Publish atomically.** Existing final output is renamed to a backup, stage is renamed to final output, then backup is removed. If any earlier step fails, the stage is deleted and the backup is restored. The user sees a final path such as `docs-output/site-1/`.
@@ -282,8 +275,8 @@ This gives a production-like static preview and rebuild loop. It does not provid
 
 Key path/data types passed between stages include:
 
-- **Site config model:** merged core JSON values, public text files, and opaque named target objects.
-- **VitePress runtime config:** typed renderer-facing object (see `SiteConfig`) with resolved local paths, locale labels, guide/collection config, resolved resources, and target settings.
+- **Site config model:** merged core JSON values and static public assets.
+- **VitePress runtime config:** typed renderer-facing object (see `SiteConfig`) with resolved local paths, locale labels, guide/collection config, and resolved resources.
 - **Page record:** `{ from, to, sourceRoot, icon, iconAsset }` for source Markdown mapped to staged Markdown plus resolved page icon.
 - **Route map:** absolute source file path → absolute staged file path.
 - **Sidebar record:** output-directory-relative path → localized labels and resolved icon.
@@ -298,7 +291,7 @@ The current source convention supports language variants as co-located filenames
 
 Locale list, fallback locale, default-prefix policy, labels, flag visibility, search/footer/notice copy, and fallback notice templates are configured separately. When a non-default translation is absent, the fallback stage copies the default page into that locale's route, sets `requestedLanguage`, `contentLanguage`, and `languageFallbackNotice`, rewrites the `lang` value, adjusts known local route links to the locale where appropriate, and copies relative imported assets beside the generated page.
 
-Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Route/path ownership stays in each site declaration/config, not in the shared host registry.
+Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Filesystem path ownership stays in the site-root `spmpst.json`; route ownership stays in the site concern configs, not in the shared host registry.
 
 ## 12. Components, hooks, styles, and browser theme
 
