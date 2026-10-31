@@ -3,5 +3,11 @@
     "en": "Feluqa CLI",
     "fr": "CLI Feluqa"
   },
-  "icon": "@spmpst::icon::square-terminal"
+  "icon": "@spmpst::icon::square-terminal",
+  "menu": {
+    "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+    "description": "Build, develop, and operate Feluqa applications.",
+    "date": "NOV 04",
+    "location": "Remote · Casablanca"
+  }
 }

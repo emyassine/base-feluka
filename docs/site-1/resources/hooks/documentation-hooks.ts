@@ -1,6 +1,17 @@
 import { defineComponent, h } from 'vue'
 import { useData } from 'vitepress'
 
+export const menuTemplates = {
+  'mega.cards': { layout: 'cards' },
+  'mega.columns': { layout: 'columns' },
+  'mega.featured': { layout: 'featured' },
+  'mega.events': { layout: 'events' },
+  'mega.background': { layout: 'background' },
+  'mega.background-icon': { layout: 'background' },
+} as const
+
+export const menuTemplateComponent = 'FeluqaMegaMenu'
+
 const strings = {
   en: {
     exploringTitle: 'Under exploration',

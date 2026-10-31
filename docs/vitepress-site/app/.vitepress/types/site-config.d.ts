@@ -48,8 +48,10 @@ export interface TopbarConfig {
   theme?: 'switch' | 'system' | 'light' | 'dark'
 }
 
+export type MenuTemplate = [id: string, fields?: string[]]
+
 export type TopbarItem =
-  | { guide: string; icon?: string }
+  | { guide: string; icon?: string; menuTitle?: LocalizedText; menuTemplate?: MenuTemplate }
   | { collection: string; icon?: string }
   | {
       text?: LocalizedText
@@ -59,6 +61,7 @@ export type TopbarItem =
       target?: string
       rel?: string
       items?: TopbarItem[]
+      menuTemplate?: MenuTemplate
     }
 
 export interface SubguideConfig {

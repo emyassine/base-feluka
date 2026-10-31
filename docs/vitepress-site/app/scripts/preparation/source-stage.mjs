@@ -124,6 +124,14 @@ const prefixDefaultLanguage = topbar.language?.prefixDefaultLanguage ?? false
 const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.path))
 const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
 const topbarIconPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
+function validateMenuTemplate(value, location) {
+  if (!Array.isArray(value) || value.length < 1 || value.length > 2 || typeof value[0] !== 'string' || !value[0].trim()) {
+    throw new Error(`${location} must be [templateId, fields]`)
+  }
+  if (value[1] !== undefined && (!Array.isArray(value[1]) || value[1].some((field) => typeof field !== 'string' || !field.trim()))) {
+    throw new Error(`${location}[1] must be an array of field names`)
+  }
+}
 function validLocalizedLink(value) {
   if (typeof value === 'string') return Boolean(value.trim())
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -172,12 +180,14 @@ function validateTopbarItems(items, location = 'topbar.items') {
     const itemLocation = `${location}[${index}]`
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
     if (item.hideIcon !== undefined && typeof item.hideIcon !== 'boolean') throw new Error(`${itemLocation}.hideIcon must be a boolean`)
+    if (item.menuTemplate !== undefined) validateMenuTemplate(item.menuTemplate, `${itemLocation}.menuTemplate`)
+    if (item.menuTitle !== undefined && typeof item.menuTitle !== 'string' && (!item.menuTitle || typeof item.menuTitle !== 'object' || Array.isArray(item.menuTitle))) throw new Error(`${itemLocation}.menuTitle must be text or an object of translated text`)
     const resolvedSvg = typeof item.icon === 'string' && isAbsolute(item.icon) && extname(item.icon).toLowerCase() === '.svg' && existsSync(item.icon)
     if (item.icon !== undefined && (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon) && !resolvedSvg))) {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
-      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items', 'menuTitle', 'menuTemplate'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
       if (item.items !== undefined) {
         if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
         else validateSubguideSelector(item.items, `${itemLocation}.items`)
@@ -185,7 +195,7 @@ function validateTopbarItems(items, location = 'topbar.items') {
       continue
     }
     if ('collection' in item) {
-      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
+      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon', 'menuTemplate'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
       continue
     }
     if (item.text !== undefined && typeof item.text !== 'string' && (!item.text || typeof item.text !== 'object' || Array.isArray(item.text))) {
@@ -513,6 +523,9 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     sidebarConfigurations.set(outputRelativePath, {
       labels: sidebarConfig.labels,
       icon: iconPath,
+      menu: sidebarConfig.menu && typeof sidebarConfig.menu === 'object' && !Array.isArray(sidebarConfig.menu)
+        ? sidebarConfig.menu
+        : {},
     })
     sidebarIconSources.add(iconPath)
   }

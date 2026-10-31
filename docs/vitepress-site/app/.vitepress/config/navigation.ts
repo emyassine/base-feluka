@@ -14,11 +14,12 @@ export interface NavigationInputs {
   navigationOrder: Record<string, string>
   generatedCollections: any[]
   guideConfigs: Record<string, { path: string; config: GuideConfig }>
+  menuTemplateComponent?: string
 }
 
 export function createNavigation(inputs: NavigationInputs) {
   const { site, siteConfig, siteDirectory, defaultLanguage, generatedDirectory, sidebarMetadata,
-    sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs } = inputs
+    sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs, menuTemplateComponent } = inputs
 // ROUTE AND SIDEBAR MODEL — translate generated Markdown paths into VitePress routes.
 const routeBase = (guidePath: string) => String(site.subguides.find((guide: { path: string }) => guide.path === guidePath).uri.base).replace(/^\/+|\/+$/g, '')
 const defaultSeoLocale = site.languages[0].toLowerCase().split('-')[0]
@@ -170,7 +171,7 @@ function navigation(language = defaultLanguage): any[] {
   const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase()
     ? (site.topbar?.language?.prefixDefaultLanguage ? `/${language}` : '')
     : `/${language}`
-  const guideLink = (path: string, icon?: string) => {
+  const guideLink = (path: string, icon?: string, title?: string | Record<string, string>) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
     if (!guide) throw new Error(`topbar references unknown subguide: ${path}`)
     const base = routeBase(path)
@@ -186,7 +187,8 @@ function navigation(language = defaultLanguage): any[] {
     const activeMatch = base
       ? `^${localePrefix}/${base}(?:/|$)`
       : `^${localePrefix}/(?!$)(?!(?:${otherRoots.join('|')})(?:/|$))`
-    return { text: itemText(guide.labels?.[language] ?? guide.label, icon, link), link, activeMatch }
+    const label = typeof title === 'string' ? title : title?.[language] ?? title?.[defaultLanguage] ?? guide.labels?.[language] ?? guide.label
+    return { text: itemText(label, icon, link), link, activeMatch }
   }
   const guideSubguides = (path: string, depth: number | number[] | 'all' | undefined, showIcons: boolean) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
@@ -201,6 +203,13 @@ function navigation(language = defaultLanguage): any[] {
         .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
         .map((entry) => ({ name: entry.name })),
     )
+    const frontmatter = (directory: string, key: string): string | undefined => {
+      const candidates = [`index.${language}.md`, `index.${defaultLanguage}.md`, 'index.md']
+      const source = candidates.map((name) => join(directory, name)).find((file) => existsSync(file))
+      if (!source) return undefined
+      const value = readFileSync(source, 'utf8').match(new RegExp(`^${key}:\\s*["']?(.+?)["']?\\s*$`, 'm'))?.[1]
+      return value?.trim() || undefined
+    }
     const visit = (directory: string, routeParts: string[], level: number): any[] =>
       sortDirectories(directory).flatMap(({ name }) => {
         const segment = name.replace(/^\d+[.-]/, '')
@@ -219,10 +228,15 @@ function navigation(language = defaultLanguage): any[] {
         const icon = showIcons && typeof metadata.icon === 'string'
           ? `/${metadata.icon.replace(/^\/+/, '')}`
           : undefined
+        const description = frontmatter(childDirectory, 'description')
+        const menu = metadata.menu && typeof metadata.menu === 'object' ? metadata.menu : {}
         return [{
           text: itemText(label, undefined, undefined, icon),
           link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+          ...(icon ? { icon } : {}),
+          ...(description ? { description } : {}),
+          ...menu,
           ...(nestedItems.length ? { items: nestedItems } : {}),
         }]
       })
@@ -305,9 +319,14 @@ function navigation(language = defaultLanguage): any[] {
   }
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
+  const applyMenuTemplate = (item: any, template: [string, string[]] | undefined) => template
+    ? menuTemplateComponent
+      ? { component: menuTemplateComponent, props: { item, menuTemplate: template } }
+      : item
+    : item
   const resolveItem = (item: any): any => {
     if (item.guide) {
-      const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon)
+      const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon, item.menuTitle)
       if (item.items && !Array.isArray(item.items) && ['subguides', 'subguides no-guide-index'].includes(item.items.source)) {
         const guideConfig = guideConfigs[item.guide]
         const rootIcon = sidebarPageIcons[guide.link]
@@ -320,7 +339,7 @@ function navigation(language = defaultLanguage): any[] {
           ),
           link: guide.link,
         }
-        return {
+        const resolved = {
           text: guide.text,
           activeMatch: guide.activeMatch,
           items: [
@@ -328,8 +347,9 @@ function navigation(language = defaultLanguage): any[] {
             ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false),
           ],
         }
+        return applyMenuTemplate(resolved, item.menuTemplate)
       }
-      if (Array.isArray(item.items)) return { ...guide, items: item.items.map(resolveItem) }
+      if (Array.isArray(item.items)) return applyMenuTemplate({ ...guide, items: item.items.map(resolveItem) }, item.menuTemplate)
       return guide
     }
     if (item.items && !Array.isArray(item.items) && item.items.source === 'collections') {
@@ -339,11 +359,11 @@ function navigation(language = defaultLanguage): any[] {
       const collectionMenuClass = collectionOptions.separateBetweenCollections === true
         ? 'docs-topbar-collection-trigger docs-topbar-collection-separators'
         : 'docs-topbar-collection-trigger'
-      return {
+      return applyMenuTemplate({
         text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, collectionMenuClass),
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
         items: collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true),
-      }
+      }, item.menuTemplate)
     }
     if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)
     const text = localize(item.text)
@@ -351,7 +371,13 @@ function navigation(language = defaultLanguage): any[] {
     const external = typeof link === 'string' && /^(?:https?:)?\/\//i.test(link)
     const target = item.target ?? (external ? '_blank' : undefined)
     const rel = item.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
-    return {
+    // Preserve template payload fields on ordinary configured children. This is
+    // what makes fields such as image, description, badge, or any future
+    // template-specific value available without adding renderer branches.
+    const templateData = Object.fromEntries(Object.entries(item).filter(([key]) =>
+      !['text', 'link', 'items', 'icon', 'activeMatch', 'target', 'rel', 'menuTemplate'].includes(key)))
+    const resolved = {
+      ...templateData,
       ...(text ? { text: itemText(text, item.hideIcon ? undefined : item.icon, link) } : {}),
       ...(link ? { link } : {}),
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
@@ -359,6 +385,7 @@ function navigation(language = defaultLanguage): any[] {
       ...(rel ? { rel } : {}),
       ...(item.items ? { items: item.items.map(resolveItem) } : {}),
     }
+    return applyMenuTemplate(resolved, item.menuTemplate)
   }
   const configuredItems = site.topbar?.items
     ?? [...site.subguides.map((guide: { path: string }) => ({ guide: guide.path })), ...generatedCollections.map((collection: { id: string }) => ({ collection: collection.id }))]

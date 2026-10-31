@@ -35,9 +35,13 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     navigationOrder, generatedCollections, generatedFonts, generatedGuideColors,
     generatedOgImages, defaultLanguage, outputDirectory, guideConfigs,
   } = context
+  const menuTemplateManifest = configSource.readJsonOr<{ menuTemplateComponent?: string | null }>(
+    join(context.generatedMetadata, 'menu-template.json'), {},
+  )
+  const menuTemplateComponent = menuTemplateManifest.menuTemplateComponent ?? undefined
   const navigationModel = navigationFactory({
     site, siteConfig, siteDirectory, defaultLanguage, generatedDirectory, sidebarMetadata,
-    sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs,
+    sidebarPageIcons, navigationOrder, generatedCollections, guideConfigs, menuTemplateComponent,
   })
   const {
     navigation, sidebars, localizedThemeConfig, vitepressLocales, routeBase,
