@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, rename, rm, writeFile } from 'node:fs/promises'
+import { mkdir, rename, rm, symlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, resolve } from 'node:path'
 import { selectSite, appDirectory } from './site-registry.mjs'
 
@@ -9,6 +9,7 @@ const option = (name) => args.includes(name) ? args[args.indexOf(name) + 1] : un
 const forwardedArgs = () => args.filter((argument, index) => argument !== '--site' && args[index - 1] !== '--site')
 const site = await selectSite(option('--site'))
 const trashDirectory = resolve(process.env.VITEPRESS_TRASH_DIR ?? resolve(appDirectory, '../.trash', site.id))
+const devProjectRoot = resolve(trashDirectory, 'vitepress-project')
 const localVitepress = resolve(appDirectory, 'node_modules/.bin/vitepress')
 const hostVitepress = resolve(appDirectory, '../node_modules/.bin/vitepress')
 const vitepress = existsSync(localVitepress) ? localVitepress : hostVitepress
@@ -20,6 +21,7 @@ const env = {
   VITEPRESS_SITE_DECLARATION: site.declarationPath,
   VITEPRESS_SITE_ROOT: site.sourceRoot,
   VITEPRESS_TRASH_DIR: trashDirectory,
+  VITEPRESS_PROJECT_ROOT: devProjectRoot,
   VITEPRESS_RESOURCES_DIR: process.env.VITEPRESS_RESOURCES_DIR ?? site.resourcesRoot,
   VITEPRESS_SITE_RESOURCES_DIR: process.env.VITEPRESS_SITE_RESOURCES_DIR ?? site.siteResourcesRoot,
 }
@@ -32,6 +34,17 @@ function run(binary, commandArgs, runEnv = env) {
 
 function prepare(prepareEnv = env) {
   run(process.execPath, [join(appDirectory, 'scripts/preparation/pipeline.mjs')], prepareEnv)
+}
+
+async function ensureVitepressProject(projectRoot) {
+  const configRoot = join(projectRoot, '.vitepress')
+  await mkdir(configRoot, { recursive: true })
+  for (const name of ['config.ts', 'config', 'theme']) {
+    const linkPath = join(configRoot, name)
+    if (!existsSync(linkPath)) {
+      await symlink(resolve(appDirectory, '.vitepress', name), linkPath, name === 'config.ts' ? 'file' : 'dir')
+    }
+  }
 }
 
 if (command === 'prepare') {
@@ -56,10 +69,12 @@ if (command === 'prepare') {
     ...env,
     DOCS_OUTPUT_DIR: stage,
     VITEPRESS_TRASH_DIR: join(trashDirectory, 'build'),
+    VITEPRESS_PROJECT_ROOT: resolve(trashDirectory, 'build/vitepress-project'),
   }
   try {
+    await ensureVitepressProject(buildEnv.VITEPRESS_PROJECT_ROOT)
     prepare(buildEnv)
-    run(vitepress, ['build'], buildEnv)
+    run(vitepress, ['build', buildEnv.VITEPRESS_PROJECT_ROOT], buildEnv)
     await mkdir(join(stage, '.spmpst'), { recursive: true })
     await writeFile(join(stage, '.spmpst', 'build-timestamp'), `${new Date().toISOString()}\n`)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)
@@ -73,9 +88,10 @@ if (command === 'prepare') {
     throw error
   }
 } else if (command === 'serve') {
+  await ensureVitepressProject(devProjectRoot)
   prepare()
   const port = process.env.PORT ?? '4173'
-  const web = spawn(vitepress, ['dev', '--host', process.env.HOST ?? '127.0.0.1', '--port', port, '--strictPort'], { cwd: appDirectory, env, stdio: 'inherit' })
+  const web = spawn(vitepress, ['dev', devProjectRoot, '--host', process.env.HOST ?? '127.0.0.1', '--port', port, '--strictPort'], { cwd: appDirectory, env, stdio: 'inherit' })
   const watcher = spawn(process.execPath, [join(appDirectory, 'scripts/dev/watch.mjs')], { cwd: appDirectory, env, stdio: 'inherit' })
   const stop = () => { web.kill('SIGTERM'); watcher.kill('SIGTERM') }
   process.once('SIGINT', stop)
@@ -85,9 +101,9 @@ if (command === 'prepare') {
   process.exit(typeof result === 'number' ? result : 0)
 } else if (command === 'preview') {
   run(process.execPath, [join(appDirectory, 'scripts/site.mjs'), 'build', '--site', site.id])
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build') })
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build'), VITEPRESS_PROJECT_ROOT: resolve(trashDirectory, 'build/vitepress-project') })
 } else if (command === 'serve-build') {
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build') })
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build'), VITEPRESS_PROJECT_ROOT: resolve(trashDirectory, 'build/vitepress-project') })
 } else if (command === 'watch') {
   const watcher = spawn(process.execPath, [join(appDirectory, 'scripts/dev/watch.mjs')], {
     cwd: appDirectory,
@@ -104,6 +120,8 @@ if (command === 'prepare') {
     join(trashDirectory, 'generated-guides.md'),
     join(trashDirectory, 'vitepress-generated'),
     join(trashDirectory, 'vitepress-cache'),
+    join(trashDirectory, 'vitepress-project'),
+    join(trashDirectory, 'build/vitepress-project'),
     join(trashDirectory, 'app-vitepress-cache'),
     join(trashDirectory, 'legacy-vitepress-cache'),
     join(trashDirectory, 'mermaid-cache'),

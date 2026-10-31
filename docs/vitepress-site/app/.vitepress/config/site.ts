@@ -59,7 +59,7 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   appearance: ({ switch: true, system: 'force-auto', light: false, dark: 'force-dark' } as const)[siteConfig.topbar?.theme ?? 'switch'],
   head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
   srcDir: context.generatedDirectory,
-    cacheDir: cacheDirectory,
+  cacheDir: cacheDirectory,
   outDir: outputDirectory,
   cleanUrls: true,
   mpa: false,
