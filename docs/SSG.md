@@ -18,7 +18,7 @@ implementation_status: "JavaScript preparation pipeline exists; independent runt
 
 ## Abstract
 
-SPMPST (Standard Portable Markdown Pre-SSG Tree) specifies a portable, target-neutral authoring tree, its metadata and resource contracts, and a preparation interface for publishing sites. It permits implementation by a command-line tool, a desktop application, or a compatible site-generator host. A working JavaScript reference preparation pipeline presently targets VitePress. Native Rust generation, generic framework-component integration, a complete portable build profile, diagnostic SEO reports, offline-first output guarantees, and agent interfaces are proposed extensions, **not assertions about the existing implementation**.
+SPMPST (Standard Portable Markdown Pre-SSG Tree) specifies a simple, portable site tree and a fast workflow for preparing, building, previewing, and publishing static sites. Its product goal is a small CLI that discovers sites in a workspace, builds one or several selected sites, and runs a local HTTP preview without requiring users to operate an adjacent renderer repository or know its internal layout. A working JavaScript preparation pipeline currently targets VitePress. A native Rust implementation is a possible way to improve startup and preparation speed, not a requirement that the site use Rust or WebAssembly. Frontend frameworks and their component semantics remain project-owned and are handled by the project's chosen JavaScript toolchain.
 
 This RFC is divided into **Part I — Specifications**, defining the normative architecture and intended standard, and **Part II — Existing v0.1 Baseline**, documenting the actual current implementation and its source contracts. If an aspirational Part I requirement conflicts with observed Part II behavior, that conflict is an **unimplemented requirement**, not evidence that the existing implementation already conforms.
 
@@ -40,7 +40,27 @@ The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **
 
 ### 1.1 Primary objective
 
-SPMPST defines a durable authoring-and-distribution contract so that one source tree can be prepared for multiple rendering targets, packaged independently per site, and maintained without adopting the lifetime or internal APIs of a particular frontend framework. The portable site tree is the primary artifact. Renderers and interactive components are interchangeable extensions.
+SPMPST's primary objective is to make static-site authoring and delivery simple and fast:
+
+- Discover registered sites from a workspace directory and provide usable defaults so a basic site needs little configuration. Configuration MAY be edited as JSON or through a future UI.
+- Prepare and build one or several selected sites with a short CLI workflow, then publish their ordinary static output to GitHub Pages or any compatible static host.
+- Preview the selected site over local HTTP, with build, serving, and optional watched rebuilds managed by the CLI.
+- Keep the CLI and preview self-contained from the user's perspective. A user running it from the workspace must not need to locate or manually enter an implementation directory such as `docs/vitepress-site/`.
+- Make source scanning, route/model preparation, and incremental updates fast, with a native implementation available if measurements show it is needed.
+
+The portable site tree is the user-owned input; the published static files are the deployable output. SPMPST standardizes site discovery, configuration, Markdown/page metadata, routes, resources, preparation, diagnostics, build isolation, and CLI behavior. It does not standardize how a frontend framework defines or executes components.
+
+The initial CLI experience SHOULD be as direct as:
+
+```sh
+cd /path/to/docs
+spmpst list
+spmpst preview sites=site-1
+spmpst preview sites=site-1,site-2
+spmpst build sites=site-1
+```
+
+Equivalent conventional flag syntax MAY also be supported. `preview` MUST serve the selected site's built output over HTTP and MUST NOT require a separate user-managed server command. A preview mode that watches and rebuilds changes MAY be provided. A normal build MUST produce static output that can be published without SPMPST or the build tool installed on the destination host.
 
 ### 1.2 Design principles
 
@@ -51,17 +71,21 @@ SPMPST defines a durable authoring-and-distribution contract so that one source 
 5. **Standards-forward extensibility.** Unknown valid HTML and future standard elements MUST pass through without an SPMPST core release, subject to explicit sanitization policy.
 6. **Determinism.** Repeated builds from identical declared inputs SHOULD produce byte-identical outputs; the Reproducible profile makes this mandatory.
 7. **Small, inspectable deliverables.** Production bundles MUST NOT implicitly require development tools, build-time package managers, or source code.
-8. **Composition, not framework lock-in.** HTML, CSS, JavaScript, and declared framework components MAY coexist, but a renderer MUST identify each component's execution and deployment constraints.
+8. **Project-owned frontend.** A site MAY use the JavaScript frontend frameworks and component systems chosen by its maintainers. It MAY mix frameworks where its own tooling supports that composition. SPMPST MUST NOT define a universal component model, component execution semantics, or a cross-framework compiler. Framework dependencies, build plugins, component registration, and runtime behavior belong to the site and its selected frontend toolchain.
 9. **Tool and agent accessibility.** Machine-readable inspection, validation, and controlled modification are first-class interfaces; autonomous edits MUST preserve explicit authorization boundaries.
 10. **Security and ownership.** Builds do not silently depend on third-party origins; scripts, plugins, and runtime capabilities MUST be declared and auditable.
 
 ### 1.3 Scope
 
-The core specifies discovery, ownership, metadata preservation, canonical model, logical resources, routing, localization, preparation, diagnostics, and output manifests. Companion profiles specify static publication, dynamic server rendering, offline caching, component bridging, packaging, SEO analysis, and agent interoperability. SPMPST core is **not** itself a new HTML dialect, a browser engine, or a universal runtime capable of executing every framework on every target.
+The core specifies workspace/site discovery, configuration, metadata preservation, page and route preparation, logical resources, localization, diagnostics, build/output isolation, and the CLI contract. Static output is the primary product. Optional profiles MAY cover local preview, offline packaging, reproducible output, or audits. A native or WASM implementation MAY implement the target-neutral preparation core, but neither is required by the site format or CLI contract.
+
+Frontend component source and behavior are opaque to SPMPST core. The selected site toolchain compiles and bundles those components and their assets. SPMPST MAY pass the site's declared frontend build configuration through to its adapter, report missing or unsupported tooling, and include resulting assets in static output. It MUST NOT promise that arbitrary component source can be compiled, mixed, or rendered without the framework toolchains the site chose.
 
 ### 1.4 Non-goals
 
-SPMPST does not guarantee that arbitrary remote APIs work offline; that a web page is fully interactive with JavaScript disabled; that every Vue/React/Svelte/Astro component can be run without its renderer; that static hosting can supply dynamic personalized server responses; that an SEO score predicts ranking; or that arbitrary third-party components can be executed safely merely by packaging them locally.
+SPMPST does not define or unify React, Vue, Svelte, Astro, or other frontend frameworks; guarantee that a component works without its framework runtime; guarantee that Markdown containing framework-specific components remains semantically readable when rendered without that framework; make arbitrary remote APIs work offline; provide dynamic personalized responses from static hosting; or claim that packaging third-party code makes it safe. Sites that require meaningful fallback content around framework-specific components own that fallback behavior.
+
+SPMPST is a static-site workflow and preparation contract, not a universal frontend runtime or a mandate to rewrite existing sites in Rust. Performance claims MUST identify whether they measure startup, source discovery, incremental preparation, full rendering, or end-to-end build and MUST state the machine, cache state, and page/asset fixture. A goal such as preparing 900 Markdown pages in 5 ms MAY be used as a benchmark target for a narrowly defined preparation stage; it MUST NOT be presented as a full build target unless a measured full build meets it.
 
 ## 2. Conformance model
 
