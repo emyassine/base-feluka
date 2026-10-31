@@ -40,13 +40,15 @@
         },
       "items": {
         "source": "collections",
-        "pathPrefix": "resources",
-        "hideChildren": ["articles"],
         "depth": "all",
         "icon": true,
-        "showIconFromParents": ["articles"],
-        "showParentsName": false,
-        "hideIcon": false
+        "hideIcon": false,
+        "collections": {
+          "pathPrefix": "resources",
+          "hideChildren": ["articles"],
+          "showIconFromParents": ["articles"],
+          "showParentsName": false
+        }
       }
       }
   ],

@@ -160,10 +160,10 @@ function iconSource(icon: string, link?: string): string | undefined {
   if (!source) throw new Error(`topbar icon not found in project.iconLibrary: ${icon}`)
   return `data:image/svg+xml;base64,${readFileSync(source).toString('base64')}`
 }
-function itemText(label: string, icon?: string, link?: string, resolvedSource?: string): string {
+function itemText(label: string, icon?: string, link?: string, resolvedSource?: string, wrapperClass?: string): string {
   const source = resolvedSource ?? (icon ? iconSource(icon, link) : undefined)
-  return source
-    ? `<span class="docs-topbar-item"><span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span><span>${escapeHtml(label)}</span></span>`
+  return source || wrapperClass
+    ? `<span class="docs-topbar-item${wrapperClass ? ` ${escapeHtml(wrapperClass)}` : ''}">${source ? `<span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span>` : ''}<span>${escapeHtml(label)}</span></span>`
     : escapeHtml(label)
 }
 function navigation(language = defaultLanguage): any[] {
@@ -300,7 +300,7 @@ function navigation(language = defaultLanguage): any[] {
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
         }
         if (hideChildren.includes(collection.id) || !items.length) return [linkItem]
-        return showParentsName ? [{ text: label, items }] : items
+        return [{ ...(showParentsName ? { text: label } : {}), items }]
       })
   }
   const localize = (value: string | Record<string, string> | undefined) =>
@@ -333,12 +333,16 @@ function navigation(language = defaultLanguage): any[] {
       return guide
     }
     if (item.items && !Array.isArray(item.items) && item.items.source === 'collections') {
-      const routePrefix = item.items.pathPrefix?.split('/').join('/')
+      const collectionOptions = item.items.collections
+      const routePrefix = collectionOptions.pathPrefix?.split('/').join('/')
       const activeRoot = routePrefix ?? ''
+      const collectionMenuClass = collectionOptions.separateBetweenCollections === true
+        ? 'docs-topbar-collection-trigger docs-topbar-collection-separators'
+        : 'docs-topbar-collection-trigger'
       return {
-        text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon),
+        text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, collectionMenuClass),
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
-        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? [], item.items.showIconFromParents ?? [], item.items.showParentsName !== false, item.items.hideIcon === true),
+        items: collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true),
       }
     }
     if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)

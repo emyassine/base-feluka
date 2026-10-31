@@ -14,6 +14,30 @@
   transition-delay: 0s;
 }
 
+.VPFlyout:has(.docs-topbar-collection-trigger) .VPMenu .items > .VPMenuGroup + .VPMenuGroup {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.VPFlyout:has(.docs-topbar-collection-separators) .VPMenu .items > .VPMenuGroup + .VPMenuGroup {
+  margin-top: 12px;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 11px;
+}
+
+.VPNavScreenMenuGroup:has(.docs-topbar-collection-trigger) .group + .group {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.VPNavScreenMenuGroup:has(.docs-topbar-collection-separators) .group + .group {
+  margin-top: 8px;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 8px;
+}
+
 .docs-topbar-icon {
   width: 16px;
   height: 16px;
@@ -32,7 +56,9 @@
   border-radius: 50%;
 }
 
-.docs-language-flags .VPNavBarTranslations .title { display: none; }
+.docs-language-flags .VPNavBarTranslations .title { font-size: 0; }
+.docs-language-flags .VPNavScreenTranslations .icon.lang { display: none; }
+.docs-language-flags .VPNavScreenTranslations .title::before { margin-right: 8px; }
 
 .VPDocAsideMeta {
   margin: 0 0 24px;

@@ -27,7 +27,7 @@ function routeRoot(guide) {
 
 const foreignRootKeys = new Set([
   ...config.subguides.map((guide) => routeRoot(guide)[0]).filter(Boolean),
-  ...collections.map((collection) => collection.id),
+  ...collections.map((collection) => String(collection.route ?? collection.id).split('/').filter(Boolean)[0]).filter(Boolean),
   ...Object.keys(config.seo?.locales ?? {}).map((language) => {
     const seoPath = config.seo.path ?? 'faq'
     return [...localePrefix(language, defaultLanguage, prefixDefaultLanguage), seoPath].filter(Boolean).join('/').split('/')[0]

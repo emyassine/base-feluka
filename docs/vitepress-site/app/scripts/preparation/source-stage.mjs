@@ -133,24 +133,30 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'hideIcon'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'hideIcon', 'collections'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
-  if (value.source === 'collections' && value.pathPrefix !== undefined && (typeof value.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(value.pathPrefix))) throw new Error(`${location}.pathPrefix must be a relative collection path`)
-  if (value.hideChildren !== undefined && (value.source !== 'collections' || !Array.isArray(value.hideChildren)
-    || value.hideChildren.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
-    || new Set(value.hideChildren).size !== value.hideChildren.length)) {
-    throw new Error(`${location}.hideChildren must be a unique array of configured collection ids and is only valid for source "collections"`)
+  if (value.source === 'collections') {
+    const options = value.collections
+    if (!options || typeof options !== 'object' || Array.isArray(options)
+      || Object.keys(options).some((key) => !['pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'separateBetweenCollections'].includes(key))) {
+      throw new Error(`${location}.collections must contain collection-specific navigation options`)
+    }
+    if (options.pathPrefix !== undefined && (typeof options.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(options.pathPrefix))) throw new Error(`${location}.collections.pathPrefix must be a relative collection path`)
+    for (const key of ['hideChildren', 'showIconFromParents']) {
+      const ids = options[key]
+      if (ids !== undefined && (!Array.isArray(ids) || ids.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id)) || new Set(ids).size !== ids.length)) {
+        throw new Error(`${location}.collections.${key} must be a unique array of configured collection ids`)
+      }
+    }
+    for (const key of ['showParentsName', 'separateBetweenCollections']) {
+      if (options[key] !== undefined && typeof options[key] !== 'boolean') throw new Error(`${location}.collections.${key} must be a boolean`)
+    }
+  } else if (value.collections !== undefined) {
+    throw new Error(`${location}.collections is only valid for source "collections"`)
   }
-  if (value.showIconFromParents !== undefined && (value.source !== 'collections' || !Array.isArray(value.showIconFromParents)
-    || value.showIconFromParents.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
-    || new Set(value.showIconFromParents).size !== value.showIconFromParents.length)) {
-    throw new Error(`${location}.showIconFromParents must be a unique array of configured collection ids and is only valid for source "collections"`)
-  }
-  for (const key of ['showParentsName', 'hideIcon']) {
-    if (value[key] !== undefined && typeof value[key] !== 'boolean') throw new Error(`${location}.${key} must be a boolean`)
-  }
+  if (value.hideIcon !== undefined && typeof value.hideIcon !== 'boolean') throw new Error(`${location}.hideIcon must be a boolean`)
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)
     && (!Array.isArray(value.depth) || value.depth.length === 0 || value.depth.some((depth) => !validDepth(depth)) || new Set(value.depth).size !== value.depth.length)) {

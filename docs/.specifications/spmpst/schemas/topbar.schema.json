@@ -41,10 +41,17 @@
                 "required": ["source"],
                 "properties": {
                   "source": { "enum": ["subguides", "subguides no-guide-index", "collections"] },
-                  "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
-                  "hideChildren": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
-                  "showIconFromParents": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "default": [] },
-                  "showParentsName": { "type": "boolean", "default": true },
+                  "collections": {
+                    "type": "object",
+                    "properties": {
+                      "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
+                      "hideChildren": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+                      "showIconFromParents": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "default": [] },
+                      "showParentsName": { "type": "boolean", "default": true },
+                      "separateBetweenCollections": { "type": "boolean", "default": false }
+                    },
+                    "additionalProperties": false
+                  },
                   "hideIcon": { "type": "boolean", "default": false },
                   "depth": {
                     "oneOf": [
@@ -61,6 +68,13 @@
                   },
                   "icon": { "type": "boolean", "default": true }
                 },
+                "allOf": [
+                  {
+                    "if": { "properties": { "source": { "const": "collections" } }, "required": ["source"] },
+                    "then": { "required": ["collections"] },
+                    "else": { "not": { "required": ["collections"] } }
+                  }
+                ],
                 "additionalProperties": false
               }
             ]

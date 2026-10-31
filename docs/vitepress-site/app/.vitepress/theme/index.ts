@@ -195,12 +195,15 @@ function installLanguageFlags(): void {
     const code = language.toLowerCase()
     const url = `/flags/language/${code}.svg`
     return `
-      html[lang="${code}"] .VPNavBarTranslations .title::before,
-      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span::before {
+      html[lang^="${code}"] .VPNavBarTranslations .title::before,
+      html[lang^="${code}"] .VPNavScreenTranslations .title::before,
+      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span::before,
+      .VPNavScreenTranslations .link[href^="/${code}/"]::before {
         content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
         background: url("${url}") center / contain no-repeat;
       }
-      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span { display: inline-flex; align-items: center; gap: 8px; }
+      .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span,
+      .VPNavScreenTranslations .link[href^="/${code}/"] { display: inline-flex; align-items: center; gap: 8px; }
     `
   })
   const defaultLanguage = config.defaultLanguage?.toLowerCase()
@@ -212,11 +215,15 @@ function installLanguageFlags(): void {
       .filter((language) => language !== defaultLanguage)
     const excludesLocalizedRoutes = otherLocales.map((language) => `:not([href^="/${language}/"])`).join('')
     rules.push(`
-      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span::before {
+      html[lang^="${defaultLanguage}"] .VPNavBarTranslations .title::before,
+      html[lang^="${defaultLanguage}"] .VPNavScreenTranslations .title::before,
+      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span::before,
+      .VPNavScreenTranslations .link${excludesLocalizedRoutes}::before {
         content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
         background: url("/flags/language/${defaultLanguage}.svg") center / contain no-repeat;
       }
-      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span { display: inline-flex; align-items: center; gap: 8px; }
+      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span,
+      .VPNavScreenTranslations .link${excludesLocalizedRoutes} { display: inline-flex; align-items: center; gap: 8px; }
     `)
   }
   const rulesText = rules.join('\n')
