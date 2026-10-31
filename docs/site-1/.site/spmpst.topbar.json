@@ -4,7 +4,11 @@
       "guide": "feluqa.rs"
     },
     {
-      "guide": "products"
+      "guide": "products",
+      "items": {
+        "source": "subguides",
+        "icon": true
+      }
     },
     {
       "text": {

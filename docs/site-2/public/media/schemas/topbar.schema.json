@@ -8,7 +8,49 @@
     "items": {
       "type": "array",
       "items": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "guide": { "type": "string" },
+          "collection": { "type": "string" },
+          "text": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "object", "additionalProperties": { "type": "string" } }
+            ]
+          },
+          "link": { "type": "string" },
+          "icon": { "type": "string" },
+          "target": { "type": "string" },
+          "rel": { "type": "string" },
+          "activeMatch": { "type": "string" },
+          "items": {
+            "oneOf": [
+              { "type": "array", "items": { "type": "object" } },
+              {
+                "type": "object",
+                "required": ["source"],
+                "properties": {
+                  "source": { "const": "subguides" },
+                  "depth": {
+                    "oneOf": [
+                      { "type": "string", "const": "all" },
+                      { "type": "integer", "minimum": 1 },
+                      {
+                        "type": "array",
+                        "items": { "type": "integer", "minimum": 1 },
+                        "uniqueItems": true,
+                        "minItems": 1
+                      }
+                    ],
+                    "default": "all"
+                  },
+                  "icon": { "type": "boolean", "default": true }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
       }
     },
     "theme": {
@@ -24,7 +66,7 @@
   "default": {
     "items": [],
     "theme": "switch",
-    "$schema": "../public/media/schemas/topbar.schema.json"
+    "$schema": "{schemaRef}"
   },
   "description": "SPMPST topbar concern configuration. The default value is the conforming-tool site scaffold."
 }

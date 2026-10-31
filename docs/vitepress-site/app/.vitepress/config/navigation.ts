@@ -160,8 +160,8 @@ function iconSource(icon: string, link?: string): string | undefined {
   if (!source) throw new Error(`topbar icon not found in project.iconLibrary: ${icon}`)
   return `data:image/svg+xml;base64,${readFileSync(source).toString('base64')}`
 }
-function itemText(label: string, icon?: string, link?: string): string {
-  const source = icon ? iconSource(icon, link) : undefined
+function itemText(label: string, icon?: string, link?: string, resolvedSource?: string): string {
+  const source = resolvedSource ?? (icon ? iconSource(icon, link) : undefined)
   return source
     ? `<span class="docs-topbar-item"><span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span><span>${escapeHtml(label)}</span></span>`
     : escapeHtml(label)
@@ -188,6 +188,46 @@ function navigation(language = defaultLanguage): any[] {
       : `^${localePrefix}/(?!$)(?!(?:${otherRoots.join('|')})(?:/|$))`
     return { text: itemText(guide.labels?.[language] ?? guide.label, icon, link), link, activeMatch }
   }
+  const guideSubguides = (path: string, depth: number | number[] | 'all' | undefined, showIcons: boolean) => {
+    const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
+    const guideConfig = guideConfigs[path]
+    if (!guide || !guideConfig) throw new Error(`cannot discover topbar children for unknown guide: ${path}`)
+    const baseParts = routeBase(path).split('/').filter(Boolean)
+    const selectedDepths = depth == null || depth === 'all'
+      ? null
+      : new Set(Array.isArray(depth) ? depth : [depth])
+    const sortDirectories = (directory: string) => sortNavigationEntries(
+      readdirSync(directory, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+        .map((entry) => ({ name: entry.name })),
+    )
+    const visit = (directory: string, routeParts: string[], level: number): any[] =>
+      sortDirectories(directory).flatMap(({ name }) => {
+        const segment = name.replace(/^\d+[.-]/, '')
+        if (!segment) return []
+        const childDirectory = join(directory, name)
+        const childRouteParts = [...routeParts, segment]
+        const metadataKey = childRouteParts.join('/')
+        const metadata = sidebarMetadata[metadataKey]
+        const nestedItems = visit(childDirectory, childRouteParts, level + 1)
+        if (!metadata || (selectedDepths && !selectedDepths.has(level))) return nestedItems
+        const link = `${localePrefix}/${childRouteParts.join('/')}/`
+        const label = metadata.labels?.[language] ?? metadata.labels?.[defaultLanguage]
+        if (typeof label !== 'string' || !label.trim()) {
+          throw new Error(`topbar child ${metadataKey} has no localized spmpst.sidebar.json label for ${language}`)
+        }
+        const icon = showIcons && typeof metadata.icon === 'string'
+          ? `/${metadata.icon.replace(/^\/+/, '')}`
+          : undefined
+        return [{
+          text: itemText(label, undefined, undefined, icon),
+          link,
+          activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
+          ...(nestedItems.length ? { items: nestedItems } : {}),
+        }]
+      })
+    return visit(dirname(guideConfig.path), baseParts, 1)
+  }
   const collectionLink = (id: string, icon?: string) => {
     const collection = generatedCollections.find((entry: { id: string }) => entry.id === id)
     if (!collection) throw new Error(`topbar references unknown collection: ${id}`)
@@ -201,16 +241,41 @@ function navigation(language = defaultLanguage): any[] {
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
   const resolveItem = (item: any): any => {
-    if (item.guide) return guideLink(item.guide, item.icon)
+    if (item.guide) {
+      const guide = guideLink(item.guide, item.icon)
+      if (item.items && !Array.isArray(item.items) && item.items.source === 'subguides') {
+        const guideConfig = guideConfigs[item.guide]
+        const rootIcon = sidebarPageIcons[guide.link]
+        const overview = {
+          text: itemText(
+            guideConfig.config.title ?? site.subguides.find((entry: { path: string }) => entry.path === item.guide)?.labels?.[language] ?? item.guide,
+            undefined,
+            undefined,
+            typeof rootIcon === 'string' ? `/${rootIcon.replace(/^\/+/, '')}` : undefined,
+          ),
+          link: guide.link,
+        }
+        return {
+          text: guide.text,
+          activeMatch: guide.activeMatch,
+          items: [overview, ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false)],
+        }
+      }
+      if (Array.isArray(item.items)) return { ...guide, items: item.items.map(resolveItem) }
+      return guide
+    }
     if (item.collection) return collectionLink(item.collection, item.icon)
     const text = localize(item.text)
     const link = item.link
+    const external = typeof link === 'string' && /^(?:https?:)?\/\//i.test(link)
+    const target = item.target ?? (external ? '_blank' : undefined)
+    const rel = item.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
     return {
       ...(text ? { text: itemText(text, item.icon, link) } : {}),
       ...(link ? { link } : {}),
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
-      ...(item.target ? { target: item.target } : {}),
-      ...(item.rel ? { rel: item.rel } : {}),
+      ...(target ? { target } : {}),
+      ...(rel ? { rel } : {}),
       ...(item.items ? { items: item.items.map(resolveItem) } : {}),
     }
   }

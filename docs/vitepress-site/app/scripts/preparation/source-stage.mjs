@@ -120,6 +120,22 @@ const prefixDefaultLanguage = topbar.language?.prefixDefaultLanguage ?? false
 const topbarGuidePaths = new Set((config.subguides ?? []).map((guide) => guide.path))
 const topbarCollectionIds = new Set(collections.map((collection) => collection.id))
 const topbarIconPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/
+function validateSubguideSelector(value, location) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`${location} must configure subguide discovery`)
+  }
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon'].includes(key)) || value.source !== 'subguides') {
+    throw new Error(`${location}.source must be "subguides" and may only define source, depth, and icon`)
+  }
+  const validDepth = (depth) => Number.isInteger(depth) && depth > 0
+  if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)
+    && (!Array.isArray(value.depth) || value.depth.length === 0 || value.depth.some((depth) => !validDepth(depth)) || new Set(value.depth).size !== value.depth.length)) {
+    throw new Error(`${location}.depth must be "all", a positive integer, or a unique non-empty array of positive integers`)
+  }
+  if (value.icon !== undefined && typeof value.icon !== 'boolean') {
+    throw new Error(`${location}.icon must be a boolean`)
+  }
+}
 function validateTopbarItems(items, location = 'topbar.items') {
   if (!Array.isArray(items)) throw new Error(`${location} must be an array`)
   for (const [index, item] of items.entries()) {
@@ -130,7 +146,11 @@ function validateTopbarItems(items, location = 'topbar.items') {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
-      if (Object.keys(item).some((key) => !['guide', 'icon'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon', 'items'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (item.items !== undefined) {
+        if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
+        else validateSubguideSelector(item.items, `${itemLocation}.items`)
+      }
       continue
     }
     if ('collection' in item) {

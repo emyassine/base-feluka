@@ -304,6 +304,21 @@ Core configuration is a versioned, **closed** schema: unknown keys are rejected.
 
 A basic site SHOULD need very little: a declaration, `definitions`, `lang` and `locale`, with all other concerns defaulted by the tool.
 
+### A11.4 Navigation menus
+
+A topbar item MAY declare `items` as a list for an authored submenu, or as a subguide selector:
+
+```json
+{
+  "guide": "products",
+  "items": { "source": "subguides", "depth": "all", "icon": true }
+}
+```
+
+For the selector, `source` MUST be `subguides`. It enumerates descendant content directories of the selected guide that have `spmpst.sidebar.json`; it MUST NOT require those entries to be repeated in the topbar config. The guide's own index MUST appear first when present. `depth` is one-based: `1` selects immediate child directories, an integer selects all levels up to that number, an array selects the listed levels, and an omitted value or `"all"` selects every level. A directory at an unselected level is omitted while selected descendants remain reachable in the nearest visible menu. `icon` defaults to `true`; when enabled, each generated item uses that directory's resolved `spmpst.sidebar.json` icon and localized labels. Generated entries follow the ordering rules in A6 and use their normalized public routes.
+
+A topbar item MAY instead use an authored `text` and `link` for an external or internal destination. External HTTP(S) links default to `target: "_blank"` and `rel: "noopener noreferrer"`; a site MAY set `target` or `rel` explicitly. Internal links remain in the current tab unless configured otherwise. The reserved topbar icon value `INHERIT` reuses the linked page's frontmatter icon. Resource references such as `@spmpst::icon::...` resolve named icons; they do not enumerate content directories.
+
 ## A12. Extensions
 
 ### A12.1 Principle
