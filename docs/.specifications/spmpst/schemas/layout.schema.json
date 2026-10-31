@@ -173,7 +173,7 @@
     }
   },
   "default": {
-    "$schema": "../public/media/schemas/layout.schema.json",
+    "$schema": "{schemaRef}",
     "layouts": {},
     "rules": [],
     "footer": {

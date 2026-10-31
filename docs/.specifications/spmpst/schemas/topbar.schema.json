@@ -24,7 +24,7 @@
   "default": {
     "items": [],
     "theme": "switch",
-    "$schema": "../public/media/schemas/topbar.schema.json"
+    "$schema": "{schemaRef}"
   },
   "description": "SPMPST topbar concern configuration. The default value is the conforming-tool site scaffold."
 }

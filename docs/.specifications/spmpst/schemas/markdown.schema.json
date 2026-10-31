@@ -20,7 +20,7 @@
   },
   "additionalProperties": false,
   "default": {
-    "$schema": "../public/media/schemas/markdown.schema.json",
+    "$schema": "{schemaRef}",
     "lineNumbers": true,
     "image": {
       "lazyLoad": true

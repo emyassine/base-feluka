@@ -52,7 +52,7 @@
     "nodeBorderWidth": "1.5px",
     "darkMessageTextColor": "#f1f3fc"
   },
-  "$schema": "../public/media/schemas/appearance.schema.json",
+  "$schema": "../public/api/schemas/appearance.schema.json",
   "styles": [
     "components/home/docs-home.css",
     "components/components.css"

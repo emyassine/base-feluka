@@ -60,7 +60,7 @@
     }
   },
   "default": {
-    "$schema": "../public/media/schemas/outline.schema.json",
+    "$schema": "{schemaRef}",
     "level": "deep",
     "label": {
       "en": "On this page"

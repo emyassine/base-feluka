@@ -245,7 +245,7 @@
     }
   },
   "default": {
-    "$schema": "../public/media/schemas/search.schema.json",
+    "$schema": "{schemaRef}",
     "provider": "local",
     "miniSearch": {
       "fuzzy": 0.2,

@@ -1,5 +1,5 @@
 {
-  "$schema": "../public/media/schemas/markdown.schema.json",
+  "$schema": "../public/api/schemas/markdown.schema.json",
   "lineNumbers": true,
   "image": {
     "lazyLoad": true

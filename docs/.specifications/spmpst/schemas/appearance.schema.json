@@ -48,7 +48,7 @@
       "nodeBorderWidth": "1.5px",
       "darkMessageTextColor": "#f1f3fc"
     },
-    "$schema": "../public/media/schemas/appearance.schema.json",
+    "$schema": "{schemaRef}",
     "logo": {
       "light": "resources/assets/brand/site-logo.svg",
       "dark": "resources/assets/brand/site-logo.svg",

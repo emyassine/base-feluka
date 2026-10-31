@@ -1,18 +1,18 @@
 {
   "items": [
-  {
-    "guide": "feluqa.rs"
-  },
+    {
+      "guide": "feluqa.rs"
+    },
     {
       "text": {
         "en": "Basics",
         "fr": "Bases"
       },
       "items": [
-      {
-        "guide": "internals",
-        "icon": "@spmpst::icon::code-xml"
-      },
+        {
+          "guide": "internals",
+          "icon": "@spmpst::icon::code-xml"
+        },
         {
           "guide": "sdui",
           "icon": "@spmpst::icon::square-terminal"
@@ -40,5 +40,5 @@
     }
   ],
   "theme": "switch",
-  "$schema": "../public/media/schemas/topbar.schema.json"
+  "$schema": "../public/api/schemas/topbar.schema.json"
 }

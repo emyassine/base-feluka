@@ -1,5 +1,5 @@
 {
-  "$schema": "../public/media/schemas/layout.schema.json",
+  "$schema": "../public/api/schemas/layout.schema.json",
   "layouts": {},
   "rules": [],
   "footer": {

@@ -9,7 +9,7 @@
     "prefixDefaultLanguage": false,
     "showFlags": true
   },
-  "$schema": "../public/media/schemas/lang.schema.json",
+  "$schema": "../public/api/schemas/lang.schema.json",
   "language": {
     "label": {
       "en": "English",

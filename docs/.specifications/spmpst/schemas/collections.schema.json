@@ -103,7 +103,7 @@
   },
   "default": {
     "collections": [],
-    "$schema": "../public/media/schemas/collections.schema.json",
+    "$schema": "{schemaRef}",
     "emptyCollection": {
       "en": "No content published yet."
     }

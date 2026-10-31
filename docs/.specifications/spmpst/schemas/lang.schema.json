@@ -113,7 +113,7 @@
       "prefixDefaultLanguage": false,
       "showFlags": false
     },
-    "$schema": "../public/media/schemas/lang.schema.json",
+    "$schema": "{schemaRef}",
     "language": {
       "label": {
         "en": "English"

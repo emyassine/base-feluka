@@ -97,7 +97,7 @@
     "siteUrl": null,
     "path": "faq",
     "icon": "@spmpst::icon::circle-help",
-    "$schema": "../public/media/schemas/seo.schema.json",
+    "$schema": "{schemaRef}",
     "pageTitle": {
       "en": "{siteName}"
     },

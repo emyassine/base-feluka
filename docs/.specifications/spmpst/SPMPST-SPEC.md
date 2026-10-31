@@ -115,7 +115,7 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
     "diagrams": "resources/diagrams",
     "hooks": "resources/hooks",
     "media": "public/media",
-    "schemas": "public/media/schemas",
+    "schemas": "public/api/schemas",
     "public": "public",
     "configFiles": {
       "appearance": ".site/spmpst.appearance.json",
@@ -194,7 +194,7 @@ docs/site-1/                                      # site root selected by paths.
 │   ├── robots.txt                                # -> <basePathOnline>/robots.txt
 │   └── media/                                     # selected by paths.media
 │       ├── icons/*.svg
-│       └── schemas/*.schema.json                 # -> <basePathOnline>/media/schemas/*.schema.json
+│   ├── api/schemas/*.schema.json                 # -> <basePathOnline>/api/schemas/*.schema.json
 ├── src/
 │   ├── guides/
 │   │   ├── index.en.md
@@ -213,7 +213,7 @@ docs/site-1/                                      # site root selected by paths.
     └── hooks/                                     # documentation hooks and SEO transforms
 ```
 
-The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, `paths.resources`, and `paths.public` roots selected by its root manifest. `public/` is the one static publishing tree: root files such as `robots.txt` and nested media such as `public/media/schemas/example.json` are copied with their relative paths, becoming `/robots.txt` and `/media/schemas/example.json`. `paths.media` identifies the media subtree inside `public/`; it is not published through a separate mechanism. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
+The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, `paths.resources`, and `paths.public` roots selected by its root manifest. `public/` is the one static publishing tree: root files such as `robots.txt` and nested files such as `public/api/schemas/example.json` are copied with their relative paths, becoming `/robots.txt` and `/api/schemas/example.json`. `paths.media` identifies the media subtree inside `public/`; it is not published through a separate mechanism. `paths.schemas` identifies the public location of copied JSON schema files and may point outside `paths.media`. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
 
 Language variants live **together** in the same directory (`page.en.md`, `page.fr.md`). A separate directory tree per language MUST NOT be required.
 
@@ -419,7 +419,7 @@ Examples:
 
 `name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's `paths.media` tree inside `public/`. Media names include their filename extension when needed.
 
-A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned media of any type lives under `public/media/`; image references may use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). Because `paths.media` is `public/media`, the ordinary public-tree copy makes `public/media/schemas/example.json` available at `/media/schemas/example.json`. JSON data and schemas are ordinary `.json` media there; the static host serves them with `application/json`, without a special schema API route. Root-level files such as `public/robots.txt` and nested media share this same `public/` source tree and publishing pass. The adapter resolves media only inside the selected site tree. The core parses resource references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
+A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned media of any type lives under `paths.media` (normally `public/media/`); image references may use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). Files in `paths.public` are copied with their relative paths and served as static files, including JSON data and schemas with the host's JSON MIME type. `paths.schemas` declares where copied JSON schemas live; the site-1 convention is `public/api/schemas/`, exposed as `/api/schemas/`, and other sites may select a different in-root public path. Root-level files such as `public/robots.txt` and nested media share this same `public/` source tree and publishing pass. The adapter resolves media only inside the selected site tree. The core parses resource references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
 
 Resolution applies at documented explicit points (configuration values, page `icon` frontmatter, sidebar icons, and language flags). It is **not** general text substitution in Markdown prose.
 
@@ -540,7 +540,7 @@ Full form (**CURRENT** for the VitePress host):
     "diagrams": "resources/diagrams",
     "hooks": "resources/hooks",
     "media": "public/media",
-    "schemas": "public/media/schemas",
+    "schemas": "public/api/schemas",
     "public": "public",
     "configFiles": {
       "appearance": ".site/spmpst.appearance.json",
