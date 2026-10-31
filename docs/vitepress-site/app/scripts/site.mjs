@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, readFile, readdir, rename, rm, stat, symlink, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, readdir, rename, rm, stat, symlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, relative, resolve, sep } from 'node:path'
 import { selectSite, appDirectory } from './site-registry.mjs'
 import { createSite } from './spmpst/create-site.mjs'
@@ -90,6 +90,35 @@ function markdownFrontmatterValue(source, key) {
     : value
 }
 
+async function loadRssConfig(site) {
+  const rssPath = site.paths.configFiles.rss
+  if (!rssPath || !existsSync(rssPath)) return {}
+  return JSON.parse(await readFile(rssPath, 'utf8'))
+}
+
+async function prepareRssImage(site, rssConfig, outputFile, hostname) {
+  const configuredImage = typeof rssConfig.fallbackImage === 'string' ? rssConfig.fallbackImage.trim() : ''
+  if (!configuredImage) return null
+  if (/^https?:\/\//i.test(configuredImage)) return configuredImage
+  if (configuredImage.startsWith('/')) return `${hostname}${configuredImage}`
+  const rssPath = site.paths.configFiles.rss
+  if (!rssPath) return null
+  const source = resolve(site.paths.root, configuredImage)
+  if (!existsSync(source)) return null
+  const imageName = basename(source)
+  const target = join(dirname(outputFile), 'rss-assets', imageName)
+  await mkdir(dirname(target), { recursive: true })
+  await copyFile(source, target)
+  return `${hostname}/rss-assets/${encodeURIComponent(imageName)}`
+}
+
+function pageImageUrl(image, hostname) {
+  if (!image) return null
+  if (/^https?:\/\//i.test(image)) return image
+  if (image.startsWith('/')) return `${hostname}${image}`
+  return null
+}
+
 async function writeSitemap(site, outputDirectory) {
   const seoPath = site.paths.configFiles.seo
   const seo = JSON.parse(await readFile(seoPath, 'utf8'))
@@ -154,6 +183,11 @@ async function writeEarlyRss(site, markdownDirectory, outputFile) {
   const seo = JSON.parse(await readFile(seoPath, 'utf8'))
   const hostname = typeof seo.siteUrl === 'string' ? seo.siteUrl.replace(/\/$/, '') : ''
   if (!hostname) return
+  const rssConfig = await loadRssConfig(site)
+  const fallbackImage = await prepareRssImage(site, rssConfig, outputFile, hostname)
+  const creators = Array.isArray(rssConfig.creator)
+    ? rssConfig.creator.filter((creator) => creator && typeof creator.name === 'string' && creator.name.trim())
+    : []
 
   const pages = []
   async function visit(directory) {
@@ -173,6 +207,7 @@ async function writeEarlyRss(site, markdownDirectory, outputFile) {
           lastmod: modified.mtime.toISOString(),
           title: markdownFrontmatterValue(source, 'title') || route,
           description: markdownFrontmatterValue(source, 'description') || 'Feluqa documentation',
+          image: markdownFrontmatterValue(source, 'image') || markdownFrontmatterValue(source, 'ogImage') || '',
         })
       }
     }
@@ -183,11 +218,18 @@ async function writeEarlyRss(site, markdownDirectory, outputFile) {
   const channelDescription = 'Documentation for the Feluqa platform and unified namespace.'
   const channelUrl = `${hostname}/`
   const lastBuildDate = feedPages[0]?.lastmod ? new Date(feedPages[0].lastmod).toUTCString() : new Date().toUTCString()
-  const items = feedPages.map(({ route, lastmod, title, description }) => {
+  const creatorElements = creators.map(({ name }) => `    <dc:creator>${xmlEscape(name)}</dc:creator>`).join('\n')
+  const channelImage = fallbackImage
+    ? `    <image>\n      <url>${xmlEscape(fallbackImage)}</url>\n      <title>${xmlEscape(channelTitle)}</title>\n      <link>${xmlEscape(channelUrl)}</link>\n    </image>\n`
+    : ''
+  const items = feedPages.map(({ route, lastmod, title, description, image }) => {
     const url = `${hostname}${route}`
-    return `    <item>\n      <title>${xmlEscape(title)}</title>\n      <link>${xmlEscape(url)}</link>\n      <guid isPermaLink="true">${xmlEscape(url)}</guid>\n      <description>${xmlEscape(description)}</description>\n      <pubDate>${new Date(lastmod).toUTCString()}</pubDate>\n    </item>`
+    const imageUrl = pageImageUrl(image, hostname) ?? fallbackImage
+    const media = imageUrl ? `\n      <media:content url="${xmlEscape(imageUrl)}" medium="image" />` : ''
+    const itemCreators = creators.map(({ name }) => `      <dc:creator>${xmlEscape(name)}</dc:creator>`).join('\n')
+    return `    <item>\n      <title>${xmlEscape(title)}</title>\n      <link>${xmlEscape(url)}</link>\n      <guid isPermaLink="true">${xmlEscape(url)}</guid>\n      <description>${xmlEscape(description)}</description>\n      <pubDate>${new Date(lastmod).toUTCString()}</pubDate>\n${itemCreators}${media}\n    </item>`
   }).join('\n')
-  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>${xmlEscape(channelTitle)}</title>\n    <link>${xmlEscape(channelUrl)}</link>\n    <description>${xmlEscape(channelDescription)}</description>\n    <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n  </channel>\n</rss>\n`
+  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">\n  <channel>\n    <title>${xmlEscape(channelTitle)}</title>\n    <link>${xmlEscape(channelUrl)}</link>\n    <description>${xmlEscape(channelDescription)}</description>\n    <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${creatorElements}\n${channelImage}${items}\n  </channel>\n</rss>\n`
   await mkdir(dirname(outputFile), { recursive: true })
   await writeFile(outputFile, body)
 }

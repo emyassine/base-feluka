@@ -13,4 +13,5 @@ export const CONCERNS = Object.freeze({
   search: ['provider', 'miniSearch', 'excludePaths', 'searchLabels'],
   outline: ['level', 'label'],
   markdown: ['lineNumbers', 'image'],
+  rss: ['creator', 'fallbackImage'],
 })

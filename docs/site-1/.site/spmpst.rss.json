@@ -1,0 +1,14 @@
+{
+  "$schema": "../public/api/schemas/rss.schema.json",
+  "creator": [
+    {
+      "name": "El Moumen Yassine",
+      "url": "https://numerimondes.com"
+    },
+    {
+      "name": "Numerimondes",
+      "url": "https://numerimondes.com"
+    }
+  ],
+  "fallbackImage": "resources/assets/brand/og-feluqa.png"
+}
