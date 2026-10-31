@@ -1,3 +1,11 @@
 {
-  "inlineLogo": true
+  "$schema": "../public/api/schemas/extra.schema.json",
+  "inlineLogo": true,
+  "lastUpdated": {
+    "enabled": true,
+    "label": {
+      "en": "Last updated",
+      "fr": "Dernière mise à jour"
+    }
+  }
 }

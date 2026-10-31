@@ -64,15 +64,22 @@ export const DocumentationNotice = defineComponent({
 
 export const DocumentationLastModified = defineComponent({
   name: 'DocumentationLastModified',
-  setup() {
+  props: { lastUpdated: { type: Object, default: () => ({}) } },
+  setup(props) {
     const { frontmatter, lang } = useData()
     return () => {
+      const configured = props.lastUpdated as Record<string, unknown>
+      if (configured.enabled === false) return null
       const value = frontmatter.value.lastmod ?? frontmatter.value.lastModified
       if (!value) return null
       const date = new Date(String(value))
       if (Number.isNaN(date.getTime())) return null
       const locale = languageFor(lang.value) === 'fr' ? 'fr-FR' : 'en-US'
-      const label = languageFor(lang.value) === 'fr' ? strings.fr.lastModified : strings.en.lastModified
+      const language = languageFor(lang.value)
+      const labels = configured.label as Record<string, unknown> | undefined
+      const label = typeof labels?.[language] === 'string'
+        ? labels[language] as string
+        : language === 'fr' ? strings.fr.lastModified : strings.en.lastModified
       return h('p', { class: 'FeluqaLastModified' }, [
         h('span', { class: 'FeluqaLastModified__icon', 'aria-hidden': 'true' }),
         `${label} : `,
