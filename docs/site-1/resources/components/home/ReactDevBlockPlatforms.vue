@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, Fragment, h, type PropType, type VNode } from 'vue'
-import FeluqaButton from '../FeluqaButton.vue'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 
 
 const imageAssets = new Map<string, string>([

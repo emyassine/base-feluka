@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, Fragment, h, onMounted, ref, watch, type PropType, type VNode } from 'vue'
-import FeluqaButton from '../FeluqaButton.vue'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 import { highlightCode, plainCode } from './code-highlighter'
 
 

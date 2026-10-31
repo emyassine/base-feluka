@@ -4,6 +4,7 @@
   "required": ["content"],
   "properties": {
     "$schema": { "type": "string" },
+    "component": { "type": ["string", "null"] },
     "content": {
       "type": "object",
       "properties": {

@@ -65,7 +65,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
         .map((key) => [key, localizedFooterText(footer[key], language)])
         .filter(([, value]) => value !== undefined),
     )])),
-    documentationNotices: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.hooks?.documentationNotices ?? {}, language)])),
+    documentationNotices: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.documentationNotices ?? {}, language)])),
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, { emptyCollection: localizeTree(model.emptyCollection ?? {}, language) }])),
     styles: (model.styles ?? []).map((path) => resolve(layout.paths.resources, path)),

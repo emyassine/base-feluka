@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Mesh, Plane, Program, Renderer, RenderTarget, Texture, Triangle } from 'ogl';
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import FeluqaButton from '../FeluqaButton.vue';
+import FeluqaButton from '../ui/FeluqaButton.vue';
 
 type BendPreset = 'liquid' | 'ribbon' | 'vortex' | 'arch';
 type CurlMode = 'twist' | 'rise' | 'fall';

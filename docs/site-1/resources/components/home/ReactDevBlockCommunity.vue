@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, Fragment, h, type PropType, type VNode } from 'vue'
-import FeluqaButton from '../FeluqaButton.vue'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 import reactImage0 from './assets/react-home/images/home/community/react_conf_elizabet.webp';
 import reactImage1 from './assets/react-home/images/home/community/react_conf_fun.webp';
 import reactImage2 from './assets/react-home/images/home/community/react_conf_hallway.webp';

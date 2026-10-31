@@ -14,7 +14,9 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   const indexPath = join(outputDirectory, ...pathParts, 'index.md')
   const noSlashAlias = join(outputDirectory, ...pathParts.slice(0, -1), `${pathParts.at(-1)}.md`)
   if (generatedMarkdown.has(indexPath) || generatedMarkdown.has(noSlashAlias)) {
-    throw new Error(`SEO page path conflicts with a documentation page: ${localizedPath}`)
+    // An authored page may own the public SEO route while still reusing the
+    // localized SEO data for metadata and page components.
+    continue
   }
   const title = locale.pageTitle ?? locale.faqTitle
   const description = locale.description

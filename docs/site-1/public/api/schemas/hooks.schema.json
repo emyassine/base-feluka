@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["components", "documentationNotices"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "components": {
+      "type": "object",
+      "properties": {
+        "sidebarNavigationBefore": { "type": ["string", "null"] },
+        "navigationAfter": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "documentationNotices": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false,
+  "default": { "$schema": "{schemaRef}", "components": {}, "documentationNotices": {} }
+}

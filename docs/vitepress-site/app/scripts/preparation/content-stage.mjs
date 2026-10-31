@@ -356,7 +356,7 @@ function validateThemeSlotComponents(slots, context) {
 }
 validateThemeSlotComponents(siteThemeSlots, configFiles.layout)
 if (config.siteFooter != null && !componentNames.has(config.siteFooter)) {
-  throw new Error(`layout.footer references unknown project component "${config.siteFooter}" in ${configFiles.layout}`)
+  throw new Error(`footer.component references unknown project component "${config.siteFooter}" in ${configFiles.footer}`)
 }
 for (const [guidePath, slots] of generatedGuideThemeSlots) {
   validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'spmpst.guide.json'))

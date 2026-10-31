@@ -1,7 +1,7 @@
 {
   "$schema": "../public/media/schemas/layout.schema.json",
   "layouts": {
-    "article": { "component": "DefaultTheme", "features": { "toc": true, "pager": true } }
+    "article": { "features": { "toc": true, "pager": true } }
   },
   "rules": [
     { "match": "src/collections/articles/**", "layout": "article" }

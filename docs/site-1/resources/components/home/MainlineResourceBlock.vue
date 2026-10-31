@@ -10,7 +10,7 @@ import word from './assets/logos/word.svg'
 import monday from './assets/logos/monday.svg'
 import drive from './assets/logos/drive.svg'
 import asana from './assets/logos/asana.svg'
-import FeluqaButton from '../FeluqaButton.vue'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 
 defineProps<{
   title: string

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useData } from 'vitepress';
-import FeluqaButton from './FeluqaButton.vue';
-import { useCollection } from './useCollections';
+import FeluqaButton from '../ui/FeluqaButton.vue';
+import { useCollection } from '../collections/useCollections';
 
 const { frontmatter, lang, page } = useData();
 const collection = computed(() => useCollection(String(frontmatter.value.collection || '')));

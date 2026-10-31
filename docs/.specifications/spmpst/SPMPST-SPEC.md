@@ -122,6 +122,7 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
       "footer": ".site/spmpst.footer.json",
+      "hooks": ".site/spmpst.hooks.json",
       "lang": ".site/spmpst.lang.json",
       "layout": ".site/spmpst.layout.json",
       "links": ".site/spmpst.links.json",
@@ -289,13 +290,14 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Navigation | `spmpst.topbar.json` | `items`, `theme` |
 | Collections | `spmpst.collections.json` | `collections` |
 | Footer content | `spmpst.footer.json` | `content` for the selected footer component |
+| Hooks | `spmpst.hooks.json` | component placements and documentation notice hooks |
 | Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | Links | `spmpst.links.json` | `socialLinks` |
 | SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon`, localized SEO fields |
 | Search | `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths` |
 | Markdown | `spmpst.markdown.json` | `lineNumbers`, `image` |
 | Outline | `spmpst.outline.json` | `level` |
-| Layout | `spmpst.layout.json` | footer component selection, semantic component placements; `layouts` and `rules` remain **PROPOSED** (§A13) |
+| Layout | `spmpst.layout.json` | reusable `layouts` and route `rules` |
 
 The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON and missing required files, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter. Every site MUST declare a footer concern file, even when its content is empty, so a configured footer component never needs to embed site copy or links in source.
 
@@ -412,7 +414,7 @@ A port, cache directory or parallelism level is a preference of a machine or a u
 
 ## A13. Layout registry (PROPOSED)
 
-**CURRENT:** `.site/spmpst.layout.json` selects a site-wide footer component, while `.site/spmpst.footer.json` supplies its localized content. The component identifier is opaque to SPMPST and resolved by the selected toolchain/adapter. **PROPOSED:** a declarative layout registry and page rules, so common cases need no code:
+**CURRENT:** `.site/spmpst.layout.json` supplies reusable layouts and route rules. `.site/spmpst.footer.json` selects the site-wide footer component and supplies its localized content. The component identifier is opaque to SPMPST and resolved by the selected toolchain/adapter. Layout declarations are reusable by every page matching a rule:
 
 ```json
 {
@@ -925,9 +927,9 @@ These are stage backlog items, not completed behavior. The present implementatio
 
 | Surface | Location / output |
 |---|---|
-| Theme component placements | `.site/spmpst.layout.json`; the VitePress adapter maps semantic placements to its slots |
+| Theme component placements | `.site/spmpst.hooks.json`; the VitePress adapter maps semantic placements to its slots |
 | Site registry / declaration | `spmpst.workspace.json` (host) / root `spmpst.json` |
-| Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` |
+| Site resources | `docs/site-1/resources/{components/{home,collections,navigation,ui,_layout},hooks,diagrams}/` |
 | Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
 | Styles, search, Markdown and outline options | SPMPST concern files, interpreted by the VitePress adapter |
 | Emitted frontmatter | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |

@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue';
 import { useData } from 'vitepress';
 import VPFlyout from 'vitepress/dist/client/theme-default/components/VPFlyout.vue';
-import FeluqaButton from './FeluqaButton.vue';
-import SpotlightCard from './SpotlightCard.vue';
+import FeluqaButton from '../ui/FeluqaButton.vue';
+import SpotlightCard from '../ui/SpotlightCard.vue';
 import { useCollection } from './useCollections';
 
 const props = defineProps<{ collectionId: string }>();

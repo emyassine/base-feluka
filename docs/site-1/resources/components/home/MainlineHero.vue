@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import heroImage from './assets/hero.webp'
 import SideRays from './SideRays.vue'
-import FeluqaButton from '../FeluqaButton.vue'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 
 defineProps<{
   title: string
