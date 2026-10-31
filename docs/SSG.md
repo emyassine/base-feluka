@@ -1,775 +1,285 @@
 ---
-title: "RFC SPMPST-0001 — Standard Portable Markdown Pre-SSG Tree"
-short_title: "SPMPST Core Specification and v0.1 Reference Baseline"
+title: "SPMPST — Standard Portable Markdown Pre-SSG Tree"
+short_title: "SPMPST Specification Suite"
 status: "Draft / Implementation in Progress"
-version: "0.1.0-draft"
-date: "2026-10-30"
-category: "Standards Track (proposed)"
-implementation_status: "JavaScript VitePress preparation pipeline exists; standalone CLI and unified static build engine proposed"
+version: "0.1.0-draft.2"
+date: "2026-10-31"
 ---
 
-# RFC SPMPST-0001: Standard Portable Markdown Pre-SSG Tree
+# SPMPST — Standard Portable Markdown Pre-SSG Tree
 
-**Status:** Draft — Implementation in Progress
-**Version:** 0.1.0-draft
-**Date:** 30 October 2026
-**Category:** Proposed Standards Track
-**Intended audience:** implementers of source-tree tools, site generators, adapters, build systems, editor integrations, and deployment tooling
+**Status:** Draft, implementation in progress
+**Version:** 0.1.0-draft.2
+**Date:** 31 October 2026
 
-## Abstract
+## 0. Preface
 
-SPMPST (Standard Portable Markdown Pre-SSG Tree) specifies a simple, portable site tree and a fast workflow for preparing, building, previewing, and publishing static sites. Its product goal is a small CLI that discovers sites in a workspace, builds one or several selected sites, and runs a local HTTP preview without requiring users to operate an adjacent renderer repository or know its internal layout. A working JavaScript preparation pipeline currently targets VitePress. A native Rust implementation is a possible way to improve startup and preparation speed, not a requirement that the site use Rust or WebAssembly. Frontend frameworks and their component semantics remain project-owned and are handled by the project's chosen JavaScript toolchain.
+### 0.1 What SPMPST is
 
-This RFC is divided into **Part I — Specifications**, defining the normative architecture and intended standard, and **Part II — Existing v0.1 Baseline**, documenting the actual current implementation and its source contracts. If an aspirational Part I requirement conflicts with observed Part II behavior, that conflict is an **unimplemented requirement**, not evidence that the existing implementation already conforms.
+SPMPST is two things, specified **separately** on purpose:
 
-## Status of This Memo
+1. **A filesystem standard (the tree).** A portable directory convention and configuration model for documentation and static sites: Markdown sources, per-language files side by side, configuration, logical resources, routes. It is a user-owned, renderer-neutral input.
+2. **A tool (the tooling).** A small, fast, self-contained CLI that discovers sites in a workspace, builds one or several of them, serves a local HTTP preview, and produces ordinary static files that can be published to GitHub Pages or any static host.
 
-This document is a technical draft for implementation and review, not an IETF publication. It uses RFC 2119 / RFC 8174 requirement terminology. The protocol, schema, command, and diagnostics examples expressly labeled **PROPOSED** are design contracts awaiting implementation and conformance testing. Paths, functions, and behavior labeled **CURRENT** are derived from the supplied reference inventory and have not been independently revalidated against a live repository for this edition.
+The tree outlives any tool. The tool can be replaced (today a Node/VitePress pipeline, tomorrow a native Rust binary) without touching a single authored file.
 
-## Conventions and Requirements Language
+### 0.2 Product goals
 
-The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL** are to be interpreted as in RFC 2119 and RFC 8174 **only when shown in all capitals**. They apply to a declared conformance profile, not indiscriminately to optional capabilities.
+1. **Create a static site at lightning speed:** sensible defaults, a minimal JSON configuration (editable by hand or through a future UI).
+2. **Compile very fast:** target millisecond-range preparation for hundreds of Markdown pages with a native engine (see §B9 for precise, scenario-based targets).
+3. **Self-contained execution:** a local HTTP engine for testing, and no dependency on neighbouring implementation directories such as `docs/vitepress-site/`.
+4. **All-in-one build:** SPMPST runs whatever the site declares in order to turn sources into static HTML, CSS, JS, SVG, images and fonts, including dependency installation and compilation, so that a project's documentation and its neighbouring website share one workflow.
+5. **Publish anywhere static:** the output is plain static files.
 
-**CURRENT** = behavior documented in the existing JavaScript baseline. **PROPOSED** = contract in this RFC not demonstrated by that baseline. **PLANNED** = proposal with no assured implementation. **OPTIONAL** = feature a conforming implementation may omit unless its declared profile requires it. **EXPERIMENTAL** = syntax or behavior requiring an extension identifier before interoperable use.
-
----
-
-# Part I — Specifications
-
-## 1. Goals, design principles, and scope
-
-### 1.1 Primary objective
-
-SPMPST's primary objective is to make static-site authoring and delivery simple and fast:
-
-- Discover registered sites from a workspace directory and provide usable defaults so a basic site needs little configuration. Configuration MAY be edited as JSON or through a future UI.
-- Prepare and build one or several selected sites with a short CLI workflow, then publish their ordinary static output to GitHub Pages or any compatible static host.
-- Preview the selected site over local HTTP, with build, serving, and optional watched rebuilds managed by the CLI.
-- Keep the CLI and preview self-contained from the user's perspective. A user running it from the workspace must not need to locate or manually enter an implementation directory such as `docs/vitepress-site/`.
-- Make source scanning, route/model preparation, and incremental updates fast, with a native implementation available if measurements show it is needed.
-
-The portable site tree is the user-owned input; the published static files are the deployable output. SPMPST standardizes site discovery, configuration, Markdown/page metadata, routes, resources, preparation, diagnostics, build isolation, and CLI behavior. It does not standardize how a frontend framework defines or executes components.
-
-The initial CLI experience SHOULD be as direct as:
+The target workflow:
 
 ```sh
 cd /path/to/docs
 spmpst list
-spmpst preview sites=site-1
-spmpst preview sites=site-1,site-2
-spmpst build sites=site-1
+spmpst preview site-1
+spmpst preview site-1 site-2
+spmpst build site-1
+spmpst deploy site-1
 ```
 
-Equivalent conventional flag syntax MAY also be supported. `preview` MUST serve the selected site's built output over HTTP and MUST NOT require a separate user-managed server command. A preview mode that watches and rebuilds changes MAY be provided. A normal build MUST produce static output that can be published without SPMPST or the build tool installed on the destination host.
+### 0.3 Non-goals
 
-### 1.2 Design principles
+- **No frontend-framework standardization.** React, Vue, Svelte, Astro and others each have their own paradigms, imports and tooling. SPMPST does not define a component model, lifecycle, or cross-framework compiler. Each site chooses its libraries and declares how to build them (§B3). Mixing frameworks is allowed wherever the site's own build can handle it.
+- **No guarantee that Markdown containing components is readable without the framework runtime.** Fallback content for framework-specific tags is the site's responsibility, not SPMPST's. (Ordinary Markdown is always converted to meaningful HTML.)
+- **No WebAssembly requirement.** WASM brings no benefit for a local CLI and is out of scope.
+- **No dynamic hosting.** SPMPST does not provide personalized or server-side behaviour from static hosting.
+- **Not a Markdown dialect, not a runtime.**
 
-1. **Portability by construction.** Content, configuration, and logical resources are not required to embed a specific machine path or build host.
-2. **Static HTML output.** Authored Markdown content MUST become meaningful HTML during the build. Site-defined interactive components MAY require JavaScript and their framework runtimes.
-3. **Offline-first delivery.** A build claiming the Offline-Complete profile MUST function without external network access, as defined precisely in §6; an ordinary static deployment need not claim offline browsing before installation or caching.
-4. **Per-site isolation.** Distinct sites MUST have separate resolved configuration, build graphs, output destinations, manifests, and packaged assets.
-5. **Standards-forward extensibility.** Unknown valid HTML and future standard elements SHOULD pass through without an SPMPST release, subject to the selected renderer and explicit sanitization policy.
-6. **Determinism.** Repeated builds from identical declared inputs SHOULD produce byte-identical outputs; the Reproducible profile makes this mandatory.
-7. **Small, inspectable deliverables.** Production bundles MUST NOT implicitly require development tools, build-time package managers, or source code.
-8. **Project-owned frontend.** A site MAY use the JavaScript frontend frameworks and component systems chosen by its maintainers. It MAY mix frameworks where its own tooling supports that composition. SPMPST MUST NOT define a universal component model, component execution semantics, or a cross-framework compiler. Framework dependencies, build plugins, component registration, and runtime behavior belong to the site and its selected frontend toolchain.
-9. **Tool and agent accessibility.** Machine-readable inspection, validation, and controlled modification are first-class interfaces; autonomous edits MUST preserve explicit authorization boundaries.
-10. **Security and ownership.** Build dependencies and scripts MUST be inspectable; network use and generated runtime dependencies MUST be reported.
+### 0.4 Document map
 
-### 1.3 Scope
+| Part | Identifier | Subject | Status |
+|---|---|---|---|
+| A | SPMPST-0001 | **Tree standard**: layout, files, routes, locales, config, resources | v0.1 baseline + proposals |
+| B | SPMPST-0002 | **Tooling standard**: `spmpst.json`, CLI, build, preview, incremental updates, performance | mostly PROPOSED |
+| C | (informative) | **Current implementation**: VitePress host (Node) | CURRENT |
+| D | (informative) | **Future native implementation** (Rust) | PLANNED |
+| E | SPMPST-0003..0006 | Companion specifications (SEO, offline, agent, reproducible builds), outlines only | PLANNED |
 
-The core specifies workspace/site discovery, configuration, metadata preservation, page and route preparation, logical resources, localization, diagnostics, build/output isolation, and the CLI contract. Static output is the primary product. Optional profiles MAY cover local preview, offline packaging, reproducible output, or audits. A native or WASM implementation MAY implement the target-neutral preparation core, but neither is required by the site format or CLI contract.
+Each companion specification is defined on its own later; Part E records only the constraints already agreed so nothing is lost.
 
-Frontend component source and behavior belong to the site. SPMPST's build product nevertheless owns the unified workflow: it MUST invoke or provision the declared toolchains and package the generated HTML, CSS, JavaScript, SVG, images, fonts, and other static assets. A site MAY combine multiple frameworks if its configured build graph can compile them. SPMPST MUST NOT impose a shared component API or require framework authors to adopt SPMPST-specific semantics. It MAY offer maintained presets and prebuilt components that sites can opt into.
+### 0.5 Conventions
 
-### 1.4 Non-goals
+**MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, MAY, OPTIONAL** are interpreted as in RFC 2119 and RFC 8174 only when in capitals.
 
-SPMPST does not define or unify React, Vue, Svelte, Astro, or other frontend frameworks, nor guarantee the behavior of framework-specific Markdown components without their runtime. A site's chosen toolchains own those semantics. SPMPST does not make arbitrary remote APIs work offline, provide dynamic personalized responses from static hosting, or claim that packaging third-party code makes it safe.
+Status labels:
 
-SPMPST is a static-site workflow and preparation contract, not a universal frontend runtime or a mandate to rewrite existing sites in Rust. Performance claims MUST identify whether they measure startup, source discovery, incremental preparation, full rendering, or end-to-end build and MUST state the machine, cache state, and page/asset fixture. A goal such as preparing 900 Markdown pages in 5 ms MAY be used as a benchmark target for a narrowly defined preparation stage; it MUST NOT be presented as a full build target unless a measured full build meets it.
+- **CURRENT**: behaviour observed in the existing JavaScript/VitePress implementation.
+- **PROPOSED**: a contract in this document not yet implemented.
+- **PLANNED**: intended, with no assured design or schedule.
+- **EXPERIMENTAL**: syntax or behaviour that MUST NOT be relied on for interoperability.
 
-## 2. Conformance model
-
-### 2.1 Roles
-
-A **Tree Producer** writes conforming sources. A **Core Loader** validates the tree and yields a target-neutral model. A **Target Adapter** maps that model to a renderer. A **Builder** emits deployable artifacts. A **Site Host** serves them. An **Inspector** audits content or bundles. An **Agent Interface** exposes constrained read/write operations. One application MAY implement multiple roles.
-
-### 2.2 Capability profiles (PROPOSED)
-
-| Profile | Required capabilities | Deployment implication |
-|---|---|---|
-| `core` | tree loading, config ownership, page model, route and resource resolution, diagnostics | no generated site required |
-| `static-html` | HTML for each route, local assets, no dev-runtime dependency | static web host or local browser |
-| `offline-complete` | `static-html` plus closed dependency graph and offline navigation support under declared conditions | browser service worker/installed cache or packaged local files |
-| `preview` | local HTTP serving of selected built site output, with optional watched rebuild | local development machine |
-| `reproducible` | stable bytes and documented input closure | deterministic build verification |
-| `seo-audit` | report schema, page/link analysis and actionable findings | no SEO guarantee |
-| `agent` | machine-readable capabilities and safe operations | local IPC or authenticated transport |
-
-A tool MUST declare which profiles it implements; documentation MUST NOT imply that supporting `core` entails supporting `offline-complete`. `SPMPST v0.1 draft` refers to the baseline format, not certification under all proposed profiles.
-
-### 2.3 Feature discovery (PROPOSED)
-
-A CLI SHOULD support `spmpst capabilities --format json`. Its response SHOULD expose `specVersion`, `implementation`, `profiles`, `extensions`, available site build adapters, and `outputFormats`. Unknown capability IDs MUST be treated as unsupported, not assumed.
-
-## 3. Source tree, identity, and configuration
-
-### 3.1 Authoritative tree
-
-The `.site/`, `src/`, and `resources/` conventions in Part II remain the v0.1 baseline. The root MUST be explicitly selected, or discovered by walking to the nearest ancestor containing `.site/`. Tools MUST NOT allow a path to escape the root through `..`, absolute paths, or symlink traversal. An implementation MAY resolve symlinks only if the final canonical path remains within an approved root.
-
-### 3.2 Site identity and multi-site workspaces (PROPOSED)
-
-A workspace MAY register several source roots. A site MUST have one unique `site.id` within that workspace. An invocation MUST select exactly one site or explicitly request a multi-site batch. A selected site's output, lock state, cache namespace, resource catalogue, canonical URL, secrets, and environment settings MUST NOT be inherited from another site's last build.
-
-Suggested source topology:
-
-```text
-workspace/
-├── sites/
-│   ├── feluqa/
-│   │   ├── .site/
-│   │   ├── src/
-│   │   └── resources/
-│   └── numerimondes/
-│       ├── .site/
-│       ├── src/
-│       └── resources/
-└── dist/
-    ├── feluqa/
-    └── numerimondes/
-```
-
-`dist/<site-id>/` is an illustrative default, not a new compulsory source-tree directory. User-supplied output paths MUST be checked for overlap with other site roots and outputs; destructive cleanup MUST be limited to the selected output directory.
-
-Language variants MAY be stored together in the same content directory, using page names such as `page.en.md` and `page.fr.md`. SPMPST MUST NOT require a separate directory tree for each language. Locale fallback and route policy are site configuration.
-
-### 3.3 Configuration ownership and forward compatibility
-
-The v0.1 concern-file ownership table (§II.11) remains normative **for the v0.1 loader**. Core loaders MUST reject unknown configuration keys under a versioned, closed schema unless the key is in a declared extension namespace. By contrast, HTML attributes, Markdown frontmatter unknown to core, and ordinary copied public files MUST be preserved wherever the consumer can represent them. These separate rules prevent accidental breaking changes while permitting new web standards.
-
-Proposed extension namespace:
-
-```json
-{
-  "extensions": {
-    "org.example.structured-data": { "enabled": true }
-  }
-}
-```
-
-No implementation is required to recognize the example extension. Namespaced extensions MUST NOT silently redefine core keys.
-
-## 4. Canonical preparation model (PROPOSED)
-
-### 4.1 Stages
-
-```mermaid
-flowchart TD
-    A[Source tree and configuration] --> B[Discovery and validation]
-    B --> C[Canonical site model]
-    C --> D[Content and route graph]
-    D --> E[Site toolchain and asset preparation]
-    E --> F{Selected output profile}
-    F --> G[Static HTML build]
-    F --> H[Site-configured frontend toolchain]
-    F --> I[HTML, CSS, JavaScript, and static assets]
-    G --> J[Per-site manifest and archive]
-    H --> I
-    I --> J
-    J --> K[SEO, security and offline audits]
-```
-
-Every stage MUST emit a machine-readable diagnostic for a blocking failure. The core model SHOULD be JSON-serializable and free of frontend-framework runtime objects. Site build tools MAY enrich an independent copy, but MUST NOT mutate shared source data in a way that changes another site's output.
-
-### 4.2 Minimum page record
-
-A proposed page model includes: `sourcePath`, `route`, `locale`, `contentLocale`, `frontmatter`, `content` or an AST, `links`, `assets`, and `provenance`. Route and locale resolution MUST be completed before renderer-specific transformations. Frontmatter fields not consumed by core MUST remain available to adapters.
-
-### 4.3 Stable identifiers
-
-If a stable page identifier is provided, it MUST be unique within the selected site. Otherwise the identity is the normalized source-relative path plus effective locale. The page model MUST distinguish a stable identity from the mutable public route so reports survive route changes.
-
-### 4.4 Parsing and escaping
-
-Parsing of Markdown MUST NOT treat arbitrary inline text as an executable directive. Reserved `@spmpst::` references are recognized only in documented metadata fields, directive contexts, or explicitly enabled Markdown extensions. Unrecognized directive forms MUST yield a diagnostic or remain literal text according to a declared policy; they MUST NOT execute code.
-
-## 5. Static HTML output
-
-### 5.1 Universal HTML contract
-
-Every published page in the `static-html` profile MUST deliver its authored Markdown content as HTML from the host without relying on browser-side JavaScript execution. The output MUST preserve document semantics, text, headings, links, and media fallbacks to the extent supported by Markdown and the selected site's build toolchain. SPMPST makes no promise about the fallback or accessibility semantics of framework-specific component tags embedded in Markdown; the site owns those components and their fallback content.
-
-Search, filtering, sorting, and similar controls MAY be implemented as client-side features. Their scripts are part of the site's selected frontend build and MUST be included in the generated static output when required. SPMPST does not require a script-free implementation of these features.
-
-### 5.2 Static rendering (PROPOSED)
-
-SPMPST's required published mode is build-time static output. The site's selected JavaScript toolchain MAY emit browser code for its own interactive components. SPMPST neither defines those components' rendering modes nor requires server-side rendering. Its core requirement is that authored Markdown text is emitted as static HTML.
-
-### 5.3 Freshness and cache policy
-
-Static output freshness is controlled by rebuilding and publishing the changed files. An offline profile MUST use a declared cache/fallback strategy and cannot promise access to remote live updates while disconnected.
-
-### 5.4 HTML extensibility
-
-The core MUST NOT maintain a restrictive allowlist of known HTML elements that requires a SPMPST release each time HTML gains an element or attribute. It MUST preserve unknown valid element names, `data-*` attributes, ARIA attributes, new `<meta>` forms, and ordinary head/body markup in an HTML-capable adapter. Sanitization MUST be a separate explicit, versioned security policy for untrusted input. Unknown markup MUST NOT bypass that policy. Adapters MAY warn where a target renderer cannot preserve an element faithfully.
-
-### 5.5 Public files and emerging conventions
-
-A site MUST be able to publish arbitrary site-owned text files under public paths without changes to SPMPST core, including prospective conventions such as `llms.txt`, `robots.txt`, `security.txt`, verification files, manifests, and new standards-defined discovery documents. This does not make SPMPST responsible for assigning semantics to those files. The current `.site/public/*` mechanism is the baseline; output-path collision handling is specified in §8.
-
-## 6. Zero-network and offline operation
-
-### 6.1 Distinct guarantees
-
-**Self-contained output** means all required application assets and code are local to the deployable package. **Network-independent operation** means no required application function fetches remote resources. **Offline browser availability** additionally requires that pages be available on the device, normally through prior installation/caching or an application bundle. These MUST NOT be conflated.
-
-### 6.2 Offline-Complete profile (PROPOSED)
-
-A build declaring `offline-complete` MUST:
-
-- Include all resources required for initial rendering and documented offline features within the per-site package, including fonts, scripts, stylesheets, images, and component runtime assets.
-- Have no mandatory runtime request to an external origin for those features; an OPTIONAL outbound link does not violate this rule if the user is clearly informed that following it requires connectivity.
-- Provide a strategy for repeat visits without a network, typically an offline-capable service worker and install/cache manifest on HTTPS or localhost, or an explicitly supported local application/file bundle.
-- Expose an offline fallback route or error experience for intentionally uncached or dynamic pages.
-- Declare unsupported functions (e.g., authentication against a remote identity provider, payments, third-party APIs, live analytics, remote search).
-- Pass tests with external network blocked after the prescribed cache/install step.
-
-A static HTML package opened as `file://` MAY have browser restrictions on fetch, modules, paths, and service workers. A builder MUST declare whether it supports `file://`, local HTTP, HTTPS hosting, or desktop wrapping; it MUST NOT promise universal `file://` compatibility without testing it.
-
-### 6.3 Optional online enhancements
-
-External analytics, embeds, CDNs, live data, remote APIs, and hosted fonts MUST be opt-in, discoverable in a dependency manifest, and disabled or replaced by safe local fallbacks when the selected profile forbids external requests. Optional third-party resources MAY be used in non-offline profiles with a documented threat model.
-
-### 6.4 Offline conformance test
-
-A conforming offline test MUST install or cache the site using a supported context, disconnect all network connectivity, navigate representative internal routes, reload them, and assert that all required assets load locally. It MUST also inspect network initiators for undeclared remote requests. A screenshot or Lighthouse score alone is insufficient proof.
-
-## 7. Frontend toolchain and component ownership
-
-SPMPST does not define a portable component descriptor or cross-framework lifecycle. A site adds components using its chosen framework's normal source files, imports, dependencies, and conventions. SPMPST's responsibility is to make the configured build workflow available through the site build: resolve or install declared dependencies as configured, run the necessary compilers and bundlers, collect their static outputs, report failures, and serve the result in preview. Sites MAY use prebuilt components supplied by SPMPST, a framework ecosystem, or another package source. Mixing frameworks is permitted when the site's own build configuration handles their composition.
-
-The build tool MUST be able to provision or invoke the site's declared toolchain, install missing locked dependencies where the site permits it, compile framework and non-framework sources, and apply configured optimization/minification before publishing output. Repeated builds SHOULD reuse verified local dependencies and caches. A site MAY opt into an offline or preinstalled-dependencies mode. Dependency installation and build plugins execute trusted project/package code; the CLI MUST make that fact clear and MUST provide controls to inspect or disable network access where practical. SPMPST SHOULD provide built-in presets for common static-site needs so a basic site does not require hand-assembling a frontend stack.
-
-Framework-specific tags in Markdown are interpreted by the selected site build tooling. SPMPST guarantees the HTML conversion of ordinary supported Markdown content, but does not promise that a framework tag has meaningful output without that framework. Authors decide whether such components need fallback HTML or non-JavaScript content.
-
-### 7.1 Structured references (EXPERIMENTAL)
-
-The suggested form `@spmpst::self::frontmatter::<dataid>` is valuable as a *structured reference*, not as a general-purpose source code evaluator. For future standardization, candidate forms are:
-
-```text
-@spmpst::self::frontmatter::title
-@spmpst::self::frontmatter::author.name
-@spmpst::page::handbook/intro::frontmatter::description
-@spmpst::resources::icon::lucide/book-open
-```
-
-Only the final resources form has an existing v0.1 grammar, described in Part II. The other forms are **EXPERIMENTAL** and MUST NOT be interpreted as implemented or portable until a future grammar is ratified.
-
-### 7.2 Proposed structured-reference rules
-
-- A reference MUST be resolved against a typed context (site, page, frontmatter, or resource), never through dynamic code execution.
-- A `frontmatter` path SHOULD follow restricted dotted JSON-property notation with escaped or indexed forms specified before standardization; `dataid` MUST NOT be treated as an arbitrary filesystem path.
-- Circular references MUST fail deterministically with a cycle diagnostic.
-- Missing keys MUST generate a diagnostic; a fallback syntax MAY be introduced in a later version.
-- Substitution MUST be escaped for its output context (HTML text, HTML attribute, URL, JSON, or CSS); raw HTML injection MUST require an explicit trusted-content capability.
-- `self` MUST refer to the page being processed, never to an ambient global page.
-- Cross-page references MUST participate in dependency tracking and incremental rebuild invalidation.
-
-### 7.3 Authoring syntax decision
-
-A future RFC MUST choose whether reference syntax is only for metadata values, fenced directives, Markdown inline transclusion, or component props. Until then, implementers SHOULD NOT silently parse `@spmpst::self::...` everywhere in prose. Marking the syntax experimental prevents collisions with ordinary Markdown, email-like strings, and future directives.
-
-## 8. Per-site build artifacts, ZIP, and deployment
-
-### 8.1 Independent build boundary (PROPOSED)
-
-Each build MUST bind one site identity, one resolved config snapshot, one adapter, one output profile, and one dependency graph. With two sites `A` and `B`, modifying only sources of `A` MUST NOT change `B`'s output unless the shared, explicitly declared dependency is modified. Caches MUST be namespaced using site identity plus relevant build inputs.
-
-### 8.2 Standard distribution structure
-
-A proposed `static-html` artifact is:
-
-```text
-build/feluqa/
-├── index.html
-├── fr/index.html
-├── handbook/index.html
-├── assets/
-├── robots.txt
-├── llms.txt                      # only if authored
-├── sitemap.xml                   # if configured
-└── .spmpst/
-    ├── manifest.json
-    ├── dependencies.json
-    └── reports/
-        ├── seo.json
-        └── security.json
-```
-
-The `.spmpst/` directory layout and report names are **PROPOSED**. An adapter MAY place metadata outside a public document root to avoid publishing internal information; output manifest semantics, not this physical location, are the interoperability contract. Sensitive configuration or secrets MUST NOT appear in artifacts served publicly.
-
-### 8.3 ZIP portability requirements
-
-An implementation claiming portable ZIP output MUST produce one archive **per selected site**, with only relative normalized `/` paths, no directory traversal, no symlink that escapes the extraction root, and no undeclared network-required runtime dependency. File order, timestamps, and permission bits SHOULD be stable; they MUST be stable in the `reproducible` profile. The archive MUST contain deployable files, not build-only dependencies, unless a profile explicitly requests a full source export.
-
-### 8.4 Manifest example (PROPOSED)
-
-```json
-{
-  "specVersion": "0.1.0-draft",
-  "siteId": "feluqa",
-  "profile": "static-html",
-  "adapter": { "name": "vitepress", "version": "declared-by-builder" },
-  "entrypoints": ["index.html"],
-  "offline": { "level": "self-contained", "tested": false },
-  "externalDependencies": [],
-  "files": [
-    { "path": "index.html", "sha256": "<64 lowercase hex digits>" }
-  ]
-}
-```
-
-Hashes in a real manifest MUST be calculated over emitted file bytes. `<...>` above denotes a placeholder, not a valid canonical manifest value.
-
-### 8.5 File and route collision policy
-
-The builder MUST detect when two sources emit the same destination path, including collisions between static public files and generated routes, localized aliases, or asset paths. Default behavior MUST be a blocking diagnostic; an explicit conflict-resolution policy MAY be specified by an adapter. Silent overwrites are prohibited.
-
-## 9. Package forms and operational interfaces
-
-### 9.1 Delivery shapes
-
-SPMPST MUST provide a standalone CLI as its primary product surface. A desktop GUI MAY wrap the same engine, and host integrations such as the existing VitePress pipeline MAY remain available as adapters. None of those integrations may be required for the CLI to discover, build, or preview a registered site. All surfaces SHOULD use identical validators and produce semantically equivalent static output for the same declared inputs.
-
-### 9.2 CLI contract (PROPOSED)
-
-```sh
-spmpst list
-spmpst preview sites=site-1
-spmpst preview sites=site-1,site-2
-spmpst build sites=site-1
-```
-
-The CLI MUST discover the workspace from the current directory or an explicit root option. `list` MUST report registered sites and their source roots. `preview` MUST build selected sites as needed, bind a local HTTP server, report served URLs, and stop cleanly on user interruption. `build` MUST build each selected site and report its output directory. Comma-separated `sites=` selection MUST be supported; equivalent conventional flags MAY also be accepted. The default output path MUST be predictable and outside source trees. Commands MUST emit meaningful exit codes and actionable diagnostics.
-
-The simple workflow MUST NOT expose an implementation checkout path such as `docs/vitepress-site/` as a required user argument. Once SPMPST is installed, execution MUST depend on the selected workspace, declared site inputs/dependencies, and SPMPST-managed packages or caches; it MUST NOT depend on a neighboring Feluqa source checkout or implementation directory. Adapter packages, framework toolchains, and dependencies MUST be located from workspace/site configuration or provisioned by SPMPST. The final static output MUST be publishable to GitHub Pages or another static file host without requiring the preview server or build tool on the destination.
-
-### 9.3 Desktop application
-
-A GUI MAY provide editing, source browsing, per-site builds, previews, local serving, diagnostics, dependency graphs, and archive export. It SHOULD invoke the same core services as the CLI; it MUST NOT silently introduce online dependencies or write outside the user's approved workspace.
-
-### 9.4 Existing host compatibility
-
-The existing `docs/vitepress-site/` pipeline remains the current reference adapter. Introducing a standalone CLI MUST NOT require moving site-owned content into a host-specific directory. A host package MAY consume the source tree in place or via a model serialization interface.
-
-## 10. CSS, JavaScript, hooks, and build extensibility
-
-### 10.1 Out-of-the-box support
-
-The build MUST collect site-scoped stylesheets, scripts, themes, components and public assets from the configured toolchain. Optional extension hooks MAY run at declared lifecycle phases. A hook MUST NOT silently mutate content outside the active site or access the network in a network-disallowed build.
-
-### 10.2 Proposed hook phases
-
-`beforeDiscover`, `afterLoad`, `beforeRoutes`, `afterRoutes`, `beforeRender`, `afterRender`, `beforePackage`, and `afterAudit` are **candidate identifiers**. A future extension registry MUST define their ordering, data contracts, error handling, and cache invalidation before interoperability is claimed.
-
-### 10.3 Script policy
-
-Scripts MUST be classified as `required`, `enhancement`, `analytics`, `third-party`, or another documented category. Security-relevant capabilities such as network access, filesystem reads during build, process execution, and environment-variable access MUST be declared. Build-time plugins are trusted code and SHOULD run in an isolated execution context where practical.
-
-### 10.4 Production cleanliness
-
-The runtime output MUST NOT inadvertently import Vite, VitePress, npm, development middleware, compiler toolchains, local source maps containing secrets, or debug endpoints. Framework runtime code may be bundled **when needed for a declared interactive component**; that is a production runtime dependency, not a forbidden development dependency.
-
-## 11. SEO reporting and decision support
-
-### 11.1 Purpose
-
-SPMPST SHOULD provide an `seo-audit` profile that analyzes internal linking (**maillage interne**), outbound linking (**maillage externe**), indexability signals, metadata, semantics, structured data, and locale relationships. Its output MUST distinguish deterministic findings from heuristics and recommendations. It MUST NOT claim to predict search-engine ranking.
-
-### 11.2 Required analysis for `seo-audit` (PROPOSED)
-
-An SEO report MUST analyze, to the extent inputs allow:
-
-- **Internal link graph:** inbound/outbound counts, orphaned pages, unreachable pages from designated navigation roots, broken local links, redirect chains, anchor targets, excessive click depth, and pages with weak discoverability.
-- **External link graph:** external destinations, protocol, origin, optional `rel` attributes, links requiring network access, duplicate destinations, and optionally status checks only when network probing is explicitly authorized.
-- **Page metadata:** effective title, description, canonical, robots directives, robots.txt interactions, sitemap presence, Open Graph metadata, and duplicate/missing metadata.
-- **Content structure:** heading hierarchy, internal anchor validity, descriptive link text, image alt text, and opportunities for relevant cross-links.
-- **Localization:** `hreflang`, fallback pages, canonical consistency, and alternate-route reciprocity.
-- **Assets and delivery:** oversized assets, rendering-dependent core content, accidental third-party requests, and other performance/security-adjacent risks when measurable.
-
-### 11.3 Actionable recommendations
-
-Each finding MUST contain `id`, `severity`, `rule`, `siteId`, `affectedRoutes`, `evidence`, `recommendation`, and whether it was measured or inferred. Reports SHOULD distinguish **fix now**, **investigate**, and **opportunity**. Recommendations MAY identify candidate internal links using topical similarity, but MUST clearly label those as suggestions, not facts.
-
-### 11.4 SEO report example (PROPOSED)
-
-```json
-{
-  "schemaVersion": "0.1-draft",
-  "siteId": "feluqa",
-  "generatedAt": "2026-10-30T00:00:00Z",
-  "scope": "local-build",
-  "findings": [
-    {
-      "id": "SEO-INT-001",
-      "severity": "warning",
-      "rule": "orphan-page",
-      "siteId": "feluqa",
-      "affectedRoutes": ["/handbook/advanced/"],
-      "evidence": { "inboundInternalLinks": 0 },
-      "recommendation": "Add a relevant internal link from a discoverable handbook page.",
-      "basis": "measured"
-    }
-  ]
-}
-```
-
-### 11.5 Optional network inspection
-
-Without explicit permission, SEO analysis MUST work entirely from the local source and build output. Live URL checks MAY be requested as a separate online phase with rate limits, caching, privacy controls, timeouts, and uncertainty recording. Network failure MUST NOT be reported as proof that a site is broken.
-
-## 12. LLM and ACP integration
-
-### 12.1 Agent-friendly design
-
-SPMPST SHOULD be operable by LLM-assisted tooling through structured JSON inputs/outputs, stable document identifiers, complete schemas, machine-readable diagnostics, reproducible plans, and dry-run changes. Human-readable prose MUST NOT be the only way to discover a tool's capabilities or validation errors.
-
-### 12.2 ACP terminology
-
-**ACP is ambiguous across ecosystems**. For this RFC, `ACP` denotes an **agent communication protocol integration selected and versioned by the implementation**, not an invented universal standard wire format. A future extension MUST identify the exact protocol specification and version before making interoperability claims. ACP support is RECOMMENDED for agent-capable distributions, not part of the minimal `core` profile.
-
-### 12.3 Recommended operations (PROPOSED)
-
-`listSites`, `inspectSite`, `readPage`, `listRoutes`, `validate`, `proposeEdit`, `applyApprovedEdit`, `build`, `getDiagnostics`, `auditSeo`, `auditOffline`, and `capabilities` are logical operations, not a frozen protocol API. Read-only functionality SHOULD work without write authority. Every proposed write SHOULD support a diff and a dry-run. `applyApprovedEdit` MUST require authorization from the controlling user or application.
-
-### 12.4 Agent safety
-
-Agent integrations MUST enforce workspace path boundaries, deny access to secrets by default, distinguish source and generated files, protect against prompt injection in authored content, and log sensitive operations. Arbitrary code execution and network use MUST require explicit authority. Tool output from a site MUST be treated as untrusted content, not control instructions.
-
-## 13. Security and supply-chain requirements
-
-### 13.1 Threat model
-
-Relevant threats include malicious dependencies, compromised remotely loaded JavaScript, build-plugin code execution, untrusted Markdown HTML, XSS in component props, leaked secrets, path traversal, symlink attacks, external-resource exfiltration, malicious archives, and unexpected outbound network connections. A self-hosted script is not inherently safe; its source and integrity still matter.
-
-### 13.2 Required controls
-
-- Build tools MUST prevent writes outside the approved output root and MUST validate archive extraction paths.
-- Untrusted HTML MUST be escaped or sanitized under a declared policy; trusted HTML MUST be explicitly distinguished.
-- External script and stylesheet origins MUST be inventoried. The offline-complete profile MUST reject required remote runtime resources.
-- Secrets MUST NOT be copied from environment variables, local `.env` files, or private configuration into public artifacts without explicit user intent.
-- Build integrations MUST identify the toolchain and dependencies used to compile project code; component semantics remain owned by that toolchain.
-- The emitted asset manifest SHOULD include content hashes; production deployments SHOULD support strict Content Security Policy and other appropriate security headers.
-- A build SHOULD support integrity pinning or lockfiles for upstream packages; a version string alone is not proof of immutability.
-
-### 13.3 Privacy
-
-Telemetry and tracking MUST be opt-in for the generated site. A builder MUST NOT add analytics scripts, trackers, remote fonts, or session replay solely because a renderer enables them by default.
-
-## 14. Deterministic builds, diagnostics, and testing
-
-### 14.1 Reproducibility
-
-A `reproducible` build MUST canonicalize or consistently serialize its own manifests, avoid embedding non-deterministic timestamps in hashed outputs, enforce stable traversal and sorting, and specify the influence of locale, toolchain, dependency versions, and environment variables. If a report includes a wall-clock `generatedAt`, that report MUST either be excluded from deterministic byte comparison or use a declared reproducible timestamp source.
-
-### 14.2 Diagnostics
-
-Diagnostics MUST identify code, severity, source file, location when available, affected site, human explanation, and optional suggested fix. Unknown configuration keys, duplicate routes, invalid references, unavailable build toolchains, unsafe paths, and offline violations MUST produce distinct codes.
-
-### 14.3 Development updates and build isolation (PROPOSED)
-
-A development server MUST update only the affected page when an author changes one page's body. It MUST NOT issue a browser-wide `location.reload`, Vite `full-reload`, or equivalent navigation for a content-only edit. The active route MAY replace its page component in place; an inactive route MUST remain untouched and show the new content when next opened. Scroll position and the running application shell SHOULD be preserved.
-
-Incremental preparation MUST retain unchanged generated files and their modification times. It MUST track the changed source page and its declared dependencies, then update only affected generated routes and assets. A change to a single page MUST NOT delete and recreate the complete generated source tree. Navigation or site-configuration changes MAY refresh the navigation configuration, but MUST NOT be misclassified as an ordinary page-body edit.
-
-The development watcher MUST debounce source events before triggering a rebuild and MUST batch consecutive events into a single preparation. Page-body edits MUST reach the incremental preparation and the generated-Markdown hot-update path without restarting the development server.
-
-An explicit production build MUST use generated-source and cache locations isolated from a concurrently running development server and from every other site. Starting a build MUST NOT cause dev-server reloads, remove files being served, or replace another site's caches. Build output publication MUST remain atomic within the selected site's output directory.
-
-Acceptance MUST be demonstrated by keeping two browser routes open, editing one page body, and confirming that only the tab displaying that route updates without a document navigation; the other tab and application shell remain live. A simultaneous build of that site MUST leave the dev server unchanged. The test SHOULD also edit a referenced asset and verify that only pages depending on it are invalidated.
-
-The VitePress adapter implements those requirements with an in-process preparation lock, staged writes that preserve unchanged generated files and pager frontmatter, and a debounced source watcher. Only structural, navigation, or site-configuration changes restart the VitePress server; page-body edits stay in the generated tree. The generated-Markdown HMR handler resolves the changed module by public URL and returns it to Vite so the changed route receives a `js-update` while the local search index replaces the previous page entry. The adapter also exposes a preview entry point that builds the selected site, serves its static output, and rebuilds only that site when its sources change.
-
-### 14.4 Conformance fixtures (PROPOSED)
-
-A reference suite SHOULD contain at least: co-located multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; missing-toolchain diagnostics; static output with no build-tool dependency; ZIP traversal checks; multi-site isolation; incremental single-page HMR without document reload; concurrent build/dev isolation; and canonical manifest comparisons.
-
-### 14.5 Validation layers
-
-| Layer | Required questions |
-|---|---|
-| Source validation | Are required configurations and page fields valid? |
-| Model validation | Is ownership unambiguous? Are routes and references resolvable? |
-| Build validation | Are declared toolchains available, and can they compile the site's sources? |
-| Artifact validation | Are outputs complete, isolated, and free of forbidden dependencies? |
-| Runtime validation | Does the static output and any declared offline behavior pass its deployment profile? |
-| Audit validation | Are SEO and security findings reproducible from their evidence? |
-
-## 15. Implementation roadmap and decision log
-
-### 15.1 Existing baseline (CURRENT)
-
-The supplied reference inventory shows a JavaScript model loader, VitePress preparation pipeline, resource-reference parser, localized guide/collection stages, and validation/verification commands. It does **not** show a self-contained SPMPST CLI, unified dependency provisioning/build pipeline, Rust static builder, ZIP packaging, a formal SEO audit engine, or an ACP implementation.
-
-### 15.2 Implementation order (PROPOSED)
-
-| Phase | Deliverable | Acceptance gate |
-|---|---|---|
-| 0 — Baseline stabilization | characterize and freeze existing v0.1 fixtures | current `docs:check` and `docs:verify` pass |
-| 1 — Simple CLI | workspace discovery, `list`, multi-site `preview`, and `build` | commands work from workspace root without an adjacent-host path |
-| 2 — Unified static build | dependency/toolchain provisioning, compile/minify, asset closure and predictable per-site output | static artifact serves independently and can be published to a static host |
-| 3 — Fast preparation | native implementation where useful; benchmark scan, model, incremental prepare, and full build separately | published measurements identify fixtures, hardware, cold/warm state and stage boundaries |
-| 4 — Offline profile | network audit, cache/service worker strategy, explicit fallback | works after install/cache with network disabled |
-| 5 — SEO audit | link graph and structured recommendations | findings backed by local evidence |
-| 6 — Agent interface | structured introspection, safe changes, protocol-specific bridge | read-only/approved-write tests pass |
-
-The sequence is a recommendation, not a promised release schedule. Independent phases MAY be developed concurrently if core contracts remain stable.
-
-### 15.3 Open architectural decisions
-
-1. Which precise ACP specification and version should the agent bridge implement?
-2. What syntax, escaping, and expression grammar should structured `frontmatter` references adopt?
-3. Should the portable artifact metadata be served publicly, or remain an out-of-webroot sidecar?
-4. Which browser contexts must `offline-complete` certify: HTTPS, localhost, file URL, or desktop shell?
-5. Which HTML sanitization policies are appropriate for trusted authoring versus untrusted contributed content?
-
-These are deliberately unresolved and MUST NOT be converted into implied implementation facts.
-
-## 16. Compatibility and migration
-
-The existing v0.1 tree MUST continue to be consumable by the documented VitePress baseline without adopting the proposed directives or manifests. New features SHOULD be additively gated behind versioned capabilities or extension namespaces. A breaking change to field meaning, routing, or resource grammar MUST have a versioned migration plan and fixture demonstrating before-and-after behavior. The duplicate Appendix A/B material in the supplied historical draft is preserved in Part II as reference history; implementers SHOULD prefer the more detailed first occurrence where the two overlap, and MUST treat actual loader behavior as authoritative until tests are in place.
-
-## 17. Normative and informative references
-
-- **[RFC2119]** S. Bradner, *Key words for use in RFCs to Indicate Requirement Levels*, RFC 2119, March 1997.
-- **[RFC8174]** B. Leiba, *Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words*, RFC 8174, May 2017.
-- **[RFC8785]** A. Rundgren, B. Jordan, S. Erdtman, *JSON Canonicalization Scheme (JCS)*, RFC 8785, June 2020. Relevant as an example for canonical JSON and precise specification style; SPMPST does not automatically adopt JCS for all files.
-- **[HTML]** WHATWG HTML Living Standard. Informative reference for extensible HTML semantics.
-- **[SW]** Service Workers / associated browser platform specifications. Informative for offline support.
-- **[BASELINE]** Supplied `SPMPST v0.1 (draft)` implementation inventory, reproduced in Part II.
+If a PROPOSED requirement conflicts with observed CURRENT behaviour, that is an **unimplemented requirement**, not evidence that the implementation conforms. Source references of the form `path#symbol` come from a reference inventory that has not been revalidated against a live repository for this edition.
 
 ---
 
-# Part II — Existing v0.1 Baseline (historical implementation inventory)
+# Part A: SPMPST-0001 Tree Standard
 
-> **Preservation note:** The following is the supplied v0.1 document, retained as an implementation baseline. It describes the JavaScript/VitePress state and distinguishes planned Rust work. Its duplicated Appendix A/B sections are retained intentionally rather than silently discarded. Requirements in this historical part apply to the **existing v0.1 baseline**, not automatically to the proposed extended profiles in Part I.
+## A1. Scope
 
-# SPMPST v0.1 (draft)
+The tree standard defines authored sources and configuration **before** site generation: directory layout, file naming, frontmatter, routes, languages and fallbacks, collections, concern-based configuration, layouts, logical resources, and public files. It does not define rendering, components, bundling, serving, or deployment (those are Part B).
 
-SPMPST means Standard Portable Markdown Pre-SSG Tree. This draft describes the
-source tree consumed by the current preparation pipeline and the boundary where
-an SSG adapter can consume its model. It records observed behavior; it does not
-claim that a Feluqa Rust SSG exists.
+## A2. Terminology
 
-The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** express
-requirements for this draft.
-
-## 1. Purpose and scope
-
-SPMPST is a portable directory convention and configuration model for human
-documentation authors and static-site adapters. It defines authored Markdown,
-metadata, configuration, and referenced resources before site generation.
-SPMPST is not an SSG, a Markdown dialect, or a runtime component system.
-
-SPMPST provides the source-tree contract, configuration ownership and loading
-rules, portable routing and locale conventions, and logical resource-reference
-syntax. It does not ship an icon or flag catalogue, choose a renderer, bundle
-site-specific components, or dictate where an adapter is installed. An adapter
-resolves logical resource references against its selected site's resource
-catalogue and emits target-ready paths or URLs.
-
-The current implementation is the JavaScript reference loader and preparation
-pipeline. A Feluqa Rust SSG adapter is **PLANNED**.
-
-## 2. Status and versioning
-
-This document specifies **v0.1 (draft)**. A breaking tree, metadata, or model
-change SHOULD increment the major version; additive optional fields SHOULD
-increment the minor version. These versioning rules are **PLANNED** and are not
-currently enforced by a manifest.
-
-## 3. Terminology
-
-- **Tree root**: directory containing `.site/`; the Feluqa site is currently
-  `docs/site-1/`.
-- **Guide**: independently routed documentation collection under `src/guides/`.
+- **Workspace**: a directory (or registry file) from which one or more sites are discovered.
+- **Site**: one tree root plus its declaration (`spmpst.json`, §B3); has a unique `id`.
+- **Tree root**: the directory containing `.site/` (currently `docs/site-1/`).
+- **Guide**: an independently routed documentation collection under `src/guides/`.
 - **Subguide**: a guide registered in the `subguides` configuration array.
 - **Section**: a directory of pages within a guide.
 - **Page**: a Markdown source file that is not metadata or ignored content.
-- **Collection**: a registry entry whose Markdown files are prepared as a list
-  or article feed.
+- **Collection**: a registry entry whose Markdown files are prepared as a list or article feed.
 - **Category**: localized metadata from a collection's `category.json`.
-- **Locale**: a language code such as `en` or `fr`.
-- **Bundle**: a locale JSON file containing language-specific UI and SEO copy.
-- **Concern file**: one `.site.config.json` file with one owner for each key.
-- **Target**: a renderer-specific configuration and resource set.
-- **Adapter**: code that maps the shared model to one target renderer.
-- **Staged tree**: portable Markdown and staged assets produced before SSG
-  rendering.
+- **Locale / Bundle**: a language code (`en`, `fr`) / a `.locale.json` file with language-specific UI and SEO copy.
+- **Concern file**: one `*.site.config.json` file with exactly one owner for each key.
+- **Layout**: a named page template selected for a page (§A12).
+- **Target / Adapter**: a renderer-specific configuration and resource set / code mapping the shared model to it.
+- **Staged tree**: portable Markdown plus staged assets produced before rendering.
 
-## 4. Layers
+## A3. Workspace, site identity, and discovery
 
-```text
-Human-authored tree       docs/site-1/{.site,src,resources}
-           │
-           ▼
-Shared site model          docs/vitepress-site/app/scripts/spmpst/ (target-neutral model)
-           │
-           ▼
-Target adapter             docs/vitepress-site/app/scripts/preparation/ + target resources
-           │
-           ▼
-Rendered site              static pages and browser assets
+### A3.1 Site declaration
+
+Every site has a declaration file stored with its owner at `<tree-root>/.site/spmpst.json` (**PROPOSED** name; **CURRENT** legacy name `vitepress-site.json`). It carries identity, paths and the build contract (the build part is Part B, §B3). Identity and path fields:
+
+| Field | Meaning |
+|---|---|
+| `id` | Stable, unique identifier. Used for caches, scratch space, and output namespacing. |
+| `name` | Human-readable label. |
+| `paths.source` | Tree root (contains `.site/`, `src/`, `resources/`). |
+| `paths.resources` | Site-owned resources (components, hooks, diagrams, assets). Default: `<source>/resources`. |
+| `paths.sharedResources` | Optional shared adapter catalogues (icons, flags). Default: tool-provided. |
+| `paths.output` | Final static output directory. Default: outside the source tree. |
+
+All paths are relative to the directory containing the declaration (never to the process working directory), use `/`, and MUST NOT escape their approved roots.
+
+### A3.2 Workspace registry and discovery
+
+A workspace lists its sites in a registry file whose entries point to site declarations:
+
+```json
+{
+  "sitesPaths": [
+    "../site-1/.site/spmpst.json",
+    "../site-2/.site/spmpst.json"
+  ]
+}
 ```
 
-The source tree SHOULD remain usable by more than one adapter. Target code and
-target-owned resources MAY be packaged with the adapter, outside that tree.
-Source: `docs/vitepress-site/README.md`
+**CURRENT** registry: `docs/vitepress-site/vitepress-site.json` with entries pointing to `docs/site-N/.site/vitepress-site.json`. The environment variable `VITEPRESS_SITE_MANIFEST` can point to another registry. Relative entries resolve from the registry's directory.
 
-The configuration loader MUST return target files as opaque data; target
-validation belongs to the consuming adapter. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
+**PROPOSED:** the registry becomes a workspace file (`spmpst.workspace.json`, found by walking up from the current directory). The registry is the authority. When it is absent, a tool MAY fall back to scanning immediate child directories for `*/.site/spmpst.json`. A tool MUST NOT require an implementation checkout path as a user argument.
 
-## 5. Directory layout and paths
+### A3.3 Site selection and aliases
+
+A command selects sites by any of these aliases (**CURRENT** in `serve.sh --sites`):
+
+1. the site `id` (e.g. `feluqa-docs`),
+2. the `name`,
+3. the basename of the source directory (e.g. `site-1`),
+4. a one-based index as shown by `list`.
+
+An alias that matches more than one site MUST be a blocking diagnostic. Internally a tool resolves every selection to the `id`.
+
+### A3.4 Isolation
+
+A selected site's output, lock state, cache namespace, generated sources, resource catalogue, canonical URL, secrets and environment MUST NOT be inherited from another site's previous run. Distinct sites MUST have distinct `id`s within a workspace.
+
+## A4. Directory layout
 
 ```text
-docs/site-1/
+<tree-root>/
 ├── .site/
-│   ├── *.site.config.json
+│   ├── spmpst.json                    # declaration + build contract (Part B)
+│   ├── *.site.config.json             # concern files (§A11)
 │   ├── locales/*.locale.json
-│   ├── public/*
+│   ├── public/*                       # public text files passed through
 │   ├── schema/*.schema.json
-│   └── targets/*.target.config.json
+│   └── targets/*.target.config.json   # adapter-owned, opaque to the core
 ├── src/
 │   ├── guides/
 │   └── collections/
 └── resources/
-    └── assets/
+    ├── components/  hooks/  diagrams/  assets/   # site-owned
 ```
 
-An adapter MAY keep shared target catalogues beside its application rather
-than inside the source tree. The current VitePress host keeps shared `icons/`
-and `flags/` in `docs/vitepress-site/resources/`; Feluqa-owned `components/`,
-`hooks/`, and `diagrams/` stay in `docs/site-1/resources/`.
+Source roots MUST use these fixed conventions. The tree root MUST be the directory containing `.site/`; the environment variable `SPMPST_ROOT` MAY override it for tooling. Shared adapter catalogues (`icons/`, `flags/`) MAY live beside the adapter instead of inside the tree. **CURRENT:** the VitePress host keeps them in `docs/vitepress-site/resources/`; Feluqa-owned `components/`, `hooks/`, `diagrams/` stay in `docs/site-1/resources/`.
 
-The tree root MUST be the directory containing `.site/`; `SPMPST_ROOT` MAY
-override it for tooling. Source roots MUST use the fixed conventions shown
-above. Source: `docs/vitepress-site/app/scripts/spmpst/layout.mjs#resolveLayout`
+Language variants live **together** in the same directory (`page.en.md`, `page.fr.md`). A separate directory tree per language MUST NOT be required.
 
-Paths in `.site/` MUST be relative to the tree root, use `/`, and MUST NOT
-escape the root. Collection `dir` is relative to `src/collections` and defaults
-to its `id`. Guide config paths are relative to that guide. Markdown relative
-links are relative to their page. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#prepareSources`
+## A5. Paths and safety
 
-Assets referenced from Markdown MAY come from `src/guides`, `src/collections`,
-or source-tree `resources/`; adapter resources are referenced by logical
-SPMPST resource identifiers. Other paths are rejected. Source:
-`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#copyAsset`
+- Paths in `.site/` MUST be relative to the tree root, use `/`, and MUST NOT escape the root via `..`, absolute paths, or symlinks. A symlink MAY be followed only if its canonical target remains within an approved root.
+- Collection `dir` is relative to `src/collections` and defaults to its `id`. Guide config paths are relative to that guide. Markdown relative links are relative to their page.
+- Assets referenced from Markdown MAY come from `src/guides`, `src/collections`, or the source tree's `resources/`; adapter resources are referenced by logical resource identifiers (§A13). Any other path is rejected.
 
-## 6. Source file conventions
+## A6. Source file conventions
 
-Numeric prefixes such as `010-` and `020.` control navigation order and are
-removed from staged names. Language suffixes use `name.<lang>.md`, where the
-current language pattern is `[a-z]{2,3}(-[A-Z]{2})?`; a missing suffix is
-treated as the fallback language. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#cleanDir`
+- **Ordering prefixes.** `010-` and `020.` style numeric prefixes control navigation order and are removed from staged names and routes.
+- **Language suffix.** `name.<lang>.md` with `<lang>` matching `[a-z]{2,3}(-[A-Z]{2})?`. A file without suffix belongs to the fallback language.
+- **Ignored.** Names beginning with `.` and files named `README.md` MUST NOT be published. `sidebar.json`, `guide.config.json` and collection `category.json` are metadata, not pages.
+- **Directory index.** `index.<lang>.md` provides a localized directory index; a prefixed form such as `000-index.en.md` MAY be used and emits the normal `index.md` route. The root fallback index is `src/guides/index.<fallbackLanguage>.md`.
+- **Recommended naming.** A guide SHOULD use a stable, site- or product-qualified directory name (`feluqa.rs/`, `numerimondes.com/`). Sections and pages SHOULD use three-digit prefixes (`000-prologue/`, `010-release-notes.en.md`). This is a recommendation, not a restriction.
 
-**Recommended source naming.** A guide SHOULD use a stable, site- or
-product-qualified directory name (for example, `feluqa.rs/` or
-`numerimondes.com/`) so ownership is clear in a multi-site workspace. Guide
-sections and nested directories SHOULD use three-digit numeric order prefixes
-such as `000-prologue/` and `010-services/`. Authored Markdown pages SHOULD
-use the same prefix before a descriptive slug and language suffix, such as
-`010-release-notes.en.md`. A directory index MAY use a prefixed index name such
-as `000-index.en.md`; preparation removes the numeric prefix and emits the
-normal `index.md` route. This naming is a recommendation, not a restriction on
-valid SPMPST trees.
+## A7. Frontmatter
 
-Names beginning with `.` and files named `README.md` MUST NOT be published.
-`sidebar.json`, `guide.config.json`, and collection `category.json` are
-metadata, not pages. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#scan`
+- Unknown frontmatter MUST be preserved for the target, except fields rewritten by preparation.
+- **v0.1 baseline rule (CURRENT):** every published page MUST define `icon` and `sidebarTitle`; `title` and `description` are recommended; collection articles MAY include `date` and `category`. These two required fields are renderer-shaped vocabulary and are candidates for relaxation in v0.2 (defaults derived from `title` and the file name).
+- Preparation MAY add: `requestedLanguage`, `contentLanguage`, `languageFallbackNotice`, `prev`, `next`, `search`, `collection`, `wordCount`, `readingTime`, `collectionIndex`.
+- A page MAY select a layout with `layout` (§A12).
 
-`index.<language>.md` files provide localized directory indexes. The root
-fallback index is derived as `src/guides/index.<fallbackLanguage>.md`.
-Source: `docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
+## A8. Routing
 
-## 7. Frontmatter
+- Guide routes are configured with `uri.base` and optional `uri.index`; locale prefixes depend on `fallbackLanguage` and `selector.prefixDefaultLanguage`.
+- Route segments are cleaned by removing numeric ordering prefixes. Directory indexes and collection pages are emitted from their source locations.
+- **Collision policy (PROPOSED):** when two sources emit the same destination (including public files versus generated routes, localized aliases, or assets), the tool MUST emit a blocking diagnostic; silent overwrites are prohibited. **CURRENT:** only specific generators detect conflicts; there is no general route-conflict validator.
+- **Identity (PROPOSED):** a stable page identity is the normalized source-relative path plus effective locale (or an explicit unique `id` in frontmatter), distinct from the mutable public route.
 
-Every published page MUST define `icon` and `sidebarTitle`; `title` and
-`description` are recommended. Collection article pages may include `date` and
-`category`. Unknown frontmatter is preserved for the target, except fields
-rewritten by preparation. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#scan`
+## A9. Languages and fallbacks
 
-Preparation may add `requestedLanguage`, `contentLanguage`,
-`languageFallbackNotice`, `prev`, `next`, `search`, `collection`, `wordCount`,
-`readingTime`, and `collectionIndex`. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#frontmatter preparation`
+- `lang.site.config.json` owns `languages`, `fallbackLanguage` and `selector`. Each configured language MUST have exactly one `.site/locales/<language>.locale.json`; extra bundles produce a warning.
+- Locale bundles MUST contain language, UI, search, outline, footer, notice and SEO sections.
+- Localized inline objects resolve: requested language, then fallback language, then the first string value. Missing translations warn, and fail under strict i18n.
+- When a non-default translation is absent, a fallback page is generated from the default-language page and marked with `requestedLanguage`, `contentLanguage` and `languageFallbackNotice`. Notice templates use `{requested}` and `{fallback}` placeholders (the reference implementation currently validates `{requested}`).
 
-## 8. Routing
+## A10. Collections
 
-Guide routes are configured with `uri.base` and optional `uri.index`; locale
-prefixes depend on `fallbackLanguage` and `selector.prefixDefaultLanguage`.
-Route segments are cleaned by removing numeric ordering prefixes. Directory
-indexes and collection pages are emitted from their source locations. The
-current source does not implement a general route-conflict validator; that
-check is **PLANNED**. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`
+- Layout is `article` or `doc`; index layout is `list` or `spotlight`.
+- `category.json` provides localized category names and IDs.
+- Word count counts whitespace-separated words; reading time rounds up at 200 words per minute.
+- Category-specific routes and route-conflict checks are **PLANNED**.
 
+## A11. Configuration
 
-## 9. Languages and fallbacks
-
-`lang.site.config.json` owns the configured languages, fallback language, and
-selector policy. Each configured language MUST have one
-`.site/locales/<language>.locale.json` bundle. Extra bundle files produce a
-warning. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
-
-Localized inline objects are resolved using the requested language, then the
-fallback language, then the first string value. Missing inline translations
-warn normally and fail with `--strict-i18n`. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#localizedValue`
-
-Fallback notice text uses `{requested}` and `{fallback}` placeholders where
-provided. The reference implementation currently validates `{requested}` for
-the notice string. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#prepareSources`
-
-## 10. Collections
-
-Collection layout is `article` or `doc`; index layout is `list` or `spotlight`.
-`category.json` provides localized category names and IDs. Article word counts
-use whitespace-separated words and reading time rounds up at 200 words per
-minute. Source: `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#readingMetrics`
-
-Category-specific routes are **PLANNED**. Current collection indexes and
-article metadata are generated by preparation. Source: `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#collection compilation`
-
-## 11. Site configuration
+### A11.1 Concern files
 
 | Concern | File | Main keys |
 |---|---|---|
-| Definitions | `definitions.site.config.json` | `site`, `subguides`, `iconFallback` |
+| Definitions | `definitions.site.config.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
 | Languages | `lang.site.config.json` | `languages`, `fallbackLanguage`, `selector` |
 | Navigation | `topbar.site.config.json` | `items`, `theme` |
 | Collections | `collections.site.config.json` | `collections` |
 | Appearance | `appearance.site.config.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
 | Links | `links.site.config.json` | `socialLinks` |
 | SEO | `seo.site.config.json` | `siteUrl`, `path`, `icon` |
+| Layouts (**PROPOSED**) | `layouts.site.config.json` | `layouts`, `rules` (§A12) |
 
-The loader MUST reject unknown concerns, unknown keys, and duplicate ownership;
-it MUST report a likely owner or spelling suggestion when available. `$schema`
-is ignored by the loader. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
+The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files, and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files (`targets/*.target.config.json`) are returned as **opaque data**; validation belongs to the consuming adapter.
 
-Locale bundles MUST contain language, UI, search, outline, footer, notice, and
-SEO sections. Target files are opaque to the shared loader. Source: `docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig`
+### A11.2 Forward compatibility
 
-`public/*` files are emitted with one trailing newline removed. Source: `docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
+Configuration is a versioned, closed schema: unknown keys are rejected unless they live in a declared extension namespace. By contrast, HTML, unknown frontmatter, and ordinary public files MUST be preserved wherever the consumer can represent them.
 
-## 12. Assets and resources
+```json
+{ "extensions": { "org.example.structured-data": { "enabled": true } } }
+```
 
-Assets are copied to `__docs-assets/<sha256><extension>`; the current digest is
-SHA-256 of file bytes. Source: `docs/vitepress-site/app/scripts/preparation/source-stage.mjs#copyAsset`
+Namespaced extensions MUST NOT silently redefine core keys.
 
-Icon IDs resolve against the selected adapter's icon catalogue; the current
-VitePress catalogue has `lucide`, `custom`, `heroicons`, and `simple-icons`
-families. An unrecognized icon uses the configured fallback. Sidebar icons may
-also be local SVG paths. Source:
-`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#findIcon`
+### A11.3 Minimal configuration
 
-Portable JSON and frontmatter may use logical resource references:
+A basic site SHOULD need very little: `definitions`, `lang` and one locale bundle, with all other concerns defaulted by the tool. `spmpst new` (§B5) generates exactly that.
+
+## A12. Layout registry (PROPOSED)
+
+**CURRENT:** layouts and page shells are selected through site hooks and renderer-shaped frontmatter (`layout`, `sidebar: false`, `aside: false`). **PROPOSED:** a declarative registry in configuration, so no code is needed for common cases:
+
+```json
+{
+  "layouts": {
+    "doc":     { "component": "DocLayout" },
+    "article": { "component": "ArticleLayout", "features": { "toc": true, "pager": true } },
+    "landing": { "component": "LandingLayout", "features": { "sidebar": false, "toc": false } }
+  },
+  "rules": [
+    { "match": "src/collections/articles/**", "layout": "article" },
+    { "match": "src/guides/*/index.*.md",     "layout": "landing" }
+  ]
+}
+```
+
+- `component` is an opaque string interpreted by the adapter/toolchain; the core only validates references and layout names.
+- Resolution order: page frontmatter `layout`, then first matching `rules` entry, then the guide default, then `doc`.
+- Neutral `features` keys replace renderer flags (`sidebar: false`, `aside: false`). Adapters translate them.
+- Hooks remain available as an escape hatch; configuration wins when both are present and the conflict is reported.
+
+## A13. Resources, assets, and public files
+
+### A13.1 Logical resource references
+
+Grammar, whole-string form only:
+
+```text
+@spmpst::resources::<kind>::<id>
+```
+
+- `kind` is `icon` or `flag`.
+- `<id>` is a slash-separated Unicode path of letters, numbers, `.`, `_`, `-`, `/`; it MUST start with a letter or number, MUST NOT contain empty or `.`/`..` segments, and is normalized to NFC.
+- The core parses the reference into a typed record `{ namespace, kind, id }`. It does **not** touch the filesystem. The adapter resolves it against its selected catalogue and emits a target-ready path or URL. An unknown or escaping resource is a build error; resolution MUST NOT fetch from the network.
 
 ```text
 @spmpst::resources::icon::lucide/book-open
@@ -777,101 +287,533 @@ Portable JSON and frontmatter may use logical resource references:
 @spmpst::resources::flag::catalog/countries/fr
 ```
 
-The grammar is `@spmpst::resources::<kind>::<id>`. In v0.1, `kind` is `icon`
-or `flag`; `<id>` is a slash-separated Unicode path without `..`, normalized
-to NFC. SPMPST parses the reference and lets an adapter resolve it. The reference does not
-embed a machine path or require one global icon catalogue. The VitePress
-adapter replaces references with validated file paths before rendering. Source:
-`docs/vitepress-site/app/scripts/spmpst/resources.mjs#parseResourceReference`
-and `docs/vitepress-site/app/scripts/preparation/resolve-resource.mjs#resolveVitepressResource`.
+Resolution applies at explicit points (configuration values, page `icon` frontmatter, sidebar icons, language flags). It is **not** a general text-substitution mechanism in Markdown prose.
 
-Language flags are provided by the VitePress host under
-`docs/vitepress-site/resources/flags/`. Mermaid settings are Feluqa-site-owned
-at `docs/site-1/resources/diagrams/`; another registered site can provide its own
-settings and diagrams with its source tree.
-Mermaid rendering may generate light and dark variants. Source:
-`docs/vitepress-site/app/scripts/preparation/stages/transform-markdown.mjs#renderDiagram`
+### A13.2 Assets
 
-## 13. Pre-SSG pipeline
+Local assets referenced from Markdown or frontmatter are copied to content-addressed names (`__docs-assets/<sha256><ext>`), written only if bytes changed. Identical bytes deduplicate.
 
-The VitePress pipeline orders source discovery, guide and collection compilation,
-theme metadata emission, Markdown transforms, language fallback pages, SEO
-pages, directory indexes, pagination, and cleanup. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#preparation entrypoint`
+### A13.3 Public files
 
-Incremental preparation is enabled by `DOCS_PREPARE_INCREMENTAL=1`. Concurrent
-prepare processes serialize through `flock`. Source:
-`docs/vitepress-site/app/scripts/preparation/pipeline.mjs#lock handling`
+Files in `.site/public/*` are published as site-owned text files without changes to SPMPST: `llms.txt`, `robots.txt`, `humans.txt`, `security.txt`, verification files, and future discovery documents. SPMPST assigns no semantics to them. **CURRENT:** one trailing newline is removed on emission.
 
-The output is deterministic for unchanged sources in the current baseline;
-incremental-cache portability is not separately guaranteed.
+## A14. HTML and Markdown passthrough
 
-## 14. Output contract
+- The core MUST NOT keep a restrictive allowlist of HTML elements: unknown valid element names, `data-*`, ARIA attributes and new `<meta>` forms MUST pass through to an HTML-capable adapter.
+- Sanitization is a separate, explicit, versioned security policy for untrusted input. Unknown markup MUST NOT bypass it.
+- Markdown MUST NOT treat arbitrary inline text as an executable directive. `@spmpst::` is recognized only in documented contexts.
 
-The portable output is staged Markdown plus content-addressed assets. Generated
-navigation, component registration, hook registration, styles, and theme files
-are adapter-specific. Source: `docs/vitepress-site/app/scripts/preparation/pipeline.mjs#preparation entrypoint`
+## A15. Structured references (EXPERIMENTAL)
 
-## 15. Target adapters
+Candidates, **not implemented** and MUST NOT be relied upon:
 
-An adapter maps the shared model and its own target config to renderer inputs.
-The current target is VitePress; its components, hooks, and catalogues are
-under `docs/vitepress-site/resources/`. The Feluqa Rust SSG adapter is
-**PLANNED**.
+```text
+@spmpst::self::frontmatter::title
+@spmpst::self::frontmatter::author.name
+@spmpst::page::handbook/intro::frontmatter::description
+```
 
-## 16. Conformance
+If standardized: references resolve against a typed context (never by code execution); `self` is always the page being processed; cycles fail deterministically; missing keys yield a diagnostic; output is escaped per context; cross-page references participate in dependency tracking. A future revision decides whether this syntax is metadata-only, a directive, or a component prop. Implementations SHOULD NOT parse it in prose until then.
 
-Run `npm --prefix docs/vitepress-site run docs:check` to validate
-configuration and source frontmatter. Run
-`npm --prefix docs/vitepress-site run docs:verify` to compare generated
-snapshots using canonical JSON object-key order while preserving array order.
-A portable cross-adapter conformance fixture directory is **PLANNED**.
-Source: `docs/vitepress-site/app/scripts/dev/docs-check.mjs#validation` and
-`docs/vitepress-site/app/scripts/dev/verify.mjs#collect`
+## A16. Versioning and naming debt
 
-## 17. Planned features
+- A breaking tree, metadata or model change SHOULD increment the major version; additive optional fields the minor version. A manifest enforcing this is **PLANNED**.
+- Existing v0.1 trees MUST remain consumable. A breaking change needs a migration plan and a before/after fixture.
+- **v0.2 candidates (discussion only):** `subguides` → `guides`; drop `subguides[].label`; `sidebarTitle` → neutral navigation title; `topbar` → `header`; clarify `uri.entry`; `documentationNotices` → `notices`; replace renderer-shaped flags with neutral layout features (§A12); add `layouts.site.config.json`.
 
-- **PLANNED**: collection category pages and category route conflict checks.
-- **PLANNED**: localized concept files and hover definitions.
-- **PLANNED**: footer link groups.
-- **PLANNED**: the Feluqa Rust SSG and target-neutral conformance fixtures.
+---
 
-## 18. Naming debt candidates for v0.2
+# Part B: SPMPST-0002 Tooling Standard
 
-Candidates include `subguides` → `guides`, removing `subguides[].label`,
-`sidebarTitle` → a neutral navigation title, `topbar` → `header`, clarifying
-`uri.entry`, `documentationNotices` → `notices`, and replacing renderer-shaped
-frontmatter flags such as `sidebar: false` and `aside: false` with neutral
-layout keys. These are discussion candidates, not current requirements.
+## B1. Delivery shape and principles
 
-## Appendix A — VitePress-specific surface
+The primary product is a **standalone CLI** (`spmpst`). A desktop GUI MAY wrap the same engine; host integrations (such as the VitePress pipeline) remain adapters. No integration may be required for the CLI to discover, build or preview a registered site. All surfaces SHOULD share validators and produce semantically equivalent output for the same inputs.
 
-The following items belong to the current renderer adapter or emitted renderer
-contract. They are not promises of the shared SPMPST model:
+Principles:
 
-| Surface | Current location or output | Coupling |
+1. **Simple by default.** Small commands, minimal config, defaults from presets.
+2. **Self-contained.** After installation, execution depends only on the workspace, the declared site inputs, and spmpst-managed caches/toolchains, never on a neighbouring implementation checkout.
+3. **Per-site isolation.** One site per build context; caches, output and locks namespaced by `id`.
+4. **Static output.** Authored Markdown becomes HTML at build time. Site components MAY need JavaScript; they are the site's concern.
+5. **Site-owned frontend.** The site declares how its frontend is built (§B3, §B10).
+6. **Honest performance claims.** Targets are scenario-based and measured (§B9).
+
+## B2. Pipeline model
+
+```mermaid
+flowchart TD
+    A[Workspace / registry] --> B[Select sites]
+    B --> C[Load tree + spmpst.json]
+    C --> D[Validate: config, routes, resources]
+    D --> E[Prepare: staged Markdown, assets, metadata]
+    E --> F{engine}
+    F -->|builtin PLANNED| G[Markdown to HTML + default shell]
+    F -->|toolchain CURRENT| H[Site-declared commands: install, compile, bundle]
+    G --> I[Static output in stage dir]
+    H --> I
+    I --> J[Check generated links]
+    J --> K[Atomic publish to output dir]
+    K --> L[preview / deploy]
+```
+
+Every stage MUST emit machine-readable diagnostics for blocking failures. The prepared model SHOULD be JSON-serializable and free of framework runtime objects.
+
+## B3. `spmpst.json`: declaration and build contract
+
+`spmpst.json` (in `.site/`) holds everything the tool needs to build the site, including the commands to execute for bundling. This is how SPMPST stays agnostic of frontend frameworks: the site says **what to run**, SPMPST orchestrates it. Minimal form:
+
+```json
+{ "specVersion": "0.1", "id": "site-1", "name": "My docs" }
+```
+
+Full form (**PROPOSED**; the current VitePress host realizes the same data through its registry, declaration and `site.mjs`):
+
+```json
+{
+  "$schema": "./schema/spmpst.schema.json",
+  "specVersion": "0.1",
+  "id": "feluqa-docs",
+  "name": "Feluqa documentation",
+  "paths": {
+    "source": "..",
+    "resources": "../resources",
+    "sharedResources": "../../vitepress-site/resources",
+    "output": "../../../docs-output/site-1"
+  },
+  "engine": "toolchain",
+  "toolchain": {
+    "preset": "vitepress",
+    "cwd": "../../vitepress-site",
+    "install": { "command": "npm ci", "when": "missing" },
+    "build":   { "command": "vitepress build app" },
+    "dev":     { "command": "vitepress dev app --host {host} --port {port} --strictPort" },
+    "network": "install-only"
+  }
+}
+```
+
+### B3.1 Fields
+
+| Field | Meaning |
+|---|---|
+| `engine` | `builtin` (PLANNED native Markdown to HTML with a default shell, no JS toolchain) or `toolchain` (run site-declared commands). |
+| `toolchain.preset` | Named preset supplying defaults for `install`, `build`, `dev` (e.g. `vitepress`). Explicit fields override the preset. |
+| `toolchain.cwd` | Working directory for the commands, relative to the declaration. |
+| `toolchain.install` | Command to provision dependencies; `when`: `missing`, `always`, or `never`. |
+| `toolchain.build` | Command(s) that read the prepared inputs and write static files to `{stageDir}`. |
+| `toolchain.dev` | Command for the interactive development server (OPTIONAL). |
+| `toolchain.network` | `none`, `install-only`, or `full`; informs controls and reports. |
+| `toolchain.env` | Extra environment variables (secrets MUST NOT be copied into artifacts). |
+
+### B3.2 Placeholders and environment
+
+Commands MAY use `{siteId}`, `{sourceDir}`, `{generatedDir}`, `{stageDir}`, `{outDir}`, `{cacheDir}`, `{host}`, `{port}`. The tool also exports `SPMPST_SITE_ID`, `SPMPST_ROOT`, `SPMPST_GENERATED_DIR`, `SPMPST_STAGE_DIR`, `SPMPST_OUT_DIR`, `SPMPST_CACHE_DIR`, `SPMPST_MODE` (`build`, `dev`, `preview`).
+
+**CURRENT** equivalents set by `site.mjs`: `SPMPST_ROOT`, `DOCS_OUTPUT_DIR`, `VITEPRESS_SITE_ID`, `VITEPRESS_SITE_DECLARATION`, `VITEPRESS_SITE_ROOT`, `VITEPRESS_TRASH_DIR`, `VITEPRESS_RESOURCES_DIR`, `VITEPRESS_SITE_RESOURCES_DIR`, `HOST`, `PORT`.
+
+### B3.3 Contract with the output
+
+After `build` succeeds, `{stageDir}` MUST contain a deployable static site. The tool then validates links and publishes atomically. The destination host needs neither the tool nor the toolchain.
+
+### B3.4 Trust
+
+`install` and `build` commands execute project and package code. The CLI MUST state this clearly, MUST print the commands it runs, MUST allow inspection (`--dry-run`) and disabling installs (`--no-install`), and SHOULD offer network restriction where practical.
+
+## B4. Engines
+
+| Engine | Status | Description |
 |---|---|---|
-| Theme slots | `.site/targets/vitepress.target.config.json` | Renderer slot names and theme component registration |
-| Site registry | `docs/vitepress-site/vitepress-site.json` | Lists site declarations; paths are resolved relative to the registry |
-| Site declaration | `docs/site-1/.site/vitepress-site.json` | Points the host registry to the Feluqa source tree |
-| Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` | Feluqa-owned components, hooks, diagrams |
-| Shared resources | `docs/vitepress-site/resources/{icons,flags}/` | Host-level icon and flag catalogues |
-| Styles and renderer config | Target config and generated theme files | CSS, renderer theme API, Vite config |
-| Search and Markdown options | Target config | Renderer local search and Markdown plugin settings |
-| Emitted frontmatter | Staged Markdown | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
-| Embedded component tags | Authored Markdown | Vue component syntax such as `<CollectionSpotlightCards />` |
-| Generated modules | `docs/vitepress-site/.trash/feluqa-docs/vitepress-generated/` | Component, hook, style, theme and collection imports |
-| CSS classes | Target components and styles | Renderer DOM and theme class names |
+| `toolchain` + preset `vitepress` | **CURRENT** | Node host prepares generated Markdown and metadata, VitePress/Vite render. Chosen for design, reactivity and search bar. |
+| `toolchain` + custom commands | PROPOSED | Any site-declared commands (Vite, Astro, esbuild, plain scripts). |
+| `builtin` | **PLANNED** | Native Rust Markdown to HTML with a default shell and prebuilt components; no Node needed. |
 
-This inventory describes current coupling, not a recommendation for other
-adapters. Source:
-`docs/vitepress-site/app/scripts/preparation/runtime.mjs#toVitepressRuntime`
-and `docs/vitepress-site/app/scripts/preparation/content-stage.mjs#prepareContent`.
+The tree standard (Part A) is identical for all engines. A site MAY start on `toolchain` and move to `builtin` without changing content.
 
-## Appendix B — Minimal tree and staged result
+## B5. CLI contract
+
+### B5.1 Commands
+
+| Command | Purpose |
+|---|---|
+| `spmpst list` | Report registered sites: index, `id`, name, source root, output directory. |
+| `spmpst new <dir>` / `init` | Create a minimal tree and `spmpst.json` with defaults (PROPOSED). |
+| `spmpst check [sites]` | Validate configuration, frontmatter, routes, resources (CURRENT: `docs:check`). |
+| `spmpst prepare [sites]` | Run preparation only. |
+| `spmpst build [sites]` | Prepare, build, validate, publish atomically; report each output directory. |
+| `spmpst preview [sites]` | Build as needed, serve built output over local HTTP, rebuild on change by default. |
+| `spmpst dev [sites]` | Interactive development server with in-place updates, when the engine offers it. |
+| `spmpst clean [sites]` | Remove generated files and caches of the selected sites only. |
+| `spmpst deploy [sites]` | Publish static output (§B11). |
+| `spmpst capabilities` | Report version, engines, profiles (`--format json`). |
+
+### B5.2 Selection syntax
+
+All of these are equivalent and MUST be accepted:
+
+```sh
+spmpst preview site-1 site-2          # canonical: positional
+spmpst preview --sites=site-1,site-2  # conventional flag
+spmpst preview sites=site-1,site-2    # key=value form
+```
+
+Without a selection: an interactive terminal prompts; a non-interactive process selects all sites for `list`/`build`, and fails for commands that start servers unless `--all` is given. (**CURRENT** `serve.sh`: selects all in non-interactive mode.)
+
+### B5.3 Options
+
+`--root <dir>` (workspace), `--out <dir>` (single site only), `--host`, `--port` (first of a sequence; each selected site gets the next free port, **CURRENT** default `127.0.0.1:4173`), `--watch` / `--no-watch`, `--no-install`, `--dry-run`, `--strict-i18n`, `--json` (machine-readable diagnostics), `--timing` (per-stage timings).
+
+### B5.4 Behaviour
+
+- The CLI discovers the workspace from the current directory or `--root`.
+- `preview` MUST serve built output over HTTP itself; no separate server command, report served URLs, stop cleanly on interruption (children terminated on `SIGINT`/`SIGTERM`).
+- Default output is predictable (`dist/<site-id>/`) and outside source trees.
+- Exit codes: `0` success, `1` build/validation failure, `2` usage error, `3` toolchain unavailable.
+- The simple workflow MUST NOT expose an implementation path such as `docs/vitepress-site/` as a user argument.
+
+## B6. Build semantics
+
+1. **Isolation.** One build binds one site identity, resolved config snapshot, engine and dependency graph. Changing site A's sources MUST NOT change site B's output unless a declared shared dependency changed.
+2. **Staging.** Builds write to `<output-parent>/tmp/<output-basename>.stage-<pid>` with a separate generated-source and cache namespace, so a concurrent dev server is unaffected.
+3. **Atomic publication.** Rename existing output to a backup, rename stage to output, delete backup; on failure delete the stage and restore the backup. Cleanup MUST be limited to the selected output directory.
+4. **Link check.** Local links in generated HTML are validated after the build. This is not an external link check.
+5. **Collisions.** Duplicate destinations are blocking (§A8).
+6. **Diagnostics.** Each has `code`, `severity`, source file, location when available, `siteId`, explanation and optional suggested fix. Distinct codes for: unknown keys, duplicate routes, invalid references, unavailable toolchain, unsafe paths.
+7. **Locking.** Concurrent preparations for one site serialize through a per-site lock with stale-lock detection and a bounded wait (**CURRENT**: `prepare.lock`, 30 s).
+
+## B7. Preview and development
+
+- **preview** (production-like): serves the already built static output; on source change (debounced) rebuilds only the changed site and swaps output atomically; the server process keeps running. The browser MAY need a refresh. (**CURRENT**: `./serve.sh --preview`.)
+- **dev** (authoring): serves with in-place updates (§B8). Availability depends on the engine.
+- Starting a build MUST NOT make a running dev server reload, delete files it serves, or replace another site's caches.
+
+## B8. Incremental updates (generic requirements)
+
+These are engine-neutral; the engine-specific realizations are in Parts C and D.
+
+1. **Minimal invalidation.** Editing one page body MUST invalidate only that page and pages that declare a dependency on it (including referenced assets). It MUST NOT delete and recreate the whole generated tree.
+2. **Retention.** Unchanged generated files keep their bytes and modification times.
+3. **Classification.** Page-body edits, navigation/structure edits and site-configuration edits are distinct classes. Only structure/navigation/configuration changes MAY restart or reconfigure the dev server.
+4. **Debounce and batching.** Source events are debounced and consecutive events batched into one preparation.
+5. **No document reload for body edits (dev).** A content-only edit updates the affected route in place: other open routes and the application shell stay live; scroll position and shell state SHOULD be preserved.
+6. **Resilience.** A failed incremental preparation is logged; the watcher stays alive for the next edit.
+7. **Acceptance test.** Keep two routes open in two tabs; edit one page body; only the tab showing that route updates, without a document navigation; a simultaneous build of that site leaves the dev server unchanged. Then edit a referenced asset and verify only dependent pages are invalidated.
+
+## B9. Performance targets and benchmarking
+
+Performance claims MUST name the **scenario**, the **stage**, the **machine**, the **cache state** and the **fixture**. The following are **design targets for the native engine**, not measurements. The current Node implementation does not claim them.
+
+### B9.1 Scenarios
+
+| Scenario | Definition |
+|---|---|
+| **cold** | Fresh process, no caches, full source tree processed. |
+| **warm** | Caches present, nothing changed; the tool verifies inputs (stat/size/mtime, content hash when needed) and does no rendering. |
+| **one-page edit** | One page body changed; incremental preparation and re-render of that page only. |
+
+### B9.2 Stages (reported separately)
+
+`discovery`, `validation`, `preparation` (staged Markdown, routes, metadata), `markdown→HTML`, `toolchain/bundle` (not controlled by SPMPST), `publish`. A **full build** that includes a JavaScript bundler is a separate figure from native preparation; a preparation target MUST NOT be presented as a full-build target unless a measured full build meets it.
+
+### B9.3 Reference fixture and indicative targets
+
+Fixture: 900 Markdown pages (about 1,500 words each, two locales co-located, ordinary Markdown, no components), on a stated mid-range laptop, local SSD.
+
+| Scenario | Stage | Target (to be refined by measurement) |
+|---|---|---|
+| warm | discovery + validation + cache check | ≤ 10 ms |
+| one-page edit | preparation + Markdown→HTML for that page | ≤ 20 ms |
+| cold | preparation + Markdown→HTML, parallel | low hundreds of ms |
+
+An earlier ambition of preparing 900 pages in 5 ms is **retained only for the warm "nothing changed" scenario**, where it is plausible; it is not a cold-render target.
+
+### B9.4 Implementation notes
+
+A native engine can use a fast CommonMark/GFM parser such as `comrak` or `pulldown-cmark`, bounded parallelism across files, async I/O, and a persistent content-hash cache. Output MUST NOT depend on scheduling order.
+
+## B10. Components and frontend toolchains
+
+SPMPST does not define components. A site adds components with its framework's ordinary files, imports and dependencies, and declares in `spmpst.json` how they are built. The tool's job: provision the declared toolchain (§B3), run it, collect the static outputs (HTML, CSS, JS, SVG, images, fonts), report failures, and serve the result.
+
+- A site MAY mix frameworks if its own build handles the composition.
+- A site MAY use prebuilt components supplied by SPMPST, a framework ecosystem, or any package source. SPMPST SHOULD offer maintained presets and prebuilt components for common needs so a basic site does not require assembling a frontend stack.
+- Whether Markdown containing framework tags has meaningful output without the framework runtime is the site's concern; authors decide whether components need fallback content.
+- Production output MUST NOT inadvertently include dev tooling (dev middleware, debug endpoints, source maps leaking secrets). Framework runtime code bundled for a declared interactive component is a legitimate production dependency.
+
+**CURRENT:** only Vue SFCs below `project.components` are auto-registered (PascalCase names from file names, collisions rejected, registered globally in the theme). A host Vite config can add plugins, but other frameworks' compilation and registration are the site's setup.
+
+## B11. Deploy
+
+`spmpst deploy` is deliberately thin (**PROPOSED**):
+
+- `spmpst deploy site-1 --target github-pages` pushes the static output to the configured publishing branch, or
+- `spmpst new workflow github-pages` generates a CI workflow that runs `spmpst build` and publishes the output directory.
+
+Other targets (`rsync`, generic upload) MAY be added as providers. Deploy MUST publish only the selected site's output and MUST NOT require the tool on the destination. **CURRENT:** the normal build does not deploy anywhere; deployment is a separate operation.
+
+## B12. Security of the tooling
+
+- Writes outside the approved output root MUST be prevented; archive extraction paths validated (when archives are produced).
+- Secrets from the environment, `.env` files or private config MUST NOT be copied into public artifacts without explicit intent.
+- Build dependencies and scripts MUST be inspectable; network use and generated runtime dependencies SHOULD be reported; lockfiles/integrity pinning SHOULD be supported.
+- Telemetry and trackers MUST be opt-in for generated sites; the builder MUST NOT add analytics, remote fonts or session replay just because a renderer enables them by default.
+- Deeper requirements (CSP, supply chain, threat model) belong to the security companion material in Part E.
+
+## B13. Conformance fixtures (PROPOSED)
+
+At minimum: co-located multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; duplicate routes; symlink escape attempt; missing-toolchain diagnostic; static output independent of the build tool; multi-site isolation; incremental single-page update; concurrent build and dev isolation; layout resolution order; alias ambiguity. Current gates: `docs:check` (config + frontmatter) and `docs:verify` (snapshot comparison with canonical object-key order, preserving array order). A portable cross-adapter fixture directory is **PLANNED**.
+
+---
+
+# Part C: Current implementation (informative, CURRENT)
+
+This part describes `docs/vitepress-site/` as observed. It is not a specification.
+
+## C1. What the host owns
+
+The shared Node/VitePress host owns the CLI wrappers, preparation pipeline, VitePress adapter, Vite configuration, theme, shared icon/flag catalogues, dependencies and caches. It does not own authored pages. Each site owns `.site/`, `src/`, `resources/`. The host prepares a generated VitePress source tree in `.trash/<site-id>/` and asks VitePress to render or serve it. Output defaults to `docs-output/`.
+
+```mermaid
+flowchart TD
+    A[serve.sh] --> B[vitepress-site.json registry]
+    B --> C[site .site/vitepress-site.json]
+    C --> D[site tree + resource roots]
+    D --> E[SPMPST config loader + VitePress runtime adapter]
+    E --> F[preparation pipeline]
+    F --> G[generated Markdown + metadata in .trash/site-id]
+    G --> H[VitePress + Vite]
+    H --> I{mode}
+    I --> J[static build in isolated staging dir]
+    I --> K[dev server + watcher]
+    I --> L[static preview server + optional watched rebuild]
+    J --> M[docs-output/site]
+```
+
+## C2. Entry points
+
+There is no `docs/vitepress-site/server.sh`; the entry point is `serve.sh`. Smaller scripts under `app/bin/` delegate to `app/scripts/site.mjs`. npm commands: `docs:prepare`, `docs:build`, `docs:serve`, `docs:preview`, `docs:clean`, `docs:check`, `docs:new`, `docs:verify`, each calling `node app/scripts/site.mjs <command>`, selecting a site with `--site <id>` or `VITEPRESS_SITE_ID` (prompt if interactive, failure otherwise).
+
+| Invocation | Behaviour |
+|---|---|
+| `./serve.sh --list` | Print each site's ID, name, source and output directories; start nothing. Cannot combine with other modes. |
+| `./serve.sh --sites=site-1 --build` | Verify the VitePress executable exists, then `site.mjs build --site <id>` per site, sequentially. |
+| `./serve.sh --sites=site-1` | Per site: `site.mjs serve`: full preparation, `vitepress dev`, plus a separate watcher. |
+| `./serve.sh --sites=site-1 --preview` | Build each site, then `site.mjs serve-build` (VitePress `serve()` on built output) plus `site.mjs watch` with `DOCS_WATCH_BUILD=1` (rebuild on change). |
+| `node app/scripts/site.mjs preview --site <id>` | Build once and serve; no rebuild watcher. |
+
+Ports start at `PORT` (default `4173`), `HOST` defaults to `127.0.0.1`. `--build` and `--preview` cannot be combined. Without `--sites`: prompt when interactive, all sites otherwise.
+
+## C3. Registry and declaration
+
+Registry `docs/vitepress-site/vitepress-site.json`:
+
+```json
+{ "sitesPaths": ["../site-1/.site/vitepress-site.json", "../site-2/.site/vitepress-site.json"] }
+```
+
+Declaration (`docs/site-1/.site/vitepress-site.json`):
+
+```json
+{
+  "id": "feluqa-docs",
+  "name": "Feluqa documentation",
+  "sourcePath": "..",
+  "resourcesPath": "../../vitepress-site/resources",
+  "siteResourcesPath": "../resources",
+  "outputPath": "../../../docs-output/site-1"
+}
+```
+
+Paths resolve from the declaration's directory. `resourcesPath` and `siteResourcesPath` are optional (defaults: host `resources/`, site-root `resources/`). The shell's lightweight reader uses ID, name, source and output; `site-registry.mjs` validates all fields. The target config also contains an `outputDir`, but normal commands set `DOCS_OUTPUT_DIR` from the declaration, which is authoritative (temporarily replaced by a staging path during builds).
+
+**Mapping to the target model:** `sourcePath` → `paths.source`; `resourcesPath` → `paths.sharedResources`; `siteResourcesPath` → `paths.resources`; `outputPath` → `paths.output`; the toolchain is implicit (VitePress preset hard-wired in `site.mjs`).
+
+## C4. Dependencies and delegation
+
+Dependencies are installed once for the host (`npm install` in `docs/vitepress-site/`); the wrapper does not install them and stops with a hint when the VitePress executable is missing.
+
+| Tool | Delegated work |
+|---|---|
+| Node.js | Registry helper, app CLI, config loader, preparation, watcher. |
+| VitePress | `dev`, `build`, static `serve`; Markdown→HTML, bundles, route rendering, local search. |
+| Vite + Vue toolchain | Dev server/HMR, SFC compilation, resolution, CSS, bundling, chunking. |
+| `@mermaid-js/mermaid-cli` (`mmdc`) | Mermaid fences to cached SVG during preparation. |
+| Shiki, Tailwind, PostCSS, `ogl` | Highlighting, styles, WebGL effects in site-owned components. |
+
+## C5. Static build lifecycle
+
+1. Shell validates options and resolves registry entries; no port in build mode.
+2. Check host dependencies (VitePress binary; `mmdc` for uncached Mermaid).
+3. `node app/scripts/site.mjs build --site <id>`; the app registry re-resolves and validates the declaration.
+4. Derive site, shared-resource, site-resource, output and per-site trash roots; working directory is the host app directory.
+5. Create staging: `<output-parent>/tmp/<output-basename>.stage-<pid>` and a backup path. Preparation receives the stage as `DOCS_OUTPUT_DIR` and `<site-trash>/build` as `VITEPRESS_TRASH_DIR`.
+6. `prepareSources`: load and validate config, target settings, languages, guide/collection paths, project directories and theme slots; scan guides and collections; normalize prefixes and locale suffixes; map routes; collect frontmatter and sidebar records; verify labels and icons; copy assets; stage public files and optional flags.
+7. `prepareContent`: resolve logos, fonts, OG images; read guide configs; derive collection indexes and article metadata; register Vue SFCs; validate theme slots; emit generated JSON/TS modules (colors, fonts, collections, components, theme, hooks, styles, navigation, sidebar, SEO helpers).
+8. Ordered stages (§C7).
+9. VitePress loads `app/.vitepress/config.ts`, which builds navigation, sidebars, locales, head transforms; `app/config/vite.config.ts` aliases `@docs` (generated tree) and `@generated` (metadata), resolves site-component imports from host dependencies, serves generated public assets, provides generated-Markdown HMR in dev. A configured `project.viteConfig` or host-root Vite config is merged.
+10. `vitepress build` writes static HTML/assets to the stage (Vite chunk-size warnings are not suppressed).
+11. `.spmpst/build-timestamp` is added; `check-file-links.mjs` validates the stage.
+12. Atomic publish with backup and restore on failure.
+
+## C6. Development server lifecycle
+
+1. Full (non-incremental) preparation; the generated Markdown root is cleaned and recreated.
+2. Spawn `vitepress dev --host <host> --port <port> --strictPort` and a separate `scripts/dev/watch.mjs`.
+3. The theme extends `vitepress/theme`, registers generated project components, applies per-route colors/fonts/logo/favicon and page enhancements.
+4. The watcher debounces events for **60 ms**, batches paths, and runs incremental preparation (`DOCS_PREPARE_INCREMENTAL=1`): unchanged staged files keep bytes and mtime; stale files are removed at cleanup.
+5. **Page-body edits** stay on the generated-Markdown HMR path: the Vite post-HMR hook maps the changed generated path to its public URL and returns that module, so the active route receives a `js-update` without document navigation. The MiniSearch entry for the page is discarded before re-adding, avoiding duplicate-ID errors.
+6. **Structural changes** (directory/file structure, route-affecting metadata such as `sidebarTitle`, any `.site` change) alter the structural signature; the watcher touches the VitePress config file to request a restart. The signature hashes source paths/directories and sidebar titles, all `.site` config contents and source-file metadata; page bodies and asset bytes are excluded.
+7. Failed preparation is logged; the watcher keeps running. It covers `src/`, `.site/`, shared and site resources. On termination both children receive SIGTERM.
+
+**Mapping to §B8:** minimal invalidation = incremental prepare; classification = structural signature; debounce = 60 ms watcher; no reload = `js-update` via the HMR hook; isolation = separate build trash namespace.
+
+## C7. Preparation pipeline
+
+`app/scripts/preparation/pipeline.mjs` takes a per-site lock (`prepare.lock`, stale detection, 30 s wait) and runs:
+
+| # | Operation | Role |
+|---|---|---|
+| 1 | `prepareSources` | Site tree/config → staged records, route map, navigation order, copied inputs. |
+| 2 | `prepareContent` | Collections, style imports, component registry, hook modules, colors/fonts/SEO/sidebar/theme metadata. |
+| 3 | `runTransformMarkdown` | Normalize links, stage local assets, render Mermaid, collection frontmatter. |
+| 4 | `runLanguageFallbacks` | Create localized copies for absent translations. |
+| 5 | `runSeoPages` | Localized SEO/FAQ pages from locale config. |
+| 6 | `runDirectoryIndexes` | Missing index pages and no-slash aliases (excluded from search). |
+| 7 | `runPager` | `prev`/`next` frontmatter, avoiding self-links via aliases. |
+| 8 | `runCleanup` | Remove stale files (incremental only); print counts. |
+
+`DOCS_PREPARE_TIMING=1` prints per-stage timings; `DOCS_PREPARE_NO_LOCK=1` disables the lock. Writers preserve unchanged bytes and the pager-owned frontmatter block. Output is deterministic for unchanged sources; incremental-cache portability is not guaranteed.
+
+## C8. Resources in practice
+
+- `resolveResourceReferences` walks strings, arrays and objects; `resolveVitepressResource` resolves against the shared host catalogue (`lucide`, `custom`, `heroicons`, `simple-icons`; flags under `flags/language/` and `flags/catalog/`). `icon::book-open` without family tries `lucide/`, `custom/`, `heroicons/`, `simple-icons/` in that order; `flag::fr` is shorthand for `flag::language/fr`.
+- Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), topbar icons (plain names or `INHERIT`).
+- `copyAsset()` confines sources to allowed roots, names by SHA-256 plus extension, writes only on change.
+- Mermaid: palette-colored, rendered by `mmdc` with the site's JSON config, cached by hash of config and diagram text, emitted as light and dark SVG; the browser theme adds zoom/open and light/dark switching.
+
+## C9. Components, hooks, styles
+
+- Vue SFCs below `project.components` are discovered recursively and registered globally in generated `components.ts`; theme slots (target config and `guide.config.json`) are validated against them.
+- Hooks by convention under `project.hooks`: `documentation-hooks` (+ optional `.css`) exports `DocumentationNotice`, `DocumentationLastModified` (no-op components when absent); `documentation-seo` exports `transformDocumentationHead` (no-op when absent).
+- Configured styles are emitted as imports in a generated TypeScript module.
+
+## C10. Current limits
+
+- Requires Node, host `node_modules`, VitePress, and Mermaid CLI for uncached diagrams; not yet the self-contained `spmpst` binary.
+- VitePress/Vue-specific; automatic multi-framework compilation is not implemented.
+- `@spmpst::resources` is not a general Markdown expression system.
+- No deployment step; no general route-conflict validator.
+- No claim of 900 pages in 5 ms; renderer build and asset processing are separate costs.
+- `docs/vitepress-site/` is a neighbouring host today.
+
+## C11. Code map
+
+| Responsibility | Implementation |
+|---|---|
+| Shell, mode selection, ports, child lifecycle | `docs/vitepress-site/serve.sh` |
+| Registry, site selection, environment, dispatch, atomic build, serve/watch/clean | `app/scripts/site-registry.mjs`, `app/scripts/site.mjs` |
+| Path resolution | `app/scripts/paths.mjs`, `app/scripts/spmpst/layout.mjs` |
+| Config discovery/ownership/validation, resource references | `app/scripts/spmpst/config/`, `app/scripts/spmpst/resources.mjs` |
+| Runtime conversion and resource lookup | `app/scripts/preparation/runtime.mjs`, `resolve-resource.mjs` |
+| Source scan, routes, icons, flags, assets | `app/scripts/preparation/source-stage.mjs` |
+| Collections, generated modules, components, hooks | `app/scripts/preparation/content-stage.mjs` |
+| Pipeline ordering, lock, timing | `app/scripts/preparation/pipeline.mjs` |
+| Markdown transform | `app/scripts/preparation/stages/transform-markdown.mjs` |
+| Fallbacks, SEO pages, indexes, pager, cleanup | `app/scripts/preparation/stages/` |
+| VitePress config composition | `app/.vitepress/config/` |
+| Browser theme | `app/.vitepress/theme/index.ts` |
+| Vite aliases, asset serving, Markdown HMR | `app/config/vite.config.ts` |
+| Watchers and preview server | `app/scripts/dev/watch.mjs`, `preview-server.mjs` |
+| Validation | `app/scripts/dev/docs-check.mjs`, `verify.mjs` |
+
+## C12. VitePress-specific surface (not shared SPMPST guarantees)
+
+| Surface | Location / output |
+|---|---|
+| Theme slots | `.site/targets/vitepress.target.config.json` |
+| Site registry / declaration | `vitepress-site.json` (host) / `.site/vitepress-site.json` |
+| Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` |
+| Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
+| Styles, search, Markdown options | Target config and generated theme files |
+| Emitted frontmatter | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
+| Embedded component tags | Vue syntax, e.g. `<CollectionSpotlightCards />` |
+| Generated modules | `docs/vitepress-site/.trash/<site>/vitepress-generated/` |
+| CSS classes | Target components and styles |
+
+## C13. Staged example
+
+For the minimal tree in Appendix 1 with `fallbackLanguage: "en"` and default-language prefixing disabled, `src/guides/handbook/index.en.md` stages at `.trash/<site>/generated-guides/handbook/index.md` and its French translation at `.../generated-guides/fr/handbook/index.md`. Collection pages stage below their collection route, relative links are rewritten, referenced assets land under `__docs-assets/`.
+
+---
+
+# Part D: Future native implementation (informative, PLANNED)
+
+## D1. Intent
+
+A single Rust binary `spmpst` implementing Part A and Part B without Node for the `builtin` engine, and orchestrating Node-based toolchains (via `spmpst.json`) for sites that need frontend frameworks. VitePress remains a supported preset for sites that want its design, reactivity and search bar.
+
+## D2. Proposed structure
+
+- `spmpst-core`: tree loader, concern-file validation, routing, locales, resource references, diagnostics, JSON-serializable site model (target-neutral).
+- `spmpst-md`: Markdown→HTML (e.g. `comrak`), parallel per-page rendering, content-hash cache.
+- `spmpst-engine-builtin`: default shell, prebuilt components, layouts from the registry (§A12), client-side search index.
+- `spmpst-toolchain`: runs site-declared commands, provisions toolchains, enforces network/trust controls.
+- `spmpst-serve`: embedded HTTP server for preview and dev (no external server process).
+- `spmpst-cli`: command surface of §B5.
+
+## D3. Realizing §B8 natively
+
+| Requirement | Native approach |
+|---|---|
+| Minimal invalidation | Per-page dependency graph (links, assets, includes, layout); content-hash keys; only dirty nodes re-render. |
+| Retention | Write-if-changed with byte comparison; mtime untouched on equal bytes. |
+| Classification | Page-body vs structure vs config computed from the graph, not from restart heuristics. |
+| Debounce | Native file watcher with debounce and batching. |
+| No document reload | Dev server pushes a per-route update over WebSocket/SSE; the injected client swaps the affected route's content region; other routes and the shell untouched. |
+| Isolation | Per-site cache directory and stage directory; builds never touch the dev server's state. |
+| Atomic publish | Rename-based swap as in §B6. |
+
+## D4. Migration path
+
+1. Freeze current fixtures (`docs:check`, `docs:verify` pass).
+2. Introduce the `spmpst` CLI as a thin front over the existing Node host (commands of §B5, `spmpst.json` read, host path hidden).
+3. Move preparation to Rust, keep VitePress as `toolchain` preset.
+4. Ship the `builtin` engine for plain documentation sites.
+5. Add companion capabilities (Part E) as separate specifications.
+
+---
+
+# Part E: Companion specifications (outlines)
+
+These are **not** part of SPMPST-0001/0002 and are specified later, each on its own. Constraints already agreed are recorded so they are not lost.
+
+## E1. SPMPST-0003: SEO audit (`seo-audit`)
+
+Analyzes, from local source and build output (no network by default): internal link graph (orphans, unreachable, broken links, redirect chains, click depth), external links, page metadata (title, description, canonical, robots, sitemap, Open Graph, duplicates), content structure (headings, anchors, link text, alt text), localization (`hreflang`, reciprocity), assets. Findings carry `id`, `severity`, `rule`, `siteId`, `affectedRoutes`, `evidence`, `recommendation`, `basis` (`measured` or `inferred`) and a class (**fix now**, **investigate**, **opportunity**). Deterministic findings are distinguished from heuristics; no ranking claims; live URL checks only as an explicit, rate-limited online phase, and a network failure is never proof of a broken site.
+
+## E2. SPMPST-0004: Offline-complete (`offline-complete`)
+
+Distinguishes self-contained output, network-independent operation, and offline browser availability. An offline-complete build includes all required assets locally, has no mandatory external requests, provides a cache/service-worker or bundle strategy, an offline fallback route, declares unsupported functions, and passes a test with the network blocked after install/cache. `file://` support must be declared and tested, never assumed. External analytics, embeds, CDNs and hosted fonts are opt-in and listed in a dependency manifest.
+
+## E3. SPMPST-0005: Agent interface (`agent`)
+
+Structured JSON inputs/outputs, stable identifiers, machine-readable diagnostics, dry-run diffs. Logical operations (not a frozen API): `listSites`, `inspectSite`, `readPage`, `listRoutes`, `validate`, `proposeEdit`, `applyApprovedEdit`, `build`, `getDiagnostics`, `auditSeo`, `auditOffline`, `capabilities`. Writes require authorization; workspace boundaries enforced; secrets denied by default; authored content treated as untrusted (prompt injection). The protocol ("ACP") is whichever agent communication protocol the implementation selects and versions; this must be pinned before interoperability claims.
+
+## E4. SPMPST-0006: Reproducible builds, manifests and archives
+
+Stable bytes and a documented input closure; canonical manifest (hashes over emitted bytes), stable file order/timestamps/permissions; one archive per site with normalized relative paths and no escaping symlinks; wall-clock fields excluded or sourced reproducibly. Illustrative manifest: `{ specVersion, siteId, profile, engine, entrypoints, externalDependencies, files: [{ path, sha256 }] }`. Public versus out-of-webroot placement of metadata is an open decision.
+
+## E5. Security and supply chain
+
+Threat model: malicious dependencies, remote scripts, build-plugin execution, untrusted HTML, path traversal, symlink attacks, secret leakage, malicious archives, unexpected network connections. Controls: output-root confinement, declared sanitization policy, inventory of external origins, lockfile/integrity pinning, strict CSP support, opt-in telemetry. Hook phases (`beforeDiscover`, `afterLoad`, `beforeRoutes`, `afterRoutes`, `beforeRender`, `afterRender`, `beforePackage`, `afterAudit`) are **candidate identifiers** requiring a registry with ordering and data contracts before interoperability is claimed.
+
+---
+
+# Appendix 1: Minimal tree
 
 ```text
 docs/
 ├── .site/
+│   ├── spmpst.json
 │   ├── definitions.site.config.json
 │   ├── lang.site.config.json
 │   ├── locales/en.locale.json
@@ -890,51 +832,20 @@ docs/
         └── first.fr.md
 ```
 
-The guide config declares the route base `handbook`; the collection registry
-uses `id: "articles"` and its conventional source directory. With English as
-the fallback language and default-language prefixing disabled, the source page
-`src/guides/handbook/index.en.md` stages at
-`docs/vitepress-site/.trash/feluqa-docs/generated-guides/handbook/index.md`, while its French translation stages at
-`docs/vitepress-site/.trash/feluqa-docs/generated-guides/fr/handbook/index.md`. The collection pages are staged below
-their configured collection route. Content files retain their frontmatter and
-relative links are rewritten to staged locations. Exact collection pagination
-and target-generated modules depend on the renderer configuration.
+With `fallbackLanguage: "en"`, the output contains `index.md`, `handbook/index.md`, `fr/index.md`, `fr/handbook/index.md`, the collection article route and referenced assets under `__docs-assets/`. Exact prefixes depend on the guide URI and selector configuration. A complete runnable sample requires the mandatory fields of each concern file and locale schema.
 
-The example is illustrative; a complete runnable sample requires the
-mandatory fields in each concern file and locale bundle schema. Source:
-`docs/vitepress-site/app/scripts/spmpst/config/assemble.mjs#assembleConfig` and
-`docs/vitepress-site/app/scripts/preparation/source-stage.mjs#stagedPath`.
+# Appendix 2: Open decisions
 
-## Appendix A — VitePress-specific fields and behavior
+1. **Workspace file name and discovery:** confirm `spmpst.workspace.json` plus optional scan fallback, and `.site/spmpst.json` as the new declaration name (with a legacy alias for `vitepress-site.json`).
+2. **`spmpst.json` build schema:** finalize `toolchain` fields, placeholders and the preset mechanism.
+3. **Layout registry schema** (§A12): matching syntax, feature keys, adapter translation.
+4. **Required frontmatter** (`icon`, `sidebarTitle`): relax in v0.2 or keep.
+5. **Structured references** (`@spmpst::self::...`): metadata-only, directive, or component prop.
+6. **Built-in engine scope:** default shell design, search, which prebuilt components ship.
+7. **Deploy providers:** GitHub Pages first; which others.
+8. **ACP:** which protocol and version (Part E3).
 
-The target configuration owns theme slots, Vue component and hook locations,
-Vite configuration, CSS imports, Markdown options, local search, outline level,
-and build output directory. Staged output currently includes renderer-shaped
-frontmatter (`layout`, `sidebar`, `aside`, `search`, `lang`, pager fields),
-generated Vue component tags, and local-search metadata. These fields are
-adapter behavior, not neutral SPMPST guarantees.
+# Appendix 3: Change log
 
-## Appendix B — Minimal example
-
-```text
-docs/
-├── .site/
-│   ├── definitions.site.config.json
-│   ├── lang.site.config.json
-│   ├── locales/en.locale.json
-│   └── locales/fr.locale.json
-├── src/
-│   ├── guides/index.en.md
-│   ├── guides/index.fr.md
-│   ├── guides/handbook/guide.config.json
-│   ├── guides/handbook/index.en.md
-│   ├── guides/handbook/index.fr.md
-│   └── collections/articles/first.en.md
-└── resources/
-    └── icons/lucide/book-open.svg
-```
-
-With `fallbackLanguage: "en"`, the staged tree contains `index.md`,
-`handbook/index.md`, `fr/index.md`, `fr/handbook/index.md`, the collection
-article route, and any referenced assets under `__docs-assets/`. Exact route
-prefixes depend on the guide URI and language selector configuration.
+- **0.1.0-draft.2 (2026-10-31):** split into tree standard (A) and tooling standard (B); framework handling moved to site-declared `spmpst.json` build contract; VitePress behaviour moved to informative Part C and native plan to Part D; scenario-based performance targets; CLI syntax unified (positional, `--sites`, `key=value`); layout registry, `new`, `deploy` added; companions (SEO, offline, agent, reproducible, security) reduced to outlines; duplicate appendices removed.
+- **0.1.0-draft (historical):** JavaScript/VitePress baseline inventory.
