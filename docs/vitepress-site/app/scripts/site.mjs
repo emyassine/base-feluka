@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, rename, rm } from 'node:fs/promises'
+import { mkdir, rename, rm, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, resolve } from 'node:path'
 import { selectSite, appDirectory } from './site-registry.mjs'
 
@@ -45,8 +45,9 @@ if (command === 'prepare') {
   run(process.execPath, [join(appDirectory, script), ...forwardedArgs()])
 } else if (command === 'build') {
   await mkdir(dirname(site.outputRoot), { recursive: true })
-  const stage = join(dirname(site.outputRoot), `.${basename(site.outputRoot)}.stage-${process.pid}`)
-  const backup = join(dirname(site.outputRoot), `.${basename(site.outputRoot)}.backup-${process.pid}`)
+  const stagingRoot = resolve(dirname(site.outputRoot), 'tmp')
+  const stage = join(stagingRoot, `${basename(site.outputRoot)}.stage-${process.pid}`)
+  const backup = join(stagingRoot, `${basename(site.outputRoot)}.backup-${process.pid}`)
   await rm(stage, { recursive: true, force: true })
   // Keep a production build isolated from a concurrently running dev server.
   // A normal preparation clears its generated Markdown tree, and sharing that
@@ -59,6 +60,8 @@ if (command === 'prepare') {
   try {
     prepare(buildEnv)
     run(vitepress, ['build'], buildEnv)
+    await mkdir(join(stage, '.spmpst'), { recursive: true })
+    await writeFile(join(stage, '.spmpst', 'build-timestamp'), `${new Date().toISOString()}\n`)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)
     try { await rename(site.outputRoot, backup) } catch (error) { if (error.code !== 'ENOENT') throw error }
     await rename(stage, site.outputRoot)
@@ -109,6 +112,7 @@ if (command === 'prepare') {
     join(appDirectory, '.vitepress/cache'),
   ]) await rm(path, { recursive: true, force: true })
   await rm(site.outputRoot, { recursive: true, force: true })
+  await rm(resolve(dirname(site.outputRoot), 'tmp'), { recursive: true, force: true })
   process.stdout.write(`[site] Cleaned ${site.id} generated files and ${site.outputRoot}\n`)
 } else {
   process.stderr.write('Usage: node scripts/site.mjs <prepare|build|serve|preview|serve-build|watch|clean|check|new|verify> [args] [--site <id>]\n')

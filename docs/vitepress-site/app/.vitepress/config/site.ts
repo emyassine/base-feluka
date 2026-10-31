@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
@@ -49,6 +50,8 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     generatedFonts, routeBase, assetMime, assetDataUri,
     transformDocumentationHead: seoHeadTransform,
   })
+  const generatedBuildTimestampPath = join(outputDirectory, '.spmpst', 'build-timestamp')
+  const generatedBuildTimestamp = existsSync(generatedBuildTimestampPath) ? readFileSync(generatedBuildTimestampPath, 'utf8').trim() : new Date().toISOString()
   return defineConfig({
   title: siteConfig.site.name,
   lang: defaultLanguage,
@@ -62,6 +65,10 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   mpa: false,
   vite: { configFile: join(siteDirectory, 'config/vite.config.ts') },
   markdown: siteConfig.markdown,
+  transformHtml: (html: string) => html.replace(
+    /<html([^>]*)>/,
+    `<html$1>\n<!------ @spmpst generated build at ${generatedBuildTimestamp} ------>`
+  ),
   transformHead,
 
   themeConfig: {

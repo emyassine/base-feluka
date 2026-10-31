@@ -50,6 +50,11 @@ const siteViteConfig = {
   // Component-owned assets live under the configured component root.
   server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.treeRoot, paths.resourcesDirectory, paths.siteResourcesDirectory, componentDirectory])] } },
   cacheDir: paths.vitepressCache,
+  build: {
+    // The documentation bundles intentionally exceed small chunk thresholds;
+    // deployment-level code splitting is handled outside the docs build.
+    chunkSizeWarningLimit: 5000,
+  },
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {
     alias: [
