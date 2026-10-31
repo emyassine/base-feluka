@@ -238,7 +238,7 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
-  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], hideIconFromParents = false, hideIcon = false) => {
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], showIconFromParents: string[] = [], showParentsName = true, hideIcon = false) => {
     const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
     return [...generatedCollections]
       .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
@@ -247,11 +247,11 @@ function navigation(language = defaultLanguage): any[] {
         return !selectedDepths || selectedDepths.has(level)
       })
       .sort((left: any, right: any) => left.path.localeCompare(right.path))
-      .map((collection: any) => {
+      .flatMap((collection: any) => {
         const link = collection.links[language] ?? collection.links[defaultLanguage]
         const route = collection.route ?? collection.id
         const metadata = sidebarMetadata[route]
-        const icon = showIcons && !hideIconFromParents && !hideIcon ? metadata?.icon : undefined
+        const icon = showIcons && !hideIcon && showIconFromParents.includes(collection.id) ? metadata?.icon : undefined
         const articles = collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []
         const rootParts = route.split('/')
         const tree: any = { children: new Map(), articles: [], orderName: '' }
@@ -282,7 +282,7 @@ function navigation(language = defaultLanguage): any[] {
             const metadata = sidebarMetadata[`${route}/${child.pathParts.join('/')}`]
             const folderLabel = metadata?.labels?.[language] ?? child.segment.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
             const icon = showIcons && !hideIcon ? article && sidebarPageIcons[article.url] : undefined
-            const pageLabel = article ? [...parents, article.title].join(' · ') : ''
+            const pageLabel = article ? [...(showParentsName ? parents : []), article.title].join(' · ') : ''
             const pageItem = article ? [{
               text: itemText(pageLabel, undefined, undefined, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
               link: article.url,
@@ -299,8 +299,8 @@ function navigation(language = defaultLanguage): any[] {
           link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
         }
-        if (hideChildren.includes(collection.id) || !items.length) return linkItem
-        return { text: label, items }
+        if (hideChildren.includes(collection.id) || !items.length) return [linkItem]
+        return showParentsName ? [{ text: label, items }] : items
       })
   }
   const localize = (value: string | Record<string, string> | undefined) =>
@@ -338,7 +338,7 @@ function navigation(language = defaultLanguage): any[] {
       return {
         text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon),
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
-        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? [], item.items.hideIconFromParents === true, item.items.hideIcon === true),
+        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? [], item.items.showIconFromParents ?? [], item.items.showParentsName !== false, item.items.hideIcon === true),
       }
     }
     if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)

@@ -133,7 +133,7 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren', 'hideIconFromParents', 'hideIcon'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'hideIcon'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
@@ -143,11 +143,13 @@ function validateSubguideSelector(value, location) {
     || new Set(value.hideChildren).size !== value.hideChildren.length)) {
     throw new Error(`${location}.hideChildren must be a unique array of configured collection ids and is only valid for source "collections"`)
   }
-  for (const key of ['hideIconFromParents', 'hideIcon']) {
-    if (value[key] !== undefined && typeof value[key] !== 'boolean') throw new Error(`${location}.${key} must be a boolean`)
+  if (value.showIconFromParents !== undefined && (value.source !== 'collections' || !Array.isArray(value.showIconFromParents)
+    || value.showIconFromParents.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
+    || new Set(value.showIconFromParents).size !== value.showIconFromParents.length)) {
+    throw new Error(`${location}.showIconFromParents must be a unique array of configured collection ids and is only valid for source "collections"`)
   }
-  if (value.source === 'collections' && value.hideIconFromParents === false) {
-    throw new Error(`${location}.hideIconFromParents must be true with the native VitePress adapter; its collection section headings are plain text and cannot render parent icon markup`)
+  for (const key of ['showParentsName', 'hideIcon']) {
+    if (value[key] !== undefined && typeof value[key] !== 'boolean') throw new Error(`${location}.${key} must be a boolean`)
   }
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)

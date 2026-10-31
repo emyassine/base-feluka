@@ -44,7 +44,8 @@
         "hideChildren": ["articles"],
         "depth": "all",
         "icon": true,
-        "hideIconFromParents": true,
+        "showIconFromParents": ["articles"],
+        "showParentsName": false,
         "hideIcon": false
       }
       }

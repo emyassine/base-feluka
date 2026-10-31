@@ -43,7 +43,8 @@
                   "source": { "enum": ["subguides", "subguides no-guide-index", "collections"] },
                   "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
                   "hideChildren": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
-                  "hideIconFromParents": { "type": "boolean", "default": true },
+                  "showIconFromParents": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "default": [] },
+                  "showParentsName": { "type": "boolean", "default": true },
                   "hideIcon": { "type": "boolean", "default": false },
                   "depth": {
                     "oneOf": [
