@@ -22,6 +22,7 @@
 	    { "name": { "en": "Pricing", "fr": "Tarifs" }, "href": "https://numerimondes.com", "external": true },
 	    { "name": { "en": "FAQ", "fr": "FAQ" }, "href": "/faq" },
 	    { "name": { "en": "Sitemap", "fr": "Plan du site" }, "href": "/sitemap.xml" },
+	    { "name": { "en": "RSS", "fr": "RSS" }, "href": "/rss.xml" },
 	    { "name": { "en": "Contact", "fr": "Contact" }, "href": "https://numerimondes.com", "external": true },
 	    { "name": { "en": "X.com", "fr": "X.com" }, "href": "https://x.com/ausrobdev", "external": true },
 	    { "name": { "en": "LinkedIn", "fr": "LinkedIn" }, "href": "#", "external": true }

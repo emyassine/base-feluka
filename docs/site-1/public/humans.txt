@@ -11,3 +11,4 @@ LinkedIn: https://www.linkedin.com/in/elmoumenyassine
 Name: Feluqa Documentation
 Description: Documentation for the Feluqa platform and unified namespace.
 Sitemap: /sitemap.xml
+RSS: /rss.xml
