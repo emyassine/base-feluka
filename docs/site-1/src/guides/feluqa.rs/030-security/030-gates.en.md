@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Gates"
-icon: "shield"
+icon: "@spmpst::icon::shield"
 title: "Gates: Protecting a Function"
 description: "The #[gate] attribute: syntax, options, resolution order, secure-by-default rules and the builder equivalent."
 summary: "Documents the planned #[gate] attribute for protecting service functions, resource hooks, API handlers, actions, and custom pages. It covers options, composition rules, secure-by-default compile errors, explicit public access, the builder equivalent, and the checks and audit behavior the macro is intended to generate."

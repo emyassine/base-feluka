@@ -2,14 +2,14 @@
 title: "SPMPST — Standard Portable Markdown Pre-SSG Tree"
 short_title: "SPMPST Specification Suite"
 status: "Draft / Implementation in Progress"
-version: "0.1.0-draft.5"
+version: "0.1.0-draft.6"
 date: "2026-10-31"
 ---
 
 # SPMPST — Standard Portable Markdown Pre-SSG Tree
 
 **Status:** Draft, implementation in progress
-**Version:** 0.1.0-draft.5
+**Version:** 0.1.0-draft.6
 **Date:** 31 October 2026
 
 ## 0. Preface
@@ -226,6 +226,7 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
 | Links | `spmpst.links.json` | `socialLinks` |
 | SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
+| Resources | `spmpst.resources.json` | ordered icon and flag sources; site-specific icon sources |
 | Layouts (**PROPOSED**) | `spmpst.layouts.json` | `layouts`, `rules` (§A13) |
 
 The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
@@ -247,7 +248,7 @@ An extension is an **optional capability**, declared by an identifier, that adds
 ### A12.2 What an extension may add
 
 - configuration keys, in its own configuration file;
-- resource kinds, written `<extension-id>.<kind>` in `@spmpst::resources::<kind>::<id>`;
+- resource kinds, written `@spmpst::<extension-id>.<kind>::<id>`;
 - layouts and layout rules (§A13);
 - page-level frontmatter fields, under one key equal to its id;
 - diagnostic codes, prefixed with its id;
@@ -331,25 +332,45 @@ A port, cache directory or parallelism level is a preference of a machine or a u
 
 ## A14. Resources, assets, and public files
 
-### A14.1 Logical resource references
+### A14.1 Logical icon and flag references
 
-Grammar, whole-string form only:
-
-```text
-@spmpst::resources::<kind>::<id>
-```
-
-- In the core, `kind` is `icon` or `flag`; extension kinds are `<extension-id>.<kind>`.
-- `<id>` is a slash-separated Unicode path of letters, numbers, `.`, `_`, `-`, `/`; it MUST start with a letter or number, MUST NOT contain empty or `.`/`..` segments, and is normalized to NFC.
-- The core parses the reference into a typed record `{ namespace, kind, id }` and does **not** touch the filesystem. The adapter resolves it against its catalogue and emits a target-ready path or URL. An unknown or escaping resource is a build error; resolution MUST NOT fetch from the network.
+Core references use short whole-string forms:
 
 ```text
-@spmpst::resources::icon::lucide/book-open
-@spmpst::resources::flag::language/fr
-@spmpst::resources::flag::catalog/countries/fr
+@spmpst::icon::<name>
+@spmpst::icon::<siteId>/<name>
+@spmpst::flag::<code>
 ```
 
-Resolution applies at explicit points (configuration values, page `icon` frontmatter, sidebar icons, language flags). It is **not** a general text-substitution mechanism in Markdown prose.
+Examples:
+
+```text
+@spmpst::icon::book-open
+@spmpst::icon::feluqa-docs/prologue-book
+@spmpst::flag::fr
+```
+
+`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. A site-qualified icon is resolved from that site's registered icon sources. An unqualified icon is resolved from the merged workspace registry; its deterministic resolution order is the ordered source array. Within a source, the logical name is the SVG basename without `.svg`. A flag code is resolved from the merged flag registry and MUST be unique in that workspace.
+
+Each site's `.site/spmpst.resources.json` declares ordered icon and flag sources. A source `uri` MAY be a local path relative to the site root or a version-pinned HTTPS collection URL. A conforming tool merges the declared sources into a build registry, indexes logical names, detects duplicate flag codes, and reports unresolved references as build errors. Remote collections are acquired during preparation or an explicit resource-sync step, cached, and bundled into static output; lookup during rendering MUST NOT make network requests. The core parses references into typed records and does not touch the filesystem.
+
+```json
+{
+  "icons": {
+    "sources": [
+      { "id": "lucide", "uri": "https://icons.example.test/lucide/0.468.0/" },
+      { "id": "feluqa-docs", "uri": "resources/icons/" }
+    ]
+  },
+  "flags": {
+    "sources": [
+      { "id": "language", "uri": "https://flags.example.test/language/1.2.0/" }
+    ]
+  }
+}
+```
+
+Resolution applies at documented explicit points (configuration values, page `icon` frontmatter, sidebar icons, and language flags). It is **not** general text substitution in Markdown prose.
 
 ### A14.2 Assets
 
@@ -722,8 +743,8 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 
 ## C8. Resources in practice
 
-- `resolveResourceReferences` walks strings, arrays and objects; `resolveVitepressResource` resolves against the shared host catalogue (`lucide`, `custom`, `heroicons`, `simple-icons`; flags under `flags/language/` and `flags/catalog/`). `icon::book-open` without family tries `lucide/`, `custom/`, `heroicons/`, `simple-icons/` in that order; `flag::fr` is shorthand for `flag::language/fr`.
-- Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `spmpst.sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), topbar icons (plain names or `INHERIT`).
+- `.site/spmpst.resources.json` declares ordered local source roots. The adapter resolves `@spmpst::icon::<name>` against those roots and `@spmpst::icon::<siteId>/<name>` against a registered site-specific root. `@spmpst::flag::<code>` resolves the code against configured flag roots. The current adapter does not download remote sources or merge source declarations across the entire workspace.
+- Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `spmpst.sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), and topbar icons.
 - `copyAsset()` confines sources to allowed roots, names by SHA-256 plus extension, writes only on change.
 - Mermaid: palette-colored, rendered by `mmdc` with the site's JSON config, cached by hash of config and diagram text, emitted as light and dark SVG; the browser theme adds zoom/open and light/dark switching.
 
@@ -735,7 +756,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 
 ## C10. Current limits and remaining work in this stage
 
-The current stage is the Node/VitePress adapter described in this part. The direct filename migration is complete: the host uses `spmpst.workspace.json`, both site declarations use `.site/spmpst.json`, and concern/guide/sidebar/category metadata uses the `spmpst.*.json` names. Loaders intentionally reject the previous filenames. The collection `categoryFile` validator and both site schemas now require `spmpst.<name>.json`.
+The current stage is the Node/VitePress adapter described in this part. The direct filename migration and short logical icon/flag references are implemented: both sites use `.site/spmpst.resources.json`, authored icon names no longer expose collection paths or hashes, and loaders reject the previous metadata names. The adapter resolves local resource sources only. Remote URL acquisition and a workspace-wide merged resource index remain unfinished.
 
 The following work remains before this stage can claim the broader SPMPST tooling contract:
 
@@ -745,7 +766,7 @@ The following work remains before this stage can claim the broader SPMPST toolin
 4. **Route and filesystem safety.** Add whole-output route collision detection across authored pages, generated aliases/indexes, public files, localized fallbacks, and assets. Add conformance coverage for traversal and symlink escapes.
 5. **Extensions and layout registry.** Implement extension declaration/config validation and required/optional unknown-extension behavior, followed by the proposed renderer-neutral layout registry and adapter translation. Neither capability is implemented by the current host.
 6. **Portable conformance fixtures.** Build the shared cross-adapter fixture suite in §B14. `docs:check` and `docs:verify` remain VitePress-host checks rather than proof of conformance by another implementation.
-7. **Build concurrency and isolation.** The reported two-site preview failed during VitePress bundle cleanup with `ENOTEMPTY` in the shared `app/.vitepress/.temp/__docs-assets` directory. Separate output and per-site trash directories do not isolate this VitePress temporary directory when build flows overlap. Give each build a unique VitePress temp/cache root or add a host-wide build lock, then rerun and record end-to-end builds for both sites, static-link validation, multi-site isolation, and incremental single-page updates. The first selected site's earlier build completed and passed its 209-page local-link check; the failed preview is not a successful two-site build.
+7. **Build concurrency and isolation.** Separate serialized builds now pass for Feluqa (209 HTML pages, all local links resolve) and Numerimondes (407 HTML pages, all local links resolve). A preview attempt overlapped an already-running build and failed during VitePress cleanup with `ENOTEMPTY` in the shared `app/.vitepress/.temp/__docs-assets` directory. Add a host-wide build lock or a unique VitePress temp/cache root per invocation, then verify overlapping independent commands and incremental single-page updates.
 
 These are stage backlog items, not completed behavior. The present implementation remains useful as the VitePress adapter and does not yet satisfy all of Part B.
 
@@ -753,7 +774,7 @@ These are stage backlog items, not completed behavior. The present implementatio
 
 - Requires Node, host `node_modules`, VitePress, and Mermaid CLI for uncached diagrams; not yet a self-contained binary.
 - VitePress/Vue-specific; automatic multi-framework compilation is not implemented.
-- `@spmpst::resources` is not a general Markdown expression system.
+- `@spmpst::icon::...` and `@spmpst::flag::...` resolve only at documented resource points; they are not a general Markdown expression system.
 - No extension mechanism, no layout registry, no deployment step, no general route-conflict validator.
 - No claim of 900 pages in 5 ms; renderer build and asset processing are separate costs.
 - `docs/vitepress-site/` is a neighbouring host today.
@@ -980,6 +1001,7 @@ The example uses the current SPMPST-owned filenames. With `fallbackLanguage: "en
 
 # Appendix 3: Change log
 
+- **0.1.0-draft.6 (2026-10-31):** replaced verbose resource references with `@spmpst::icon::...` and `@spmpst::flag::...`; specified site-declared icon/flag sources and the merged build-time registry; recorded remote-source acquisition as unfinished adapter work.
 - **0.1.0-draft.5 (2026-10-31):** documented remaining work for the current VitePress stage, including standardized declaration/toolchain support, schema enforcement, route/filesystem safety, extensions/layouts, conformance fixtures, and build evidence; recorded the `categoryFile` naming constraint and shared VitePress temporary-directory build collision.
 - **0.1.0-draft.4 (2026-10-31):** direct SPMPST filename migration in the VitePress host and both sites; no v0.1 filename aliases; current implementation examples and open decisions updated.
 - **0.1.0-draft.3 (2026-10-31):** standard made tool-neutral (§0.6); Kiln introduced as planned reference implementation in Part D (CLI moved there); SPMPST-0002 recast as a conformance contract with a minimal tool surface; extension mechanism added (§A12) and former companion specs turned into extensions (Part E); `spmpst.` file-naming rule (§A4.1); tool-specific settings kept out of the tree (§B12); inline `foreach` syntax rejected, site data model and optional `spmpst.templating` proposed (§A16, §E5); capability report replaces profiles (§B13).

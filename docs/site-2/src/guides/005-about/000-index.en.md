@@ -1,7 +1,7 @@
 ---
 title: "About Numerimondes"
 sidebarTitle: "Home"
-icon: "building-2"
+icon: "@spmpst::icon::building-2"
 description: "Company identity, legal information, and brand assets."
 ---
 

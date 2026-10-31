@@ -1,7 +1,7 @@
 ---
 title: "Past events"
 sidebarTitle: "Past"
-icon: "archive"
+icon: "@spmpst::icon::archive"
 description: "Archive of past Numerimondes academic and community events."
 ---
 

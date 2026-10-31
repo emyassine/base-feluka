@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Agents"
-icon: "bot"
+icon: "@spmpst::icon::bot"
 title: "AI Agent Skills"
 description: "An index of reusable skills for AI agents contributing to Feluqa."
 summary: "Introduces reusable skills for AI agents working on Feluqa, explains how they relate to project instructions and product guides, and lists the documentation-writing skill. It also defines a portable, gitignored `.x-agents/` directory at the root of a documentation working area for local rules and planning notes."

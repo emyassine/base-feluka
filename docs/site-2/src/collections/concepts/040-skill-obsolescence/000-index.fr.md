@@ -1,7 +1,7 @@
 ---
 title: "Obsolescence des compétences"
 sidebarTitle: "Obsolescence des compétences"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Obsolescence des compétences », publiée dans la collection des concepts de recherche."
 ---
 

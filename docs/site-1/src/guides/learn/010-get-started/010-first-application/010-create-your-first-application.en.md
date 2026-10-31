@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "First App"
-icon: "square-terminal"
+icon: "@spmpst::icon::square-terminal"
 title: "Create Your First Application"
 description: "The planned Feluqa getting-started path: choose an application, prepare the environment, create a first CLI command, and build a useful weather watcher."
 summary: "Introduces the planned first-project journey and explains Feluqa's command format, including the binary name, command namespace, arguments, and options. It helps readers choose an application profile and follow the setup, CLI structure, first greeting command, and weather-watcher tutorial while clearly separating the planned scaffold from currently available CLI behavior."

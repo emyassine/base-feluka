@@ -8,15 +8,15 @@
       "items": [
         {
           "guide": "feluqa.rs",
-          "icon": "book-open"
+          "icon": "@spmpst::icon::book-open"
         },
         {
           "guide": "sdui",
-          "icon": "square-terminal"
+          "icon": "@spmpst::icon::square-terminal"
         },
         {
           "guide": "internals",
-          "icon": "code-xml"
+          "icon": "@spmpst::icon::code-xml"
         }
       ]
     },

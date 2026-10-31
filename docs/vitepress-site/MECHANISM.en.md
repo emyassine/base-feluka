@@ -180,47 +180,50 @@ Dependencies are installed for the shared host (`npm install` from `docs/vitepre
 
 The package manifest and lockfile in this host define these versions. `serve.sh --preview` delegates HTTP serving to VitePress's static `serve()` API; it does not run a separate custom Express server.
 
-## 6. Resource references: `@spmpst::resources::...`
+## 6. Resource references: short icon and flag names
 
 ### Grammar and parser
 
-`app/scripts/spmpst/resources.mjs` recognizes this exact whole-string form:
+`app/scripts/spmpst/resources.mjs` recognizes whole-string references:
 
 ```text
-@spmpst::resources::<kind>::<id>
+@spmpst::icon::<name>
+@spmpst::icon::<siteId>/<name>
+@spmpst::flag::<code>
 ```
 
-Current kinds are `icon` and `flag`. The ID must begin with a Unicode letter/number and may contain letters, numbers, `.`, `_`, `-`, and `/`; repeated `/`, `.` segments, and `..` segments are rejected. IDs are normalized to Unicode NFC. The parser returns a typed logical record such as `{ namespace: "resources", kind: "icon", id: "lucide/book-open" }`; it does not itself touch the filesystem.
+Names are logical IDs, not family paths or generated filenames. The parser validates the identifier, rejects empty, `.` and `..` path segments, and normalizes Unicode to NFC. `resolveResourceReferences(value, resolver)` walks arrays and objects and sends each parsed reference to the VitePress adapter.
 
-`resolveResourceReferences(value, resolver)` recursively walks strings, arrays, and objects, replacing recognized references by asking the VitePress adapter to resolve them. In this host the adapter is `resolveVitepressResource(reference, layout)`. An unknown or escaping resource is a build error; it does not silently fetch from a network or invent a file.
+### Site-declared source registry
 
-### Catalogue mapping
+Each site declares ordered local icon/flag collection roots in `.site/spmpst.resources.json`. For example, Feluqa points at shared Lucide, Heroicons, Simple Icons, language flags, and its own named icon assets. The adapter searches the configured roots in order for an unqualified name. A site-qualified icon searches the source registered under that site ID. The logical name is the SVG filename without `.svg`.
 
-The resolver confines lookup to the shared host catalogue:
+```json
+{
+  "icons": {
+    "sources": [
+      { "id": "lucide", "uri": "../vitepress-site/resources/icons/lucide" },
+      { "id": "feluqa-docs", "uri": "resources/icons" }
+    ]
+  },
+  "flags": {
+    "sources": [
+      { "id": "language", "uri": "../vitepress-site/resources/flags/language" }
+    ]
+  }
+}
+```
 
-| Reference | Candidate file under `resources/` |
-|---|---|
-| `@spmpst::resources::icon::lucide/book-open` | `icons/lucide/book-open.svg` |
-| `@spmpst::resources::icon::book-open` | Tries `icons/lucide/`, `custom/`, `heroicons/`, then `simple-icons/` |
-| `@spmpst::resources::icon::heroicons/o-home` | `icons/heroicons/o-home.svg` |
-| `@spmpst::resources::flag::language/fr` | `flags/language/fr.svg` |
-| `@spmpst::resources::flag::catalog/countries/fr` | `flags/catalog/countries/fr.svg` |
-| `@spmpst::resources::flag::fr` | Shorthand for `flags/language/fr.svg` |
-
-An extension such as `.svg` may be included. A catalogue ID is a logical identifier, not a disk path. This lets site config refer to a resource without knowing which host directory contains the catalogue.
+Current VitePress adapter resolution is local-file only. It does not download remote collections or yet build one workspace-wide index from every site's declaration. Remote source acquisition and duplicate-name diagnostics remain work for the conforming tooling contract.
 
 ### Where resolution happens
 
-- Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model to a VitePress runtime config.
-- Markdown page `icon` frontmatter is read during source discovery. Its logical icon reference is parsed, reduced to an icon ID, resolved against the configured icon library, and copied into the generated asset set. Each published Markdown page must provide a valid icon; missing icons use the configured `project.iconFallback` (default `circle-help`) with a warning, while a missing fallback is fatal.
-- `spmpst.sidebar.json` icons may refer to an SVG path relative to that directory or to a catalogue icon ID. They are constrained to the site/shared resource roots and copied into generated metadata/assets.
-- Navigation/topbar icon fields currently use plain icon names or `INHERIT`; `INHERIT` reads the destination page's compiled frontmatter icon. This is a renderer config convention, not a separate `@spmpst` syntax.
-- If language flags are enabled, source preparation constructs `@spmpst::resources::flag::language/<locale>` for every configured language, resolves it through the same resource resolver, and copies it to `generated-guides/public/flags/language/<locale>.svg`.
-- Markdown image/link references and frontmatter `src:` values are separately resolved relative to the source page and staged when local. **The current implementation does not scan and substitute arbitrary `@spmpst::resources::...` text everywhere in Markdown prose.** The parser is used at explicit configuration/icon resolution points.
+- Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model. Topbar icon paths are converted to embedded SVG data URLs; social-link icon paths become inline SVGs.
+- Markdown page `icon` frontmatter and `spmpst.sidebar.json` icons are resolved through the same configured source list and copied into generated assets. Missing page icons still use the configured fallback with a warning; a missing fallback is fatal.
+- If language flags are enabled, source preparation creates `@spmpst::flag::<locale>` for each configured language and copies it to `generated-guides/public/flags/language/<locale>.svg`.
+- Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The parser does not rewrite arbitrary `@spmpst` text inside Markdown prose.
 
-For ordinary referenced files, `copyAsset()` checks that the source is inside an allowed guide, collection, site-resource, or shared-resource root; names it by SHA-256 plus the original extension under `__docs-assets/`; and writes it only if bytes changed. This deduplicates identical asset content and avoids touching unchanged files during incremental preparation.
-
-Mermaid diagrams use a different pipeline: fenced Mermaid source is colored according to the site palette, rendered to SVG by the host's `mmdc` executable using the site's Mermaid JSON config, cached by a hash of renderer config and diagram text, and emitted as light/dark SVGs. The Markdown is replaced with an image link; the browser theme adds zoom/open controls and switches the light/dark image.
+`copyAsset()` confines source files to allowed roots, names them by SHA-256 plus extension under `__docs-assets/`, and writes only when bytes change. This content hash is an internal output detail; authors use readable logical names.
 
 ## 7. Lifecycle A: static build
 

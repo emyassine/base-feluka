@@ -1,7 +1,7 @@
 ---
 title: Learn Feluqa
 sidebarTitle: Learn
-icon: "graduation-cap"
+icon: "@spmpst::icon::graduation-cap"
 lang: en
 description: Practical learning paths and tutorials for Feluqa.
 ---

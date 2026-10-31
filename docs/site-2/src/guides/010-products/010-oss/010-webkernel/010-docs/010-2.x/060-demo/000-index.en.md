@@ -1,7 +1,7 @@
 ---
 title: "Demo"
 sidebarTitle: "Demo"
-icon: "play"
+icon: "@spmpst::icon::play"
 description: "Try Webkernel in a guided demo."
 ---
 

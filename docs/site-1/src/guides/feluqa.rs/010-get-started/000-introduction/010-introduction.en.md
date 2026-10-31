@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Introduction"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 title: "Introduction to Feluqa"
 description: "A short introduction to Feluqa, its purpose, and the guides that explain its product model, vocabulary, and architecture."
 summary: "Introduces Feluqa's goals for Rust applications across web, desktop, mobile, IoT, workstation, and high-stakes environments. It explains that the platform is under development, distinguishes existing foundations from design targets, and directs readers to product, architecture, security, and deployment guides."

@@ -1,7 +1,7 @@
 ---
 title: "Technological acceleration"
 sidebarTitle: "Technological acceleration"
-icon: "rocket-launch"
+icon: "@spmpst::icon::rocket-launch"
 description: "Acceleration as a systems property — not mere feature velocity."
 ---
 

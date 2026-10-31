@@ -1,6 +1,6 @@
 {
   "siteUrl": null,
   "path": "faq",
-  "icon": "circle-help",
+  "icon": "@spmpst::icon::circle-help",
   "$schema": "./schema/seo.schema.json"
 }

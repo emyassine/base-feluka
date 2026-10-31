@@ -1,7 +1,7 @@
 ---
 title: "Achèvement de tâche"
 sidebarTitle: "Achèvement de tâche"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Achèvement de tâche », publiée dans la collection des concepts de recherche."
 ---
 

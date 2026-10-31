@@ -1,7 +1,7 @@
 ---
 title: "Job market: actual state"
 sidebarTitle: "Job market: actual state"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "A plain reading of labour-market signals, skill obsolescence, and what operators can still plan for."
 ---
 

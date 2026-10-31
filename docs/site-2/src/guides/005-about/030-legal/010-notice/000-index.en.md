@@ -1,7 +1,7 @@
 ---
 title: "Legal notice"
 sidebarTitle: "Notice"
-icon: "file-text"
+icon: "@spmpst::icon::file-text"
 description: "Company legal information."
 ---
 

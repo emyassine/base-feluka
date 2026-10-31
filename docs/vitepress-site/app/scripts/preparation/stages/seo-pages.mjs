@@ -1,4 +1,4 @@
-import { join } from 'node:path'
+import { extname, isAbsolute, join } from 'node:path'
 import { localePrefix } from '../../spmpst/routing.mjs'
 import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
@@ -21,10 +21,10 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   const quickLinks = (locale.quickLinks ?? []).map((link) => `- [${link.label}](${link.url}) — ${link.description}`).join('\n')
   const answers = (locale.faq ?? []).map((item) => `### ${item.question}\n\n${item.answer}`).join('\n\n')
   const icon = locale.icon
-  if (typeof icon !== 'string' || !iconNamePattern.test(icon)) {
+  if (typeof icon !== 'string' || (!iconNamePattern.test(icon) && !(isAbsolute(icon) && extname(icon).toLowerCase() === '.svg'))) {
     throw new Error(`seo.locales.${language}.icon must name an SVG in project.iconLibrary`)
   }
-  const iconPath = resolveIcon(icon, `seo.locales.${language}`)
+  const iconPath = isAbsolute(icon) ? icon : resolveIcon(icon, `seo.locales.${language}`)
   const iconAsset = await copyAsset(iconPath)
   const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle)}\nicon: ${JSON.stringify(icon)}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle}\n\n${answers}\n` : ''}`
   sidebarPageIcons[publicMarkdownLink(indexPath)] = iconAsset

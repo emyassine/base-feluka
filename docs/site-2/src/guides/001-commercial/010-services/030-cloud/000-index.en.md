@@ -1,7 +1,7 @@
 ---
 title: "Numerimondes Cloud"
 sidebarTitle: "Cloud"
-icon: "cloud"
+icon: "@spmpst::icon::cloud"
 description: "Server management, hosting, and infrastructure resale — shared hosting, VPS, bare metal, or your own hardware, managed and invoiced directly by Numerimondes."
 ---
 

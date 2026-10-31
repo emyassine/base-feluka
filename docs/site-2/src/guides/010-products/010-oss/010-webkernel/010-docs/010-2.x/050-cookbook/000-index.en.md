@@ -1,7 +1,7 @@
 ---
 title: "Cookbook"
 sidebarTitle: "Cookbook"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "Recipes and practical patterns."
 ---
 

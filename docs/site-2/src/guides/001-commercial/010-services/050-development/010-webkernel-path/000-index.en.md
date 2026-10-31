@@ -1,7 +1,7 @@
 ---
 title: "The Webkernel Path"
 sidebarTitle: "Webkernel Path"
-icon: "cube"
+icon: "@spmpst::icon::cube"
 description: "Building on Webkernel — a source-available enterprise foundation you host and control, instead of a build from a blank page."
 ---
 

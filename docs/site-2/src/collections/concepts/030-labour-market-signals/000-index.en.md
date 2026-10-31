@@ -1,7 +1,7 @@
 ---
 title: "Labour-market signals"
 sidebarTitle: "Labour-market signals"
-icon: "chart-bar"
+icon: "@spmpst::icon::chart-bar"
 description: "How to read noisy labour data without treating headlines as a single market."
 ---
 

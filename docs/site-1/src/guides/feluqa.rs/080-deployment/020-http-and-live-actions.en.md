@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "HTTP & Live"
-icon: "radio"
+icon: "@spmpst::icon::radio"
 title: "HTTP Surface and Live Actions"
 description: "Route classes, request lifecycle through gates, health endpoints and signed live actions in a Feluqa installation."
 summary: "Describes Feluqa's generated Axum HTTP routes, route classes, request lifecycle, security rules, and Live actions. It explains typed client-triggered server operations and incremental UI updates, and distinguishes implemented signed dispatch from remaining planned work."

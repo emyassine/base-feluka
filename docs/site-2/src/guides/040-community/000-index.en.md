@@ -1,7 +1,7 @@
 ---
 title: "Community"
 sidebarTitle: "Community Subsite"
-icon: "home"
+icon: "@spmpst::icon::home"
 description: "Community home."
 ---
 

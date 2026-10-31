@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Starter Kits"
-icon: "layers-3"
+icon: "@spmpst::icon::layers-3"
 title: "Application Profiles and Starter Kits"
 description: "Choose an application profile or starter kit when creating a Feluqa application."
 summary: "Explains that a Feluqa starter kit is selected as an application profile when creating an application, using the `feluqa new <app> profile <profile-or-starter-kit>` command shape. It distinguishes the selected profile or starter kit from the executable binary, Rust compilation target, and interaction surface, and marks tooling that is not yet available."

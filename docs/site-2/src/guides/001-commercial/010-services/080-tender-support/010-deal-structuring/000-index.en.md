@@ -1,7 +1,7 @@
 ---
 title: "Deal Structuring"
 sidebarTitle: "Deal Structuring"
-icon: "briefcase"
+icon: "@spmpst::icon::briefcase"
 description: "Tender sourcing, file assembly, submission, and success-based commission — Morocco & Europe, deposit due at signature."
 ---
 

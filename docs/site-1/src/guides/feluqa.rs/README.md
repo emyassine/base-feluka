@@ -1,5 +1,5 @@
 ---
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 ---
 
 # Feluqa documentation (English)

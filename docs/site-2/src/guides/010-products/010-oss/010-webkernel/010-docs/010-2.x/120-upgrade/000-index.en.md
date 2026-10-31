@@ -1,7 +1,7 @@
 ---
 title: "Upgrade"
 sidebarTitle: "Upgrade"
-icon: "arrow-up-circle"
+icon: "@spmpst::icon::arrow-up-circle"
 description: "Upgrade guides between versions."
 ---
 

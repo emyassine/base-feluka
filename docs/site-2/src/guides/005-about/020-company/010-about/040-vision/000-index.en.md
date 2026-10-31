@@ -1,7 +1,7 @@
 ---
 title: "Vision"
 sidebarTitle: "Vision"
-icon: "eye"
+icon: "@spmpst::icon::eye"
 description: "What we aim to build."
 ---
 

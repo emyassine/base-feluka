@@ -1,7 +1,7 @@
 ---
 title: "Cloud Tech Stack"
 sidebarTitle: "Tech Stack"
-icon: "code-xml"
+icon: "@spmpst::icon::code-xml"
 description: "Every runtime, database engine, and framework supported and managed on Numerimondes Cloud."
 ---
 

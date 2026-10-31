@@ -1,7 +1,7 @@
 ---
 title: "Apply"
 sidebarTitle: "Apply"
-icon: "send"
+icon: "@spmpst::icon::send"
 description: "Submit an application to join Numerimondes."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Why Self-Hosting"
 sidebarTitle: "Self-Hosting"
-icon: "shield-check"
+icon: "@spmpst::icon::shield-check"
 description: "An honest look at the sovereignty argument for self-hosting infrastructure — including when renting is still the right call."
 ---
 

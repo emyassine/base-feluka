@@ -1,7 +1,7 @@
 ---
 title: "Infrastructure"
 sidebarTitle: "Infrastructure"
-icon: "server"
+icon: "@spmpst::icon::server"
 description: "Keep it running. Hosting, monitoring, migrations, and operator training for systems you already own."
 ---
 

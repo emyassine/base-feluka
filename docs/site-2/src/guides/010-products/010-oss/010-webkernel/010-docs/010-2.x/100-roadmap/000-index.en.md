@@ -1,7 +1,7 @@
 ---
 title: "Roadmap"
 sidebarTitle: "Roadmap"
-icon: "map"
+icon: "@spmpst::icon::map"
 description: "Planned features — vote and follow progress."
 ---
 

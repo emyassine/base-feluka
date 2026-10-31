@@ -1,0 +1,40 @@
+{
+  "$schema": "./schema/resources.schema.json",
+  "icons": {
+    "sources": [
+      {
+        "id": "lucide",
+        "uri": "../vitepress-site/resources/icons/lucide"
+      },
+      {
+        "id": "heroicons",
+        "uri": "../vitepress-site/resources/icons/heroicons"
+      },
+      {
+        "id": "simple-icons",
+        "uri": "../vitepress-site/resources/icons/simple-icons"
+      },
+      {
+        "id": "custom",
+        "uri": "../vitepress-site/resources/icons/custom"
+      }
+    ],
+    "sites": {
+      "feluqa-docs": [
+        "resources/icons"
+      ]
+    }
+  },
+  "flags": {
+    "sources": [
+      {
+        "id": "language",
+        "uri": "../vitepress-site/resources/flags/language"
+      },
+      {
+        "id": "countries",
+        "uri": "../vitepress-site/resources/flags/catalog/countries"
+      }
+    ]
+  }
+}

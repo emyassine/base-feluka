@@ -1,7 +1,7 @@
 ---
 title: "Modernization"
 sidebarTitle: "Modernization"
-icon: "refresh-cw"
+icon: "@spmpst::icon::refresh-cw"
 description: "Own your stack again. A named package: diagnose with Audit, decide with Consulting, then build, automate, and run — without permanent vendor lock-in."
 ---
 

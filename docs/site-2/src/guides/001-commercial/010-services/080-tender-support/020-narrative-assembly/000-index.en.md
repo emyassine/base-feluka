@@ -1,7 +1,7 @@
 ---
 title: "Narrative & Dossier Assembly"
 sidebarTitle: "Narrative & Assembly"
-icon: "puzzle-piece"
+icon: "@spmpst::icon::puzzle-piece"
 description: "We take what you already have — brochures, specs, technical data — and build the story that satisfies the cahier des charges. Production is subcontracted when needed; the strategy and assembly are ours."
 ---
 

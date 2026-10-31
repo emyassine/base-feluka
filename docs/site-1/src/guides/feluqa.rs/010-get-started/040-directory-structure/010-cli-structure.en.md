@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "CLI Structure"
-icon: "folder-tree"
+icon: "@spmpst::icon::folder-tree"
 title: "How a Feluqa CLI Is Structured"
 description: "How the CLI binary, Cargo manifest, main.rs, build script, console profile, and command source tree fit together."
 summary: "Explains a Feluqa CLI as a console application with a named binary, Cargo manifest, main.rs entry point, build script, console profile, and command handlers. It shows how a project can organize command source, why Cargo runs build.rs, and how a command is discovered and invoked."

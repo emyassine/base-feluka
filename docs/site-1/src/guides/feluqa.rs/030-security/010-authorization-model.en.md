@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Authorization"
-icon: "shield-check"
+icon: "@spmpst::icon::shield-check"
 title: "Authorization Model"
 description: "How privilege levels, roles, permissions, policies and gates combine to decide whether an action is allowed in Feluqa."
 summary: "Describes an authorization decision pipeline that separates Platform administration, application actions, and record-level access. It explains permissions, generated baseline roles, the Access Control resource, policies, and how navigation reflects server-side authorization rather than replacing it."

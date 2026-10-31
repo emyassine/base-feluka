@@ -1,7 +1,7 @@
 ---
 title: "Cloud Features"
 sidebarTitle: "Features"
-icon: "sliders-horizontal"
+icon: "@spmpst::icon::sliders-horizontal"
 description: "Everything Numerimondes Cloud configures, monitors, and maintains — server hardening, database management, SSL/DNS/email, monitoring, and backups."
 ---
 

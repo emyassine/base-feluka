@@ -1,7 +1,7 @@
 ---
 title: "Échelle de Kardashev"
 sidebarTitle: "Échelle de Kardashev"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Échelle de Kardashev », publiée dans la collection des concepts de recherche."
 ---
 

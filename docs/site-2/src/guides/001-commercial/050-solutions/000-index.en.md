@@ -1,7 +1,7 @@
 ---
 title: "Solutions"
 sidebarTitle: "Solutions"
-icon: "sparkles"
+icon: "@spmpst::icon::sparkles"
 description: "Named packages that compose several Numerimondes services into one outcome. Unit services live under Services."
 ---
 

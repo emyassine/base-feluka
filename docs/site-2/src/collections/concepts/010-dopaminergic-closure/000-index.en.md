@@ -1,7 +1,7 @@
 ---
 title: "Dopaminergic closure"
 sidebarTitle: "Dopaminergic closure"
-icon: "bolt"
+icon: "@spmpst::icon::bolt"
 description: "Completion as a distinct dopaminergic event at the end of a work unit."
 ---
 

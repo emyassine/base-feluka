@@ -1,7 +1,7 @@
 ---
 title: "Tender Support"
 sidebarTitle: "Tender Support"
-icon: "file-check"
+icon: "@spmpst::icon::file-check"
 description: "End-to-end public and private tender support for Morocco and Europe — deal structuring on a deposit-plus-commission model, and technical dossier production."
 ---
 

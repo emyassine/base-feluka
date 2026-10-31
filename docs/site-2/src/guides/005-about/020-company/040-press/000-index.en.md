@@ -1,7 +1,7 @@
 ---
 title: "Press"
 sidebarTitle: "Press"
-icon: "megaphone"
+icon: "@spmpst::icon::megaphone"
 description: "Media kit and press releases."
 ---
 

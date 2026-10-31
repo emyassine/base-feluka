@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Home"
-icon: "badge-check"
+icon: "@spmpst::icon::badge-check"
 description: Guides for building applications, understanding the platform, and contributing to its development.
 layout: home
 ---

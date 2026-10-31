@@ -1,7 +1,7 @@
 ---
 title: "Terms of use"
 sidebarTitle: "Terms"
-icon: "file-check"
+icon: "@spmpst::icon::file-check"
 description: "Terms governing use of our sites and services."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Jobs"
 sidebarTitle: "Jobs"
-icon: "briefcase"
+icon: "@spmpst::icon::briefcase"
 description: "Freelance and opportunity discussion — live forum threads."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Satisfaction when work is done"
 sidebarTitle: "Satisfaction when work is done"
-icon: "list"
+icon: "@spmpst::icon::list"
 description: "Multi-part series on completion, reward, and the neurobiology of finishing work."
 ---
 

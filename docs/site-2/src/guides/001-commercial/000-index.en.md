@@ -1,7 +1,7 @@
 ---
 title: "Sovereign technology for builders"
 sidebarTitle: "Home"
-icon: "home"
+icon: "@spmpst::icon::home"
 description: "Numerimondes — Webkernel, services, Services, Education, Products, Research — Webkernel and more. Casablanca."
 ---
 

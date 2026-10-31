@@ -1,7 +1,7 @@
 ---
 title: "Task completion"
 sidebarTitle: "Task completion"
-icon: "check-circle"
+icon: "@spmpst::icon::check-circle"
 description: "Designing work so that done is a real, checkable boundary."
 ---
 

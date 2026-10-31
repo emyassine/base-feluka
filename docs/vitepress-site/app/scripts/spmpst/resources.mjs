@@ -1,15 +1,15 @@
-const RESOURCE_REFERENCE = /^@spmpst::resources::(icon|flag)::([\p{L}\p{N}][\p{L}\p{N}._/-]*)$/u
+const RESOURCE_REFERENCE = /^@spmpst::(icon|flag)::([\p{L}\p{N}][\p{L}\p{N}._/-]*)$/u
 
 /** Parse a portable logical resource identifier without resolving it to a file. */
 export function parseResourceReference(value) {
   if (typeof value !== 'string') return null
   const match = value.match(RESOURCE_REFERENCE)
   if (!match || match[2].includes('//') || match[2].split('/').some((part) => part === '.' || part === '..')) return null
-  return { namespace: 'resources', kind: match[1], id: match[2].normalize('NFC') }
+  return { kind: match[1], id: match[2].normalize('NFC') }
 }
 
 export function resourceReference(kind, id) {
-  const reference = `@spmpst::resources::${kind}::${id}`
+  const reference = `@spmpst::${kind}::${id}`
   if (!parseResourceReference(reference)) throw new TypeError(`Invalid SPMPST resource reference: ${reference}`)
   return reference
 }

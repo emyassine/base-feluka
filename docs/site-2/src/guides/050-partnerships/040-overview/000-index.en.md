@@ -1,7 +1,7 @@
 ---
 title: "Overview"
 sidebarTitle: "Overview"
-icon: "info"
+icon: "@spmpst::icon::info"
 description: "How Numerimondes partnerships work."
 ---
 

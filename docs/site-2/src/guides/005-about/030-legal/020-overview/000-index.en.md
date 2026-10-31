@@ -1,7 +1,7 @@
 ---
 title: "Legal overview"
 sidebarTitle: "Overview"
-icon: "scale"
+icon: "@spmpst::icon::scale"
 description: "Index of legal pages."
 ---
 

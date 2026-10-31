@@ -1,7 +1,7 @@
 ---
 title: "Webkernel"
 sidebarTitle: "Webkernel"
-icon: "cube"
+icon: "@spmpst::icon::cube"
 description: "Source-available enterprise foundation — product landing."
 ---
 

@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Privileges"
-icon: "badge-check"
+icon: "@spmpst::icon::badge-check"
 title: "Privilege Levels"
 description: "Platform-wide privilege levels (platform-owner, super-admin, sysadmin, staff) with internal and external origins, rank rules and delegation limits."
 summary: "Defines privilege levels for administration of a single Platform instance and distinguishes them from application roles and permissions. It explains privilege origins, rank, use in gates, delegation limits, and an optional exploring clearance model for classified data, with examples and API sketches."

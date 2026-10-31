@@ -1,7 +1,7 @@
 ---
 title: "Institutional"
 sidebarTitle: "Institutional"
-icon: "landmark"
+icon: "@spmpst::icon::landmark"
 description: "Institutional and university partnerships."
 ---
 

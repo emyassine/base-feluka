@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Hello CLI"
-icon: "terminal"
+icon: "@spmpst::icon::terminal"
 title: "Program 0: Hello CLI"
 description: "Write a first Feluqa console command that prints Hello CLI, and learn why the crate uses explicit imports and strict lints."
 summary: "Walks through a first console command that prints Hello CLI and returns a command result. It explains the handler's relationship to the binary and profile, introduces core/alloc/std, Rust paths and the prelude, explains the crate attributes and lint choices, and shows how to run the program and continue learning."

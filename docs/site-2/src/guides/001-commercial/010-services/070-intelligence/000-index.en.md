@@ -1,7 +1,7 @@
 ---
 title: "Intelligence"
 sidebarTitle: "Intelligence"
-icon: "cpu"
+icon: "@spmpst::icon::cpu"
 description: "Private intelligence, local inference, external signal pipelines, and workforce alignment — sized from freelancers to industrial and institutional operators."
 ---
 

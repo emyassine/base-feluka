@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Releases"
-icon: "scroll-text"
+icon: "@spmpst::icon::scroll-text"
 title: "Release Notes"
 description: "Feluqa's versioning scheme, support policy, Rust requirements, and release notes."
 summary: "Explains Feluqa's versioning scheme before and after 1.0, the absence of an announced release cadence or support periods, and how release-specific Rust compiler requirements will be documented. It identifies the current development baseline without treating it as a published release or support promise."

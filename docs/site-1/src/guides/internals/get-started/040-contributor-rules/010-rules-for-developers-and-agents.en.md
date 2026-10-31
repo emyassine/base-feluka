@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Contributor Rules"
-icon: "list-checks"
+icon: "@spmpst::icon::list-checks"
 title: "Rules for Developers and Agents"
 description: "Coding conventions and CLI generators for Feluqa developers and AI agents; also generated into AGENTS.md by feluqa new."
 summary: "Collects the planned coding rules for developers and AI agents, including documentation, generated registries, typed names, security, and IDE support. It explains that feluqa new is intended to place the rules in AGENTS.md and that the global IDE command family remains planned."

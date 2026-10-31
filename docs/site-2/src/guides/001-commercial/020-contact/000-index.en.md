@@ -1,7 +1,7 @@
 ---
 title: "Contact"
 sidebarTitle: "Contact"
-icon: "envelope"
+icon: "@spmpst::icon::envelope"
 description: "Get in touch. Want to write to us or have a question or comment? Write in, we would love to hear from you."
 ---
 

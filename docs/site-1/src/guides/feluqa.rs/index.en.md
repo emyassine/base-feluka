@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Feluqa"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 title: Feluqa Guides
 description: Start here for Feluqa product, application, and contributor documentation.
 ---

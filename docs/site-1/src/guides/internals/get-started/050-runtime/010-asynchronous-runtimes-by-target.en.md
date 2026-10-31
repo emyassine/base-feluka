@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Async Runtimes"
-icon: "timer"
+icon: "@spmpst::icon::timer"
 title: "Asynchronous Runtimes by Target"
 description: "How Feluqa should use async execution on server, embedded, and real-time targets."
 summary: "Explains that Rust async syntax produces futures but requires an executor to make progress. It records the current Tokio server runtime boundary, recommends against rewriting Tokio, and distinguishes embedded Embassy, real-time RTIC, and runtime-neutral futures utilities. It gives contributors a target-based checklist and cautions against assuming no_std, no allocation, and hard real-time guarantees are interchangeable."

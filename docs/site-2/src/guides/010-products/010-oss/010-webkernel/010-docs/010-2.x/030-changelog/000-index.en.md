@@ -1,7 +1,7 @@
 ---
 title: "Changelog"
 sidebarTitle: "Changelog"
-icon: "clock"
+icon: "@spmpst::icon::clock"
 description: "Release history for Webkernel."
 ---
 

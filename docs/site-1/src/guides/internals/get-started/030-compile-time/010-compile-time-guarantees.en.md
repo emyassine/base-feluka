@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Compile Time"
-icon: "badge-check"
+icon: "@spmpst::icon::badge-check"
 title: "What Moves to Compile Time"
 description: "Comparison of manual and legacy approaches with Feluqa's attribute-driven, compile-time equivalents."
 summary: "Compares manual framework work with Feluqa's intended compile-time scanning and generation for module identity, permissions, routes, storage, configuration, and registries. It lists framework extensions still in active development, explains main.rs and explicit path overrides, and shows the proposed product layout."

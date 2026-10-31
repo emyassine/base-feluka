@@ -1,7 +1,7 @@
 ---
 title: "Become a consultant"
 sidebarTitle: "Become a consultant"
-icon: "id-card"
+icon: "@spmpst::icon::id-card"
 description: "Join the Numerimondes consultant network — live accepted experts."
 ---
 

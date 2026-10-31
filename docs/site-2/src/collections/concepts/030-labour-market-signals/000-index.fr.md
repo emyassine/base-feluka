@@ -1,7 +1,7 @@
 ---
 title: "Signaux du marché du travail"
 sidebarTitle: "Signaux du marché du travail"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Signaux du marché du travail », publiée dans la collection des concepts de recherche."
 ---
 

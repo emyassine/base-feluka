@@ -1,7 +1,7 @@
 ---
 title: "Clôture dopaminergique"
 sidebarTitle: "Clôture dopaminergique"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Clôture dopaminergique », publiée dans la collection des concepts de recherche."
 ---
 

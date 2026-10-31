@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Internals"
-icon: "code-xml"
+icon: "@spmpst::icon::code-xml"
 title: "Feluqa’s Internals"
 description: "Source-level architecture and working guidance for contributors to Feluqa itself."
 summary: "Collects the source-workspace structure, compile-time architecture, and engineering rules for people contributing to Feluqa itself."

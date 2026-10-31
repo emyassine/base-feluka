@@ -1,7 +1,7 @@
 ---
 title: "Privacy policy"
 sidebarTitle: "Privacy"
-icon: "shield-check"
+icon: "@spmpst::icon::shield-check"
 description: "How we handle personal data."
 ---
 

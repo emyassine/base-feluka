@@ -1,7 +1,7 @@
 ---
 sidebarTitle: "Starting an app"
 title: "A practical way to start a Feluqa app"
-icon: "square-terminal"
+icon: "@spmpst::icon::square-terminal"
 description: "A concise starting point for shaping a Feluqa application around a real workflow and a chosen runtime."
 summary: "Suggests a brief, use-case-led way to begin a Feluqa application while distinguishing current tools from unfinished target capabilities."
 date: 2026-10-30

@@ -1,7 +1,7 @@
 ---
 title: "Modules"
 sidebarTitle: "Modules"
-icon: "puzzle-piece"
+icon: "@spmpst::icon::puzzle-piece"
 description: "Webkernel modules catalogue."
 ---
 

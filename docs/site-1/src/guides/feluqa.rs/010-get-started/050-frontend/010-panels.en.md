@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Panels"
-icon: "panels-top-left"
+icon: "@spmpst::icon::panels-top-left"
 title: "Panels"
 description: "How to declare a Feluqa panel: path, branding, login, tenancy, middleware, navigation groups and render hooks."
 summary: "Shows how to declare a Feluqa web panel, including its path, branding, login, tenancy, middleware, navigation groups, and render hooks. It explains strict authorization as the default, the restricted prototype mode, injected resources, and common panel types."

@@ -1,7 +1,7 @@
 ---
 title: "Freelance jobs"
 sidebarTitle: "Freelance jobs"
-icon: "briefcase"
+icon: "@spmpst::icon::briefcase"
 description: "Live published opportunities and freelance missions — apply in the portal."
 ---
 

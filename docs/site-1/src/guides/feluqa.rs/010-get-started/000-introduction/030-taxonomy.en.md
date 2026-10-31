@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Taxonomy"
-icon: "list-tree"
+icon: "@spmpst::icon::list-tree"
 title: "Taxonomy"
 description: "Canonical Feluqa terms for products, applications, modules, platform instances, workspaces, and access control."
 summary: "Defines Feluqa's canonical distinctions among Products, Applications, Modules, Features, developer kit (SDK), Platform, projects, packages, runtimes, and access-control terms. Examples show how several applications can form one Product and how console interfaces relate to target profiles; the guide also sets naming rules and clarifies that target terminology does not promise completed features."

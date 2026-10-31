@@ -1,7 +1,7 @@
 ---
 title: "Education"
 sidebarTitle: "Education Subsite"
-icon: "home"
+icon: "@spmpst::icon::home"
 description: "Education home."
 ---
 

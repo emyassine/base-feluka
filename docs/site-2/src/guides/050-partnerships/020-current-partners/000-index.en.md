@@ -1,7 +1,7 @@
 ---
 title: "Current partners"
 sidebarTitle: "Current partners"
-icon: "building-office"
+icon: "@spmpst::icon::building-office"
 description: "Organisations we partner with."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Audit Methodology"
 sidebarTitle: "Methodology"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "How Numerimondes scopes Level 1 vs Level 2 audits, when an NDA applies, and how the three-year TCO figure is built."
 ---
 

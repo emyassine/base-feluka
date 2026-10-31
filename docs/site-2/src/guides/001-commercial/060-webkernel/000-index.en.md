@@ -1,7 +1,7 @@
 ---
 title: "Software"
 sidebarTitle: "Webkernel"
-icon: "webkernel-logo"
+icon: "@spmpst::icon::webkernel-logo"
 description: "Download software packages and tools."
 ---
 

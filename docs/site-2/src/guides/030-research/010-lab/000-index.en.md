@@ -1,7 +1,7 @@
 ---
 title: "Lab"
 sidebarTitle: "Lab"
-icon: "beaker"
+icon: "@spmpst::icon::beaker"
 description: "Public experiments and prototypes from Numerimondes research."
 ---
 

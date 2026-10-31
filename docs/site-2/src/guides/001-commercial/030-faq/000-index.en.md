@@ -1,7 +1,7 @@
 ---
 title: "FAQ"
 sidebarTitle: "FAQ"
-icon: "circle-help"
+icon: "@spmpst::icon::circle-help"
 description: "Frequently asked questions."
 ---
 

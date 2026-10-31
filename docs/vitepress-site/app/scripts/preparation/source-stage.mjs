@@ -125,7 +125,8 @@ function validateTopbarItems(items, location = 'topbar.items') {
   for (const [index, item] of items.entries()) {
     const itemLocation = `${location}[${index}]`
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
-    if (item.icon !== undefined && (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon)))) {
+    const resolvedSvg = typeof item.icon === 'string' && isAbsolute(item.icon) && extname(item.icon).toLowerCase() === '.svg' && existsSync(item.icon)
+    if (item.icon !== undefined && (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon) && !resolvedSvg))) {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
@@ -230,7 +231,7 @@ function findIcon(name) {
   const resource = parseResourceReference(name)
   if (resource) {
     if (resource.kind !== 'icon') return null
-    name = resource.id
+    return resolveVitepressResource(resource, layout, config.resources)
   }
   if (isAbsolute(name)) {
     const local = relative(projectDirectories.iconLibrary, name)
@@ -555,9 +556,9 @@ await writeIfChanged(join(generatedDirectory, 'navigation-order.json'), JSON.str
 await mkdir(join(outputDirectory, 'public'), { recursive: true })
 if (topbar.language?.showFlags) {
   for (const language of config.languages) {
-    const reference = resourceReference('flag', `language/${language.toLowerCase()}`)
+    const reference = resourceReference('flag', language.toLowerCase())
     const parsedReference = parseResourceReference(reference)
-    const source = resolveVitepressResource(parsedReference, layout)
+    const source = resolveVitepressResource(parsedReference, layout, config.resources)
     if (!existsSync(source)) throw new Error(`Missing language flag for ${language}: ${source}`)
     const target = join(outputDirectory, 'public', 'flags', 'language', `${language.toLowerCase()}.svg`)
     await mkdir(dirname(target), { recursive: true })

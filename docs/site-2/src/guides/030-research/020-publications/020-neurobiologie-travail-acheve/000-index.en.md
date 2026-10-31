@@ -1,7 +1,7 @@
 ---
 title: "Neurobiologie de quand le travail est achevé"
 sidebarTitle: "Neurobiologie de quand le travail est achevé"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "What happens in the brain when a unit of work is completed — and why that moment is underrated in product and ops design."
 ---
 

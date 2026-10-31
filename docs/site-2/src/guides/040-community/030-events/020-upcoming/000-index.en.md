@@ -1,7 +1,7 @@
 ---
 title: "Upcoming events"
 sidebarTitle: "Upcoming"
-icon: "calendar"
+icon: "@spmpst::icon::calendar"
 description: "Live academic and community events — register for attestations."
 ---
 

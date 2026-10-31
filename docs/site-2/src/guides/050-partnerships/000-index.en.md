@@ -1,7 +1,7 @@
 ---
 title: "Partnerships"
 sidebarTitle: "Partners Subsite"
-icon: "home"
+icon: "@spmpst::icon::home"
 description: "Partnerships home."
 ---
 

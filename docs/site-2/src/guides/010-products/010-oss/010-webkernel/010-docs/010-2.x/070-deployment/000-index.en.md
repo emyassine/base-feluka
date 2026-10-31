@@ -1,7 +1,7 @@
 ---
 title: "Deployment"
 sidebarTitle: "Deployment"
-icon: "cloud-arrow-up"
+icon: "@spmpst::icon::cloud-arrow-up"
 description: "Ship and operate Webkernel."
 ---
 

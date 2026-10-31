@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
-import { dirname, extname, join, relative, resolve } from 'node:path'
+import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { sortNavigationEntries } from '../../scripts/shared/navigation-order.mjs'
 import type { GuideConfig, SiteConfig } from '../types/site-config'
 
@@ -150,6 +150,9 @@ function iconSource(icon: string, link?: string): string | undefined {
     return `/${inherited.replace(/^\/+/, '')}`
   }
   if (!icon) return undefined
+  if (isAbsolute(icon) && existsSync(icon)) {
+    return `data:image/svg+xml;base64,${readFileSync(icon).toString('base64')}`
+  }
   const library = resolve(siteDirectory, '..', site.project?.iconLibrary ?? '')
   const families = ['lucide', 'custom', 'heroicons', 'simple-icons']
   const candidates = icon.includes('/') ? [resolve(library, `${icon}.svg`)] : families.map((family) => resolve(library, family, `${icon}.svg`))

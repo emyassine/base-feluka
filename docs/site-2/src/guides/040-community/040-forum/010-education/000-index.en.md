@@ -1,7 +1,7 @@
 ---
 title: "Education"
 sidebarTitle: "Education"
-icon: "graduation-cap"
+icon: "@spmpst::icon::graduation-cap"
 description: "Courses, conferences, academic tracks — live forum threads."
 ---
 

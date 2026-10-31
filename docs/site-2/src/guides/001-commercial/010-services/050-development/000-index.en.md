@@ -1,7 +1,7 @@
 ---
 title: "Development"
 sidebarTitle: "Development"
-icon: "code-xml"
+icon: "@spmpst::icon::code-xml"
 description: "Build it. Custom software you own outright — designed once, shipped once, no vendor left in the loop."
 ---
 

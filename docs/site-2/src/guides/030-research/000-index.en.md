@@ -1,7 +1,7 @@
 ---
 title: "Research"
 sidebarTitle: "Home"
-icon: "home"
+icon: "@spmpst::icon::home"
 description: "Publications, concepts, and lab experiments from Numerimondes."
 ---
 

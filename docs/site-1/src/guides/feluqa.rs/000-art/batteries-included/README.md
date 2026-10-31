@@ -1,5 +1,5 @@
 ---
-icon: "shapes"
+icon: "@spmpst::icon::shapes"
 ---
 
 # Prologue artwork

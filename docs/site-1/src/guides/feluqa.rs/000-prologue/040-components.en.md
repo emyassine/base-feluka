@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Components"
-icon: "battery-charging"
+icon: "@spmpst::icon::battery-charging"
 title: "Components"
 description: "The major capabilities Feluqa brings together, what is available today, and what remains a product direction."
 summary: "Introduces the components Feluqa brings together across application foundations, asynchronous server execution, web and API services, identity and access control, data persistence, modules, panels, console tooling, live interactions, deployment, and agent workflows. It marks each area by implementation status and explains Feluqa's batteries-included approach."

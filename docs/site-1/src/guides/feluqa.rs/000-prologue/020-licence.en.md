@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "License"
-icon: "scale"
+icon: "@spmpst::icon::scale"
 title: "Build with Feluqa"
 description: "Create applications with Feluqa, understand product rights, and work with the NUMERIMONDES team."
 summary: "Explains that building Applications for personal, commercial, organizational, and authorized client work is free of charge and that creators may use the Products they create. It distinguishes the proprietary developer kit (SDK) and Platform from customer Products, describes contribution and selective open-source direction, provides company legal information, and outlines product-development options."

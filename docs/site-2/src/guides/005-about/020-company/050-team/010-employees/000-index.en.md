@@ -1,7 +1,7 @@
 ---
 title: "Employees"
 sidebarTitle: "Employees"
-icon: "id-card"
+icon: "@spmpst::icon::id-card"
 description: "Core team members at Numerimondes."
 ---
 

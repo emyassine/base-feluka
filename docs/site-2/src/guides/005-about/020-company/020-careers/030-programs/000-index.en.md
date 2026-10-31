@@ -1,7 +1,7 @@
 ---
 title: "Programs"
 sidebarTitle: "Programs"
-icon: "graduation-cap"
+icon: "@spmpst::icon::graduation-cap"
 description: "Internships, apprenticeships, and early-career programmes."
 ---
 

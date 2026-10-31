@@ -1,7 +1,7 @@
 ---
 title: "Cloud Platforms"
 sidebarTitle: "Platforms"
-icon: "layout-grid"
+icon: "@spmpst::icon::layout-grid"
 description: "The Numerimondes products and platforms that run on Numerimondes Cloud infrastructure."
 ---
 

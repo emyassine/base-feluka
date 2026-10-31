@@ -1,7 +1,7 @@
 ---
 title: "Culture"
 sidebarTitle: "Culture"
-icon: "users"
+icon: "@spmpst::icon::users"
 description: "How we work together."
 ---
 

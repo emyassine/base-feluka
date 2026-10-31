@@ -13,6 +13,7 @@ inside `targets/`; `scripts/spmpst/` loads those files as opaque target data.
 | `spmpst.appearance.json` | Fonts, logos, social preview images, and diagram palette. |
 | `spmpst.links.json` | Social links. |
 | `spmpst.seo.json` | Canonical site URL, SEO route, and icon. |
+| `spmpst.resources.json` | Ordered icon and flag collection sources used by logical SPMPST references. |
 | `locales/<language>.locale.json` | Localized UI, search, footer, notices, and SEO copy. |
 | `public/*` | Public text files copied into the rendered site. |
 | `targets/vitepress.target.config.json` | Renderer configuration; keep it separate from the target-neutral model. |

@@ -1,7 +1,7 @@
 ---
 title: "Payment methods"
 sidebarTitle: "Payment methods"
-icon: "credit-card"
+icon: "@spmpst::icon::credit-card"
 description: "Accepted payment methods."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Numerimondes Group"
 sidebarTitle: "Group"
-icon: "building-2"
+icon: "@spmpst::icon::building-2"
 description: "The future shape of Numerimondes — a holding structure with associates operating focused subsidiaries."
 ---
 

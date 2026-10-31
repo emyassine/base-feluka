@@ -1,7 +1,7 @@
 ---
 title: "How We Sprint"
 sidebarTitle: "How We Sprint"
-icon: "bolt"
+icon: "@spmpst::icon::bolt"
 description: "The eight-week sprint model behind Numerimondes consulting — why fixed-length engagements beat open retainers."
 ---
 

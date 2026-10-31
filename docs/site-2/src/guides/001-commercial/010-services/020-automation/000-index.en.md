@@ -1,7 +1,7 @@
 ---
 title: "Automation"
 sidebarTitle: "Automation"
-icon: "bolt"
+icon: "@spmpst::icon::bolt"
 description: "Remove the manual work. No-code and AI workflows for sales, HR, and back-office processes, priced against the value they create."
 ---
 

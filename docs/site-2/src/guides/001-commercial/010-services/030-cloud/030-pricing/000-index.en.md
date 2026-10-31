@@ -1,7 +1,7 @@
 ---
 title: "Cloud Pricing"
 sidebarTitle: "Pricing"
-icon: "currency-dollar"
+icon: "@spmpst::icon::currency-dollar"
 description: "Numerimondes Cloud pricing — shared hosting from 400 MAD, or a quote for VPS, bare-metal dedicated, and managed hardware you already own."
 ---
 

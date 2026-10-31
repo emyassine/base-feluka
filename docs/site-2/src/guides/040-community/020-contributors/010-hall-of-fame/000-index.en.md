@@ -1,7 +1,7 @@
 ---
 title: "Hall of fame"
 sidebarTitle: "Hall of fame"
-icon: "trophy"
+icon: "@spmpst::icon::trophy"
 description: "Recognising outstanding accepted consultants and community experts."
 ---
 

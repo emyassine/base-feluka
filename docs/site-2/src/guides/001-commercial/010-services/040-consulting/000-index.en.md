@@ -1,7 +1,7 @@
 ---
 title: "Consulting"
 sidebarTitle: "Consulting"
-icon: "messages-square"
+icon: "@spmpst::icon::messages-square"
 description: "Should we do this, and how? Strategic decisions grounded in what we've actually shipped — not a generic framework."
 ---
 

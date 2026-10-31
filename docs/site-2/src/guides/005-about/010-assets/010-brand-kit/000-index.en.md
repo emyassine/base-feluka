@@ -1,7 +1,7 @@
 ---
 title: "Brand kit"
 sidebarTitle: "Brand kit"
-icon: "paint-brush"
+icon: "@spmpst::icon::paint-brush"
 description: "Logos and brand assets."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Skill obsolescence"
 sidebarTitle: "Skill obsolescence"
-icon: "graduation-cap"
+icon: "@spmpst::icon::graduation-cap"
 description: "How fast mid-stack skills lose economic relevance."
 ---
 

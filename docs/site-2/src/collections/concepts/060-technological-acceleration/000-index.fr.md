@@ -1,7 +1,7 @@
 ---
 title: "Accélération technologique"
 sidebarTitle: "Accélération technologique"
-icon: "lightbulb"
+icon: "@spmpst::icon::lightbulb"
 description: "Définition de « Accélération technologique », publiée dans la collection des concepts de recherche."
 ---
 

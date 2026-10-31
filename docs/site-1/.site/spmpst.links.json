@@ -1,7 +1,7 @@
 {
   "socialLinks": [
     {
-      "icon": "github",
+      "icon": "@spmpst::icon::github",
       "link": "https://github.com/emyassine/base-feluka",
       "ariaLabel": "Feluqa on GitHub"
     },
@@ -13,7 +13,7 @@
       "ariaLabel": "Numerimondes website"
     },
     {
-      "icon": "linkedin",
+      "icon": "@spmpst::icon::linkedin",
       "link": "https://www.linkedin.com/in/elmoumenyassine",
       "ariaLabel": "Yassine on LinkedIn"
     }

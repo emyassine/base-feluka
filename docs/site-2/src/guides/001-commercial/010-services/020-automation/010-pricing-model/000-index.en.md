@@ -1,7 +1,7 @@
 ---
 title: "Value-Based Pricing"
 sidebarTitle: "Pricing Model"
-icon: "currency-dollar"
+icon: "@spmpst::icon::currency-dollar"
 description: "Why Numerimondes prices automation work against the value it creates, not hours spent building it."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Sovereign technology for builders"
 sidebarTitle: "Accueil"
-icon: "home"
+icon: "@spmpst::icon::home"
 layout: home
 description: "Design, operate, and retain control of your digital stack. From Casablanca, Numerimondes supports organizations from strategy through infrastructure."
 hero:

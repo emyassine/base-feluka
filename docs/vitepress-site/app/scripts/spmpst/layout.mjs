@@ -9,6 +9,7 @@ export function resolveLayout(siteDirectory) {
   const siteResourcesDir = resolve(process.env.VITEPRESS_SITE_RESOURCES_DIR ?? resolve(treeRoot, 'resources'))
   return {
     treeRoot,
+    siteId: process.env.VITEPRESS_SITE_ID ?? null,
     siteDir: resolve(treeRoot, '.site'),
     guidesDir,
     collectionsDir: resolve(treeRoot, 'src/collections'),

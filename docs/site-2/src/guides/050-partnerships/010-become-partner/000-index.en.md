@@ -1,7 +1,7 @@
 ---
 title: "Become a partner"
 sidebarTitle: "Become a partner"
-icon: "handshake"
+icon: "@spmpst::icon::handshake"
 description: "Join the Numerimondes partner framework as an independent professional."
 ---
 

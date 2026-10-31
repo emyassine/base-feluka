@@ -1,7 +1,7 @@
 ---
 title: "Services"
 sidebarTitle: "Services"
-icon: "layout-grid"
+icon: "@spmpst::icon::layout-grid"
 description: "Numerimondes — unit offers with closed scopes. Consulting, delivery, managed cloud, and tender support for organizations. Founder-led, real deliverables."
 ---
 

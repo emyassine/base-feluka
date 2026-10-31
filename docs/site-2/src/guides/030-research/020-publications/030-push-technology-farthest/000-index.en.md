@@ -1,7 +1,7 @@
 ---
 title: "Push technology to its farthest possible development"
 sidebarTitle: "Push technology to its farthest possible development"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "On accelerating technology toward the edge of what a civilization can harness and direct."
 ---
 

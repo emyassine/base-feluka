@@ -1,7 +1,7 @@
 ---
 title: "General"
 sidebarTitle: "General"
-icon: "message-circle"
+icon: "@spmpst::icon::message-circle"
 description: "General community discussion — live threads from the database."
 ---
 

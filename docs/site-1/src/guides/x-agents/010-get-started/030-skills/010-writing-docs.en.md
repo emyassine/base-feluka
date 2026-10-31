@@ -1,5 +1,5 @@
 ---
-icon: "file-pen-line"
+icon: "@spmpst::icon::file-pen-line"
 title: "Writing Published Feluqa Documentation"
 sidebarTitle: "Writing Docs"
 description: "A workflow for writing accurate Feluqa docs that preserve product intent, use canonical terms, and stand on their own on the documentation site."

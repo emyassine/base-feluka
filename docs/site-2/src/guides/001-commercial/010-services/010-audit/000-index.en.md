@@ -1,7 +1,7 @@
 ---
 title: "Audit"
 sidebarTitle: "Audit"
-icon: "magnifying-glass"
+icon: "@spmpst::icon::magnifying-glass"
 description: "What do we have, and what is it costing us? Packaged Audit + conference — technology inventory or full value-chain diagnostic."
 ---
 

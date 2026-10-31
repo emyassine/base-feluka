@@ -1,7 +1,7 @@
 ---
 title: "Numerimondes Documentation"
 sidebarTitle: "Documentation"
-icon: "book-open"
+icon: "@spmpst::icon::book-open"
 description: "Technical documentation for Numerimondes products and platforms."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "How to contribute"
 sidebarTitle: "How to contribute"
-icon: "hand"
+icon: "@spmpst::icon::hand"
 description: "Ways to contribute to Numerimondes projects and community."
 ---
 

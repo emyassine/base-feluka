@@ -1,6 +1,6 @@
 ---
 sidebarTitle: "Contributing"
-icon: "git-pull-request"
+icon: "@spmpst::icon::git-pull-request"
 title: "Contribution Guide"
 description: "How to propose a Feluqa contribution and find the guides for working with the Feluqa team."
 summary: "Explains how to propose a contribution through Feluqa's GitHub page, discuss scope and terms with maintainers, and find the core contribution guidance and AI-agent skills."

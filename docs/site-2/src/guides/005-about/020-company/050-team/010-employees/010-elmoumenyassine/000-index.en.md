@@ -1,7 +1,7 @@
 ---
 title: "Yassine El Moumen"
 sidebarTitle: "Yassine El Moumen"
-icon: "user-round"
+icon: "@spmpst::icon::user-round"
 ---
 
 # Yassine El Moumen

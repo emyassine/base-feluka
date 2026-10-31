@@ -1,7 +1,7 @@
 ---
 title: "Catalogue"
 sidebarTitle: "Catalogue"
-icon: "list"
+icon: "@spmpst::icon::list"
 description: "Global index of education offerings."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Values"
 sidebarTitle: "Values"
-icon: "heart"
+icon: "@spmpst::icon::heart"
 description: "Principles that guide our work."
 ---
 

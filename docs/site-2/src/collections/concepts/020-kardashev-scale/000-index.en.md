@@ -1,7 +1,7 @@
 ---
 title: "Kardashev Scale"
 sidebarTitle: "Kardashev Scale"
-icon: "globe"
+icon: "@spmpst::icon::globe"
 description: "Method of ranking civilizations by energy capture — from planetary to stellar to galactic scales."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Contributing"
 sidebarTitle: "Contributing"
-icon: "heart"
+icon: "@spmpst::icon::heart"
 description: "How to contribute to Webkernel."
 ---
 

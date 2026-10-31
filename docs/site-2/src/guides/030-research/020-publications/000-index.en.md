@@ -1,7 +1,7 @@
 ---
 title: "Publications"
 sidebarTitle: "Publications"
-icon: "file-text"
+icon: "@spmpst::icon::file-text"
 description: "Essays, papers, guest industry pieces, and market notes."
 ---
 
