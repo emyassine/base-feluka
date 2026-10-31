@@ -52,7 +52,10 @@ const questions = computed(() => faqItems.value)
           {{ link.description }}
         </p>
       </div>
-      <img src="@spmpst::icon::arrow-right" style="width: 16px; height: 16px; opacity: 0.6; flex-shrink: 0; margin-left: 0.75rem;" alt="" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; opacity: 0.6; flex-shrink: 0; margin-left: 0.75rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
+      </svg>
     </a>
   </div>
 </section>
@@ -69,7 +72,9 @@ const questions = computed(() => faqItems.value)
     >
       <summary style="padding: 0.875rem 1rem; font-weight: 500; font-size: 0.95rem; color: var(--vp-c-text-1); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between;">
         <span>{{ item.question }}</span>
-        <img src="@spmpst::icon::chevron-down" style="width: 16px; height: 16px; opacity: 0.6; flex-shrink: 0; margin-left: 0.5rem;" alt="" />
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 16px; height: 16px; opacity: 0.6; flex-shrink: 0; margin-left: 0.5rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </summary>
       <div style="padding: 0 1rem 1rem 1rem; color: var(--vp-c-text-2); font-size: 0.875rem; line-height: 1.5;">
         {{ item.answer }}
