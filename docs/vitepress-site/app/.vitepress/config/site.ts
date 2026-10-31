@@ -63,6 +63,10 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   outDir: outputDirectory,
   cleanUrls: true,
   mpa: false,
+  lastUpdated: true,
+  ...(siteConfig.seo?.siteUrl
+    ? { sitemap: { hostname: siteConfig.seo.siteUrl } }
+    : {}),
   vite: { configFile: join(siteDirectory, 'config/vite.config.ts') },
   markdown: siteConfig.markdown,
   transformHtml: (html: string) => html.replace(
