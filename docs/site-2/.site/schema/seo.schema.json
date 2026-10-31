@@ -1,6 +1,96 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "properties": { "$schema": { "type": "string" }, "siteUrl": { "type": ["string", "null"], "format": "uri" }, "path": { "type": "string" }, "icon": { "type": "string" } },
-  "additionalProperties": false
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "siteUrl": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "path": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "pageTitle": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "pageNavTitle": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "description": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "quickLinksTitle": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "faqTitle": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "quickLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "label",
+          "description"
+        ],
+        "properties": {
+          "url": {
+            "$ref": "#/$defs/localizedText"
+          },
+          "label": {
+            "$ref": "#/$defs/localizedText"
+          },
+          "description": {
+            "$ref": "#/$defs/localizedText"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "faq": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "question",
+          "answer"
+        ],
+        "properties": {
+          "question": {
+            "$ref": "#/$defs/localizedText"
+          },
+          "answer": {
+            "$ref": "#/$defs/localizedText"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localizedText": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
 }

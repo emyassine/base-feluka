@@ -2,5 +2,17 @@
   "siteUrl": "https://numerimondes.com",
   "path": "faq",
   "icon": "@spmpst::icon::circle-help",
-  "$schema": "./schema/seo.schema.json"
+  "$schema": "./schema/seo.schema.json",
+  "pageTitle": {
+    "en": "Numerimondes",
+    "fr": "Numerimondes"
+  },
+  "pageNavTitle": {
+    "en": "Numerimondes",
+    "fr": "Numerimondes"
+  },
+  "description": {
+    "en": "Sovereign enterprise technology. Built to last. Casablanca.",
+    "fr": "Technologie d’entreprise souveraine. Conçue pour durer. Casablanca."
+  }
 }

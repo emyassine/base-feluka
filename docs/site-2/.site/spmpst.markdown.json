@@ -1,0 +1,7 @@
+{
+  "$schema": "./schema/markdown.schema.json",
+  "lineNumbers": true,
+  "image": {
+    "lazyLoad": true
+  }
+}

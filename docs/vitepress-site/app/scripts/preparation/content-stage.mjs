@@ -351,7 +351,7 @@ function validateThemeSlotComponents(slots, context) {
     }
   }
 }
-validateThemeSlotComponents(siteThemeSlots, '.site/targets/vitepress.target.config.json')
+validateThemeSlotComponents(siteThemeSlots, '.site/spmpst.layout.json')
 if (config.siteFooter != null && !componentNames.has(config.siteFooter)) {
   throw new Error(`layout.footer references unknown project component "${config.siteFooter}" in .site/spmpst.layout.json`)
 }

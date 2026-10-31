@@ -32,10 +32,5 @@
     "validated": "This information has been reviewed.",
     "fallbackTitle": "Language availability"
   },
-  "seo": {
-    "pageTitle": "Numerimondes",
-    "pageNavTitle": "Numerimondes",
-    "description": "Sovereign enterprise technology. Built to last. Casablanca."
-  },
   "$schema": "../schema/locale.schema.json"
 }

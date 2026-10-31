@@ -32,10 +32,5 @@
     "validated": "Ces informations ont été vérifiées.",
     "fallbackTitle": "Language availability"
   },
-  "seo": {
-    "pageTitle": "Numerimondes",
-    "pageNavTitle": "Numerimondes",
-    "description": "Technologie d’entreprise souveraine. Conçue pour durer. Casablanca."
-  },
   "$schema": "../schema/locale.schema.json"
 }

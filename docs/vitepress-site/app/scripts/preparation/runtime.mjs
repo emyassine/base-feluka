@@ -3,7 +3,7 @@ import { isAbsolute, resolve } from 'node:path'
 import { resolveResourceReferences } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
 
-export function toVitepressRuntime(sourceModel, target, layout) {
+export function toVitepressRuntime(sourceModel, layout) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
   const locales = model.locales
@@ -13,10 +13,26 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
     return value[language] ?? value[defaultLanguage] ?? Object.values(value).find((entry) => typeof entry === 'string')
   }
-  const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...locales[language].seo }]))
+  const localizeTree = (value, language) => {
+    if (Array.isArray(value)) return value.map((item) => localizeTree(item, language))
+    if (!value || typeof value !== 'object') return value
+    const entries = Object.entries(value)
+    if (entries.length && entries.every(([key, entry]) => model.languages.includes(key) && typeof entry === 'string')) {
+      return value[language] ?? value[defaultLanguage] ?? entries[0][1]
+    }
+    return Object.fromEntries(entries.map(([key, entry]) => [key, localizeTree(entry, language)]))
+  }
+  const seoCopy = Object.fromEntries(['pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq']
+    .filter((key) => model[key] !== undefined)
+    .map((key) => [key, model[key]]))
+  const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...localizeTree(seoCopy, language) }]))
   const searchLabels = { root: locales[defaultLanguage].search }
   for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = locales[language].search
   const publicFiles = Object.fromEntries(Object.entries(model.publicFiles).map(([name, text]) => [name, text.replace(/\n$/, '')]))
+  const layoutComponentSlots = {
+    ...(model.components?.sidebarNavigationBefore ? { 'sidebar-nav-before': model.components.sidebarNavigationBefore } : {}),
+    ...(model.components?.navigationAfter ? { 'nav-bar-content-after': model.components.navigationAfter } : {}),
+  }
   const socialLinks = (model.socialLinks ?? []).map((item) => ({
     ...item,
     icon: typeof item.icon === 'string' && isAbsolute(item.icon) && existsSync(item.icon)
@@ -41,8 +57,8 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     languageLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.label])),
     languageMenuLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.menuLabel])),
     fallbackNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.fallbackNotice])),
-    search: { ...target.search, labels: searchLabels },
-    outline: { labels: Object.fromEntries(model.languages.map((language) => [language, locales[language].outline.label])), ...target.outline },
+    search: { ...model.search, labels: searchLabels },
+    outline: { labels: Object.fromEntries(model.languages.map((language) => [language, locales[language].outline.label])), ...model.outline },
     footer: Object.fromEntries(model.languages.map((language) => [language, Object.fromEntries(
       ['message', 'copyright']
         .map((key) => [key, localizedFooterText(footer[key], language)])
@@ -52,15 +68,15 @@ export function toVitepressRuntime(sourceModel, target, layout) {
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     publicFiles,
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, locales[language].ui])),
-    styles: (target.styles ?? []).map((path) => resolve(layout.siteResourcesDir, path)),
-    theme: target.theme,
-    markdown: target.markdown,
-    outputDir: target.outputDir,
+    styles: (model.styles ?? []).map((path) => resolve(layout.siteResourcesDir, path)),
+    theme: { slots: layoutComponentSlots },
+    markdown: model.markdown,
+    outputDir: layout.outputDirectory,
     project: {
-      ...target.project,
+      ...model.project,
       iconLibrary: layout.iconsDir,
-      components: resolve(layout.siteResourcesDir, target.project?.components ?? 'components'),
-      hooks: resolve(layout.siteResourcesDir, target.project?.hooks ?? 'hooks'),
+      components: resolve(layout.siteResourcesDir, model.project?.components ?? 'components'),
+      hooks: resolve(layout.siteResourcesDir, model.project?.hooks ?? 'hooks'),
       iconFallback: model.iconFallback,
       mermaidConfig: layout.mermaidConfigPath,
     },

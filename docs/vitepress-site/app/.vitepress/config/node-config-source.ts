@@ -10,7 +10,7 @@ export const nodeConfigSource: SiteConfigSource = {
   readSiteConfig(siteDirectory: string): SiteConfig {
     const layout = resolveLayout(siteDirectory)
     const loaded = loadSiteModelSync(layout)
-    return toVitepressRuntime(loaded.model, loaded.targets.vitepress, layout) as SiteConfig
+    return toVitepressRuntime(loaded.model, layout) as SiteConfig
   },
   readJson<T>(path: string): T {
     return JSON.parse(readFileSync(path, 'utf8')) as T

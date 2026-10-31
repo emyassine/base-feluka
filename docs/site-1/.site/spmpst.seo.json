@@ -2,5 +2,115 @@
   "siteUrl": null,
   "path": "faq",
   "icon": "@spmpst::icon::circle-help",
-  "$schema": "./schema/seo.schema.json"
+  "$schema": "./schema/seo.schema.json",
+  "quickLinksTitle": {
+    "en": "Popular guides",
+    "fr": "Guides populaires"
+  },
+  "faqTitle": {
+    "en": "Quick answers",
+    "fr": "Réponses rapides"
+  },
+  "quickLinks": [
+    {
+      "label": {
+        "en": "Get started",
+        "fr": "Bien démarrer"
+      },
+      "description": {
+        "en": "Understand Feluqa and build a first application.",
+        "fr": "Comprendre Feluqa et créer une première application."
+      },
+      "url": {
+        "en": "/get-started/",
+        "fr": "/fr/get-started/"
+      }
+    },
+    {
+      "label": {
+        "en": "Internals",
+        "fr": "Les internes de Feluqa"
+      },
+      "description": {
+        "en": "Explore runtime, workspace, and compile-time architecture.",
+        "fr": "Explorer l’architecture du runtime, du workspace et de la compilation."
+      },
+      "url": {
+        "en": "/internals/",
+        "fr": "/fr/internals/"
+      }
+    },
+    {
+      "label": {
+        "en": "Agents",
+        "fr": "Agents"
+      },
+      "description": {
+        "en": "Read contribution guidance for AI coding agents.",
+        "fr": "Consulter les consignes de contribution pour les agents de codage IA."
+      },
+      "url": {
+        "en": "/agents/",
+        "fr": "/fr/agents/"
+      }
+    },
+    {
+      "label": {
+        "en": "Learn",
+        "fr": "Apprendre"
+      },
+      "description": {
+        "en": "Follow practical application tutorials.",
+        "fr": "Suivre des tutoriels pratiques de développement d’applications."
+      },
+      "url": {
+        "en": "/learn/",
+        "fr": "/fr/learn/"
+      }
+    }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "What is Feluqa?",
+        "fr": "Qu’est-ce que Feluqa ?"
+      },
+      "answer": {
+        "en": "Feluqa is a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.",
+        "fr": "Feluqa est une plateforme propriétaire et un espace de noms unifié pour créer des applications web, poste de travail, mobiles, de jeux, des API et des systèmes temps réel. L’architecture cible est encore en développement."
+      }
+    },
+    {
+      "question": {
+        "en": "Where should I start?",
+        "fr": "Par où commencer ?"
+      },
+      "answer": {
+        "en": "Start with Get started to understand the current product direction, set up a development environment, and follow the application guides.",
+        "fr": "Commencez par Bien démarrer pour comprendre l’orientation actuelle du produit, préparer votre environnement et suivre les guides de développement."
+      }
+    },
+    {
+      "question": {
+        "en": "Is the complete platform available today?",
+        "fr": "La plateforme complète est-elle disponible aujourd’hui ?"
+      },
+      "answer": {
+        "en": "No. The repository provides selected framework foundations, while several target capabilities such as dynamic module installation and complete runtime shells remain in active development.",
+        "fr": "Non. Le dépôt fournit certaines fondations du framework, tandis que plusieurs capacités cibles, dont l’installation dynamique de modules et les shells runtime complets, sont encore en développement."
+      }
+    }
+  ],
+  "pageTitle": {
+    "en": "Feluqa FAQ",
+    "fr": "FAQ Feluqa"
+  },
+  "pageNavTitle": {
+    "en": "FAQ",
+    "fr": "FAQ"
+  },
+  "description": {
+    "en": "Frequently asked questions and links to the Feluqa documentation guides.",
+    "fr": "Questions fréquentes et liens vers les guides de documentation Feluqa."
+  }
 }

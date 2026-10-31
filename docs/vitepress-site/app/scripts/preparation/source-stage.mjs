@@ -21,9 +21,9 @@ const layout = resolveLayout(siteDirectory)
 const paths = resolveSitePaths(siteDirectory)
 const configDirectory = layout.configBase
 const loadedConfig = loadSiteModelSync(layout)
-const config = toVitepressRuntime(loadedConfig.model, loadedConfig.targets.vitepress, layout)
+const config = toVitepressRuntime(loadedConfig.model, layout)
 const configuredStyles = config.styles ?? []
-if (!Array.isArray(configuredStyles)) throw new Error('styles must be an array of CSS paths in .site/targets/vitepress.target.config.json')
+if (!Array.isArray(configuredStyles)) throw new Error('styles must be an array of CSS paths in .site/spmpst.appearance.json')
 const styleFiles = configuredStyles.map((stylePath) => {
   if (typeof stylePath !== 'string' || !stylePath.trim()) {
     throw new Error('Each styles entry must resolve to a CSS file inside VitePress resources')
@@ -95,9 +95,9 @@ function themeSlots(value, context) {
   return value
 }
 if (config.theme != null && (typeof config.theme !== 'object' || Array.isArray(config.theme))) {
-  throw new Error('theme must be an object in .site/targets/vitepress.target.config.json')
+  throw new Error('theme must be an object derived from .site/spmpst.layout.json')
 }
-const siteThemeSlots = themeSlots(config.theme?.slots, '.site/targets/vitepress.target.config.json')
+const siteThemeSlots = themeSlots(config.theme?.slots, '.site/spmpst.layout.json')
 if (!Array.isArray(config.languages) || !config.languages.length || config.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(config.languages).size !== config.languages.length) {
   throw new Error('languages must be a non-empty array of unique locale codes')
 }
@@ -200,7 +200,7 @@ for (const key of ['components', 'hooks', 'iconLibrary']) {
     continue
   }
   if (typeof value !== 'string' || !value.trim()) {
-    throw new Error(`project.${key} must be a non-empty directory path relative to the documentation tree`)
+    throw new Error(`project.${key} must be a non-empty directory path relative to the documentation tree in .site/spmpst.definitions.json`)
   }
   const resourceRoot = key === 'iconLibrary' ? layout.targetResourcesDir : layout.siteResourcesDir
   const target = resolve(resourceRoot, value)

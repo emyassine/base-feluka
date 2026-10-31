@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["language", "ui", "search", "outline", "notices", "seo"],
-  "properties": { "$schema": { "type": "string" }, "language": { "type": "object" }, "ui": { "type": "object" }, "search": { "type": "object" }, "outline": { "type": "object" }, "notices": { "type": "object" }, "seo": { "type": "object" } },
+  "required": ["language", "ui", "search", "outline", "notices"],
+  "properties": { "$schema": { "type": "string" }, "language": { "type": "object" }, "ui": { "type": "object" }, "search": { "type": "object" }, "outline": { "type": "object" }, "notices": { "type": "object" } },
   "additionalProperties": false
 }

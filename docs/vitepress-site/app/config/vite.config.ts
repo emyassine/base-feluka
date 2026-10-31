@@ -18,7 +18,7 @@ const dependencyDirectory = existsSync(resolve(siteDirectory, 'node_modules/vite
 const layout = resolveLayout(siteDirectory)
 const paths = resolveSitePaths(siteDirectory)
 const loadedSite = loadSiteModelSync(layout)
-const siteConfiguration = toVitepressRuntime(loadedSite.model, loadedSite.targets.vitepress, layout)
+const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
 const componentDirectory = resolve(siteConfiguration.project?.components ?? resolve(paths.siteResourcesDirectory, 'components'))
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {

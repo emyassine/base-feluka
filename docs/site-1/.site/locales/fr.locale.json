@@ -32,48 +32,5 @@
     "validated": "Les informations contenues sur cette page sont vérifiées et conformes à la version actuelle.",
     "fallbackTitle": "Disponibilité linguistique"
   },
-  "seo": {
-    "quickLinksTitle": "Guides populaires",
-    "faqTitle": "Réponses rapides",
-    "quickLinks": [
-      {
-        "label": "Bien démarrer",
-        "description": "Comprendre Feluqa et créer une première application.",
-        "url": "/fr/get-started/"
-      },
-      {
-        "label": "Les internes de Feluqa",
-        "description": "Explorer l’architecture du runtime, du workspace et de la compilation.",
-        "url": "/fr/internals/"
-      },
-      {
-        "label": "Agents",
-        "description": "Consulter les consignes de contribution pour les agents de codage IA.",
-        "url": "/fr/agents/"
-      },
-      {
-        "label": "Apprendre",
-        "description": "Suivre des tutoriels pratiques de développement d’applications.",
-        "url": "/fr/learn/"
-      }
-    ],
-    "faq": [
-      {
-        "question": "Qu’est-ce que Feluqa ?",
-        "answer": "Feluqa est une plateforme propriétaire et un espace de noms unifié pour créer des applications web, poste de travail, mobiles, de jeux, des API et des systèmes temps réel. L’architecture cible est encore en développement."
-      },
-      {
-        "question": "Par où commencer ?",
-        "answer": "Commencez par Bien démarrer pour comprendre l’orientation actuelle du produit, préparer votre environnement et suivre les guides de développement."
-      },
-      {
-        "question": "La plateforme complète est-elle disponible aujourd’hui ?",
-        "answer": "Non. Le dépôt fournit certaines fondations du framework, tandis que plusieurs capacités cibles, dont l’installation dynamique de modules et les shells runtime complets, sont encore en développement."
-      }
-    ],
-    "pageTitle": "FAQ Feluqa",
-    "pageNavTitle": "FAQ",
-    "description": "Questions fréquentes et liens vers les guides de documentation Feluqa."
-  },
   "$schema": "../schema/locale.schema.json"
 }

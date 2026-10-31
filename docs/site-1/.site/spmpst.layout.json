@@ -10,5 +10,9 @@
     "copyright": {
       "en": ""
     }
+  },
+  "components": {
+    "sidebarNavigationBefore": "BranchedSidebar",
+    "navigationAfter": "CollectionArticleSubnav"
   }
 }

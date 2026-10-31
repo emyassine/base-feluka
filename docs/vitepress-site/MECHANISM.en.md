@@ -97,7 +97,7 @@ Paths in the declaration are resolved relative to the directory containing that 
 
 The current aliases accepted by `serve.sh --sites` include site ID, name, source directory basename (so `site-1` works although the ID is `feluqa-docs`), and one-based selection numbers. Internal app commands use the resolved site ID.
 
-The site's separate `.site/targets/vitepress.target.config.json` also contains an `outputDir`, but normal host commands set `DOCS_OUTPUT_DIR` from the site declaration. During a production build that environment value is temporarily replaced with a staging output path. The declaration is therefore authoritative for the normal final destination.
+Normal host commands set `DOCS_OUTPUT_DIR` from the site declaration. During a production build that environment value is temporarily replaced with a staging output path. The declaration is authoritative for the final destination.
 
 ## 4. Site tree and configuration data types
 
@@ -130,13 +130,17 @@ site-root/
 | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
 | `spmpst.topbar.json` | `items`, `theme` |
 | `spmpst.collections.json` | `collections` |
-| `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
+| `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | `spmpst.links.json` | `socialLinks` |
-| `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
+| `spmpst.seo.json` | `siteUrl`, `path`, `icon`, key-centric multilingual SEO fields |
+| `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths` |
+| `spmpst.markdown.json` | `lineNumbers`, `image` |
+| `spmpst.outline.json` | `level` |
+| `spmpst.layout.json` | `footer`, semantic component placements |
 
-The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, missing locale bundles, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. A target config is loaded under its target name (`vitepress`) and remains opaque to the shared config model until `toVitepressRuntime` consumes it.
+The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, missing locale bundles, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. The current VitePress adapter reads site behavior from the shared SPMPST model; neither checked-in site has a VitePress target config file.
 
-`<language>.locale.json` supplies localized UI strings, search labels, outline labels, notices, and optional SEO content. `spmpst.layout.json` owns the site-wide footer: `footer.component` may name a site component, while `footer.message` and `footer.copyright` accept plain or per-language text. The VitePress adapter maps these generic fields to its renderer configuration. `public/*` files are loaded as text and passed through as public text files. `targets/vitepress.target.config.json` supplies VitePress-specific output, project directories, styles, theme slots, Markdown, search, and outline settings. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
+`<language>.locale.json` supplies localized UI strings, search labels, outline labels, and notices. `spmpst.search.json` supplies the site's search provider and provider options; the VitePress adapter reads `search.miniSearch` when it configures local search. `spmpst.seo.json` keeps SEO translations key-centric: each field has its language map, while FAQ and quick-link items keep their shared shape. `spmpst.layout.json` owns the site-wide footer and semantic component placements. `spmpst.markdown.json`, `spmpst.outline.json`, and `spmpst.appearance.json` hold site-wide rendering preferences and styles. The adapter maps those shared fields to VitePress options. `public/*` files are loaded as text and passed through as public text files. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
 
 The composed `SiteConfig` is the renderer-facing shape in `app/.vitepress/types/site-config.d.ts`: site identity, guides, locales, topbar, collections, styles, fonts, theme/project paths, search/outline/footer, SEO, public files, and Mermaid options. The Node config-source adapter supplies file reads; the VitePress composition root injects that source plus navigation and head-transform functions.
 
@@ -299,7 +303,7 @@ Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`u
 
 ## 12. Components, hooks, styles, and browser theme
 
-The current preparation code recursively discovers `.vue` files below the configured `project.components` directory, derives a PascalCase component name from each filename, rejects name collisions, and emits imports/registrations in the generated `components.ts`. The VitePress theme registers these components globally, so they can be used by generated Markdown. Theme slots in the target config and guide `spmpst.guide.json` are checked against these component names and are rendered at the configured VitePress slots.
+The current preparation code recursively discovers `.vue` files below the configured `project.components` directory, derives a PascalCase component name from each filename, rejects name collisions, and emits imports/registrations in the generated `components.ts`. The VitePress theme registers these components globally, so they can be used by generated Markdown. Semantic component placements in `spmpst.layout.json` and guide `spmpst.guide.json` placements are checked against these component names and mapped to VitePress slots by the adapter.
 
 This is the current adapter mechanism: automatic registration is for Vue SFCs. It does **not** itself install arbitrary React/Svelte toolchains or provide a universal mixed-framework component runtime. A host Vite config can add plugins, but each framework's compiler/registration remains the site's build setup.
 

@@ -16,15 +16,15 @@ const mode = process.argv[2]
 if (!['record', 'compare'].includes(mode)) throw new Error('Usage: node scripts/dev/verify-config.mjs record|compare')
 if (mode === 'record') {
   const layout = resolveLayout(site)
-  const { model, targets } = loadSiteModelSync(layout)
-  const canonical = `${JSON.stringify(sortKeys(toVitepressRuntime(model, targets.vitepress, layout)), null, 2)}\n`
+  const { model } = loadSiteModelSync(layout)
+  const canonical = `${JSON.stringify(sortKeys(toVitepressRuntime(model, layout)), null, 2)}\n`
   await writeFile(baselinePath, canonical)
   process.stdout.write(`Recorded canonical renderer config at ${baselinePath}\n`)
 } else {
   const previous = await readFile(baselinePath, 'utf8')
   const layout = resolveLayout(site)
-  const { model, targets } = loadSiteModelSync(layout)
-  const currentRuntime = toVitepressRuntime(model, targets.vitepress, layout)
+  const { model } = loadSiteModelSync(layout)
+  const currentRuntime = toVitepressRuntime(model, layout)
   const expected = structuredClone(JSON.parse(previous))
   const actual = structuredClone(currentRuntime)
   const allowedPaths = JSON.parse(await readFile(join(site, '../.trash/refactor/allowed-config-diffs.json'), 'utf8').catch(() => '["/uiStrings"]'))

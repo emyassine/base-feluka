@@ -6,6 +6,7 @@
     "fonts": { "type": "object" },
     "logo": { "type": "object" },
     "ogImages": { "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }] },
+    "styles": { "type": "array", "items": { "type": "string" } },
     "mermaid": { "type": "object" }
   },
   "additionalProperties": false

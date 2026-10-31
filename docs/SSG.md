@@ -203,7 +203,7 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 ## A9. Languages and fallbacks
 
 - `lang` owns `languages`, `fallbackLanguage`, `selector`. Each configured language MUST have exactly one locale bundle; extra bundles produce a warning.
-- Locale bundles MUST contain language, UI, search, outline, notice and SEO sections. Footer copy belongs to `spmpst.layout.json` and may be localized there.
+- Locale bundles MUST contain language, UI, search, outline and notice sections. Footer copy belongs to `spmpst.layout.json`; SEO page content belongs to `spmpst.seo.json` as key-centric localized values.
 - Localized inline objects resolve: requested language, then fallback language, then first string value. Missing translations warn, and fail under strict i18n.
 - When a non-default translation is absent, a fallback page is generated from the default-language page and marked with `requestedLanguage`, `contentLanguage`, `languageFallbackNotice`. Notice templates use `{requested}` and `{fallback}` (the reference implementation currently validates `{requested}`).
 
@@ -224,10 +224,13 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Languages | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
 | Navigation | `spmpst.topbar.json` | `items`, `theme` |
 | Collections | `spmpst.collections.json` | `collections` |
-| Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
+| Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | Links | `spmpst.links.json` | `socialLinks` |
-| SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
-| Layouts (**PROPOSED**) | `spmpst.layouts.json` | `layouts`, `rules` (§A13) |
+| SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon`, localized SEO fields |
+| Search | `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths` |
+| Markdown | `spmpst.markdown.json` | `lineNumbers`, `image` |
+| Outline | `spmpst.outline.json` | `level` |
+| Layout and footer | `spmpst.layout.json` | `footer`, semantic component placements; `layouts` and `rules` remain **PROPOSED** (§A13) |
 
 The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
 
@@ -667,7 +670,7 @@ Declaration (`docs/site-1/.site/spmpst.json`):
 }
 ```
 
-Paths resolve from the declaration's directory. `resourcesPath` and `siteResourcesPath` are optional (defaults: host `resources/`, site-root `resources/`). The shell's lightweight reader uses ID, name, source and output; `site-registry.mjs` validates all fields. The target config also contains an `outputDir`, but normal commands set `DOCS_OUTPUT_DIR` from the declaration, which is authoritative (temporarily replaced by a staging path during builds).
+Paths resolve from the declaration's directory. `resourcesPath` and `siteResourcesPath` are optional (defaults: host `resources/`, site-root `resources/`). The shell's lightweight reader uses ID, name, source and output; `site-registry.mjs` validates all fields. Normal commands set `DOCS_OUTPUT_DIR` from the declaration, temporarily replacing it with a staging path during builds.
 
 **Mapping to the tool-neutral model:** `sourcePath` → `paths.source`; `resourcesPath` → `paths.sharedResources`; `siteResourcesPath` → `paths.resources`; `outputPath` → `paths.output`; the toolchain is implicit (VitePress preset hard-wired in `site.mjs`).
 
@@ -736,7 +739,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 
 ## C9. Components, hooks, styles
 
-- Vue SFCs below `project.components` are discovered recursively and registered globally in generated `components.ts`; theme slots (target config and guide config) are validated against them.
+- Vue SFCs below `project.components` are discovered recursively and registered globally in generated `components.ts`; semantic component placements in site and guide config are validated against them.
 - Hooks by convention under `project.hooks`: `documentation-hooks` (+ optional `.css`) exports `DocumentationNotice`, `DocumentationLastModified` (no-op components when absent); `documentation-seo` exports `transformDocumentationHead` (no-op when absent).
 - Configured styles are emitted as imports in a generated TypeScript module.
 
@@ -789,11 +792,11 @@ These are stage backlog items, not completed behavior. The present implementatio
 
 | Surface | Location / output |
 |---|---|
-| Theme slots | `.site/targets/vitepress.target.config.json` |
+| Theme component placements | `.site/spmpst.layout.json`; the VitePress adapter maps semantic placements to its slots |
 | Site registry / declaration | `spmpst.workspace.json` (host) / `.site/spmpst.json` |
 | Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` |
 | Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
-| Styles, search, Markdown options | Target config and generated theme files |
+| Styles, search, Markdown and outline options | SPMPST concern files, interpreted by the VitePress adapter |
 | Emitted frontmatter | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
 | Embedded component tags | Vue syntax, e.g. `<CollectionSpotlightCards />` |
 | Generated modules | `docs/vitepress-site/.trash/<site>/vitepress-generated/` |

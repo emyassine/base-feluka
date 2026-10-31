@@ -19,6 +19,14 @@
         { "required": ["copyright"] }
       ],
       "additionalProperties": false
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "sidebarNavigationBefore": { "type": ["string", "null"] },
+        "navigationAfter": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,

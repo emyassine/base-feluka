@@ -1,0 +1,14 @@
+{
+  "$schema": "./schema/search.schema.json",
+  "provider": "local",
+  "miniSearch": {
+    "fuzzy": 0.2,
+    "prefix": true,
+    "boost": {
+      "title": 4,
+      "text": 2,
+      "titles": 1
+    }
+  },
+  "excludePaths": []
+}
