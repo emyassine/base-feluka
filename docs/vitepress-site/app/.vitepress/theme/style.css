@@ -56,7 +56,6 @@
   border-radius: 50%;
 }
 
-.docs-language-flags .VPNavBarTranslations .title { font-size: 0; }
 .docs-language-flags .VPNavScreenTranslations .icon.lang { display: none; }
 .docs-language-flags .VPNavScreenTranslations .title::before { margin-right: 8px; }
 

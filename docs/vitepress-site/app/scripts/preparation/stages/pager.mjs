@@ -88,6 +88,23 @@ function pagerTarget(file) {
   return target
 }
 
+function replacePager(markdown, previous, next) {
+  const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+  if (!frontmatter) return null
+  const kept = []
+  const lines = frontmatter[1].split('\n')
+  for (let index = 0; index < lines.length; index += 1) {
+    if (/^(?:prev|next):(?:\s|$)/.test(lines[index])) {
+      while (index + 1 < lines.length && /^\s+/.test(lines[index + 1])) index += 1
+      continue
+    }
+    kept.push(lines[index])
+  }
+  const pagerLine = (name, target) => `${name}: ${target ? `{ text: ${JSON.stringify(target.text)}, link: ${JSON.stringify(target.link)} }` : 'false'}`
+  kept.push(pagerLine('prev', previous && pagerTarget(previous)), pagerLine('next', next && pagerTarget(next)))
+  return `${markdown.slice(0, frontmatter.index)}---\n${kept.join('\n')}\n---${markdown.slice(frontmatter.index + frontmatter[0].length)}`
+}
+
 const pagedFiles = new Set()
 for (const language of config.languages) {
   const prefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage, { lowercase: true })
@@ -119,23 +136,32 @@ for (const language of config.languages) {
     const contents = new Map(await Promise.all([...pager.keys()].map(async (file) => [file, await readFile(file, 'utf8')])))
     for (const [file, [previous, next]] of pager) {
       const markdown = contents.get(file)
-      const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
-      if (!frontmatter) continue
-      const kept = []
-      const lines = frontmatter[1].split('\n')
-      for (let index = 0; index < lines.length; index += 1) {
-        if (/^(?:prev|next):(?:\s|$)/.test(lines[index])) {
-          while (index + 1 < lines.length && /^\s+/.test(lines[index + 1])) index += 1
-          continue
-        }
-        kept.push(lines[index])
-      }
-      const pagerLine = (name, target) => `${name}: ${target ? `{ text: ${JSON.stringify(target.text)}, link: ${JSON.stringify(target.link)} }` : 'false'}`
-      kept.push(pagerLine('prev', previous && pagerTarget(previous)), pagerLine('next', next && pagerTarget(next)))
-      const updated = `${markdown.slice(0, frontmatter.index)}---\n${kept.join('\n')}\n---${markdown.slice(frontmatter.index + frontmatter[0].length)}`
+      const updated = replacePager(markdown, previous, next)
+      if (updated === null) continue
       generatedFiles.add(file)
       pagedFiles.add(file)
       if (updated !== markdown) pendingWrites.push(writeFile(file, updated))
+    }
+  }
+}
+
+// Each configured collection is its own reading boundary, just like a guide.
+// Do not join articles from sibling collections into one global sequence.
+for (const language of config.languages) {
+  for (const collection of generatedCollectionNavigation) {
+    const articles = collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []
+    const sourceNames = Object.fromEntries(articles.map((article) => [article.url, article.sourcePath]))
+    const orderedArticles = sortNavigationEntries(articles.map((article) => ({ name: article.url })), sourceNames)
+    const files = orderedArticles
+      .map(({ name }) => join(outputDirectory, name.replace(/^\/+/, '').split('/').join(sep) + '.md'))
+      .filter((file) => generatedMarkdown.has(file))
+    for (let index = 0; index < files.length; index += 1) {
+      const file = files[index]
+      const updated = replacePager(await readFile(file, 'utf8'), files[index - 1], files[index + 1])
+      if (updated === null) continue
+      generatedFiles.add(file)
+      pagedFiles.add(file)
+      if (updated !== await readFile(file, 'utf8')) pendingWrites.push(writeFile(file, updated))
     }
   }
 }

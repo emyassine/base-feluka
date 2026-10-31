@@ -237,6 +237,7 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 
 - Paths in `.site/` MUST be relative to the tree root, use `/`, and MUST NOT escape the root via `..`, absolute paths, or symlinks. A symlink MAY be followed only if its canonical target stays within an approved root.
 - Collection `dir` is relative to `src/collections` and defaults to its `id`. Guide config paths are relative to that guide. Markdown relative links are relative to their page.
+- A collection's source directory SHOULD be a direct child of `src/collections`; nested directories belong inside that collection and do not declare new collections. Its public URL MAY use a nested `route` such as `resources/legal`.
 - Assets referenced from Markdown MAY come from `src/guides`, `src/collections`, or the source tree's `resources/`; adapter resources are referenced by logical identifiers (§A14). Any other path is rejected.
 
 ## A6. Source file conventions
@@ -333,7 +334,7 @@ Collections MAY set `route` to a non-hidden relative public URL path. If omitted
 }
 ```
 
-Any configured collection below `src/collections/resources/` appears automatically, with its pages as children. Resources therefore remains a collection of collections and needs no guide declaration or manually maintained topbar links.
+With no `collections.pathPrefix`, every configured collection appears automatically. Collections such as `about`, `legal`, `governance`, and `articles` can each live directly under `src/collections` while publishing below `/resources/` through their `route`. Resources is a navigation grouping of independent collections, not a collection containing other collections.
 
 A topbar item MAY instead use an authored `text` and `link` for an external or internal destination. `link` MAY be one string shared by all languages or an object with one destination for every configured language. External HTTP(S) links default to `target: "_blank"` and `rel: "noopener noreferrer"`; a site MAY set `target` or `rel` explicitly. Internal links remain in the current tab unless configured otherwise. The reserved topbar icon value `INHERIT` reuses the linked page's frontmatter icon. Resource references such as `@spmpst::icon::...` resolve named icons; they do not enumerate content directories.
 

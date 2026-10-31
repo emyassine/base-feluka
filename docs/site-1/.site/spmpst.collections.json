@@ -12,8 +12,7 @@
         "en": "Short articles about building with Feluqa.",
         "fr": "Articles courts sur la création avec Feluqa."
       },
-      "dir": "resources/articles",
-      "route": "resources/articles"
+      "dir": "articles"
     },
     {
       "id": "about",
@@ -21,8 +20,7 @@
       "indexLayout": "list",
       "title": { "en": "About Feluqa", "fr": "À propos de Feluqa" },
       "description": { "en": "About the platform and the people behind it.", "fr": "La plateforme et les personnes qui la portent." },
-      "dir": "resources/about",
-      "route": "resources/about"
+      "dir": "about"
     },
     {
       "id": "governance",
@@ -30,8 +28,7 @@
       "indexLayout": "list",
       "title": { "en": "Governance", "fr": "Gouvernance" },
       "description": { "en": "Stewardship, contribution, and published commitments.", "fr": "Gouvernance, contributions et engagements publiés." },
-      "dir": "resources/governance",
-      "route": "resources/governance"
+      "dir": "governance"
     },
     {
       "id": "legal",
@@ -45,8 +42,7 @@
         "en": "Privacy, publisher, and legal information for Feluqa.",
         "fr": "Informations sur la confidentialité, l’éditeur et les aspects juridiques de Feluqa."
       },
-      "dir": "resources/legal",
-      "route": "resources/legal"
+      "dir": "legal"
     }
   ],
   "$schema": "../public/api/schemas/collections.schema.json",
