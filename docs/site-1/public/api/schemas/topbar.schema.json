@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "theme": {
+      "enum": [
+        "switch",
+        "system",
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "items": [],
+    "theme": "switch",
+    "$schema": "../public/media/schemas/topbar.schema.json"
+  },
+  "description": "SPMPST topbar concern configuration. The default value is the conforming-tool site scaffold."
+}

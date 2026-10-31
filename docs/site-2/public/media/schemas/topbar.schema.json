@@ -20,5 +20,11 @@
       ]
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "default": {
+    "items": [],
+    "theme": "switch",
+    "$schema": "../public/media/schemas/topbar.schema.json"
+  },
+  "description": "SPMPST topbar concern configuration. The default value is the conforming-tool site scaffold."
 }

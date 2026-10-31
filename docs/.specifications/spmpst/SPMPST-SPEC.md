@@ -626,6 +626,12 @@ A conforming tool MUST provide:
 
 A conforming tool MAY additionally provide **preview** and **dev** (§B7), validation-only, cleaning, scaffolding and deployment. How these are invoked is the tool's own business. The simple workflow MUST NOT make an implementation checkout path a required user argument.
 
+#### B7.1 Schema defaults and site scaffolding
+
+The canonical schemas and scaffold contract are distributed with this specification in `docs/.specifications/spmpst/` (or the equivalent specification package location). The manifest schema MUST describe the complete `SpmpstPaths` registry and MAY declare an `x-spmpst-scaffold` contract for starter-site generation. That contract declares the concern-schema mapping, directories, files, and schema copies; a conforming tool MUST use these declarations instead of duplicating starter values or filesystem paths in command code.
+
+For site generation, each schema's root `default` is the initial value for that JSON document. The tool MUST deep-clone the value before use and substitute only placeholders declared by the scaffold contract. Unrecognized placeholders MUST remain unchanged. Generated concern files MUST be registered in `SpmpstPaths.configFiles`, and the generated site's paths MUST be resolved through that one `SpmpstPaths` object. Public copies of schemas are ordinary files beneath the configured `paths.public` directory; they do not replace the canonical schemas in the specification package.
+
 ## B6. Build semantics
 
 1. **Isolation.** A build binds one site identity, one resolved config snapshot, one engine, one dependency graph. Changing site A's sources MUST NOT change site B's output unless a declared shared dependency changed.

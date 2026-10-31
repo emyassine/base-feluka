@@ -10,6 +10,7 @@
     "docs:clean": "node app/scripts/site.mjs clean",
     "docs:check": "node app/scripts/site.mjs check",
     "docs:new": "node app/scripts/site.mjs new",
+    "docs:new-site": "node app/scripts/site.mjs new-site",
     "docs:verify": "node app/scripts/site.mjs verify compare"
   },
   "devDependencies": {

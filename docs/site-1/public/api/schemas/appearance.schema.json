@@ -34,5 +34,21 @@
       "type": "object"
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "default": {
+    "styles": [],
+    "mermaid": {
+      "flowchartPalette": [
+        {
+          "fill": "#e8eaf0",
+          "text": "#20222a",
+          "stroke": "#7451d5"
+        }
+      ],
+      "nodeBorderWidth": "1.5px",
+      "darkMessageTextColor": "#f1f3fc"
+    },
+    "$schema": "../public/media/schemas/appearance.schema.json"
+  },
+  "description": "SPMPST appearance concern configuration. The default value is the conforming-tool site scaffold."
 }

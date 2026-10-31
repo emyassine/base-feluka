@@ -36,6 +36,7 @@ error() { printf '%sERROR%s %s\n' "$RED" "$RESET" "$*" >&2; }
 usage() {
   cat <<'EOF'
 Usage: ./serve.sh [OPTIONS]
+       ./serve.sh new <sitename>
 
   --list              List registered sites, source directories, and output paths.
   --sites LIST        Select comma-separated site ids or directory names.
@@ -43,6 +44,7 @@ Usage: ./serve.sh [OPTIONS]
   --preview           Build selected sites, serve the static output, and rebuild
                       only the site whose sources change.
   --help              Show this help.
+  new <sitename>      Create and register a site from the SPMPST schema defaults.
 
 Examples:
   ./serve.sh --list
@@ -56,6 +58,14 @@ execution selects all registered sites. Servers use distinct available ports,
 starting at PORT (default: 4173).
 EOF
 }
+
+if [[ "${1:-}" == 'new' ]]; then
+  if (($# != 2)); then
+    error 'Usage: ./serve.sh new <sitename>'
+    exit 2
+  fi
+  exec node "$site_dir/app/scripts/site.mjs" new-site "$2"
+fi
 
 while (($#)); do
   case "$1" in

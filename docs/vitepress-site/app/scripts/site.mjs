@@ -3,8 +3,13 @@ import { existsSync } from 'node:fs'
 import { mkdir, rename, rm, symlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, resolve } from 'node:path'
 import { selectSite, appDirectory } from './site-registry.mjs'
+import { createSite } from './spmpst/create-site.mjs'
 
 const [command, ...args] = process.argv.slice(2)
+if (command === 'new-site') {
+  await createSite(args[0])
+  process.exit(0)
+}
 const option = (name) => args.includes(name) ? args[args.indexOf(name) + 1] : undefined
 const forwardedArgs = () => args.filter((argument, index) => argument !== '--site' && args[index - 1] !== '--site')
 const site = await selectSite(option('--site'))
@@ -179,6 +184,6 @@ if (command === 'prepare') {
   await rm(resolve(dirname(site.paths.output), 'tmp'), { recursive: true, force: true })
   process.stdout.write(`[site] Cleaned ${site.id} generated files and ${site.paths.output}\n`)
 } else {
-  process.stderr.write('Usage: node scripts/site.mjs <prepare|build|serve|preview|serve-build|watch|clean|check|new|verify> [args] [--site <id>]\n')
+  process.stderr.write('Usage: node scripts/site.mjs <prepare|build|serve|preview|serve-build|watch|clean|check|new|new-site|verify> [args] [--site <id>]\n')
   process.exitCode = 2
 }

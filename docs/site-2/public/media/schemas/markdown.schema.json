@@ -18,5 +18,13 @@
       "additionalProperties": false
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "default": {
+    "$schema": "../public/media/schemas/markdown.schema.json",
+    "lineNumbers": true,
+    "image": {
+      "lazyLoad": true
+    }
+  },
+  "description": "SPMPST markdown concern configuration. The default value is the conforming-tool site scaffold."
 }

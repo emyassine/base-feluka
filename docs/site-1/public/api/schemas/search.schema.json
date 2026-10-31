@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "provider"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "miniSearch": {
+      "type": "object",
+      "properties": {
+        "fuzzy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "prefix": {
+          "type": "boolean"
+        },
+        "boost": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "excludePaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "searchLabels": {
+      "type": "object",
+      "properties": {
+        "buttonText": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "buttonAriaLabel": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "displayDetails": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "resetButtonTitle": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "backButtonTitle": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "noResultsText": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "selectText": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "selectKeyAriaLabel": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "navigateText": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "navigateUpKeyAriaLabel": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "navigateDownKeyAriaLabel": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "closeText": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "closeKeyAriaLabel": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localizedText": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "default": {
+    "$schema": "../public/media/schemas/search.schema.json",
+    "provider": "local",
+    "miniSearch": {
+      "fuzzy": 0.2,
+      "prefix": true,
+      "boost": {
+        "title": 4,
+        "text": 2,
+        "titles": 1
+      }
+    },
+    "excludePaths": [],
+    "searchLabels": {
+      "buttonText": {
+        "en": "Search"
+      },
+      "buttonAriaLabel": {
+        "en": "Search documentation"
+      },
+      "displayDetails": {
+        "en": "Display detailed list"
+      },
+      "resetButtonTitle": {
+        "en": "Reset search"
+      },
+      "backButtonTitle": {
+        "en": "Close search"
+      },
+      "noResultsText": {
+        "en": "No results"
+      },
+      "selectText": {
+        "en": "Select"
+      },
+      "selectKeyAriaLabel": {
+        "en": "Enter"
+      },
+      "navigateText": {
+        "en": "Navigate"
+      },
+      "navigateUpKeyAriaLabel": {
+        "en": "Arrow up"
+      },
+      "navigateDownKeyAriaLabel": {
+        "en": "Arrow down"
+      },
+      "closeText": {
+        "en": "Close"
+      },
+      "closeKeyAriaLabel": {
+        "en": "Escape"
+      }
+    }
+  },
+  "description": "SPMPST search concern configuration. The default value is the conforming-tool site scaffold."
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "icon",
+          "link"
+        ],
+        "properties": {
+          "icon": {},
+          "link": {
+            "type": "string"
+          },
+          "ariaLabel": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "socialLinks": [],
+    "$schema": "../public/media/schemas/links.schema.json"
+  },
+  "description": "SPMPST links concern configuration. The default value is the conforming-tool site scaffold."
+}

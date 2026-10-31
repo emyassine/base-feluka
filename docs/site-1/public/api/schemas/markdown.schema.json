@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lineNumbers": {
+      "type": "boolean"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "lazyLoad": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "$schema": "../public/media/schemas/markdown.schema.json",
+    "lineNumbers": true,
+    "image": {
+      "lazyLoad": true
+    }
+  },
+  "description": "SPMPST markdown concern configuration. The default value is the conforming-tool site scaffold."
+}

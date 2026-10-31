@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "fonts": {
+      "type": "object"
+    },
+    "logo": {
+      "type": "object"
+    },
+    "ogImages": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "styles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mermaid": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "styles": [],
+    "mermaid": {
+      "flowchartPalette": [
+        {
+          "fill": "#e8eaf0",
+          "text": "#20222a",
+          "stroke": "#7451d5"
+        }
+      ],
+      "nodeBorderWidth": "1.5px",
+      "darkMessageTextColor": "#f1f3fc"
+    },
+    "$schema": "../public/media/schemas/appearance.schema.json",
+    "logo": {
+      "light": "resources/assets/brand/site-logo.svg",
+      "dark": "resources/assets/brand/site-logo.svg",
+      "alt": "{siteName}",
+      "height": "2rem"
+    }
+  },
+  "description": "SPMPST appearance concern configuration. The default value is the conforming-tool site scaffold."
+}

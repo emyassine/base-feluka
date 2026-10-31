@@ -26,5 +26,10 @@
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "default": {
+    "socialLinks": [],
+    "$schema": "../public/media/schemas/links.schema.json"
+  },
+  "description": "SPMPST links concern configuration. The default value is the conforming-tool site scaffold."
 }

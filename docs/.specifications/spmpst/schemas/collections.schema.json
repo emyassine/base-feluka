@@ -100,5 +100,13 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "collections": [],
+    "$schema": "../public/media/schemas/collections.schema.json",
+    "emptyCollection": {
+      "en": "No content published yet."
+    }
+  },
+  "description": "SPMPST collections concern configuration. The default value is the conforming-tool site scaffold."
 }

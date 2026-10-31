@@ -92,5 +92,29 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "siteUrl": null,
+    "path": "faq",
+    "icon": "@spmpst::icon::circle-help",
+    "$schema": "../public/media/schemas/seo.schema.json",
+    "pageTitle": {
+      "en": "{siteName}"
+    },
+    "pageNavTitle": {
+      "en": "FAQ"
+    },
+    "description": {
+      "en": "Frequently asked questions about {siteName}."
+    },
+    "quickLinksTitle": {
+      "en": "Popular guides"
+    },
+    "faqTitle": {
+      "en": "Quick answers"
+    },
+    "quickLinks": [],
+    "faq": []
+  },
+  "description": "SPMPST seo concern configuration. The default value is the conforming-tool site scaffold."
 }

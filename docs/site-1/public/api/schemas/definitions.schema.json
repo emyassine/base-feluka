@@ -72,5 +72,26 @@
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "default": {
+    "site": {
+      "name": "{siteName}",
+      "description": "Documentation for {siteName}."
+    },
+    "subguides": [
+      {
+        "path": "{guidePath}",
+        "label": "Guides",
+        "labels": {
+          "en": "Guides"
+        },
+        "uri": {
+          "base": "/"
+        }
+      }
+    ],
+    "iconFallback": "circle-help",
+    "$schema": "../public/media/schemas/definitions.schema.json"
+  },
+  "description": "SPMPST definitions concern configuration. The default value is the conforming-tool site scaffold."
 }

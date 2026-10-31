@@ -1,0 +1,575 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:spmpst:specification:0.1:spmpst.schema.json",
+  "title": "SPMPST site declaration",
+  "description": "The site-root manifest. Its default value is a complete VitePress-host scaffold template; placeholders are defined by the SPMPST scaffold contract.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "id",
+    "name",
+    "paths",
+    "engine",
+    "toolchain"
+  ],
+  "properties": {
+    "specVersion": {
+      "const": "0.1",
+      "default": "0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "default": "{siteId}"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "default": "{siteName}"
+    },
+    "paths": {
+      "type": "object",
+      "default": {
+        "root": ".",
+        "config": ".site",
+        "guides": "src/guides",
+        "collections": "src/collections",
+        "resources": "resources",
+        "sharedResources": "{sharedResourcesPath}",
+        "assets": "resources/assets",
+        "components": "resources/components",
+        "diagrams": "resources/diagrams",
+        "hooks": "resources/hooks",
+        "media": "public/media",
+        "schemas": "public/media/schemas",
+        "public": "public",
+        "configFiles": {
+          "appearance": ".site/spmpst.appearance.json",
+          "collections": ".site/spmpst.collections.json",
+          "definitions": ".site/spmpst.definitions.json",
+          "lang": ".site/spmpst.lang.json",
+          "layout": ".site/spmpst.layout.json",
+          "links": ".site/spmpst.links.json",
+          "markdown": ".site/spmpst.markdown.json",
+          "outline": ".site/spmpst.outline.json",
+          "search": ".site/spmpst.search.json",
+          "seo": ".site/spmpst.seo.json",
+          "topbar": ".site/spmpst.topbar.json"
+        },
+        "icons": "{iconsPath}",
+        "flags": "{flagsPath}",
+        "mermaidConfig": "resources/diagrams/mermaid.json",
+        "toolchain": "{toolchainPath}",
+        "output": "{outputPath}"
+      },
+      "description": "Canonical SpmpstPaths registry. Values resolve from this manifest.",
+      "required": [
+        "root",
+        "config",
+        "guides",
+        "collections",
+        "resources",
+        "sharedResources",
+        "assets",
+        "components",
+        "diagrams",
+        "hooks",
+        "media",
+        "schemas",
+        "public",
+        "configFiles",
+        "icons",
+        "flags",
+        "mermaidConfig",
+        "toolchain",
+        "output"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "type": "string",
+          "minLength": 1,
+          "default": "."
+        },
+        "config": {
+          "type": "string",
+          "minLength": 1,
+          "default": ".site"
+        },
+        "guides": {
+          "type": "string",
+          "minLength": 1,
+          "default": "src/guides"
+        },
+        "collections": {
+          "type": "string",
+          "minLength": 1,
+          "default": "src/collections"
+        },
+        "resources": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources"
+        },
+        "sharedResources": {
+          "type": "string",
+          "minLength": 1,
+          "default": "{sharedResourcesPath}"
+        },
+        "assets": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources/assets"
+        },
+        "components": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources/components"
+        },
+        "diagrams": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources/diagrams"
+        },
+        "hooks": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources/hooks"
+        },
+        "media": {
+          "type": "string",
+          "minLength": 1,
+          "default": "public/media"
+        },
+        "schemas": {
+          "type": "string",
+          "minLength": 1,
+          "default": "public/media/schemas"
+        },
+        "public": {
+          "type": "string",
+          "minLength": 1,
+          "default": "public"
+        },
+        "configFiles": {
+          "type": "object",
+          "required": [
+            "appearance",
+            "collections",
+            "definitions",
+            "lang",
+            "layout",
+            "links",
+            "markdown",
+            "outline",
+            "search",
+            "seo",
+            "topbar"
+          ],
+          "properties": {
+            "appearance": {
+              "type": "string",
+              "default": ".site/spmpst.appearance.json"
+            },
+            "collections": {
+              "type": "string",
+              "default": ".site/spmpst.collections.json"
+            },
+            "definitions": {
+              "type": "string",
+              "default": ".site/spmpst.definitions.json"
+            },
+            "lang": {
+              "type": "string",
+              "default": ".site/spmpst.lang.json"
+            },
+            "layout": {
+              "type": "string",
+              "default": ".site/spmpst.layout.json"
+            },
+            "links": {
+              "type": "string",
+              "default": ".site/spmpst.links.json"
+            },
+            "markdown": {
+              "type": "string",
+              "default": ".site/spmpst.markdown.json"
+            },
+            "outline": {
+              "type": "string",
+              "default": ".site/spmpst.outline.json"
+            },
+            "search": {
+              "type": "string",
+              "default": ".site/spmpst.search.json"
+            },
+            "seo": {
+              "type": "string",
+              "default": ".site/spmpst.seo.json"
+            },
+            "topbar": {
+              "type": "string",
+              "default": ".site/spmpst.topbar.json"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "appearance": ".site/spmpst.appearance.json",
+            "collections": ".site/spmpst.collections.json",
+            "definitions": ".site/spmpst.definitions.json",
+            "lang": ".site/spmpst.lang.json",
+            "layout": ".site/spmpst.layout.json",
+            "links": ".site/spmpst.links.json",
+            "markdown": ".site/spmpst.markdown.json",
+            "outline": ".site/spmpst.outline.json",
+            "search": ".site/spmpst.search.json",
+            "seo": ".site/spmpst.seo.json",
+            "topbar": ".site/spmpst.topbar.json"
+          }
+        },
+        "icons": {
+          "type": "string",
+          "minLength": 1,
+          "default": "{iconsPath}"
+        },
+        "flags": {
+          "type": "string",
+          "minLength": 1,
+          "default": "{flagsPath}"
+        },
+        "mermaidConfig": {
+          "type": "string",
+          "minLength": 1,
+          "default": "resources/diagrams/mermaid.json"
+        },
+        "toolchain": {
+          "type": "string",
+          "minLength": 1,
+          "default": "{toolchainPath}"
+        },
+        "output": {
+          "type": "string",
+          "minLength": 1,
+          "default": "{outputPath}"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "default": {}
+    },
+    "engine": {
+      "enum": [
+        "builtin",
+        "toolchain"
+      ],
+      "default": "toolchain"
+    },
+    "toolchain": {
+      "type": "object",
+      "required": [
+        "preset",
+        "cwd",
+        "build",
+        "dev",
+        "network"
+      ],
+      "properties": {
+        "preset": {
+          "type": "string",
+          "default": "vitepress"
+        },
+        "cwd": {
+          "type": "string",
+          "default": "toolchain"
+        },
+        "install": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "when": {
+              "enum": [
+                "missing",
+                "always",
+                "never"
+              ],
+              "default": "missing"
+            }
+          },
+          "required": [
+            "command",
+            "args",
+            "when"
+          ],
+          "additionalProperties": false,
+          "default": {
+            "command": "npm",
+            "args": [
+              "ci"
+            ],
+            "when": "missing"
+          }
+        },
+        "build": {
+          "type": "object",
+          "required": [
+            "command",
+            "args"
+          ],
+          "properties": {
+            "command": {
+              "type": "string",
+              "minLength": 1
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "command": "./node_modules/.bin/vitepress",
+            "args": [
+              "build",
+              "{generatedDir}"
+            ]
+          }
+        },
+        "dev": {
+          "type": "object",
+          "required": [
+            "command",
+            "args"
+          ],
+          "properties": {
+            "command": {
+              "type": "string",
+              "minLength": 1
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "command": "./node_modules/.bin/vitepress",
+            "args": [
+              "dev",
+              "{generatedDir}",
+              "--host",
+              "{host}",
+              "--port",
+              "{port}",
+              "--strictPort"
+            ]
+          }
+        },
+        "network": {
+          "enum": [
+            "none",
+            "install-only",
+            "full"
+          ],
+          "default": "install-only"
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "default": {
+        "preset": "vitepress",
+        "cwd": "toolchain",
+        "install": {
+          "command": "npm",
+          "args": [
+            "ci"
+          ],
+          "when": "missing"
+        },
+        "build": {
+          "command": "./node_modules/.bin/vitepress",
+          "args": [
+            "build",
+            "{generatedDir}"
+          ]
+        },
+        "dev": {
+          "command": "./node_modules/.bin/vitepress",
+          "args": [
+            "dev",
+            "{generatedDir}",
+            "--host",
+            "{host}",
+            "--port",
+            "{port}",
+            "--strictPort"
+          ]
+        },
+        "network": "install-only"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "specVersion": "0.1",
+    "id": "{siteId}",
+    "name": "{siteName}",
+    "paths": {
+      "root": ".",
+      "config": ".site",
+      "guides": "src/guides",
+      "collections": "src/collections",
+      "resources": "resources",
+      "sharedResources": "{sharedResourcesPath}",
+      "assets": "resources/assets",
+      "components": "resources/components",
+      "diagrams": "resources/diagrams",
+      "hooks": "resources/hooks",
+      "media": "public/media",
+      "schemas": "public/media/schemas",
+      "public": "public",
+      "configFiles": {
+        "appearance": ".site/spmpst.appearance.json",
+        "collections": ".site/spmpst.collections.json",
+        "definitions": ".site/spmpst.definitions.json",
+        "lang": ".site/spmpst.lang.json",
+        "layout": ".site/spmpst.layout.json",
+        "links": ".site/spmpst.links.json",
+        "markdown": ".site/spmpst.markdown.json",
+        "outline": ".site/spmpst.outline.json",
+        "search": ".site/spmpst.search.json",
+        "seo": ".site/spmpst.seo.json",
+        "topbar": ".site/spmpst.topbar.json"
+      },
+      "icons": "{iconsPath}",
+      "flags": "{flagsPath}",
+      "mermaidConfig": "resources/diagrams/mermaid.json",
+      "toolchain": "{toolchainPath}",
+      "output": "{outputPath}"
+    },
+    "extensions": {},
+    "engine": "toolchain",
+    "toolchain": {
+      "preset": "vitepress",
+      "cwd": "toolchain",
+      "install": {
+        "command": "npm",
+        "args": [
+          "ci"
+        ],
+        "when": "missing"
+      },
+      "build": {
+        "command": "./node_modules/.bin/vitepress",
+        "args": [
+          "build",
+          "{generatedDir}"
+        ]
+      },
+      "dev": {
+        "command": "./node_modules/.bin/vitepress",
+        "args": [
+          "dev",
+          "{generatedDir}",
+          "--host",
+          "{host}",
+          "--port",
+          "{port}",
+          "--strictPort"
+        ]
+      },
+      "network": "install-only"
+    }
+  },
+  "x-spmpst-scaffold": {
+    "version": "0.1",
+    "placeholders": {
+      "siteId": "Normalized site directory slug.",
+      "siteName": "Human-readable site name.",
+      "siteSlug": "Normalized site directory slug.",
+      "siteRoot": "Relative path of the new site root; normally \".\".",
+      "guidePath": "Default guide directory name.",
+      "language": "Default language code.",
+      "sharedResourcesPath": "Path from the site root to the conforming tool shared resources.",
+      "iconsPath": "Path from the site root to the shared icons directory.",
+      "flagsPath": "Path from the site root to the shared flags directory.",
+      "toolchainPath": "Path from the site root to the declared toolchain working directory.",
+      "outputPath": "Path from the site root to this site’s build output.",
+      "schemaRef": "Relative reference from a concern config file to its public JSON Schema."
+    },
+    "concernSchemaPattern": "schemas/{concern}.schema.json",
+    "concernFilenamePattern": "spmpst.{concern}.json",
+    "directories": [
+      "{paths.config}",
+      "{paths.guides}/{guidePath}",
+      "{paths.collections}",
+      "{paths.resources}",
+      "{paths.assets}",
+      "{paths.components}",
+      "{paths.diagrams}",
+      "{paths.hooks}",
+      "{paths.public}",
+      "{paths.media}",
+      "{paths.schemas}"
+    ],
+    "schemaCopy": {
+      "source": "schemas",
+      "destination": "{paths.schemas}",
+      "pattern": "*.schema.json"
+    },
+    "files": [
+      {
+        "path": "{paths.guides}/index.{language}.md",
+        "content": "---\ntitle: \"{siteName}\"\nsidebarTitle: \"{siteName}\"\nicon: book-open\n---\n\n# {siteName}\n\nWelcome to the {siteName} documentation.\n"
+      },
+      {
+        "path": "{paths.guides}/{guidePath}/index.{language}.md",
+        "content": "---\ntitle: \"{siteName}\"\nsidebarTitle: \"{siteName}\"\nicon: book-open\n---\n\n# {siteName}\n\nWelcome to the {siteName} documentation.\n"
+      },
+      {
+        "path": "{paths.guides}/{guidePath}/spmpst.guide.json",
+        "content": {
+          "title": "{siteName}",
+          "favicon": "../../../resources/assets/brand/site-logo.svg",
+          "showSiteTitle": false
+        }
+      },
+      {
+        "path": "{paths.mermaidConfig}",
+        "content": {
+          "theme": "base",
+          "securityLevel": "strict"
+        }
+      },
+      {
+        "path": "{paths.config}/README.md",
+        "content": "# Site configuration\n\nConcern file paths are registered in the site-root `spmpst.json`. Published files live under the configured `public/` directory.\n"
+      },
+      {
+        "path": "{paths.assets}/brand/site-logo.svg",
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><rect width=\"32\" height=\"32\" rx=\"6\" fill=\"#7451d5\"/><path d=\"M9 8h14v2H9zm0 5h14v2H9zm0 5h9v2H9z\" fill=\"#fff\"/></svg>\n"
+      }
+    ],
+    "values": {
+      "guidePath": "guides",
+      "language": "en"
+    }
+  }
+}

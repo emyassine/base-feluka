@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "level": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
+          }
+        }
+      ]
+    },
+    "label": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localizedText": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "default": {
+    "$schema": "../public/media/schemas/outline.schema.json",
+    "level": "deep",
+    "label": {
+      "en": "On this page"
+    }
+  },
+  "description": "SPMPST outline concern configuration. The default value is the conforming-tool site scaffold."
+}

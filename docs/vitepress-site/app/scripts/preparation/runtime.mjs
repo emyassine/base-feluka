@@ -1,11 +1,12 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { isAbsolute, resolve } from 'node:path'
+import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { resolveResourceReferences } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
 
 export function toVitepressRuntime(sourceModel, layout) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
+  const guidesPath = relative(layout.paths.root, layout.paths.guides).split(sep).join('/')
   const footer = model.footer ?? {}
   const localizedFooterText = (value, language) => {
     if (typeof value === 'string') return value
@@ -40,8 +41,8 @@ export function toVitepressRuntime(sourceModel, layout) {
   }))
   return {
     site: model.site,
-    guidesPath: 'src/guides',
-    indexPath: `src/guides/index.${defaultLanguage}.md`,
+    guidesPath,
+    indexPath: `${guidesPath}/index.${defaultLanguage}.md`,
     subguides: model.subguides,
     languages: model.languages,
     fallbackLanguage: model.fallbackLanguage,

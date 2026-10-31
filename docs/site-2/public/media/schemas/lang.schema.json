@@ -102,5 +102,29 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "languages": [
+      "en"
+    ],
+    "fallbackLanguage": "en",
+    "selector": {
+      "showSelector": false,
+      "prefixDefaultLanguage": false,
+      "showFlags": false
+    },
+    "$schema": "../public/media/schemas/lang.schema.json",
+    "language": {
+      "label": {
+        "en": "English"
+      },
+      "menuLabel": {
+        "en": "Change language"
+      },
+      "fallbackNotice": {
+        "en": "This page is not available in {requested}. Showing the {fallback} version."
+      }
+    }
+  },
+  "description": "SPMPST lang concern configuration. The default value is the conforming-tool site scaffold."
 }

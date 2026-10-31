@@ -243,5 +243,61 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "$schema": "../public/media/schemas/search.schema.json",
+    "provider": "local",
+    "miniSearch": {
+      "fuzzy": 0.2,
+      "prefix": true,
+      "boost": {
+        "title": 4,
+        "text": 2,
+        "titles": 1
+      }
+    },
+    "excludePaths": [],
+    "searchLabels": {
+      "buttonText": {
+        "en": "Search"
+      },
+      "buttonAriaLabel": {
+        "en": "Search documentation"
+      },
+      "displayDetails": {
+        "en": "Display detailed list"
+      },
+      "resetButtonTitle": {
+        "en": "Reset search"
+      },
+      "backButtonTitle": {
+        "en": "Close search"
+      },
+      "noResultsText": {
+        "en": "No results"
+      },
+      "selectText": {
+        "en": "Select"
+      },
+      "selectKeyAriaLabel": {
+        "en": "Enter"
+      },
+      "navigateText": {
+        "en": "Navigate"
+      },
+      "navigateUpKeyAriaLabel": {
+        "en": "Arrow up"
+      },
+      "navigateDownKeyAriaLabel": {
+        "en": "Arrow down"
+      },
+      "closeText": {
+        "en": "Close"
+      },
+      "closeKeyAriaLabel": {
+        "en": "Escape"
+      }
+    }
+  },
+  "description": "SPMPST search concern configuration. The default value is the conforming-tool site scaffold."
 }

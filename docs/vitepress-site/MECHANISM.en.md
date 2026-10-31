@@ -336,7 +336,7 @@ VitePress owns the renderer lifecycle. Vite owns dev transforms, Vue compilation
 
 ## 15. Important current limits
 
-- The installed CLI still requires Node, host `node_modules`, VitePress, and (for uncached Mermaid rendering) Mermaid CLI. This is not yet the self-contained future `spmpst` binary described in `docs/SSG.md`.
+- The installed CLI still requires Node, host `node_modules`, VitePress, and (for uncached Mermaid rendering) Mermaid CLI. This is not yet the self-contained future `spmpst` binary described in `docs/.specifications/spmpst/SSG.md`.
 - The current shared host is VitePress/Vue-specific. Site-owned Vue SFC registration is implemented; automatic multi-framework compilation is not.
 - `@spmpst::resources` resolves logical icon/flag resources at explicit configuration/icon sites. It is not a general Markdown expression system.
 - The normal build produces static files; it does not deploy/publish them to GitHub Pages or another host. Deployment is a separate operation.

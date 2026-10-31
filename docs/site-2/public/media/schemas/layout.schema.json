@@ -171,5 +171,35 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "$schema": "../public/media/schemas/layout.schema.json",
+    "layouts": {},
+    "rules": [],
+    "footer": {
+      "message": {
+        "en": "Explore the {siteName} documentation."
+      }
+    },
+    "hooks": {
+      "documentationNotices": {
+        "exploringTitle": {
+          "en": "Under exploration"
+        },
+        "exploring": {
+          "en": "This page is still being developed and may change."
+        },
+        "validatedTitle": {
+          "en": "Validated"
+        },
+        "validated": {
+          "en": "The information on this page has been reviewed."
+        },
+        "fallbackTitle": {
+          "en": "Language availability"
+        }
+      }
+    }
+  },
+  "description": "SPMPST layout concern configuration. The default value is the conforming-tool site scaffold."
 }

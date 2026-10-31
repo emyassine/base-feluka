@@ -58,5 +58,13 @@
         }
       ]
     }
-  }
+  },
+  "default": {
+    "$schema": "../public/media/schemas/outline.schema.json",
+    "level": "deep",
+    "label": {
+      "en": "On this page"
+    }
+  },
+  "description": "SPMPST outline concern configuration. The default value is the conforming-tool site scaffold."
 }
