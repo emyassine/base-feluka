@@ -14,26 +14,15 @@ const humanize = (value) => value.split('-').map((part) => part.charAt(0).toUppe
 const languages = (await readJson(join(layout.siteDir, 'spmpst.lang.json'))).languages
 const fallback = (await readJson(join(layout.siteDir, 'spmpst.lang.json'))).fallbackLanguage ?? languages[0]
 
-if (kind === 'locale') {
+if (kind === 'locale' || kind === 'language') {
   const [language] = args
-  if (!/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language ?? '')) fail('Usage: docs:new locale <language-code>')
+  if (!/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language ?? '')) fail('Usage: docs:new language <language-code>')
   const langPath = join(layout.siteDir, 'spmpst.lang.json')
   const lang = await readJson(langPath)
   if (lang.languages.includes(language)) fail(`Language already exists: ${language}`)
-  const localePath = join(layout.siteDir, 'spmpst.locale.json')
-  const locale = await readJson(localePath)
-  const translate = (node) => {
-    if (!node || typeof node !== 'object') return
-    for (const child of Object.values(node)) {
-      if (child && typeof child === 'object' && !Array.isArray(child) && fallback in child && Object.values(child).every((text) => typeof text === 'string')) child[language] = child[fallback]
-      else translate(child)
-    }
-  }
-  translate(locale.strings)
   lang.languages.push(language)
   await writeJson(langPath, lang)
-  await writeJson(localePath, locale)
-  for (const file of ['spmpst.topbar.json', 'spmpst.collections.json', 'spmpst.definitions.json']) {
+  for (const file of ['spmpst.lang.json', 'spmpst.search.json', 'spmpst.outline.json', 'spmpst.layout.json', 'spmpst.topbar.json', 'spmpst.collections.json', 'spmpst.definitions.json']) {
     const path = join(layout.siteDir, file)
     const value = await readJson(path)
     const translate = (node) => {
@@ -46,7 +35,7 @@ if (kind === 'locale') {
     translate(value)
     await writeJson(path, value)
   }
-  process.stdout.write(`Created ${localePath}; review copied fallback-language strings.\n`)
+  process.stdout.write(`Added ${language} to SPMPST concerns; review copied fallback-language strings.\n`)
 } else if (kind === 'guide') {
   const [id] = args
   if (!slugPattern.test(id ?? '')) fail('Usage: docs:new guide <lowercase-slug>')
@@ -82,4 +71,4 @@ if (kind === 'locale') {
   await writeJson(join(directory, 'spmpst.sidebar.json'), { labels: Object.fromEntries(languages.map((language) => [language, humanize(section)])), icon: 'lucide/book-open' })
   await writeFile(join(directory, `index.${fallback}.md`), `---\ntitle: ${JSON.stringify(humanize(section))}\nsidebarTitle: ${JSON.stringify(humanize(section))}\nicon: book-open\n---\n\n# ${humanize(section)}\n`)
   process.stdout.write(`Created section ${guide}/${section}.\n`)
-} else fail('Usage: docs:new <locale|guide|collection|section> …')
+} else fail('Usage: docs:new <language|guide|collection|section> …')

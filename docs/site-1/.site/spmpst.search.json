@@ -10,5 +10,59 @@
       "titles": 1
     }
   },
-  "excludePaths": []
+  "excludePaths": [],
+  "searchLabels": {
+    "buttonText": {
+      "en": "Search",
+      "fr": "Rechercher"
+    },
+    "buttonAriaLabel": {
+      "en": "Search documentation",
+      "fr": "Rechercher dans la documentation"
+    },
+    "displayDetails": {
+      "en": "Display detailed list",
+      "fr": "Afficher les détails"
+    },
+    "resetButtonTitle": {
+      "en": "Reset search",
+      "fr": "Réinitialiser la recherche"
+    },
+    "backButtonTitle": {
+      "en": "Close search",
+      "fr": "Fermer la recherche"
+    },
+    "noResultsText": {
+      "en": "No results",
+      "fr": "Aucun résultat"
+    },
+    "selectText": {
+      "en": "Select",
+      "fr": "Sélectionner"
+    },
+    "selectKeyAriaLabel": {
+      "en": "Enter",
+      "fr": "Entrée"
+    },
+    "navigateText": {
+      "en": "Navigate",
+      "fr": "Naviguer"
+    },
+    "navigateUpKeyAriaLabel": {
+      "en": "Arrow up",
+      "fr": "Flèche vers le haut"
+    },
+    "navigateDownKeyAriaLabel": {
+      "en": "Arrow down",
+      "fr": "Flèche vers le bas"
+    },
+    "closeText": {
+      "en": "Close",
+      "fr": "Fermer"
+    },
+    "closeKeyAriaLabel": {
+      "en": "Escape",
+      "fr": "Échap"
+    }
+  }
 }

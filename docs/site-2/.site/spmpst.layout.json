@@ -8,5 +8,29 @@
       "fr": "Contactez-nous à <a href=\"mailto:contact@numerimondes.com\">contact@numerimondes.com</a>."
     },
     "copyright": "Numerimondes SARL AU"
+  },
+  "hooks": {
+    "documentationNotices": {
+      "exploringTitle": {
+        "en": "In progress",
+        "fr": "In progress"
+      },
+      "exploring": {
+        "en": "This information is being prepared and may change.",
+        "fr": "Ces informations sont en préparation et peuvent évoluer."
+      },
+      "validatedTitle": {
+        "en": "Verified",
+        "fr": "Verified"
+      },
+      "validated": {
+        "en": "This information has been reviewed.",
+        "fr": "Ces informations ont été vérifiées."
+      },
+      "fallbackTitle": {
+        "en": "Language availability",
+        "fr": "Language availability"
+      }
+    }
   }
 }

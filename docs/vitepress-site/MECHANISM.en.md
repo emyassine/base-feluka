@@ -107,7 +107,6 @@ The current site trees use these SPMPST-owned metadata filenames:
 site-root/
 ├── .site/
 │   ├── spmpst.<concern>.json
-│   ├── locales/*.locale.json
 │   ├── public/*
 │   └── targets/*.target.config.json
 ├── src/
@@ -122,25 +121,25 @@ site-root/
 
 ### Concern files and ownership
 
-`config/discover.mjs` finds concern files, locale bundles, public files, and target configs. `config/assemble.mjs` reads and combines the core model. `config/registry.mjs` assigns keys to concern owners:
+`config/discover.mjs` finds concern files, public files, and target configs. `config/assemble.mjs` reads and combines the core model. `config/registry.mjs` assigns keys to concern owners:
 
 | Concern file | Owned keys in the current loader |
 |---|---|
 | `spmpst.definitions.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
-| `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
+| `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector`, localized language labels |
 | `spmpst.topbar.json` | `items`, `theme` |
-| `spmpst.collections.json` | `collections` |
+| `spmpst.collections.json` | `collections`, `emptyCollection` |
 | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `styles`, `mermaid` |
 | `spmpst.links.json` | `socialLinks` |
 | `spmpst.seo.json` | `siteUrl`, `path`, `icon`, key-centric multilingual SEO fields |
-| `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths` |
+| `spmpst.search.json` | `provider`, `miniSearch`, `excludePaths`, localized `labels` |
 | `spmpst.markdown.json` | `lineNumbers`, `image` |
-| `spmpst.outline.json` | `level` |
-| `spmpst.layout.json` | `footer`, semantic component placements |
+| `spmpst.outline.json` | `level`, localized `label` |
+| `spmpst.layout.json` | `footer`, semantic component placements, hook configuration and documentation notice copy |
 
-The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, missing locale bundles, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. The current VitePress adapter reads site behavior from the shared SPMPST model; neither checked-in site has a VitePress target config file.
+The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. The current VitePress adapter reads site behavior from the shared SPMPST model; neither checked-in site has a VitePress target config file.
 
-`<language>.locale.json` supplies localized UI strings, search labels, outline labels, and notices. `spmpst.search.json` supplies the site's search provider and provider options; the VitePress adapter reads `search.miniSearch` when it configures local search. `spmpst.seo.json` keeps SEO translations key-centric: each field has its language map, while FAQ and quick-link items keep their shared shape. `spmpst.layout.json` owns the site-wide footer and semantic component placements. `spmpst.markdown.json`, `spmpst.outline.json`, and `spmpst.appearance.json` hold site-wide rendering preferences and styles. The adapter maps those shared fields to VitePress options. `public/*` files are loaded as text and passed through as public text files. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
+Localized strings live in their owning concerns: language labels in `spmpst.lang.json`, search labels in `spmpst.search.json`, outline label in `spmpst.outline.json`, empty collection copy in `spmpst.collections.json`, and documentation notice copy under `spmpst.layout.json` hook config. `spmpst.search.json` also supplies the site's search provider and provider options; the VitePress adapter reads `search.miniSearch` when it configures local search. `spmpst.seo.json` keeps SEO translations key-centric: each field has its language map, while FAQ and quick-link items keep their shared shape. `spmpst.layout.json` owns the site-wide footer and semantic component placements. `spmpst.markdown.json`, `spmpst.outline.json`, and `spmpst.appearance.json` hold site-wide rendering preferences and styles. The adapter maps those shared fields to VitePress options. `public/*` files are loaded as text and passed through as public text files. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
 
 The composed `SiteConfig` is the renderer-facing shape in `app/.vitepress/types/site-config.d.ts`: site identity, guides, locales, topbar, collections, styles, fonts, theme/project paths, search/outline/footer, SEO, public files, and Mermaid options. The Node config-source adapter supplies file reads; the VitePress composition root injects that source plus navigation and head-transform functions.
 
@@ -283,7 +282,7 @@ This gives a production-like static preview and rebuild loop. It does not provid
 
 Key path/data types passed between stages include:
 
-- **Site config model:** merged core JSON values, locale bundles, public text files, and opaque named target objects.
+- **Site config model:** merged core JSON values, public text files, and opaque named target objects.
 - **VitePress runtime config:** typed renderer-facing object (see `SiteConfig`) with resolved local paths, locale labels, guide/collection config, resolved resources, and target settings.
 - **Page record:** `{ from, to, sourceRoot, icon, iconAsset }` for source Markdown mapped to staged Markdown plus resolved page icon.
 - **Route map:** absolute source file path → absolute staged file path.

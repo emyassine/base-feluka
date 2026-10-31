@@ -2,19 +2,18 @@
 
 This directory owns the configuration for the documentation tree. Site paths
 use `/` separators and are relative to `docs/`. Site behavior belongs in the
-`spmpst.*.json` concern files; localized UI copy belongs in the single key-centric `spmpst.locale.json` file.
+`spmpst.*.json` concern files; localized text belongs in the concern that consumes it; its leaf values use key-centric language maps.
 
 | File | Owns |
 |---|---|
 | `spmpst.definitions.json` | Site identity, guide registry, and icon fallback. |
-| `spmpst.lang.json` | Language list, fallback language, and selector policy. |
-| `spmpst.locale.json` | UI, search, outline, and notice strings, keyed by property and then language. |
+| `spmpst.lang.json` | Languages, selector policy, and localized language labels/fallback notice. |
 | `spmpst.topbar.json` | Navigation items and color-mode policy. |
-| `spmpst.collections.json` | Collection IDs, presentation, and source directory names. |
-| `spmpst.layout.json` | Site-wide footer component/copy and semantic component placements; general layout registry remains planned. |
-| `spmpst.search.json` | Site search provider, provider options, and excluded routes. |
+| `spmpst.collections.json` | Collection IDs, presentation, source directories, and empty-state copy. |
+| `spmpst.layout.json` | Footer, component placements, and hook-owned copy such as documentation notices. |
+| `spmpst.search.json` | Search provider/options and localized search UI labels. |
 | `spmpst.markdown.json` | Markdown rendering preferences. |
-| `spmpst.outline.json` | Site-wide table-of-contents depth. |
+| `spmpst.outline.json` | Table-of-contents depth and localized label. |
 | `spmpst.appearance.json` | Fonts, logos, social preview images, styles, and diagram palette. |
 | `spmpst.links.json` | Social links. |
 | `spmpst.seo.json` | Canonical site URL, SEO route, icon, and key-centric multilingual SEO copy. |

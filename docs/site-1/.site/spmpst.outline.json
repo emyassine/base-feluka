@@ -1,4 +1,8 @@
 {
   "$schema": "../resources/media/schemas/outline.schema.json",
-  "level": "deep"
+  "level": "deep",
+  "label": {
+    "en": "On this page",
+    "fr": "Sur cette page"
+  }
 }

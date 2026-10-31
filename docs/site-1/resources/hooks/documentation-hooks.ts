@@ -43,8 +43,8 @@ export const DocumentationNotice = defineComponent({
           : ''
       if (!fallbackNotice && !statusMessage) return null
       const statusTitle = status === 'exploring'
-        ? (language === 'fr' ? 'Spécification / Proposition' : 'Proposal / Draft')
-        : (language === 'fr' ? 'Spécifié / Validé' : 'Validated');
+        ? configured.exploringTitle ?? messages.exploringTitle
+        : configured.validatedTitle ?? messages.validatedTitle
       return h('div', { class: 'FeluqaDocumentationNotices', 'aria-live': 'polite' }, [
         fallbackNotice ? h('div', { class: 'FeluqaDocumentationNotices__fallback', role: 'note' }, [
           h('span', { class: 'FeluqaDocumentationNotices__icon', 'aria-hidden': 'true' }, 'i'),

@@ -9,5 +9,19 @@
     "prefixDefaultLanguage": false,
     "showFlags": true
   },
-  "$schema": "../resources/media/schemas/lang.schema.json"
+  "$schema": "../resources/media/schemas/lang.schema.json",
+  "language": {
+    "label": {
+      "en": "English",
+      "fr": "Français"
+    },
+    "menuLabel": {
+      "en": "Change language",
+      "fr": "Changer de langue"
+    },
+    "fallbackNotice": {
+      "en": "This page is not available in {requested}. Showing the {fallback} version.",
+      "fr": "Cette page n’est pas disponible en {requested}. La version en anglais est affichée."
+    }
+  }
 }

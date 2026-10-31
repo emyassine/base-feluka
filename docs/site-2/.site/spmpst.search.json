@@ -10,5 +10,59 @@
       "titles": 1
     }
   },
-  "excludePaths": []
+  "excludePaths": [],
+  "searchLabels": {
+    "buttonText": {
+      "en": "Search",
+      "fr": "Rechercher"
+    },
+    "buttonAriaLabel": {
+      "en": "Search this site",
+      "fr": "Rechercher this site"
+    },
+    "displayDetails": {
+      "en": "Display details",
+      "fr": "Display details"
+    },
+    "resetButtonTitle": {
+      "en": "Reset search",
+      "fr": "Reset search"
+    },
+    "backButtonTitle": {
+      "en": "Close search",
+      "fr": "Close search"
+    },
+    "noResultsText": {
+      "en": "No results",
+      "fr": "Aucun résultat"
+    },
+    "selectText": {
+      "en": "Select",
+      "fr": "Select"
+    },
+    "selectKeyAriaLabel": {
+      "en": "Enter",
+      "fr": "Enter"
+    },
+    "navigateText": {
+      "en": "Navigate",
+      "fr": "Navigate"
+    },
+    "navigateUpKeyAriaLabel": {
+      "en": "Arrow up",
+      "fr": "Arrow up"
+    },
+    "navigateDownKeyAriaLabel": {
+      "en": "Arrow down",
+      "fr": "Arrow down"
+    },
+    "closeText": {
+      "en": "Close",
+      "fr": "Close"
+    },
+    "closeKeyAriaLabel": {
+      "en": "Escape",
+      "fr": "Escape"
+    }
+  }
 }

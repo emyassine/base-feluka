@@ -19,5 +19,9 @@
       "dir": "concepts"
     }
   ],
-  "$schema": "../resources/media/schemas/collections.schema.json"
+  "$schema": "../resources/media/schemas/collections.schema.json",
+  "emptyCollection": {
+    "en": "No content published yet.",
+    "fr": "No content published yet."
+  }
 }

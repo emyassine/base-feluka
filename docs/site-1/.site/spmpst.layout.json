@@ -14,5 +14,29 @@
   "components": {
     "sidebarNavigationBefore": "BranchedSidebar",
     "navigationAfter": "CollectionArticleSubnav"
+  },
+  "hooks": {
+    "documentationNotices": {
+      "exploringTitle": {
+        "en": "Under exploration",
+        "fr": "En cours d'exploration"
+      },
+      "exploring": {
+        "en": "This page describes an idea or proposal that is still under active discussion and subject to change.",
+        "fr": "Cette page présente une idée ou une proposition encore à l'étude, susceptible de faire l'objet de modifications."
+      },
+      "validatedTitle": {
+        "en": "Validated",
+        "fr": "Validé"
+      },
+      "validated": {
+        "en": "The information on this page has been verified and reflects the current baseline.",
+        "fr": "Les informations contenues sur cette page sont vérifiées et conformes à la version actuelle."
+      },
+      "fallbackTitle": {
+        "en": "Language availability",
+        "fr": "Disponibilité linguistique"
+      }
+    }
   }
 }

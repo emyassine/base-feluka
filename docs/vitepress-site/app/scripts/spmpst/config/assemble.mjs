@@ -53,7 +53,7 @@ export function assembleConfig(layout, discovered, options = {}) {
     }
   }
   for (const [name, keys] of Object.entries(CONCERNS)) {
-    if (name === 'definitions' || name === 'lang' || name === 'locale') {
+    if (name === 'definitions' || name === 'lang') {
       const path = discovered.concerns.find((item) => basename(item) === `spmpst.${name}.json`)
       if (!path) collector.add(`.site/spmpst.${name}.json`, '', 'Required concern file is missing')
     }
@@ -73,24 +73,6 @@ export function assembleConfig(layout, discovered, options = {}) {
     collector.add('.site/spmpst.lang.json', '#/languages', 'languages must be a non-empty array of unique locale codes')
   }
   if (model.languages?.length && !model.languages.includes(fallback)) collector.add('.site/spmpst.lang.json', '#/fallbackLanguage', 'fallbackLanguage must be listed in languages')
-  const localeKeys = model.strings
-  const checkLocaleMaps = (value, pointer = '#/strings') => {
-    if (!value || typeof value !== 'object') return
-    if (!Array.isArray(value) && Object.keys(value).some((key) => model.languages?.includes(key))) {
-      const nonLanguageKeys = Object.keys(value).filter((key) => !model.languages?.includes(key))
-      if (!nonLanguageKeys.length && Object.values(value).every((entry) => typeof entry === 'string')) {
-        const missing = (model.languages ?? []).filter((language) => !(language in value))
-        if (missing.length) {
-          const message = `Localized value is missing: ${missing.join(', ')}`
-          if (options.strictI18n) collector.add('.site/spmpst.locale.json', pointer, message)
-          else collector.warn('.site/spmpst.locale.json', pointer, message)
-        }
-        return
-      }
-    }
-    for (const [key, child] of Object.entries(value)) checkLocaleMaps(child, `${pointer}/${key}`)
-  }
-  checkLocaleMaps(localeKeys)
   const guidePaths = new Set((model.subguides ?? []).map((guide) => guide.path))
   const collectionIds = new Set((model.collections ?? []).map((collection) => collection.id))
   const visitItems = (items, pointer = '#/items') => {
@@ -103,7 +85,16 @@ export function assembleConfig(layout, discovered, options = {}) {
     })
   }
   visitItems(model.items)
-  for (const [concern, langs] of [['topbar items', model.items], ['collections', model.collections], ['guides', model.subguides]]) {
+  for (const [concern, langs] of [
+    ['language labels', model.language],
+    ['search labels', model.searchLabels],
+    ['outline label', model.label],
+    ['collection empty-state copy', model.emptyCollection],
+    ['documentation notice hook', model.hooks?.documentationNotices],
+    ['topbar items', model.items],
+    ['collections', model.collections],
+    ['guides', model.subguides],
+  ]) {
     const inspect = (value, pointer = '') => {
       if (!value || typeof value !== 'object') return
       for (const [key, child] of Object.entries(value)) {

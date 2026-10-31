@@ -140,7 +140,6 @@ A selected site's output, lock state, cache namespace, generated sources, resour
 │   ├── spmpst.json                    # declaration + build contract + extensions
 │   ├── spmpst.<concern>.json          # concern files
 │   ├── spmpst.<extension>.json      # configuration of a declared extension (§A12)
-│   ├── spmpst.locale.json
 │   ├── public/*                       # files served from the site URL root
 
 │   └── targets/*.target.config.json   # adapter-owned, opaque to the core
@@ -202,8 +201,8 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 
 ## A9. Languages and fallbacks
 
-- `lang` owns `languages`, `fallbackLanguage`, `selector`. `locale` owns `strings`; each localized text leaf is key-centric, for example `"searchButton": {"en":"Search","fr":"Rechercher"}`. Missing language values warn or fail under strict i18n.
-- `spmpst.locale.json` owns UI, search, outline and notice text. Footer copy belongs to `spmpst.layout.json`; SEO page content belongs to `spmpst.seo.json` with the same key-centric translation shape.
+- `lang` owns `languages`, `fallbackLanguage`, `selector`, and localized language labels. Each concern owns the translated copy it consumes: `search.labels`, `outline.label`, `collections.emptyCollection`, and `layout.hooks.documentationNotices`, for example. Leaf values use key-centric language maps such as `{"en":"Search","fr":"Rechercher"}`. Footer copy remains in `layout.footer`; SEO page content remains in `seo` with the same translation shape.
+- Documentation notice copy belongs to `spmpst.layout.json` under the `documentationNotices` hook configuration. This keeps each translation beside the behavior that consumes it instead of creating per-language locale files.
 - Localized inline objects resolve: requested language, then fallback language, then first string value. Missing translations warn, and fail under strict i18n.
 - When a non-default translation is absent, a fallback page is generated from the default-language page and marked with `requestedLanguage`, `contentLanguage`, `languageFallbackNotice`. Notice templates use `{requested}` and `{fallback}` (the reference implementation currently validates `{requested}`).
 
@@ -722,7 +721,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 | 2 | `prepareContent` | Collections, style imports, component registry, hook modules, colors/fonts/SEO/sidebar/theme metadata. |
 | 3 | `runTransformMarkdown` | Normalize links, stage local assets, render Mermaid, collection frontmatter. |
 | 4 | `runLanguageFallbacks` | Create localized copies for absent translations. |
-| 5 | `runSeoPages` | Localized SEO/FAQ pages from locale config. |
+| 5 | `runSeoPages` | Localized SEO/FAQ pages from `spmpst.seo.json`. |
 | 6 | `runDirectoryIndexes` | Missing index pages and no-slash aliases (excluded from search). |
 | 7 | `runPager` | `prev`/`next` frontmatter, avoiding self-links via aliases. |
 | 8 | `runCleanup` | Remove stale files (incremental only); print counts. |
@@ -955,7 +954,6 @@ docs/
 │   ├── spmpst.json
 │   ├── spmpst.definitions.json
 │   ├── spmpst.lang.json
-│   ├── spmpst.locale.json
 ├── resources/
 │   └── icons/lucide/book-open.svg
 └── src/

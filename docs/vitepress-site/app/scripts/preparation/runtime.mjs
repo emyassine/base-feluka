@@ -21,13 +21,13 @@ export function toVitepressRuntime(sourceModel, layout) {
     }
     return Object.fromEntries(entries.map(([key, entry]) => [key, localizeTree(entry, language)]))
   }
-  const locales = Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.strings ?? {}, language)]))
+  const languageLabels = Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.language ?? {}, language)]))
   const seoCopy = Object.fromEntries(['pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq']
     .filter((key) => model[key] !== undefined)
     .map((key) => [key, model[key]]))
   const seo = Object.fromEntries(model.languages.map((language) => [language, { icon: model.icon, ...localizeTree(seoCopy, language) }]))
-  const searchLabels = { root: locales[defaultLanguage].search }
-  for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = locales[language].search
+  const searchLabels = { root: localizeTree(model.searchLabels ?? {}, defaultLanguage) }
+  for (const language of model.languages) if (language !== defaultLanguage) searchLabels[language] = localizeTree(model.searchLabels ?? {}, language)
   const publicFiles = Object.fromEntries(Object.entries(model.publicFiles).map(([name, text]) => [name, text.replace(/\n$/, '')]))
   const layoutComponentSlots = {
     ...(model.components?.sidebarNavigationBefore ? { 'sidebar-nav-before': model.components.sidebarNavigationBefore } : {}),
@@ -54,20 +54,20 @@ export function toVitepressRuntime(sourceModel, layout) {
     ogImages: model.ogImages,
     mermaid: model.mermaid,
     socialLinks,
-    languageLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.label])),
-    languageMenuLabels: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.menuLabel])),
-    fallbackNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].language.fallbackNotice])),
-    search: { ...model.search, labels: searchLabels },
-    outline: { labels: Object.fromEntries(model.languages.map((language) => [language, locales[language].outline.label])), ...model.outline },
+    languageLabels: Object.fromEntries(model.languages.map((language) => [language, languageLabels[language].label])),
+    languageMenuLabels: Object.fromEntries(model.languages.map((language) => [language, languageLabels[language].menuLabel])),
+    fallbackNotices: Object.fromEntries(model.languages.map((language) => [language, languageLabels[language].fallbackNotice])),
+    search: { provider: model.provider, miniSearch: model.miniSearch, excludePaths: model.excludePaths, labels: searchLabels },
+    outline: { labels: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.label ?? {}, language)])), level: model.level },
     footer: Object.fromEntries(model.languages.map((language) => [language, Object.fromEntries(
       ['message', 'copyright']
         .map((key) => [key, localizedFooterText(footer[key], language)])
         .filter(([, value]) => value !== undefined),
     )])),
-    documentationNotices: Object.fromEntries(model.languages.map((language) => [language, locales[language].notices])),
+    documentationNotices: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.hooks?.documentationNotices ?? {}, language)])),
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     publicFiles,
-    uiStrings: Object.fromEntries(model.languages.map((language) => [language, locales[language].ui])),
+    uiStrings: Object.fromEntries(model.languages.map((language) => [language, { emptyCollection: localizeTree(model.emptyCollection ?? {}, language) }])),
     styles: (model.styles ?? []).map((path) => resolve(layout.siteResourcesDir, path)),
     theme: { slots: layoutComponentSlots },
     markdown: model.markdown,
