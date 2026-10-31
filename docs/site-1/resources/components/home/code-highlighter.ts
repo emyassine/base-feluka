@@ -1,23 +1,3 @@
-import { createHighlighterCore } from 'shiki/core'
-import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
-import javascript from '@shikijs/langs/javascript'
-import jsx from '@shikijs/langs/jsx'
-import rust from '@shikijs/langs/rust'
-import toml from '@shikijs/langs/toml'
-import githubDark from '@shikijs/themes/github-dark'
-import githubLight from '@shikijs/themes/github-light'
-
-let highlighter: ReturnType<typeof createHighlighterCore> | undefined
-
-function getHighlighter(): ReturnType<typeof createHighlighter> {
-  highlighter ??= createHighlighterCore({
-    themes: [githubLight, githubDark],
-    langs: [rust, toml, javascript, jsx],
-    engine: createJavaScriptRegexEngine(),
-  })
-  return highlighter
-}
-
 const supportedLanguages = new Set(['rust', 'toml', 'javascript', 'jsx'])
 
 function wrapCode(pre: string, source: string, language: string): string {
@@ -40,11 +20,6 @@ export function plainCode(source: string, requestedLanguage: string): string {
 /** Highlight injected source with the same Shiki themes VitePress uses for Markdown fences. */
 export async function highlightCode(source: string, requestedLanguage: string): Promise<string> {
   const language = supportedLanguages.has(requestedLanguage) ? requestedLanguage : 'text'
-  const engine = await getHighlighter()
-  const html = engine.codeToHtml(source, {
-    lang: language,
-    themes: { light: 'github-light', dark: 'github-dark' },
-  }).replace('<pre class="shiki shiki-themes github-light github-dark"', '<pre class="vp-code shiki shiki-themes github-light github-dark"')
-    .replace(/<pre class="vp-code shiki shiki-themes github-light github-dark" style="([^"]*)"/, '<pre class="vp-code shiki shiki-themes github-light github-dark" style="$1;padding:0"')
-  return wrapCode(html, source, language)
+  const { highlightCodeWithShiki } = await import('./shiki-highlighter')
+  return wrapCode(await highlightCodeWithShiki(source, language), source, language)
 }
