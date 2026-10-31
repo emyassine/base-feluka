@@ -241,11 +241,11 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 
 ## A6. Source file conventions
 
-- **Ordering prefixes.** `010-` and `020.` style numeric prefixes control navigation order and are removed from staged names and routes.
+- **Ordering prefixes.** An ordered content directory or page MUST use a numeric prefix in its source name. The prefix is one or more decimal digits followed by `-` or `.` (for example, `010-products/`, `020-cli.en.md`). Within each parent directory, prefixed siblings sort by their numeric value, ascending; equal values sort by their full source name. Unprefixed siblings sort after prefixed siblings, by full source name. A conforming tool MUST use this deterministic order and MUST NOT rely on filesystem enumeration. Prefixes are removed from staged paths and public routes. Prefix numbers SHOULD be unique among siblings; skipped values are allowed to leave room for insertions. `index.<lang>.md` is the directory-index exception and does not need an ordering prefix.
 - **Language suffix.** `name.<lang>.md` with `<lang>` matching `[a-z]{2,3}(-[A-Z]{2})?`. A file without suffix belongs to the fallback language.
 - **Ignored.** Names beginning with `.` and files named `README.md` MUST NOT be published. Metadata files (`sidebar`, `guide`, `category`) are not pages.
 - **Directory index.** `index.<lang>.md` provides a localized directory index; a prefixed form such as `000-index.en.md` MAY be used and emits the normal `index.md` route. The root fallback index is `src/guides/index.<fallbackLanguage>.md`.
-- **Recommended naming.** A guide SHOULD use a stable, site- or product-qualified directory name (`feluqa.rs/`, `numerimondes.com/`); sections and pages SHOULD use three-digit prefixes (`000-prologue/`, `010-release-notes.en.md`). A recommendation, not a restriction.
+- **Recommended naming.** A guide SHOULD use a stable, site- or product-qualified directory name (`feluqa.rs/`, `numerimondes.com/`). Section and page prefixes SHOULD use three digits so contributors can insert siblings without renumbering existing content (`000-prologue/`, `010-release-notes.en.md`, `020-feluqa-cli/`). The numeric prefixes are structural ordering metadata, not part of the published URL.
 
 ## A7. Frontmatter
 

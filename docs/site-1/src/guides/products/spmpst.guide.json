@@ -1,0 +1,14 @@
+{
+  "title": "Feluqa Products",
+  "showSiteTitle": true,
+  "favicon": "../feluqa.rs/.art/favicon.png",
+  "colors": {
+    "primary": "oklch(57.7% .245 27.325)",
+    "secondary": "oklch(66% .21 28)",
+    "sidebarIcon": "#8b9099",
+    "inlineCode": "oklch(57.7% .245 27.325)",
+    "heroNameColor": "transparent",
+    "heroNameBackground": "linear-gradient(120deg, oklch(57.7% .245 27.325), oklch(72% .19 38))",
+    "inlineCodeBackgroundDarkMode": "#252a37"
+  }
+}

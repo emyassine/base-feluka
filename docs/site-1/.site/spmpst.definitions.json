@@ -18,6 +18,17 @@
       }
     },
     {
+      "path": "products",
+      "label": "Products",
+      "labels": {
+        "en": "Products",
+        "fr": "Produits"
+      },
+      "uri": {
+        "base": "/products/"
+      }
+    },
+    {
       "path": "sdui",
       "label": "sdui",
       "labels": {
