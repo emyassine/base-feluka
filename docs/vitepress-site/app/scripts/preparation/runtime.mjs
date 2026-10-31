@@ -7,7 +7,13 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
   const guidesPath = relative(layout.paths.root, layout.paths.guides).split(sep).join('/')
-  const footer = model.footer ?? {}
+  // The SPMPST assembler flattens concern keys into the shared model. The
+  // footer concern therefore exposes `component` and `content` directly on
+  // `model`, rather than under a nested `model.footer` object.
+  const footer = {
+    component: model.component,
+    content: model.content,
+  }
   const localizedFooterText = (value, language) => {
     if (typeof value === 'string') return value
     if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
