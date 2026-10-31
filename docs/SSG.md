@@ -500,6 +500,8 @@ A development server MUST update only the affected page when an author changes o
 
 Incremental preparation MUST retain unchanged generated files and their modification times. It MUST track the changed source page and its declared dependencies, then update only affected generated routes and assets. A change to a single page MUST NOT delete and recreate the complete generated source tree. Navigation or site-configuration changes MAY refresh the navigation configuration, but MUST NOT be misclassified as an ordinary page-body edit.
 
+The development watcher MUST debounce source events before triggering a rebuild and MUST batch consecutive events into a single preparation. Page-body edits MUST reach the incremental preparation and the generated-Markdown hot-update path without restarting the development server.
+
 An explicit production build MUST use generated-source and cache locations isolated from a concurrently running development server and from every other site. Starting a build MUST NOT cause dev-server reloads, remove files being served, or replace another site's caches. Build output publication MUST remain atomic within the selected site's output directory.
 
 Acceptance MUST be demonstrated by keeping two browser routes open, editing one page body, and confirming that only the tab displaying that route updates without a document navigation; the other tab and application shell remain live. A simultaneous build of that site MUST leave the dev server unchanged. The test SHOULD also edit a referenced asset and verify that only pages depending on it are invalidated.
