@@ -1,0 +1,14 @@
+{
+  "$schema": "../public/api/schemas/hooks.schema.json",
+  "components": {
+    "sidebarNavigationBefore": "BranchedSidebar",
+    "navigationAfter": "CollectionArticleSubnav"
+  },
+  "documentationNotices": {
+    "exploringTitle": { "en": "Under exploration", "fr": "En cours d'exploration" },
+    "exploring": { "en": "This page describes an idea still under active discussion and subject to change.", "fr": "Cette page présente une idée encore à l'étude et susceptible d'évoluer." },
+    "validatedTitle": { "en": "Validated", "fr": "Validé" },
+    "validated": { "en": "The information on this page has been verified and reflects the current baseline.", "fr": "Les informations de cette page ont été vérifiées et reflètent l'état actuel." },
+    "fallbackTitle": { "en": "Language availability", "fr": "Disponibilité linguistique" }
+  }
+}

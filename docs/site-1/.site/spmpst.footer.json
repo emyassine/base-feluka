@@ -1,5 +1,6 @@
 {
   "$schema": "../public/api/schemas/footer.schema.json",
+  "component": "FeluqaDocsFooter",
   "content": {
     "title": {
       "en": "Build with the current foundations",

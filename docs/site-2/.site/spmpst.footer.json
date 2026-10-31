@@ -1,4 +1,5 @@
 {
   "$schema": "../public/media/schemas/footer.schema.json",
+  "component": null,
   "content": {}
 }

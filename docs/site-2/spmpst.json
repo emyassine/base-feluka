@@ -21,6 +21,7 @@
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
       "footer": ".site/spmpst.footer.json",
+      "hooks": ".site/spmpst.hooks.json",
       "lang": ".site/spmpst.lang.json",
       "layout": ".site/spmpst.layout.json",
       "links": ".site/spmpst.links.json",
