@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, rename, rm, symlink, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, readdir, rename, rm, stat, symlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, resolve } from 'node:path'
 import { selectSite, appDirectory } from './site-registry.mjs'
 import { createSite } from './spmpst/create-site.mjs'
@@ -69,6 +69,33 @@ function runAction(action, runEnv = env) {
   if (result.status !== 0) process.exit(result.status ?? 1)
 }
 
+async function writeSitemap(site, outputDirectory) {
+  const seoPath = site.paths.configFiles.seo
+  const seo = JSON.parse(await readFile(seoPath, 'utf8'))
+  const hostname = typeof seo.siteUrl === 'string' ? seo.siteUrl.replace(/\/$/, '') : ''
+  if (!hostname) return
+  const pages = []
+  async function visit(directory) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const target = join(directory, entry.name)
+      if (entry.isDirectory()) await visit(target)
+      else if (entry.isFile() && entry.name.endsWith('.html') && entry.name !== '404.html') {
+        const relativePath = relative(outputDirectory, target).split(sep).join('/')
+        const route = relativePath === 'index.html'
+          ? '/'
+          : `/${relativePath.replace(/\/index\.html$/, '').replace(/\.html$/, '')}`
+        const modified = await stat(target)
+        pages.push({ route, lastmod: modified.mtime.toISOString() })
+      }
+    }
+  }
+  await visit(outputDirectory)
+  pages.sort((left, right) => left.route.localeCompare(right.route))
+  const escape = (value) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  const body = pages.map(({ route, lastmod }) => `  <url><loc>${escape(`${hostname}${route}`)}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')
+  await writeFile(join(outputDirectory, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`)
+}
+
 function installToolchain() {
   const install = site.toolchain.install
   if (!install) return
@@ -124,6 +151,7 @@ if (command === 'prepare') {
     await ensureVitepressProject(buildEnv.SPMPST_GENERATED_DIR)
     prepare(buildEnv)
     runAction(site.toolchain.build, buildEnv)
+    await writeSitemap(site, stage)
     await mkdir(join(stage, '.spmpst'), { recursive: true })
     await writeFile(join(stage, '.spmpst', 'build-timestamp'), `${new Date().toISOString()}\n`)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)

@@ -1,5 +1,5 @@
 {
-  "siteUrl": null,
+  "siteUrl": "https://numerimondes.com",
   "path": "faq",
   "icon": "@spmpst::icon::circle-help",
   "$schema": "../public/api/schemas/seo.schema.json",

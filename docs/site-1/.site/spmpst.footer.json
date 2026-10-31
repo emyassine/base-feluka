@@ -14,18 +14,18 @@
       "fr": "Lire le guide de contribution"
     },
     "actionHref": "/prologue/contribution-guide",
-    "navigation": [
-      { "name": { "en": "Product", "fr": "Produit" }, "href": "/#feature-modern-teams" },
-      { "name": { "en": "About Us", "fr": "À propos" }, "href": "https://numerimondes.com", "external": true },
-      { "name": { "en": "Pricing", "fr": "Tarifs" }, "href": "https://numerimondes.com", "external": true },
-      { "name": { "en": "FAQ", "fr": "FAQ" }, "href": "/faq" },
-      { "name": { "en": "Sitemap", "fr": "Plan du site" }, "href": "/sitemap.xml" },
-      { "name": { "en": "Contact", "fr": "Contact" }, "href": "https://numerimondes.com", "external": true },
-      { "name": { "en": "X.com", "fr": "X.com" }, "href": "https://x.com/ausrobdev", "external": true },
-      { "name": { "en": "LinkedIn", "fr": "LinkedIn" }, "href": "#", "external": true }
+    "navigation": [],
+    "subNavigation": [
+	    { "name": { "en": "Product", "fr": "Produit" }, "href": "/#feature-modern-teams" },
+	    { "name": { "en": "About Us", "fr": "À propos" }, "href": "https://numerimondes.com", "external": true },
+	    { "name": { "en": "Pricing", "fr": "Tarifs" }, "href": "https://numerimondes.com", "external": true },
+	    { "name": { "en": "FAQ", "fr": "FAQ" }, "href": "/faq" },
+	    { "name": { "en": "Sitemap", "fr": "Plan du site" }, "href": "/sitemap.xml" },
+	    { "name": { "en": "Contact", "fr": "Contact" }, "href": "https://numerimondes.com", "external": true },
+	    { "name": { "en": "X.com", "fr": "X.com" }, "href": "https://x.com/ausrobdev", "external": true },
+	    { "name": { "en": "LinkedIn", "fr": "LinkedIn" }, "href": "#", "external": true }
     ],
-    "legalLabel": { "en": "Privacy Policy", "fr": "Politique de confidentialité" },
-    "legalHref": "https://numerimondes.com",
+    "logoImg": "",
     "logoAlt": { "en": "Feluqa", "fr": "Feluqa" }
   }
 }

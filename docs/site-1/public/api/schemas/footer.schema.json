@@ -24,8 +24,20 @@
             "additionalProperties": false
           }
         },
-        "legalLabel": { "$ref": "#/$defs/localizedText" },
-        "legalHref": { "type": "string", "minLength": 1 },
+        "subNavigation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "href"],
+            "properties": {
+              "name": { "$ref": "#/$defs/localizedText" },
+              "href": { "type": "string", "minLength": 1 },
+              "external": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "logoImg": { "type": "string" },
         "logoAlt": { "$ref": "#/$defs/localizedText" }
       },
       "additionalProperties": false

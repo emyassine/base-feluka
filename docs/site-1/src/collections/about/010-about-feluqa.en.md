@@ -21,5 +21,5 @@ The current repository provides selected framework foundations. The full
 workspace, runtime shells, and dynamic module lifecycle described in the target
 architecture are still under development.
 
-Feluqa is created and stewarded by [Numerimondes SARL AU](/resources/about/who-is-behind-feluqa).
+Feluqa is created and stewarded by [Numerimondes SARL AU](/about/who-is-behind-feluqa).
 The [product catalog](/products/) introduces Feluqa CLI and Nadim CLI.

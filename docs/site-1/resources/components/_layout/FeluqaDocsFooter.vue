@@ -8,8 +8,8 @@ interface FooterContent {
   actionLabel: string
   actionHref: string
   navigation: Array<{ name: string; href: string; external?: boolean }>
-  legalLabel: string
-  legalHref: string
+  subNavigation: Array<{ name: string; href: string; external?: boolean }>
+  logoImg?: string
   logoAlt: string
 }
 
@@ -24,8 +24,8 @@ const content = useSpmpstConfig<FooterContent>('footer.content')
       :action-label="content.actionLabel"
       :action-href="content.actionHref"
       :navigation="content.navigation"
-      :legal-label="content.legalLabel"
-      :legal-href="content.legalHref"
+      :sub-navigation="content.subNavigation"
+      :logo-img="content.logoImg"
       :logo-alt="content.logoAlt"
     />
   </div>
