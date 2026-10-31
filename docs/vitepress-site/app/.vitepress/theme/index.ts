@@ -189,7 +189,7 @@ function installPagerIcons(): void {
 }
 
 function installLanguageFlags(): void {
-  const config = siteContent as { showLanguageFlags?: boolean; languages?: string[] }
+  const config = siteContent as { showLanguageFlags?: boolean; languages?: string[]; defaultLanguage?: string }
   if (!config.showLanguageFlags || !Array.isArray(config.languages)) return
   const rules = config.languages.map((language) => {
     const code = language.toLowerCase()
@@ -202,14 +202,29 @@ function installLanguageFlags(): void {
       }
       .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span { display: inline-flex; align-items: center; gap: 8px; }
     `
-  }).join('\n')
+  })
+  const defaultLanguage = config.defaultLanguage?.toLowerCase()
+  if (defaultLanguage && config.languages.some((language) => language.toLowerCase() === defaultLanguage)) {
+    const otherLocales = config.languages
+      .map((language) => language.toLowerCase())
+      .filter((language) => language !== defaultLanguage)
+    const excludesLocalizedRoutes = otherLocales.map((language) => `:not([href^="/${language}/"])`).join('')
+    rules.push(`
+      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span::before {
+        content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
+        background: url("/flags/language/${defaultLanguage}.svg") center / contain no-repeat;
+      }
+      .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span { display: inline-flex; align-items: center; gap: 8px; }
+    `)
+  }
+  const rulesText = rules.join('\n')
   let style = document.getElementById('docs-language-flag-styles') as HTMLStyleElement | null
   if (!style) {
     style = document.createElement('style')
     style.id = 'docs-language-flag-styles'
     document.head.append(style)
   }
-  style.textContent = rules
+  style.textContent = rulesText
 }
 
 function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expand' | 'close'): HTMLButtonElement {
