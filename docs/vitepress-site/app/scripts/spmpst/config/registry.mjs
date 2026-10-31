@@ -4,6 +4,7 @@ export const CONCERNS = Object.freeze({
   topbar: ['items', 'theme'],
   collections: ['collections', 'emptyCollection'],
   footer: ['component', 'content'],
+  extra: ['inlineLogo'],
   appearance: ['fonts', 'logo', 'ogImages', 'styles', 'mermaid'],
   links: ['socialLinks'],
   seo: ['siteUrl', 'path', 'icon', 'pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq'],

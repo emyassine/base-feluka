@@ -383,6 +383,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   showLanguageFlags: config.topbar?.language?.showFlags ?? false,
   themeSlots: { site: siteThemeSlots, guides: generatedGuideThemeSlotsByRoute },
   siteFooter: config.siteFooter ?? null,
+  inlineLogo: config.inlineLogo === true,
   footer: config.footer ?? {},
   seo: config.seo ?? {},
   documentationNotices: config.documentationNotices ?? {},

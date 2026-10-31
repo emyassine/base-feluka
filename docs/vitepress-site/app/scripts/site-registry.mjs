@@ -10,6 +10,7 @@ export const registryPath = resolve(process.env.VITEPRESS_SITE_MANIFEST ?? works
 
 const REQUIRED_PATHS = ['root', 'config', 'guides', 'collections', 'resources', 'sharedResources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'icons', 'flags', 'mermaidConfig', 'toolchain', 'output']
 const REQUIRED_CONFIGS = ['appearance', 'collections', 'definitions', 'footer', 'hooks', 'lang', 'layout', 'links', 'markdown', 'outline', 'search', 'seo', 'topbar']
+const OPTIONAL_CONFIGS = ['extra']
 
 async function readJson(path, responsibleFile, field) {
   try { return JSON.parse(await readFile(path, 'utf8')) }
@@ -72,7 +73,7 @@ export async function loadSites() {
       }
     }
     for (const concern of Object.keys(declaration.paths.configFiles)) {
-      if (!REQUIRED_CONFIGS.includes(concern)) throw new Error(`${activeDeclarationPath}: unknown paths.configFiles.${concern}`)
+      if (![...REQUIRED_CONFIGS, ...OPTIONAL_CONFIGS].includes(concern)) throw new Error(`${activeDeclarationPath}: unknown paths.configFiles.${concern}`)
     }
     const base = dirname(activeDeclarationPath)
     const resolvePath = (value) => isAbsolute(value) ? resolve(value) : resolve(base, value)

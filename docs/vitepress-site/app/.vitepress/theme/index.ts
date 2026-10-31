@@ -247,6 +247,38 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
   return button
 }
 
+async function inlineConfiguredLogo(image: HTMLImageElement, source: string): Promise<void> {
+  if (image.dataset.inlineLogoSource === source) return
+  if (!source.startsWith('/') || image.dataset.inliningLogo === 'true') return
+  const logoContainer = image.parentElement
+  logoContainer?.querySelectorAll('.logo').forEach((logo) => {
+    if (logo !== image) logo.remove()
+  })
+  const existingInlineLogo = image.parentElement?.querySelector('svg.logo')
+  if (existingInlineLogo) {
+    image.remove()
+    return
+  }
+  image.dataset.inliningLogo = 'true'
+  try {
+    const response = await fetch(source)
+    if (!response.ok) return
+    const markup = await response.text()
+    const parsed = new DOMParser().parseFromString(markup, 'image/svg+xml')
+    const svg = parsed.documentElement
+    if (svg.tagName.toLowerCase() !== 'svg' || parsed.querySelector('parsererror')) return
+    const replacement = document.importNode(svg, true)
+    replacement.classList.add(...image.classList)
+    replacement.classList.add('logo')
+    replacement.setAttribute('role', 'img')
+    replacement.setAttribute('aria-label', image.alt)
+    replacement.dataset.inlineLogoSource = source
+    image.replaceWith(replacement)
+  } finally {
+    image.dataset.inliningLogo = 'false'
+  }
+}
+
 const MermaidLayout = {
   setup() {
     const route = useRoute()
@@ -255,6 +287,7 @@ const MermaidLayout = {
         languages?: string[]
         defaultLanguage?: string
         siteFooter?: string | null
+        inlineLogo?: boolean
         themeSlots?: { site?: Record<string, string | null>; guides?: Record<string, Record<string, string | null>> }
       }
       const themeSlots = content.themeSlots
@@ -280,6 +313,7 @@ const MermaidLayout = {
       heroNameBackground: '--vp-home-hero-name-background',
     }
     const applyGuideColors = () => {
+      const content = siteContent as typeof siteContent & { inlineLogo?: boolean }
       const pathGuide = route.path.split('/').filter(Boolean)[0]
       const configured = guideColors as Record<string, Record<string, string>>
       const colors = configured[pathGuide] ?? Object.values(configured)[0] ?? {}
@@ -312,7 +346,10 @@ const MermaidLayout = {
       guideStyle.textContent = `${logoRules}\n${codeBackgroundRules}`
       document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle img.logo').forEach((logo) => {
         const source = logo.classList.contains('dark') ? colors.logoDark : colors.logoLight
-        if (typeof source === 'string' && source && logo.getAttribute('src') !== source) logo.setAttribute('src', source)
+        if (typeof source === 'string' && source) {
+          if (logo.getAttribute('src') !== source) logo.setAttribute('src', source)
+          if (content.inlineLogo === true) void inlineConfiguredLogo(logo, source)
+        }
         if (typeof colors.logoAlt === 'string') logo.alt = colors.logoAlt
       })
       const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }

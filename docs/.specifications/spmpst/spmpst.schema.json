@@ -222,6 +222,10 @@
             "hooks": {
               "type": "string",
               "default": ".site/spmpst.hooks.json"
+            },
+            "extra": {
+              "type": "string",
+              "default": ".site/spmpst.extra.json"
             }
           },
           "additionalProperties": false,

@@ -47,6 +47,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
   }))
   return {
     spmpstConfig: sourceConcerns,
+    inlineLogo: model.inlineLogo === true,
     site: model.site,
     guidesPath,
     indexPath: `${guidesPath}/index.${defaultLanguage}.md`,
