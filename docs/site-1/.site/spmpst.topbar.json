@@ -1,27 +1,27 @@
 {
   "items": [
+  {
+    "guide": "feluqa.rs"
+  },
     {
       "text": {
         "en": "Docs",
         "fr": "Docs"
       },
       "items": [
-        {
-          "guide": "feluqa.rs",
-          "icon": "@spmpst::icon::book-open"
-        },
+      {
+        "guide": "internals",
+        "icon": "@spmpst::icon::code-xml"
+      },
         {
           "guide": "sdui",
           "icon": "@spmpst::icon::square-terminal"
         },
         {
-          "guide": "internals",
-          "icon": "@spmpst::icon::code-xml"
+          "guide": "x-agents",
+          "icon": "@spmpst::icon::chip"
         }
       ]
-    },
-    {
-      "guide": "x-agents"
     },
     {
       "guide": "learn"
