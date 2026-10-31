@@ -78,4 +78,3 @@ local protocol; one application does not depend on the other's executable.
 3. [Program 0: Hello CLI](/learn/get-started/hello-cli/program-0-hello-cli): write a command that prints `Hello CLI`.
 4. [Build the weather watcher](/learn/get-started/weather-watcher/build-the-weather-watcher): extend the first command into a useful local service with weather checks and email notifications.
 5. [Choose an application profile or starter kit](/get-started/starter-kits/application-profiles-and-starter-kits): distinguish the selected profile, executable binary, and Rust compilation target.
-
