@@ -40,16 +40,9 @@ body::before {
   background-color: var(--vp-c-bg) !important;
 }
 
-/* Align the current-language flag with the menu label, like the menu items. */
+/* The language list is clear without repeating the current language above it. */
 .VPNavBarTranslations .title,
 .VPNavScreenTranslations .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.VPNavBarTranslations .title::before,
-.VPNavScreenTranslations .title::before {
-  vertical-align: middle;
+  display: none;
 }
 
