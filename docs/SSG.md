@@ -5,7 +5,7 @@ status: "Draft / Implementation in Progress"
 version: "0.1.0-draft"
 date: "2026-10-30"
 category: "Standards Track (proposed)"
-implementation_status: "JavaScript preparation pipeline exists; independent runtime and Rust adapter proposed"
+implementation_status: "JavaScript VitePress preparation pipeline exists; standalone CLI and unified static build engine proposed"
 ---
 
 # RFC SPMPST-0001: Standard Portable Markdown Pre-SSG Tree
@@ -64,26 +64,26 @@ Equivalent conventional flag syntax MAY also be supported. `preview` MUST serve 
 
 ### 1.2 Design principles
 
-1. **Portability by construction.** Content, configuration, and logical resources are not required to embed a specific machine path, build host, or renderer API.
-2. **HTML-first, with progressive interactivity.** A page's primary authored content MUST be available as meaningful HTML without requiring client-side JavaScript. Interactive features such as search, filtering, sorting, and menus MAY require JavaScript; the HTML-first rule does not require full feature parity with scripts disabled. Dynamic server rendering is an OPTIONAL deployment profile (§5), not a condition for static-site correctness.
+1. **Portability by construction.** Content, configuration, and logical resources are not required to embed a specific machine path or build host.
+2. **Static HTML output.** Authored Markdown content MUST become meaningful HTML during the build. Site-defined interactive components MAY require JavaScript and their framework runtimes.
 3. **Offline-first delivery.** A build claiming the Offline-Complete profile MUST function without external network access, as defined precisely in §6; an ordinary static deployment need not claim offline browsing before installation or caching.
 4. **Per-site isolation.** Distinct sites MUST have separate resolved configuration, build graphs, output destinations, manifests, and packaged assets.
-5. **Standards-forward extensibility.** Unknown valid HTML and future standard elements MUST pass through without an SPMPST core release, subject to explicit sanitization policy.
+5. **Standards-forward extensibility.** Unknown valid HTML and future standard elements SHOULD pass through without an SPMPST release, subject to the selected renderer and explicit sanitization policy.
 6. **Determinism.** Repeated builds from identical declared inputs SHOULD produce byte-identical outputs; the Reproducible profile makes this mandatory.
 7. **Small, inspectable deliverables.** Production bundles MUST NOT implicitly require development tools, build-time package managers, or source code.
 8. **Project-owned frontend.** A site MAY use the JavaScript frontend frameworks and component systems chosen by its maintainers. It MAY mix frameworks where its own tooling supports that composition. SPMPST MUST NOT define a universal component model, component execution semantics, or a cross-framework compiler. Framework dependencies, build plugins, component registration, and runtime behavior belong to the site and its selected frontend toolchain.
 9. **Tool and agent accessibility.** Machine-readable inspection, validation, and controlled modification are first-class interfaces; autonomous edits MUST preserve explicit authorization boundaries.
-10. **Security and ownership.** Builds do not silently depend on third-party origins; scripts, plugins, and runtime capabilities MUST be declared and auditable.
+10. **Security and ownership.** Build dependencies and scripts MUST be inspectable; network use and generated runtime dependencies MUST be reported.
 
 ### 1.3 Scope
 
 The core specifies workspace/site discovery, configuration, metadata preservation, page and route preparation, logical resources, localization, diagnostics, build/output isolation, and the CLI contract. Static output is the primary product. Optional profiles MAY cover local preview, offline packaging, reproducible output, or audits. A native or WASM implementation MAY implement the target-neutral preparation core, but neither is required by the site format or CLI contract.
 
-Frontend component source and behavior are opaque to SPMPST core. The selected site toolchain compiles and bundles those components and their assets. SPMPST MAY pass the site's declared frontend build configuration through to its adapter, report missing or unsupported tooling, and include resulting assets in static output. It MUST NOT promise that arbitrary component source can be compiled, mixed, or rendered without the framework toolchains the site chose.
+Frontend component source and behavior belong to the site. SPMPST's build product nevertheless owns the unified workflow: it MUST invoke or provision the declared toolchains and package the generated HTML, CSS, JavaScript, SVG, images, fonts, and other static assets. A site MAY combine multiple frameworks if its configured build graph can compile them. SPMPST MUST NOT impose a shared component API or require framework authors to adopt SPMPST-specific semantics. It MAY offer maintained presets and prebuilt components that sites can opt into.
 
 ### 1.4 Non-goals
 
-SPMPST does not define or unify React, Vue, Svelte, Astro, or other frontend frameworks; guarantee that a component works without its framework runtime; guarantee that Markdown containing framework-specific components remains semantically readable when rendered without that framework; make arbitrary remote APIs work offline; provide dynamic personalized responses from static hosting; or claim that packaging third-party code makes it safe. Sites that require meaningful fallback content around framework-specific components own that fallback behavior.
+SPMPST does not define or unify React, Vue, Svelte, Astro, or other frontend frameworks, nor guarantee the behavior of framework-specific Markdown components without their runtime. A site's chosen toolchains own those semantics. SPMPST does not make arbitrary remote APIs work offline, provide dynamic personalized responses from static hosting, or claim that packaging third-party code makes it safe.
 
 SPMPST is a static-site workflow and preparation contract, not a universal frontend runtime or a mandate to rewrite existing sites in Rust. Performance claims MUST identify whether they measure startup, source discovery, incremental preparation, full rendering, or end-to-end build and MUST state the machine, cache state, and page/asset fixture. A goal such as preparing 900 Markdown pages in 5 ms MAY be used as a benchmark target for a narrowly defined preparation stage; it MUST NOT be presented as a full build target unless a measured full build meets it.
 
@@ -100,17 +100,16 @@ A **Tree Producer** writes conforming sources. A **Core Loader** validates the t
 | `core` | tree loading, config ownership, page model, route and resource resolution, diagnostics | no generated site required |
 | `static-html` | HTML for each route, local assets, no dev-runtime dependency | static web host or local browser |
 | `offline-complete` | `static-html` plus closed dependency graph and offline navigation support under declared conditions | browser service worker/installed cache or packaged local files |
-| `server-rendered` | request-time server HTML and declared runtime contract | compatible server process required |
-| `components` | explicit component declarations, adapters, rendering/asset policy | runtime depends on chosen component mode |
+| `preview` | local HTTP serving of selected built site output, with optional watched rebuild | local development machine |
 | `reproducible` | stable bytes and documented input closure | deterministic build verification |
 | `seo-audit` | report schema, page/link analysis and actionable findings | no SEO guarantee |
 | `agent` | machine-readable capabilities and safe operations | local IPC or authenticated transport |
 
-A tool MUST declare which profiles it implements; documentation MUST NOT imply that supporting `core` entails supporting `server-rendered` or `offline-complete`. `SPMPST v0.1 draft` refers to the baseline format, not certification under all proposed profiles.
+A tool MUST declare which profiles it implements; documentation MUST NOT imply that supporting `core` entails supporting `offline-complete`. `SPMPST v0.1 draft` refers to the baseline format, not certification under all proposed profiles.
 
 ### 2.3 Feature discovery (PROPOSED)
 
-A CLI SHOULD support `spmpst capabilities --format json`. Its response SHOULD expose `specVersion`, `implementation`, `profiles`, `extensions`, `renderers`, `componentModes`, and `outputFormats`. Unknown capability IDs MUST be treated as unsupported, not assumed.
+A CLI SHOULD support `spmpst capabilities --format json`. Its response SHOULD expose `specVersion`, `implementation`, `profiles`, `extensions`, available site build adapters, and `outputFormats`. Unknown capability IDs MUST be treated as unsupported, not assumed.
 
 ## 3. Source tree, identity, and configuration
 
@@ -142,6 +141,8 @@ workspace/
 
 `dist/<site-id>/` is an illustrative default, not a new compulsory source-tree directory. User-supplied output paths MUST be checked for overlap with other site roots and outputs; destructive cleanup MUST be limited to the selected output directory.
 
+Language variants MAY be stored together in the same content directory, using page names such as `page.en.md` and `page.fr.md`. SPMPST MUST NOT require a separate directory tree for each language. Locale fallback and route policy are site configuration.
+
 ### 3.3 Configuration ownership and forward compatibility
 
 The v0.1 concern-file ownership table (§II.11) remains normative **for the v0.1 loader**. Core loaders MUST reject unknown configuration keys under a versioned, closed schema unless the key is in a declared extension namespace. By contrast, HTML attributes, Markdown frontmatter unknown to core, and ordinary copied public files MUST be preserved wherever the consumer can represent them. These separate rules prevent accidental breaking changes while permitting new web standards.
@@ -167,18 +168,18 @@ flowchart TD
     A[Source tree and configuration] --> B[Discovery and validation]
     B --> C[Canonical site model]
     C --> D[Content and route graph]
-    D --> E[Component and asset resolution]
+    D --> E[Site toolchain and asset preparation]
     E --> F{Selected output profile}
     F --> G[Static HTML build]
-    F --> H[Server-rendered application]
-    F --> I[Adapter output: VitePress, etc.]
+    F --> H[Site-configured frontend toolchain]
+    F --> I[HTML, CSS, JavaScript, and static assets]
     G --> J[Per-site manifest and archive]
-    H --> J
+    H --> I
     I --> J
     J --> K[SEO, security and offline audits]
 ```
 
-Every stage MUST emit a machine-readable diagnostic for a blocking failure. The core model SHOULD be JSON-serializable and free of adapter-specific runtime objects. Adapters MAY enrich an independent copy, but MUST NOT mutate the shared model in a way that changes another adapter's output.
+Every stage MUST emit a machine-readable diagnostic for a blocking failure. The core model SHOULD be JSON-serializable and free of frontend-framework runtime objects. Site build tools MAY enrich an independent copy, but MUST NOT mutate shared source data in a way that changes another site's output.
 
 ### 4.2 Minimum page record
 
@@ -192,30 +193,21 @@ If a stable page identifier is provided, it MUST be unique within the selected s
 
 Parsing of Markdown MUST NOT treat arbitrary inline text as an executable directive. Reserved `@spmpst::` references are recognized only in documented metadata fields, directive contexts, or explicitly enabled Markdown extensions. Unrecognized directive forms MUST yield a diagnostic or remain literal text according to a declared policy; they MUST NOT execute code.
 
-## 5. HTML rendering and dynamic server rendering
+## 5. Static HTML output
 
 ### 5.1 Universal HTML contract
 
-Every published page in the `static-html` and `server-rendered` profiles MUST deliver its primary readable content as HTML from the host without relying on browser-side JavaScript execution. The HTML output MUST preserve document semantics, accessible text, headings, links, forms, and media fallbacks to the extent supported by the source. This requirement concerns reading and navigating authored content; it does not require interactive features to work with JavaScript disabled.
+Every published page in the `static-html` profile MUST deliver its authored Markdown content as HTML from the host without relying on browser-side JavaScript execution. The output MUST preserve document semantics, text, headings, links, and media fallbacks to the extent supported by Markdown and the selected site's build toolchain. SPMPST makes no promise about the fallback or accessibility semantics of framework-specific component tags embedded in Markdown; the site owns those components and their fallback content.
 
-Search, filtering, sorting, and similar controls MAY be implemented as client-side features, including on static sites. Their scripts MUST be declared under the script policy in §10.3. If a feature cannot run because JavaScript is disabled or unavailable, its controls MUST expose an accessible explanation or fallback, while the page's primary content remains readable. A static site is not required to provide a second, script-free implementation of client-side search.
+Search, filtering, sorting, and similar controls MAY be implemented as client-side features. Their scripts are part of the site's selected frontend build and MUST be included in the generated static output when required. SPMPST does not require a script-free implementation of these features.
 
-### 5.2 Rendering modes (PROPOSED)
+### 5.2 Static rendering (PROPOSED)
 
-| Mode | When HTML is produced | Deploys on static host | Usable with JavaScript disabled |
-|---|---|---|---|
-| `prerender` | at build time | yes | primary content yes |
-| `ssr` | per incoming request | no, needs server | primary content yes |
-| `island` | prerender/SSR HTML then selective hydration | yes if prerendered | initial content yes; enhanced interactions may not work |
-| `client-only` | browser execution | yes | not necessarily; forbidden for required core content in HTML-first profiles |
-
-**Requirement clarification:** “Always provide real-time server rendering” is interpreted as **always support the ability to select a request-time SSR target when an SSR-capable adapter and host are present**, while **always providing valid prerendered HTML for a static target**. A static ZIP cannot independently perform request-time SSR on a static hosting service. The runtime selection MUST be explicit, not simulated or implied.
-
-The JavaScript-disabled column describes access to primary page content, not complete feature parity. For example, a static documentation site MAY use a bundled local search index and JavaScript search interface without requiring a server-side search endpoint.
+SPMPST's required published mode is build-time static output. The site's selected JavaScript toolchain MAY emit browser code for its own interactive components. SPMPST neither defines those components' rendering modes nor requires server-side rendering. Its core requirement is that authored Markdown text is emitted as static HTML.
 
 ### 5.3 Freshness and cache policy
 
-SSR and content freshness are independent. Server-rendered output MAY use a cache and MUST document its freshness guarantees. Offline mode MUST use a declared cache/fallback strategy and cannot promise access to remote live updates while disconnected.
+Static output freshness is controlled by rebuilding and publishing the changed files. An offline profile MUST use a declared cache/fallback strategy and cannot promise access to remote live updates while disconnected.
 
 ### 5.4 HTML extensibility
 
@@ -252,46 +244,15 @@ External analytics, embeds, CDNs, live data, remote APIs, and hosted fonts MUST 
 
 A conforming offline test MUST install or cache the site using a supported context, disconnect all network connectivity, navigate representative internal routes, reload them, and assert that all required assets load locally. It MUST also inspect network initiators for undeclared remote requests. A screenshot or Lighthouse score alone is insufficient proof.
 
-## 7. Cross-framework components and content transclusion
+## 7. Frontend toolchain and component ownership
 
-### 7.1 Problem statement
+SPMPST does not define a portable component descriptor or cross-framework lifecycle. A site adds components using its chosen framework's normal source files, imports, dependencies, and conventions. SPMPST's responsibility is to make the configured build workflow available through the site build: resolve or install declared dependencies as configured, run the necessary compilers and bundlers, collect their static outputs, report failures, and serve the result in preview. Sites MAY use prebuilt components supplied by SPMPST, a framework ecosystem, or another package source. Mixing frameworks is permitted when the site's own build configuration handles their composition.
 
-A site author may wish to reference **HTML, Vue, Svelte, React, Astro, Web Components, or later frameworks** from portable Markdown. Framework component syntax and lifecycle are not interoperable by default. SPMPST SHOULD offer a *component descriptor* and target-specific bridge instead of pretending that the HTML tags of arbitrary frameworks are equivalent.
+The build tool MUST be able to provision or invoke the site's declared toolchain, install missing locked dependencies where the site permits it, compile framework and non-framework sources, and apply configured optimization/minification before publishing output. Repeated builds SHOULD reuse verified local dependencies and caches. A site MAY opt into an offline or preinstalled-dependencies mode. Dependency installation and build plugins execute trusted project/package code; the CLI MUST make that fact clear and MUST provide controls to inspect or disable network access where practical. SPMPST SHOULD provide built-in presets for common static-site needs so a basic site does not require hand-assembling a frontend stack.
 
-### 7.2 Component interoperability modes (PROPOSED)
+Framework-specific tags in Markdown are interpreted by the selected site build tooling. SPMPST guarantees the HTML conversion of ordinary supported Markdown content, but does not promise that a framework tag has meaningful output without that framework. Authors decide whether such components need fallback HTML or non-JavaScript content.
 
-| Mode | Contract | Cross-target expectation |
-|---|---|---|
-| `html` | trusted HTML fragment or template | strongest portability |
-| `web-component` | standards-based custom element with local module | portable to browsers supporting required APIs; SSR fallback needed |
-| `server-rendered` | adapter renders component to HTML during build or request | portable output; toolchain may differ |
-| `island` | component renders HTML then hydrates locally | needs framework runtime bundled for that island |
-| `client-only` | mounts after page load | optional progressive enhancement only |
-| `target-native` | renderer-specific component or directive | no cross-target guarantee |
-
-A descriptor MUST declare `id`, `source`, `framework`, `mode`, `propsSchema` where props exist, and `targets` or an explicit fallback policy. Adapters MUST reject unsupported components before publication or apply a declared accessible fallback. Undeclared runtime dependency discovery MUST NOT be considered successful portability.
-
-### 7.3 Illustrative component descriptor (EXPERIMENTAL)
-
-```json
-{
-  "id": "example.counter",
-  "source": "resources/components/counter/Counter.svelte",
-  "framework": "svelte",
-  "mode": "island",
-  "propsSchema": {
-    "type": "object",
-    "properties": { "start": { "type": "integer" } },
-    "additionalProperties": false
-  },
-  "fallback": "resources/components/counter/fallback.html",
-  "network": "none"
-}
-```
-
-This is a schema proposal, **not implemented v0.1 input syntax**. When a component has no server renderer, its fallback MUST supply meaningful accessible content if used on an HTML-first page.
-
-### 7.4 Content reference candidates (EXPERIMENTAL)
+### 7.1 Structured references (EXPERIMENTAL)
 
 The suggested form `@spmpst::self::frontmatter::<dataid>` is valuable as a *structured reference*, not as a general-purpose source code evaluator. For future standardization, candidate forms are:
 
@@ -304,7 +265,7 @@ The suggested form `@spmpst::self::frontmatter::<dataid>` is valuable as a *stru
 
 Only the final resources form has an existing v0.1 grammar, described in Part II. The other forms are **EXPERIMENTAL** and MUST NOT be interpreted as implemented or portable until a future grammar is ratified.
 
-### 7.5 Proposed structured-reference rules
+### 7.2 Proposed structured-reference rules
 
 - A reference MUST be resolved against a typed context (site, page, frontmatter, or resource), never through dynamic code execution.
 - A `frontmatter` path SHOULD follow restricted dotted JSON-property notation with escaped or indexed forms specified before standardization; `dataid` MUST NOT be treated as an arbitrary filesystem path.
@@ -314,7 +275,7 @@ Only the final resources form has an existing v0.1 grammar, described in Part II
 - `self` MUST refer to the page being processed, never to an ambient global page.
 - Cross-page references MUST participate in dependency tracking and incremental rebuild invalidation.
 
-### 7.6 Authoring syntax decision
+### 7.3 Authoring syntax decision
 
 A future RFC MUST choose whether reference syntax is only for metadata values, fenced directives, Markdown inline transclusion, or component props. Until then, implementers SHOULD NOT silently parse `@spmpst::self::...` everywhere in prose. Marking the syntax experimental prevents collisions with ordinary Markdown, email-like strings, and future directives.
 
@@ -378,23 +339,20 @@ The builder MUST detect when two sources emit the same destination path, includi
 
 ### 9.1 Delivery shapes
 
-SPMPST SHOULD be usable as (a) a standalone CLI, (b) a desktop GUI wrapping the same engine, and/or (c) an installable package for a host such as `vitepress-site`. CLI and desktop are preferred product surfaces; the VitePress integration is a compatible adapter, not the definition of the standard. All surfaces SHOULD use identical validators and produce semantically equivalent manifests for the same declared target.
+SPMPST MUST provide a standalone CLI as its primary product surface. A desktop GUI MAY wrap the same engine, and host integrations such as the existing VitePress pipeline MAY remain available as adapters. None of those integrations may be required for the CLI to discover, build, or preview a registered site. All surfaces SHOULD use identical validators and produce semantically equivalent static output for the same declared inputs.
 
-### 9.2 CLI sketch (PROPOSED; not commands guaranteed to exist)
+### 9.2 CLI contract (PROPOSED)
 
 ```sh
-spmpst init --site my-site
-spmpst inspect --site my-site --format json
-spmpst check --site my-site --strict
-spmpst build --site my-site --target static --out dist/my-site
-spmpst build --site my-site --target server --out dist/my-site-server
-spmpst pack --site my-site --format zip --out dist/my-site.zip
-spmpst audit seo --site my-site --format json
-spmpst audit offline --site my-site --profile offline-complete
-spmpst capabilities --format json
+spmpst list
+spmpst preview sites=site-1
+spmpst preview sites=site-1,site-2
+spmpst build sites=site-1
 ```
 
-Commands MUST emit meaningful exit codes and structured errors once standardized. At minimum: success (`0`), validation failure, unsupported capability, build failure, and unsafe output path SHOULD be distinguishable. A production CLI MUST define the numeric codes in its reference manual rather than infer them from these examples.
+The CLI MUST discover the workspace from the current directory or an explicit root option. `list` MUST report registered sites and their source roots. `preview` MUST build selected sites as needed, bind a local HTTP server, report served URLs, and stop cleanly on user interruption. `build` MUST build each selected site and report its output directory. Comma-separated `sites=` selection MUST be supported; equivalent conventional flags MAY also be accepted. The default output path MUST be predictable and outside source trees. Commands MUST emit meaningful exit codes and actionable diagnostics.
+
+The simple workflow MUST NOT expose an implementation checkout path such as `docs/vitepress-site/` as a required user argument. Once SPMPST is installed, execution MUST depend on the selected workspace, declared site inputs/dependencies, and SPMPST-managed packages or caches; it MUST NOT depend on a neighboring Feluqa source checkout or implementation directory. Adapter packages, framework toolchains, and dependencies MUST be located from workspace/site configuration or provisioned by SPMPST. The final static output MUST be publishable to GitHub Pages or another static file host without requiring the preview server or build tool on the destination.
 
 ### 9.3 Desktop application
 
@@ -408,7 +366,7 @@ The existing `docs/vitepress-site/` pipeline remains the current reference adapt
 
 ### 10.1 Out-of-the-box support
 
-Adapters SHOULD support site-scoped stylesheets, scripts, themes, hooks, components, and public assets, while preserving portable core semantics. Hooks MUST declare lifecycle phase, inputs, outputs, and required permissions. A hook MUST NOT silently mutate content outside the active site or access the network in a network-disallowed build.
+The build MUST collect site-scoped stylesheets, scripts, themes, components and public assets from the configured toolchain. Optional extension hooks MAY run at declared lifecycle phases. A hook MUST NOT silently mutate content outside the active site or access the network in a network-disallowed build.
 
 ### 10.2 Proposed hook phases
 
@@ -500,7 +458,7 @@ Relevant threats include malicious dependencies, compromised remotely loaded Jav
 - Untrusted HTML MUST be escaped or sanitized under a declared policy; trusted HTML MUST be explicitly distinguished.
 - External script and stylesheet origins MUST be inventoried. The offline-complete profile MUST reject required remote runtime resources.
 - Secrets MUST NOT be copied from environment variables, local `.env` files, or private configuration into public artifacts without explicit user intent.
-- Component adapters MUST declare whether they execute arbitrary build code or client JavaScript.
+- Build integrations MUST identify the toolchain and dependencies used to compile project code; component semantics remain owned by that toolchain.
 - The emitted asset manifest SHOULD include content hashes; production deployments SHOULD support strict Content Security Policy and other appropriate security headers.
 - A build SHOULD support integrity pinning or lockfiles for upstream packages; a version string alone is not proof of immutability.
 
@@ -516,7 +474,7 @@ A `reproducible` build MUST canonicalize or consistently serialize its own manif
 
 ### 14.2 Diagnostics
 
-Diagnostics MUST identify code, severity, source file, location when available, affected site, human explanation, and optional suggested fix. Unknown configuration keys, duplicate routes, invalid references, unsupported components, unsafe paths, and offline violations MUST produce distinct codes.
+Diagnostics MUST identify code, severity, source file, location when available, affected site, human explanation, and optional suggested fix. Unknown configuration keys, duplicate routes, invalid references, unavailable build toolchains, unsafe paths, and offline violations MUST produce distinct codes.
 
 ### 14.3 Development updates and build isolation (PROPOSED)
 
@@ -534,7 +492,7 @@ The VitePress adapter implements those requirements with an in-process preparati
 
 ### 14.4 Conformance fixtures (PROPOSED)
 
-A reference suite SHOULD contain at least: multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; unsupported framework component; component fallback; offline rerender/reload; no-dev-dependency static output; ZIP traversal checks; multi-site isolation; incremental single-page HMR without document reload; concurrent build/dev isolation; and canonical manifest comparisons.
+A reference suite SHOULD contain at least: co-located multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; missing-toolchain diagnostics; static output with no build-tool dependency; ZIP traversal checks; multi-site isolation; incremental single-page HMR without document reload; concurrent build/dev isolation; and canonical manifest comparisons.
 
 ### 14.5 Validation layers
 
@@ -542,43 +500,38 @@ A reference suite SHOULD contain at least: multilingual routes; numeric prefixes
 |---|---|
 | Source validation | Are required configurations and page fields valid? |
 | Model validation | Is ownership unambiguous? Are routes and references resolvable? |
-| Adapter validation | Does the target support required content and components? |
+| Build validation | Are declared toolchains available, and can they compile the site's sources? |
 | Artifact validation | Are outputs complete, isolated, and free of forbidden dependencies? |
-| Runtime validation | Do SSR and offline behaviors pass their declared deployment profiles? |
+| Runtime validation | Does the static output and any declared offline behavior pass its deployment profile? |
 | Audit validation | Are SEO and security findings reproducible from their evidence? |
 
 ## 15. Implementation roadmap and decision log
 
 ### 15.1 Existing baseline (CURRENT)
 
-The supplied reference inventory shows a JavaScript model loader, VitePress preparation pipeline, resource-reference parser, localized guide/collection stages, and validation/verification commands. It does **not** show a universal SSR runtime, a Rust SSG, ZIP packaging, arbitrary framework bridging, a formal SEO audit engine, or an ACP implementation.
+The supplied reference inventory shows a JavaScript model loader, VitePress preparation pipeline, resource-reference parser, localized guide/collection stages, and validation/verification commands. It does **not** show a self-contained SPMPST CLI, unified dependency provisioning/build pipeline, Rust static builder, ZIP packaging, a formal SEO audit engine, or an ACP implementation.
 
 ### 15.2 Implementation order (PROPOSED)
 
 | Phase | Deliverable | Acceptance gate |
 |---|---|---|
 | 0 — Baseline stabilization | characterize and freeze existing v0.1 fixtures | current `docs:check` and `docs:verify` pass |
-| 1 — Canonical model | schema, route conflict detection, model serialization | fixtures round-trip across isolated sites |
-| 2 — Static distribution | local HTML output, asset closure, per-site manifest, ZIP | static site serves without dev dependencies |
-| 3 — Offline profile | network audit, cache/service worker strategy, explicit fallback | works after install/cache with network disabled |
-| 4 — Components | portable HTML/web-component path, target-native bridge, SSR fallback | representative Vue/React/Svelte/Astro examples handled or rejected clearly |
+| 1 — Simple CLI | workspace discovery, `list`, multi-site `preview`, and `build` | commands work from workspace root without an adjacent-host path |
+| 2 — Unified static build | dependency/toolchain provisioning, compile/minify, asset closure and predictable per-site output | static artifact serves independently and can be published to a static host |
+| 3 — Fast preparation | native implementation where useful; benchmark scan, model, incremental prepare, and full build separately | published measurements identify fixtures, hardware, cold/warm state and stage boundaries |
+| 4 — Offline profile | network audit, cache/service worker strategy, explicit fallback | works after install/cache with network disabled |
 | 5 — SEO audit | link graph and structured recommendations | findings backed by local evidence |
 | 6 — Agent interface | structured introspection, safe changes, protocol-specific bridge | read-only/approved-write tests pass |
-| 7 — Independent target | Rust/Feluqa adapter or equivalent | common conformance fixtures pass |
-| 8 — SSR deployment | request-time renderer plus deployment manifest | server runtime and cache semantics documented and tested |
 
 The sequence is a recommendation, not a promised release schedule. Independent phases MAY be developed concurrently if core contracts remain stable.
 
 ### 15.3 Open architectural decisions
 
-1. Should the first independent non-VitePress renderer be Rust-native or a minimal standards-only HTML renderer?
-2. Which precise ACP specification and version should the agent bridge implement?
-3. What syntax, escaping, and expression grammar should structured `frontmatter` references adopt?
-4. Should components be declared in a dedicated concern file, a resource catalogue, or frontmatter?
-5. Should the portable artifact metadata be served publicly, or remain an out-of-webroot sidecar?
-6. Which browser contexts must `offline-complete` certify: HTTPS, localhost, file URL, or desktop shell?
-7. Which adapter capabilities are mandatory for accepting `server-rendered` sites?
-8. Which HTML sanitization policies are appropriate for trusted authoring versus untrusted contributed content?
+1. Which precise ACP specification and version should the agent bridge implement?
+2. What syntax, escaping, and expression grammar should structured `frontmatter` references adopt?
+3. Should the portable artifact metadata be served publicly, or remain an out-of-webroot sidecar?
+4. Which browser contexts must `offline-complete` certify: HTTPS, localhost, file URL, or desktop shell?
+5. Which HTML sanitization policies are appropriate for trusted authoring versus untrusted contributed content?
 
 These are deliberately unresolved and MUST NOT be converted into implied implementation facts.
 
