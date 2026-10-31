@@ -26,12 +26,18 @@ const layout = computed(() => (menuTemplates as Record<string, { layout?: string
 const children = computed(() => props.item.items ?? [])
 const options = computed(() => template.value[2] ?? {})
 const totalCount = computed(() => children.value.length)
+const more = computed(() => options.value.more)
 const displayChildren = computed(() => {
   const repeated = Array.from({ length: 3 }, () => children.value).flat()
-  return options.value.maxItems ? repeated.slice(0, options.value.maxItems) : repeated
+  const childLimit = options.value.maxItems && more.value
+    ? Math.max(0, options.value.maxItems - 1)
+    : options.value.maxItems
+  return childLimit === undefined ? repeated : repeated.slice(0, childLimit)
 })
-const more = computed(() => options.value.more)
 const cardHeight = computed(() => options.value.cardHeight ?? 260)
+const backgroundGridStyle = computed(() => ({
+  gridTemplateColumns: `repeat(${Math.min(3, Math.max(1, displayChildren.value.length + (more.value ? 1 : 0)))}, minmax(0, 1fr))`,
+}))
 const mobileToo = computed(() => options.value.mobileToo !== false)
 const morePosition = computed(() => more.value?.position === 'before' ? 'before' : 'after')
 function localized(value: string | Record<string, string> | undefined): string {
@@ -80,7 +86,7 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
       <div v-else-if="layout === 'events'" class="FeluqaMegaMenu__events">
         <a v-for="(event, index) in displayChildren" :key="`${href(event) ?? String(event.text)}-${index}`" :href="href(event)" class="FeluqaMegaMenu__event"><strong>{{ field(event, 'date') }}</strong><span><b>{{ field(event, 'title') }}</b><small>{{ field(event, 'location') }}</small></span></a>
       </div>
-      <div v-else-if="layout === 'background'" class="FeluqaMegaMenu__background-grid">
+      <div v-else-if="layout === 'background'" class="FeluqaMegaMenu__background-grid" :style="backgroundGridStyle">
         <a v-if="more && morePosition === 'before'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${more.image ?? ''})` }">
           <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
         </a>

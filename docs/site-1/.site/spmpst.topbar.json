@@ -6,7 +6,7 @@
     {
       "guide": "products",
       "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products · Background + icon", "fr": "Produits · Arrière-plan + icône" },
+      "menuTitle": { "en": "Products", "fr": "Produits" },
       "menuTemplate": ["mega.background-icon", ["title", "image", "icon", "description", "children"], {
         "mobileToo": false,
         "maxItems": 2,
