@@ -89,7 +89,7 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
 </template>
 
 <style scoped>
-.FeluqaMegaMenu__body { width: min(960px, calc(100vw - 32px)); min-width: 0; padding: 8px; color: var(--vp-c-text-1); box-sizing: border-box; }
+.FeluqaMegaMenu__body { width: min(960px, calc(100vw - 32px)); min-width: 0; padding: 8px; color: var(--vp-c-text-1); box-sizing: border-box; animation: FeluqaMegaMenu-fade-in .32s cubic-bezier(.22, 1, .36, 1) both; transform-origin: right center; }
 :deep(.menu) { right: auto !important; left: 50% !important; transform: translate(-50%, 0) !important; }
 :deep(.button), :deep(.button:hover), :deep(.text), :deep(.VPFlyout:hover .text), :deep(.VPFlyout.active .text) { color: var(--vp-c-text-1) !important; }
 .FeluqaMegaMenu__cards { display: grid; width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
@@ -110,8 +110,15 @@ h3 { margin: 0 0 12px; font-size: .95rem; }
 .FeluqaMegaMenu__featured { grid-template-columns: 1fr 2fr; }.FeluqaMegaMenu__featured article { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }.FeluqaMegaMenu__featured article img { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; }.FeluqaMegaMenu__featured article a { color: var(--vp-c-brand-1); }
 .FeluqaMegaMenu__events { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; padding: 14px 18px; }.FeluqaMegaMenu__event { display: flex; gap: 12px; padding: 10px; color: var(--vp-c-text-1) !important; text-decoration: none; }.FeluqaMegaMenu__event strong { min-width: 54px; color: var(--vp-c-brand-1); }.FeluqaMegaMenu__event span { display: grid; gap: 3px; }
 .FeluqaMegaMenu__background-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.FeluqaMegaMenu__background-card { display: flex; min-width: 0; min-height: 220px; box-sizing: border-box; flex-direction: column; justify-content: space-between; padding: 18px; border-radius: 10px; background-position: center; background-size: cover; color: white !important; text-decoration: none; }
+.FeluqaMegaMenu__background-card { display: flex; min-width: 0; min-height: 220px; box-sizing: border-box; flex-direction: column; justify-content: space-between; padding: 18px; border-radius: 10px; background-position: center; background-size: cover; color: white !important; text-decoration: none; animation: FeluqaMegaMenu-card-in .36s cubic-bezier(.22, 1, .36, 1) both; }
+.FeluqaMegaMenu__background-card:nth-child(1) { animation-delay: .16s; }
+.FeluqaMegaMenu__background-card:nth-child(2) { animation-delay: .1s; }
+.FeluqaMegaMenu__background-card:nth-child(3) { animation-delay: .04s; }
+.FeluqaMegaMenu__background-card:nth-child(n + 4) { animation-delay: 0s; }
 .FeluqaMegaMenu__background-card span { display: grid; gap: 6px; min-width: 0; }.FeluqaMegaMenu__background-card strong { overflow-wrap: anywhere; font-size: 1.05rem; }.FeluqaMegaMenu__background-card small { display: -webkit-box; overflow: hidden; color: rgb(255 255 255 / .82); -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 .FeluqaMegaMenu__background-icon { width: 28px; height: 28px; object-fit: contain; filter: brightness(0) invert(1); }
 @media (max-width: 768px) { .FeluqaMegaMenu__body { width: min(600px, calc(100vw - 32px)); }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .FeluqaMegaMenu__body, .FeluqaMegaMenu__background-card { animation: none; } }
+@keyframes FeluqaMegaMenu-fade-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes FeluqaMegaMenu-card-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 </style>
