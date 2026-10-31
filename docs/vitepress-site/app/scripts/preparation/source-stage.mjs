@@ -124,8 +124,9 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon'].includes(key)) || value.source !== 'subguides') {
-    throw new Error(`${location}.source must be "subguides" and may only define source, depth, and icon`)
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon'].includes(key))
+    || !['subguides', 'subguides no-guide-index'].includes(value.source)) {
+    throw new Error(`${location}.source must be "subguides" or "subguides no-guide-index" and may only define source, depth, and icon`)
   }
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)

@@ -6,7 +6,7 @@
     {
       "guide": "products",
       "items": {
-        "source": "subguides",
+        "source": "subguides no-guide-index",
         "icon": true
       }
     },

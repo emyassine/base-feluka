@@ -30,7 +30,7 @@
                 "type": "object",
                 "required": ["source"],
                 "properties": {
-                  "source": { "const": "subguides" },
+                  "source": { "enum": ["subguides", "subguides no-guide-index"] },
                   "depth": {
                     "oneOf": [
                       { "type": "string", "const": "all" },

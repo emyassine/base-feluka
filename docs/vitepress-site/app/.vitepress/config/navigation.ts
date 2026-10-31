@@ -243,7 +243,7 @@ function navigation(language = defaultLanguage): any[] {
   const resolveItem = (item: any): any => {
     if (item.guide) {
       const guide = guideLink(item.guide, item.icon)
-      if (item.items && !Array.isArray(item.items) && item.items.source === 'subguides') {
+      if (item.items && !Array.isArray(item.items) && ['subguides', 'subguides no-guide-index'].includes(item.items.source)) {
         const guideConfig = guideConfigs[item.guide]
         const rootIcon = sidebarPageIcons[guide.link]
         const overview = {
@@ -258,7 +258,10 @@ function navigation(language = defaultLanguage): any[] {
         return {
           text: guide.text,
           activeMatch: guide.activeMatch,
-          items: [overview, ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false)],
+          items: [
+            ...(item.items.source === 'subguides' ? [overview] : []),
+            ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false),
+          ],
         }
       }
       if (Array.isArray(item.items)) return { ...guide, items: item.items.map(resolveItem) }
