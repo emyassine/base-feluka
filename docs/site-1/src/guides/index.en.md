@@ -123,7 +123,7 @@ layout: home
 <MainlineResourceBlock
       title="A shared foundation, with purpose-built runtimes"
       :items='[
-        { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
+        { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/resources/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
         { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/internals/" },
         { title: "Portable path ownership.", description: "Context roots and portable paths define where an application owns its data.", linkLabel: "Read storage guidance", href: "/storage/storage-backends-and-paths", imageAlt: "Portable path ownership" },
         { title: "A built-in control panel.", description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work.", linkLabel: "Read the panel status", href: "/get-started/frontend/system-panel", imageAlt: "System control panel" },

@@ -244,6 +244,7 @@ for (const collection of collectionMetadata.values()) {
     const articles = (await Promise.all([...localizedArticles.values()]
       .map(async (record) => {
         const markdown = await readSourceText(record.from)
+        const relativeSource = relative(collection.sourceDirectory, record.from).split(sep).join('/')
         const articleTitle = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(record.from)
         const description = frontmatterScalar(markdown, 'description')
         const date = frontmatterScalar(markdown, 'date')
@@ -251,7 +252,7 @@ for (const collection of collectionMetadata.values()) {
         const recordLanguage = sourceLanguage(record.from)
         const target = recordLanguage === language.toLowerCase() ? record.to : stagedPath(record.from, language)
         const { wordCount, readingTime } = readingMetrics(markdown)
-        return { title: articleTitle, description, date, category, wordCount, readingTime, url: publicMarkdownLink(target) }
+        return { title: articleTitle, description, date, category, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
       })))
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles

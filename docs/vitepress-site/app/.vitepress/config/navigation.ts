@@ -238,7 +238,7 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
-  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean) => {
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = []) => {
     const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
     return [...generatedCollections]
       .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
@@ -253,19 +253,57 @@ function navigation(language = defaultLanguage): any[] {
         const metadata = sidebarMetadata[route]
         const icon = showIcons ? metadata?.icon : undefined
         const articles = collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []
-        const items = articles.map((article: any) => {
-          const articleIcon = showIcons ? sidebarPageIcons[article.url] : undefined
-          return {
-            text: itemText(article.title, undefined, undefined, articleIcon ? `/${articleIcon.replace(/^\/+/, '')}` : undefined),
-            link: article.url,
-            ...(article.url ? { activeMatch: `^${article.url.replace(/\/+$/, '')}(?:/|$)` } : {}),
-          }
-        })
+        const rootParts = route.split('/')
+        const tree: any = { children: new Map(), articles: [], orderName: '' }
+        for (const article of articles) {
+          const urlParts = String(article.url ?? '').split('/').filter(Boolean)
+          if (urlParts[0]?.toLowerCase() === language.toLowerCase() && language.toLowerCase() !== defaultLanguage.toLowerCase()) urlParts.shift()
+          else if (urlParts[0]?.toLowerCase() === defaultLanguage.toLowerCase() && site.topbar?.language?.prefixDefaultLanguage) urlParts.shift()
+          const routePartsInUrl = urlParts.slice(0, rootParts.length)
+          if (routePartsInUrl.join('/') !== rootParts.join('/')) continue
+          const relativeParts = urlParts.slice(rootParts.length)
+          const sourceParts = String(article.sourcePath ?? '').split('/')
+          let parent = tree
+          relativeParts.forEach((segment: string, index: number) => {
+            let child = parent.children.get(segment)
+            if (!child) {
+              child = { segment, sourceName: sourceParts[index] ?? segment, pathParts: [...(parent.pathParts ?? []), segment], children: new Map(), articles: [], orderName: sourceParts[index] ?? segment }
+              parent.children.set(segment, child)
+            }
+            parent = child
+          })
+          parent.articles.push(article)
+        }
+        const renderTree = (node: any): any[] => {
+          const entries = [...node.children.values()].map((child: any) => ({ name: child.segment, child }))
+          const sourceNames = Object.fromEntries(entries.map(({ name, child }: any) => [name, child.orderName]))
+          return sortNavigationEntries(entries, sourceNames).map(({ child }: any) => {
+            const nested = renderTree(child)
+            const article = child.articles[0]
+            const metadata = sidebarMetadata[`${route}/${child.pathParts.join('/')}`]
+            const icon = showIcons ? (metadata?.icon ?? (article && sidebarPageIcons[article.url])) : undefined
+            const label = metadata?.labels?.[language] ?? article?.title ?? child.segment.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
+            const link = article?.url
+            const children = [
+              ...(article && nested.length ? [{ text: itemText(article.title), link: article.url }] : []),
+              ...nested,
+            ]
+            return {
+              text: itemText(label, undefined, undefined, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
+              activeMatch: `^${link ? link.replace(/\/+$/, '') : `/${route}/${child.pathParts.join('/')}`}(?:/|$)`,
+              ...(children.length ? { items: children } : link ? { link } : {}),
+            }
+          })
+        }
+        const childItems = hideChildren.includes(collection.id) ? [] : renderTree(tree)
+        const items = childItems.length ? [
+          { text: itemText(collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id), link },
+          ...childItems,
+        ] : []
         return {
           text: itemText(metadata?.labels?.[language] ?? collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, undefined, link, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
-          link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
-          ...(items.length ? { items } : {}),
+          ...(items.length ? { items } : { link }),
         }
       })
   }
@@ -302,9 +340,14 @@ function navigation(language = defaultLanguage): any[] {
       const routePrefix = item.items.pathPrefix?.split('/').join('/')
       const activeRoot = routePrefix ?? ''
       return {
-        text: itemText(localize(item.text) ?? '', item.icon),
-        ...(item.activeMatch ? { activeMatch: item.activeMatch } : activeRoot ? { activeMatch: `^${localePrefix}/${activeRoot}(?:/|$)` } : {}),
-        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false),
+        component: 'SpmpstNestedNav',
+        props: {
+          item: {
+            text: itemText(localize(item.text) ?? '', item.icon),
+            activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
+            items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? []),
+          },
+        },
       }
     }
     if (item.collection) return collectionLink(item.collection, item.icon)

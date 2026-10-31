@@ -38,10 +38,10 @@
           "en": "Resources",
           "fr": "Ressources"
         },
-        "icon": "@spmpst::icon::package",
       "items": {
         "source": "collections",
         "pathPrefix": "resources",
+        "hideChildren": ["articles"],
         "depth": "all",
         "icon": true
       }

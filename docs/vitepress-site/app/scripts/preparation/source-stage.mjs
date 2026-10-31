@@ -133,11 +133,16 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
   if (value.source === 'collections' && value.pathPrefix !== undefined && (typeof value.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(value.pathPrefix))) throw new Error(`${location}.pathPrefix must be a relative collection path`)
+  if (value.hideChildren !== undefined && (value.source !== 'collections' || !Array.isArray(value.hideChildren)
+    || value.hideChildren.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
+    || new Set(value.hideChildren).size !== value.hideChildren.length)) {
+    throw new Error(`${location}.hideChildren must be a unique array of configured collection ids and is only valid for source "collections"`)
+  }
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)
     && (!Array.isArray(value.depth) || value.depth.length === 0 || value.depth.some((depth) => !validDepth(depth)) || new Set(value.depth).size !== value.depth.length)) {
