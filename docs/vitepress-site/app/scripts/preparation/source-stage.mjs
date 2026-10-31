@@ -137,6 +137,9 @@ function validateMenuTemplate(value, location) {
   if (value[2]?.maxItems !== undefined && (!Number.isInteger(value[2].maxItems) || value[2].maxItems < 1)) {
     throw new Error(`${location}[2].maxItems must be a positive integer`)
   }
+  if (value[2]?.cardHeight !== undefined && (!Number.isInteger(value[2].cardHeight) || value[2].cardHeight < 1)) {
+    throw new Error(`${location}[2].cardHeight must be a positive integer`)
+  }
   if (value[2]?.mobileToo !== undefined && typeof value[2].mobileToo !== 'boolean') {
     throw new Error(`${location}[2].mobileToo must be a boolean`)
   }

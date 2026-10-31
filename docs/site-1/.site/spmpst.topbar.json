@@ -10,12 +10,7 @@
       "menuTemplate": ["mega.background-icon", ["title", "image", "icon", "description", "children"], {
         "mobileToo": false,
         "maxItems": 2,
-        "more": {
-          "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-          "text": { "en": "Discover all our {number} products", "fr": "Découvrir nos {number} produits" },
-          "link": "/products/",
-          "position": "after"
-        }
+        "cardHeight": 300
       }]
     },
     {

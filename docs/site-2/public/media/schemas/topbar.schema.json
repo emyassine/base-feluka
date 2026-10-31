@@ -43,7 +43,12 @@
             "items": [
               { "type": "string", "minLength": 1 },
               { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-              { "type": "object" }
+              {
+                "type": "object",
+                "properties": {
+                  "cardHeight": { "type": "integer", "minimum": 1 }
+                }
+              }
             ]
           },
           "target": { "type": "string" },
