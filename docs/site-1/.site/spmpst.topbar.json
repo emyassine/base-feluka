@@ -40,5 +40,5 @@
     }
   ],
   "theme": "switch",
-  "$schema": "../resources/media/schemas/topbar.schema.json"
+  "$schema": "../public/media/schemas/topbar.schema.json"
 }

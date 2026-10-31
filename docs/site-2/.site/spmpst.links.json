@@ -1,4 +1,4 @@
 {
   "socialLinks": [],
-  "$schema": "../resources/media/schemas/links.schema.json"
+  "$schema": "../public/media/schemas/links.schema.json"
 }

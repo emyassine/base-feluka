@@ -80,7 +80,9 @@ The host resolves `paths` once into `SpmpstPaths` and passes that value into pre
 | `paths.root` | Site root | `docs/site-1/` |
 | `paths.config` | Site concern configs | `docs/site-1/.site/` |
 | `paths.configFiles` | Exact paths for every concern file | `docs/site-1/.site/spmpst.*.json` |
-| `paths.public` | Files copied to the URL root | `docs/site-1/.site/public/` |
+| `paths.public` | Files copied to the URL root | `docs/site-1/public/` |
+| `paths.media` | Site media subtree within public | `docs/site-1/public/media/` |
+| `paths.schemas` | Published JSON schemas | `docs/site-1/public/media/schemas/` |
 | `paths.resources` | Site-owned assets, components, hooks, and diagrams | `docs/site-1/resources/` |
 | `paths.sharedResources` | Shared adapter catalogues | `docs/vitepress-site/resources/` |
 | `paths.toolchain` | Host/toolchain working directory | `docs/vitepress-site/` |
@@ -101,8 +103,10 @@ The current site trees use these SPMPST-owned metadata filenames:
 site-root/
 ├── spmpst.json
 ├── .site/
-│   ├── spmpst.<concern>.json
-│   ├── public/*
+│   └── spmpst.<concern>.json
+├── public/
+│   ├── root-level static files
+│   └── media/
 ├── src/
 │   ├── guides/
 │   └── collections/
@@ -156,7 +160,7 @@ The adapter resolves `SpmpstPaths` once and passes it to preparation, VitePress 
 
 1. **Site source:** Markdown, config, source-relative images, and `site-root/resources/`.
 2. **Tool resources:** host `resources/icons/` and `resources/flags/`, owned and indexed by the conforming tool.
-3. **Site media:** selected site `resources/media/`, owned by that site and never configured through a host-relative path.
+3. **Site media:** selected site `paths.media` (currently `public/media/`), owned by that site and inside the public publishing tree.
 3. **Generated/cache data:** `.trash/<site-id>/generated-guides/`, `vitepress-generated/`, Mermaid cache, and VitePress cache.
 
 The generated Markdown directory is VitePress `srcDir`; the output directory is VitePress `outDir`. The site source tree is not rewritten into the generated tree in place.
@@ -196,7 +200,7 @@ Names are logical IDs, not family paths or generated filenames. The parser valid
 
 The conforming tool provides standard icon and flag catalogues. Sites reference them by logical name and do not configure catalogue paths. Family-qualified icon names select a tool family when needed; otherwise the adapter searches its documented family order.
 
-Site-owned images and SVGs live under that site's `resources/media/` directory and use `@spmpst::media::<name>`, for example `@spmpst::media::icons/prologue-book`. This keeps every site self-contained while allowing custom visuals beside components, styles, and brand assets. The resolver confines media to this directory.
+Site-owned images and SVGs live under that site's `public/media/` directory and use `@spmpst::media::<name>`, for example `@spmpst::media::icons/prologue-book`. This keeps every site self-contained while allowing custom visuals beside components, styles, and brand assets. The resolver confines media to the configured `paths.media` directory inside the site's public tree.
 
 
 ### Where resolution happens

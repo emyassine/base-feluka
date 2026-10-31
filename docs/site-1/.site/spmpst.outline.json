@@ -1,5 +1,5 @@
 {
-  "$schema": "../resources/media/schemas/outline.schema.json",
+  "$schema": "../public/media/schemas/outline.schema.json",
   "level": "deep",
   "label": {
     "en": "On this page",

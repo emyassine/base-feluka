@@ -247,7 +247,7 @@ function resolveSidebarIcon(directory, iconPath, context) {
   const candidate = /\.svg$/i.test(iconPath) ? resolve(directory, iconPath) : findIcon(iconPath)
   const relativePath = candidate ? relative(sourceRoot, candidate) : '..'
   const inGuides = relativePath !== '..' && !relativePath.startsWith(`..${sep}`)
-  const inResources = candidate && [layout.paths.sharedResources, layout.paths.resources].some((root) => {
+  const inResources = candidate && [layout.paths.sharedResources, layout.paths.resources, layout.paths.media].some((root) => {
     const local = relative(root, candidate)
     return local !== '..' && !local.startsWith(`..${sep}`)
   })
@@ -390,7 +390,7 @@ function stagedPath(sourcePath, language = null) {
 async function copyAsset(sourceFile) {
   const cached = assetCache.get(sourceFile)
   if (cached) return cached
-  const allowedRoots = [layout.paths.guides, layout.paths.collections, layout.paths.resources, layout.paths.sharedResources, layout.paths.resources]
+  const allowedRoots = [layout.paths.guides, layout.paths.collections, layout.paths.resources, layout.paths.sharedResources, layout.paths.media]
   const insideAllowedRoot = allowedRoots.some((root) => {
     const path = relative(root, sourceFile)
     return path !== '..' && !path.startsWith(`..${sep}`)
@@ -568,9 +568,6 @@ async function publishDirectory(source, destination, field, relativePath = '') {
   }
 }
 await publishDirectory(layout.paths.public, join(outputDirectory, 'public'), 'public')
-// Site media also has a stable namespaced URL, independent of whether paths.public points at it.
-const mediaRoot = layout.paths.media
-if (existsSync(mediaRoot)) await publishDirectory(mediaRoot, join(outputDirectory, 'public', 'media'), 'media')
 
 
   return {

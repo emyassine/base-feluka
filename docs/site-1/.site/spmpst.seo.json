@@ -2,7 +2,7 @@
   "siteUrl": null,
   "path": "faq",
   "icon": "@spmpst::icon::circle-help",
-  "$schema": "../resources/media/schemas/seo.schema.json",
+  "$schema": "../public/media/schemas/seo.schema.json",
   "quickLinksTitle": {
     "en": "Popular guides",
     "fr": "Guides populaires"

@@ -15,7 +15,7 @@
       "dir": "articles"
     }
   ],
-  "$schema": "../resources/media/schemas/collections.schema.json",
+  "$schema": "../public/media/schemas/collections.schema.json",
   "emptyCollection": {
     "en": "No published content yet.",
     "fr": "Aucun contenu publié pour le moment."

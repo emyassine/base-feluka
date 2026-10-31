@@ -67,5 +67,5 @@
     }
   ],
   "iconFallback": "circle-help",
-  "$schema": "../resources/media/schemas/definitions.schema.json"
+  "$schema": "../public/media/schemas/definitions.schema.json"
 }

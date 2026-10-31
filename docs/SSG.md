@@ -114,9 +114,9 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
     "components": "resources/components",
     "diagrams": "resources/diagrams",
     "hooks": "resources/hooks",
-    "media": "resources/media",
-    "schemas": "resources/media/schemas",
-    "public": ".site/public",
+    "media": "public/media",
+    "schemas": "public/media/schemas",
+    "public": "public",
     "configFiles": {
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
@@ -148,9 +148,9 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
 }
 ```
 
-Every value in `paths` resolves relative to the directory containing the root `spmpst.json`, never the process working directory. `paths.root` is the site root; `paths.config` selects configuration files; the other entries name all structural inputs, shared resources, toolchain, and output. `paths.public` selects the directory whose contents are copied to the site's public URL root. Thus `.site/public/robots.txt` is served at `<basePathOnline>/robots.txt`.
+Every value in `paths` resolves relative to the directory containing the root `spmpst.json`, never the process working directory. `paths.root` is the site root; `paths.config` selects configuration files; the other entries name all structural inputs, shared resources, toolchain, and output. `paths.public` selects the directory whose contents are copied to the site's public URL root. Thus `public/robots.txt` is served at `<basePathOnline>/robots.txt`.
 
-`paths.public` is an explicit, configurable source directory. A site may point it to another directory inside its site root, for example `"resources/media"`; the contents of that selected directory are then served from `<basePathOnline>/`. Moving the directory means changing `paths.public` in the root `spmpst.json`. The public root is not inferred from directory names. Files are copied recursively, preserving relative paths and MIME-significant extensions.
+`paths.public` is an explicit, configurable source directory. A site may point it to another directory inside its site root, for example `"public/media"`; the contents of that selected directory are then served from `<basePathOnline>/`. Moving the directory means changing `paths.public` in the root `spmpst.json`. The public root is not inferred from directory names. Files are copied recursively, preserving relative paths and MIME-significant extensions.
 
 The conforming tool MUST validate configured structural paths and report the missing path, its purpose, the responsible declaration and field, and a concrete correction. For example: restore the missing directory at the reported location, or change `paths.guides` / `paths.root` in `spmpst.json`. This rule applies to every path the tool uses to read, write, publish, or execute site files.
 
@@ -187,11 +187,14 @@ docs/site-1/                                      # site root selected by paths.
 ├── .archives/                                     # retained site archive; not an SPMPST input
 ├── .site/
 │   ├── README.md
-│   ├── spmpst.<concern>.json                      # one config file per concern
-│   └── public/                                    # selected by paths.public
-│       ├── humans.txt                            # -> <basePathOnline>/humans.txt
-│       ├── llms.txt                              # -> <basePathOnline>/llms.txt
-│       └── robots.txt                            # -> <basePathOnline>/robots.txt
+│   └── spmpst.<concern>.json                     # one config file per concern
+├── public/                                        # selected by paths.public
+│   ├── humans.txt                                # -> <basePathOnline>/humans.txt
+│   ├── llms.txt                                  # -> <basePathOnline>/llms.txt
+│   ├── robots.txt                                # -> <basePathOnline>/robots.txt
+│   └── media/                                     # selected by paths.media
+│       ├── icons/*.svg
+│       └── schemas/*.schema.json                 # -> <basePathOnline>/media/schemas/*.schema.json
 ├── src/
 │   ├── guides/
 │   │   ├── index.en.md
@@ -207,13 +210,10 @@ docs/site-1/                                      # site root selected by paths.
     ├── assets/                                    # brand images and fonts
     ├── components/                                # site Vue components; _layout/ has layout components
     ├── diagrams/                                  # Mermaid configuration
-    ├── hooks/                                     # documentation hooks and SEO transforms
-    └── media/                                     # media published under <basePathOnline>/media/
-        ├── icons/*.svg
-        └── schemas/*.schema.json                  # -> <basePathOnline>/media/schemas/*.schema.json
+    └── hooks/                                     # documentation hooks and SEO transforms
 ```
 
-The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, and `paths.resources` roots selected by its root manifest. The selected `paths.public` is the configurable public-directory source; its files are copied preserving relative paths to the root of the built site. Site-owned media remains under `paths.media` and is also available under `/media/<relative-path>`; when `paths.public` points at that directory, its selected public-root copy is an additional mapping. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
+The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, `paths.resources`, and `paths.public` roots selected by its root manifest. `public/` is the one static publishing tree: root files such as `robots.txt` and nested media such as `public/media/schemas/example.json` are copied with their relative paths, becoming `/robots.txt` and `/media/schemas/example.json`. `paths.media` identifies the media subtree inside `public/`; it is not published through a separate mechanism. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
 
 Language variants live **together** in the same directory (`page.en.md`, `page.fr.md`). A separate directory tree per language MUST NOT be required.
 
@@ -417,9 +417,9 @@ Examples:
 @spmpst::media::icons/prologue-book
 ```
 
-`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's own `resources/media/` tree. Media names include their filename extension when needed.
+`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's `paths.media` tree inside `public/`. Media names include their filename extension when needed.
 
-A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned media of any type live under `resources/media/`; image references may use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). The adapter publishes this tree under `/media/`, preserving relative paths: `resources/media/schemas/example.json` becomes `/media/schemas/example.json`. JSON data and schemas are ordinary `.json` media there; the static host serves them with `application/json`, without a special schema API route. This differs from `.site/public/`, which is for files served directly from the site URL root, such as `/robots.txt` and `/llms.txt`. Both are copied into the generated site's public output; their source locations differ because their public URL paths differ. The adapter resolves media only inside the selected site tree. The core parses resource references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
+A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned media of any type lives under `public/media/`; image references may use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). Because `paths.media` is `public/media`, the ordinary public-tree copy makes `public/media/schemas/example.json` available at `/media/schemas/example.json`. JSON data and schemas are ordinary `.json` media there; the static host serves them with `application/json`, without a special schema API route. Root-level files such as `public/robots.txt` and nested media share this same `public/` source tree and publishing pass. The adapter resolves media only inside the selected site tree. The core parses resource references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
 
 Resolution applies at documented explicit points (configuration values, page `icon` frontmatter, sidebar icons, and language flags). It is **not** general text substitution in Markdown prose.
 
@@ -429,7 +429,7 @@ Local assets referenced from Markdown or frontmatter are copied to content-addre
 
 ### A14.3 Public files
 
-The directory named by `paths.public` in root `spmpst.json` is copied recursively to the site URL root. With site-1's `paths.public: ".site/public"`, `.site/public/robots.txt` becomes `<basePathOnline>/robots.txt`; nested `.site/public/media/catalog.json` becomes `<basePathOnline>/media/catalog.json`. Put root-level discovery and verification files (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) there. A site may point `paths.public` at another directory inside its site root, including one that contains media. Files retain their relative paths and extensions for static MIME handling. `resources/media/` separately maps to `<basePathOnline>/media/<relative-path>`; if `paths.public` points there, this is an additional mapping.
+The directory named by `paths.public` in root `spmpst.json` is copied recursively to the site URL root. With site-1's `paths.public: "public"`, `public/robots.txt` becomes `<basePathOnline>/robots.txt`; nested `public/media/catalog.json` becomes `<basePathOnline>/media/catalog.json`. Put root-level discovery and verification files (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) there. Keep all files intended for static delivery under this one root. `paths.media` may identify a nested subtree such as `public/media` for logical media references; the normal public copy preserves its paths and extensions for browser MIME handling.
 
 ## A15. HTML and Markdown passthrough
 
@@ -539,9 +539,9 @@ Full form (**CURRENT** for the VitePress host):
     "components": "resources/components",
     "diagrams": "resources/diagrams",
     "hooks": "resources/hooks",
-    "media": "resources/media",
-    "schemas": "resources/media/schemas",
-    "public": ".site/public",
+    "media": "public/media",
+    "schemas": "public/media/schemas",
+    "public": "public",
     "configFiles": {
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
@@ -752,7 +752,7 @@ Declaration (`docs/site-1/spmpst.json`):
 {
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
-  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "resources/media", "schemas": "resources/media/schemas", "public": ".site/public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
+  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "public/media", "schemas": "public/media/schemas", "public": "public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
   "engine": "toolchain",
   "toolchain": { "preset": "vitepress", "cwd": "toolchain", "install": { "command": "npm", "args": ["ci"], "when": "missing" }, "build": { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] }, "dev": { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] }, "network": "install-only" }
 }
@@ -820,7 +820,7 @@ Dependencies are provisioned through each site's declared `toolchain.install` ac
 
 ## C8. Resources in practice
 
-- The conforming tool owns standard icon and flag catalogues. `@spmpst::icon::<name>` and `@spmpst::flag::<code>` resolve from those catalogues; `@spmpst::media::<name>` resolves under the selected site's `resources/media/` directory. Sites do not declare paths to shared tool resources.
+- The conforming tool owns standard icon and flag catalogues. `@spmpst::icon::<name>` and `@spmpst::flag::<code>` resolve from those catalogues; `@spmpst::media::<name>` resolves under the selected site's `paths.media` directory, which is nested under `public/`. Sites do not declare paths to shared tool resources.
 - Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `spmpst.sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), and topbar icons.
 - `copyAsset()` confines sources to allowed roots, names by SHA-256 plus extension, writes only on change.
 - Mermaid: palette-colored, rendered by `mmdc` with the site's JSON config, cached by hash of config and diagram text, emitted as light and dark SVG; the browser theme adds zoom/open and light/dark switching.

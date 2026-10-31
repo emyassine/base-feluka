@@ -20,12 +20,7 @@ concern file locations are registered in `paths.configFiles`. Site behavior belo
 | `spmpst.seo.json` | Canonical site URL, SEO route, icon, and key-centric multilingual SEO copy. |
 | `public/*` | The directory selected by `paths.public` in the root manifest, copied recursively to the site URL root. |
 
-`src/guides/`, `src/collections/`, and `resources/` are fixed by convention.
-The current `paths.public: ".site/public"` in `../spmpst.json` selects `.site/public/`; its
-contents map to the site URL root (`robots.txt` becomes `/robots.txt`). Change
-`paths.public` in `../spmpst.json` when moving this source directory. It may point to
-another directory inside the site root and contain nested files of any type.
-`resources/media/` separately maps to `/media/`; its JSON schemas are ordinary
-JSON media there.
+`src/guides/`, `src/collections/`, and `resources/` use the paths declared in the root manifest.
+The current `paths.public: "public"` in `../spmpst.json` selects the site-root `public/`; all its contents map to the URL root (`robots.txt` becomes `/robots.txt`, and `media/schemas/definitions.schema.json` becomes `/media/schemas/definitions.schema.json`). `paths.media` and `paths.schemas` identify subdirectories within that same public tree for media references and schema tooling. Move public assets by updating these fields in `../spmpst.json`; there is no second media source directory.
 `npm run docs:check` validates the assembled configuration and source content;
 add `-- --strict-i18n` to reject missing translations.
