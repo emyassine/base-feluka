@@ -1,11 +1,12 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { readFile, readdir } from 'node:fs/promises'
+import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join, relative, sep } from 'node:path'
 import { sortNavigationEntries } from '../../shared/navigation-order.mjs'
 import { localePrefix } from '../../spmpst/routing.mjs'
 
 export async function runPager(ctx) {
   const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
+  const pendingWrites = []
 // VitePress infers the footer pager from the sidebar. Generated directory entry
 // pages and their no-slash aliases are copies of the first real page below them
 // and are not part of the sidebar, so VitePress fell back to the first sidebar
@@ -75,10 +76,16 @@ async function readingOrder(guide, language) {
   return order
 }
 
+const pagerTitles = new Map()
 function pagerTarget(file) {
-  const markdown = readFileSync(file, 'utf8')
-  const title = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(file)
-  return { text: title, link: publicUrl(file) }
+  let target = pagerTitles.get(file)
+  if (!target) {
+    const markdown = readFileSync(file, 'utf8')
+    const title = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(file)
+    target = { text: title, link: publicUrl(file) }
+    pagerTitles.set(file, target)
+  }
+  return target
 }
 
 const pagedFiles = new Set()
@@ -109,8 +116,9 @@ for (const language of config.languages) {
     }
     await mapAliases(root, true)
 
+    const contents = new Map(await Promise.all([...pager.keys()].map(async (file) => [file, await readFile(file, 'utf8')])))
     for (const [file, [previous, next]] of pager) {
-      const markdown = await readFile(file, 'utf8')
+      const markdown = contents.get(file)
       const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
       if (!frontmatter) continue
       const kept = []
@@ -127,25 +135,29 @@ for (const language of config.languages) {
       const updated = `${markdown.slice(0, frontmatter.index)}---\n${kept.join('\n')}\n---${markdown.slice(frontmatter.index + frontmatter[0].length)}`
       generatedFiles.add(file)
       pagedFiles.add(file)
-      await writeIfChanged(file, updated)
+      if (updated !== markdown) pendingWrites.push(writeFile(file, updated))
     }
   }
 }
 
 // Pages outside any guide reading order (FAQ, collections, home) must not
 // inherit a pager from the surrounding sidebar.
-for (const file of generatedMarkdown) {
-  if (pagedFiles.has(file)) continue
-  let markdown
-  try { markdown = await readFile(file, 'utf8') }
-  catch (error) { if (error.code === 'ENOENT') continue; throw error }
+const remaining = [...generatedMarkdown].filter((file) => !pagedFiles.has(file))
+const remainingContents = await Promise.all(remaining.map(async (file) => {
+  try { return [file, await readFile(file, 'utf8')] }
+  catch (error) { if (error.code === 'ENOENT') return null; throw error }
+}))
+for (const entry of remainingContents) {
+  if (!entry) continue
+  const [file, markdown] = entry
   const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
   if (!frontmatter) continue
   const kept = frontmatter[1].split('\n').filter((line) => !/^(?:prev|next):(?:\s|$)/.test(line))
   kept.push('prev: false', 'next: false')
   const updated = `${markdown.slice(0, frontmatter.index)}---\n${kept.join('\n')}\n---${markdown.slice(frontmatter.index + frontmatter[0].length)}`
   generatedFiles.add(file)
-  await writeIfChanged(file, updated)
+  if (updated !== markdown) pendingWrites.push(writeFile(file, updated))
 }
+await Promise.all(pendingWrites)
   return ctx
 }

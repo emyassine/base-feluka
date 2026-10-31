@@ -296,6 +296,16 @@ if (typeof nodeBorderWidth !== 'string' || !/^\d+(?:\.\d+)?px$/.test(nodeBorderW
   throw new Error('mermaid.nodeBorderWidth must be a pixel width such as 1.5px')
 }
 const incremental = process.env.DOCS_PREPARE_INCREMENTAL === '1'
+const sourceTextCache = new Map()
+async function readSourceText(path) {
+  let text = sourceTextCache.get(path)
+  if (text === undefined) {
+    text = await readFile(path, 'utf8')
+    sourceTextCache.set(path, text)
+  }
+  return text
+}
+const assetCache = new Map()
 const records = []
 const routeMap = new Map()
 const generatedFiles = new Set()
@@ -397,6 +407,8 @@ function stagedPath(sourcePath, language = null) {
 /** INPUT DISCOVERY — copy assets and collect Markdown, sidebar, and route records. */
 /** ASSET STAGING — content-address assets and publish them to generated public roots. */
 async function copyAsset(sourceFile) {
+  const cached = assetCache.get(sourceFile)
+  if (cached) return cached
   const allowedRoots = [layout.guidesDir, layout.collectionsDir, layout.resourcesDir, layout.targetResourcesDir, layout.siteResourcesDir]
   const insideAllowedRoot = allowedRoots.some((root) => {
     const path = relative(root, sourceFile)
@@ -412,7 +424,9 @@ async function copyAsset(sourceFile) {
     generatedFiles.add(target)
     await writeIfChanged(target, bytes)
   }
-  return publishedPath.split(sep).join('/')
+  const published = publishedPath.split(sep).join('/')
+  assetCache.set(sourceFile, published)
+  return published
 }
 
 function publicPagePath(outputPath) {
@@ -488,7 +502,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
       await mkdir(dirname(to), { recursive: true })
       routeMap.set(resolve(from), to)
       if (extname(entry.name).toLowerCase() === '.md') {
-        const markdown = await readFile(from, 'utf8')
+        const markdown = await readSourceText(from)
         const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
         const iconMatch = frontmatter?.[1].match(/^icon:\s*(?:"([^"]+)"|'([^']+)'|([^\s#]+))\s*$/m)
         const icon = iconMatch?.[1] ?? iconMatch?.[2] ?? iconMatch?.[3]
@@ -506,8 +520,6 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     }
   }
 }
-
-await validateMarkdownIcons(sourceRoot)
 
 for (const guide of config.subguides) {
   if (!guide.uri || typeof guide.uri !== 'object' || Array.isArray(guide.uri) || typeof guide.uri.base !== 'string' || !/^\/(?:[A-Za-z0-9._~-]+\/)*$/.test(guide.uri.base)) {
@@ -567,6 +579,6 @@ for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
 
 
   return {
-    configDirectory, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, diagramsCached, diagramsRendered
+    configDirectory, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, diagramsCached, diagramsRendered
   }
 }

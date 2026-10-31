@@ -1,5 +1,5 @@
 import { existsSync, watch as watchFs } from 'node:fs'
-import { readFile, readdir, utimes } from 'node:fs/promises'
+import { readFile, readdir, stat, utimes } from 'node:fs/promises'
 import { spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
@@ -25,42 +25,46 @@ function log(message) {
   process.stdout.write(`[watch ${new Date().toLocaleTimeString('en-GB', { hour12: false })}] ${message}\n`)
 }
 
+/**
+ * Signature of everything VitePress reads once at configuration time.
+ *
+ * Page bodies, assets and resource files are deliberately excluded: they are
+ * served as generated files and hot-updated. Only a change here requires a
+ * configuration restart, so a normal page edit never reloads the whole site.
+ */
 async function structuralSignature() {
   const hash = createHash('sha256')
-  async function visit(directory, root) {
+  async function visit(directory, root, readContent) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue
       const path = join(directory, entry.name)
       const relativePath = relative(root, path).split(sep).join('/')
       if (entry.isDirectory()) {
         hash.update(`dir:${relativePath}\0`)
-        await visit(path, root)
+        await visit(path, root, readContent)
         continue
       }
       if (entry.name === 'README.md') continue
       hash.update(`file:${relativePath}\0`)
-      if (entry.name.endsWith('.json')) {
+      if (readContent) {
         hash.update(await readFile(path))
-      } else if (extname(entry.name).toLowerCase() === '.md') {
+        continue
+      }
+      if (extname(entry.name).toLowerCase() === '.md') {
         const source = await readFile(path, 'utf8')
         const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---/)
         const sidebarTitle = frontmatter?.[1].match(/^sidebarTitle:\s*(.+?)\s*$/m)?.[1] ?? ''
         hash.update(`sidebarTitle:${sidebarTitle}\0`)
+        continue
       }
+      const metadata = await stat(path)
+      hash.update(`${metadata.size}:${metadata.mtimeMs}\0`)
     }
   }
   hash.update('source\0')
-  await visit(sourceDirectory, sourceDirectory)
+  await visit(sourceDirectory, sourceDirectory, false)
   hash.update('site-config\0')
-  await visit(siteConfigDirectory, siteConfigDirectory)
-  hash.update('resources\0')
-  await visit(resourceDirectory, resourceDirectory)
-  hash.update('site-resources\0')
-  if (existsSync(siteResourceDirectory)) await visit(siteResourceDirectory, siteResourceDirectory)
-  if (existsSync(sourceResourceDirectory)) {
-    hash.update('source-resources\0')
-    await visit(sourceResourceDirectory, sourceResourceDirectory)
-  }
+  await visit(siteConfigDirectory, siteConfigDirectory, true)
   return hash.digest('hex')
 }
 
@@ -84,19 +88,18 @@ async function processChanges() {
     pendingPaths.clear()
     log(`Change detected (${changed.length} path${changed.length === 1 ? '' : 's'}): ${changed.slice(0, 4).join(', ')}${changed.length > 4 ? ', …' : ''}`)
     const started = Date.now()
-    const previousSignature = signature
     const result = await runPrepare()
     if (result.code !== 0) {
       log(`Preparation failed${result.signal ? ` (${result.signal})` : ''}; the watcher remains active and will retry after the next edit.`)
       continue
     }
     const nextSignature = await structuralSignature()
-    if (nextSignature !== previousSignature) {
+    if (nextSignature !== signature) {
       const now = new Date()
       await utimes(vitepressConfig, now, now)
-      log('Navigation or site configuration changed; VitePress is restarting to reload its config.')
+      log(`Navigation or site configuration changed in ${((Date.now() - started) / 1000).toFixed(2)}s; VitePress is restarting to reload its config.`)
     } else {
-      log(`Updated generated documentation in ${((Date.now() - started) / 1000).toFixed(2)}s; VitePress will hot reload changed pages.`)
+      log(`Updated generated documentation in ${((Date.now() - started) / 1000).toFixed(2)}s; only the edited page is refreshed.`)
     }
     signature = nextSignature
   }
@@ -106,7 +109,7 @@ async function processChanges() {
 function schedule(path) {
   pendingPaths.add(path)
   clearTimeout(debounceTimer)
-  debounceTimer = setTimeout(() => void processChanges(), 220)
+  debounceTimer = setTimeout(() => void processChanges(), 60)
 }
 
 const watchers = []
@@ -144,4 +147,3 @@ async function shutdown() {
 
 process.once('SIGINT', shutdown)
 process.once('SIGTERM', shutdown)
-

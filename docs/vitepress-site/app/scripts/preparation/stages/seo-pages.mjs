@@ -1,5 +1,6 @@
 import { join } from 'node:path'
 import { localePrefix } from '../../spmpst/routing.mjs'
+import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
 export async function runSeoPages(ctx) {
   const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
@@ -30,10 +31,10 @@ for (const [language, locale] of Object.entries(seoLocales)) {
   sidebarPageIcons[publicMarkdownLink(noSlashAlias)] = iconAsset
   generatedMarkdown.add(indexPath)
   generatedFiles.add(indexPath)
-  await writeIfChanged(indexPath, content)
+  await writeStagedMarkdownIfChanged(indexPath, content)
   generatedMarkdown.add(noSlashAlias)
   generatedFiles.add(noSlashAlias)
-  await writeIfChanged(noSlashAlias, content.replace(/\n---\n/, '\nsearch: false\n---\n'))
+  await writeStagedMarkdownIfChanged(noSlashAlias, content.replace(/\n---\n/, '\nsearch: false\n---\n'))
   generatedSeoPages += 1
 }
 

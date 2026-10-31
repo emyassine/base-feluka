@@ -1,6 +1,7 @@
 import { access, readFile, readdir } from 'node:fs/promises'
 import { dirname, join, relative, sep } from 'node:path'
 import { sortNavigationEntries } from '../../shared/navigation-order.mjs'
+import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
 export async function runDirectoryIndexes(ctx) {
   const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
@@ -48,7 +49,7 @@ for (const directory of [...directories].reverse()) {
       }
       generatedMarkdown.add(indexPath)
       generatedFiles.add(indexPath)
-      await writeIfChanged(indexPath, markdown)
+      await writeStagedMarkdownIfChanged(indexPath, markdown)
     }
     const languageRoot = relative(outputDirectory, directoryTarget).replace(/\\/g, '/') === language.toLowerCase()
     const noSlashAlias = `${directoryTarget}.md`
@@ -65,7 +66,7 @@ for (const directory of [...directories].reverse()) {
       }
       generatedMarkdown.add(noSlashAlias)
       generatedFiles.add(noSlashAlias)
-      await writeIfChanged(noSlashAlias, markdown)
+      await writeStagedMarkdownIfChanged(noSlashAlias, markdown)
     }
   }
 }

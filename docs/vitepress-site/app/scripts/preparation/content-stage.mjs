@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { existsSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { isDefaultLanguage, localePrefix } from '../spmpst/routing.mjs'
+import { writeStagedMarkdownIfChanged } from '../spmpst/fs-utils.mjs'
 
 
 /** CONFIGURATION AND CONTENT COMPILATION PHASE
@@ -53,6 +54,7 @@ export async function prepareContent(ctx) {
     stagedPath,
     copyIfChanged,
     writeIfChanged,
+    readSourceText,
     scan
   } = ctx
 
@@ -238,9 +240,9 @@ for (const collection of collectionMetadata.values()) {
       const current = localizedArticles.get(canonical)
       if (!current || recordLanguage === language.toLowerCase()) localizedArticles.set(canonical, record)
     }
-    const articles = [...localizedArticles.values()]
-      .map((record) => {
-        const markdown = readFileSync(record.from, 'utf8')
+    const articles = (await Promise.all([...localizedArticles.values()]
+      .map(async (record) => {
+        const markdown = await readSourceText(record.from)
         const articleTitle = frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(record.from)
         const description = frontmatterScalar(markdown, 'description')
         const date = frontmatterScalar(markdown, 'date')
@@ -249,7 +251,7 @@ for (const collection of collectionMetadata.values()) {
         const target = recordLanguage === language.toLowerCase() ? record.to : stagedPath(record.from, language)
         const { wordCount, readingTime } = readingMetrics(markdown)
         return { title: articleTitle, description, date, category, wordCount, readingTime, url: publicMarkdownLink(target) }
-      })
+      })))
       .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
     const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)
@@ -285,7 +287,7 @@ for (const collection of collectionMetadata.values()) {
     await mkdir(targetDirectory, { recursive: true })
     generatedFiles.add(target)
     generatedCollectionPages.add(target)
-    await writeIfChanged(target, lines.join('\n'))
+    await writeStagedMarkdownIfChanged(target, lines.join('\n'))
   }
 }
 

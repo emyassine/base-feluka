@@ -118,27 +118,27 @@ const siteViteConfig = {
   }],
 }
 
-// VitePress sends page-data HMR for Markdown, but its route-module graph can
-// fall back to a browser-wide full reload. Refresh only the active route's Vue
-// component instead; inactive pages are picked up naturally on navigation.
 siteViteConfig.plugins.push({
-  name: 'spmpst-markdown-route-hmr',
-  enforce: 'post',
-  handleHotUpdate(context: {
-    file: string
-    server: { ws: { send: (payload: { type: 'custom'; event: string; data: { path: string } }) => void } }
-  }) {
-    if (!context.file.endsWith('.md')) return
-    const localPath = relative(paths.generatedGuides, resolve(context.file)).split(sep).join('/')
-    if (!localPath || localPath === '..' || localPath.startsWith('../')) return
-
-    const routePath = `/${localPath.replace(/(?:^|\/)index\.md$/, '').replace(/\.md$/, '').replace(/\/$/, '')}`
-    context.server.ws.send({
-      type: 'custom',
-      event: 'spmpst:markdown-route-updated',
-      data: { path: routePath || '/' },
+  name: 'debug-hmr',
+  configureServer(server: any) {
+    server.middlewares.use('/__debug-modules', (request: any, response: any) => {
+      const query = new URL(request.url ?? '/', 'http://localhost').searchParams
+      const id = query.get('id') ?? ''
+      if (query.has('list')) {
+        const needle = query.get('list') ?? ''
+        const matches = [...server.moduleGraph.idToModuleMap.values()].filter((entry: any) => entry.id.includes(needle)).map((entry: any) => ({ id: entry.id, url: entry.url, file: entry.file }))
+        response.setHeader('content-type', 'application/json')
+        response.end(JSON.stringify({ needle, matches }, null, 2))
+        return
+      }
+      const module = server.moduleGraph.getModuleById(id)
+      response.setHeader('content-type', 'application/json')
+      response.end(JSON.stringify({ id, found: module ? { id: module.id, file: module.file, url: module.url } : null, fileModules: module?.file ? [...server.moduleGraph.getModulesByFile(module.file)].map((entry: any) => ({ id: entry.id, file: entry.file })) : [] }))
     })
-    return []
+  },
+  handleHotUpdate(context: any) {
+    const modules = context.server.moduleGraph.getModulesByFile(context.file)
+    process.stderr.write(`[debug-hmr] file=${context.file} modules=${modules?.size ?? 0} ids=${[...(modules ?? [])].map((m: any) => m.id).join(',')}\n`)
   },
 })
 

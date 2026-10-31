@@ -3,9 +3,10 @@ import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { execFile as execFileCallback } from 'node:child_process'
 import { promisify } from 'node:util'
+import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
 export async function runTransformMarkdown(ctx) {
-  const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
+  const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
   const execFile = promisify(execFileCallback)
   let diagramsCached = ctx.diagramsCached
   let diagramsRendered = ctx.diagramsRendered
@@ -41,7 +42,7 @@ async function createDarkVariant(lightPath, darkPath) {
 
 await mkdir(mermaidCache, { recursive: true })
 await Promise.all(records.map(async (record) => {
-  let markdown = await readFile(record.from, 'utf8')
+  let markdown = await readSourceText(record.from)
   const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
   if (owningCollection) {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
@@ -148,7 +149,7 @@ await Promise.all(records.map(async (record) => {
     return `${before}${target}${suffix.join('')}${after}`
   })
   generatedFiles.add(record.to)
-  await writeIfChanged(record.to, markdown)
+  await writeStagedMarkdownIfChanged(record.to, markdown)
 }))
   return { diagramsCached, diagramsRendered }
 }

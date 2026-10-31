@@ -93,6 +93,7 @@ if (command === 'prepare') {
     join(trashDirectory, 'legacy-vitepress-cache'),
     join(trashDirectory, 'mermaid-cache'),
     join(trashDirectory, 'build.lock'),
+    join(trashDirectory, 'prepare.lock'),
     join(appDirectory, '.vitepress/cache'),
   ]) await rm(path, { recursive: true, force: true })
   await rm(site.outputRoot, { recursive: true, force: true })

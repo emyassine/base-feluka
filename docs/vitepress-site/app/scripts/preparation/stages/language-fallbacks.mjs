@@ -1,6 +1,7 @@
 import { access, mkdir, readFile } from 'node:fs/promises'
 import { dirname, join, resolve, sep } from 'node:path'
 import { isDefaultLanguage } from '../../spmpst/routing.mjs'
+import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
 export async function runLanguageFallbacks(ctx) {
   const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
@@ -53,7 +54,7 @@ for (const language of config.languages) {
     }
     generatedMarkdown.add(localizedTarget)
     generatedFiles.add(localizedTarget)
-    await writeIfChanged(localizedTarget, markdown)
+    await writeStagedMarkdownIfChanged(localizedTarget, markdown)
   }
 }
   return ctx
