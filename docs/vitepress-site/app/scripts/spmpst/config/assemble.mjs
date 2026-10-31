@@ -32,7 +32,7 @@ export function assembleConfig(layout, discovered, options = {}) {
   const collector = new ErrorCollector()
   const seen = new Map()
   for (const path of discovered.concerns) {
-    const name = basename(path).replace(/\.site\.config\.json$/, '')
+    const name = basename(path).replace(/^spmpst\./, '').replace(/\.json$/, '')
     if (!(name in CONCERNS)) { collector.add(path, '', `Unknown concern: ${name}${suggestion(name, Object.keys(CONCERNS)) ? `; did you mean "${suggestion(name, Object.keys(CONCERNS))}"?` : ''}`); continue }
     let value
     try { value = json(path, layout.siteDir) }
@@ -43,7 +43,7 @@ export function assembleConfig(layout, discovered, options = {}) {
       if (!CONCERNS[name].includes(key)) {
         const owner = owners[key]
         const likely = suggestion(key, Object.keys(owners))
-        collector.add(path, `#/${key}`, owner ? `"${key}" belongs in ${owner}.site.config.json, not in ${name}.site.config.json` : `Unknown key "${key}"${likely ? `; did you mean "${likely}"?` : ''}`)
+        collector.add(path, `#/${key}`, owner ? `"${key}" belongs in spmpst.${owner}.json, not in spmpst.${name}.json` : `Unknown key "${key}"${likely ? `; did you mean "${likely}"?` : ''}`)
         continue
       }
       const previousOwner = seen.get(key)
@@ -54,8 +54,8 @@ export function assembleConfig(layout, discovered, options = {}) {
   }
   for (const [name, keys] of Object.entries(CONCERNS)) {
     if (name === 'definitions' || name === 'lang') {
-      const path = discovered.concerns.find((item) => basename(item) === `${name}.site.config.json`)
-      if (!path) collector.add(`.site/${name}.site.config.json`, '', 'Required concern file is missing')
+      const path = discovered.concerns.find((item) => basename(item) === `spmpst.${name}.json`)
+      if (!path) collector.add(`.site/spmpst.${name}.json`, '', 'Required concern file is missing')
     }
   }
   const fallback = model.fallbackLanguage ?? model.languages?.[0]
@@ -78,19 +78,19 @@ export function assembleConfig(layout, discovered, options = {}) {
     sources.push(path)
   }
   if (!Array.isArray(model.languages) || model.languages.length === 0 || model.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(model.languages).size !== model.languages.length) {
-    collector.add('.site/lang.site.config.json', '#/languages', 'languages must be a non-empty array of unique locale codes')
+    collector.add('.site/spmpst.lang.json', '#/languages', 'languages must be a non-empty array of unique locale codes')
   }
   for (const language of model.languages ?? []) if (!model.locales[language]) collector.add(`.site/locales/${language}.locale.json`, '', 'Locale bundle is required for each configured language')
   for (const language of Object.keys(model.locales)) if (!(model.languages ?? []).includes(language)) collector.warn(`.site/locales/${language}.locale.json`, '', 'Locale bundle is not listed in lang.languages')
-  if (model.languages?.length && !model.languages.includes(fallback)) collector.add('.site/lang.site.config.json', '#/fallbackLanguage', 'fallbackLanguage must be listed in languages')
+  if (model.languages?.length && !model.languages.includes(fallback)) collector.add('.site/spmpst.lang.json', '#/fallbackLanguage', 'fallbackLanguage must be listed in languages')
   const guidePaths = new Set((model.subguides ?? []).map((guide) => guide.path))
   const collectionIds = new Set((model.collections ?? []).map((collection) => collection.id))
   const visitItems = (items, pointer = '#/items') => {
     if (!Array.isArray(items)) return
     items.forEach((item, index) => {
       const itemPointer = `${pointer}/${index}`
-      if (typeof item.guide === 'string' && !guidePaths.has(item.guide)) collector.add('.site/topbar.site.config.json', `${itemPointer}/guide`, `Unknown guide reference: ${item.guide}`)
-      if (typeof item.collection === 'string' && !collectionIds.has(item.collection)) collector.add('.site/topbar.site.config.json', `${itemPointer}/collection`, `Unknown collection reference: ${item.collection}`)
+      if (typeof item.guide === 'string' && !guidePaths.has(item.guide)) collector.add('.site/spmpst.topbar.json', `${itemPointer}/guide`, `Unknown guide reference: ${item.guide}`)
+      if (typeof item.collection === 'string' && !collectionIds.has(item.collection)) collector.add('.site/spmpst.topbar.json', `${itemPointer}/collection`, `Unknown collection reference: ${item.collection}`)
       visitItems(item.items, `${itemPointer}/items`)
     })
   }

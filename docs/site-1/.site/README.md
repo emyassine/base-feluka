@@ -6,13 +6,13 @@ inside `targets/`; `scripts/spmpst/` loads those files as opaque target data.
 
 | File | Owns |
 |---|---|
-| `definitions.site.config.json` | Site identity, guide registry, and icon fallback. |
-| `lang.site.config.json` | Language list, fallback language, and selector policy. |
-| `topbar.site.config.json` | Navigation items and color-mode policy. |
-| `collections.site.config.json` | Collection IDs, presentation, and source directory names. |
-| `appearance.site.config.json` | Fonts, logos, social preview images, and diagram palette. |
-| `links.site.config.json` | Social links. |
-| `seo.site.config.json` | Canonical site URL, SEO route, and icon. |
+| `spmpst.definitions.json` | Site identity, guide registry, and icon fallback. |
+| `spmpst.lang.json` | Language list, fallback language, and selector policy. |
+| `spmpst.topbar.json` | Navigation items and color-mode policy. |
+| `spmpst.collections.json` | Collection IDs, presentation, and source directory names. |
+| `spmpst.appearance.json` | Fonts, logos, social preview images, and diagram palette. |
+| `spmpst.links.json` | Social links. |
+| `spmpst.seo.json` | Canonical site URL, SEO route, and icon. |
 | `locales/<language>.locale.json` | Localized UI, search, footer, notices, and SEO copy. |
 | `public/*` | Public text files copied into the rendered site. |
 | `targets/vitepress.target.config.json` | Renderer configuration; keep it separate from the target-neutral model. |

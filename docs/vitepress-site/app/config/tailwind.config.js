@@ -4,7 +4,7 @@ const sourceRoot = process.env.SPMPST_ROOT
 const siteResourcesRoot = process.env.VITEPRESS_SITE_RESOURCES_DIR
 const trashRoot = process.env.VITEPRESS_TRASH_DIR
 if (!sourceRoot || !siteResourcesRoot || !trashRoot) {
-  throw new Error('Tailwind requires a site selected through vitepress-site.json')
+  throw new Error('Tailwind requires a site selected through spmpst.json')
 }
 
 /** @type {import('tailwindcss').Config} */

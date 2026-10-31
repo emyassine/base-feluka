@@ -38,14 +38,14 @@ const styleFiles = configuredStyles.map((stylePath) => {
 })
 if (new Set(styleFiles).size !== styleFiles.length) throw new Error('styles contains duplicate CSS paths')
 const configuredCollections = config.collections ?? []
-if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in .site/collections.site.config.json')
+if (!Array.isArray(configuredCollections)) throw new Error('collections must be an array in .site/spmpst.collections.json')
 const collectionIds = new Set()
 const collectionPaths = new Set()
 const collections = configuredCollections.map((collection) => {
   if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
     throw new Error('Each collections entry must be an object with id and path')
   }
-  const { id, path, title, description, layout: collectionLayout, indexLayout = 'list', categoryFile = 'category.json' } = collection
+  const { id, path, title, description, layout: collectionLayout, indexLayout = 'list', categoryFile = 'spmpst.category.json' } = collection
   if (typeof id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || collectionIds.has(id)) {
     throw new Error(`Collection id must be a unique lowercase slug: ${String(id)}`)
   }
@@ -59,8 +59,8 @@ const collections = configuredCollections.map((collection) => {
     throw new Error(`Collection ${id} dir must be a non-hidden relative path inside src/collections`)
   }
   if (collectionPaths.has(normalizedPath)) throw new Error(`Duplicate collection path: ${normalizedPath}`)
-  if (typeof categoryFile !== 'string' || !/^[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
-    throw new Error(`Collection ${id} categoryFile must be a root-level JSON filename`)
+  if (typeof categoryFile !== 'string' || !/^spmpst\.[A-Za-z0-9_-]+\.json$/.test(categoryFile)) {
+    throw new Error(`Collection ${id} categoryFile must be a root-level SPMPST metadata filename (spmpst.<name>.json)`)
   }
   for (const existing of collectionPaths) {
     if (normalizedPath.startsWith(`${existing}/`) || existing.startsWith(`${normalizedPath}/`)) {
@@ -104,7 +104,7 @@ if (!Array.isArray(config.languages) || !config.languages.length || config.langu
 const defaultLanguage = config.fallbackLanguage ?? config.languages[0]
 if (!config.languages.includes(defaultLanguage)) throw new Error('fallbackLanguage must be listed in languages')
 const topbar = config.topbar ?? {}
-if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in .site/topbar.site.config.json')
+if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Error('topbar must be an object in .site/spmpst.topbar.json')
 if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].includes(topbar.theme)) {
   throw new Error('topbar.theme must be switch, system, light, or dark')
 }
@@ -362,7 +362,7 @@ for (const collection of collections) {
 /** SOURCE VALIDATION — enforce frontmatter icon and configured library contracts. */
 async function validateMarkdownIcons(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.name.startsWith('.') || entry.name === 'README.md' || entry.name === 'sidebar.json' || entry.name === 'guide.config.json' || collections.some((collection) => entry.name === collection.categoryFile && collection.sourceDirectory === directory)) continue
+    if (entry.name.startsWith('.') || entry.name === 'README.md' || ['spmpst.sidebar.json', 'spmpst.guide.json'].includes(entry.name) || collections.some((collection) => entry.name === collection.categoryFile && collection.sourceDirectory === directory)) continue
     const file = join(directory, entry.name)
     if (entry.isDirectory()) {
       await validateMarkdownIcons(file)
@@ -451,13 +451,13 @@ function publicMarkdownLink(outputPath) {
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   await mkdir(outputPath, { recursive: true })
   const entries = (await readdir(sourcePath, { withFileTypes: true }))
-    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && entry.name !== 'guide.config.json' && entry.name !== 'sidebar.json'
+    .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && !['spmpst.guide.json', 'spmpst.sidebar.json'].includes(entry.name)
       && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile))
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^(?:\d+[-.])?index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
   try {
-    sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'sidebar.json'), 'utf8'))
+    sidebarConfig = JSON.parse(await readFile(join(sourcePath, 'spmpst.sidebar.json'), 'utf8'))
   } catch (error) {
     if (error.code !== 'ENOENT') throw error
   }
@@ -466,17 +466,17 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     const sourceRelativePath = relative(sourceRoot, sourcePath).split(sep).join('/')
     const matchingGuide = config.subguides.find((guide) => sourceRelativePath.startsWith(`${guide.path}/`))
     if (!sidebarConfig.labels || typeof sidebarConfig.labels !== 'object' || Array.isArray(sidebarConfig.labels)) {
-      throw new Error(`sidebar.json must define a labels object by language: ${join(sourcePath, 'sidebar.json')}`)
+      throw new Error(`spmpst.sidebar.json must define a labels object by language: ${join(sourcePath, 'spmpst.sidebar.json')}`)
     }
     for (const language of config.languages) {
       if (typeof sidebarConfig.labels[language] !== 'string' || !sidebarConfig.labels[language].trim()) {
-        throw new Error(`sidebar.json needs a non-empty labels.${language}: ${join(sourcePath, 'sidebar.json')}`)
+        throw new Error(`spmpst.sidebar.json needs a non-empty labels.${language}: ${join(sourcePath, 'spmpst.sidebar.json')}`)
       }
     }
     if (typeof sidebarConfig.icon !== 'string' || !sidebarConfig.icon.trim()) {
-      throw new Error(`sidebar.json must define an icon path relative to that file: ${join(sourcePath, 'sidebar.json')}`)
+      throw new Error(`spmpst.sidebar.json must define an icon path relative to that file: ${join(sourcePath, 'spmpst.sidebar.json')}`)
     }
-    const iconPath = resolveSidebarIcon(sourcePath, sidebarConfig.icon, join(sourcePath, 'sidebar.json'))
+    const iconPath = resolveSidebarIcon(sourcePath, sidebarConfig.icon, join(sourcePath, 'spmpst.sidebar.json'))
     sidebarConfigurations.set(outputRelativePath, {
       labels: sidebarConfig.labels,
       icon: iconPath,
@@ -548,7 +548,7 @@ for (const directory of directories) {
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^(?:\d+[-.])?index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   const outputRelative = relative(outputDirectory, stagedPath(directory.sourcePath)).split(sep).join('/')
   if (hasPublishedMarkdown && !indexOnly && !sidebarConfigurations.has(outputRelative)) {
-    throw new Error(`Every documentation subdirectory needs sidebar.json with localized labels: ${join(directory.sourcePath, 'sidebar.json')}`)
+    throw new Error(`Every documentation subdirectory needs spmpst.sidebar.json with localized labels: ${join(directory.sourcePath, 'spmpst.sidebar.json')}`)
   }
 }
 await writeIfChanged(join(generatedDirectory, 'navigation-order.json'), JSON.stringify(navigationOrder, null, 2))

@@ -41,7 +41,7 @@ export function loadSiteRuntimeContext(
   const paths = resolveSitePaths(siteDirectory)
   const generatedDirectory = paths.generatedGuides
   const generatedMetadata = paths.generatedMetadata
-  const sidebarMetadata = source.readJsonOr(join(generatedMetadata, 'sidebar.json'), {})
+  const sidebarMetadata = source.readJsonOr(join(generatedMetadata, 'spmpst.sidebar.json'), {})
   const sidebarPageIcons = source.readJsonOr(join(generatedMetadata, 'sidebar-page-icons.json'), {})
   const navigationOrder = source.readJsonOr(join(generatedMetadata, 'navigation-order.json'), {})
   const generatedCollections = source.readJsonOr(join(generatedMetadata, 'collections.json'), [])
@@ -54,7 +54,7 @@ export function loadSiteRuntimeContext(
     ? resolve(outputOverride)
     : resolve(configDirectory, siteConfig.outputDir)
   const guideConfigs = Object.fromEntries(siteConfig.subguides.map((guide) => {
-    const path = resolve(sourceDirectory, guide.path, 'guide.config.json')
+    const path = resolve(sourceDirectory, guide.path, 'spmpst.guide.json')
     return [guide.path, { path, config: source.readJson<GuideConfig>(path) }]
   }))
 

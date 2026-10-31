@@ -128,7 +128,7 @@ const siteLogo = config.logo ?? {}
 const siteOgImages = await prepareOgImages(config.ogImages ?? [], join(configDirectory, 'site-model.config.json'))
 generatedOgImages.root = siteOgImages
 for (const guide of config.subguides) {
-  const guideConfigPath = resolve(sourceRoot, guide.path, 'guide.config.json')
+  const guideConfigPath = resolve(sourceRoot, guide.path, 'spmpst.guide.json')
   const guideConfig = JSON.parse(await readFile(guideConfigPath, 'utf8'))
   if (guideConfig.theme != null && (typeof guideConfig.theme !== 'object' || Array.isArray(guideConfig.theme))) {
     throw new Error(`theme must be an object in ${guideConfigPath}`)
@@ -353,7 +353,7 @@ function validateThemeSlotComponents(slots, context) {
 }
 validateThemeSlotComponents(siteThemeSlots, '.site/targets/vitepress.target.config.json')
 for (const [guidePath, slots] of generatedGuideThemeSlots) {
-  validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'guide.config.json'))
+  validateThemeSlotComponents(slots, join(sourceRoot, guidePath, 'spmpst.guide.json'))
 }
 
 const generatedGuideThemeSlotsByRoute = {}
@@ -417,7 +417,7 @@ for (const [path, metadata] of sidebarConfigurations) {
     icon: metadata.icon ? await copyAsset(metadata.icon) : null,
   }
 }
-await writeIfChanged(join(generatedDirectory, 'sidebar.json'), JSON.stringify(generatedSidebar, null, 2))
+await writeIfChanged(join(generatedDirectory, 'spmpst.sidebar.json'), JSON.stringify(generatedSidebar, null, 2))
 
   return { copyAsset, publicPagePath, publicUrl, publicMarkdownLink, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute }
 }

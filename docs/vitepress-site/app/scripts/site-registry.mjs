@@ -5,32 +5,35 @@ import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
 
 export const appDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-export const registryPath = resolve(process.env.VITEPRESS_SITE_MANIFEST ?? resolve(appDirectory, '../vitepress-site.json'))
+const workspacePath = resolve(appDirectory, '../spmpst.workspace.json')
+export const registryPath = resolve(process.env.VITEPRESS_SITE_MANIFEST ?? workspacePath)
 
 export async function loadSites() {
-  const registry = JSON.parse(await readFile(registryPath, 'utf8'))
+  const activeRegistryPath = registryPath
+  const registry = JSON.parse(await readFile(activeRegistryPath, 'utf8'))
   if (!Array.isArray(registry.sitesPaths) || registry.sitesPaths.length === 0) {
-    throw new Error(`${registryPath}: sitesPaths must be a non-empty array of site declaration paths`)
+    throw new Error(`${activeRegistryPath}: sitesPaths must be a non-empty array of site declaration paths`)
   }
-  const registryDirectory = dirname(registryPath)
+  const registryDirectory = dirname(activeRegistryPath)
   const declarations = await Promise.all(registry.sitesPaths.map(async (sitePath) => {
     if (typeof sitePath !== 'string' || !sitePath.trim()) throw new Error(`${registryPath}: every sitesPaths entry must be a path`)
     const declarationPath = isAbsolute(sitePath) ? sitePath : resolve(registryDirectory, sitePath)
-    const declaration = JSON.parse(await readFile(declarationPath, 'utf8'))
+    const activeDeclarationPath = declarationPath
+    const declaration = JSON.parse(await readFile(activeDeclarationPath, 'utf8'))
     for (const key of ['id', 'name', 'sourcePath', 'outputPath']) {
       if (typeof declaration[key] !== 'string' || !declaration[key].trim()) {
-        throw new Error(`${declarationPath}: ${key} must be a non-empty string`)
+        throw new Error(`${activeDeclarationPath}: ${key} must be a non-empty string`)
       }
     }
     for (const key of ['resourcesPath', 'siteResourcesPath']) {
       if (declaration[key] != null && (typeof declaration[key] !== 'string' || !declaration[key].trim())) {
-        throw new Error(`${declarationPath}: ${key} must be a non-empty path when provided`)
+        throw new Error(`${activeDeclarationPath}: ${key} must be a non-empty path when provided`)
       }
     }
-    const base = dirname(declarationPath)
+    const base = dirname(activeDeclarationPath)
     return {
       ...declaration,
-      declarationPath,
+      declarationPath: activeDeclarationPath,
       sourceRoot: isAbsolute(declaration.sourcePath) ? declaration.sourcePath : resolve(base, declaration.sourcePath),
       resourcesRoot: declaration.resourcesPath
         ? (isAbsolute(declaration.resourcesPath) ? declaration.resourcesPath : resolve(base, declaration.resourcesPath))

@@ -113,7 +113,7 @@ export function createTransformHead(dependencies: HeadDependencies) {
       const value = colors[key]
       if (value === undefined) continue
       if (typeof value !== 'string' || !value.trim() || /[<>;{}]/.test(value)) {
-        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/guide.config.json`)
+        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/spmpst.guide.json`)
       }
       declarations.push(`${property}: ${value.trim()};`)
     }
@@ -122,7 +122,7 @@ export function createTransformHead(dependencies: HeadDependencies) {
       const value = colors[key]
       if (value === undefined) continue
       if (typeof value !== 'string' || !value.trim() || /[<>;{}]/.test(value)) {
-        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/guide.config.json`)
+        throw new Error(`Invalid colors.${key} in ${guide ? guide.path : primaryGuide.path}/spmpst.guide.json`)
       }
       codeBackgroundRules.push(`${selector} { --vp-code-bg: ${value.trim()}; }`)
     }

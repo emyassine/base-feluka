@@ -107,7 +107,7 @@ export interface SeoConfig {
   }>
 }
 
-/** Typed contract for each guide's guide.config.json. */
+/** Typed contract for each guide's spmpst.guide.json. */
 export interface GuideConfig {
   title: string
   favicon: string

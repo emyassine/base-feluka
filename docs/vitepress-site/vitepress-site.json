@@ -1,6 +1,0 @@
-{
-  "sitesPaths": [
-    "../site-1/.site/vitepress-site.json",
-    "../site-2/.site/vitepress-site.json"
-  ]
-}

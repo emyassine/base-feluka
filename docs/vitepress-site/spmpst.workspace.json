@@ -1,0 +1,6 @@
+{
+  "sitesPaths": [
+    "../site-1/.site/spmpst.json",
+    "../site-2/.site/spmpst.json"
+  ]
+}

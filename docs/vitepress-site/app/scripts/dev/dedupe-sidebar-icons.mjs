@@ -17,7 +17,7 @@ async function visit(directory) {
     if (entry.name.startsWith('.')) continue
     const path = join(directory, entry.name)
     if (entry.isDirectory()) { await visit(path); continue }
-    if (entry.name !== 'sidebar.json') continue
+    if (entry.name !== 'spmpst.sidebar.json') continue
     const config = JSON.parse(await readFile(path, 'utf8'))
     if (typeof config.icon !== 'string' || !config.icon.toLowerCase().endsWith('.svg')) { kept += 1; continue }
     const source = resolve(directory, config.icon)

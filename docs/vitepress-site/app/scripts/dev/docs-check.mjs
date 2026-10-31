@@ -19,8 +19,8 @@ try {
     const markdown = visible.filter((entry) => entry.isFile() && extname(entry.name).toLowerCase() === '.md')
     const hasNonIndexPage = markdown.some((entry) => !/^(?:\d+[-.])?index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
     if (hasNonIndexPage && !collection) {
-      try { await stat(join(directory, 'sidebar.json')) }
-      catch { errors.push(`${relative(layout.treeRoot, directory)}: missing sidebar.json`) }
+      try { await stat(join(directory, 'spmpst.sidebar.json')) }
+      catch { errors.push(`${relative(layout.treeRoot, directory)}: missing spmpst.sidebar.json`) }
     }
     for (const entry of visible) {
       const path = join(directory, entry.name)

@@ -95,7 +95,7 @@ const requested = process.argv[3]
 const listMode = process.argv[4] === '1'
 const registryPath = process.env.VITEPRESS_SITE_MANIFEST
   ? resolve(process.env.VITEPRESS_SITE_MANIFEST)
-  : resolve(root, 'vitepress-site.json')
+  : resolve(root, 'spmpst.workspace.json')
 const registry = JSON.parse(await readFile(registryPath, 'utf8'))
 const sites = await Promise.all((registry.sitesPaths ?? []).map(async (entry) => {
   const declarationPath = isAbsolute(entry) ? entry : resolve(dirname(registryPath), entry)

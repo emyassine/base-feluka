@@ -2,14 +2,14 @@
 title: "SPMPST — Standard Portable Markdown Pre-SSG Tree"
 short_title: "SPMPST Specification Suite"
 status: "Draft / Implementation in Progress"
-version: "0.1.0-draft.3"
+version: "0.1.0-draft.5"
 date: "2026-10-31"
 ---
 
 # SPMPST — Standard Portable Markdown Pre-SSG Tree
 
 **Status:** Draft, implementation in progress
-**Version:** 0.1.0-draft.3
+**Version:** 0.1.0-draft.5
 **Date:** 31 October 2026
 
 ## 0. Preface
@@ -63,7 +63,7 @@ If a PROPOSED requirement conflicts with observed CURRENT behaviour, that is an 
 
 ### 0.6 Naming rule
 
-The identifier **`spmpst`** is used for everything that belongs to the standard: files in the tree, the reference syntax `@spmpst::...`, the declaration file `spmpst.json`, the variables `SPMPST_*` that a tool gives to site commands, extension ids with the `spmpst.` prefix. **No implementation name ever appears in a tree, a standard file, or an adapter's configuration.** A tool's own settings live outside the tree (§B12).
+The identifier **`spmpst`** is used for everything that belongs to the standard: files in the tree, the reference syntax `@spmpst::...`, the declaration file `spmpst.json`, the variables `SPMPST_*` that a tool gives to site commands, and extension ids with the `spmpst.` prefix. **No implementation name ever appears in a tree, a standard file, or an adapter's configuration.** A tool's own settings live outside the tree (§B12).
 
 ---
 
@@ -96,7 +96,7 @@ The tree standard defines authored sources and configuration **before** site gen
 
 ### A3.1 Site declaration
 
-Every site has a declaration file stored with its owner at `<tree-root>/.site/spmpst.json` (**PROPOSED** name; **CURRENT** legacy name `vitepress-site.json`). It carries identity, paths, the build contract (§B3) and extension declarations (§A12). Identity and path fields:
+Every site has a declaration file stored with its owner at `<tree-root>/.site/spmpst.json`. The current VitePress adapter uses the earlier host-specific declaration fields; the standardized `paths`, build contract (§B3), and extension declarations (§A12) remain proposed. Identity and path fields:
 
 | Field | Meaning |
 |---|---|
@@ -120,9 +120,9 @@ All paths are relative to the directory containing the declaration (never the pr
 }
 ```
 
-**CURRENT:** `docs/vitepress-site/vitepress-site.json` with entries pointing to `docs/site-N/.site/vitepress-site.json`; `VITEPRESS_SITE_MANIFEST` points to another registry; relative entries resolve from the registry's directory.
+**CURRENT:** `docs/vitepress-site/spmpst.workspace.json` points to `docs/site-N/.site/spmpst.json`; `VITEPRESS_SITE_MANIFEST` selects another registry; relative entries resolve from the registry directory. The current adapter requires this explicit workspace file and does not scan for sites.
 
-**PROPOSED:** the registry becomes a workspace file, `spmpst.workspace.json`, found by walking up from the current directory. The registry is the authority. When it is absent, a tool MAY fall back to scanning immediate child directories for `*/.site/spmpst.json`. A tool MUST NOT require an implementation checkout path as a user argument.
+**PROPOSED:** a conforming tool finds `spmpst.workspace.json` by walking up from the current directory. The registry is the authority. When absent, a tool MAY scan immediate child directories for `*/.site/spmpst.json`. A tool MUST NOT require an implementation checkout path as a user argument.
 
 ### A3.3 Site selection and aliases
 
@@ -138,8 +138,8 @@ A selected site's output, lock state, cache namespace, generated sources, resour
 <tree-root>/
 ├── .site/
 │   ├── spmpst.json                    # declaration + build contract + extensions
-│   ├── *.site.config.json             # concern files (v0.1 names, §A11)
-│   ├── <extension-id>.json            # configuration of a declared extension (§A12)
+│   ├── spmpst.<concern>.json          # concern files
+│   ├── spmpst.<extension>.json      # configuration of a declared extension (§A12)
 │   ├── locales/*.locale.json
 │   ├── public/*                       # public text files passed through
 │   ├── schema/*.schema.json
@@ -155,11 +155,11 @@ Source roots MUST use these fixed conventions. The tree root MUST be the directo
 
 Language variants live **together** in the same directory (`page.en.md`, `page.fr.md`). A separate directory tree per language MUST NOT be required.
 
-### A4.1 Ownership prefix rule (v0.2 target)
+### A4.1 Ownership prefix rule
 
-SPMPST-owned data files carry the `spmpst.` prefix, so a file's name says who owns it and so that a metadata file mixed among authored content cannot be mistaken for an author's file. Target names:
+SPMPST-owned data files carry the `spmpst.` prefix, so a file's name says who owns it and so that a metadata file mixed among authored content cannot be mistaken for an author's file. Current SPMPST-owned names:
 
-| v0.1 (CURRENT) | v0.2 (PROPOSED) | Location |
+| Previous name | Current name | Location |
 |---|---|---|
 | `vitepress-site.json` | `spmpst.json` | `.site/` |
 | `<concern>.site.config.json` | `spmpst.<concern>.json` | `.site/` |
@@ -168,7 +168,7 @@ SPMPST-owned data files carry the `spmpst.` prefix, so a file's name says who ow
 | `category.json` | `spmpst.category.json` | `src/collections/**` |
 | (new) extension config | `spmpst.<name>.json` for standard extensions; `<reverse-domain-id>.json` otherwise | `.site/` |
 
-Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) are never prefixed. Locale bundles (`en.locale.json`) live in their own folder and are not prefixed. Because this renaming is a breaking change, v0.2 loaders MUST read the v0.1 names as aliases during a documented transition and report them as deprecated.
+Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt`, `security.txt`) are never prefixed. Locale bundles (`en.locale.json`) live in their own folder and are not prefixed. The VitePress host and both checked-in sites use these names. The migration is intentionally breaking; loaders reject the previous filenames.
 
 ## A5. Paths and safety
 
@@ -217,16 +217,16 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 
 ### A11.1 Core concerns
 
-| Concern | v0.1 file | Main keys |
+| Concern | Current file | Main keys |
 |---|---|---|
-| Definitions | `definitions.site.config.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
-| Languages | `lang.site.config.json` | `languages`, `fallbackLanguage`, `selector` |
-| Navigation | `topbar.site.config.json` | `items`, `theme` |
-| Collections | `collections.site.config.json` | `collections` |
-| Appearance | `appearance.site.config.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
-| Links | `links.site.config.json` | `socialLinks` |
-| SEO metadata | `seo.site.config.json` | `siteUrl`, `path`, `icon` |
-| Layouts (**PROPOSED**) | `layouts.site.config.json` | `layouts`, `rules` (§A13) |
+| Definitions | `spmpst.definitions.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
+| Languages | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
+| Navigation | `spmpst.topbar.json` | `items`, `theme` |
+| Collections | `spmpst.collections.json` | `collections` |
+| Appearance | `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
+| Links | `spmpst.links.json` | `socialLinks` |
+| SEO metadata | `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
+| Layouts (**PROPOSED**) | `spmpst.layouts.json` | `layouts`, `rules` (§A13) |
 
 The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
 
@@ -611,8 +611,8 @@ The shared Node/VitePress host owns the CLI wrappers, preparation pipeline, Vite
 
 ```mermaid
 flowchart TD
-    A[serve.sh] --> B[vitepress-site.json registry]
-    B --> C[site .site/vitepress-site.json]
+    A[serve.sh] --> B[spmpst.workspace.json registry]
+    B --> C[site .site/spmpst.json]
     C --> D[site tree + resource roots]
     D --> E[SPMPST config loader + VitePress runtime adapter]
     E --> F[preparation pipeline]
@@ -641,13 +641,13 @@ Ports start at `PORT` (default `4173`), `HOST` defaults to `127.0.0.1`. `--build
 
 ## C3. Registry and declaration
 
-Registry `docs/vitepress-site/vitepress-site.json`:
+Workspace registry `docs/vitepress-site/spmpst.workspace.json`:
 
 ```json
-{ "sitesPaths": ["../site-1/.site/vitepress-site.json", "../site-2/.site/vitepress-site.json"] }
+{ "sitesPaths": ["../site-1/.site/spmpst.json", "../site-2/.site/spmpst.json"] }
 ```
 
-Declaration (`docs/site-1/.site/vitepress-site.json`):
+Declaration (`docs/site-1/.site/spmpst.json`):
 
 ```json
 {
@@ -723,7 +723,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 ## C8. Resources in practice
 
 - `resolveResourceReferences` walks strings, arrays and objects; `resolveVitepressResource` resolves against the shared host catalogue (`lucide`, `custom`, `heroicons`, `simple-icons`; flags under `flags/language/` and `flags/catalog/`). `icon::book-open` without family tries `lucide/`, `custom/`, `heroicons/`, `simple-icons/` in that order; `flag::fr` is shorthand for `flag::language/fr`.
-- Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), topbar icons (plain names or `INHERIT`).
+- Resolution points: `toVitepressRuntime()` (config), page `icon` frontmatter (fallback `iconFallback`, default `circle-help`, with a warning; a missing fallback is fatal), `spmpst.sidebar.json` icons, language flags (`generated-guides/public/flags/language/<locale>.svg`), topbar icons (plain names or `INHERIT`).
 - `copyAsset()` confines sources to allowed roots, names by SHA-256 plus extension, writes only on change.
 - Mermaid: palette-colored, rendered by `mmdc` with the site's JSON config, cached by hash of config and diagram text, emitted as light and dark SVG; the browser theme adds zoom/open and light/dark switching.
 
@@ -733,7 +733,23 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 - Hooks by convention under `project.hooks`: `documentation-hooks` (+ optional `.css`) exports `DocumentationNotice`, `DocumentationLastModified` (no-op components when absent); `documentation-seo` exports `transformDocumentationHead` (no-op when absent).
 - Configured styles are emitted as imports in a generated TypeScript module.
 
-## C10. Current limits
+## C10. Current limits and remaining work in this stage
+
+The current stage is the Node/VitePress adapter described in this part. The direct filename migration is complete: the host uses `spmpst.workspace.json`, both site declarations use `.site/spmpst.json`, and concern/guide/sidebar/category metadata uses the `spmpst.*.json` names. Loaders intentionally reject the previous filenames. The collection `categoryFile` validator and both site schemas now require `spmpst.<name>.json`.
+
+The following work remains before this stage can claim the broader SPMPST tooling contract:
+
+1. **Standard declaration and workspace model.** Replace the adapter-specific declaration fields (`sourcePath`, `resourcesPath`, `siteResourcesPath`, `outputPath`) with the standardized `paths` model, and define/validate the workspace registry shape. The adapter currently requires an explicit registry and does not search parent directories or discover sites.
+2. **Declared build contract.** Read `engine`, `toolchain`, install/build/dev commands, placeholders, and environment from `.site/spmpst.json`. Today `site.mjs` hard-codes the VitePress workflow and depends on host `node_modules`; a site cannot independently declare its toolchain.
+3. **Config schema enforcement.** Validate all concern, declaration, locale, target, and extension data against versioned schemas. The current loader has manual checks for core fields and passes target data to the VitePress adapter; it does not yet implement a complete versioned closed-schema contract.
+4. **Route and filesystem safety.** Add whole-output route collision detection across authored pages, generated aliases/indexes, public files, localized fallbacks, and assets. Add conformance coverage for traversal and symlink escapes.
+5. **Extensions and layout registry.** Implement extension declaration/config validation and required/optional unknown-extension behavior, followed by the proposed renderer-neutral layout registry and adapter translation. Neither capability is implemented by the current host.
+6. **Portable conformance fixtures.** Build the shared cross-adapter fixture suite in §B14. `docs:check` and `docs:verify` remain VitePress-host checks rather than proof of conformance by another implementation.
+7. **Build concurrency and isolation.** The reported two-site preview failed during VitePress bundle cleanup with `ENOTEMPTY` in the shared `app/.vitepress/.temp/__docs-assets` directory. Separate output and per-site trash directories do not isolate this VitePress temporary directory when build flows overlap. Give each build a unique VitePress temp/cache root or add a host-wide build lock, then rerun and record end-to-end builds for both sites, static-link validation, multi-site isolation, and incremental single-page updates. The first selected site's earlier build completed and passed its 209-page local-link check; the failed preview is not a successful two-site build.
+
+These are stage backlog items, not completed behavior. The present implementation remains useful as the VitePress adapter and does not yet satisfy all of Part B.
+
+### Existing limits
 
 - Requires Node, host `node_modules`, VitePress, and Mermaid CLI for uncached diagrams; not yet a self-contained binary.
 - VitePress/Vue-specific; automatic multi-framework compilation is not implemented.
@@ -767,7 +783,7 @@ Dependencies are installed once for the host (`npm install` in `docs/vitepress-s
 | Surface | Location / output |
 |---|---|
 | Theme slots | `.site/targets/vitepress.target.config.json` |
-| Site registry / declaration | `vitepress-site.json` (host) / `.site/vitepress-site.json` |
+| Site registry / declaration | `spmpst.workspace.json` (host) / `.site/spmpst.json` |
 | Site resources | `docs/site-1/resources/{components,hooks,diagrams}/` |
 | Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
 | Styles, search, Markdown options | Target config and generated theme files |
@@ -928,8 +944,8 @@ Threat model: malicious dependencies, remote scripts, build-plugin execution, un
 docs/
 ├── .site/
 │   ├── spmpst.json
-│   ├── definitions.site.config.json
-│   ├── lang.site.config.json
+│   ├── spmpst.definitions.json
+│   ├── spmpst.lang.json
 │   ├── locales/en.locale.json
 │   └── locales/fr.locale.json
 ├── resources/
@@ -937,33 +953,35 @@ docs/
 └── src/
     ├── guides/index.en.md
     ├── guides/index.fr.md
-    ├── guides/handbook/guide.config.json
+    ├── guides/handbook/spmpst.guide.json
+    ├── guides/handbook/spmpst.sidebar.json
     ├── guides/handbook/index.en.md
     ├── guides/handbook/index.fr.md
     └── collections/articles/
-        ├── category.json
+        ├── spmpst.category.json
         ├── first.en.md
         └── first.fr.md
 ```
 
-Names are the v0.1 ones (§A4.1 gives the v0.2 targets). With `fallbackLanguage: "en"`, the output contains `index.md`, `handbook/index.md`, `fr/index.md`, `fr/handbook/index.md`, the collection article route and referenced assets under `__docs-assets/`. Exact prefixes depend on the guide URI and selector configuration. A complete runnable sample requires the mandatory fields of each concern file and locale schema.
+The example uses the current SPMPST-owned filenames. With `fallbackLanguage: "en"`, the output contains `index.md`, `handbook/index.md`, `fr/index.md`, `fr/handbook/index.md`, the collection article route and referenced assets under `__docs-assets/`. Exact prefixes depend on the guide URI and selector configuration. A complete runnable sample requires the mandatory fields of each concern file and locale schema.
 
 # Appendix 2: Open decisions
 
-1. **Workspace and declaration names:** confirm `spmpst.workspace.json`, `.site/spmpst.json`, and the legacy alias for `vitepress-site.json`.
-2. **`spmpst.json` build schema:** finalize `toolchain` fields, placeholders and the preset mechanism.
-3. **File prefix migration** (§A4.1): timing, alias period, and whether concern files keep the `.site/` folder as namespace.
-4. **Layout registry schema** (§A13): matching syntax, feature keys, adapter translation.
-5. **Required frontmatter** (`icon`, `sidebarTitle`): relax in v0.2 or keep.
-6. **Site data model** (§A16.2): module shape and location.
-7. **Extension manifest** (`extension.json`) and the first real extension that settles it.
-8. **Minimal tool surface** (§B5): is "list + build" the right floor, or should preview also be required?
-9. **Built-in engine scope:** default shell design, search, which prebuilt components ship.
-10. **Collision check** of the name "Kiln" on crates.io, npm and GitHub, and domain availability.
-11. **ACP:** which protocol and version (§E3).
+1. **`spmpst.json` build schema:** finalize `toolchain` fields, placeholders and the preset mechanism.
+2. **Workspace discovery:** finalize upward search, fallback scanning, and workspace registry schema.
+3. **Layout registry schema** (§A13): matching syntax, feature keys, adapter translation.
+4. **Required frontmatter** (`icon`, `sidebarTitle`): relax in v0.2 or keep.
+5. **Site data model** (§A16.2): module shape and location.
+6. **Extension manifest** (`extension.json`) and the first real extension that settles it.
+7. **Minimal tool surface** (§B5): is "list + build" the right floor, or should preview also be required?
+8. **Built-in engine scope:** default shell design, search, which prebuilt components ship.
+9. **Collision check** of the name "Kiln" on crates.io, npm and GitHub, and domain availability.
+10. **ACP:** which protocol and version (§E3).
 
 # Appendix 3: Change log
 
+- **0.1.0-draft.5 (2026-10-31):** documented remaining work for the current VitePress stage, including standardized declaration/toolchain support, schema enforcement, route/filesystem safety, extensions/layouts, conformance fixtures, and build evidence; recorded the `categoryFile` naming constraint and shared VitePress temporary-directory build collision.
+- **0.1.0-draft.4 (2026-10-31):** direct SPMPST filename migration in the VitePress host and both sites; no v0.1 filename aliases; current implementation examples and open decisions updated.
 - **0.1.0-draft.3 (2026-10-31):** standard made tool-neutral (§0.6); Kiln introduced as planned reference implementation in Part D (CLI moved there); SPMPST-0002 recast as a conformance contract with a minimal tool surface; extension mechanism added (§A12) and former companion specs turned into extensions (Part E); `spmpst.` file-naming rule (§A4.1); tool-specific settings kept out of the tree (§B12); inline `foreach` syntax rejected, site data model and optional `spmpst.templating` proposed (§A16, §E5); capability report replaces profiles (§B13).
 - **0.1.0-draft.2 (2026-10-31):** split into tree standard and tooling; `spmpst.json` build contract; scenario-based performance targets; layout registry, `new`, `deploy`; duplicate appendices removed.
 - **0.1.0-draft (historical):** JavaScript/VitePress baseline inventory.

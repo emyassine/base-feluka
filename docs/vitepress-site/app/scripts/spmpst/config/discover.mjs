@@ -7,7 +7,7 @@ function files(directory, predicate) {
 }
 
 export function discoverConfig(layout) {
-  const concerns = files(layout.siteDir, (name) => name.endsWith('.site.config.json'))
+  const concerns = files(layout.siteDir, (name) => /^spmpst\.[a-z][a-z0-9-]*\.json$/.test(name))
   const locales = files(join(layout.siteDir, 'locales'), (name) => name.endsWith('.locale.json'))
   const publicFiles = files(join(layout.siteDir, 'public'), () => true)
   const targets = files(join(layout.siteDir, 'targets'), (name) => name.endsWith('.target.config.json'))

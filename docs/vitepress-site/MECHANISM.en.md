@@ -12,8 +12,8 @@ The data path is:
 
 ```mermaid
 flowchart TD
-    A[docs/vitepress-site/serve.sh] --> B[vitepress-site.json registry]
-    B --> C[site .site/vitepress-site.json declaration]
+    A[docs/vitepress-site/serve.sh] --> B[spmpst.workspace.json registry]
+    B --> C[site .site/spmpst.json declaration]
     C --> D[site tree and resource roots]
     D --> E[SPMPST config loader and VitePress runtime adapter]
     E --> F[preparation pipeline]
@@ -56,20 +56,20 @@ The shell wrapper assigns separate available ports, starting at `PORT` (default 
 
 ## 3. How the registry connects host and sites
 
-The host-level registry is [vitepress-site.json](vitepress-site.json):
+The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
 
 ```json
 {
   "sitesPaths": [
-    "../site-1/.site/vitepress-site.json",
-    "../site-2/.site/vitepress-site.json"
+    "../site-1/.site/spmpst.json",
+    "../site-2/.site/spmpst.json"
   ]
 }
 ```
 
 Each entry is a path to a site declaration. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
 
-The site declaration is a separate JSON object stored with its owner, for example `docs/site-1/.site/vitepress-site.json`:
+The site declaration is a separate JSON object stored with its owner, for example `docs/site-1/.site/spmpst.json`:
 
 ```json
 {
@@ -101,12 +101,12 @@ The site's separate `.site/targets/vitepress.target.config.json` also contains a
 
 ## 4. Site tree and configuration data types
 
-The current tree contract is:
+The current site trees use these SPMPST-owned metadata filenames:
 
 ```text
 site-root/
 ├── .site/
-│   ├── *.site.config.json
+│   ├── spmpst.<concern>.json
 │   ├── locales/*.locale.json
 │   ├── public/*
 │   └── targets/*.target.config.json
@@ -126,17 +126,17 @@ site-root/
 
 | Concern file | Owned keys in the current loader |
 |---|---|
-| `definitions.site.config.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
-| `lang.site.config.json` | `languages`, `fallbackLanguage`, `selector` |
-| `topbar.site.config.json` | `items`, `theme` |
-| `collections.site.config.json` | `collections` |
-| `appearance.site.config.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
-| `links.site.config.json` | `socialLinks` |
-| `seo.site.config.json` | `siteUrl`, `path`, `icon` |
+| `spmpst.definitions.json` | `site`, `guidesPath`, `indexPath`, `project`, `subguides`, `iconFallback` |
+| `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector` |
+| `spmpst.topbar.json` | `items`, `theme` |
+| `spmpst.collections.json` | `collections` |
+| `spmpst.appearance.json` | `fonts`, `logo`, `ogImages`, `mermaid` |
+| `spmpst.links.json` | `socialLinks` |
+| `spmpst.seo.json` | `siteUrl`, `path`, `icon` |
 
-For each file, the loader rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, missing locale bundles, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. A target config is loaded under its target name (`vitepress`) and remains opaque to the shared config model until `toVitepressRuntime` consumes it.
+The loader recognizes only the `spmpst.<concern>.json` naming convention; previous unprefixed names are not accepted. It rejects unknown concerns, keys in the wrong file, duplicate ownership, malformed JSON, missing required definitions/language files, missing locale bundles, and invalid language/default-language relationships. It can emit localization warnings; strict i18n can turn missing translations into errors. A target config is loaded under its target name (`vitepress`) and remains opaque to the shared config model until `toVitepressRuntime` consumes it.
 
-`<language>.locale.json` supplies localized UI strings, search labels, outline labels, footer/notices, and optional SEO content. `public/*` files are loaded as text and passed through as public text files. `targets/vitepress.target.config.json` supplies VitePress-specific output, project directories, styles, theme slots, Markdown, search, and outline settings. Guide-local `guide.config.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `sidebar.json` provides localized labels and an icon for a source directory.
+`<language>.locale.json` supplies localized UI strings, search labels, outline labels, footer/notices, and optional SEO content. `public/*` files are loaded as text and passed through as public text files. `targets/vitepress.target.config.json` supplies VitePress-specific output, project directories, styles, theme slots, Markdown, search, and outline settings. Guide-local `spmpst.guide.json` supplies a guide's title/favicon and optional colors, logo, fonts, Open Graph images, URI, and theme slots. `spmpst.sidebar.json` provides localized labels and an icon for a source directory.
 
 The composed `SiteConfig` is the renderer-facing shape in `app/.vitepress/types/site-config.d.ts`: site identity, guides, locales, topbar, collections, styles, fonts, theme/project paths, search/outline/footer, SEO, public files, and Mermaid options. The Node config-source adapter supplies file reads; the VitePress composition root injects that source plus navigation and head-transform functions.
 
@@ -213,7 +213,7 @@ An extension such as `.svg` may be included. A catalogue ID is a logical identif
 
 - Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model to a VitePress runtime config.
 - Markdown page `icon` frontmatter is read during source discovery. Its logical icon reference is parsed, reduced to an icon ID, resolved against the configured icon library, and copied into the generated asset set. Each published Markdown page must provide a valid icon; missing icons use the configured `project.iconFallback` (default `circle-help`) with a warning, while a missing fallback is fatal.
-- `sidebar.json` icons may refer to an SVG path relative to that directory or to a catalogue icon ID. They are constrained to the site/shared resource roots and copied into generated metadata/assets.
+- `spmpst.sidebar.json` icons may refer to an SVG path relative to that directory or to a catalogue icon ID. They are constrained to the site/shared resource roots and copied into generated metadata/assets.
 - Navigation/topbar icon fields currently use plain icon names or `INHERIT`; `INHERIT` reads the destination page's compiled frontmatter icon. This is a renderer config convention, not a separate `@spmpst` syntax.
 - If language flags are enabled, source preparation constructs `@spmpst::resources::flag::language/<locale>` for every configured language, resolves it through the same resource resolver, and copies it to `generated-guides/public/flags/language/<locale>.svg`.
 - Markdown image/link references and frontmatter `src:` values are separately resolved relative to the source page and staged when local. **The current implementation does not scan and substitute arbitrary `@spmpst::resources::...` text everywhere in Markdown prose.** The parser is used at explicit configuration/icon resolution points.
@@ -301,15 +301,15 @@ The important distinction is that SPMPST handles site structure, source validati
 
 ## 11. Route and language mechanics
 
-The current source convention supports language variants as co-located filenames, for example `page.en.md` and `page.fr.md`. The final language suffix is removed from the staged basename. A file without a language suffix belongs to the configured fallback language. Numeric prefixes such as `010-` or `020.` affect navigation order and are removed from output paths. Dot-prefixed files, `README.md`, `sidebar.json`, `guide.config.json`, and collection category metadata are not published as pages.
+The current source convention supports language variants as co-located filenames, for example `page.en.md` and `page.fr.md`. The final language suffix is removed from the staged basename. A file without a language suffix belongs to the configured fallback language. Numeric prefixes such as `010-` or `020.` affect navigation order and are removed from output paths. Dot-prefixed files, `README.md`, `spmpst.sidebar.json`, `spmpst.guide.json`, and collection category metadata are not published as pages.
 
 Locale list, fallback locale, default-prefix policy, labels, flag visibility, search/footer/notice copy, and fallback notice templates are configured separately. When a non-default translation is absent, the fallback stage copies the default page into that locale's route, sets `requestedLanguage`, `contentLanguage`, and `languageFallbackNotice`, rewrites the `lang` value, adjusts known local route links to the locale where appropriate, and copies relative imported assets beside the generated page.
 
-Guide routes come from `definitions.site.config.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Route/path ownership stays in each site declaration/config, not in the shared host registry.
+Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Route/path ownership stays in each site declaration/config, not in the shared host registry.
 
 ## 12. Components, hooks, styles, and browser theme
 
-The current preparation code recursively discovers `.vue` files below the configured `project.components` directory, derives a PascalCase component name from each filename, rejects name collisions, and emits imports/registrations in the generated `components.ts`. The VitePress theme registers these components globally, so they can be used by generated Markdown. Theme slots in the target config and guide `guide.config.json` are checked against these component names and are rendered at the configured VitePress slots.
+The current preparation code recursively discovers `.vue` files below the configured `project.components` directory, derives a PascalCase component name from each filename, rejects name collisions, and emits imports/registrations in the generated `components.ts`. The VitePress theme registers these components globally, so they can be used by generated Markdown. Theme slots in the target config and guide `spmpst.guide.json` are checked against these component names and are rendered at the configured VitePress slots.
 
 This is the current adapter mechanism: automatic registration is for Vue SFCs. It does **not** itself install arbitrary React/Svelte toolchains or provide a universal mixed-framework component runtime. A host Vite config can add plugins, but each framework's compiler/registration remains the site's build setup.
 

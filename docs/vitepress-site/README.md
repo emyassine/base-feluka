@@ -4,7 +4,7 @@ This directory contains the shared VitePress host and site registry. The
 actual site sources live in sibling site directories such as `../site-1/`.
 
 ```text
-vitepress-site.json       registry of site declaration files
+spmpst.workspace.json     registry of site declaration files
 app/                      renderer, adapters, commands, and package manifest
 resources/                shared icon and flag catalogues
 .trash/                   generated Markdown, metadata, caches, and scratch data
