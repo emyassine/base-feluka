@@ -205,6 +205,8 @@ function installLanguageFlags(): void {
   })
   const defaultLanguage = config.defaultLanguage?.toLowerCase()
   if (defaultLanguage && config.languages.some((language) => language.toLowerCase() === defaultLanguage)) {
+    // VitePress keeps the default locale unprefixed (for example `/get-started`),
+    // so identify its menu entry by excluding every other locale prefix.
     const otherLocales = config.languages
       .map((language) => language.toLowerCase())
       .filter((language) => language !== defaultLanguage)
