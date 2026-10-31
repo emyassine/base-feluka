@@ -2,6 +2,7 @@ import { createReadStream, existsSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import MiniSearch from 'minisearch'
 import { defineConfig, loadConfigFromFile, mergeConfig, searchForWorkspaceRoot } from 'vite'
 import { loadSiteModelSync } from '../scripts/spmpst/config/index.mjs'
 import { resolveLayout } from '../scripts/spmpst/layout.mjs'
@@ -118,27 +119,38 @@ const siteViteConfig = {
   }],
 }
 
+// VitePress re-indexes an edited page without discarding its previous search
+// entries, so MiniSearch throws "duplicate ID" and aborts the HMR hook chain.
+// Replacing the existing entry keeps local search current during development.
+const miniSearchAdd = MiniSearch.prototype.add
+MiniSearch.prototype.add = function addWithoutDuplicate(this: any, document: any) {
+  const idField = this._options?.idField ?? 'id'
+  const id = document?.[idField]
+  if (id != null && this._idToShortId?.has(id)) this.discard(id)
+  return miniSearchAdd.call(this, document)
+}
+
 siteViteConfig.plugins.push({
-  name: 'debug-hmr',
-  configureServer(server: any) {
-    server.middlewares.use('/__debug-modules', (request: any, response: any) => {
-      const query = new URL(request.url ?? '/', 'http://localhost').searchParams
-      const id = query.get('id') ?? ''
-      if (query.has('list')) {
-        const needle = query.get('list') ?? ''
-        const matches = [...server.moduleGraph.idToModuleMap.values()].filter((entry: any) => entry.id.includes(needle)).map((entry: any) => ({ id: entry.id, url: entry.url, file: entry.file }))
-        response.setHeader('content-type', 'application/json')
-        response.end(JSON.stringify({ needle, matches }, null, 2))
-        return
-      }
-      const module = server.moduleGraph.getModuleById(id)
-      response.setHeader('content-type', 'application/json')
-      response.end(JSON.stringify({ id, found: module ? { id: module.id, file: module.file, url: module.url } : null, fileModules: module?.file ? [...server.moduleGraph.getModulesByFile(module.file)].map((entry: any) => ({ id: entry.id, file: entry.file })) : [] }))
-    })
-  },
+  name: 'feluqa:generated-markdown-hmr',
+  apply: 'serve' as const,
+  // Run after the Vue plugin: it replaces the HMR module list for non-Vue
+  // files, which otherwise clears the generated page module.
+  enforce: 'post' as const,
+  // VitePress serves generated pages from a srcDir outside Vite's root, so the
+  // module graph cannot always resolve them by absolute file path. Resolve by
+  // public URL instead and return the module so only the edited page refreshes.
   handleHotUpdate(context: any) {
-    const modules = context.server.moduleGraph.getModulesByFile(context.file)
-    process.stderr.write(`[debug-hmr] file=${context.file} modules=${modules?.size ?? 0} ids=${[...(modules ?? [])].map((m: any) => m.id).join(',')}\n`)
+    if (!context.file.endsWith('.md')) return
+    const relativePath = relative(paths.generatedGuides, context.file)
+    if (!relativePath || relativePath === '..' || relativePath.startsWith(`..${sep}`)) return
+    const modules = new Set<any>(context.modules)
+    if (modules.size === 0) {
+      const url = `/${relativePath.split(sep).join('/')}`
+      for (const module of context.server.moduleGraph.idToModuleMap.values()) {
+        if (module.url === url || module.url === `${url}?import`) modules.add(module)
+      }
+    }
+    return modules.size > 0 ? [...modules] : undefined
   },
 })
 

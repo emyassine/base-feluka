@@ -14,7 +14,9 @@ const resourceDirectory = sitePaths.resourcesDirectory
 const siteResourceDirectory = sitePaths.siteResourcesDirectory
 const sourceResourceDirectory = resolve(sitePaths.sourceRoot, 'resources')
 const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
+const siteScript = join(siteDirectory, 'scripts/site.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
+const buildMode = process.env.DOCS_WATCH_BUILD === '1'
 const ignoredDirectories = new Set(['node_modules', '.git', '.trash', 'build'])
 const pendingPaths = new Set()
 let debounceTimer
@@ -70,11 +72,17 @@ async function structuralSignature() {
 
 async function runPrepare() {
   return new Promise((resolveResult) => {
-    const child = spawn(process.execPath, [prepareScript], {
-      cwd: siteDirectory,
-      env: { ...process.env, DOCS_PREPARE_INCREMENTAL: '1' },
-      stdio: 'inherit',
-    })
+    const child = buildMode
+      ? spawn(process.execPath, [siteScript, 'build', '--site', process.env.VITEPRESS_SITE_ID ?? ''], {
+        cwd: siteDirectory,
+        env: process.env,
+        stdio: 'inherit',
+      })
+      : spawn(process.execPath, [prepareScript], {
+        cwd: siteDirectory,
+        env: { ...process.env, DOCS_PREPARE_INCREMENTAL: '1' },
+        stdio: 'inherit',
+      })
     child.once('error', (error) => resolveResult({ code: 1, error }))
     child.once('exit', (code, signal) => resolveResult({ code: code ?? 1, signal }))
   })
@@ -90,7 +98,11 @@ async function processChanges() {
     const started = Date.now()
     const result = await runPrepare()
     if (result.code !== 0) {
-      log(`Preparation failed${result.signal ? ` (${result.signal})` : ''}; the watcher remains active and will retry after the next edit.`)
+      log(`${buildMode ? 'Build' : 'Preparation'} failed${result.signal ? ` (${result.signal})` : ''}; the watcher remains active and will retry after the next edit.`)
+      continue
+    }
+    if (buildMode) {
+      log(`Rebuilt the site in ${((Date.now() - started) / 1000).toFixed(2)}s; the static preview now serves the new output.`)
       continue
     }
     const nextSignature = await structuralSignature()
@@ -133,8 +145,8 @@ try {
   throw new Error(`Unable to watch the documentation sources on this platform: ${error.message}`)
 }
 
-let signature = await structuralSignature()
-log(`Watching ${sourceDirectory}, ${siteConfigDirectory}, ${resourceDirectory}, and ${sourceResourceDirectory}.`)
+let signature = buildMode ? '' : await structuralSignature()
+log(`Watching ${sourceDirectory}, ${siteConfigDirectory}, ${resourceDirectory}, and ${sourceResourceDirectory}${buildMode ? ' for static rebuilds' : ''}.`)
 
 async function shutdown() {
   if (stopping) return

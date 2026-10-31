@@ -82,7 +82,19 @@ if (command === 'prepare') {
   process.exit(typeof result === 'number' ? result : 0)
 } else if (command === 'preview') {
   run(process.execPath, [join(appDirectory, 'scripts/site.mjs'), 'build', '--site', site.id])
-  run(process.env.PYTHON ?? 'python3', ['-m', 'http.server', process.env.PORT ?? '4173', '--directory', site.outputRoot])
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')])
+} else if (command === 'serve-build') {
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')])
+} else if (command === 'watch') {
+  const watcher = spawn(process.execPath, [join(appDirectory, 'scripts/dev/watch.mjs')], {
+    cwd: appDirectory,
+    env: { ...env, DOCS_WATCH_BUILD: '1' },
+    stdio: 'inherit',
+  })
+  const stop = () => watcher.kill('SIGTERM')
+  process.once('SIGINT', stop)
+  process.once('SIGTERM', stop)
+  watcher.once('exit', (code) => process.exit(code ?? 0))
 } else if (command === 'clean') {
   for (const path of [
     join(trashDirectory, 'generated-guides'),
@@ -99,6 +111,6 @@ if (command === 'prepare') {
   await rm(site.outputRoot, { recursive: true, force: true })
   process.stdout.write(`[site] Cleaned ${site.id} generated files and ${site.outputRoot}\n`)
 } else {
-  process.stderr.write('Usage: node scripts/site.mjs <prepare|build|serve|preview|clean|check|new|verify> [args] [--site <id>]\n')
+  process.stderr.write('Usage: node scripts/site.mjs <prepare|build|serve|preview|serve-build|watch|clean|check|new|verify> [args] [--site <id>]\n')
   process.exitCode = 2
 }

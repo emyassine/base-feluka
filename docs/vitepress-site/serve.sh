@@ -7,6 +7,7 @@ base_port="${PORT:-4173}"
 requested_sites=""
 sites_option=0
 build=0
+preview=0
 list_sites=0
 
 if [[ -t 1 && -n "${TERM:-}" && "$TERM" != "dumb" && -z "${NO_COLOR:-}" ]]; then
@@ -39,6 +40,8 @@ Usage: ./serve.sh [OPTIONS]
   --list              List registered sites, source directories, and output paths.
   --sites LIST        Select comma-separated site ids or directory names.
   --build             Build selected sites instead of starting servers.
+  --preview           Build selected sites, serve the static output, and rebuild
+                      only the site whose sources change.
   --help              Show this help.
 
 Examples:
@@ -46,6 +49,7 @@ Examples:
   ./serve.sh --sites=site-1
   ./serve.sh --sites=site-1,site-2
   ./serve.sh --sites=site-1 --build
+  ./serve.sh --sites=site-1 --preview
 
 Without --sites, an interactive terminal prompts for a selection. Non-interactive
 execution selects all registered sites. Servers use distinct available ports,
@@ -59,6 +63,7 @@ while (($#)); do
     --sites=*) requested_sites="${1#*=}"; sites_option=1; shift ;;
     --sites) (($# >= 2)) || { error '--sites needs a comma-separated list.'; exit 2; }; requested_sites="$2"; sites_option=1; shift 2 ;;
     --build) build=1; shift ;;
+    --preview) preview=1; shift ;;
     --help|-h) usage; exit 0 ;;
     *) error "Unknown option: $1"; usage >&2; exit 2 ;;
   esac
@@ -69,8 +74,13 @@ if ((sites_option)) && [[ -z "$requested_sites" ]]; then
   exit 2
 fi
 
-if ((list_sites)) && { ((build || sites_option)); }; then
-  error '--list cannot be combined with --sites or --build.'
+if ((list_sites)) && { ((build || preview || sites_option)); }; then
+  error '--list cannot be combined with --sites, --build, or --preview.'
+  exit 2
+fi
+
+if ((build && preview)); then
+  error '--build and --preview cannot be combined.'
   exit 2
 fi
 
@@ -138,7 +148,7 @@ for (const selection of selections) {
   if (!site) throw new Error(`Unknown site "${selection}". Available: ${sites.map((candidate) => `${candidate.id} (${basename(candidate.sourceRoot)})`).join(', ')}`)
   if (!chosen.some((candidate) => candidate.id === site.id)) chosen.push(site)
 }
-for (const site of chosen) console.log(`${site.id}\t${ascii(site.name ?? site.id)}`)
+for (const site of chosen) console.log(`${site.id}\t${ascii(site.name ?? site.id)}\t${ascii(site.outputRoot)}`)
 NODE
 )
 
@@ -169,11 +179,24 @@ fi
 if ((build)); then
   info "Building ${#sites[@]} selected site(s)."
   for entry in "${sites[@]}"; do
-    IFS=$'\t' read -r site_id _ <<<"$entry"
+    IFS=$'\t' read -r site_id _ _ <<<"$entry"
     (cd -- "$site_dir" && node app/scripts/site.mjs build --site "$site_id")
   done
   success 'Build completed.'
   exit 0
+fi
+
+if ((preview)); then
+  info "Building ${#sites[@]} selected site(s) before preview."
+  for entry in "${sites[@]}"; do
+    IFS=$'\t' read -r site_id _ output_root <<<"$entry"
+    if [[ -z "$output_root" ]]; then
+      error "Site $site_id has no outputPath in its declaration."
+      exit 1
+    fi
+    (cd -- "$site_dir" && node app/scripts/site.mjs build --site "$site_id")
+  done
+  success 'Build completed.'
 fi
 
 mapfile -t ports < <(node --input-type=module - "$base_port" "${#sites[@]}" <<'NODE'
@@ -216,11 +239,18 @@ trap 'exit 130' INT
 trap 'exit 143' TERM
 
 for index in "${!sites[@]}"; do
-  IFS=$'\t' read -r site_id site_name <<<"${sites[$index]}"
+  IFS=$'\t' read -r site_id site_name output_root <<<"${sites[$index]}"
   port="${ports[$index]}"
   printf '  %s%-24s%s %s (%s)\n' "$BOLD" "$site_name" "$RESET" "http://$host:$port/" "$site_id"
-  (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve --site "$site_id") &
-  pids+=("$!")
+  if ((preview)); then
+    (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve-build --site "$site_id") &
+    pids+=("$!")
+    (cd -- "$site_dir" && exec node app/scripts/site.mjs watch --site "$site_id") &
+    pids+=("$!")
+  else
+    (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve --site "$site_id") &
+    pids+=("$!")
+  fi
 done
 
 wait -n "${pids[@]}"
