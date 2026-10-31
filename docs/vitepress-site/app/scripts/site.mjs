@@ -82,9 +82,9 @@ if (command === 'prepare') {
   process.exit(typeof result === 'number' ? result : 0)
 } else if (command === 'preview') {
   run(process.execPath, [join(appDirectory, 'scripts/site.mjs'), 'build', '--site', site.id])
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')])
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build') })
 } else if (command === 'serve-build') {
-  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')])
+  run(process.execPath, [join(appDirectory, 'scripts/dev/preview-server.mjs')], { ...env, VITEPRESS_TRASH_DIR: join(trashDirectory, 'build') })
 } else if (command === 'watch') {
   const watcher = spawn(process.execPath, [join(appDirectory, 'scripts/dev/watch.mjs')], {
     cwd: appDirectory,

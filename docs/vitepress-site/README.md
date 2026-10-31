@@ -34,7 +34,13 @@ npm run docs:build
 ./serve.sh --sites=site-1,site-2
 ./serve.sh --sites=site-1
 ./serve.sh --sites=site-1 --build
+./serve.sh --sites=site-1 --preview
 ```
+
+`--build` compiles the selected sites and exits. `--preview` compiles them,
+serves the static output, and then watches the sources of each selected site:
+the first build runs before serving, later edits rebuild only the site whose
+sources changed and keep the running static server pointed at the new output.
 
 It prints each running site's URL and id. Without `--sites`, it asks which
 registered sites to use in a terminal and selects all sites in non-interactive

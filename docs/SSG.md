@@ -504,6 +504,8 @@ An explicit production build MUST use generated-source and cache locations isola
 
 Acceptance MUST be demonstrated by keeping two browser routes open, editing one page body, and confirming that only the tab displaying that route updates without a document navigation; the other tab and application shell remain live. A simultaneous build of that site MUST leave the dev server unchanged. The test SHOULD also edit a referenced asset and verify that only pages depending on it are invalidated.
 
+The VitePress adapter implements those requirements with an in-process preparation lock, staged writes that preserve unchanged generated files and pager frontmatter, and a debounced source watcher. Only structural, navigation, or site-configuration changes restart the VitePress server; page-body edits stay in the generated tree. The generated-Markdown HMR handler resolves the changed module by public URL and returns it to Vite so the changed route receives a `js-update` while the local search index replaces the previous page entry. The adapter also exposes a preview entry point that builds the selected site, serves its static output, and rebuilds only that site when its sources change.
+
 ### 14.4 Conformance fixtures (PROPOSED)
 
 A reference suite SHOULD contain at least: multilingual routes; numeric prefixes; unknown frontmatter; arbitrary new HTML elements and metadata; `llms.txt` passthrough; asset deduplication; external URL auditing; duplicate routes; symlink escape attempt; unsupported framework component; component fallback; offline rerender/reload; no-dev-dependency static output; ZIP traversal checks; multi-site isolation; incremental single-page HMR without document reload; concurrent build/dev isolation; and canonical manifest comparisons.
