@@ -1,8 +1,13 @@
 /* TEAM */
+
 Owner: Numerimondes
 Website: https://numerimondes.com
-GitHub: https://github.com/emyassine/base-feluka
+GitHub: https://github.com/feluqa
+Creator: El Moumen Yassine
+LinkedIn: https://www.linkedin.com/in/elmoumenyassine
 
 /* SITE */
-Feluqa Documentation
-Built with VitePress.
+
+Name: Feluqa Documentation
+Description: Documentation for the Feluqa platform and unified namespace.
+Sitemap: /sitemap.xml

@@ -2,13 +2,22 @@
 
 > Documentation for Feluqa, a proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development.
 
-## Guides
+## Start here
 
-- [Feluqa](/get-started/) — product direction, setup, and application development.
-- [Feluqa’s Internals](/internals/) — runtime, workspace, and compile-time architecture.
+- [Get started](/get-started/) — product direction, setup, and application development.
+- [Learn by building](/learn/) — practical application tutorials.
+
+## Reference guides
+
+- [Feluqa](/feluqa/) — product, framework, and developer guidance.
+- [Feluqa internals](/internals/) — runtime, workspace, and compile-time architecture.
 - [Agents](/agents/) — contribution guidance for AI coding agents.
-- [Learn](/learn/) — practical application tutorials.
+
+## Machine-readable resources
+
+- [Sitemap](/sitemap.xml) — generated index of the published documentation pages.
+- [API schemas](/api/schemas/) — schemas for site configuration and documentation resources.
 
 ## Documentation status
 
-Treat pages marked Exploring as provisional and pages marked Target as planned product direction. Do not describe planned capabilities as implemented.
+This documentation describes a platform in active development. Treat pages marked `Exploring` as provisional and pages marked `Target` as planned product direction. Do not describe planned capabilities as implemented.
