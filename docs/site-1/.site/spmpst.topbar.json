@@ -15,24 +15,6 @@
     {
       "guide": "products",
       "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products · Columns", "fr": "Produits · Colonnes" },
-      "menuTemplate": ["mega.columns", ["title", "image", "icon", "description", "children"]]
-    },
-    {
-      "guide": "products",
-      "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products · Featured", "fr": "Produits · Vedette" },
-      "menuTemplate": ["mega.featured", ["title", "image", "icon", "description", "children"]]
-    },
-    {
-      "guide": "products",
-      "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products · Events", "fr": "Produits · Événements" },
-      "menuTemplate": ["mega.events", ["title", "image", "icon", "description", "date", "location", "children"]]
-    },
-    {
-      "guide": "products",
-      "items": { "source": "subguides no-guide-index", "icon": true },
       "menuTitle": { "en": "Products · Background", "fr": "Produits · Arrière-plan" },
       "menuTemplate": ["mega.background", ["title", "image", "description", "children"]]
     },
