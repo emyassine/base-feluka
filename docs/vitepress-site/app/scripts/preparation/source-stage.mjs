@@ -133,7 +133,7 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'pathPrefix', 'hideChildren', 'hideIconFromParents', 'hideIcon'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
@@ -142,6 +142,12 @@ function validateSubguideSelector(value, location) {
     || value.hideChildren.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
     || new Set(value.hideChildren).size !== value.hideChildren.length)) {
     throw new Error(`${location}.hideChildren must be a unique array of configured collection ids and is only valid for source "collections"`)
+  }
+  for (const key of ['hideIconFromParents', 'hideIcon']) {
+    if (value[key] !== undefined && typeof value[key] !== 'boolean') throw new Error(`${location}.${key} must be a boolean`)
+  }
+  if (value.source === 'collections' && value.hideIconFromParents === false) {
+    throw new Error(`${location}.hideIconFromParents must be true with the native VitePress adapter; its collection section headings are plain text and cannot render parent icon markup`)
   }
   const validDepth = (depth) => Number.isInteger(depth) && depth > 0
   if (value.depth !== undefined && value.depth !== 'all' && !validDepth(value.depth)
@@ -157,12 +163,13 @@ function validateTopbarItems(items, location = 'topbar.items') {
   for (const [index, item] of items.entries()) {
     const itemLocation = `${location}[${index}]`
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
+    if (item.hideIcon !== undefined && typeof item.hideIcon !== 'boolean') throw new Error(`${itemLocation}.hideIcon must be a boolean`)
     const resolvedSvg = typeof item.icon === 'string' && isAbsolute(item.icon) && extname(item.icon).toLowerCase() === '.svg' && existsSync(item.icon)
     if (item.icon !== undefined && (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon) && !resolvedSvg))) {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
-      if (Object.keys(item).some((key) => !['guide', 'icon', 'items'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
       if (item.items !== undefined) {
         if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
         else validateSubguideSelector(item.items, `${itemLocation}.items`)
@@ -170,7 +177,7 @@ function validateTopbarItems(items, location = 'topbar.items') {
       continue
     }
     if ('collection' in item) {
-      if (Object.keys(item).some((key) => !['collection', 'icon'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
+      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
       continue
     }
     if (item.text !== undefined && typeof item.text !== 'string' && (!item.text || typeof item.text !== 'object' || Array.isArray(item.text))) {

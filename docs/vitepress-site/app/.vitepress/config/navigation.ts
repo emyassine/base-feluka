@@ -238,7 +238,7 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
-  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = []) => {
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], hideIconFromParents = false, hideIcon = false) => {
     const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
     return [...generatedCollections]
       .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
@@ -251,7 +251,7 @@ function navigation(language = defaultLanguage): any[] {
         const link = collection.links[language] ?? collection.links[defaultLanguage]
         const route = collection.route ?? collection.id
         const metadata = sidebarMetadata[route]
-        const icon = showIcons ? metadata?.icon : undefined
+        const icon = showIcons && !hideIconFromParents && !hideIcon ? metadata?.icon : undefined
         const articles = collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []
         const rootParts = route.split('/')
         const tree: any = { children: new Map(), articles: [], orderName: '' }
@@ -274,44 +274,40 @@ function navigation(language = defaultLanguage): any[] {
           })
           parent.articles.push(article)
         }
-        const renderTree = (node: any): any[] => {
+        const renderTree = (node: any, parents: string[] = []): any[] => {
           const entries = [...node.children.values()].map((child: any) => ({ name: child.segment, child }))
           const sourceNames = Object.fromEntries(entries.map(({ name, child }: any) => [name, child.orderName]))
-          return sortNavigationEntries(entries, sourceNames).map(({ child }: any) => {
-            const nested = renderTree(child)
+          return sortNavigationEntries(entries, sourceNames).flatMap(({ child }: any) => {
             const article = child.articles[0]
             const metadata = sidebarMetadata[`${route}/${child.pathParts.join('/')}`]
-            const icon = showIcons ? (metadata?.icon ?? (article && sidebarPageIcons[article.url])) : undefined
-            const label = metadata?.labels?.[language] ?? article?.title ?? child.segment.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
-            const link = article?.url
-            const children = [
-              ...(article && nested.length ? [{ text: itemText(article.title), link: article.url }] : []),
-              ...nested,
-            ]
-            return {
-              text: itemText(label, undefined, undefined, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
-              activeMatch: `^${link ? link.replace(/\/+$/, '') : `/${route}/${child.pathParts.join('/')}`}(?:/|$)`,
-              ...(children.length ? { items: children } : link ? { link } : {}),
-            }
+            const folderLabel = metadata?.labels?.[language] ?? child.segment.replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ')
+            const icon = showIcons && !hideIcon ? article && sidebarPageIcons[article.url] : undefined
+            const pageLabel = article ? [...parents, article.title].join(' · ') : ''
+            const pageItem = article ? [{
+              text: itemText(pageLabel, undefined, undefined, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
+              link: article.url,
+              activeMatch: `^${article.url.replace(/\/+$/, '')}(?:/|$)`,
+            }] : []
+            return [...pageItem, ...renderTree(child, [...parents, folderLabel])]
           })
         }
         const childItems = hideChildren.includes(collection.id) ? [] : renderTree(tree)
-        const items = childItems.length ? [
-          { text: itemText(collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id), link },
-          ...childItems,
-        ] : []
-        return {
-          text: itemText(metadata?.labels?.[language] ?? collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, undefined, link, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
+        const items = childItems
+        const label = metadata?.labels?.[language] ?? collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id
+        const linkItem = {
+          text: itemText(label, undefined, link, icon ? `/${icon.replace(/^\/+/, '')}` : undefined),
+          link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
-          ...(items.length ? { items } : { link }),
         }
+        if (hideChildren.includes(collection.id) || !items.length) return linkItem
+        return { text: label, items }
       })
   }
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
   const resolveItem = (item: any): any => {
     if (item.guide) {
-      const guide = guideLink(item.guide, item.icon)
+      const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon)
       if (item.items && !Array.isArray(item.items) && ['subguides', 'subguides no-guide-index'].includes(item.items.source)) {
         const guideConfig = guideConfigs[item.guide]
         const rootIcon = sidebarPageIcons[guide.link]
@@ -340,24 +336,19 @@ function navigation(language = defaultLanguage): any[] {
       const routePrefix = item.items.pathPrefix?.split('/').join('/')
       const activeRoot = routePrefix ?? ''
       return {
-        component: 'SpmpstNestedNav',
-        props: {
-          item: {
-            text: itemText(localize(item.text) ?? '', item.icon),
-            activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
-            items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? []),
-          },
-        },
+        text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon),
+        activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
+        items: collectionSubmenus(item.items.pathPrefix, item.items.depth, item.items.icon !== false, item.items.hideChildren ?? [], item.items.hideIconFromParents === true, item.items.hideIcon === true),
       }
     }
-    if (item.collection) return collectionLink(item.collection, item.icon)
+    if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)
     const text = localize(item.text)
     const link = localize(item.link)
     const external = typeof link === 'string' && /^(?:https?:)?\/\//i.test(link)
     const target = item.target ?? (external ? '_blank' : undefined)
     const rel = item.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
     return {
-      ...(text ? { text: itemText(text, item.icon, link) } : {}),
+      ...(text ? { text: itemText(text, item.hideIcon ? undefined : item.icon, link) } : {}),
       ...(link ? { link } : {}),
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
       ...(target ? { target } : {}),

@@ -5,105 +5,14 @@
   gap: 8px;
 }
 
-.spmpst-nested-nav {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: var(--vp-nav-height);
+.VPFlyout .menu {
+  transition: opacity 0.3s, visibility 0s linear 0.3s, transform 0.3s;
 }
 
-.spmpst-nested-nav-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 100%;
-  padding: 0 12px;
-  border: 0;
-  background: transparent;
-  color: var(--vp-c-text-1);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
+.VPFlyout:hover .menu,
+.VPFlyout:focus-within .menu {
+  transition-delay: 0s;
 }
-
-.spmpst-nested-nav-trigger:hover,
-.spmpst-nested-nav-trigger:focus-visible {
-  color: var(--vp-c-brand-1);
-}
-
-.spmpst-nested-nav-trigger.is-active,
-.spmpst-nav-row.is-active,
-.spmpst-nav-entry.is-active > .spmpst-nav-branch-button {
-  color: var(--vp-c-brand-1);
-}
-
-.spmpst-nested-nav-trigger .text-icon,
-.spmpst-nav-branch-button .text-icon {
-  margin-left: 4px;
-  font-size: 14px;
-}
-
-.spmpst-nested-nav-panel {
-  position: absolute;
-  z-index: var(--vp-z-index-nav);
-  top: calc(100% - 2px);
-  right: 0;
-  min-width: 240px;
-  max-width: min(360px, calc(100vw - 24px));
-  max-height: calc(100vh - var(--vp-nav-height) - 16px);
-  overflow: auto;
-  padding: 8px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-3);
-}
-
-.spmpst-nav-list {
-  display: grid;
-  gap: 2px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.spmpst-nav-list .spmpst-nav-list {
-  margin: 2px 0 4px 12px;
-  padding-left: 8px;
-  border-left: 1px solid var(--vp-c-divider);
-}
-
-.spmpst-nav-row {
-  display: flex;
-  width: 100%;
-  min-height: 36px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 4px 10px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--vp-c-text-1);
-  font: inherit;
-  font-size: 14px;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.spmpst-nav-row:hover,
-.spmpst-nav-row:focus-visible {
-  background: var(--vp-c-default-soft);
-  color: var(--vp-c-brand-1);
-  outline: none;
-}
-
-.spmpst-nav-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 
 .docs-topbar-icon {
   width: 16px;

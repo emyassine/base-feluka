@@ -43,7 +43,9 @@
         "pathPrefix": "resources",
         "hideChildren": ["articles"],
         "depth": "all",
-        "icon": true
+        "icon": true,
+        "hideIconFromParents": true,
+        "hideIcon": false
       }
       }
   ],

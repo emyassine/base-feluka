@@ -29,6 +29,7 @@
             ]
           },
           "icon": { "type": "string" },
+          "hideIcon": { "type": "boolean", "default": false },
           "target": { "type": "string" },
           "rel": { "type": "string" },
           "activeMatch": { "type": "string" },
@@ -42,6 +43,8 @@
                   "source": { "enum": ["subguides", "subguides no-guide-index", "collections"] },
                   "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
                   "hideChildren": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+                  "hideIconFromParents": { "type": "boolean", "default": true },
+                  "hideIcon": { "type": "boolean", "default": false },
                   "depth": {
                     "oneOf": [
                       { "type": "string", "const": "all" },
