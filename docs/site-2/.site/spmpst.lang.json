@@ -9,5 +9,5 @@
     "prefixDefaultLanguage": false,
     "showFlags": true
   },
-  "$schema": "./schema/lang.schema.json"
+  "$schema": "../resources/media/schemas/lang.schema.json"
 }

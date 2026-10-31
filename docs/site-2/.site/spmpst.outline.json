@@ -1,4 +1,4 @@
 {
-  "$schema": "./schema/outline.schema.json",
+  "$schema": "../resources/media/schemas/outline.schema.json",
   "level": "deep"
 }

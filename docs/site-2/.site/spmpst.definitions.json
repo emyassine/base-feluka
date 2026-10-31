@@ -84,7 +84,7 @@
     }
   ],
   "iconFallback": "circle-help",
-  "$schema": "./schema/definitions.schema.json",
+  "$schema": "../resources/media/schemas/definitions.schema.json",
   "project": {
     "components": "components",
     "hooks": "hooks"

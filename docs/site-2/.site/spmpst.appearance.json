@@ -26,7 +26,7 @@
     "nodeBorderWidth": "1.5px",
     "darkMessageTextColor": "#f1f3fc"
   },
-  "$schema": "./schema/appearance.schema.json",
+  "$schema": "../resources/media/schemas/appearance.schema.json",
   "styles": [
     "components/numerimondes.css"
   ]

@@ -53,20 +53,12 @@ export function assembleConfig(layout, discovered, options = {}) {
     }
   }
   for (const [name, keys] of Object.entries(CONCERNS)) {
-    if (name === 'definitions' || name === 'lang') {
+    if (name === 'definitions' || name === 'lang' || name === 'locale') {
       const path = discovered.concerns.find((item) => basename(item) === `spmpst.${name}.json`)
       if (!path) collector.add(`.site/spmpst.${name}.json`, '', 'Required concern file is missing')
     }
   }
   const fallback = model.fallbackLanguage ?? model.languages?.[0]
-  model.locales = {}
-  for (const path of discovered.locales) {
-    const name = basename(path).replace(/\.locale\.json$/, '')
-    try { model.locales[name] = json(path, layout.siteDir) }
-    catch (error) { collector.add(error.file, error.pointer, error.message.replace(` (${error.file}${error.pointer || ''})`, '')); continue }
-    if (model.locales[name] && typeof model.locales[name] !== 'object') collector.add(path, '', 'Locale bundle must be an object')
-    sources.push(path)
-  }
   model.publicFiles = {}
   for (const path of discovered.publicFiles) {
     model.publicFiles[basename(path)] = readFileSync(path, 'utf8')
@@ -80,9 +72,25 @@ export function assembleConfig(layout, discovered, options = {}) {
   if (!Array.isArray(model.languages) || model.languages.length === 0 || model.languages.some((language) => typeof language !== 'string' || !/^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(language)) || new Set(model.languages).size !== model.languages.length) {
     collector.add('.site/spmpst.lang.json', '#/languages', 'languages must be a non-empty array of unique locale codes')
   }
-  for (const language of model.languages ?? []) if (!model.locales[language]) collector.add(`.site/locales/${language}.locale.json`, '', 'Locale bundle is required for each configured language')
-  for (const language of Object.keys(model.locales)) if (!(model.languages ?? []).includes(language)) collector.warn(`.site/locales/${language}.locale.json`, '', 'Locale bundle is not listed in lang.languages')
   if (model.languages?.length && !model.languages.includes(fallback)) collector.add('.site/spmpst.lang.json', '#/fallbackLanguage', 'fallbackLanguage must be listed in languages')
+  const localeKeys = model.strings
+  const checkLocaleMaps = (value, pointer = '#/strings') => {
+    if (!value || typeof value !== 'object') return
+    if (!Array.isArray(value) && Object.keys(value).some((key) => model.languages?.includes(key))) {
+      const nonLanguageKeys = Object.keys(value).filter((key) => !model.languages?.includes(key))
+      if (!nonLanguageKeys.length && Object.values(value).every((entry) => typeof entry === 'string')) {
+        const missing = (model.languages ?? []).filter((language) => !(language in value))
+        if (missing.length) {
+          const message = `Localized value is missing: ${missing.join(', ')}`
+          if (options.strictI18n) collector.add('.site/spmpst.locale.json', pointer, message)
+          else collector.warn('.site/spmpst.locale.json', pointer, message)
+        }
+        return
+      }
+    }
+    for (const [key, child] of Object.entries(value)) checkLocaleMaps(child, `${pointer}/${key}`)
+  }
+  checkLocaleMaps(localeKeys)
   const guidePaths = new Set((model.subguides ?? []).map((guide) => guide.path))
   const collectionIds = new Set((model.collections ?? []).map((collection) => collection.id))
   const visitItems = (items, pointer = '#/items') => {
@@ -95,18 +103,6 @@ export function assembleConfig(layout, discovered, options = {}) {
     })
   }
   visitItems(model.items)
-  const seoLocales = model.locales && Object.fromEntries(Object.entries(model.locales).map(([language, bundle]) => [language, bundle?.seo ?? {}]))
-  for (const [language, localeSeo] of Object.entries(seoLocales ?? {})) {
-    if (Object.keys(localeSeo).length && !(model.languages ?? []).includes(language)) {
-      collector.add(`.site/locales/${language}.locale.json`, '#/seo', `SEO locale is not listed in lang.languages: ${language}`)
-    }
-    if (!(localeSeo.quickLinks?.length || localeSeo.faq?.length)) continue
-    for (const key of ['pageTitle', 'pageNavTitle', 'description']) {
-      if (typeof localeSeo[key] !== 'string' || !localeSeo[key].trim()) collector.add(`.site/locales/${language}.locale.json`, `#/seo/${key}`, `${key} is required when an SEO page has quick links or FAQ entries`)
-    }
-    if (localeSeo.quickLinks?.length && (typeof localeSeo.quickLinksTitle !== 'string' || !localeSeo.quickLinksTitle.trim())) collector.add(`.site/locales/${language}.locale.json`, '#/seo/quickLinksTitle', 'quickLinksTitle is required when quickLinks are configured')
-    if (localeSeo.faq?.length && (typeof localeSeo.faqTitle !== 'string' || !localeSeo.faqTitle.trim())) collector.add(`.site/locales/${language}.locale.json`, '#/seo/faqTitle', 'faqTitle is required when FAQ entries are configured')
-  }
   for (const [concern, langs] of [['topbar items', model.items], ['collections', model.collections], ['guides', model.subguides]]) {
     const inspect = (value, pointer = '') => {
       if (!value || typeof value !== 'object') return

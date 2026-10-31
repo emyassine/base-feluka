@@ -15,5 +15,5 @@
       "dir": "articles"
     }
   ],
-  "$schema": "./schema/collections.schema.json"
+  "$schema": "../resources/media/schemas/collections.schema.json"
 }

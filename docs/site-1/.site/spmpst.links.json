@@ -18,5 +18,5 @@
       "ariaLabel": "Yassine on LinkedIn"
     }
   ],
-  "$schema": "./schema/links.schema.json"
+  "$schema": "../resources/media/schemas/links.schema.json"
 }

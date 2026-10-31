@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "site",
+    "subguides",
+    "iconFallback"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "site": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "iconFallback": {
+      "type": "string"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "string"
+        },
+        "hooks": {
+          "type": "string"
+        },
+        "viteConfig": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "subguides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "uri"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "labels": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "uri": {
+            "type": "object",
+            "required": [
+              "base"
+            ],
+            "properties": {
+              "base": {
+                "type": "string"
+              },
+              "index": {
+                "type": "string"
+              },
+              "entry": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

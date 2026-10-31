@@ -6,7 +6,6 @@ import { resolveVitepressResource } from './resolve-resource.mjs'
 export function toVitepressRuntime(sourceModel, layout) {
   const model = resolveResourceReferences(sourceModel, (reference) => resolveVitepressResource(reference, layout))
   const defaultLanguage = model.fallbackLanguage ?? model.languages[0]
-  const locales = model.locales
   const footer = model.footer ?? {}
   const localizedFooterText = (value, language) => {
     if (typeof value === 'string') return value
@@ -22,6 +21,7 @@ export function toVitepressRuntime(sourceModel, layout) {
     }
     return Object.fromEntries(entries.map(([key, entry]) => [key, localizeTree(entry, language)]))
   }
+  const locales = Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.strings ?? {}, language)]))
   const seoCopy = Object.fromEntries(['pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq']
     .filter((key) => model[key] !== undefined)
     .map((key) => [key, model[key]]))

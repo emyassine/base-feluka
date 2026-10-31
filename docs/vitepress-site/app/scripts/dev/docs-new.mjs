@@ -20,14 +20,19 @@ if (kind === 'locale') {
   const langPath = join(layout.siteDir, 'spmpst.lang.json')
   const lang = await readJson(langPath)
   if (lang.languages.includes(language)) fail(`Language already exists: ${language}`)
-  const localePath = join(layout.siteDir, `locales/${language}.locale.json`)
-  try { await readFile(localePath); fail(`Locale bundle already exists: ${localePath}`) } catch (error) { if (error.code !== 'ENOENT') throw error }
-  const source = await readJson(join(layout.siteDir, `locales/${fallback}.locale.json`))
-  source.language.label = language
-  source.$schema = '../schema/locale.schema.json'
+  const localePath = join(layout.siteDir, 'spmpst.locale.json')
+  const locale = await readJson(localePath)
+  const translate = (node) => {
+    if (!node || typeof node !== 'object') return
+    for (const child of Object.values(node)) {
+      if (child && typeof child === 'object' && !Array.isArray(child) && fallback in child && Object.values(child).every((text) => typeof text === 'string')) child[language] = child[fallback]
+      else translate(child)
+    }
+  }
+  translate(locale.strings)
   lang.languages.push(language)
   await writeJson(langPath, lang)
-  await writeJson(localePath, source)
+  await writeJson(localePath, locale)
   for (const file of ['spmpst.topbar.json', 'spmpst.collections.json', 'spmpst.definitions.json']) {
     const path = join(layout.siteDir, file)
     const value = await readJson(path)

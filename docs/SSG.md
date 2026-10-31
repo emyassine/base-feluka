@@ -140,9 +140,9 @@ A selected site's output, lock state, cache namespace, generated sources, resour
 │   ├── spmpst.json                    # declaration + build contract + extensions
 │   ├── spmpst.<concern>.json          # concern files
 │   ├── spmpst.<extension>.json      # configuration of a declared extension (§A12)
-│   ├── locales/*.locale.json
-│   ├── public/*                       # public text files passed through
-│   ├── schema/*.schema.json
+│   ├── spmpst.locale.json
+│   ├── public/*                       # files served from the site URL root
+
 │   └── targets/*.target.config.json   # adapter-owned, opaque to the core
 ├── src/
 │   ├── guides/
@@ -202,8 +202,8 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 
 ## A9. Languages and fallbacks
 
-- `lang` owns `languages`, `fallbackLanguage`, `selector`. Each configured language MUST have exactly one locale bundle; extra bundles produce a warning.
-- Locale bundles MUST contain language, UI, search, outline and notice sections. Footer copy belongs to `spmpst.layout.json`; SEO page content belongs to `spmpst.seo.json` as key-centric localized values.
+- `lang` owns `languages`, `fallbackLanguage`, `selector`. `locale` owns `strings`; each localized text leaf is key-centric, for example `"searchButton": {"en":"Search","fr":"Rechercher"}`. Missing language values warn or fail under strict i18n.
+- `spmpst.locale.json` owns UI, search, outline and notice text. Footer copy belongs to `spmpst.layout.json`; SEO page content belongs to `spmpst.seo.json` with the same key-centric translation shape.
 - Localized inline objects resolve: requested language, then fallback language, then first string value. Missing translations warn, and fail under strict i18n.
 - When a non-default translation is absent, a fallback page is generated from the default-language page and marked with `requestedLanguage`, `contentLanguage`, `languageFallbackNotice`. Notice templates use `{requested}` and `{fallback}` (the reference implementation currently validates `{requested}`).
 
@@ -232,7 +232,7 @@ Files that must keep an exact public name (`robots.txt`, `llms.txt`, `humans.txt
 | Outline | `spmpst.outline.json` | `level` |
 | Layout and footer | `spmpst.layout.json` | `footer`, semantic component placements; `layouts` and `rules` remain **PROPOSED** (§A13) |
 
-The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON, missing required files and missing locale bundles, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
+The loader MUST reject unknown concerns, unknown keys, duplicate ownership, malformed JSON and missing required files, and SHOULD suggest a likely owner or spelling. `$schema` is ignored. Target files are returned as **opaque data**; validation belongs to the consuming adapter.
 
 ### A11.2 Closed versus open
 
@@ -240,7 +240,7 @@ Core configuration is a versioned, **closed** schema: unknown keys are rejected.
 
 ### A11.3 Minimal configuration
 
-A basic site SHOULD need very little: a declaration, `definitions`, `lang` and one locale bundle, with all other concerns defaulted by the tool.
+A basic site SHOULD need very little: a declaration, `definitions`, `lang` and `locale`, with all other concerns defaulted by the tool.
 
 ## A12. Extensions
 
@@ -355,9 +355,9 @@ Examples:
 @spmpst::media::icons/prologue-book
 ```
 
-`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's own `resources/media/` tree. The logical name is the relative SVG filename without `.svg`.
+`name` and `code` are stable logical identifiers, not collection paths or filenames. They MUST begin with a Unicode letter or number, may contain letters, numbers, `.`, `_`, `-`, and `/`, MUST NOT contain empty or `.`/`..` segments, and are normalized to NFC. Icons and flags resolve from the conforming tool's standard registries. Qualified icon IDs select a tool-provided family; unqualified IDs use the tool's documented deterministic family order. Site media resolves from the selected site's own `resources/media/` tree. Media names include their filename extension when needed.
 
-A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned images and SVGs live under `resources/media/` and use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). The adapter resolves media only inside the selected site tree. The core parses these references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
+A conforming tool owns the standard icon and flag catalogues and exposes their logical names through a build-time registry. Standard icons may be addressed by unqualified name; `family/name` MAY select a specific tool-provided family where needed. Sites MUST NOT configure paths into the tool installation or duplicate its standard registries. Site-owned media of any type live under `resources/media/`; image references may use `@spmpst::media::<name>` (including nested names such as `icons/prologue-book`). The adapter publishes this tree under `/media/`, preserving relative paths: `resources/media/schemas/example.json` becomes `/media/schemas/example.json`. JSON data and schemas are ordinary `.json` media there; the static host serves them with `application/json`, without a special schema API route. This differs from `.site/public/`, which is for files served directly from the site URL root, such as `/robots.txt` and `/llms.txt`. Both are copied into the generated site's public output; their source locations differ because their public URL paths differ. The adapter resolves media only inside the selected site tree. The core parses resource references into typed records and does not touch the filesystem. Unknown names and escaping/symlink paths are build errors.
 
 Resolution applies at documented explicit points (configuration values, page `icon` frontmatter, sidebar icons, and language flags). It is **not** general text substitution in Markdown prose.
 
@@ -367,7 +367,7 @@ Local assets referenced from Markdown or frontmatter are copied to content-addre
 
 ### A14.3 Public files
 
-Files in `.site/public/*` are published as site-owned text files without any SPMPST change: `llms.txt`, `robots.txt`, `humans.txt`, `security.txt`, verification files, future discovery documents. SPMPST assigns them no semantics. **CURRENT:** one trailing newline is removed on emission.
+Files in `.site/public/*` are published at the site URL root without any SPMPST change: `.site/public/robots.txt` becomes `/robots.txt`; use this for root-level discovery and verification files such as `llms.txt`, `humans.txt`, and `security.txt`. Use `resources/media/` for namespaced media such as images, downloads, and JSON data; `resources/media/data/catalog.json` becomes `/media/data/catalog.json`. These media URLs retain their extension and MIME type. **CURRENT:** `.site/public/` accepts root-level `.txt` files only and one trailing newline is removed on emission.
 
 ## A15. HTML and Markdown passthrough
 
@@ -463,7 +463,6 @@ Full form (**PROPOSED**; the current VitePress host realizes the same data throu
 
 ```json
 {
-  "$schema": "./schema/spmpst.schema.json",
   "specVersion": "0.1",
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
@@ -956,8 +955,7 @@ docs/
 │   ├── spmpst.json
 │   ├── spmpst.definitions.json
 │   ├── spmpst.lang.json
-│   ├── locales/en.locale.json
-│   └── locales/fr.locale.json
+│   ├── spmpst.locale.json
 ├── resources/
 │   └── icons/lucide/book-open.svg
 └── src/

@@ -569,6 +569,22 @@ if (topbar.language?.showFlags) {
 if (config.publicFiles !== undefined && (!config.publicFiles || typeof config.publicFiles !== 'object' || Array.isArray(config.publicFiles))) {
   throw new Error('publicFiles must be an object of root-level filenames and text contents')
 }
+// Publish site media at stable URLs as ordinary static files, preserving MIME by extension.
+async function publishMedia(source, relativePath = '') {
+  for (const entry of await readdir(source, { withFileTypes: true })) {
+    const sourcePath = join(source, entry.name)
+    const childPath = join(relativePath, entry.name)
+    if (entry.isSymbolicLink()) throw new Error(`Media symlinks are not allowed: ${sourcePath}`)
+    if (entry.isDirectory()) await publishMedia(sourcePath, childPath)
+    else if (entry.isFile()) {
+      const target = join(outputDirectory, 'public', 'media', childPath)
+      generatedFiles.add(target)
+      await writeIfChanged(target, await readFile(sourcePath))
+    }
+  }
+}
+const mediaRoot = resolve(layout.siteResourcesDir, 'media')
+if (existsSync(mediaRoot)) await publishMedia(mediaRoot)
 for (const [name, content] of Object.entries(config.publicFiles ?? {})) {
   if (!/^[A-Za-z0-9._-]+\.txt$/.test(name) || typeof content !== 'string') {
     throw new Error(`publicFiles.${name} must be a .txt filename with string content`)

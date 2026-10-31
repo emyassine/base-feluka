@@ -1,6 +1,7 @@
 export const CONCERNS = Object.freeze({
   definitions: ['site', 'guidesPath', 'indexPath', 'project', 'subguides', 'iconFallback'],
   lang: ['languages', 'fallbackLanguage', 'selector'],
+  locale: ['strings'],
   topbar: ['items', 'theme'],
   collections: ['collections'],
   appearance: ['fonts', 'logo', 'ogImages', 'styles', 'mermaid'],
