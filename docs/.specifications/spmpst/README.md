@@ -20,10 +20,10 @@ mapping, directories, files, and schema files to copy into a new site's
 `paths.schemas` directory. A conforming tool MUST consume those declarations;
 it MUST NOT hard-code site paths or starter config values in its CLI.
 
-Concern schema files are also copied into each site's `public/media/schemas/`
-when the site is scaffolded. They are ordinary public JSON media in the site,
-while the canonical schemas and generation defaults remain owned by this
-specification package.
+Concern schema files are also copied into each site's configured `paths.schemas`
+directory when scaffolded. That path defaults to `public/api/schemas/`; the
+schemas are delivered as ordinary static JSON files, while canonical schemas
+and generation defaults remain owned by this specification package.
 
 The current Node/VitePress conforming-tool entry point is:
 

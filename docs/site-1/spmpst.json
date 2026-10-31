@@ -14,7 +14,7 @@
     "diagrams": "resources/diagrams",
     "hooks": "resources/hooks",
     "media": "public/media",
-    "schemas": "public/media/schemas",
+    "schemas": "public/api/schemas",
     "public": "public",
     "configFiles": {
       "appearance": ".site/spmpst.appearance.json",
