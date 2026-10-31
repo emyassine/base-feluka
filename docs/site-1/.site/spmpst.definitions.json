@@ -25,7 +25,8 @@
         "fr": "Produits"
       },
       "uri": {
-        "base": "/products/"
+        "base": "/products/",
+        "entry": "feluqa-cli"
       }
     },
     {
