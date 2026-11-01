@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useData } from 'vitepress'
+import type { CSSProperties } from 'vue'
 
 interface HeroButton {
   label: string
@@ -8,32 +10,51 @@ interface HeroButton {
   external?: boolean
 }
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   description: string
   backgroundImage?: string
+  backgroundImageLight?: string
+  backgroundImageDark?: string
   buttons?: HeroButton[]
+  titleStyle?: CSSProperties
+  titleStyleLight?: CSSProperties
+  titleStyleDark?: CSSProperties
+  descriptionStyle?: CSSProperties
+  descriptionStyleLight?: CSSProperties
+  descriptionStyleDark?: CSSProperties
 }>(), {
   backgroundImage: 'https://images.unsplash.com/photo-1739733901473-421dc1e2dc75?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
   buttons: () => [],
 })
 
 const { isDark } = useData()
+const activeBackgroundImage = computed(() =>
+  (isDark.value ? props.backgroundImageDark : props.backgroundImageLight) || props.backgroundImage,
+)
+const titleStyles = computed(() => ({
+  ...props.titleStyle,
+  ...(isDark.value ? props.titleStyleDark : props.titleStyleLight),
+}))
+const descriptionStyles = computed(() => ({
+  ...props.descriptionStyle,
+  ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
+}))
 </script>
 
 <template>
   <section
     class="nm-hero"
     :class="isDark ? 'nm-hero--dark' : 'nm-hero--light'"
-    :style="{ '--nm-hero-image': `url('${backgroundImage}')` }"
+    :style="{ '--nm-hero-image': `url('${activeBackgroundImage}')` }"
   >
     <div class="nm-hero__panel">
       <div class="nm-hero__content">
-        <h1>{{ title }}</h1>
-        <p>{{ description }}</p>
-        <div v-if="buttons.length" class="nm-hero__actions">
+        <h1 :style="titleStyles">{{ props.title }}</h1>
+        <p :style="descriptionStyles">{{ props.description }}</p>
+        <div v-if="props.buttons.length" class="nm-hero__actions">
           <a
-            v-for="(button, index) in buttons"
+            v-for="(button, index) in props.buttons"
             :key="`${button.href}-${index}`"
             class="nm-hero__button"
             :class="`nm-hero__button--${button.style || (index === 0 ? 'primary' : 'secondary')}`"
@@ -49,6 +70,8 @@ const { isDark } = useData()
 
 <style scoped>
 .nm-hero {
+  position: relative;
+  z-index: 0;
   display: grid;
   width: 100vw;
   min-height: clamp(32rem, 66vw, 48rem);
@@ -58,6 +81,10 @@ const { isDark } = useData()
   background-image: var(--nm-hero-image);
   background-position: center;
   background-size: cover;
+}
+
+:global(.VPNav) {
+  z-index: 100;
 }
 
 .nm-hero__panel {
@@ -79,12 +106,6 @@ const { isDark } = useData()
 
 .nm-hero--light { color: #111827; }
 .nm-hero--dark { color: #fff; }
-.nm-hero--light .nm-hero__content {
-  text-shadow: 0 1px 2px #fff, 0 0 14px rgb(255 255 255 / 90%), 0 0 34px rgb(255 255 255 / 72%);
-}
-.nm-hero--dark .nm-hero__content {
-  text-shadow: 0 1px 3px rgb(0 0 0 / 95%), 0 0 18px rgb(0 0 0 / 75%), 0 0 36px rgb(0 0 0 / 55%);
-}
 
 .nm-hero h1 {
   margin: 0 auto;

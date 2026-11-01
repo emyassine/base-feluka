@@ -9,8 +9,12 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <MainlineHomeLayout>
 <NmHero
   title="Technology you can own, understand, and operate"
+  :title-style-light="{ color: '#ffffff' }"
+  :title-style-dark="{ color: '#ffffff' }"
   description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
-  background-image="https://images.unsplash.com/photo-1685902397640-04a02fde0f85?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+  :description-style-light="{ color: '#e2e8f0' }"
+  :description-style-dark="{ color: '#e2e8f0' }"
+  background-image="https://images.unsplash.com/photo-1749497268209-c167ed52b682?q=80&w=1567&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
   :buttons="[
     { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
     { label: 'Explore our services', href: '/services/', style: 'secondary' }
