@@ -269,7 +269,7 @@ for (const collection of collectionMetadata.values()) {
     const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: home`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '', `# ${localizedTitle}`, '']
     if (localizedDescription) lines.push(localizedDescription, '')
     if (collection.indexLayout === 'spotlight') {
-      lines.push(`<CollectionSpotlightCards collection-id="${collection.id}" />`, '')
+      lines.push(`<CollectionSpotlightIndex collection-id="${collection.id}" />`, '')
     } else {
       const grouped = new Map()
       for (const article of articles) {

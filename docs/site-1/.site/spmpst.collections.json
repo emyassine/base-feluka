@@ -47,7 +47,7 @@
     {
       "id": "research",
       "layout": "doc",
-      "indexLayout": "list",
+      "indexLayout": "spotlight",
       "title": {
         "en": "Research",
         "fr": "Recherche"

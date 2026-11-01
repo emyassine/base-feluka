@@ -8,6 +8,7 @@ import sidebarPageIcons from '@generated/sidebar-page-icons.json'
 import generatedCollections from '@generated/collections.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
+import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import './tailwind.css'
 import './style.css'
 import '@generated/configured-styles'
@@ -593,6 +594,7 @@ export default {
   Layout: MermaidLayout,
   enhanceApp(context: Parameters<NonNullable<typeof DefaultTheme.enhanceApp>>[0]) {
     DefaultTheme.enhanceApp?.(context)
+    context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
     registerProjectComponents(context.app)
   },
 }

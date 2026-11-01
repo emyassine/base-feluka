@@ -64,7 +64,8 @@
             "enum": [
               "list",
               "spotlight"
-            ]
+            ],
+            "description": "Use spotlight to generate the built-in collection presentation page with search, category filtering, and sorting. This option is per collection."
           },
           "categoryFile": {
             "type": "string",
