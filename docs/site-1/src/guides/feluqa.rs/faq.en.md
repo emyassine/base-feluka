@@ -44,8 +44,6 @@ const questions = computed(() => faqItems.value)
   </section>
 </div>
 
-
-
 <style>
 .faq-page {
   box-sizing: border-box;
@@ -80,38 +78,31 @@ const questions = computed(() => faqItems.value)
 .faq-answers details > summary {
   position: relative;
   display: block;
-  padding: 1rem 1rem 1rem 2.2rem;
+  margin: 0;
+  padding: 0.6rem 1rem 0.6rem 2.2rem;
   cursor: pointer;
   user-select: none;
 }
 
-.custom-block.details summary {
-    margin: 0;
-    padding-top:0;
-    padding-bottom:0;
-    padding-left:2;
-}
 .faq-answers details > summary::before {
   position: absolute;
-  top: 1.3rem;
+  top: 50%;
   left: 1rem;
   border-width: 0.4rem;
   border-style: solid;
   border-color: transparent transparent transparent var(--vp-c-text-2);
   content: '';
-  transform: rotate(0);
-  transform-origin: 0.2rem 50%;
+  transform: translateY(-50%) rotate(0);
   transition: transform 0.25s ease;
 }
 
 .faq-answers details[open] > summary::before {
-  transform: rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
 }
 
 .faq-answers details > summary::-webkit-details-marker {
   display: none;
 }
-
 
 @media (max-width: 640px) {
   .faq-page {
