@@ -294,9 +294,16 @@ const MermaidLayout = {
       const localized = segments.length > 1 && content.languages?.includes(segments[0]) && segments[0] !== content.defaultLanguage
       const routeKey = localized ? `${segments[0]}/${segments[1]}` : segments[0] ?? 'root'
       const slots = { ...themeSlots?.site, ...themeSlots?.guides?.[routeKey] }
-      // Use collection metadata from the page instead of inferring its layout from the URL.
+      const pagePath = route.path.replace(/\/+$/, '') || '/'
       const isCollectionLayout = typeof pageFrontmatter.value.collection === 'string'
         || typeof pageFrontmatter.value.collectionIndex === 'string'
+        || (generatedCollections as Array<{
+          links?: Record<string, string>
+          articles?: Record<string, Array<{ url?: string }>>
+        }>).some((collection) => [
+          ...Object.values(collection.links ?? {}),
+          ...Object.values(collection.articles ?? {}).flatMap((articles) => articles.map((article) => article.url ?? '')),
+        ].some((url) => url.replace(/\/+$/, '') === pagePath))
       if (content.siteFooter) {
         const usesDocumentLayout = !isCollectionLayout && (pageFrontmatter.value.layout == null || pageFrontmatter.value.layout === 'doc')
         slots[usesDocumentLayout ? 'doc-bottom' : 'layout-bottom'] = content.siteFooter

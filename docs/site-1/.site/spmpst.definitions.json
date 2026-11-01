@@ -6,10 +6,10 @@
   "subguides": [
     {
       "path": "feluqa.rs",
-      "label": "Docs",
+      "label": "Manual",
       "labels": {
-        "en": "Docs",
-        "fr": "Docs"
+        "en": "Manual",
+        "fr": "Manuel"
       },
       "uri": {
         "base": "/",

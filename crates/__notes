@@ -4,9 +4,20 @@ https://kenin.ch/blog/server-driven-ui
 
 
 ________
+READ : https://fr.wikipedia.org/wiki/Java_Web_Start
 
-Agentic dev: what is mcp.cua_repl.js
+________
 
+question (agentic dev) : what is mcp.cua_repl.js
+answer : https://developers.openai.com/api/docs/guides/tools-computer-use?sdk-task=computer#run-your-first-task
+
+Rust n’a pas d’outil natif d’inspection visuelle de navigateur comparable à mcp__cua_repl.js. Mais on peut piloter un navigateur depuis un projet Rust avec thirtyfour (WebDriver) [https://docs.rs/thirtyfour/latest/thirtyfour/] ou fantoccini [https://docs.rs/fantoccini/latest/fantoccini/], puis récupérer des captures d’écran ou inspecter le DOM.
+
+Pour ton cas — **inspecter et automatiser les pages en Rust** — je choisirais **`thirtyfour`** : il permet d’automatiser l’interface et de prendre des captures d’écran, avec un outil de lancement de WebDriver intégré. [Documentation `thirtyfour`](https://docs.rs/thirtyfour/latest/thirtyfour/)
+
+`fantoccini` convient aussi, mais il faut démarrer un serveur WebDriver séparément. [Documentation `fantoccini`](https://docs.rs/fantoccini/latest/fantoccini/)
+
+`cua_repl.js` sert à un autre usage : laisser un agent observer une interface et agir visuellement. Pour des vérifications répétables et pilotées par du code Rust, `thirtyfour` est le meilleur choix parmi les trois. [Guide OpenAI Computer Use](https://developers.openai.com/api/docs/guides/tools-computer-use)
 ________
 
 
