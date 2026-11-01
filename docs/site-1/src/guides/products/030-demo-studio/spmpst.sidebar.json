@@ -1,0 +1,13 @@
+{
+  "labels": {
+    "en": "Demo Studio",
+    "fr": "Studio démo"
+  },
+  "icon": "@spmpst::icon::layout-dashboard",
+  "menu": {
+    "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80",
+    "description": "A fictional dashboard product for testing menu composition.",
+    "date": "DEMO",
+    "location": "Preview only"
+  }
+}

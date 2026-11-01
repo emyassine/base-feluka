@@ -130,7 +130,7 @@ function backgroundImage(image: unknown): string {
 </template>
 
 <style scoped>
-.FeluqaMegaMenu__body { width: min(960px, calc(100vw - 32px)); min-width: 0; padding: 8px; color: var(--vp-c-text-1); box-sizing: border-box; }
+.FeluqaMegaMenu__body { width: min(960px, calc(100vw - 32px)); min-width: 0; color: var(--vp-c-text-1); box-sizing: border-box; }
 :deep(.menu) { right: auto !important; left: 50% !important; transform: translate(-50%, 0) !important; }
 :deep(.button), :deep(.button:hover), :deep(.text), :deep(.VPFlyout:hover .text), :deep(.VPFlyout.active .text) { color: var(--vp-c-text-1) !important; }
 .FeluqaMegaMenu__cards { display: grid; width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
