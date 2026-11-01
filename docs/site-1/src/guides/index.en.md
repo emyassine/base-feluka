@@ -5,6 +5,10 @@ description: Guides for building applications, understanding the platform, and c
 layout: home
 ---
 
+<script setup>
+import dashboardHeroImage from '@docs/src/guides/feluqa.rs/.art/screenshot_1.png'
+</script>
+
 <MainlineHomeLayout>
 <MainlineHero
       title="One platform for every application target."
@@ -13,7 +17,8 @@ layout: home
       primary-href="/get-started/"
       secondary-label="Explore the architecture"
       secondary-href="/internals/"
-      hero-alt="hero"
+      :hero-image="dashboardHeroImage"
+      hero-alt="Feluqa dashboard screenshot"
       :points='[
         { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product." },
         { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles." },

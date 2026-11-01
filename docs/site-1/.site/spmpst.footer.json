@@ -3,8 +3,8 @@
   "component": "FeluqaDocsFooter",
   "content": {
     "title": {
-      "en": "Build with the current foundations",
-      "fr": "Construisez sur les fondations actuelles"
+      "en": "It's Time To Compile",
+      "fr": "Il Est Temps de Compiler"
     },
     "description": {
       "en": "Follow the guides, check what is implemented, and help move the framework forward.",

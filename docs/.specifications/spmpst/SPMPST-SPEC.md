@@ -113,7 +113,7 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
     "assets": "resources/assets",
     "components": "resources/components",
     "diagrams": "resources/diagrams",
-    "hooks": "resources/hooks",
+    "hooks": ".site/hooks",
     "media": "public/media",
     "schemas": "public/api/schemas",
     "public": "public",
@@ -134,7 +134,7 @@ Every site has one declaration file at `<tree-root>/spmpst.json`. The declaratio
     },
     "icons": "../vitepress-site/resources/icons",
     "flags": "../vitepress-site/resources/flags",
-    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "mermaidConfig": ".site/spmpst.mermaid.json",
     "toolchain": "../vitepress-site",
     "output": "../../docs-output/site-1"
   },
@@ -208,11 +208,15 @@ docs/site-1/                                      # site root selected by paths.
 │       └── articles/
 │           ├── spmpst.category.json
 │           └── <article>.<language>.md
-└── resources/
+├── resources/
     ├── assets/                                    # brand images and fonts
     ├── components/                                # site Vue components; _layout/ has layout components
-    ├── diagrams/                                  # Mermaid configuration
+    └── diagrams/                                  # authored diagrams and related resources
+└── .site/
+    ├── spmpst.mermaid.json                        # site Mermaid rendering configuration
     └── hooks/                                     # documentation hooks and SEO transforms
+
+The site-owned Mermaid configuration is `.site/spmpst.mermaid.json`. Hook implementation files live under `.site/hooks/`, as selected by `paths.hooks`; `resources/` contains published or reusable site resources such as assets, components, and diagrams.
 ```
 
 The `.archives/` directory exists in site-1 but is not read or published by the SPMPST build. The site root contains the `paths.guides`, `paths.collections`, `paths.resources`, and `paths.public` roots selected by its root manifest. `public/` is the one static publishing tree: root files such as `robots.txt` and nested files such as `public/api/schemas/example.json` are copied with their relative paths, becoming `/robots.txt` and `/api/schemas/example.json`. `paths.media` identifies the media subtree inside `public/`; it is not published through a separate mechanism. `paths.schemas` identifies the public location of copied JSON schema files and may point outside `paths.media`. Tool-owned icon and flag catalogues live separately in `paths.sharedResources` and are not part of the site tree.
@@ -578,7 +582,7 @@ Full form (**CURRENT** for the VitePress host):
     "assets": "resources/assets",
     "components": "resources/components",
     "diagrams": "resources/diagrams",
-    "hooks": "resources/hooks",
+    "hooks": ".site/hooks",
     "media": "public/media",
     "schemas": "public/api/schemas",
     "public": "public",
@@ -598,7 +602,7 @@ Full form (**CURRENT** for the VitePress host):
     },
     "icons": "../vitepress-site/resources/icons",
     "flags": "../vitepress-site/resources/flags",
-    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "mermaidConfig": ".site/spmpst.mermaid.json",
     "toolchain": "../vitepress-site",
     "output": "../../docs-output/site-1"
   },
@@ -799,7 +803,7 @@ Declaration (`docs/site-1/spmpst.json`):
 {
   "id": "feluqa-docs",
   "name": "Feluqa documentation",
-  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": "resources/hooks", "media": "public/media", "schemas": "public/media/schemas", "public": "public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "footer": ".site/spmpst.footer.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": "resources/diagrams/mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
+  "paths": { "root": ".", "config": ".site", "guides": "src/guides", "collections": "src/collections", "resources": "resources", "sharedResources": "../vitepress-site/resources", "assets": "resources/assets", "components": "resources/components", "diagrams": "resources/diagrams", "hooks": ".site/hooks", "media": "public/media", "schemas": "public/api/schemas", "public": "public", "configFiles": { "appearance": ".site/spmpst.appearance.json", "collections": ".site/spmpst.collections.json", "definitions": ".site/spmpst.definitions.json", "footer": ".site/spmpst.footer.json", "lang": ".site/spmpst.lang.json", "layout": ".site/spmpst.layout.json", "links": ".site/spmpst.links.json", "markdown": ".site/spmpst.markdown.json", "outline": ".site/spmpst.outline.json", "search": ".site/spmpst.search.json", "seo": ".site/spmpst.seo.json", "topbar": ".site/spmpst.topbar.json" }, "icons": "../vitepress-site/resources/icons", "flags": "../vitepress-site/resources/flags", "mermaidConfig": ".site/spmpst.mermaid.json", "toolchain": "../vitepress-site", "output": "../../docs-output/site-1" },
   "engine": "toolchain",
   "toolchain": { "preset": "vitepress", "cwd": "toolchain", "install": { "command": "npm", "args": ["ci"], "when": "missing" }, "build": { "command": "./node_modules/.bin/vitepress", "args": ["build", "{generatedDir}"] }, "dev": { "command": "./node_modules/.bin/vitepress", "args": ["dev", "{generatedDir}", "--host", "{host}", "--port", "{port}", "--strictPort"] }, "network": "install-only" }
 }
@@ -875,7 +879,7 @@ Dependencies are provisioned through each site's declared `toolchain.install` ac
 ## C9. Components, hooks, styles
 
 - Vue SFCs below `project.components` are discovered recursively and registered globally in generated `components.ts`; semantic component placements in site and guide config are validated against them.
-- Hooks by convention under `project.hooks`: `documentation-hooks` (+ optional `.css`) exports `DocumentationNotice`, `DocumentationLastModified` (no-op components when absent); `documentation-seo` exports `transformDocumentationHead` (no-op when absent).
+- Hook implementations live under the declared `project.hooks` directory (default `.site/hooks`): `documentation-hooks` (+ optional `.css`) exports `DocumentationNotice`, `DocumentationLastModified` (no-op components when absent); `documentation-seo` exports `transformDocumentationHead` (no-op when absent).
 - Configured styles are emitted as imports in a generated TypeScript module.
 
 ## C10. Current limits and remaining work in this stage

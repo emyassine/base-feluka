@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import heroImage from './assets/hero.webp'
+import defaultHeroImage from './assets/hero.webp'
 import SideRays from './SideRays.vue'
 import FeluqaButton from '../ui/FeluqaButton.vue'
 
-defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   lead: string
   primaryLabel: string
@@ -11,8 +11,11 @@ defineProps<{
   secondaryLabel: string
   secondaryHref: string
   heroAlt: string
+  heroImage?: string
   points: Array<{ title: string; description: string }>
-}>()
+}>(), {
+  heroImage: defaultHeroImage,
+})
 </script>
 
 <template>
@@ -65,7 +68,7 @@ defineProps<{
 
     <div class="relative z-10 mt-12 max-lg:ml-6 max-lg:h-[550px] max-lg:overflow-hidden md:mt-20 lg:container lg:mt-24">
       <div class="relative h-[793px] w-full overflow-hidden rounded-2xl shadow-lg max-lg:rounded-tr-none">
-        <img :src="heroImage" :alt="heroAlt" class="h-full w-full object-cover object-left-top" />
+        <img :src="props.heroImage" :alt="heroAlt" class="h-full w-full object-cover object-left-top" />
       </div>
     </div>
   </section>

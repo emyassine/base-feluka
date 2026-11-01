@@ -12,7 +12,7 @@
     "assets": "resources/assets",
     "components": "resources/components",
     "diagrams": "resources/diagrams",
-    "hooks": "resources/hooks",
+    "hooks": ".site/hooks",
     "media": "public/media",
     "schemas": "public/media/schemas",
     "public": "public",
@@ -33,7 +33,7 @@
     },
     "icons": "../vitepress-site/resources/icons",
     "flags": "../vitepress-site/resources/flags",
-    "mermaidConfig": "resources/diagrams/mermaid.json",
+    "mermaidConfig": ".site/spmpst.mermaid.json",
     "toolchain": "../vitepress-site",
     "output": "../../docs-output/site-2"
   },

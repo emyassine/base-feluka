@@ -5,6 +5,8 @@ location is declared by `paths.config` in the root `../spmpst.json`; individual
 concern file locations are registered in `paths.configFiles`. Site behavior belongs in the
 `spmpst.*.json` concern files; localized text belongs in the concern that consumes it; its leaf values use key-centric language maps.
 
+The Mermaid theme is configured in `spmpst.mermaid.json`. Site-specific hook source files live in `hooks/`; both paths are registered in the root `spmpst.json`.
+
 | File | Owns |
 |---|---|
 | `spmpst.definitions.json` | Site identity, guide registry, and icon fallback. |

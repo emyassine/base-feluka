@@ -39,7 +39,7 @@
         "assets": "resources/assets",
         "components": "resources/components",
         "diagrams": "resources/diagrams",
-        "hooks": "resources/hooks",
+        "hooks": ".site/hooks",
         "media": "public/media",
         "schemas": "public/api/schemas",
         "public": "public",
@@ -60,7 +60,7 @@
         },
         "icons": "{iconsPath}",
         "flags": "{flagsPath}",
-        "mermaidConfig": "resources/diagrams/mermaid.json",
+        "mermaidConfig": ".site/spmpst.mermaid.json",
         "toolchain": "{toolchainPath}",
         "output": "{outputPath}"
       },
@@ -136,7 +136,7 @@
         "hooks": {
           "type": "string",
           "minLength": 1,
-          "default": "resources/hooks"
+          "default": ".site/hooks"
         },
         "media": {
           "type": "string",
@@ -258,7 +258,7 @@
         "mermaidConfig": {
           "type": "string",
           "minLength": 1,
-          "default": "resources/diagrams/mermaid.json"
+          "default": ".site/spmpst.mermaid.json"
         },
         "toolchain": {
           "type": "string",
@@ -459,7 +459,7 @@
       "assets": "resources/assets",
       "components": "resources/components",
       "diagrams": "resources/diagrams",
-      "hooks": "resources/hooks",
+      "hooks": ".site/hooks",
       "media": "public/media",
       "schemas": "public/api/schemas",
       "public": "public",
@@ -478,7 +478,7 @@
       },
       "icons": "{iconsPath}",
       "flags": "{flagsPath}",
-      "mermaidConfig": "resources/diagrams/mermaid.json",
+      "mermaidConfig": ".site/spmpst.mermaid.json",
       "toolchain": "{toolchainPath}",
       "output": "{outputPath}"
     },
