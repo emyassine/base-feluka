@@ -10,42 +10,56 @@ status: "Exploring"
 category: "interface-architecture"
 tags: [research, multiplatform, interface, architecture]
 ---
+
 # Rethinking Reliable Software Development
 
-## The Feluqa Interface Standard: one description, many native profiles, one namespace
+<div style="display:flex;align-items:center;gap:14px;margin:24px 0 32px;">
+  <img src="https://raw.githubusercontent.com/numerimondes/.github/refs/heads/main/assets/brands/numerimondes/team/photos/optimized/elmoumenyassine-founder.jpg" alt="El Moumen Yassine" style="width:52px;height:52px;min-width:52px;object-fit:cover;object-position:center;border-radius:50%;border:2px solid var(--vp-c-divider);">
+  <div style="display:flex;flex-direction:column;justify-content:center;gap:3px;line-height:1.4;">
+    <span style="font-size:12px;font-weight:600;">
+    	<span style="color:var(--vp-c-text-2);">Research by </span>
+     <span style="color:var(--vp-c-brand-1);">El Moumen Yassine</span>
+    </span>
+    <span style="font-size:12px;color:var(--vp-c-text-2);">Founder of <a href="https://numerimondes.com" target="_blank" rel="noopener noreferrer" style="color:var(--vp-c-brand-1);text-decoration:none;">Numerimondes</a></span>
+  </div>
+</div>
 
-*Draft 0.1, 1 November 2026. Status: proposal and research record. Nothing described as a target in this document is implemented yet.*
+
+:::: info Summary
+
+| Field | Description |
+|-------|-------------|
+| Standard | The Feluqa Interface Standard |
+| Objective | Write once, deploy across multiple platforms |
+| Rendering | Cross-platform by default, platform-native when desired |
+| Extensibility | Custom components, native implementations, and configurable fallbacks |
+| Draft | 0.2 |
+| Date | 1 November 2026 |
+| Status | Exploring — proposal and research record |
+
+This document explores a unified, Rust-based approach to building reliable, cross-platform applications with minimal to no platform-specific development effort.
+
+Feluqa aims to provide a reusable, customizable interface system out of the box, while allowing developers to use native platform components or supply their own implementations when needed.
+
+The primary objective is to enable rapid application development without sacrificing the ability to deliver fully native experiences where required.
+
+**Implementation status:** The interface architecture described in this document remains a research proposal. Features presented as targets are not yet implemented.
+
+::: details Table of Content
+[[toc]]
+:::
+::::
 
 ---
+# Why do that ?
 
-## Contents
+First this
 
-0. Definitions
-1. Introduction
-2. What to Do
-3. Why: the Reason Behind Each Directive
-4. The Original Questions, Answered
-5. The Native Reality
-6. Fact-Checking the Outside Advice
-7. The Interface Tree and the Filament-Style Programming Model
-8. The Web Profile: Maud, htmx and Alpine.js
-9. The Profile Ladder: KDE, Android, Apple, GNOME, Canvas
-10. The Namespace and the Internalization Standard
-11. Procedures: How to Internalize and Uniformize
-12. Risks, Hard Truths and Kill Conditions
-13. Example Panels
-14. Road Map
-- Appendix A. Complete Rule List
-- Appendix B. Acceptance Checklists
-- References
-
----
-
-# Chapter 0 Definitions
+# Definitions
 
 **Caveat:** this chapter comes first on purpose. Every abbreviation and every unusual term used later in this document is defined here, once. If you find an abbreviation later that is not in this chapter, that is a defect in the document; please report it.
 
-## 0.1 Key words that make this a standard
+## Key words that make this a standard
 
 The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY**, when written in capital letters, carry the meaning given by the Internet Engineering Task Force document known as Request for Comments 2119 (see the background references at the end).
 
