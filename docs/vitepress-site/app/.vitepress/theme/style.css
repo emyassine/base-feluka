@@ -584,6 +584,7 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   box-sizing: border-box;
   object-fit: contain;
   object-position: left center;
+  vertical-align: middle;
 }
 /* Optional site-wide heading family configured with fonts.heading. */
 .vp-doc h1,

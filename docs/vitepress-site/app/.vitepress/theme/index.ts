@@ -251,18 +251,9 @@ function actionButton(action: string, label: string, icon: 'in' | 'out' | 'expan
   return button
 }
 
-async function inlineConfiguredLogo(image: HTMLImageElement, source: string): Promise<void> {
+async function inlineConfiguredLogo(image: HTMLImageElement | SVGSVGElement, source: string): Promise<void> {
   if (image.dataset.inlineLogoSource === source) return
   if (!source.startsWith('/') || image.dataset.inliningLogo === 'true') return
-  const logoContainer = image.parentElement
-  logoContainer?.querySelectorAll('.logo').forEach((logo) => {
-    if (logo !== image) logo.remove()
-  })
-  const existingInlineLogo = image.parentElement?.querySelector('svg.logo')
-  if (existingInlineLogo) {
-    image.remove()
-    return
-  }
   image.dataset.inliningLogo = 'true'
   try {
     const response = await fetch(source)
@@ -274,8 +265,11 @@ async function inlineConfiguredLogo(image: HTMLImageElement, source: string): Pr
     const replacement = document.importNode(svg, true)
     replacement.classList.add(...image.classList)
     replacement.classList.add('logo')
+    for (const attribute of Array.from(image.attributes)) {
+      if (attribute.name.startsWith('data-v-')) replacement.setAttribute(attribute.name, attribute.value)
+    }
     replacement.setAttribute('role', 'img')
-    replacement.setAttribute('aria-label', image.alt)
+    replacement.setAttribute('aria-label', image instanceof HTMLImageElement ? image.alt : image.getAttribute('aria-label') ?? '')
     replacement.dataset.inlineLogoSource = source
     image.replaceWith(replacement)
   } finally {
@@ -348,13 +342,15 @@ const MermaidLayout = {
         colors.inlineCodeBackgroundLightMode ? `:root:not(.dark) { --vp-code-bg: ${colors.inlineCodeBackgroundLightMode}; }` : '',
       ].filter(Boolean).join('\n')
       guideStyle.textContent = `${logoRules}\n${codeBackgroundRules}`
-      document.querySelectorAll<HTMLImageElement>('.VPNavBarTitle img.logo').forEach((logo) => {
+      document.querySelectorAll<HTMLElement>('.VPNavBarTitle .logo').forEach((logo) => {
         const source = logo.classList.contains('dark') ? colors.logoDark : colors.logoLight
         if (typeof source === 'string' && source) {
-          if (logo.getAttribute('src') !== source) logo.setAttribute('src', source)
-          if (content.inlineLogo === true) void inlineConfiguredLogo(logo, source)
+          if (logo instanceof HTMLImageElement && logo.getAttribute('src') !== source) logo.setAttribute('src', source)
+          if (content.inlineLogo === true && (logo instanceof HTMLImageElement || logo instanceof SVGSVGElement)) {
+            void inlineConfiguredLogo(logo, source)
+          }
         }
-        if (typeof colors.logoAlt === 'string') logo.alt = colors.logoAlt
+        if (typeof colors.logoAlt === 'string') logo.setAttribute('aria-label', colors.logoAlt)
       })
       const fontConfig = generatedFonts as { site: Record<string, any>; guides: Record<string, Record<string, any>> }
       const fonts = { ...fontConfig.site, ...(fontConfig.guides[pathGuide] ?? {}) }

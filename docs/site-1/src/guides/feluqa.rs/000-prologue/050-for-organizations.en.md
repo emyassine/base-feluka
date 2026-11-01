@@ -155,9 +155,3 @@ Four questions. No call needed to start.
 **Where can we reach you?** Name, organization, email, and a few lines about what is not working today.
 
 We read every brief ourselves. Write to [contact@numerimondes.com](mailto:contact@numerimondes.com) or use the form below.
-
-[Send a brief](mailto:contact@numerimondes.com?subject=Feluqa%20project%20brief)
-
----
-
-NUMERIMONDES SARL AU · Casablanca · [Legal overview](/legal/)

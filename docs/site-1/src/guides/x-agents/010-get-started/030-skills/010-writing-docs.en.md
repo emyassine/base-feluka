@@ -113,6 +113,12 @@ claims that proprietary or open-source licensing by itself makes software
 secure. For technical security claims, use accurate wording and link to
 authoritative references.
 
+Page `status` metadata renders a documentation notice above the page content.
+Validated notices are compact and single-line by default. Use the optional
+`notice` front matter map to make notices dismissible or collapsible, reduce
+their visual emphasis with `subtle: true`, or set `autoDismissMs` to a positive
+number of milliseconds. The site configuration guide documents all options.
+
 ## Explain licensing and AI choices without conflating them
 
 - Proprietary describes ownership and distribution; it does not by itself

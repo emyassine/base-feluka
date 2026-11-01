@@ -27,3 +27,24 @@ The current `paths.public: "public"` in `../spmpst.json` selects the site-root `
 Keep published media grouped by type under `public/media/`: images in `images/`, fonts in `fonts/`, and icons in `icons/`. Reference these files by their public URL (for example, `/media/images/screenshot_1.png`) or through the configured media resolver. API schemas remain in `public/api/schemas/`.
 `npm run docs:check` validates the assembled configuration and source content;
 add `-- --strict-i18n` to reject missing translations.
+
+## Documentation notices
+
+The page `status` front matter renders an Exploring or Validated notice. Validated
+notices use a compact, single-line presentation by default. Add a `notice` map to
+the page front matter to change the presentation:
+
+```yaml
+notice:
+  dismissible: true
+  collapsible: true
+  subtle: true
+  autoDismissMs: 8000
+```
+
+All options are optional. `dismissible` adds a close control, `collapsible`
+starts the notice closed behind a disclosure row, `subtle` removes its colored
+surface, and `autoDismissMs` closes notices after the given number of
+milliseconds. Set `compact: false` to restore a title and message for the
+Validated notice. Notice icons are SVG icons rendered consistently for every
+notice type.

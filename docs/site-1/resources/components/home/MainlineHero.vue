@@ -356,7 +356,7 @@ onBeforeUnmount(() => cancelAnimationFrame(raf))
   border-radius: 2rem;
 }
 
-:global(.dark) .hero-glow {
+html.dark .hero-glow {
   opacity: 0.3;
 }
 
@@ -412,7 +412,7 @@ onBeforeUnmount(() => cancelAnimationFrame(raf))
   animation-range: entry 0% entry 55%;
 }
 
-:global(.dark) .hero-frame {
+html.dark .hero-frame {
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.08),
     0 12px 24px -6px rgb(0 0 0 / 0.5),
