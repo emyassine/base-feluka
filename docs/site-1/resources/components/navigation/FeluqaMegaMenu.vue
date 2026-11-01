@@ -79,9 +79,6 @@ function field(item: DefaultTheme.NavItem, name: string): unknown {
 }
 function has(name: string): boolean { return fields.value.has(name) }
 function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in item ? item.link : undefined }
-function backgroundImage(image: unknown): string {
-  return `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${String(image ?? '')})`
-}
 </script>
 
 <template>
@@ -116,21 +113,25 @@ function backgroundImage(image: unknown): string {
       <div v-else-if="layout === 'background'" class="FeluqaMegaMenu__background-grid" :style="backgroundGridStyle">
         <template v-if="options.composition">
           <div v-for="(column, columnIndex) in composedColumns" :key="`composition-column-${columnIndex}`" class="FeluqaMegaMenu__background-column" :style="{ gap: `${column.gap}px`, gridTemplateRows: `repeat(${column.cards.length}, minmax(0, 1fr))` }">
-            <a v-for="card in column.cards" :key="card.key" :href="card.kind === 'more' ? card.item.link ?? '#' : href(card.item)" class="FeluqaMegaMenu__background-card" :style="{ backgroundImage: backgroundImage(card.kind === 'more' ? card.item.image : field(card.item, 'image')) }">
+            <a v-for="card in column.cards" :key="card.key" :href="card.kind === 'more' ? card.item.link ?? '#' : href(card.item)" class="FeluqaMegaMenu__background-card">
+              <img class="FeluqaMegaMenu__background-image" :src="String(card.kind === 'more' ? card.item.image ?? '' : field(card.item, 'image') ?? '')" alt="">
               <img v-if="card.kind === 'child' && has('icon') && field(card.item, 'icon')" :src="String(field(card.item, 'icon'))" alt="" class="FeluqaMegaMenu__background-icon">
               <span><strong>{{ card.kind === 'more' ? localized(card.item.text) : field(card.item, 'title') }}</strong><small>{{ card.kind === 'more' ? 'Explore the full product catalog →' : field(card.item, 'description') }}</small></span>
             </a>
           </div>
         </template>
         <template v-else>
-        <a v-if="more && morePosition === 'before'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${more.image ?? ''})` }">
+        <a v-if="more && morePosition === 'before'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card">
+          <img class="FeluqaMegaMenu__background-image" :src="more.image ?? ''" alt="">
           <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
         </a>
-        <a v-for="(child, index) in displayChildren" :key="`${href(child) ?? String(child.text)}-${index}`" :href="href(child)" class="FeluqaMegaMenu__background-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${String(field(child, 'image') ?? '')})` }">
+        <a v-for="(child, index) in displayChildren" :key="`${href(child) ?? String(child.text)}-${index}`" :href="href(child)" class="FeluqaMegaMenu__background-card">
+          <img class="FeluqaMegaMenu__background-image" :src="String(field(child, 'image') ?? '')" alt="">
           <img v-if="has('icon') && field(child, 'icon')" :src="String(field(child, 'icon'))" alt="" class="FeluqaMegaMenu__background-icon">
           <span><strong>{{ field(child, 'title') }}</strong><small>{{ field(child, 'description') }}</small></span>
         </a>
-        <a v-if="more && morePosition === 'after'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card" :style="{ backgroundImage: `linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)), url(${more.image ?? ''})` }">
+        <a v-if="more && morePosition === 'after'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card">
+          <img class="FeluqaMegaMenu__background-image" :src="more.image ?? ''" alt="">
           <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
         </a>
         </template>
@@ -175,18 +176,21 @@ h3 { margin: 0 0 12px; font-size: .95rem; }
 .FeluqaMegaMenu__event span { display: grid; gap: 3px; }
 .FeluqaMegaMenu__background-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .FeluqaMegaMenu__background-column { display: grid; min-width: 0; min-height: 0; }
-.FeluqaMegaMenu__background-card { display: flex; min-width: 0; min-height: var(--feluqa-mega-card-height, 260px); box-sizing: border-box; flex-direction: column; justify-content: space-between; padding: 18px; border-radius: 10px; background-position: center; background-size: cover; color: white !important; text-decoration: none; overflow: hidden; transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
-.FeluqaMegaMenu__background-card:hover { transform: scale(1.06); }
+.FeluqaMegaMenu__background-card { position: relative; display: flex; min-width: 0; min-height: var(--feluqa-mega-card-height, 260px); box-sizing: border-box; flex-direction: column; justify-content: space-between; padding: 18px; border-radius: 10px; color: white !important; text-decoration: none; overflow: hidden; transition: box-shadow .4s cubic-bezier(.22, 1, .36, 1); }
+.FeluqaMegaMenu__background-card::after { position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)); content: ''; pointer-events: none; }
+.FeluqaMegaMenu__background-card:hover { box-shadow: 0 12px 28px rgb(0 0 0 / .16); }
+.FeluqaMegaMenu__background-image { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+.FeluqaMegaMenu__background-card:hover .FeluqaMegaMenu__background-image { transform: scale(1.08); }
 .FeluqaMegaMenu:hover .FeluqaMegaMenu__background-card, .FeluqaMegaMenu.active .FeluqaMegaMenu__background-card { animation: FeluqaMegaMenu-card-in .36s cubic-bezier(.22, 1, .36, 1) both; }
 .FeluqaMegaMenu__background-card:nth-child(1) { animation-delay: .16s; }
 .FeluqaMegaMenu__background-card:nth-child(2) { animation-delay: .1s; }
 .FeluqaMegaMenu__background-card:nth-child(3) { animation-delay: .04s; }
 .FeluqaMegaMenu__background-card:nth-child(n + 4) { animation-delay: 0s; }
-.FeluqaMegaMenu__background-card span { display: grid; gap: 6px; min-width: 0; }
+.FeluqaMegaMenu__background-card span { position: relative; z-index: 2; display: grid; gap: 6px; min-width: 0; }
 .FeluqaMegaMenu__background-card strong { overflow-wrap: anywhere; font-size: 1.05rem; }
 .FeluqaMegaMenu__background-card small { display: -webkit-box; overflow: hidden; color: rgb(255 255 255 / .82); -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
-.FeluqaMegaMenu__background-icon { width: 28px; height: 28px; object-fit: contain; filter: brightness(0) invert(1); }
+.FeluqaMegaMenu__background-icon { position: relative; z-index: 2; width: 28px; height: 28px; object-fit: contain; filter: brightness(0) invert(1); }
 @media (max-width: 768px) { .FeluqaMegaMenu__body { width: min(600px, calc(100vw - 32px)); }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events, .FeluqaMegaMenu__background-grid { grid-template-columns: 1fr !important; }.FeluqaMegaMenu__background-card { min-height: 220px; } }
-@media (prefers-reduced-motion: reduce) { .FeluqaMegaMenu__card, .FeluqaMegaMenu__background-card, .FeluqaMegaMenu__card > img { animation: none; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .FeluqaMegaMenu__card, .FeluqaMegaMenu__background-card, .FeluqaMegaMenu__card > img, .FeluqaMegaMenu__background-image { animation: none; transform: none; } }
 @keyframes FeluqaMegaMenu-card-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 </style>
