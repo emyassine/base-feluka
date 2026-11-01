@@ -95,6 +95,23 @@ body:has(.docs-home) #VPContent .VPHome .vp-doc.container {
   padding: 0;
 }
 
+/* Home pages use a full-width closing section aligned with the desktop content area. */
+@media (min-width: 960px) {
+  body:has(.VPContent.is-home.has-sidebar) .footer-deluqa-docs {
+    box-sizing: border-box;
+    width: calc(min(100vw, var(--vp-layout-max-width)) - var(--vp-sidebar-width));
+    max-width: none;
+    margin-left: calc(max(0px, (100vw - var(--vp-layout-max-width)) / 2) + var(--vp-sidebar-width));
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  body:has(.VPContent.is-home.has-sidebar) .footer-deluqa-docs {
+    width: calc(var(--vp-layout-max-width) - var(--vp-sidebar-width));
+  }
+}
+
 .docs-home .container:not([class*="max-w-"]) {
   max-width: 1220px;
 }

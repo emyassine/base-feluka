@@ -20,13 +20,13 @@ const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : p
 </script>
 
 <template>
-  <footer class="flex w-full flex-col items-center gap-14 pt-8 text-center lg:pt-10">
-    <div class="container space-y-3 text-center">
+  <footer class="footer-cta flex w-full flex-col items-center gap-8 pt-6 text-center md:gap-14 md:pt-8 lg:pt-10">
+    <div class="container footer-cta__content space-y-3 text-center">
       <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
       <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
       <div><a :href="actionHref" class="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium !text-primary-foreground !no-underline">{{ actionLabel }}</a></div>
     </div>
-    <nav class="container flex flex-col items-center gap-3">
+    <nav class="container footer-cta__content flex flex-col items-center gap-3">
       <ul v-if="navigation.length" class="footer-navigation flex list-none flex-wrap items-center justify-center gap-x-7 gap-y-2 p-0">
         <li v-for="item in navigation" :key="`${item.href}-${item.name}`">
           <a :href="item.href" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noreferrer' : undefined" class="footer-link flex items-center gap-1 !no-underline">
@@ -41,11 +41,15 @@ const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : p
         </li>
       </ul>
     </nav>
-    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="logoImg || footerImage" :alt="logoAlt" :style="logoStyle" class="mx-auto block w-full max-w-3xl" /></div>
+    <div class="text-primary mt-4 w-full md:mt-14 lg:mt-20"><img :src="logoImg || footerImage" :alt="logoAlt" :style="logoStyle" class="footer-brand-image" /></div>
   </footer>
 </template>
 
 <style scoped>
+.footer-cta,
+.footer-cta__content { box-sizing: border-box; min-width: 0; max-width: 100%; }
+.footer-cta__content { width: 100%; padding-inline: 16px; }
+.footer-brand-image { display: block; width: 100%; max-width: 100%; height: auto; margin-inline: auto; object-fit: contain; }
 .footer-link,
 .footer-sub-link { transition: color 180ms ease, opacity 180ms ease; }
 .footer-link { color: var(--vp-c-text-1); font-size: 0.9rem; font-weight: 600; }

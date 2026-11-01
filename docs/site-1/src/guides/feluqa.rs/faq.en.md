@@ -87,6 +87,9 @@ const questions = computed(() => faqItems.value)
 
 .custom-block.details summary {
     margin: 0;
+    padding-top:0;
+    padding-bottom:0;
+    padding-left:2;
 }
 .faq-answers details > summary::before {
   position: absolute;

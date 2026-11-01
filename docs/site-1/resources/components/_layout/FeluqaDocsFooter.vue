@@ -35,9 +35,18 @@ const content = useSpmpstConfig<FooterContent>('footer.content')
 
 <style>
 .footer-deluqa-docs {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   max-width: 1220px;
   margin-inline: auto;
   text-align: center;
+}
+
+@media (max-width: 959px) {
+  .footer-deluqa-docs {
+    max-width: 100%;
+    overflow-x: clip;
+  }
 }
 </style>

@@ -6,6 +6,70 @@
   max-width: 100%;
 }
 
+/* Keep the document outline beside the article on common laptop widths. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #VPContent .VPDoc.has-aside .container {
+    display: flex;
+    justify-content: center;
+  }
+
+  #VPContent .VPDoc.has-aside .aside {
+    display: block;
+    flex: 0 0 180px;
+    width: 180px;
+    max-width: 180px;
+    padding-left: 20px;
+  }
+
+  #VPContent .VPDoc.has-aside .aside-container {
+    width: 160px;
+  }
+
+  #VPContent .VPDoc.has-aside .content {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    margin: 0;
+    padding: 0 24px 96px;
+  }
+
+  #VPContent .VPDoc.has-aside .content-container {
+    max-width: none;
+  }
+
+  body:has(.VPDoc.has-aside) .VPLocalNav {
+    display: none;
+  }
+}
+
+/* The site footer follows the article column instead of extending under the outline. */
+@media (min-width: 960px) {
+  body:has(.VPContent.has-sidebar) .footer-deluqa-docs {
+    box-sizing: border-box;
+    width: calc(min(100vw, var(--vp-layout-max-width)) - var(--vp-sidebar-width));
+    max-width: none;
+    margin-left: calc(max(0px, (100vw - var(--vp-layout-max-width)) / 2) + var(--vp-sidebar-width));
+    margin-right: 0;
+  }
+
+  body:has(.VPContent.has-sidebar .VPDoc.has-aside) .footer-deluqa-docs {
+    --feluqa-footer-aside-width: 256px;
+    width: calc(min(100vw, var(--vp-layout-max-width)) - var(--vp-sidebar-width) - var(--feluqa-footer-aside-width));
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  body:has(.VPContent.has-sidebar .VPDoc.has-aside) .footer-deluqa-docs {
+    --feluqa-footer-aside-width: 180px;
+  }
+}
+
+@media (min-width: 1440px) {
+  body:has(.VPContent.has-sidebar .VPDoc.has-aside) .footer-deluqa-docs {
+    width: calc(var(--vp-layout-max-width) - var(--vp-sidebar-width) - var(--feluqa-footer-aside-width));
+  }
+}
+
 html,
 body {
   max-width: 100%;
