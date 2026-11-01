@@ -46,7 +46,32 @@
               {
                 "type": "object",
                 "properties": {
-                  "cardHeight": { "type": "integer", "minimum": 1 }
+                  "cardHeight": { "type": "integer", "minimum": 1 },
+                  "composition": {
+                    "type": "object",
+                    "required": ["columns"],
+                    "properties": {
+                      "columns": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": ["items"],
+                          "properties": {
+                            "width": { "type": "string", "minLength": 1 },
+                            "gap": { "type": "number", "minimum": 0 },
+                            "items": {
+                              "type": "array",
+                              "minItems": 1,
+                              "items": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "const": "more" }] }
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
                 }
               }
             ]
