@@ -147,16 +147,17 @@ function validateMenuTemplate(value, location) {
     }
     composition.columns.forEach((column, columnIndex) => {
       const columnLocation = `${location}[2].composition.columns[${columnIndex}]`
-      if (!column || typeof column !== 'object' || Array.isArray(column) || !Array.isArray(column.items) || !column.items.length) {
+      const items = Array.isArray(column) ? column : column && typeof column === 'object' && !Array.isArray(column) ? column.items : undefined
+      if (!Array.isArray(items) || !items.length) {
         throw new Error(`${columnLocation} must contain a non-empty items array`)
       }
-      if (column.width !== undefined && (typeof column.width !== 'string' || !column.width.trim())) {
+      if (!Array.isArray(column) && column.width !== undefined && (typeof column.width !== 'string' || !column.width.trim())) {
         throw new Error(`${columnLocation}.width must be a non-empty string`)
       }
-      if (column.gap !== undefined && (typeof column.gap !== 'number' || !Number.isFinite(column.gap) || column.gap < 0)) {
+      if (!Array.isArray(column) && column.gap !== undefined && (typeof column.gap !== 'number' || !Number.isFinite(column.gap) || column.gap < 0)) {
         throw new Error(`${columnLocation}.gap must be a non-negative number`)
       }
-      column.items.forEach((item, itemIndex) => {
+      items.forEach((item, itemIndex) => {
         if (!(item === 'more' || (Number.isInteger(item) && item >= 0))) {
           throw new Error(`${columnLocation}.items[${itemIndex}] must be a non-negative card index or "more"`)
         }

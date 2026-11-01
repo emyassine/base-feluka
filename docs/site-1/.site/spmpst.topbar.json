@@ -12,9 +12,9 @@
         "cardHeight": 200,
         "composition": {
           "columns": [
-            { "width": "1.2fr", "items": [0] },
-            { "width": "1fr", "gap": 12, "items": [1, 2] },
-            { "width": "0.8fr", "items": ["more"] }
+            [0, 1],
+            [2, 3],
+            ["more"]
           ]
         },
         "more": {
