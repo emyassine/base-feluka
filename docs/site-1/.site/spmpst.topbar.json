@@ -61,8 +61,8 @@
         "icon": true,
         "hideIcon": false,
         "collections": {
-          "hideChildren": ["articles"],
-          "showIconFromParents": ["articles"],
+          "hideChildren": ["articles", "research"],
+          "showIconFromParents": ["articles", "research"],
           "showParentsName": false
         }
       }

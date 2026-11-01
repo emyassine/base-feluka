@@ -1,3 +1,15 @@
+---
+sidebarTitle: "Reliable Multiplatform Research"
+title: "Rethinking Reliable Multiplatform Software Development"
+icon: "@spmpst::icon::microscope"
+description: "An exploratory research record and proposal for a reliable, cross-platform interface standard and unified Feluqa namespace."
+summary: "Presents a research-backed proposal for describing application interfaces once and rendering them through native platform profiles. The proposed standard remains under exploration and is not implemented."
+date: 2026-11-01
+lastmod: 2026-11-01
+status: "Exploring"
+category: "interface-architecture"
+tags: [research, multiplatform, interface, architecture]
+---
 # Rethinking Reliable Multiplatform Software Development
 
 ## The Feluqa Interface Standard: one description, many native profiles, one namespace

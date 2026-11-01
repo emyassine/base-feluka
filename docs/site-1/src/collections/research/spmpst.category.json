@@ -1,0 +1,16 @@
+{
+  "title": { "en": "Research", "fr": "Recherche" },
+  "description": {
+    "en": "Research records and proposals on Feluqa's architecture, interfaces, and development.",
+    "fr": "Recherches et propositions sur l’architecture, les interfaces et le développement de Feluqa."
+  },
+  "categories": [
+    {
+      "id": "interface-architecture",
+      "label": {
+        "en": "Interface architecture",
+        "fr": "Architecture des interfaces"
+      }
+    }
+  ]
+}

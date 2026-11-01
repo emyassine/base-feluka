@@ -43,6 +43,20 @@
         "fr": "Informations sur la confidentialité, l’éditeur et les aspects juridiques de Feluqa."
       },
       "dir": "legal"
+    },
+    {
+      "id": "research",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": {
+        "en": "Research",
+        "fr": "Recherche"
+      },
+      "description": {
+        "en": "Research records and proposals on Feluqa's architecture, interfaces, and development.",
+        "fr": "Recherches et propositions sur l’architecture, les interfaces et le développement de Feluqa."
+      },
+      "dir": "research"
     }
   ],
   "$schema": "../public/api/schemas/collections.schema.json",
