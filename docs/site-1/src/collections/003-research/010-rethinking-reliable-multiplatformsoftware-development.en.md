@@ -62,6 +62,8 @@ Every factual claim about the outside world in this document carries one of two 
 
 ## 0.3 Abbreviations
 
+::: details Abbreviations
+
 | Term | Meaning |
 |------|---------|
 | ABI | Application Binary Interface: the agreement about how compiled code calls other compiled code (which registers, which memory layout). |
@@ -92,7 +94,11 @@ Every factual claim about the outside world in this document carries one of two 
 | URL | Uniform Resource Locator: a web address. |
 | 0BSD | Zero-clause BSD license: a license that allows almost any use, including with no notice. htmx uses it [R25]. |
 
+:::
+
 ## 0.4 Terms of art in this document
+
+::: details Terms of art
 
 | Term | Meaning |
 |------|---------|
@@ -116,9 +122,13 @@ Every factual claim about the outside world in this document carries one of two 
 | **Facade** | A Feluqa module that re-exports and wraps a third-party component so that users never see the third-party names. |
 | **Server-driven interface** | A design in which a server sends a description of the interface, and the client displays it. |
 
+:::
+
 ## 0.5 Product and project names
 
 These are names, not abbreviations. They are listed so that nobody has to guess.
+
+::: details Product and project names
 
 | Name | What it is |
 |------|------------|
@@ -167,6 +177,8 @@ These are names, not abbreviations. They are listed so that nobody has to guess.
 | **Material** | Google's design language for Android. |
 | **Flutter** | Google's cross-platform toolkit, which draws its own widgets. |
 | **Tauri** | A framework that wraps a web page in a desktop shell. |
+
+:::
 
 ---
 

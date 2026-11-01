@@ -252,7 +252,7 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
-  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], showIconFromParents: string[] = [], showParentsName = true, hideIcon = false) => {
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], showIconFromParents: string[] = [], showParentsName = true, hideIcon = false, order: string[] = []) => {
     const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
     return [...generatedCollections]
       .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
@@ -260,7 +260,16 @@ function navigation(language = defaultLanguage): any[] {
         const level = pathPrefix ? collection.path.split('/').length - pathPrefix.split('/').length : collection.path.split('/').length
         return !selectedDepths || selectedDepths.has(level)
       })
-      .sort((left: any, right: any) => left.path.localeCompare(right.path))
+      .sort((left: any, right: any) => {
+        const leftOrder = order.indexOf(left.id)
+        const rightOrder = order.indexOf(right.id)
+        if (leftOrder >= 0 || rightOrder >= 0) {
+          return (leftOrder < 0 ? Number.MAX_SAFE_INTEGER : leftOrder)
+            - (rightOrder < 0 ? Number.MAX_SAFE_INTEGER : rightOrder)
+            || left.path.localeCompare(right.path)
+        }
+        return left.path.localeCompare(right.path)
+      })
       .flatMap((collection: any) => {
         const link = collection.links[language] ?? collection.links[defaultLanguage]
         const route = collection.route ?? collection.id
@@ -362,7 +371,7 @@ function navigation(language = defaultLanguage): any[] {
       return applyMenuTemplate({
         text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, collectionMenuClass),
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
-        items: collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true),
+        items: collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true, collectionOptions.order ?? []),
       }, item.menuTemplate)
     }
     if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)
