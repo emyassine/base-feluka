@@ -51,8 +51,8 @@ const logoSource = computed(() => (isDark.value ? props.logoImgDark : undefined)
 .footer-cta,
 .footer-cta__content { box-sizing: border-box; min-width: 0; max-width: 100%; }
 .footer-cta__content { width: 100%; padding-inline: 16px; }
-.footer-brand { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; overflow: clip; }
-.footer-brand-image { display: block; width: 100%; max-width: 100%; max-height: clamp(4rem, 12vw, 12rem); height: auto; margin-inline: auto; object-fit: contain; }
+.footer-brand { box-sizing: border-box; display: flex; justify-content: center; width: 100%; min-width: 0; max-width: 100%; overflow: clip; }
+.footer-brand-image { display: block; flex: 0 1 64rem; width: 100%; max-width: 64rem; height: auto; margin-inline: auto; object-fit: contain; }
 .footer-link,
 .footer-sub-link { transition: color 180ms ease, opacity 180ms ease; }
 .footer-link { color: var(--vp-c-text-1); font-size: 0.9rem; font-weight: 600; }
