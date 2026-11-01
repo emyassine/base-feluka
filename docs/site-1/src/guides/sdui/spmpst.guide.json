@@ -1,7 +1,7 @@
 {
   "title": "SDUI",
   "showSiteTitle": true,
-  "favicon": "../feluqa.rs/.art/favicon.png",
+  "favicon": "../../../public/media/images/favicon.png",
   "colors": {
     "primary": "oklch(68% .19 153)",
     "sidebarIcon": "#8b9099",

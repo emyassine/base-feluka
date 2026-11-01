@@ -2,24 +2,24 @@
   "fonts": {
     "body": {
       "family": "Manrope",
-      "src": "resources/assets/fonts/manrope-latin.woff2",
+      "src": "public/media/fonts/manrope-latin.woff2",
       "weight": "200 800"
     },
     "heading": {
       "family": "DM Sans",
-      "src": "resources/assets/fonts/DM-Sans-Variable.ttf",
+      "src": "public/media/fonts/DM-Sans-Variable.ttf",
       "weight": "100 1000"
     }
   },
   "logo": {
-    "light": "resources/assets/brand/feluqa.svg",
-    "dark": "resources/assets/brand/feluqa.svg",
+    "light": "public/media/images/feluqa.svg",
+    "dark": "public/media/images/feluqa.svg",
     "alt": "Feluqa",
     "height": "1.97rem",
     "extraStyle": ""
   },
   "ogImages": [
-    "resources/assets/brand/og-feluqa.png"
+    "public/media/images/og-feluqa.png"
   ],
   "mermaid": {
     "flowchartPalette": [

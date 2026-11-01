@@ -24,5 +24,6 @@ The Mermaid theme is configured in `spmpst.mermaid.json`. Site-specific hook sou
 
 `src/guides/`, `src/collections/`, and `resources/` use the paths declared in the root manifest.
 The current `paths.public: "public"` in `../spmpst.json` selects the site-root `public/`; all its contents map to the URL root (`robots.txt` becomes `/robots.txt`, and `media/schemas/definitions.schema.json` becomes `/media/schemas/definitions.schema.json`). `paths.media` and `paths.schemas` identify subdirectories within that same public tree for media references and schema tooling. Move public assets by updating these fields in `../spmpst.json`; there is no second media source directory.
+Keep published media grouped by type under `public/media/`: images in `images/`, fonts in `fonts/`, and icons in `icons/`. Reference these files by their public URL (for example, `/media/images/screenshot_1.png`) or through the configured media resolver. API schemas remain in `public/api/schemas/`.
 `npm run docs:check` validates the assembled configuration and source content;
 add `-- --strict-i18n` to reject missing translations.

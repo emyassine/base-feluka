@@ -6,21 +6,27 @@ layout: home
 ---
 
 <MainlineHomeLayout>
-<MainlineHero
-      title="One platform for every application target."
-      lead="A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes."
-      primary-label="Get started"
-      primary-href="/get-started/"
-      secondary-label="Explore the architecture"
-      secondary-href="/internals/"
-      hero-image="/screenshot_1.png"
-      hero-alt="Feluqa dashboard screenshot"
-      :points='[
-        { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product.", icon: "@spmpst::icon::starter-layers" },
-        { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles.", icon: "@spmpst::icon::deployment-cloud" },
-        { title: "Current implementation", description: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished.", icon: "@spmpst::icon::conventions-code" }
-      ]'
-    />
+	<MainlineHero
+  title="The software your operations run on. Built once, delivered everywhere."
+  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
+  primary-label="Describe your operation"
+  primary-href="/for-organizations#tell-us-about-your-operation"
+  secondary-label="See what is tested today"
+  secondary-href="/products/"
+  :targets='[
+    { label: "Web", caption: "Back office in the browser", image: "/media/images/target-web.png", alt: "Feluqa web application" },
+    { label: "Workstation", caption: "Operator workstation", image: "/media/images/target-workstation.png", alt: "Feluqa workstation application" },
+    { label: "Mobile", caption: "Field use on a phone", image: "/media/images/target-mobile.png", alt: "Feluqa mobile application" },
+    { label: "Real-time", caption: "Live operations view", image: "/media/images/target-realtime.png", alt: "Feluqa real-time dashboard" },
+    { label: "APIs", caption: "Integration with your existing systems", image: "/media/images/target-api.png", alt: "Feluqa API console" }
+  ]'
+  :points='[
+    { title: "Minimal and expressive", description: "Describe what the application is with standardized structs and components. The platform handles the rest.", icon: "/media/icons/conventions-code.svg" },
+    { title: "One foundation, every target", description: "Share schemas, tooling, and libraries while keeping distinct runtime profiles per target.", icon: "/media/icons/starter-layers.svg" },
+    { title: "Ready for agents", description: "Predictable contracts let agents inspect, propose, and validate changes for human review.", icon: "/media/icons/agent-ready.svg" },
+    { title: "Honest about status", description: "Every guide marks what is implemented, partial, targeted, or still being explored.", icon: "/media/icons/status-check.svg" }
+  ]'
+	/>
 
 <MainlineLogos
       title="Powering the world's best product teams."

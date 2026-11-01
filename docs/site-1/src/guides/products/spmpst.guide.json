@@ -1,7 +1,7 @@
 {
   "title": "Feluqa Products",
   "showSiteTitle": true,
-  "favicon": "../feluqa.rs/.art/favicon.png",
+  "favicon": "../../../public/media/images/favicon.png",
   "colors": {
     "primary": "oklch(57.7% .245 27.325)",
     "secondary": "oklch(66% .21 28)",
