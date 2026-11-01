@@ -8,19 +8,29 @@
   "mermaid": {
     "flowchartPalette": [
       {
-        "fill": "#dbeafe",
-        "text": "#172554",
-        "stroke": "#2563eb"
+        "fill": "#DCE9FF",
+        "text": "#000E2A",
+        "stroke": "#0066FF"
       },
       {
-        "fill": "#dcfce7",
-        "text": "#14532d",
-        "stroke": "#16a34a"
+        "fill": "#C9F3FF",
+        "text": "#002B49",
+        "stroke": "#20AFFF"
       },
       {
-        "fill": "#fef3c7",
-        "text": "#713f12",
-        "stroke": "#d97706"
+        "fill": "#E1E9F7",
+        "text": "#000E2A",
+        "stroke": "#355A91"
+      },
+      {
+        "fill": "#DBF7EF",
+        "text": "#073E34",
+        "stroke": "#16A080"
+      },
+      {
+        "fill": "#FFF0CE",
+        "text": "#4A3410",
+        "stroke": "#C68B20"
       }
     ],
     "nodeBorderWidth": "1.5px",

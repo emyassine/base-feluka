@@ -1,1 +1,15 @@
-{"favicon":"../../../public/media/favicon.png"}
+{
+  "favicon": "../../../public/media/favicon.png",
+  "colors": {
+    "primary": "#0066FF",
+    "secondary": "#20C8FF",
+    "tertiary": "#000E2A",
+    "soft": "color-mix(in srgb, #0066FF 14%, transparent)",
+    "sidebarIcon": "#078BFF",
+    "inlineCode": "#005CE6",
+    "heroNameColor": "transparent",
+    "heroNameBackground": "linear-gradient(120deg, #000E2A 0%, #075CFF 56%, #20C8FF 100%)",
+    "inlineCodeBackgroundDarkMode": "#101F3D",
+    "inlineCodeBackgroundLightMode": "#EAF2FF"
+  }
+}

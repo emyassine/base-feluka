@@ -52,8 +52,8 @@
         "href": "/"
       }
     ],
-    "logoImg": "/media/logo-light-mode.png",
-    "logoImgDark": "/media/logo-dark-mode.png",
+    "logoImg": "/media/logo-footer-lightmode-filled.png",
+    "logoImgDark": "/media/logo-footer-darkmode-transteinted.svg",
     "logoAlt": {
       "en": "Numerimondes"
     }
