@@ -22,6 +22,6 @@ We begin with the operational need, not a predetermined tool. We work in clear s
 Our work spans technology and operational consulting, business software and integrations, infrastructure and cloud operations, cybersecurity improvements, process automation, and private AI. These capabilities connect across one foundation: infrastructure, data, software, and operations.
 
 <div class="nm-actions">
-  <FeluqaButton tag="a" href="/services/" size="lg">Explore our services</FeluqaButton>
-  <FeluqaButton tag="a" href="/contact/" color="gray" outlined size="lg">Contact our team</FeluqaButton>
+  <FeluqaButton tag="a" href="/services/" size="md">Explore our services</FeluqaButton>
+  <FeluqaButton tag="a" href="/contact/" color="gray" outlined size="md">Contact our team</FeluqaButton>
 </div>

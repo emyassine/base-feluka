@@ -37,7 +37,7 @@ function sendMessage() {
       <span>How can we help?</span>
       <textarea v-model="message" name="message" rows="5" required maxlength="3000" />
     </label>
-    <div class="nm-contact-form__submit"><FeluqaButton type="submit" size="lg">Continue to WhatsApp</FeluqaButton></div>
+    <div class="nm-contact-form__submit"><FeluqaButton type="submit" size="md">Continue to WhatsApp</FeluqaButton></div>
     <p class="nm-contact-form__note">Your browser opens a WhatsApp draft for you to review and send. This site does not receive or store these fields.</p>
   </form>
 </template>

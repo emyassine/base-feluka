@@ -6,19 +6,6 @@ layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
 ---
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-<NmHero
-  title="Technology you can own, understand, and operate"
-  :title-style-light="{ color: '#ffffff' }"
-  :title-style-dark="{ color: '#ffffff' }"
-  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
-  :description-style-light="{ color: '#e2e8f0' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
-  background-image="https://images.unsplash.com/photo-1749497268209-c167ed52b682?q=80&w=1567&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
-  :buttons="[
-    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
-    { label: 'Explore our services', href: '/services/', style: 'secondary' }
-  ]"
-/>
 <NmEffectHero
   effect="prismatic-burst"
   title="Technology you can own, understand, and operate"
@@ -28,7 +15,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[
-    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp' },
     { label: 'Explore our services', href: '/services/', style: 'secondary' }
   ]"
 />
@@ -53,8 +40,3 @@ See [all services](/services/) or explore [solutions](/solutions/).
 We start by understanding your process, constraints, and existing systems. Then we agree on a clear scope, deliverables, and next step. Work is led from Casablanca and shaped to leave your team with systems it can understand and operate.
 
 Ready to discuss an opportunity?
-
-	<div class="nm-actions">
-	  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" size="lg">Message us on WhatsApp</FeluqaButton>
-	  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="lg">Explore services</FeluqaButton>
-	</div>

@@ -73,7 +73,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
             :key="`${button.href}-${index}`"
             tag="a"
             :href="button.href"
-            size="lg"
+            size="md"
             :color="isSecondaryButton(button, index) ? 'gray' : 'primary'"
             :outlined="isSecondaryButton(button, index)"
             :target="button.external ? '_blank' : undefined"

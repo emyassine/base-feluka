@@ -9,6 +9,7 @@ interface HeroButton {
   href: string
   style?: 'primary' | 'secondary'
   external?: boolean
+  icon?: 'whatsapp'
 }
 
 const props = withDefaults(defineProps<{
@@ -75,12 +76,21 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
           :key="`${button.href}-${index}`"
           tag="a"
           :href="button.href"
-          size="lg"
+          size="md"
           :color="isSecondaryButton(button, index) ? 'gray' : 'primary'"
           :outlined="isSecondaryButton(button, index)"
+          :class="isSecondaryButton(button, index) ? 'nm-effect-hero__button--secondary' : 'nm-effect-hero__button--primary'"
           :target="button.external ? '_blank' : undefined"
           :rel="button.external ? 'noopener noreferrer' : undefined"
-        >{{ button.label }}</FeluqaButton>
+        >
+          <template v-if="button.icon === 'whatsapp'" #icon>
+            <svg class="nm-effect-hero__whatsapp-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.1 11.8a8.1 8.1 0 0 1-12 7.1L4 20l1.1-4a8.1 8.1 0 1 1 15-4.2Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 8.5c.2-.5.5-.5.8-.5h.4c.2 0 .3.1.4.4l.7 1.6c.1.2 0 .4-.1.6l-.5.6c-.2.2-.2.4 0 .6.5.8 1.1 1.4 2 1.8.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.5.7c.2.1.3.2.3.4 0 .4-.2 1.1-.7 1.4-.5.4-1.1.6-1.8.4-1-.2-2.2-.8-3.3-1.8-1.2-1.1-2-2.4-2.2-3.4-.2-.8.1-1.4.6-1.8Z" fill="currentColor" />
+            </svg>
+          </template>
+          {{ button.label }}
+        </FeluqaButton>
       </div>
     </div>
   </section>
@@ -92,7 +102,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   z-index: 0;
   display: grid;
   width: 100vw;
-  height: 600px;
+  min-height: clamp(34rem, 70svh, 46rem);
   place-items: center;
   margin: 0 calc(50% - 50vw) 3rem;
   overflow: hidden;
@@ -112,7 +122,8 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 .nm-effect-hero__content {
   position: relative;
   z-index: 1;
-  width: min(100% - 2rem, 740px);
+  width: min(100% - 2rem, 820px);
+  padding: 3.5rem 0;
   text-align: center;
   pointer-events: none;
 }
@@ -123,30 +134,75 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 .nm-effect-hero h1 {
   margin: 0 auto;
   color: inherit;
-  font-size: clamp(2.4rem, 6vw, 4.4rem);
-  font-weight: 450;
-  letter-spacing: -0.045em;
-  line-height: 1.05;
+  max-width: 760px;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
 }
 
 .nm-effect-hero p {
-  max-width: 650px;
-  margin: 1.25rem auto 0;
+  max-width: 590px;
+  margin: 1rem auto 0;
   color: inherit;
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .nm-effect-hero__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: 2rem;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
   pointer-events: auto;
 }
 
+.nm-effect-hero__actions :deep(.feluqa-button) {
+  min-height: 2.25rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  box-shadow: none;
+}
+
+.nm-effect-hero__actions :deep(.nm-effect-hero__whatsapp-icon) {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.nm-effect-hero__actions :deep(.feluqa-button:hover:not(:disabled):not(.is-disabled)) {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.nm-effect-hero__actions :deep(.nm-effect-hero__button--primary) {
+  border-color: #fff;
+  background: #fff;
+  color: #111827 !important;
+}
+
+.nm-effect-hero__actions :deep(.nm-effect-hero__button--primary:hover) {
+  background: #f1f5f9;
+}
+
+.nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary) {
+  border-color: rgb(255 255 255 / 0.42);
+  background: rgb(15 23 42 / 0.28);
+  color: #fff !important;
+  backdrop-filter: blur(8px);
+}
+
+.nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary:hover) {
+  border-color: rgb(255 255 255 / 0.68);
+  background: rgb(255 255 255 / 0.12);
+}
+
 @media (max-width: 640px) {
-  .nm-effect-hero { height: 34rem; margin-top: -20px; }
+  .nm-effect-hero { min-height: 34rem; margin-top: -20px; }
+  .nm-effect-hero__content { padding: 2.5rem 0; }
+  .nm-effect-hero h1 { font-size: clamp(2rem, 8vw, 2.75rem); }
+  .nm-effect-hero__actions { gap: 0.5rem; margin-top: 1.5rem; }
 }
 </style>
