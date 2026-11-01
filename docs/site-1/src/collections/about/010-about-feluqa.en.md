@@ -2,8 +2,8 @@
 sidebarTitle: "About Feluqa"
 icon: "@spmpst::icon::badge-info"
 title: "About Feluqa"
-description: "What Feluqa is building and who is responsible for the project."
-summary: "Introduces Feluqa as a proprietary platform and unified namespace, clarifies that its target architecture is still under development, and identifies Numerimondes as its steward."
+description: "The Feluqa platform, its current status, and the people and company behind it."
+summary: "Introduces Feluqa's goals and current status, and identifies Numerimondes SARL AU and its founder as the people responsible for the project."
 date: 2026-10-31
 lastmod: 2026-10-31
 status: "Validated"
@@ -21,5 +21,19 @@ The current repository provides selected framework foundations. The full
 workspace, runtime shells, and dynamic module lifecycle described in the target
 architecture are still under development.
 
-Feluqa is created and stewarded by [Numerimondes SARL AU](/about/who-is-behind-feluqa).
+## Who is behind Feluqa?
+
+Feluqa is created and stewarded by **Numerimondes SARL AU**, a Moroccan
+software and technology company based in Casablanca. The company was founded
+and is managed by **Yassine El Moumen**.
+
+Numerimondes develops Feluqa and works with organisations that want to build
+products with it. Feluqa remains an evolving platform; this documentation
+describes implemented capabilities separately from product goals.
+
+- [Visit Numerimondes](https://numerimondes.com)
+- [Feluqa on GitHub](https://github.com/feluqa/)
+- [Company legal identity and licensing](/prologue/licence#legal-overview)
+- Contact: [contact@numerimondes.com](mailto:contact@numerimondes.com)
+
 The [product catalog](/products/) introduces Feluqa CLI and Nadim CLI.
