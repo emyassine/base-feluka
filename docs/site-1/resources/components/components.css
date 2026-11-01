@@ -63,9 +63,91 @@
 
 .VPDoc > .footer-deluqa-docs {
   box-sizing: border-box;
-  width: calc(100% + 64px);
-  max-width: 1284px;
-  margin: 0 -32px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.footer-deluqa-docs__container {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 960px) {
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__content {
+    padding: 0 32px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__content {
+    flex: 1 1 0;
+    order: 1;
+    min-width: 0;
+    width: auto;
+    margin: 0;
+    padding: 0 24px;
+  }
+
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__aside {
+    display: block;
+    flex: 0 0 180px;
+    order: 2;
+    width: 180px;
+    max-width: 180px;
+    padding-left: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__content {
+    order: 1;
+    width: 100%;
+    min-width: 640px;
+    margin: 0;
+    padding: 0 32px;
+  }
+
+  .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__aside {
+    position: relative;
+    display: block;
+    flex-grow: 1;
+    order: 2;
+    width: 100%;
+    max-width: 256px;
+    padding-left: 32px;
+  }
+}
+
+/* Keep the outline in the document row so the footer starts after it. */
+@media (min-width: 1024px) {
+  #VPContent .VPDoc.has-aside .aside-container {
+    position: sticky;
+    top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + var(--vp-doc-top-height, 0px) + 48px);
+    height: max-content;
+    max-height: calc(100vh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px) - var(--vp-doc-top-height, 0px) - 80px);
+    padding-top: 0;
+  }
+
+  #VPContent .VPDoc.has-aside .aside-content {
+    min-height: 0;
+    padding-bottom: 32px;
+  }
+
+  #VPContent .VPDoc.has-aside .aside-curtain {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {

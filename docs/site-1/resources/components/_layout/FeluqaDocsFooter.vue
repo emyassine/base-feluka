@@ -19,17 +19,22 @@ const content = useSpmpstConfig<FooterContent>('footer.content')
 
 <template>
   <div class="footer-deluqa-docs">
-    <MainlineCta
-      :title="content.title"
-      :description="content.description"
-      :action-label="content.actionLabel"
-      :action-href="content.actionHref"
-      :navigation="content.navigation"
-      :sub-navigation="content.subNavigation"
-      :logo-img="content.logoImg"
-      :logo-alt="content.logoAlt"
-      :logo-styles="content.logoStyles"
-    />
+    <div class="footer-deluqa-docs__container">
+      <div class="footer-deluqa-docs__content">
+        <MainlineCta
+          :title="content.title"
+          :description="content.description"
+          :action-label="content.actionLabel"
+          :action-href="content.actionHref"
+          :navigation="content.navigation"
+          :sub-navigation="content.subNavigation"
+          :logo-img="content.logoImg"
+          :logo-alt="content.logoAlt"
+          :logo-styles="content.logoStyles"
+        />
+      </div>
+      <div class="footer-deluqa-docs__aside" aria-hidden="true" />
+    </div>
   </div>
 </template>
 

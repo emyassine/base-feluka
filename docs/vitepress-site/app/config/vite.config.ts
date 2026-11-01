@@ -100,7 +100,7 @@ const siteViteConfig = {
         }
         const isDefaultIcon = pathname === '/favicon.ico' && typeof primaryFavicon === 'string'
         const isConfiguredTextFile = /^\/(?:[A-Za-z0-9._-]+\.txt)$/.test(pathname)
-        if (!isDefaultIcon && !isConfiguredTextFile && !pathname.startsWith('/mermaid/') && !pathname.startsWith('/__docs-assets/')) {
+        if (!isDefaultIcon && !isConfiguredTextFile && !pathname.startsWith('/mermaid/') && !pathname.startsWith('/__docs-assets/') && !pathname.startsWith('/media/')) {
           next()
           return
         }

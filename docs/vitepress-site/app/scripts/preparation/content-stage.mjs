@@ -266,7 +266,7 @@ for (const collection of collectionMetadata.values()) {
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
-    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: doc`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '', `# ${localizedTitle}`, '']
+    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: home`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '', `# ${localizedTitle}`, '']
     if (localizedDescription) lines.push(localizedDescription, '')
     if (collection.indexLayout === 'spotlight') {
       lines.push(`<CollectionSpotlightCards collection-id="${collection.id}" />`, '')

@@ -295,7 +295,8 @@ const MermaidLayout = {
       const routeKey = localized ? `${segments[0]}/${segments[1]}` : segments[0] ?? 'root'
       const slots = { ...themeSlots?.site, ...themeSlots?.guides?.[routeKey] }
       if (content.siteFooter) {
-        const usesDocumentLayout = pageFrontmatter.value.layout == null || pageFrontmatter.value.layout === 'doc'
+        const isCollectionIndex = typeof pageFrontmatter.value.collectionIndex === 'string'
+        const usesDocumentLayout = !isCollectionIndex && (pageFrontmatter.value.layout == null || pageFrontmatter.value.layout === 'doc')
         slots[usesDocumentLayout ? 'doc-bottom' : 'layout-bottom'] = content.siteFooter
       }
       return Object.fromEntries(Object.entries(slots).map(([slot, name]) => [slot, () => {
