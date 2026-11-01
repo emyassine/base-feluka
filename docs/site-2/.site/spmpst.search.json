@@ -18,19 +18,19 @@
     },
     "buttonAriaLabel": {
       "en": "Search this site",
-      "fr": "Rechercher this site"
+      "fr": "Rechercher sur ce site"
     },
     "displayDetails": {
       "en": "Display details",
-      "fr": "Display details"
+      "fr": "Afficher les détails"
     },
     "resetButtonTitle": {
       "en": "Reset search",
-      "fr": "Reset search"
+      "fr": "Effacer la recherche"
     },
     "backButtonTitle": {
       "en": "Close search",
-      "fr": "Close search"
+      "fr": "Fermer la recherche"
     },
     "noResultsText": {
       "en": "No results",
@@ -38,31 +38,31 @@
     },
     "selectText": {
       "en": "Select",
-      "fr": "Select"
+      "fr": "Sélectionner"
     },
     "selectKeyAriaLabel": {
       "en": "Enter",
-      "fr": "Enter"
+      "fr": "Entrée"
     },
     "navigateText": {
       "en": "Navigate",
-      "fr": "Navigate"
+      "fr": "Naviguer"
     },
     "navigateUpKeyAriaLabel": {
       "en": "Arrow up",
-      "fr": "Arrow up"
+      "fr": "Flèche haut"
     },
     "navigateDownKeyAriaLabel": {
       "en": "Arrow down",
-      "fr": "Arrow down"
+      "fr": "Flèche bas"
     },
     "closeText": {
       "en": "Close",
-      "fr": "Close"
+      "fr": "Fermer"
     },
     "closeKeyAriaLabel": {
       "en": "Escape",
-      "fr": "Escape"
+      "fr": "Échap"
     }
   }
 }

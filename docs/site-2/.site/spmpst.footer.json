@@ -1,5 +1,25 @@
 {
   "$schema": "../public/media/schemas/footer.schema.json",
-  "component": null,
-  "content": {}
+  "component": "NumerimondesFooter",
+  "content": {
+    "title": { "en": "Build with control.", "fr": "Construire avec maîtrise." },
+    "description": {
+      "en": "Numerimondes helps organizations design, build, and operate technology they can understand and control.",
+      "fr": "Numerimondes accompagne les organisations pour concevoir, bâtir et exploiter des solutions qu’elles comprennent et maîtrisent."
+    },
+    "actionLabel": { "en": "Talk to our team", "fr": "Parler à notre équipe" },
+    "actionHref": "/contact/",
+    "navigation": [
+      { "name": { "en": "Services", "fr": "Services" }, "href": "/services/" },
+      { "name": { "en": "Research", "fr": "Recherche" }, "href": "/research/" },
+      { "name": { "en": "About", "fr": "À propos" }, "href": "/about/company/" },
+      { "name": { "en": "Privacy", "fr": "Confidentialité" }, "href": "/about/legal/privacy/" }
+    ],
+    "subNavigation": [
+      { "name": { "en": "Numerimondes", "fr": "Numerimondes" }, "href": "/" },
+      { "name": { "en": "Contact", "fr": "Contact" }, "href": "/contact/" }
+    ],
+    "logoImg": "/media/numerimondes.svg",
+    "logoAlt": { "en": "Numerimondes", "fr": "Numerimondes" }
+  }
 }

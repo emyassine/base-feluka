@@ -201,6 +201,6 @@
       ]
     }
   ],
-  "theme": "system",
+  "theme": "switch",
   "$schema": "../public/media/schemas/topbar.schema.json"
 }

@@ -9,6 +9,7 @@ const workspacePath = resolve(appDirectory, '../spmpst.workspace.json')
 export const registryPath = resolve(process.env.VITEPRESS_SITE_MANIFEST ?? workspacePath)
 
 const REQUIRED_PATHS = ['root', 'config', 'guides', 'collections', 'resources', 'sharedResources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'icons', 'flags', 'mermaidConfig', 'toolchain', 'output']
+const OPTIONAL_PATHS = ['sharedComponents']
 const REQUIRED_CONFIGS = ['appearance', 'collections', 'definitions', 'footer', 'hooks', 'lang', 'layout', 'links', 'markdown', 'outline', 'search', 'seo', 'topbar']
 const OPTIONAL_CONFIGS = ['extra', 'rss']
 
@@ -62,7 +63,7 @@ export async function loadSites() {
       }
     }
     for (const key of Object.keys(declaration.paths)) {
-      if (![...REQUIRED_PATHS, 'configFiles'].includes(key)) throw new Error(`${activeDeclarationPath}: unknown paths.${key}; add structural paths to the canonical SpmpstPaths registry only`)
+      if (![...REQUIRED_PATHS, ...OPTIONAL_PATHS, 'configFiles'].includes(key)) throw new Error(`${activeDeclarationPath}: unknown paths.${key}; add structural paths to the canonical SpmpstPaths registry only`)
     }
     if (!declaration.paths.configFiles || typeof declaration.paths.configFiles !== 'object' || Array.isArray(declaration.paths.configFiles)) {
       throw new Error(`${activeDeclarationPath}: paths.configFiles must map each concern name to its config file path`)
@@ -90,6 +91,7 @@ export async function loadSites() {
     for (const key of ['root', 'config', 'guides', 'collections', 'resources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'sharedResources', 'icons', 'flags', 'toolchain']) {
       await requireDirectory(paths[key], activeDeclarationPath, key)
     }
+    if (paths.sharedComponents) await requireDirectory(paths.sharedComponents, activeDeclarationPath, 'sharedComponents')
     await requireFile(paths.mermaidConfig, activeDeclarationPath, 'mermaidConfig')
     for (const [concern, path] of Object.entries(paths.configFiles)) await requireFile(path, activeDeclarationPath, `configFiles.${concern}`)
     const realRoot = await realpath(paths.root)

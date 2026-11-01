@@ -334,7 +334,8 @@ function componentName(path) {
   return pascal
 }
 
-const componentFiles = projectDirectories.components ? await collectVueFiles(projectDirectories.components) : []
+const componentRoots = Array.isArray(projectDirectories.components) ? projectDirectories.components : [projectDirectories.components]
+const componentFiles = (await Promise.all(componentRoots.filter(Boolean).map((directory) => collectVueFiles(directory)))).flat()
 const componentNames = new Map()
 const componentImports = []
 const componentRegistrations = []

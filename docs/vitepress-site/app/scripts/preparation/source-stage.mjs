@@ -295,17 +295,19 @@ if (config.seo?.locales != null) {
 }
 const projectConfig = {}
 const projectDirectories = {
-  components: layout.paths.components,
+  components: [layout.paths.components, ...(layout.paths.sharedComponents ? [layout.paths.sharedComponents] : [])],
   hooks: layout.paths.hooks,
   iconLibrary: layout.paths.icons,
 }
 for (const key of ['components', 'hooks', 'iconLibrary']) {
-  const target = projectDirectories[key]
-  try {
-    if (!(await stat(target)).isDirectory()) throw new Error('not a directory')
-  } catch {
-    const pathKey = key === 'iconLibrary' ? 'icons' : key
-    throw new Error(`Directory path was not found by the conforming tool: ${target}. Restore it, or update "paths.${pathKey}" in ${layout.paths.declaration}.`)
+  const targets = Array.isArray(projectDirectories[key]) ? projectDirectories[key] : [projectDirectories[key]]
+  for (const target of targets) {
+    try {
+      if (!(await stat(target)).isDirectory()) throw new Error('not a directory')
+    } catch {
+      const pathKey = key === 'iconLibrary' ? 'icons' : key
+      throw new Error(`Directory path was not found by the conforming tool: ${target}. Restore it, or update "paths.${pathKey}" in ${layout.paths.declaration}.`)
+    }
   }
 }
 const mermaidConfigPath = layout.paths.mermaidConfig

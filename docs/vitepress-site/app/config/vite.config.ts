@@ -18,7 +18,7 @@ const layout = resolveLayout(siteDirectory)
 const paths = layout.paths
 const loadedSite = loadSiteModelSync(layout)
 const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
-const componentDirectory = paths.components
+const componentDirectories = [paths.components, ...(paths.sharedComponents ? [paths.sharedComponents] : [])]
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -47,7 +47,7 @@ const mimeTypes: Record<string, string> = {
 
 const siteViteConfig = {
   // Component-owned assets live under the configured component root.
-  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.paths.root, paths.sharedResources, paths.resources, componentDirectory])] } },
+  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.paths.root, paths.sharedResources, paths.resources, ...componentDirectories])] } },
   cacheDir: paths.vitepressCache,
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {
@@ -55,6 +55,7 @@ const siteViteConfig = {
       { find: /^vue$/, replacement: resolve(dependencyDirectory, 'vue/dist/vue.runtime.esm-bundler.js') },
       { find: /^vue\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vue')}/$1` },
       { find: /^vitepress$/, replacement: resolve(dependencyDirectory, 'vitepress/dist/client/index.js') },
+      { find: /^vitepress\/dist\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vitepress/dist')}/$1` },
       { find: '@docs', replacement: layout.paths.root },
       { find: '@generated', replacement: paths.generatedMetadata },
       { find: '@spmpst/config', replacement: resolve(paths.generatedMetadata, 'spmpst-config.ts') },
@@ -68,8 +69,11 @@ const siteViteConfig = {
       if (!importer || source.startsWith('.') || source.startsWith('/') || source.startsWith('node:')) return null
       if (source === 'vue' || source.startsWith('vue/') || source === 'vitepress') return null
       const importerPath = importer.split(/[?#]/, 1)[0]
-      const componentRelativePath = relative(componentDirectory, importerPath)
-      if (componentRelativePath === '..' || componentRelativePath.startsWith(`..${sep}`) || componentRelativePath.startsWith(sep)) return null
+      const isProjectComponent = componentDirectories.some((directory) => {
+        const componentRelativePath = relative(directory, importerPath)
+        return componentRelativePath !== '..' && !componentRelativePath.startsWith(`..${sep}`) && !componentRelativePath.startsWith(sep)
+      })
+      if (!isProjectComponent) return null
       try {
         return siteRequire.resolve(source)
       } catch {

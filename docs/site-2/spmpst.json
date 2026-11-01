@@ -9,6 +9,7 @@
     "collections": "src/collections",
     "resources": "resources",
     "sharedResources": "../vitepress-site/resources",
+    "sharedComponents": "../site-1/resources/components",
     "assets": "resources/assets",
     "components": "resources/components",
     "diagrams": "resources/diagrams",
