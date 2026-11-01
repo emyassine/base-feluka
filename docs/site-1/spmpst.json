@@ -11,7 +11,7 @@
     "sharedResources": "../vitepress-site/resources",
     "assets": "resources/assets",
     "components": "resources/components",
-    "diagrams": "resources/diagrams",
+    "diagrams": ".site",
     "hooks": ".site/hooks",
     "media": "public/media",
     "schemas": "public/api/schemas",

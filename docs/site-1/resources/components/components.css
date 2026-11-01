@@ -74,6 +74,18 @@
   margin: 0 auto;
 }
 
+.footer-deluqa-docs--home .footer-deluqa-docs__container {
+  display: block;
+  width: 100%;
+}
+
+.footer-deluqa-docs--home .footer-deluqa-docs__content {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
 @media (min-width: 960px) {
   .VPDoc > .footer-deluqa-docs .footer-deluqa-docs__content {
     padding: 0 32px;

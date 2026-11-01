@@ -15,10 +15,11 @@ interface FooterContent {
 }
 
 const content = useSpmpstConfig<FooterContent>('footer.content')
+defineProps<{ homeLayout?: boolean }>()
 </script>
 
 <template>
-  <div class="footer-deluqa-docs">
+  <div class="footer-deluqa-docs" :class="{ 'footer-deluqa-docs--home': homeLayout }">
     <div class="footer-deluqa-docs__container">
       <div class="footer-deluqa-docs__content">
         <MainlineCta
@@ -33,7 +34,7 @@ const content = useSpmpstConfig<FooterContent>('footer.content')
           :logo-styles="content.logoStyles"
         />
       </div>
-      <div class="footer-deluqa-docs__aside" aria-hidden="true" />
+      <div v-if="!homeLayout" class="footer-deluqa-docs__aside" aria-hidden="true" />
     </div>
   </div>
 </template>
