@@ -23,7 +23,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
     if (Array.isArray(value)) return value.map((item) => localizeTree(item, language))
     if (!value || typeof value !== 'object') return value
     const entries = Object.entries(value)
-    if (entries.length && entries.every(([key, entry]) => model.languages.includes(key) && typeof entry === 'string')) {
+    if (entries.length && entries.every(([key, entry]) => /^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(key) && typeof entry === 'string')) {
       return value[language] ?? value[defaultLanguage] ?? entries[0][1]
     }
     return Object.fromEntries(entries.map(([key, entry]) => [key, localizeTree(entry, language)]))
