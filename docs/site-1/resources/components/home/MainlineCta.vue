@@ -43,7 +43,7 @@ const logoSource = computed(() => (isDark.value ? props.logoImgDark : undefined)
         </li>
       </ul>
     </nav>
-    <div class="text-primary mt-4 w-full md:mt-14 lg:mt-20"><img :src="logoSource" :alt="logoAlt" :style="logoStyle" class="footer-brand-image" /></div>
+    <div class="footer-brand text-primary mt-4 md:mt-14 lg:mt-20"><img :src="logoSource" :alt="logoAlt" :style="logoStyle" class="footer-brand-image" /></div>
   </footer>
 </template>
 
@@ -51,10 +51,8 @@ const logoSource = computed(() => (isDark.value ? props.logoImgDark : undefined)
 .footer-cta,
 .footer-cta__content { box-sizing: border-box; min-width: 0; max-width: 100%; }
 .footer-cta__content { width: 100%; padding-inline: 16px; }
-.footer-brand-image { display: block; width: 100%; max-width: 100%; height: auto; margin-inline: auto; object-fit: contain; }
-@media (max-width: 959px) {
-  .footer-brand-image { max-width: 97vw; }
-}
+.footer-brand { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; overflow: clip; }
+.footer-brand-image { display: block; width: 100%; max-width: 100%; max-height: clamp(4rem, 12vw, 12rem); height: auto; margin-inline: auto; object-fit: contain; }
 .footer-link,
 .footer-sub-link { transition: color 180ms ease, opacity 180ms ease; }
 .footer-link { color: var(--vp-c-text-1); font-size: 0.9rem; font-weight: 600; }
