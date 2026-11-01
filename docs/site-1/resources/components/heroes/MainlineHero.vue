@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import SideRays from '../home/SideRays.vue'
-import FeluqaButton from '../ui/FeluqaButton.vue'
-
 interface HeroTarget {
   /** Short name shown in the rail, e.g. "Workstation". */
   label: string

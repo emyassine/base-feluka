@@ -2,11 +2,6 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import type { CSSProperties } from 'vue'
-import Aurora from './Aurora.vue'
-import PrismaticBurst from './PrismaticBurst.vue'
-import ShapeGrid from './ShapeGrid.vue'
-import Silk from './Silk.vue'
-
 type Effect = 'aurora' | 'silk' | 'shape-grid' | 'prismatic-burst'
 
 interface HeroButton {
@@ -33,10 +28,10 @@ const props = withDefaults(defineProps<{
 
 const { isDark } = useData()
 const effectComponent = computed(() => ({
-  aurora: Aurora,
-  silk: Silk,
-  'shape-grid': ShapeGrid,
-  'prismatic-burst': PrismaticBurst,
+  aurora: 'Aurora',
+  silk: 'Silk',
+  'shape-grid': 'ShapeGrid',
+  'prismatic-burst': 'PrismaticBurst',
 }[props.effect]))
 const effectProps = computed<Record<string, unknown>>(() => {
   switch (props.effect) {
@@ -62,6 +57,8 @@ const descriptionStyles = computed(() => ({
   ...props.descriptionStyle,
   ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
 }))
+const isSecondaryButton = (button: HeroButton, index: number) =>
+  (button.style ?? (index === 0 ? 'primary' : 'secondary')) === 'secondary'
 </script>
 
 <template>
@@ -73,18 +70,17 @@ const descriptionStyles = computed(() => ({
       <h1 :style="titleStyles">{{ props.title }}</h1>
       <p :style="descriptionStyles">{{ props.description }}</p>
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
-        <a
+        <FeluqaButton
           v-for="(button, index) in props.buttons"
           :key="`${button.href}-${index}`"
-          class="nm-effect-hero__button"
-          :class="[
-            `nm-effect-hero__button--${button.style || (index === 0 ? 'primary' : 'secondary')}`,
-            { 'nm-effect-hero__button--dark': isDark },
-          ]"
+          tag="a"
           :href="button.href"
+          size="lg"
+          :color="isSecondaryButton(button, index) ? 'gray' : 'primary'"
+          :outlined="isSecondaryButton(button, index)"
           :target="button.external ? '_blank' : undefined"
           :rel="button.external ? 'noopener noreferrer' : undefined"
-        >{{ button.label }}</a>
+        >{{ button.label }}</FeluqaButton>
       </div>
     </div>
   </section>
@@ -149,24 +145,6 @@ const descriptionStyles = computed(() => ({
   margin-top: 2rem;
   pointer-events: auto;
 }
-
-.nm-effect-hero__button {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1.25rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  color: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.nm-effect-hero__button--primary { border-color: #1749dc; background: #1749dc; color: #fff; }
-.nm-effect-hero__button--secondary { background: rgb(255 255 255 / 84%); color: #111827; }
-.nm-effect-hero__button--secondary.nm-effect-hero__button--dark { background: rgb(13 24 43 / 78%); color: #fff; }
 
 @media (max-width: 640px) {
   .nm-effect-hero { height: 34rem; margin-top: -20px; }

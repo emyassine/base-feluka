@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import FeluqaButton from '../ui/FeluqaButton.vue'
 const footerImage = '/media/images/feluqa-footer-white-transteinted.png'
 
 const props = defineProps<{

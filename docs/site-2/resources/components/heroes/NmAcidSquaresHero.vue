@@ -2,8 +2,6 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import type { CSSProperties } from 'vue'
-import AcidSquares from './AcidSquares.vue'
-
 interface HeroButton {
   label: string
   href: string
@@ -34,6 +32,8 @@ const descriptionStyles = computed(() => ({
   ...props.descriptionStyle,
   ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
 }))
+const isSecondaryButton = (button: HeroButton, index: number) =>
+  (button.style ?? (index === 0 ? 'primary' : 'secondary')) === 'secondary'
 </script>
 
 <template>
@@ -68,15 +68,17 @@ const descriptionStyles = computed(() => ({
       <h1 :style="titleStyles">{{ props.title }}</h1>
       <p :style="descriptionStyles">{{ props.description }}</p>
       <div v-if="props.buttons.length" class="nm-acid-hero__actions">
-          <a
+          <FeluqaButton
             v-for="(button, index) in props.buttons"
             :key="`${button.href}-${index}`"
-            class="nm-acid-hero__button"
-            :class="`nm-acid-hero__button--${button.style || (index === 0 ? 'primary' : 'secondary')}`"
+            tag="a"
             :href="button.href"
+            size="lg"
+            :color="isSecondaryButton(button, index) ? 'gray' : 'primary'"
+            :outlined="isSecondaryButton(button, index)"
             :target="button.external ? '_blank' : undefined"
             :rel="button.external ? 'noopener noreferrer' : undefined"
-          >{{ button.label }}</a>
+          >{{ button.label }}</FeluqaButton>
       </div>
     </div>
   </section>
@@ -140,26 +142,6 @@ const descriptionStyles = computed(() => ({
   gap: 0.75rem;
   margin-top: 2rem;
 }
-
-.nm-acid-hero__button {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1.25rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  color: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: transform 160ms ease, background-color 160ms ease;
-}
-
-.nm-acid-hero__button:hover { transform: translateY(-2px); }
-.nm-acid-hero__button--primary { border-color: #1749dc; background: #1749dc; color: #fff; }
-.nm-acid-hero--light .nm-acid-hero__button--secondary { background: rgb(255 255 255 / 84%); color: #111827; }
-.nm-acid-hero--dark .nm-acid-hero__button--secondary { background: rgb(13 24 43 / 78%); color: #fff; }
 
 @media (max-width: 640px) {
   .nm-acid-hero { min-height: 34rem; margin-top: -20px; }

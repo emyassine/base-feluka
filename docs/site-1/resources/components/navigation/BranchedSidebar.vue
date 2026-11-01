@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter, useData } from 'vitepress'
-import BranchedMenu from './BranchedMenu.vue'
 import type { BranchedMenuChild, BranchedMenuItem } from './BranchedMenu.vue'
 
 interface SidebarEntry {

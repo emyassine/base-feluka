@@ -1,6 +1,5 @@
 <script lang="ts">
-import { defineComponent, Fragment, h, type PropType, type VNode } from 'vue'
-import FeluqaButton from '../ui/FeluqaButton.vue'
+import { resolveComponent, defineComponent, Fragment, h, type PropType, type VNode } from 'vue'
 import reactImage0 from '../home/assets/react-home/images/uwu.png';
 
 const imageAssets = new Map<string, string>([
@@ -94,7 +93,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
     const action = actions.find((item) => item.sourceHref === node.attrs.href)
     if (action) {
       const primary = action.style === 'primary'
-      return h(FeluqaButton, {
+      return h(resolveComponent('FeluqaButton'), {
         tag: 'a',
         href: action.href,
         size: 'lg',

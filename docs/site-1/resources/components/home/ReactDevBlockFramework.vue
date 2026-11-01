@@ -1,6 +1,5 @@
 <script lang="ts">
-import { defineComponent, Fragment, h, onMounted, ref, watch, type PropType, type VNode } from 'vue'
-import FeluqaButton from '../ui/FeluqaButton.vue'
+import { resolveComponent, defineComponent, Fragment, h, onMounted, ref, watch, type PropType, type VNode } from 'vue'
 import { highlightCode, plainCode } from './code-highlighter'
 import reactImage0 from './assets/react-home/images/home/conf2021/aakansha.jpg';
 import reactImage1 from './assets/react-home/images/home/conf2021/andrew.jpg';
@@ -170,7 +169,7 @@ function renderNode(node: ReactDevHtmlNode, actions: ReactDevAction[]): VNode | 
     const action = actions.find((item) => item.sourceHref === node.attrs.href)
     if (action) {
       const primary = action.style === 'primary'
-      return h(FeluqaButton, {
+      return h(resolveComponent('FeluqaButton'), {
         tag: 'a',
         href: action.href,
         size: 'lg',

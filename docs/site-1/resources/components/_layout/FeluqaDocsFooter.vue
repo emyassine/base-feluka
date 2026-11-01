@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MainlineCta from '../home/MainlineCta.vue'
 import { useSpmpstConfig } from '@spmpst/config'
 
 interface FooterContent {

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useData } from 'vitepress';
-import FeluqaButton from '../ui/FeluqaButton.vue';
 import { useCollection } from '../collections/useCollections';
 
 const { frontmatter, lang, page } = useData();
