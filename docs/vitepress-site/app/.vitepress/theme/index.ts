@@ -294,16 +294,17 @@ const MermaidLayout = {
       const localized = segments.length > 1 && content.languages?.includes(segments[0]) && segments[0] !== content.defaultLanguage
       const routeKey = localized ? `${segments[0]}/${segments[1]}` : segments[0] ?? 'root'
       const slots = { ...themeSlots?.site, ...themeSlots?.guides?.[routeKey] }
-      const isCollectionPage = typeof pageFrontmatter.value.collection === 'string'
+      // Use collection metadata from the page instead of inferring its layout from the URL.
+      const isCollectionLayout = typeof pageFrontmatter.value.collection === 'string'
         || typeof pageFrontmatter.value.collectionIndex === 'string'
       if (content.siteFooter) {
-        const usesDocumentLayout = !isCollectionPage && (pageFrontmatter.value.layout == null || pageFrontmatter.value.layout === 'doc')
+        const usesDocumentLayout = !isCollectionLayout && (pageFrontmatter.value.layout == null || pageFrontmatter.value.layout === 'doc')
         slots[usesDocumentLayout ? 'doc-bottom' : 'layout-bottom'] = content.siteFooter
       }
       return Object.fromEntries(Object.entries(slots).map(([slot, name]) => [slot, () => {
         if (!name) return null
         const component = (projectComponents as Record<string, Component>)[name]
-        return component ? h(component, isCollectionPage && slot === 'layout-bottom' ? { homeLayout: true } : undefined) : null
+        return component ? h(component, isCollectionLayout && slot === 'layout-bottom' ? { homeLayout: true } : undefined) : null
       }]))
     }
     const colorProperties: Record<string, string> = {
