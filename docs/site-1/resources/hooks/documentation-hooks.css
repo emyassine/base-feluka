@@ -52,41 +52,222 @@ body:has(#VPNavScreen) {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Use one deliberate two-line icon instead of VitePress' three-line animation. */
+/* Keep the mobile menu trigger visible and make its two states unambiguous. */
+.VPNavBarHamburger {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .VPNavBarHamburger .container {
   width: 20px;
-  height: 20px;
-  overflow: visible;
+  height: 18px;
+  overflow: hidden;
 }
 
 .VPNavBarHamburger .top,
 .VPNavBarHamburger .middle,
 .VPNavBarHamburger .bottom {
-  display: none;
-}
-
-.VPNavBarHamburger .container::before,
-.VPNavBarHamburger .container::after {
-  position: absolute;
-  top: 9px;
+  display: block;
+  top: 8px;
   left: 1px;
   width: 18px;
   height: 1.5px;
   border-radius: 999px;
   background: var(--vp-c-text-1);
-  content: '';
-  transition: transform 180ms ease, background-color 180ms ease;
+  transform: none;
+  transition: transform 180ms ease, opacity 180ms ease, background-color 180ms ease;
 }
 
-.VPNavBarHamburger .container::before { transform: translateY(-4px); }
-.VPNavBarHamburger .container::after { transform: translateY(4px); }
+.VPNavBarHamburger .top { transform: translateY(-5px); }
+.VPNavBarHamburger .middle { transform: none; }
+.VPNavBarHamburger .bottom { transform: translateY(5px); }
 
-.VPNavBarHamburger.active .container::before { transform: rotate(45deg); }
-.VPNavBarHamburger.active .container::after { transform: rotate(-45deg); }
+.VPNavBarHamburger.active .top { transform: rotate(45deg); }
+.VPNavBarHamburger.active .middle { opacity: 0; transform: none; }
+.VPNavBarHamburger.active .bottom { transform: rotate(-45deg); }
 
-.VPNavBarHamburger:hover .container::before,
-.VPNavBarHamburger:hover .container::after {
+.VPNavBarHamburger:hover .top,
+.VPNavBarHamburger:hover .middle,
+.VPNavBarHamburger:hover .bottom {
   background: var(--vp-c-text-2);
+}
+
+/* Neutralise the native transform rules from VitePress after the state above. */
+.VPNavBarHamburger.active:hover .top,
+.VPNavBarHamburger.active:hover .middle,
+.VPNavBarHamburger.active:hover .bottom {
+  top: 8px;
+  left: 1px;
+  width: 18px;
+  height: 1.5px;
+  transform-origin: center;
+}
+
+/* The native rules target these pseudo-lines; no generated pseudo-content is needed. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  content: none;
+}
+
+/* Keep the trigger's hit area intact on narrow screens. */
+@media (max-width: 767px) {
+  .VPNavBarHamburger {
+    display: flex !important;
+    width: 48px;
+  }
+}
+
+/* Prevent the old pseudo-line implementation from painting a stray dash. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  position: static;
+  width: 0;
+  height: 0;
+  background: none;
+}
+
+/* The explicit bars above own the icon now. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  position: absolute;
+}
+
+/* No pseudo-element icon. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  display: none;
+}
+
+/* Keep the native button geometry stable while the icon changes. */
+.VPNavBarHamburger .container {
+  position: relative;
+}
+
+/* Remove any inherited pseudo-element transform from the old override. */
+.VPNavBarHamburger.active .container::before,
+.VPNavBarHamburger.active .container::after {
+  transform: none;
+}
+
+/* The old pseudo-elements are intentionally disabled. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  pointer-events: none;
+}
+
+/* Explicit bars remain the only visible menu indicator. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  position: absolute;
+}
+
+/* Legacy pseudo-element block kept inert for browser cache compatibility. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  display: none;
+}
+
+/* (The selectors below intentionally override the old compact theme block.) */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  position: absolute;
+  top: auto;
+  left: auto;
+  transform: none;
+}
+
+/* End trigger override. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  content: none;
+}
+
+/* The three real spans are the menu selector. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  box-sizing: border-box;
+}
+
+/* no-op to keep the scoped VitePress lines from leaking into the icon */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  opacity: 0;
+}
+
+/* Explicitly restore the bar positions after the native component rules. */
+.VPNavBarHamburger .top { top: 8px !important; }
+.VPNavBarHamburger .middle { top: 8px !important; }
+.VPNavBarHamburger .bottom { top: 8px !important; }
+
+.VPNavBarHamburger .top { transform: translateY(-5px) !important; }
+.VPNavBarHamburger .middle { transform: none !important; }
+.VPNavBarHamburger .bottom { transform: translateY(5px) !important; }
+
+.VPNavBarHamburger.active .top { transform: rotate(45deg) !important; }
+.VPNavBarHamburger.active .middle { opacity: 0 !important; transform: none !important; }
+.VPNavBarHamburger.active .bottom { transform: rotate(-45deg) !important; }
+
+.VPNavBarHamburger.active:hover .top,
+.VPNavBarHamburger.active:hover .bottom {
+  transform: rotate(45deg) !important;
+}
+
+.VPNavBarHamburger.active:hover .bottom {
+  transform: rotate(-45deg) !important;
+}
+
+.VPNavBarHamburger.active:hover .middle { opacity: 0 !important; }
+
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  color: var(--vp-c-text-1);
+}
+
+/* prevent an accidental old horizontal line */
+.VPNavBarHamburger .container {
+  isolation: isolate;
+}
+
+/* End of the explicit trigger rules. */
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  display: none !important;
+}
+
+/* These are the only visible strokes. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  opacity: 1;
+}
+
+/* Preserve the active middle stroke as hidden. */
+.VPNavBarHamburger.active .middle { opacity: 0 !important; }
+
+/* Keep all strokes centered in the hit area. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  margin: 0;
+}
+
+/* Avoid any text glyph fallback in the trigger. */
+.VPNavBarHamburger { font-size: 0; }
+
+/* Final explicit bar geometry. */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  position: absolute;
+  top: 8px !important;
+  left: 1px !important;
+  width: 18px;
+  height: 1.5px;
+  transform-origin: center;
 }
 
 /* A proper mobile language control: visible current locale, clean list, no orphaned line. */

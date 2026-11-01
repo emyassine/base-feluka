@@ -1,4 +1,6 @@
 {
+	"$schema": "../public/api/schemas/topbar.schema.json",
+	"theme": "switch",
   "items": [
     {
       "guide": "feluqa.rs"
@@ -65,7 +67,5 @@
         }
       }
       }
-  ],
-  "theme": "switch",
-  "$schema": "../public/api/schemas/topbar.schema.json"
+  ]
 }
