@@ -15,7 +15,7 @@
 .FeluqaDocumentationNotices__status.is-compact { align-items: center; gap: 8px; padding: 9px 14px; }
 .FeluqaDocumentationNotices__status.is-compact.is-validated { border-color: #a7f3d0; background: #ecfdf5; }
 .FeluqaDocumentationNotices__status.is-compact .FeluqaDocumentationNotices__icon { width: 17px; height: 17px; flex-basis: 17px; margin: 0; }
-.FeluqaDocumentationNotices__status.is-compact p { font-size: 0.8125rem; }
+.FeluqaDocumentationNotices__status.is-compact .FeluqaDocumentationNotices__compact-label { margin: 0; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; }
 .FeluqaDocumentationNotices__dismiss { display: inline-flex; width: 28px; height: 28px; flex: 0 0 28px; align-items: center; justify-content: center; margin: -4px -6px 0 auto; border: 0; border-radius: 6px; color: var(--vp-c-text-2); background: transparent; cursor: pointer; }
 .FeluqaDocumentationNotices__dismiss:hover { color: var(--vp-c-text-1); background: var(--vp-c-bg); }
 .FeluqaDocumentationNotices__dismiss:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }

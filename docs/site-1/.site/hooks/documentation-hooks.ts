@@ -95,8 +95,9 @@ export const DocumentationNotice = defineComponent({
         const content = [
           icon(iconKind),
           h('div', { class: 'FeluqaDocumentationNotices__content' }, [
+            compact ? h('strong', { class: 'FeluqaDocumentationNotices__compact-label' }, message) : null,
             !compact && !collapsible ? h('strong', heading) : null,
-            h('p', message),
+            compact ? null : h('p', message),
           ]),
           dismissible ? dismissButton() : null,
         ]
