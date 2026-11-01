@@ -5,7 +5,7 @@ sidebarTitle: "Writing Docs"
 description: "A workflow for writing accurate Feluqa docs that preserve product intent, use canonical terms, and stand on their own on the documentation site."
 summary: "Provides a workflow for researching, drafting, and reviewing published Feluqa documentation. It covers preserving product intent and canonical terminology, site independence, honest implementation status, licensing and agent distinctions, global and accessible writing, file structure, and final review."
 date: 2026-10-29
-lastmod: 2026-10-29
+lastmod: 2026-11-01
 weight: 1
 status: "Exploring"
 tags: [feluqa, agents, skills, documentation, writing]
@@ -113,11 +113,33 @@ claims that proprietary or open-source licensing by itself makes software
 secure. For technical security claims, use accurate wording and link to
 authoritative references.
 
-Page `status` metadata renders a documentation notice above the page content.
-Validated notices are compact and single-line by default. Use the optional
-`notice` front matter map to make notices dismissible or collapsible, reduce
-their visual emphasis with `subtle: true`, or set `autoDismissMs` to a positive
-number of milliseconds. The site configuration guide documents all options.
+### Set status notices deliberately
+
+The page `status` front matter displays a notice for `Exploring` and validated
+pages. Use `Exploring` when the page describes an idea still under discussion.
+Use Feluqa's canonical `Validated` status only when its information has been
+checked against the current baseline. The notice hook also recognizes
+`Verified`, `Complete`, and `Completed` as validated equivalents. Values such
+as `Target`, `Partial`, and `Published` do not display a status notice.
+
+Validated notices are compact and single-line by default. Add a `notice` map
+only when the page needs a different presentation or reader control:
+
+```yaml
+notice:
+  dismissible: true
+  collapsible: true
+  subtle: true
+  autoDismissMs: 8000
+  compact: false
+```
+
+All fields are optional. `dismissible` adds a close button. `collapsible`
+starts the notice closed behind a disclosure row. `subtle` removes the colored
+surface. A positive `autoDismissMs` value closes the notice after that many
+milliseconds and adds a close button. Set `compact: false` when a Validated
+notice needs its title and explanatory message. Choose only the options that
+help readers; do not add a notice merely to decorate a page.
 
 ## Explain licensing and AI choices without conflating them
 
