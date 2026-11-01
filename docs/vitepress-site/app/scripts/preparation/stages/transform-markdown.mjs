@@ -48,9 +48,9 @@ await Promise.all(records.map(async (record) => {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
     if (metadata) {
       const frontmatter = metadata[1].split('\n').filter((line) => !/^(?:sidebar|aside):\s*/.test(line))
+        if (!/^collection:\s*/m.test(metadata[1])) frontmatter.push(`collection: ${JSON.stringify(owningCollection.id)}`)
       if (owningCollection.layout === 'article') {
         const { wordCount, readingTime } = readingMetrics(markdown)
-        if (!/^collection:\s*/m.test(metadata[1])) frontmatter.push(`collection: ${JSON.stringify(owningCollection.id)}`)
         if (!/^wordCount:\s*/m.test(metadata[1])) frontmatter.push(`wordCount: ${wordCount}`)
         if (!/^readingTime:\s*/m.test(metadata[1])) frontmatter.push(`readingTime: ${readingTime}`)
       }
