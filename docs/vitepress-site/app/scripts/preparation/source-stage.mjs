@@ -184,8 +184,13 @@ function validateSubguideSelector(value, location) {
   if (value.source === 'collections') {
     const options = value.collections
     if (!options || typeof options !== 'object' || Array.isArray(options)
-      || Object.keys(options).some((key) => !['pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'separateBetweenCollections'].includes(key))) {
+      || Object.keys(options).some((key) => !['order', 'pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'separateBetweenCollections'].includes(key))) {
       throw new Error(`${location}.collections must contain collection-specific navigation options`)
+    }
+    if (options.order !== undefined && (!Array.isArray(options.order)
+      || options.order.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
+      || new Set(options.order).size !== options.order.length)) {
+      throw new Error(`${location}.collections.order must be a unique array of configured collection ids`)
     }
     if (options.pathPrefix !== undefined && (typeof options.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(options.pathPrefix))) throw new Error(`${location}.collections.pathPrefix must be a relative collection path`)
     for (const key of ['hideChildren', 'showIconFromParents']) {
