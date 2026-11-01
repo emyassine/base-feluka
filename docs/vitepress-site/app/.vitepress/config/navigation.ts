@@ -252,17 +252,20 @@ function navigation(language = defaultLanguage): any[] {
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
   }
-  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], showIconFromParents: string[] = [], showParentsName = true, hideIcon = false, order: string[] = []) => {
+  const collectionSubmenus = (pathPrefix: string | undefined, depth: number | number[] | 'all' | undefined, showIcons: boolean, hideChildren: string[] = [], showIconFromParents: string[] = [], showParentsName = true, hideIcon = false, order: Array<string | string[]> = []) => {
     const selectedDepths = depth == null || depth === 'all' ? null : new Set(Array.isArray(depth) ? depth : [depth])
-    return [...generatedCollections]
+    const groups = order.map((entry) => Array.isArray(entry) ? entry : [entry])
+    const orderedIds = groups.flat()
+    const submenuById = new Map<string, { title: string; items: any[] }>()
+    const collectionsInScope = [...generatedCollections]
       .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
       .filter((collection: any) => {
         const level = pathPrefix ? collection.path.split('/').length - pathPrefix.split('/').length : collection.path.split('/').length
         return !selectedDepths || selectedDepths.has(level)
       })
       .sort((left: any, right: any) => {
-        const leftOrder = order.indexOf(left.id)
-        const rightOrder = order.indexOf(right.id)
+        const leftOrder = orderedIds.indexOf(left.id)
+        const rightOrder = orderedIds.indexOf(right.id)
         if (leftOrder >= 0 || rightOrder >= 0) {
           return (leftOrder < 0 ? Number.MAX_SAFE_INTEGER : leftOrder)
             - (rightOrder < 0 ? Number.MAX_SAFE_INTEGER : rightOrder)
@@ -270,7 +273,7 @@ function navigation(language = defaultLanguage): any[] {
         }
         return left.path.localeCompare(right.path)
       })
-      .flatMap((collection: any) => {
+    collectionsInScope.forEach((collection: any) => {
         const link = collection.links[language] ?? collection.links[defaultLanguage]
         const route = collection.route ?? collection.id
         const metadata = sidebarMetadata[route]
@@ -322,9 +325,26 @@ function navigation(language = defaultLanguage): any[] {
           link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
         }
-        if (hideChildren.includes(collection.id) || !items.length) return [linkItem]
-        return [{ ...(showParentsName ? { text: label } : {}), items }]
+        submenuById.set(collection.id, {
+          title: label,
+          items: hideChildren.includes(collection.id) || !items.length ? [linkItem] : items,
+        })
       })
+    const remainingIds = [...generatedCollections]
+      .filter((collection: any) => !orderedIds.includes(collection.id))
+      .filter((collection: any) => !pathPrefix || collection.path === pathPrefix || collection.path.startsWith(`${pathPrefix}/`))
+      .filter((collection: any) => {
+        const level = pathPrefix ? collection.path.split('/').length - pathPrefix.split('/').length : collection.path.split('/').length
+        return !selectedDepths || selectedDepths.has(level)
+      })
+      .map((collection: any) => collection.id)
+    const resolvedGroups = [...groups, ...remainingIds.map((id: string) => [id])]
+    return resolvedGroups.flatMap((ids) => {
+      const collections = ids.map((id) => submenuById.get(id)).filter(Boolean) as Array<{ title: string; items: any[] }>
+      const items = collections.flatMap((collection) => collection.items)
+      const text = collections.map((collection) => collection.title).join(' · ')
+      return items.length ? [{ ...(showParentsName ? { text } : {}), items }] : []
+    })
   }
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
@@ -365,7 +385,7 @@ function navigation(language = defaultLanguage): any[] {
       const collectionOptions = item.items.collections
       const routePrefix = collectionOptions.pathPrefix?.split('/').join('/')
       const activeRoot = routePrefix ?? ''
-      const collectionMenuClass = collectionOptions.separateBetweenCollections === true
+      const collectionMenuClass = collectionOptions.separateBetweenCollections === true || (collectionOptions.order?.length ?? 0) > 1
         ? 'docs-topbar-collection-trigger docs-topbar-collection-separators'
         : 'docs-topbar-collection-trigger'
       return applyMenuTemplate({

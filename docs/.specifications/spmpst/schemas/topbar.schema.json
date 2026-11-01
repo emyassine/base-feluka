@@ -44,6 +44,15 @@
                   "collections": {
                     "type": "object",
                     "properties": {
+                      "order": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            { "type": "string", "minLength": 1 },
+                            { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+                          ]
+                        }
+                      },
                       "pathPrefix": { "type": "string", "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$" },
                       "hideChildren": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
                       "showIconFromParents": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "default": [] },

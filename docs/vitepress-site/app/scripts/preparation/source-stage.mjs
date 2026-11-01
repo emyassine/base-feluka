@@ -187,10 +187,12 @@ function validateSubguideSelector(value, location) {
       || Object.keys(options).some((key) => !['order', 'pathPrefix', 'hideChildren', 'showIconFromParents', 'showParentsName', 'separateBetweenCollections'].includes(key))) {
       throw new Error(`${location}.collections must contain collection-specific navigation options`)
     }
+    const orderIds = Array.isArray(options.order) ? options.order.flatMap((entry) => Array.isArray(entry) ? entry : [entry]) : []
     if (options.order !== undefined && (!Array.isArray(options.order)
-      || options.order.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
-      || new Set(options.order).size !== options.order.length)) {
-      throw new Error(`${location}.collections.order must be a unique array of configured collection ids`)
+      || options.order.some((entry) => Array.isArray(entry) ? entry.length < 1 : typeof entry !== 'string')
+      || orderIds.some((id) => typeof id !== 'string' || !topbarCollectionIds.has(id))
+      || new Set(orderIds).size !== orderIds.length)) {
+      throw new Error(`${location}.collections.order must contain configured collection ids, optionally grouped in non-empty arrays`)
     }
     if (options.pathPrefix !== undefined && (typeof options.pathPrefix !== 'string' || !/^[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*$/.test(options.pathPrefix))) throw new Error(`${location}.collections.pathPrefix must be a relative collection path`)
     for (const key of ['hideChildren', 'showIconFromParents']) {

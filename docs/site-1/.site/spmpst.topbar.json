@@ -61,7 +61,7 @@
         "icon": true,
         "hideIcon": false,
         "collections": {
-          "order": ["about", "articles", "research", "governance", "legal"],
+          "order": ["about", ["articles", "research"], ["governance", "legal"]],
           "hideChildren": ["articles", "research"],
           "showIconFromParents": ["articles", "research"],
           "showParentsName": false
