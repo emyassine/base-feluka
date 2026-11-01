@@ -1,3 +1,17 @@
+.VPContent,
+.VPDoc,
+.VPPage,
+.VPHome {
+  min-width: 0;
+  max-width: 100%;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .spotlight-card {
   --feluqa-brand: var(--vp-brand-c-1, var(--vp-c-brand-1));
   position: relative;

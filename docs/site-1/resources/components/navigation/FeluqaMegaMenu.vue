@@ -141,8 +141,9 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
 </template>
 
 <style scoped>
-.FeluqaMegaMenu__body { width: min(960px, calc(100dvw - 32px)); max-width: calc(100dvw - 32px); min-width: 0; color: var(--vp-c-text-1); box-sizing: border-box; }
-:deep(.menu) { right: auto !important; left: 50% !important; width: min(960px, calc(100dvw - 32px)); max-width: calc(100dvw - 32px); box-sizing: border-box; transform: translate(-50%, 0) !important; }
+.FeluqaMegaMenu__body { width: 100%; max-width: 100%; min-width: 0; color: var(--vp-c-text-1); box-sizing: border-box; }
+:deep(.menu) { position: fixed !important; top: var(--vp-nav-height) !important; right: auto !important; left: 50% !important; width: min(960px, calc(100dvw - 32px)) !important; max-width: calc(100dvw - 32px) !important; min-width: 0 !important; box-sizing: border-box; transform: translate(-50%, 0) !important; }
+:deep(.menu > .VPMenu) { width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box; }
 :deep(.button), :deep(.button:hover), :deep(.text), :deep(.VPFlyout:hover .text), :deep(.VPFlyout.active .text) { color: var(--vp-c-text-1) !important; }
 .FeluqaMegaMenu__cards { display: grid; width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
 .FeluqaMegaMenu__card { display: flex; width: 100%; min-width: 0; min-height: 126px; box-sizing: border-box; flex-direction: column; gap: 7px; padding: 14px; border: 1px solid var(--vp-c-divider); border-radius: 10px; color: var(--vp-c-text-1) !important; text-decoration: none; overflow: hidden; }
@@ -158,7 +159,7 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
 .FeluqaMegaMenu__card strong { color: var(--vp-c-text-1); }
 .FeluqaMegaMenu__card span, .FeluqaMegaMenu__line small, .FeluqaMegaMenu__featured p, .FeluqaMegaMenu__event small { color: var(--vp-c-text-2); font-size: .82rem; }
 .FeluqaMegaMenu__card span { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; text-overflow: ellipsis; }
-.FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured { display: grid; grid-template-columns: repeat(3, 1fr); }
+.FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured { display: grid; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .FeluqaMegaMenu__columns section, .FeluqaMegaMenu__featured > section, .FeluqaMegaMenu__featured article { padding: 14px 18px; border-right: 1px solid var(--vp-c-divider); }
 .FeluqaMegaMenu__columns section:last-child, .FeluqaMegaMenu__featured article { border-right: 0; }
 h3 { margin: 0 0 12px; font-size: .95rem; }
@@ -170,11 +171,11 @@ h3 { margin: 0 0 12px; font-size: .95rem; }
 .FeluqaMegaMenu__featured article img:hover { transform: scale(1.08); }
 .FeluqaMegaMenu__featured article div > img:hover { transform: scale(1.08); }
 .FeluqaMegaMenu__featured article a { color: var(--vp-c-brand-1); }
-.FeluqaMegaMenu__events { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; padding: 14px 18px; }
+.FeluqaMegaMenu__events { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 20px; padding: 14px 18px; }
 .FeluqaMegaMenu__event { display: flex; gap: 12px; padding: 10px; color: var(--vp-c-text-1) !important; text-decoration: none; }
 .FeluqaMegaMenu__event strong { min-width: 54px; color: var(--vp-c-brand-1); }
 .FeluqaMegaMenu__event span { display: grid; gap: 3px; }
-.FeluqaMegaMenu__background-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.FeluqaMegaMenu__background-grid { display: grid; width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .FeluqaMegaMenu__background-column { display: grid; min-width: 0; min-height: 0; }
 .FeluqaMegaMenu__background-card { position: relative; display: flex; min-width: 0; min-height: var(--feluqa-mega-card-height, 260px); box-sizing: border-box; flex-direction: column; justify-content: space-between; padding: 18px; border-radius: 10px; color: white !important; text-decoration: none; overflow: hidden; transition: box-shadow .4s cubic-bezier(.22, 1, .36, 1); }
 .FeluqaMegaMenu__background-card::after { position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgb(0 0 0 / .04), rgb(0 0 0 / .82)); content: ''; pointer-events: none; }
@@ -193,7 +194,7 @@ h3 { margin: 0 0 12px; font-size: .95rem; }
 .FeluqaMegaMenu__more-hint svg { width: 14px; height: 14px; flex: none; }
 :dir(rtl) .FeluqaMegaMenu__more-hint svg { transform: scaleX(-1); }
 .FeluqaMegaMenu__background-icon { position: relative; z-index: 2; width: 28px; height: 28px; object-fit: contain; filter: brightness(0) invert(1); }
-@media (max-width: 768px) { .FeluqaMegaMenu__body, :deep(.menu) { width: min(600px, calc(100dvw - 24px)); max-width: calc(100dvw - 24px); }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events, .FeluqaMegaMenu__background-grid { grid-template-columns: 1fr !important; }.FeluqaMegaMenu__background-card { min-height: 220px; } }
+@media (max-width: 768px) { :deep(.menu) { width: calc(100dvw - 24px) !important; max-width: calc(100dvw - 24px) !important; }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events, .FeluqaMegaMenu__background-grid { grid-template-columns: minmax(0, 1fr) !important; }.FeluqaMegaMenu__background-card { min-height: 220px; } }
 @media (prefers-reduced-motion: reduce) { .FeluqaMegaMenu__card, .FeluqaMegaMenu__background-card, .FeluqaMegaMenu__card > img, .FeluqaMegaMenu__background-image { animation: none; transform: none; } }
 @keyframes FeluqaMegaMenu-card-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 </style>

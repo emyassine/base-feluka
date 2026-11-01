@@ -40,8 +40,119 @@ body::before {
   background-color: var(--vp-c-bg) !important;
 }
 
-/* The language list is clear without repeating the current language above it. */
-.VPNavBarTranslations .title,
-.VPNavScreenTranslations .title {
+/* Keep the page behind the mobile navigation completely inert while it is open. */
+html:has(#VPNavScreen),
+body:has(#VPNavScreen) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.VPNavScreen {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Use one deliberate two-line icon instead of VitePress' three-line animation. */
+.VPNavBarHamburger .container {
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
   display: none;
+}
+
+.VPNavBarHamburger .container::before,
+.VPNavBarHamburger .container::after {
+  position: absolute;
+  top: 9px;
+  left: 1px;
+  width: 18px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: var(--vp-c-text-1);
+  content: '';
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.VPNavBarHamburger .container::before { transform: translateY(-4px); }
+.VPNavBarHamburger .container::after { transform: translateY(4px); }
+
+.VPNavBarHamburger.active .container::before { transform: rotate(45deg); }
+.VPNavBarHamburger.active .container::after { transform: rotate(-45deg); }
+
+.VPNavBarHamburger:hover .container::before,
+.VPNavBarHamburger:hover .container::after {
+  background: var(--vp-c-text-2);
+}
+
+/* A proper mobile language control: visible current locale, clean list, no orphaned line. */
+.VPNavScreenTranslations {
+  height: auto;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 16px;
+}
+
+.VPNavScreenTranslations .title {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+  border-radius: 8px;
+  color: var(--vp-c-text-1);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.VPNavScreenTranslations .title:hover,
+.VPNavScreenTranslations.open .title {
+  background: var(--vp-c-bg-soft);
+}
+
+.VPNavScreenTranslations .title .icon.lang { display: none; }
+.VPNavScreenTranslations .title::before {
+  margin: 0;
+}
+
+.VPNavScreenTranslations .title .icon.chevron {
+  margin-left: auto;
+  transition: transform 180ms ease;
+}
+
+.VPNavScreenTranslations.open .title .icon.chevron {
+  transform: rotate(180deg);
+}
+
+.VPNavScreenTranslations .list {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0 0 0 28px;
+  list-style: none;
+}
+
+.VPNavScreenTranslations:not(.open) .list {
+  display: none;
+}
+
+.VPNavScreenTranslations .link {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 7px;
+  padding: 0 8px;
+  color: var(--vp-c-text-2);
+  line-height: 1;
+}
+
+.VPNavScreenTranslations .link:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft);
 }
