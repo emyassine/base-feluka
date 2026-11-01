@@ -12,6 +12,7 @@ export default {
     resolve(process.cwd(), '.vitepress/**/*.{vue,ts,js}'),
     resolve(generatedRoot, '../generated-guides/**/*.md'),
     resolve(paths.components, '**/*.{vue,md}'),
+    ...(paths.sharedComponents ? [resolve(paths.sharedComponents, '**/*.{vue,md}')] : []),
     resolve(paths.guides, '**/*.{vue,md}'),
   ],
   corePlugins: {

@@ -1,4 +1,15 @@
 {
-  "socialLinks": [],
-  "$schema": "../public/media/schemas/links.schema.json"
+  "socialLinks": [
+    {
+    	"icon": "@spmpst::icon::whatsapp",
+      "link": "https://wa.me/212620990692",
+      "ariaLabel": "Contactez-nous"
+    },
+    {
+      "icon": "@spmpst::icon::linkedin-logo",
+      "link": "https://www.linkedin.com/company/numerimondes",
+      "ariaLabel": "Numerimondes on LinkedIn"
+    }
+  ],
+  "$schema": "../public/api/schemas/links.schema.json"
 }
