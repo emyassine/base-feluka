@@ -11,6 +11,7 @@ interface FooterContent {
   subNavigation: Array<{ name: string; href: string; external?: boolean }>
   logoImg?: string
   logoAlt: string
+  logoStyles?: { dark?: string; light?: string }
 }
 
 const content = useSpmpstConfig<FooterContent>('footer.content')
@@ -27,6 +28,7 @@ const content = useSpmpstConfig<FooterContent>('footer.content')
       :sub-navigation="content.subNavigation"
       :logo-img="content.logoImg"
       :logo-alt="content.logoAlt"
+      :logo-styles="content.logoStyles"
     />
   </div>
 </template>

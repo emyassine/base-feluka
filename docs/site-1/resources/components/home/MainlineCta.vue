@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useData } from 'vitepress'
 import footerImage from '@docs/src/guides/feluqa.rs/.art/feluqa-footer-white-transteinted.png'
 
-defineProps<{
+const props = defineProps<{
   title: string
   description: string
   actionLabel: string
@@ -10,7 +12,11 @@ defineProps<{
   subNavigation: Array<{ name: string; href: string; external?: boolean }>
   logoImg?: string
   logoAlt: string
+  logoStyles?: { dark?: string; light?: string }
 }>()
+
+const { isDark } = useData()
+const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : props.logoStyles?.light ?? '')
 </script>
 
 <template>
@@ -35,7 +41,7 @@ defineProps<{
         </li>
       </ul>
     </nav>
-    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="logoImg || footerImage" :alt="logoAlt" class="mx-auto block w-full max-w-3xl" /></div>
+    <div class="text-primary mt-10 w-full md:mt-14 lg:mt-20"><img :src="logoImg || footerImage" :alt="logoAlt" :style="logoStyle" class="mx-auto block w-full max-w-3xl" /></div>
   </footer>
 </template>
 

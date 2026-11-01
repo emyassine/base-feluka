@@ -28,6 +28,7 @@
 	    { "name": { "en": "LinkedIn", "fr": "LinkedIn" }, "href": "#", "external": true }
     ],
     "logoImg": "",
-    "logoAlt": { "en": "Feluqa", "fr": "Feluqa" }
+    "logoAlt": { "en": "Feluqa", "fr": "Feluqa" },
+    "logoStyles": { "dark": "opacity: 0.5", "light": "" }
   }
 }
