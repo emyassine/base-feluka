@@ -50,6 +50,9 @@ const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : p
 .footer-cta__content { box-sizing: border-box; min-width: 0; max-width: 100%; }
 .footer-cta__content { width: 100%; padding-inline: 16px; }
 .footer-brand-image { display: block; width: 100%; max-width: 100%; height: auto; margin-inline: auto; object-fit: contain; }
+@media (max-width: 959px) {
+  .footer-brand-image { max-width: 97vw; }
+}
 .footer-link,
 .footer-sub-link { transition: color 180ms ease, opacity 180ms ease; }
 .footer-link { color: var(--vp-c-text-1); font-size: 0.9rem; font-weight: 600; }
