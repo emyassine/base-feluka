@@ -4,28 +4,18 @@ sidebarTitle: "Home"
 icon: "@spmpst::icon::home"
 layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
-hero:
-  name: Numerimondes
-  text: "Technology you can own, understand, and operate"
-  tagline: "One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
-  actions:
-    - theme: brand
-      text: "Talk to us on WhatsApp"
-      link: "https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project."
-    - theme: alt
-      text: "Explore our services"
-      link: "/services/"
-features:
-  - title: "Consulting and cybersecurity"
-    details: "Make informed technology and security decisions with a practical plan."
-    link: "/services/"
-  - title: "Business software and automation"
-    details: "Improve core workflows with software and automation shaped around your operations."
-    link: "/solutions/"
-  - title: "Infrastructure and private AI"
-    details: "Run dependable infrastructure and explore AI with appropriate control over your data."
-    link: "/services/"
 ---
+
+<MainlineHomeLayout>
+<NmHero
+  title="Technology you can own, understand, and operate"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
+  background-image="https://images.unsplash.com/photo-1685902397640-04a02fde0f85?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+/>
 
 ## One foundation. All your operations.
 
@@ -48,7 +38,8 @@ We start by understanding your process, constraints, and existing systems. Then 
 
 Ready to discuss an opportunity?
 
-<div class="nm-actions">
-  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" size="lg">Message us on WhatsApp</FeluqaButton>
-  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="lg">Explore services</FeluqaButton>
-</div>
+	<div class="nm-actions">
+	  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" size="lg">Message us on WhatsApp</FeluqaButton>
+	  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="lg">Explore services</FeluqaButton>
+	</div>
+</MainlineHomeLayout>
