@@ -10,7 +10,7 @@ status: "Exploring"
 category: "interface-architecture"
 tags: [research, multiplatform, interface, architecture]
 ---
-# Rethinking Reliable Multiplatform Software Development
+# Rethinking Reliable Software Development
 
 ## The Feluqa Interface Standard: one description, many native profiles, one namespace
 
