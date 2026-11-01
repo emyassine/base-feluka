@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import FeluqaButton from '../ui/FeluqaButton.vue'
 const footerImage = '/media/images/feluqa-footer-white-transteinted.png'
 
 const props = defineProps<{
@@ -11,12 +12,14 @@ const props = defineProps<{
   navigation: Array<{ name: string; href: string; external?: boolean }>
   subNavigation: Array<{ name: string; href: string; external?: boolean }>
   logoImg?: string
+  logoImgDark?: string
   logoAlt: string
   logoStyles?: { dark?: string; light?: string }
 }>()
 
 const { isDark } = useData()
 const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : props.logoStyles?.light ?? '')
+const logoSource = computed(() => (isDark.value ? props.logoImgDark : undefined) || props.logoImg || footerImage)
 </script>
 
 <template>
@@ -24,7 +27,7 @@ const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : p
     <div class="container footer-cta__content space-y-3 text-center">
       <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
       <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
-      <div><a :href="actionHref" class="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium !text-primary-foreground !no-underline">{{ actionLabel }}</a></div>
+      <div class="mt-4"><FeluqaButton tag="a" :href="actionHref" size="lg">{{ actionLabel }}</FeluqaButton></div>
     </div>
     <nav class="container footer-cta__content flex flex-col items-center gap-3">
       <ul v-if="navigation.length" class="footer-navigation flex list-none flex-wrap items-center justify-center gap-x-7 gap-y-2 p-0">
@@ -41,7 +44,7 @@ const logoStyle = computed(() => isDark.value ? props.logoStyles?.dark ?? '' : p
         </li>
       </ul>
     </nav>
-    <div class="text-primary mt-4 w-full md:mt-14 lg:mt-20"><img :src="logoImg || footerImage" :alt="logoAlt" :style="logoStyle" class="footer-brand-image" /></div>
+    <div class="text-primary mt-4 w-full md:mt-14 lg:mt-20"><img :src="logoSource" :alt="logoAlt" :style="logoStyle" class="footer-brand-image" /></div>
   </footer>
 </template>
 

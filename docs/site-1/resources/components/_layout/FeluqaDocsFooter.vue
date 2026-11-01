@@ -10,6 +10,7 @@ interface FooterContent {
   navigation: Array<{ name: string; href: string; external?: boolean }>
   subNavigation: Array<{ name: string; href: string; external?: boolean }>
   logoImg?: string
+  logoImgDark?: string
   logoAlt: string
   logoStyles?: { dark?: string; light?: string }
 }
@@ -30,6 +31,7 @@ defineProps<{ homeLayout?: boolean }>()
           :navigation="content.navigation"
           :sub-navigation="content.subNavigation"
           :logo-img="content.logoImg"
+          :logo-img-dark="content.logoImgDark"
           :logo-alt="content.logoAlt"
           :logo-styles="content.logoStyles"
         />

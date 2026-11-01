@@ -1,7 +1,7 @@
 {
   "logo": {
-    "light": "resources/assets/brand/numerimondes.svg",
-    "dark": "resources/assets/brand/numerimondes.svg",
+    "light": "@spmpst::media::logo-light-mode.png",
+    "dark": "@spmpst::media::logo-dark-mode.png",
     "alt": "Numerimondes",
     "height": "2rem"
   },

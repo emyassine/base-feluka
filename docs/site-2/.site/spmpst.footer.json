@@ -1,25 +1,61 @@
 {
   "$schema": "../public/media/schemas/footer.schema.json",
-  "component": "NumerimondesFooter",
+  "component": "FeluqaDocsFooter",
   "content": {
-    "title": { "en": "Build with control.", "fr": "Construire avec maîtrise." },
-    "description": {
-      "en": "Numerimondes helps organizations design, build, and operate technology they can understand and control.",
-      "fr": "Numerimondes accompagne les organisations pour concevoir, bâtir et exploiter des solutions qu’elles comprennent et maîtrisent."
+    "title": {
+      "en": "One foundation. All your operations."
     },
-    "actionLabel": { "en": "Talk to our team", "fr": "Parler à notre équipe" },
-    "actionHref": "/contact/",
+    "description": {
+      "en": "Infrastructure, data, software, and operations working together around your organization."
+    },
+    "actionLabel": {
+      "en": "Start a WhatsApp conversation"
+    },
+    "actionHref": "https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.",
     "navigation": [
-      { "name": { "en": "Services", "fr": "Services" }, "href": "/services/" },
-      { "name": { "en": "Research", "fr": "Recherche" }, "href": "/research/" },
-      { "name": { "en": "About", "fr": "À propos" }, "href": "/about/company/" },
-      { "name": { "en": "Privacy", "fr": "Confidentialité" }, "href": "/about/legal/privacy/" }
+      {
+        "name": {
+          "en": "Services"
+        },
+        "href": "/services/"
+      },
+      {
+        "name": {
+          "en": "Solutions"
+        },
+        "href": "/solutions/"
+      },
+      {
+        "name": {
+          "en": "About"
+        },
+        "href": "/about/"
+      },
+      {
+        "name": {
+          "en": "Privacy"
+        },
+        "href": "/privacy/"
+      }
     ],
     "subNavigation": [
-      { "name": { "en": "Numerimondes", "fr": "Numerimondes" }, "href": "/" },
-      { "name": { "en": "Contact", "fr": "Contact" }, "href": "/contact/" }
+      {
+        "name": {
+          "en": "Contact"
+        },
+        "href": "/contact/"
+      },
+      {
+        "name": {
+          "en": "Numerimondes"
+        },
+        "href": "/"
+      }
     ],
-    "logoImg": "/media/numerimondes.svg",
-    "logoAlt": { "en": "Numerimondes", "fr": "Numerimondes" }
+    "logoImg": "/media/logo-light-mode.png",
+    "logoImgDark": "/media/logo-dark-mode.png",
+    "logoAlt": {
+      "en": "Numerimondes"
+    }
   }
 }

@@ -1,85 +1,37 @@
 {
   "site": {
     "name": "Numerimondes",
-    "description": "Sovereign enterprise technology. Built to last. Casablanca."
+    "description": "Technology you can own, understand, and operate. Casablanca, Morocco."
   },
   "subguides": [
     {
       "path": "001-commercial",
       "label": "Commercial",
       "labels": {
-        "en": "Commercial",
-        "fr": "Commercial"
+        "en": "Commercial"
       },
       "uri": {
-        "base": "/",
-        "index": "commercial/"
+        "base": "/"
       }
     },
     {
       "path": "005-about",
       "label": "About",
       "labels": {
-        "en": "About",
-        "fr": "À propos"
+        "en": "About"
       },
       "uri": {
         "base": "/about/"
       }
     },
     {
-      "path": "010-products",
-      "label": "Products",
+      "path": "006-privacy",
+      "label": "Privacy",
       "labels": {
-        "en": "Products",
-        "fr": "Produits"
+        "en": "Privacy"
       },
       "uri": {
-        "base": "/numerimondes/docs/"
-      }
-    },
-    {
-      "path": "020-education",
-      "label": "Education",
-      "labels": {
-        "en": "Education",
-        "fr": "Formation"
-      },
-      "uri": {
-        "base": "/education/"
-      }
-    },
-    {
-      "path": "030-research",
-      "label": "Research",
-      "labels": {
-        "en": "Research",
-        "fr": "Recherche"
-      },
-      "uri": {
-        "base": "/research/"
-      }
-    },
-    {
-      "path": "040-community",
-      "label": "Community",
-      "labels": {
-        "en": "Community",
-        "fr": "Communauté"
-      },
-      "uri": {
-        "base": "/community/"
-      }
-    },
-    {
-      "path": "050-partnerships",
-      "label": "Partnerships",
-      "labels": {
-        "en": "Partnerships",
-        "fr": "Partenariats"
-      },
-      "uri": {
-        "base": "/partnerships/"
+        "base": "/privacy/"
       }
     }
   ],

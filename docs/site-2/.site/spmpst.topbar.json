@@ -1,206 +1,34 @@
 {
+  "$schema": "../public/media/schemas/topbar.schema.json",
+  "theme": "switch",
   "items": [
     {
       "text": {
-        "en": "Services",
-        "fr": "Services"
+        "en": "Services"
       },
-      "items": [
-        {
-          "text": {
-            "en": "All services",
-            "fr": "Tous les services"
-          },
-          "link": "/services/",
-          "icon": "@spmpst::icon::layout-grid"
-        },
-        {
-          "text": {
-            "en": "Consulting and audit",
-            "fr": "Conseil et audit"
-          },
-          "link": "/services/consulting/",
-          "icon": "@spmpst::icon::message-circle"
-        },
-        {
-          "text": {
-            "en": "Software and automation",
-            "fr": "Logiciel et automatisation"
-          },
-          "link": "/services/development/",
-          "icon": "@spmpst::icon::code-xml"
-        },
-        {
-          "text": {
-            "en": "Intelligence",
-            "fr": "Intelligence"
-          },
-          "link": "/services/intelligence/",
-          "icon": "@spmpst::icon::cpu"
-        },
-        {
-          "text": {
-            "en": "Cloud and infrastructure",
-            "fr": "Cloud et infrastructure"
-          },
-          "link": "/services/cloud/",
-          "icon": "@spmpst::icon::cloud"
-        },
-        {
-          "text": {
-            "en": "Tender support",
-            "fr": "Appui aux appels d’offres"
-          },
-          "link": "/services/tender-support/",
-          "icon": "@spmpst::icon::file-check-2"
-        }
-      ]
+      "link": "/services/",
+      "icon": "@spmpst::icon::layout-grid"
     },
     {
       "text": {
-        "en": "Products",
-        "fr": "Produits"
+        "en": "Solutions"
       },
-      "items": [
-        {
-          "text": {
-            "en": "Numerimondes documentation",
-            "fr": "Documentation Numerimondes"
-          },
-          "link": "/numerimondes/docs/",
-          "icon": "@spmpst::icon::book-open"
-        },
-        {
-          "text": {
-            "en": "Webkernel",
-            "fr": "Webkernel"
-          },
-          "link": "/numerimondes/docs/oss/webkernel/",
-          "icon": "@spmpst::icon::box"
-        },
-        {
-          "text": {
-            "en": "The Best Recruit",
-            "fr": "The Best Recruit"
-          },
-          "link": "/services/cloud/platforms/",
-          "icon": "@spmpst::icon::users-round"
-        }
-      ]
+      "link": "/solutions/",
+      "icon": "@spmpst::icon::sparkles"
     },
     {
       "text": {
-        "en": "Insights",
-        "fr": "Ressources"
+        "en": "About"
       },
-      "items": [
-        {
-          "text": {
-            "en": "Research",
-            "fr": "Recherche"
-          },
-          "link": "/research/",
-          "icon": "@spmpst::icon::flask-conical"
-        },
-        {
-          "text": {
-            "en": "Publications",
-            "fr": "Publications"
-          },
-          "link": "/research/publications/",
-          "icon": "@spmpst::icon::file-text"
-        },
-        {
-          "text": {
-            "en": "Concepts",
-            "fr": "Concepts"
-          },
-          "link": "/concepts/",
-          "icon": "@spmpst::icon::lightbulb"
-        },
-        {
-          "text": {
-            "en": "Education",
-            "fr": "Formation"
-          },
-          "link": "/education/",
-          "icon": "@spmpst::icon::graduation-cap"
-        }
-      ]
+      "link": "/about/",
+      "icon": "@spmpst::icon::building-2"
     },
     {
       "text": {
-        "en": "Network",
-        "fr": "Réseau"
+        "en": "Contact"
       },
-      "items": [
-        {
-          "text": {
-            "en": "Partner framework",
-            "fr": "Réseau de partenaires"
-          },
-          "link": "/partnerships/",
-          "icon": "@spmpst::icon::handshake"
-        },
-        {
-          "text": {
-            "en": "Become a partner",
-            "fr": "Devenir partenaire"
-          },
-          "link": "/partnerships/become-partner/",
-          "icon": "@spmpst::icon::user-round-plus"
-        },
-        {
-          "text": {
-            "en": "Community",
-            "fr": "Communauté"
-          },
-          "link": "/community/",
-          "icon": "@spmpst::icon::messages-square"
-        },
-        {
-          "text": {
-            "en": "Events",
-            "fr": "Événements"
-          },
-          "link": "/community/events/",
-          "icon": "@spmpst::icon::calendar-days"
-        }
-      ]
-    },
-    {
-      "text": {
-        "en": "About",
-        "fr": "À propos"
-      },
-      "items": [
-        {
-          "text": {
-            "en": "Company",
-            "fr": "Entreprise"
-          },
-          "link": "/about/company/",
-          "icon": "@spmpst::icon::building-2"
-        },
-        {
-          "text": {
-            "en": "Group",
-            "fr": "Groupe"
-          },
-          "link": "/about/company/group/",
-          "icon": "@spmpst::icon::network"
-        },
-        {
-          "text": {
-            "en": "Contact",
-            "fr": "Contact"
-          },
-          "link": "/contact/",
-          "icon": "@spmpst::icon::mail"
-        }
-      ]
+      "link": "/contact/",
+      "icon": "@spmpst::icon::message-circle"
     }
-  ],
-  "theme": "switch",
-  "$schema": "../public/media/schemas/topbar.schema.json"
+  ]
 }

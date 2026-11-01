@@ -1,58 +1,54 @@
 ---
-title: "Sovereign technology for builders"
-sidebarTitle: "Accueil"
+title: "Technology you can own, understand, and operate"
+sidebarTitle: "Home"
 icon: "@spmpst::icon::home"
 layout: home
-description: "Design, operate, and retain control of your digital stack. From Casablanca, Numerimondes supports organizations from strategy through infrastructure."
+description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
 hero:
-  image:
-    src: ../../resources/assets/brand/numerimondes-hero.svg
-    alt: "Numerimondes digital infrastructure illustration"
   name: Numerimondes
-  text: "Sovereign technology for builders"
-  tagline: "Design, operate, and retain control of your digital stack. From Casablanca, Numerimondes supports organizations from strategy through infrastructure."
+  text: "Technology you can own, understand, and operate"
+  tagline: "One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   actions:
     - theme: brand
+      text: "Talk to us on WhatsApp"
+      link: "https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project."
+    - theme: alt
       text: "Explore our services"
       link: "/services/"
-    - theme: alt
-      text: "Discuss a partnership"
-      link: "/partnerships/become-partner/"
 features:
-  - title: "Advice and strategy"
-    details: "Make technology decisions with a clear, grounded roadmap."
-    link: "/services/consulting/"
-  - title: "Software engineering"
-    details: "Applications and integrations designed around your requirements."
-    link: "/services/development/"
-  - title: "Sovereign infrastructure"
-    details: "Hosting, automation, and private AI under your control."
-    link: "/services/infrastructure/"
-  - title: "The Best Recruit"
-    details: "A self-hosted HR and learning suite for recruitment and talent operations."
-    link: "/services/cloud/platforms/"
+  - title: "Consulting and cybersecurity"
+    details: "Make informed technology and security decisions with a practical plan."
+    link: "/services/"
+  - title: "Business software and automation"
+    details: "Improve core workflows with software and automation shaped around your operations."
+    link: "/solutions/"
+  - title: "Infrastructure and private AI"
+    details: "Run dependable infrastructure and explore AI with appropriate control over your data."
+    link: "/services/"
 ---
 
-## Technology that serves the work
+## One foundation. All your operations.
 
-Numerimondes helps organizations make clear technology decisions, build software around their operations, automate repeatable work, and run the resulting systems with control over their data and infrastructure.
+**Infrastructure → Data & Private AI → Business Software → Operations**
 
-<div class="nm-home-links">
-  <a href="/services/">Explore our services</a>
-  <a href="/partnerships/become-partner/">Join the partner framework</a>
-  <a href="/services/cloud/platforms/">Discover The Best Recruit</a>
+Numerimondes works with small and mid-sized businesses, institutions, and teams whose operations depend on technology they can trust. We connect strategy, implementation, and ongoing operations so your systems serve the way your organization actually works.
+
+## How we help
+
+- **Consulting and cybersecurity:** assess needs, risks, and priorities, then set a practical direction.
+- **Software development:** build business applications, integrations, and internal tools around real workflows.
+- **Infrastructure:** plan, deploy, and operate hosting and systems with clear ownership.
+- **Automation and private AI:** reduce repetitive work and explore useful AI while considering data control.
+
+See [all services](/services/) or explore [solutions](/solutions/).
+
+## A practical partnership
+
+We start by understanding your process, constraints, and existing systems. Then we agree on a clear scope, deliverables, and next step. Work is led from Casablanca and shaped to leave your team with systems it can understand and operate.
+
+Ready to discuss an opportunity?
+
+<div class="nm-actions">
+  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" size="lg">Message us on WhatsApp</FeluqaButton>
+  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="lg">Explore services</FeluqaButton>
 </div>
-
-## Services for the whole journey
-
-Start with an [operational audit](/services/audit/) or [consulting](/services/consulting/), then move into [software development](/services/development/), [automation](/services/automation/), [private intelligence](/services/intelligence/), or [managed cloud](/services/cloud/). We keep each engagement clear about its scope, owner, and deliverables.
-
-## A partner network built on useful work
-
-Our partner framework connects independent professionals with shared tools, introductions, training, and service opportunities. Partners keep their independent business and work under written, deal-specific terms. [Read about becoming a partner](/partnerships/become-partner/).
-
-## Products and ventures
-
-[The Best Recruit](/services/cloud/platforms/) is our self-hosted HR and learning suite, covering applicant tracking, learning management, and talent operations. Our products run on the infrastructure practices we offer to clients through [Numerimondes Cloud](/services/cloud/).
-
-For product and platform documentation, visit [Numerimondes documentation](/numerimondes/docs/).

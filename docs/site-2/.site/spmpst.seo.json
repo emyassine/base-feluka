@@ -1,18 +1,15 @@
 {
   "siteUrl": "https://numerimondes.com",
-  "path": "faq",
+  "path": "privacy",
   "icon": "@spmpst::icon::circle-help",
   "$schema": "../public/media/schemas/seo.schema.json",
   "pageTitle": {
-    "en": "Numerimondes",
-    "fr": "Numerimondes"
+    "en": "Numerimondes"
   },
   "pageNavTitle": {
-    "en": "Numerimondes",
-    "fr": "Numerimondes"
+    "en": "Numerimondes"
   },
   "description": {
-    "en": "Sovereign enterprise technology. Built to last. Casablanca.",
-    "fr": "Technologie d’entreprise souveraine. Conçue pour durer. Casablanca."
+    "en": "Technology you can own, understand, and operate. Consulting, software, infrastructure, cybersecurity, and private AI from Casablanca, Morocco."
   }
 }

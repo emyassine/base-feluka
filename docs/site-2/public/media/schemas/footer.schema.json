@@ -39,6 +39,7 @@
           }
         },
         "logoImg": { "type": "string" },
+        "logoImgDark": { "type": "string" },
         "logoAlt": { "$ref": "#/$defs/localizedText" }
       },
       "additionalProperties": false

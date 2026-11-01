@@ -1,27 +1,23 @@
 {
   "languages": [
-    "en",
-    "fr"
+    "en"
   ],
   "fallbackLanguage": "en",
   "selector": {
-    "showSelector": true,
+    "showSelector": false,
     "prefixDefaultLanguage": false,
-    "showFlags": true
+    "showFlags": false
   },
   "$schema": "../public/media/schemas/lang.schema.json",
   "language": {
     "label": {
-      "en": "English",
-      "fr": "Français"
+      "en": "English"
     },
     "menuLabel": {
-      "en": "Change language",
-      "fr": "Changer de langue"
+      "en": "Language"
     },
     "fallbackNotice": {
-      "en": "This page is not available in {requested}. Showing the {fallback} version.",
-      "fr": "Cette page n’est pas disponible en {requested}. La version {fallback} est affichée."
+      "en": "This page is not available in {requested}. Showing the {fallback} version."
     }
   }
 }
