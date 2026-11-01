@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   secondaryHref: string
   heroAlt: string
   heroImage?: string
-  points: Array<{ title: string; description: string }>
+  points: Array<{ title: string; description: string; icon?: string }>
 }>(), {
   heroImage: defaultHeroImage,
 })
@@ -56,7 +56,8 @@ const props = withDefaults(defineProps<{
         <div class="absolute top-0 left-0 block h-px w-full bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)] [mask-image:linear-gradient(90deg,transparent,black_25%,black_75%,transparent)] text-muted-foreground lg:hidden" aria-hidden="true"></div>
         <div class="space-y-5 lg:pl-10">
           <div v-for="point in points" :key="point.title" class="flex gap-3 lg:gap-5">
-            <svg class="text-foreground mt-1 size-4 shrink-0 lg:size-5" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            <img v-if="point.icon" :src="point.icon" alt="" class="mt-1 size-4 shrink-0 object-contain lg:size-5" />
+            <svg v-else class="text-foreground mt-1 size-4 shrink-0 lg:size-5" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
             <div>
               <h2 class="text-foreground !text-base !font-semibold !leading-6">{{ point.title }}</h2>
               <p class="text-muted-foreground max-w-xs text-sm leading-relaxed">{{ point.description }}</p>

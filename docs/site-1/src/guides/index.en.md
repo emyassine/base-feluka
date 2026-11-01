@@ -5,10 +5,6 @@ description: Guides for building applications, understanding the platform, and c
 layout: home
 ---
 
-<script setup>
-import dashboardHeroImage from '@docs/src/guides/feluqa.rs/.art/screenshot_1.png'
-</script>
-
 <MainlineHomeLayout>
 <MainlineHero
       title="One platform for every application target."
@@ -17,12 +13,12 @@ import dashboardHeroImage from '@docs/src/guides/feluqa.rs/.art/screenshot_1.png
       primary-href="/get-started/"
       secondary-label="Explore the architecture"
       secondary-href="/internals/"
-      :hero-image="dashboardHeroImage"
+      hero-image="/screenshot_1.png"
       hero-alt="Feluqa dashboard screenshot"
       :points='[
-        { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product." },
-        { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles." },
-        { title: "Current implementation", description: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished." }
+        { title: "One shared foundation", description: "Compose a business module into a hosted application or a standalone workstation product.", icon: "@spmpst::icon::starter-layers" },
+        { title: "Purpose-built runtimes", description: "Share schemas, tooling, and libraries while retaining distinct runtime profiles.", icon: "@spmpst::icon::deployment-cloud" },
+        { title: "Current implementation", description: "Selected framework foundations are implemented. Dynamic module installation and complete runtime shells remain unfinished.", icon: "@spmpst::icon::conventions-code" }
       ]'
     />
 
@@ -42,99 +38,6 @@ import dashboardHeroImage from '@docs/src/guides/feluqa.rs/.art/screenshot_1.png
       ]'
     />
 
-<ReactDevHome>
-  <ReactDevBlockComponents
-    :content='["Create user interfaces from components","Feluqa lets you build user interfaces out of individual pieces called components. Create your own Feluqa components like"," ","Thumbnail",", ","LikeButton",", and"," ","module",". Then combine them into entire screens, pages, and apps.","module.js","My module","module description","Whether you work on your own or with thousands of other developers, using Feluqa feels the same. It is designed to let you seamlessly combine components written by independent people, teams, and organizations."]'
-    :markup-content='["Write components with code and markup","Feluqa components are JavaScript functions. Want to show some content conditionally? Use an ","if"," statement. Displaying a list? Try array ","map()",". Learning Feluqa is learning programming.","moduleList.js","3 modules","First module","module description","Second module","module description","Third module","module description","This markup syntax is called compiled view syntax. It is a JavaScript syntax extension popularized by Feluqa. Putting compiled view syntax markup close to related rendering logic makes Feluqa components easy to create, maintain, and delete."]'
-    :preview-items='[{"title":"Inventory module","description":"Typed product view compiled by Feluqa"},{"title":"Order module","description":"Business workflow owned by the application"},{"title":"Customer module","description":"Reusable, typed application component"}]'
-    :code-lines='["use feluqa::view::View;","","pub struct ProductCard {","    pub name: String,","    pub price: Money,","}","","impl View for ProductCard {","    fn render(&self) -> Html {","        html! {","            <article class=\"product-card\">","                <h2>{ self.name }</h2>","                <p>{ self.price }</p>","            </article>","        }","    }","}"]'
-    code-language="rust"
-    :markup-code-lines='["use feluqa::view::View;","","pub struct ProductCatalog {","    pub products: Vec<Product>,","}","","impl View for ProductCatalog {","    fn render(&self) -> Html {","        html! {","            <section class=\"catalog\">","                { for self.products.iter().map(ProductCard::from) }","            </section>","        }","    }","}"]'
-    markup-code-language="rust"
-    preview-count-label="3 business modules"
-    title="Compose product interfaces from typed views"
-    lead="Build product pages from small, reusable view templates. Feluqa compiles `.view.rs` files into the application and keeps data and rendering responsibilities explicit."
-    detail="The view compiler is implemented. Shared UI contracts and a complete accessible component catalogue are still being integrated."
-    code-title="resources/views/catalog/product-card.view.rs"
-    markup-title="Keep the frontend independent"
-    markup-lead="Feluqa is headless-first: application contracts and services do not depend on a UI framework."
-    markup-detail="Feluqa is meant to work with React or any frontend framework. Vue and plain HTML are also intended consumers; complete frontend integrations remain in progress."
-    markup-code-title="resources/views/catalog/index.view.rs"
-  />
-
-  <ReactDevBlockInteractivity
-    :content='["Add interactivity wherever you need it","Feluqa components receive data and return what should appear on the screen. You can pass them new data in response to an interaction, like when the user types into an input. Feluqa will then update the screen to match the new data.","SearchablemoduleList.js","example.com","/","modules","Live product search","A brief history of Feluqa","Search","5 modules","Catalog search","Find products by name","Rethinking Best Practices","Pete Hunt (2013)","Introducing Feluqa mobile runtime","Tom Occhino (2015)","Introducing Feluqa Hooks","Sophie Alpert and Dan Abramov (2018)","Introducing Server Components","Dan Abramov and Lauren Tan (2020)","You don’t have to build your whole page in Feluqa. Add Feluqa to your existing HTML page, and render interactive Feluqa components anywhere on it.","Add Feluqa to your page"]'
-    search-placeholder="Search products"
-    preview-count-label="5 catalog results"
-    :preview-items='[{"title":"Product catalog","description":"Search products by name"},{"title":"Wireless sensor","description":"Connected inventory device"},{"title":"Gateway device","description":"Local network equipment"},{"title":"Temperature probe","description":"Typed catalog result"},{"title":"Workstation runtime","description":"Application target"}]'
-    :code-lines='["use feluqa::live::Action;","use feluqa::live::LiveContext;","","pub struct SearchProducts {","    pub query: String,","}","","impl Action for SearchProducts {","    type Output = Vec<ProductSummary>;","","    async fn handle(self, ctx: LiveContext) -> Result<Self::Output> {","        ctx.authz.require(\"catalog.read\").await?;","        ctx.catalog.search(self.query).await","    }","}"]'
-    code-language="rust"
-    title="Connect interactive views to typed actions"
-    lead="Feluqa Live defines typed action contracts. Server handlers validate input, authorize every action, and own business behavior regardless of which frontend sends the request."
-    detail="The snippet illustrates Rust domain logic, not a complete Live handler. Browser reconciliation and shared replay support remain under development."
-    preview-title="Live product search"
-    preview-subtitle="Search a catalog through a typed action"
-    code-title="crates/catalog/src/search.rs"
-    cta-label="Explore panels and Live"
-    cta-href="/get-started/frontend/panels"
-    cta-icon="code"
-  />
-
-  <ReactDevBlockFramework
-    :content='["Go full-stack ","with a framework","Feluqa is a library. It lets you put components together, but it doesn’t prescribe how to do routing and data fetching. To build an entire app with Feluqa, we recommend a full-stack Feluqa framework like ","Next.js"," or"," ","Feluqa routing",".","confs/[slug].js","example.com","/","confs/apps/bookstore","Feluqa Web Runtime","Feluqa Workstation Runtime","Search","19 modules","Feluqa showcase","Feluqa 18 Keynote","The Feluqa Team","Feluqa showcase","Feluqa 18 for App Developers","Shruti Kapoor","Feluqa showcase","Streaming Server Rendering with Suspense","Shaundai Person","Feluqa showcase","The First Feluqa Working Group","Aakansha Doshi","Feluqa showcase","Feluqa Developer Tooling","Brian Vaughn","Feluqa showcase","Feluqa without memo","Xuan Huang (黄玄)","Feluqa showcase","Feluqa Docs Keynote","Rachel Nabors","Feluqa showcase","Things I Learnt from the New Feluqa Docs","Debbie O\u0027Brien","Feluqa showcase","Learning in the Browser","Sarah Rainsberger","Feluqa showcase","The ROI of Designing with Feluqa","Linton Ye","Feluqa showcase","Interactive Playgrounds with Feluqa","Delba de Oliveira","Feluqa showcase","Re-introducing Relay","Robert Balicki","Feluqa showcase","Feluqa mobile runtime Desktop","Eric Rozell and Steven Moyes","Feluqa showcase","On-device Machine Learning for Feluqa mobile runtime","Roman Rädle","Feluqa showcase","Feluqa 18 for External Store Libraries","Daishi Kato","Feluqa showcase","Building Accessible Components with Feluqa 18","Diego Haz","Feluqa showcase","Accessible Japanese Form Components with Feluqa","Tafu Nakazaki","Feluqa showcase","UI Tools for Artists","Lyle Troxell","Feluqa showcase","Hydrogen + Feluqa 18","Helen Lin","Feluqa is also an architecture. Frameworks that implement it let you fetch data in asynchronous components that run on the server or even during the build. Read data from a file or a database, and pass it down to your interactive components.","Get started with a framework"]'
-    preview-count-label="4 runtime capabilities"
-    event-label="Runtime"
-    reload-label="Reload preview"
-    :preview-options='["Feluqa Web Runtime","Feluqa Workstation Runtime"]'
-    :preview-items='[{"title":"Hosted web application","description":"Routes, compiled views, and typed actions"},{"title":"Standalone workstation","description":"Dedicated application runtime"},{"title":"Local network host","description":"Serve nearby clients without Internet"},{"title":"Connected device module","description":"IoT and real-time application target"}]'
-    :code-lines='["[application]","name = \"bookstore\"","","[runtime]","profile = \"web\"","","[modules.catalog]","source = \"products/catalog\"","","[targets]","web = true","workstation = true","iot = true"]'
-    code-language="toml"
-    search-placeholder="Search modules"
-    title="Build within an opinionated application framework"
-    lead="Feluqa gives every application a consistent structure for configuration, route composition, compiled views, and shared contracts. It provides conventions across the application lifecycle so teams can focus on business workflows."
-    detail="Application composition is selected in `feluqa.toml` and compiled statically today. Dynamic module installation, complete runtime shells, and standalone generated-app builds remain unfinished."
-    preview-badge="Feluqa showcase"
-    code-title="feluqa.toml"
-    cta-label="Read the architecture"
-    cta-href="/internals/"
-    cta-icon="framework"
-  />
-
-  <ReactDevBlockPlatforms
-    :content='["One product across every platform","People love web and native apps for different reasons. Feluqa lets you build both web apps and native apps using the same skills. It leans upon each platform’s unique strengths to let your interfaces feel just right on every platform.","example.com","Serve web and local networks","People expect web app pages to load fast. On the server, Feluqa lets you start streaming HTML while you’re still fetching data, progressively filling in the remaining content before any JavaScript code loads. On the client, Feluqa can use standard web APIs to keep your UI responsive even in the middle of rendering.","1:19 PM","Reach workstations and IoT","People expect native apps to look and feel like their platform."," ","Feluqa mobile runtime"," ","and"," ","Expo"," ","let you build apps in Feluqa for Android, iOS, and more. They look and feel native because their UIs"," ","are"," truly native. It’s not a web view—your Feluqa components render real Android and iOS views provided by the platform.","With Feluqa, you can be a web ","and"," a native developer. Your team can ship to many platforms without sacrificing the user experience. Your organization can bridge the platform silos, and form teams that own entire features end-to-end.","Build for native platforms"]'
-    title="One product across web, native, and connected devices"
-    lead="Feluqa targets hosted web, workstation, mobile, games, APIs, real-time systems, and IoT through one namespace and SDK, with runtimes suited to each destination."
-    detail="Web delivery is the first priority. Local hosting for nearby clients without Internet is a product requirement; workstation storage, device synchronization, and conflict behavior remain open work."
-    web-title="Serve web applications and local networks"
-    web-detail="The web profile composes routes from their owning sites, panels, and modules. It can serve nearby clients as a local host; web delivery comes first."
-    native-title="Reach workstations, mobile, and IoT"
-    native-detail="Dedicated runtimes are the target for standalone workstation, mobile, and connected device applications. Workstation storage and offline synchronization design remain open."
-    cta-label="Explore target platforms"
-    cta-href="/internals/"
-    cta-icon="native"
-  />
-</ReactDevHome>
-
-<MainlineGuideBlocks
-      title="Find your way through the guides"
-      description="Start building, explore platform architecture, or find the contribution guidance that fits your work."
-      :items='[
-        { title: "Start building", description: "Prepare the toolchain, learn the application structure, and follow practical guides.", image: "triage-card", links: [{ label: "Get started", href: "/get-started/" }, { label: "Learn by building", href: "/learn/" }] },
-        { title: "Understand the platform", description: "Read the product direction, runtime model, compilation approach, and workspace architecture.", image: "cycle-card", links: [{ label: "Product and audience", href: "/get-started/introduction/product-and-audience" }, { label: "Platform internals", href: "/internals/" }] },
-        { title: "Contribute", description: "Check the implementation status and contributor rules before changing the framework.", image: "overview-card", links: [{ label: "Agent guidance", href: "/agents/" }, { label: "Contribution guide", href: "/prologue/contribution-guide" }] }
-      ]'
-    />
-
-<MainlineResourceBlock
-      title="A shared foundation, with purpose-built runtimes"
-      :items='[
-        { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
-        { title: "Separate target runtimes.", description: "Share tooling and contracts while keeping runtime profiles suited to each destination.", linkLabel: "Explore platform internals", href: "/internals/" },
-        { title: "Portable path ownership.", description: "Context roots and portable paths define where an application owns its data.", linkLabel: "Read storage guidance", href: "/storage/storage-backends-and-paths", imageAlt: "Portable path ownership" },
-        { title: "A built-in control panel.", description: "Shared panel contracts exist; complete System Panel and UI integration remain planned work.", linkLabel: "Read the panel status", href: "/get-started/frontend/system-panel", imageAlt: "System control panel" },
-        { title: "Local-first operation.", description: "Serving nearby clients without Internet is a product requirement; sync and conflict behavior remain open.", linkLabel: "Read the local-first direction", href: "/internals/", imageAlt: "Local-first application" }
-      ]'
-    />
 
 <FlexCarousel
     title="Explore Feluqa"
@@ -155,17 +58,5 @@ import dashboardHeroImage from '@docs/src/guides/feluqa.rs/.art/screenshot_1.png
       { src: "https://images.unsplash.com/photo-1787181875088-087d612262a7?w=1200&q=80&auto=format&fit=max", alt: "A black textured sculpture with an opening at its center", title: "System Control Panel", actionLabel: "Explore the control panel", subtitle: "Manage modules and context roots from the built-in panel.", href: "/get-started/frontend/system-panel" }
     ]'
   />
-
-
-
-<MainlineFaq
-      title="Ask your Questions"
-      lead="Read the guides for implementation details and the current status of the work."
-      :items='[
-        { question: "What is Feluqa?", answer: "A proprietary platform and unified namespace for building applications across web, workstation, mobile, games, APIs, and real-time systems. The target architecture is still under development." },
-        { question: "Where should I start?", answer: "Start with Get started to understand the product direction, prepare an environment, and follow the application guides." },
-        { question: "Is the complete platform available today?", answer: "No. Selected framework foundations are implemented; dynamic module installation, complete runtime shells, and several product capabilities remain unfinished." }
-      ]'
-    />
 
 </MainlineHomeLayout>
