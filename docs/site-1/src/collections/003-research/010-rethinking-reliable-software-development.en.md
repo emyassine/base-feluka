@@ -1,5 +1,5 @@
 ---
-sidebarTitle: "Reliable Multiplatform Research"
+sidebarTitle: "The New Software"
 title: "Rethinking Reliable Multiplatform Software Development"
 icon: "@spmpst::icon::microscope"
 description: "An exploratory research record and proposal for a reliable, cross-platform interface standard and unified Feluqa namespace."

@@ -266,11 +266,15 @@ for (const collection of collectionMetadata.values()) {
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))
-    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: home`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '', `# ${localizedTitle}`, '']
-    if (localizedDescription) lines.push(localizedDescription, '')
+    const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: home`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '']
     if (collection.indexLayout === 'spotlight') {
-      lines.push(`<CollectionSpotlightIndex collection-id="${collection.id}" />`, '')
+      lines.push(
+        `<CollectionSpotlightIndex collection-id="${collection.id}" />`,
+        '',
+      )
     } else {
+      lines.push(`# ${localizedTitle}`, '')
+      if (localizedDescription) lines.push(localizedDescription, '')
       const grouped = new Map()
       for (const article of articles) {
         const key = article.category || ''

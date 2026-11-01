@@ -6,6 +6,8 @@ import collections from '@generated/collections.json';
 
 interface ContentCollection {
   id: string;
+  titles: Record<string, string>;
+  descriptions: Record<string, string>;
   categories: Record<string, Array<{ id: string; label: string }>>;
   articles: Record<string, Array<{ title: string; description: string; date: string; category: string; wordCount: number; readingTime: number; url: string }>>;
 }
@@ -14,6 +16,8 @@ const props = defineProps<{ collectionId: string }>();
 const { lang, frontmatter } = useData();
 const collection = computed(() => (collections as ContentCollection[]).find((item) => item.id === props.collectionId));
 const locale = computed(() => String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]);
+const title = computed(() => collection.value?.titles[locale.value] ?? collection.value?.titles.en ?? props.collectionId);
+const description = computed(() => collection.value?.descriptions[locale.value] ?? collection.value?.descriptions.en ?? '');
 const search = ref('');
 const category = ref('');
 const sort = ref('newest');
@@ -35,40 +39,46 @@ const items = computed(() => {
 </script>
 
 <template>
-  <div class="collection-spotlight-filters" role="search">
-    <input v-model="search" type="search" :placeholder="labels.search" :aria-label="labels.search" />
-    <VPFlyout class="collection-filter-flyout" :button="categoryLabel" :label="labels.category">
-      <div class="collection-filter-options">
-        <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(!category)" @click="category = ''">{{ labels.category }}</button>
-        <button v-for="item in categories" :key="item.id" class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(category === item.id)" @click="category = item.id">{{ item.label }}</button>
-      </div>
-    </VPFlyout>
-    <VPFlyout class="collection-filter-flyout" :button="sortLabel" :label="labels.sort">
-      <div class="collection-filter-options">
-        <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(sort === 'newest')" @click="sort = 'newest'">{{ labels.newest }}</button>
-        <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(sort === 'title')" @click="sort = 'title'">{{ labels.title }}</button>
-      </div>
-    </VPFlyout>
-  </div>
-  <div class="collection-spotlight-grid">
-    <article v-for="item in items" :key="item.url" class="collection-spotlight-card">
-      <div class="collection-spotlight-card__body">
-        <div class="collection-spotlight-card__meta">
-          <time v-if="item.date">{{ item.date }}</time>
-          <span>{{ item.wordCount }} {{ lang.toLowerCase().startsWith('fr') ? 'mots' : 'words' }}</span>
-          <span>{{ item.readingTime }} {{ lang.toLowerCase().startsWith('fr') ? 'min de lecture' : 'min read' }}</span>
+  <div class="collection-spotlight-page">
+    <header class="collection-spotlight-header">
+      <h1>{{ title }}</h1>
+      <p v-if="description">{{ description }}</p>
+    </header>
+    <div class="collection-spotlight-filters" role="search">
+      <input v-model="search" type="search" :placeholder="labels.search" :aria-label="labels.search" />
+      <VPFlyout class="collection-filter-flyout" :button="categoryLabel" :label="labels.category">
+        <div class="collection-filter-options">
+          <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(!category)" @click="category = ''">{{ labels.category }}</button>
+          <button v-for="item in categories" :key="item.id" class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(category === item.id)" @click="category = item.id">{{ item.label }}</button>
         </div>
-        <h2><a :href="item.url">{{ item.title }}</a></h2>
-        <p v-if="item.description">{{ item.description }}</p>
-        <a class="collection-spotlight-card__link" :href="item.url">{{ labels.read }} {{ item.title }}</a>
-      </div>
-    </article>
+      </VPFlyout>
+      <VPFlyout class="collection-filter-flyout" :button="sortLabel" :label="labels.sort">
+        <div class="collection-filter-options">
+          <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(sort === 'newest')" @click="sort = 'newest'">{{ labels.newest }}</button>
+          <button class="collection-filter-option" type="button" role="menuitemradio" :aria-checked="String(sort === 'title')" @click="sort = 'title'">{{ labels.title }}</button>
+        </div>
+      </VPFlyout>
+    </div>
+    <div class="collection-spotlight-grid">
+      <article v-for="item in items" :key="item.url" class="collection-spotlight-card">
+        <div class="collection-spotlight-card__body">
+          <div class="collection-spotlight-card__meta">
+            <time v-if="item.date">{{ item.date }}</time>
+            <span>{{ item.wordCount }} {{ lang.toLowerCase().startsWith('fr') ? 'mots' : 'words' }}</span>
+            <span>{{ item.readingTime }} {{ lang.toLowerCase().startsWith('fr') ? 'min de lecture' : 'min read' }}</span>
+          </div>
+          <h2><a :href="item.url">{{ item.title }}</a></h2>
+          <p v-if="item.description">{{ item.description }}</p>
+          <a class="collection-spotlight-card__link" :href="item.url">{{ labels.read }} {{ item.title }}</a>
+        </div>
+      </article>
+    </div>
+    <p v-if="!items.length" class="collection-spotlight-empty">{{ labels.noResults }}</p>
   </div>
-  <p v-if="!items.length" class="collection-spotlight-empty">{{ labels.noResults }}</p>
 </template>
 
 <style scoped>
-.collection-spotlight-filters { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:24px; }
+.collection-spotlight-filters { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:0; }
 .collection-spotlight-filters input { min-height:40px; border:1px solid var(--vp-c-divider); border-radius:8px; background:var(--vp-c-bg-soft); color:var(--vp-c-text-1); padding:0 12px; font:inherit; }
 .collection-spotlight-filters input { flex:1 1 240px; }
 .collection-spotlight-filters input:focus { outline:2px solid var(--vp-c-brand-1); outline-offset:1px; }
