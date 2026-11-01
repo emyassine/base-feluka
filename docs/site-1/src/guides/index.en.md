@@ -7,25 +7,25 @@ layout: home
 
 <MainlineHomeLayout>
 	<MainlineHero
-  title="The software your operations run on. Built once, delivered everywhere."
-  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
-  primary-label="Describe your operation"
-  primary-href="/for-organizations#tell-us-about-your-operation"
-  secondary-label="See what is tested today"
-  secondary-href="/products/"
-  :targets='[
-    { label: "Web", caption: "Back office in the browser", image: "/media/images/target-web.png", alt: "Feluqa web application" },
-    { label: "Workstation", caption: "Operator workstation", image: "/media/images/target-workstation.png", alt: "Feluqa workstation application" },
-    { label: "Mobile", caption: "Field use on a phone", image: "/media/images/target-mobile.png", alt: "Feluqa mobile application" },
-    { label: "Real-time", caption: "Live operations view", image: "/media/images/target-realtime.png", alt: "Feluqa real-time dashboard" },
-    { label: "APIs", caption: "Integration with your existing systems", image: "/media/images/target-api.png", alt: "Feluqa API console" }
-  ]'
+	  title="The software your operations run on. Built once, delivered everywhere."
+	  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
+	  primary-label="Describe your operation"
+	  primary-href="/for-organizations#tell-us-about-your-operation"
+	  secondary-label="See what is tested today"
+	  secondary-href="/products/"
+	  :targets='[
+	    { label: "Web", caption: "Back office in the browser", image: "/media/images/target-web.png", alt: "Feluqa web application" },
+	    { label: "Workstation", caption: "Operator workstation", image: "/media/images/target-workstation.png", alt: "Feluqa workstation application" },
+	    { label: "Mobile", caption: "Field use on a phone", image: "/media/images/target-mobile.png", alt: "Feluqa mobile application" },
+	    { label: "Real-time", caption: "Live operations view", image: "/media/images/target-realtime.png", alt: "Feluqa real-time dashboard" },
+	    { label: "APIs", caption: "Integration with your existing systems", image: "/media/images/target-api.png", alt: "Feluqa API console" }
+	  ]'
   :points='[
-    { title: "Minimal and expressive", description: "Describe what the application is with standardized structs and components. The platform handles the rest.", icon: "/media/icons/conventions-code.svg" },
-    { title: "One foundation, every target", description: "Share schemas, tooling, and libraries while keeping distinct runtime profiles per target.", icon: "/media/icons/starter-layers.svg" },
-    { title: "Ready for agents", description: "Predictable contracts let agents inspect, propose, and validate changes for human review.", icon: "/media/icons/agent-ready.svg" },
-    { title: "Honest about status", description: "Every guide marks what is implemented, partial, targeted, or still being explored.", icon: "/media/icons/status-check.svg" }
-  ]'
+	    { title: "Minimal and expressive", description: "Describe what the application is with standardized structs and components. The platform handles the rest.", icon: "/media/icons/conventions-code.svg" },
+	    { title: "One foundation, every target", description: "Share schemas, tooling, and libraries while keeping distinct runtime profiles per target.", icon: "/media/icons/starter-layers.svg" },
+	    { title: "Ready for agents", description: "Predictable contracts let agents inspect, propose, and validate changes for human review.", icon: "/media/icons/agent-ready.svg" },
+	    { title: "Honest about status", description: "Every guide marks what is implemented, partial, targeted, or still being explored.", icon: "/media/icons/status-check.svg" }
+	  ]'
 	/>
 
 <MainlineLogos

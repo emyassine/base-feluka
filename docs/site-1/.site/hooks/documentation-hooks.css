@@ -1,4 +1,4 @@
-.FeluqaDocumentationNotices { display: grid; gap: 12px; margin: 0 0 24px; }
+.FeluqaDocumentationNotices { display: grid; gap: 12px; margin-block: 0 3rem; }
 .FeluqaDocumentationNotices__fallback,
 .FeluqaDocumentationNotices__status { display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 14px 16px; color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); }
 .FeluqaDocumentationNotices__fallback { border-color: color-mix(in srgb, var(--vp-c-brand-1) 30%, var(--vp-c-divider)); background: color-mix(in srgb, var(--vp-c-brand-1) 10%, var(--vp-c-bg-soft)); }
