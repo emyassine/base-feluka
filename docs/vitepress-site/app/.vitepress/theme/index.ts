@@ -198,11 +198,13 @@ function installLanguageFlags(): void {
       html[lang^="${code}"] .VPNavBarTranslations .title::before,
       html[lang^="${code}"] .VPNavScreenTranslations .title::before,
       .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span::before,
+      .VPNavBarExtra .VPMenuLink a[href^="/${code}/"] > span::before,
       .VPNavScreenTranslations .link[href^="/${code}/"]::before {
         content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
         background: url("${url}") center / contain no-repeat;
       }
       .VPNavBarTranslations .VPMenuLink a[href^="/${code}/"] > span,
+      .VPNavBarExtra .VPMenuLink a[href^="/${code}/"] > span,
       .VPNavScreenTranslations .link[href^="/${code}/"] { display: inline-flex; align-items: center; gap: 8px; }
     `
   })
@@ -218,11 +220,13 @@ function installLanguageFlags(): void {
       html[lang^="${defaultLanguage}"] .VPNavBarTranslations .title::before,
       html[lang^="${defaultLanguage}"] .VPNavScreenTranslations .title::before,
       .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span::before,
+      .VPNavBarExtra .VPMenuLink a${excludesLocalizedRoutes} > span::before,
       .VPNavScreenTranslations .link${excludesLocalizedRoutes}::before {
         content: ""; display: inline-block; width: 18px; height: 18px; flex: 0 0 auto;
         background: url("/flags/language/${defaultLanguage}.svg") center / contain no-repeat;
       }
       .VPNavBarTranslations .VPMenuLink a${excludesLocalizedRoutes} > span,
+      .VPNavBarExtra .VPMenuLink a${excludesLocalizedRoutes} > span,
       .VPNavScreenTranslations .link${excludesLocalizedRoutes} { display: inline-flex; align-items: center; gap: 8px; }
     `)
   }

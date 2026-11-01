@@ -3,4 +3,22 @@ read : https://blog.logrocket.com/rust-internationalization-localization-and-tra
 https://kenin.ch/blog/server-driven-ui
 
 
+________
+
 Agentic dev: what is mcp.cua_repl.js
+
+________
+
+
+Chapter 1
+Introduction
+Caveat: This document is really two different documents in one. Much of the expository text (rationale, extended descriptions) belongs in an overview, background, or introductory document. The more concise “man pages” belong in an API reference manual. And, of course, a tutorial is needed. Lacking a tutorial, we suspect the best thing for new users to do is to scan this introductory chapter and then look over and play with some of the small example programs, outlined below in section 1.6.1. Feedback appreciated, and bear with us.
+
+1.1 Goals and Scope
+The OSKit is a framework and set of modularized components and library code, together with extensive documentation, for the construction of operating system kernels, servers, and other OS-level functionality. Its purpose is to provide, as a set of easily reusable modules, much of the infrastructure “grunge” that usually takes up a large percentage of development time in any operating system or OS-related project, and allow developers to concentrate their efforts on the unique and interesting aspects of the new OS in question. The goal is for someone to be able to take the OSKit and immediately have a base on which they can start concentrating on “real” OS issues such as scheduling, VM, IPC, file systems, security, or whatever. Alternately they can concentrate on the real language issues raised by using advanced languages inside operating systems, such as Java, Lisp, Scheme, or ML--instead of spending six months first writing boot loader code, startup code, device drivers, kernel printf and malloc code, a kernel debugger, etc. With the recent addition of extensive multithreading and sophisticated scheduling support, the OSKit also provides a modular platform for embedded applications.
+
+Although it can provide a complete OS environment for many domains, the primary intention of this toolkit is not to “write the OS for you”; we certainly want to leave the OS writing to the OS writer. The dividing line between the “OS” and the “OS toolkit,” as we see it, is basically the line between what OS writers want to write and what they would otherwise have to write but don’t really want to. Naturally this will vary between different OS groups and developers. If you really want to write your own x86 protected-mode startup code, or have found a clever way to do it “better,” you’re perfectly free to do so and simply not use the corresponding code in our toolkit. However, our goal is that the toolkit be modular enough that you can still easily use other parts of it to fill in other functional areas you don’t want to have to deal with yourself (or areas that you just don’t have time to do “yet”).
+
+As such, the toolkit is designed to be usable either as a whole or in arbitrary subsets, as requirements dictate. It can be used either as a set of support libraries to be linked into an operating system kernel and/or its support programs, or it can be used merely as a collection of “spare parts”: example source code to be ripped apart and cannibalized for whatever purpose. (Naturally, we prefer that the toolkit be used in library fashion, since this keeps a cleaner interface between the toolkit and the OS and makes them both easier to maintain; however, we recognize that in some situations this will not be practical for technical or political reasons.)
+
+The toolkit is also intended to be useful for things that aren’t kernels but are OS-related, such as boot loaders or OS-level servers running on top of a microkernel.

@@ -73,6 +73,7 @@
 }
 
 .VPNavBarTranslations .title { display: none; }
+.VPNavBarExtra .trans-title { display: none; }
 .VPNavScreenTranslations .title { font-size: 0; }
 .VPNavScreenTranslations .title .icon { font-size: 16px; }
 .VPNavScreenTranslations .title .icon.chevron { margin-left: auto; }
@@ -118,7 +119,7 @@ body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
 .VPNavScreenTranslations .title { display: none; }
 .VPNavScreenTranslations .icon.lang { display: none; }
 .VPNavScreenTranslations .list,
-.VPNavScreenTranslations:not(.open) .list { display: grid !important; gap: 4px; margin: 0; padding: 0 0 0 28px; list-style: none; }
+.VPNavScreenTranslations:not(.open) .list { display: grid !important; gap: 4px; margin: 0; padding: 0; list-style: none; }
 .VPNavScreenTranslations .link { display:flex; min-height:36px; align-items:center; gap:8px; border-radius:7px; padding:0 8px; color:var(--vp-c-text-2); line-height:1; }
 .VPNavScreenTranslations .link:hover { color:var(--vp-c-text-1); background:var(--vp-c-bg-soft); }
 
