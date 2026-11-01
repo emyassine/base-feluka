@@ -6,7 +6,6 @@ layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
 ---
 
-<MainlineHomeLayout>
 <NmHero
   title="Technology you can own, understand, and operate"
   :title-style-light="{ color: '#ffffff' }"
@@ -15,6 +14,91 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   background-image="https://images.unsplash.com/photo-1749497268209-c167ed52b682?q=80&w=1567&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+	/>
+	<NmHero
+  title="Technology you can own, understand, and operate"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
+  background-image="https://images.unsplash.com/photo-1771793334809-965ac6665d7f?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+	/>
+<NmSlatsHero
+  title="Technology you can own, understand, and operate"
+  description="One foundation for your infrastructure, data, and software."
+  :buttons="[
+    { label: 'Talk to us', href: '/contact/' },
+    { label: 'Explore services', href: '/services/', style: 'secondary' }
+  ]"
+  color="#A855F7"
+  glint-color="#ffffff"
+  background-color-light="#f8fafc"
+  background-color-dark="#000000"
+/>
+<NmAcidSquaresHero
+  title="Technology you can own, understand, and operate"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
+  :title-style-light="{ color: '#000' }"
+  :title-style-dark="{ color: '#000' }"
+  :description-style-light="{ color: '#000' }"
+  :description-style-dark="{ color: '#000' }"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+/>
+<NmEffectHero
+  effect="aurora"
+  title="Technology you can own, understand, and operate"
+  description="Aurora background"
+  :title-style-light="{ color: '#ffffff' }"
+  :title-style-dark="{ color: '#ffffff' }"
+  :description-style-light="{ color: '#e2e8f0' }"
+  :description-style-dark="{ color: '#e2e8f0' }"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+/>
+<NmEffectHero
+  effect="silk"
+  title="Technology you can own, understand, and operate"
+  description="Silk background"
+  :title-style-light="{ color: '#ffffff' }"
+  :title-style-dark="{ color: '#ffffff' }"
+  :description-style-light="{ color: '#e2e8f0' }"
+  :description-style-dark="{ color: '#e2e8f0' }"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+/>
+<NmEffectHero
+  effect="shape-grid"
+  title="Technology you can own, understand, and operate"
+  description="Shape Grid background"
+  :title-style-light="{ color: '#ffffff' }"
+  :title-style-dark="{ color: '#ffffff' }"
+  :description-style-light="{ color: '#e2e8f0' }"
+  :description-style-dark="{ color: '#e2e8f0' }"
+  :buttons="[
+    { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
+    { label: 'Explore our services', href: '/services/', style: 'secondary' }
+  ]"
+/>
+<NmEffectHero
+  effect="prismatic-burst"
+  title="Technology you can own, understand, and operate"
+  description="Prismatic Burst background"
+  :title-style-light="{ color: '#ffffff' }"
+  :title-style-dark="{ color: '#ffffff' }"
+  :description-style-light="{ color: '#e2e8f0' }"
+  :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[
     { label: 'Talk to us on WhatsApp', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true },
     { label: 'Explore our services', href: '/services/', style: 'secondary' }
@@ -46,4 +130,3 @@ Ready to discuss an opportunity?
 	  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" size="lg">Message us on WhatsApp</FeluqaButton>
 	  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="lg">Explore services</FeluqaButton>
 	</div>
-</MainlineHomeLayout>

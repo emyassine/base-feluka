@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
-import SideRays from './SideRays.vue'
+import SideRays from '../home/SideRays.vue'
 import FeluqaButton from '../ui/FeluqaButton.vue'
 
 interface HeroTarget {
