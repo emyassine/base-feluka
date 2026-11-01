@@ -5,7 +5,7 @@ icon: "@spmpst::icon::home"
 layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
 ---
-
+<span class="block md:hidden"/>
 <NmHero
   title="Technology you can own, understand, and operate"
   :title-style-light="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	/>
 <NmSlatsHero
   title="Technology you can own, understand, and operate"
-  description="One foundation for your infrastructure, data, and software."
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   :buttons="[
     { label: 'Talk to us', href: '/contact/' },
     { label: 'Explore services', href: '/services/', style: 'secondary' }
@@ -55,7 +55,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <NmEffectHero
   effect="aurora"
   title="Technology you can own, understand, and operate"
-  description="Aurora background"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
@@ -68,7 +68,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <NmEffectHero
   effect="silk"
   title="Technology you can own, understand, and operate"
-  description="Silk background"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
@@ -81,7 +81,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <NmEffectHero
   effect="shape-grid"
   title="Technology you can own, understand, and operate"
-  description="Shape Grid background"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
@@ -94,7 +94,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <NmEffectHero
   effect="prismatic-burst"
   title="Technology you can own, understand, and operate"
-  description="Prismatic Burst background"
+  description="One foundation for your infrastructure, data, software, and day-to-day operations. Built around your work and your control."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"

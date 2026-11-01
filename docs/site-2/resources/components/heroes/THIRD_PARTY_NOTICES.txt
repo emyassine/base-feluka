@@ -1,5 +1,0 @@
-Aurora.vue, MicroSlats.vue, AcidSquares.vue, Silk.vue, ShapeGrid.vue, and
-PrismaticBurst.vue are copied from Vue Bits by David Haz.
-
-Source: https://github.com/DavidHDev/vue-bits
-License: MIT + Commons Clause, reproduced in LICENSE-VUE-BITS.md.
