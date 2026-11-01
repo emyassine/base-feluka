@@ -105,6 +105,8 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
       light: generatedGuideColors.root?.logoLight,
       dark: generatedGuideColors.root?.logoDark,
       alt: generatedGuideColors.root?.logoAlt ?? siteConfig.logo?.alt ?? siteConfig.site?.name ?? 'Documentation',
+      ...(generatedGuideColors.root?.logoWidth ? { width: generatedGuideColors.root.logoWidth } : {}),
+      ...(generatedGuideColors.root?.logoHeight ? { height: generatedGuideColors.root.logoHeight } : {}),
     },
     siteTitle: primaryConfig.showSiteTitle ? primaryConfig.title : false,
   },

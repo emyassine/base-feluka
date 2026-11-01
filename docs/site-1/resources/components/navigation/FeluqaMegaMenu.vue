@@ -116,14 +116,14 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
             <a v-for="card in column.cards" :key="card.key" :href="card.kind === 'more' ? card.item.link ?? '#' : href(card.item)" class="FeluqaMegaMenu__background-card">
               <img class="FeluqaMegaMenu__background-image" :src="String(card.kind === 'more' ? card.item.image ?? '' : field(card.item, 'image') ?? '')" alt="">
               <img v-if="card.kind === 'child' && has('icon') && field(card.item, 'icon')" :src="String(field(card.item, 'icon'))" alt="" class="FeluqaMegaMenu__background-icon">
-              <span><strong>{{ card.kind === 'more' ? localized(card.item.text) : field(card.item, 'title') }}</strong><small>{{ card.kind === 'more' ? 'Explore the full product catalog →' : field(card.item, 'description') }}</small></span>
+              <span><strong>{{ card.kind === 'more' ? localized(card.item.text) : field(card.item, 'title') }}</strong><small v-if="card.kind === 'more'" class="FeluqaMegaMenu__more-hint">Explore the full product catalog <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></small><small v-else>{{ field(card.item, 'description') }}</small></span>
             </a>
           </div>
         </template>
         <template v-else>
         <a v-if="more && morePosition === 'before'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card">
           <img class="FeluqaMegaMenu__background-image" :src="more.image ?? ''" alt="">
-          <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
+          <span><strong>{{ localized(more.text) }}</strong><small class="FeluqaMegaMenu__more-hint">Explore the full product catalog <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></small></span>
         </a>
         <a v-for="(child, index) in displayChildren" :key="`${href(child) ?? String(child.text)}-${index}`" :href="href(child)" class="FeluqaMegaMenu__background-card">
           <img class="FeluqaMegaMenu__background-image" :src="String(field(child, 'image') ?? '')" alt="">
@@ -132,7 +132,7 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
         </a>
         <a v-if="more && morePosition === 'after'" :href="more.link ?? '#'" class="FeluqaMegaMenu__background-card FeluqaMegaMenu__more-card">
           <img class="FeluqaMegaMenu__background-image" :src="more.image ?? ''" alt="">
-          <span><strong>{{ localized(more.text) }}</strong><small>Explore the full product catalog →</small></span>
+          <span><strong>{{ localized(more.text) }}</strong><small class="FeluqaMegaMenu__more-hint">Explore the full product catalog <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></small></span>
         </a>
         </template>
       </div>
@@ -141,8 +141,8 @@ function href(item: DefaultTheme.NavItem): string | undefined { return 'link' in
 </template>
 
 <style scoped>
-.FeluqaMegaMenu__body { width: min(960px, calc(100vw - 32px)); min-width: 0; color: var(--vp-c-text-1); box-sizing: border-box; }
-:deep(.menu) { right: auto !important; left: 50% !important; transform: translate(-50%, 0) !important; }
+.FeluqaMegaMenu__body { width: min(960px, calc(100dvw - 32px)); max-width: calc(100dvw - 32px); min-width: 0; color: var(--vp-c-text-1); box-sizing: border-box; }
+:deep(.menu) { right: auto !important; left: 50% !important; width: min(960px, calc(100dvw - 32px)); max-width: calc(100dvw - 32px); box-sizing: border-box; transform: translate(-50%, 0) !important; }
 :deep(.button), :deep(.button:hover), :deep(.text), :deep(.VPFlyout:hover .text), :deep(.VPFlyout.active .text) { color: var(--vp-c-text-1) !important; }
 .FeluqaMegaMenu__cards { display: grid; width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
 .FeluqaMegaMenu__card { display: flex; width: 100%; min-width: 0; min-height: 126px; box-sizing: border-box; flex-direction: column; gap: 7px; padding: 14px; border: 1px solid var(--vp-c-divider); border-radius: 10px; color: var(--vp-c-text-1) !important; text-decoration: none; overflow: hidden; }
@@ -189,8 +189,11 @@ h3 { margin: 0 0 12px; font-size: .95rem; }
 .FeluqaMegaMenu__background-card span { position: relative; z-index: 2; display: grid; gap: 6px; min-width: 0; }
 .FeluqaMegaMenu__background-card strong { overflow-wrap: anywhere; font-size: 1.05rem; }
 .FeluqaMegaMenu__background-card small { display: -webkit-box; overflow: hidden; color: rgb(255 255 255 / .82); -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.FeluqaMegaMenu__more-hint { display: inline-flex !important; align-items: center; gap: 6px; }
+.FeluqaMegaMenu__more-hint svg { width: 14px; height: 14px; flex: none; }
+:dir(rtl) .FeluqaMegaMenu__more-hint svg { transform: scaleX(-1); }
 .FeluqaMegaMenu__background-icon { position: relative; z-index: 2; width: 28px; height: 28px; object-fit: contain; filter: brightness(0) invert(1); }
-@media (max-width: 768px) { .FeluqaMegaMenu__body { width: min(600px, calc(100vw - 32px)); }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events, .FeluqaMegaMenu__background-grid { grid-template-columns: 1fr !important; }.FeluqaMegaMenu__background-card { min-height: 220px; } }
+@media (max-width: 768px) { .FeluqaMegaMenu__body, :deep(.menu) { width: min(600px, calc(100dvw - 24px)); max-width: calc(100dvw - 24px); }.FeluqaMegaMenu__cards, .FeluqaMegaMenu__columns, .FeluqaMegaMenu__featured, .FeluqaMegaMenu__events, .FeluqaMegaMenu__background-grid { grid-template-columns: 1fr !important; }.FeluqaMegaMenu__background-card { min-height: 220px; } }
 @media (prefers-reduced-motion: reduce) { .FeluqaMegaMenu__card, .FeluqaMegaMenu__background-card, .FeluqaMegaMenu__card > img, .FeluqaMegaMenu__background-image { animation: none; transform: none; } }
 @keyframes FeluqaMegaMenu-card-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 </style>
