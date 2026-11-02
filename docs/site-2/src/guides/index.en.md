@@ -11,7 +11,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :hero-style="{ minHeight: '90vh' }"
   eyebrow="Insight. Innovation. Strategy. Execution."
   title="Ideas and operations that move businesses forward."
-  description="Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>."
+  :description="'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>.'"
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
@@ -22,7 +22,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 <Acomponent/>
-<div style="width: min(100% - 40px, 544px);"
+<div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
+
 :::: info What this can mean for your business
 ::: details Better decisions
 Clearer priorities, options and investment choices.
@@ -41,7 +42,9 @@ Defined scope, accountable coordination and expertise matched to the assignment.
 :::
 Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
 ::::
+
 </div>
+
  <NmShowcase
    title="Numerimondes is an independent consulting and solutions company. We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
    footnote="Possibility becomes valuable through execution.

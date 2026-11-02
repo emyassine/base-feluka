@@ -98,7 +98,6 @@
 .yc-about {
   color: var(--vp-c-text-1);
   padding: 28px 0 100px;
-  font-size: 15px;
   line-height: 1.52;
 }
 
