@@ -192,12 +192,9 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-<div class="simple-mini-card" style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); padding: 16px; display: inline-flex; align-items: center;">
-    <div class="simple-mini-card-icon" style="display: flex; align-items: center; gap: 12px;">
-        <img src="@spmpst::icon::car" style="width: 24px; height: 24px;" />
-        <p style="margin: 0;">Card Text</p>
-    </div>
-</div>
+
+<div class="simple-mini-card" style="--card-bg: #ffffff; --card-bg-dark: #1e293b; --card-radius: 12px; --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); --card-shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4); --card-border: 1px solid #e2e8f0; --card-border-dark: 1px solid #334155; --card-text: #0f172a; --card-text-dark: #f8fafc; --icon-color: #2563eb; --icon-color-dark: #60a5fa; background: var(--card-bg); color: var(--card-text); border-radius: var(--card-radius); box-shadow: var(--card-shadow); border: var(--card-border); padding: 16px; display: inline-flex; align-items: center;"><div class="simple-mini-card-icon" style="display: flex; align-items: center; gap: 12px; color: var(--icon-color);"><img src="@spmpst::icon::car" style="width: 24px; height: 24px; filter: drop-shadow(0 0 0 var(--icon-color));" /><p style="margin: 0; color: inherit;">Card Text</p></div><style>@media (prefers-color-scheme: dark) { .simple-mini-card { background: var(--card-bg-dark) !important; color: var(--card-text-dark) !important; box-shadow: var(--card-shadow-dark) !important; border: var(--card-border-dark) !important; } .simple-mini-card-icon { color: var(--icon-color-dark) !important; } }</style></div>
+
 
 | Category | Scope |
 | :--- | :--- |
