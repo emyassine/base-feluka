@@ -331,7 +331,10 @@ onBeforeUnmount(() => {
             @keydown="onNamesKeydown"
           >
             <Transition name="nm-showcase-title" mode="out-in">
-              <span :key="stories[active]?.name" class="nm-showcase__name-title">{{ stories[active]?.name }}</span>
+              <div :key="stories[active]?.name" class="nm-showcase__story-heading">
+                <span class="nm-showcase__name-title">{{ stories[active]?.name }}</span>
+                <p class="nm-showcase__story-description">{{ stories[active]?.description }}</p>
+              </div>
             </Transition>
           </nav>
 
@@ -612,13 +615,16 @@ onBeforeUnmount(() => {
 
   .nm-showcase__names {
     position: relative;
-    display: grid;
+    display: flex;
     width: 100%;
     min-width: 0;
     min-height: var(--item-h);
-    place-items: center;
+    align-items: center;
+    justify-content: center;
     outline: none;
   }
+
+  .nm-showcase__story-heading { width: 100%; }
 
   .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
 
@@ -635,6 +641,16 @@ onBeforeUnmount(() => {
     overflow-wrap: break-word;
     text-align: center;
     white-space: normal;
+  }
+
+  .nm-showcase__story-description {
+    max-width: 34rem;
+    margin: 0.75rem auto 0;
+    color: var(--vp-c-text-2);
+    font-size: var(--vp-font-size-base, 14px);
+    line-height: 1.5;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
 
   .nm-showcase-title-enter-active,
