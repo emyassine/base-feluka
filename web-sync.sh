@@ -28,6 +28,20 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/web-sync.config.json"
 GITIGNORE_FILE="$SCRIPT_DIR/.gitignore"
 
+check_dependencies() {
+  local dependency
+  local -a missing=()
+
+  for dependency in "$@"; do
+    command -v "$dependency" >/dev/null 2>&1 || missing+=("$dependency")
+  done
+
+  if (( ${#missing[@]} )); then
+    printf 'Missing required dependencies: %s\n' "${missing[*]}" >&2
+    exit 1
+  fi
+}
+
 create_default_config() {
 cat > "$CONFIG_FILE" << 'EOF'
 {
@@ -103,7 +117,7 @@ run_post_deploy() {
 
 [[ ! -f "$CONFIG_FILE" ]] && create_default_config
 
-command -v jq >/dev/null || { echo "jq is required to read $CONFIG_FILE"; exit 1; }
+check_dependencies jq
 jq -e 'type == "object" and (.deploys | type == "object")' "$CONFIG_FILE" >/dev/null || {
   echo "Invalid JSON config or missing deploys object: $CONFIG_FILE"
   exit 1
@@ -127,6 +141,16 @@ if [[ "$UNSAFE_MODE" != "true" && "$UNSAFE_MODE" != "1" ]]; then
   SUDO_PASSWORD=""
 fi
 
+DEPENDENCIES=(jq)
+case "$METHOD" in
+  ssh) DEPENDENCIES+=(ssh rsync) ;;
+  sftp) DEPENDENCIES+=(sftp) ;;
+esac
+if [[ -n "$SSH_PASSWORD" ]]; then DEPENDENCIES+=(sshpass); fi
+if [[ -n "$SUDO_PASSWORD" ]]; then DEPENDENCIES+=(base64 tr); fi
+if [[ -f "$GITIGNORE_FILE" ]]; then DEPENDENCIES+=(sed); fi
+check_dependencies "${DEPENDENCIES[@]}"
+
 echo ""
 echo ""
 echo "WEB SYNC (•) DEPLOY"
@@ -146,7 +170,6 @@ echo ""
 HOST="$USER@$SERVER"
 
 if [[ -n "$SSH_PASSWORD" ]]; then
-  command -v sshpass >/dev/null || { echo "SSH_PASSWORD requires sshpass"; exit 1; }
   export SSHPASS="$SSH_PASSWORD"
   ssh() { command sshpass -e ssh "$@"; }
   rsync() { command sshpass -e rsync -e "sshpass -e ssh" "$@"; }
