@@ -240,8 +240,11 @@ onBeforeUnmount(() => {
               <span class="nm-showcase__name">{{ story.name }}</span>
               <span class="nm-showcase__description">{{ story.description }}</span>
               <span class="nm-showcase__story">
-                <span class="nm-showcase__story-text" :style="{ opacity: 1 - progressFor(index) / 100 }">{{ story.beforeText }}</span>
-                <span class="nm-showcase__story-text nm-showcase__story-text--after" :style="{ opacity: progressFor(index) / 100 }">{{ story.afterText }}</span>
+                <span class="nm-showcase__story-state">{{ progressFor(index) < 50 ? labels.before : labels.after }}</span>
+                <Transition name="nm-showcase-copy" mode="out-in">
+                  <span v-if="progressFor(index) < 50" :key="`${story.name}-before`" class="nm-showcase__story-text">{{ story.beforeText }}</span>
+                  <span v-else :key="`${story.name}-after`" class="nm-showcase__story-text">{{ story.afterText }}</span>
+                </Transition>
               </span>
               <div class="nm-showcase__timeline">
                 <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineStart }}</span>
@@ -443,9 +446,13 @@ onBeforeUnmount(() => {
 
 .nm-showcase__name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
 .nm-showcase__description { max-width: 42rem; font-size: 13px; font-weight: 400; line-height: 1.4; }
-.nm-showcase__story { position: relative; display: block; min-height: 3.7rem; font-size: 16px; font-weight: 400; line-height: 24px; }
+.nm-showcase__story { display: flex; min-height: 4.8rem; flex-direction: column; align-items: flex-start; font-size: 16px; font-weight: 400; line-height: 24px; }
+.nm-showcase__story-state { color: rgb(255 255 255 / 0.82); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; line-height: 1.3; text-transform: uppercase; }
 .nm-showcase__story-text { display: block; }
-.nm-showcase__story-text--after { position: absolute; inset: 0; }
+.nm-showcase-copy-enter-active,
+.nm-showcase-copy-leave-active { transition: opacity 160ms ease-in-out; }
+.nm-showcase-copy-enter-from,
+.nm-showcase-copy-leave-to { opacity: 0; }
 
 .nm-showcase__timeline { display: flex; align-items: center; gap: 0.75rem; }
 .nm-showcase__timeline-label { flex: none; color: rgb(255 255 255 / 0.9); font-size: 14px; font-weight: 500; line-height: 20px; }
@@ -618,6 +625,8 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .nm-showcase__layer,
-  .nm-showcase__caption { transition: none; }
+  .nm-showcase__caption,
+  .nm-showcase-copy-enter-active,
+  .nm-showcase-copy-leave-active { transition: none; }
 }
 </style>
