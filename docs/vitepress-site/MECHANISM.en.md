@@ -209,7 +209,6 @@ Site-owned images and SVGs live under that site's `public/media/` directory and 
 
 - Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model. Topbar icon paths are converted to embedded SVG data URLs; social-link icon paths become inline SVGs.
 - Markdown page `icon` frontmatter and `spmpst.sidebar.json` icons are resolved through the tool catalogue or selected-site media root and copied into generated assets. Missing page icons still use the configured fallback with a warning; a missing fallback is fatal.
-- `@spmpst::flag::<code>` resolves language flags first, then country flags from the standard catalogue. This supports both locale codes and country codes such as `@spmpst::flag::ma`.
 - If language flags are enabled, source preparation creates `@spmpst::flag::<locale>` for each configured language and copies it to `generated-guides/public/flags/language/<locale>.svg`.
 - Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The parser does not rewrite arbitrary `@spmpst` text inside Markdown prose. Sites do not use `.site/spmpst.resources.json` and MUST NOT point at sibling tool directories.
 
