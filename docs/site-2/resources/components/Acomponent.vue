@@ -46,7 +46,7 @@
 
       <div class="yc-quotes">
         <p>
-          <span>Every organization has opportunities waiting to be explored: processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.</span>
+          <span>Every organization has opportunities waiting to be explored:</span>
           <span class="yc-illustration" tabindex="0">
             <img
               alt="A team collaborating around a table"
@@ -58,10 +58,11 @@
               <span>People working through opportunities together</span>
             </span>
           </span>
+          <span>processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.</span>
         </p>
 
         <p>
-          <span>We combine research, commercial thinking and engineering to examine these possibilities, shape viable approaches and move selected projects into action.</span>
+          <span>We combine research, commercial thinking and engineering</span>
           <span class="yc-illustration" tabindex="0">
             <img
               alt="A workspace set up for focused research and planning"
@@ -73,10 +74,11 @@
               <span>Research and planning workspace</span>
             </span>
           </span>
+          <span>to examine these possibilities, shape viable approaches and move selected projects into action.</span>
         </p>
 
         <p>
-          <span>Our contribution can begin with an idea, a question, an operational challenge or a clear project brief.</span>
+          <span>Our contribution can begin with an idea, a question, an operational challenge</span>
           <span class="yc-illustration" tabindex="0">
             <img
               alt="Colleagues discussing a project together"
@@ -88,6 +90,7 @@
               <span>Project discussion and planning</span>
             </span>
           </span>
+          <span>or a clear project brief.</span>
         </p>
       </div>
     </div>
@@ -137,7 +140,6 @@
 
 .yc-testimonials h2 {
   margin: 0 0 16px;
-  font-size: 9px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -150,7 +152,8 @@
 
 .yc-quotes p > span:not(.yc-illustration) {
   text-decoration: underline;
-  text-decoration-color: #cbbfae;
+  text-decoration-color: var(--vp-c-brand-1, #cbbfae);
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 

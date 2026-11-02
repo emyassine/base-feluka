@@ -46,27 +46,62 @@ Expected benefits are assessed for each engagement; specific results depend on t
 </div>
 
  <NmShowcase
-   title="Numerimondes is an independent consulting and solutions company. We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
-   footnote="Possibility becomes valuable through execution.
-   Every organization has opportunities waiting to be explored: processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets. We combine research, commercial thinking and engineering to examine these possibilities, shape viable approaches and move selected projects into action. Our contribution can begin with an idea, a question, an operational challenge or a clear project brief."
-   citation="El Moumen Yassine"
-   footnote-marker="*"
-   :stories='[
-   {
-     name: "Airbnb",
-     beforeImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-batch-2-a1df9c49bacc25254fe05a3bac4921eff5ac37109de97b1d2337f6fd86a488be.jpg",
-     afterImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-now-1-26d764d24e2486fd91a902dbd06b7bb05a3613e5af6273baffecf6f24090f6d1.jpg",
-     beforeText: "Brian, Joe, and Nate did YC in W09.",
-     afterText: "Airbnb went public in 2020 at an over $100B valuation.",
-   },
-   {
-     name: "OpenAI",
-     beforeImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-batch-2-bd451c2a6d1966e17822ce4a22aeaec5167daad588cf0a99a9a68c563b6b4028.jpg",
-     afterImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-now-1-14b338a4c66a1ad05c34b311d1d4c1b535cb960ef24109be329fe552358ebba9.jpg",
-     beforeText: "Sam was part of YC’s inaugural batch in S05 and founded OpenAI as YC Research in 2015.",
-     afterText: "Sam built OpenAI into a $500B company.",
-   },
-   ]'
+	 title="What we do"
+	 footnote="Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required."
+	 citation="El Moumen Yassine"
+	 footnote-marker="*"
+		:stories = [
+	  {
+	    name: "Business Consulting & Development",
+	    description: "Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.",
+	    beforeImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1200&auto=format&fit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
+	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
+	    afterText: "Structured business roadmap, clear decision-making frameworks, and accelerated commercial expansion.",
+	    linkText: "Explore consulting",
+	    linkUrl: "/services/consulting"
+	  },
+	  {
+	    name: "Digital Systems & Software",
+	    description: "Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.",
+	    beforeImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
+	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
+	    linkText: "Explore software & systems",
+	    linkUrl: "/services/software"
+	  },
+	  {
+	    name: "Infrastructure, Equipment & Security",
+	    description: "Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.",
+	    beforeImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1200&auto=format&fit=crop",
+	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
+	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
+	    linkText: "Explore infrastructure",
+	    linkUrl: "/services/infrastructure"
+	  },
+	  {
+	    name: "Operations, People & Capabilities",
+	    description: "Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.",
+	    beforeImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop",
+	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
+	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
+	    linkText: "Explore operations",
+	    linkUrl: "/services/operations"
+	  },
+	  {
+	    name: "Innovation & New Ventures",
+	    description: "Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.",
+	    beforeImage: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1200&auto=format&fit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop",
+	    beforeText: "Untapped commercial concepts and high-potential ideas stalled without a practical path to execution.",
+	    afterText: "Validated product-market strategy, robust system architecture, and new venture models deployed for growth.",
+	    linkText: "Explore innovation",
+	    linkUrl: "/innovation"
+	  }
+		];
    :labels="{
      region: 'Company showcase',
      before: 'During YC',
@@ -80,34 +115,6 @@ Expected benefits are assessed for each engagement; specific results depend on t
      altAfter: '{name} after YC',
    }"
  />
-
-
-
----
-
-## Possibility becomes valuable through execution.
-
-Every organization has opportunities waiting to be explored: processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.
-
-We combine research, commercial thinking and engineering to examine these possibilities, shape viable approaches and move selected projects into action.
-
-Our contribution can begin with an idea, a question, an operational challenge or a clear project brief.
-
-### What this can mean for your business
-
-- **Better decisions** — clearer priorities, options and investment choices.
-- **More efficient operations** — less duplicated work, fewer avoidable errors and better coordination.
-- **Greater visibility and control** — accessible information, traceable processes and systems you can manage.
-- **New opportunities** — business concepts, partnerships, products and services evaluated for real-world potential.
-- **A clearer route to delivery** — defined scope, accountable coordination and expertise matched to the assignment.
-
-*Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.*
-
----
-
-## What we do
-
-Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required.
 
 ### Business consulting & development
 
