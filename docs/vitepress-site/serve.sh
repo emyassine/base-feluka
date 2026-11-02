@@ -241,6 +241,18 @@ else
   info 'Starting 1 selected site.'
 fi
 
+if [[ -n "$retry_seconds" ]]; then
+  retry_site_ids=()
+  for entry in "${sites[@]}"; do
+    IFS=$'\t' read -r site_id _ _ <<<"$entry"
+    retry_site_ids+=("$site_id")
+  done
+  retry_sites_csv=$(IFS=,; printf '%s' "${retry_site_ids[*]}")
+  retry_command="${site_dir}/serve.sh --sites=${retry_sites_csv}"
+  if ((preview)); then retry_command+=' --preview'; fi
+  info "Retry loop: while ! ${retry_command}; do sleep ${retry_seconds}; done (Ctrl+C to stop)."
+fi
+
 pids=()
 retry_sleep_pid=''
 stop_children() {
