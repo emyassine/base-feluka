@@ -47,4 +47,27 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 .docs-topbar-actions { display: flex; align-items: center; gap: .5rem; margin-inline-start: .75rem; }
 .docs-topbar-actions .feluqa-button { white-space: nowrap; }
 @media (max-width: 768px) { .docs-topbar-actions { margin-inline-start: .35rem; } }
+@media (max-width: 768px) {
+  .docs-topbar-actions a[href="/account/"] {
+    display: inline-flex;
+    width: 2.25rem;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    font-size: 0;
+  }
+
+  .docs-topbar-actions a[href="/account/"]::before {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex: 0 0 1.2rem;
+    background: currentColor;
+    content: "";
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+}
 </style>
