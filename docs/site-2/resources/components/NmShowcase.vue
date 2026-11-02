@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .nm-showcase {
-  --scroll-per-item: 45svh;
+  --scroll-per-item: 60svh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -487,7 +487,7 @@ onBeforeUnmount(() => {
 
 @media (min-width: 1024px) {
   .nm-showcase {
-    --scroll-per-item: 45svh;
+    --scroll-per-item: 60svh;
     margin: 4rem calc(50% - 50vw) 5rem;
   }
 
@@ -519,11 +519,11 @@ onBeforeUnmount(() => {
 
   .nm-showcase__sticky {
     position: sticky;
-    top: 50%;
+    top: 0;
+    height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateY(-50%);
   }
 
   .nm-showcase__stage {
@@ -563,11 +563,11 @@ onBeforeUnmount(() => {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 350ms ease;
+    transition: opacity 550ms ease-in-out;
     user-select: none;
   }
 
-  .nm-showcase__layer.is-active { opacity: 1; }
+.nm-showcase__layer.is-active { opacity: 1; }
 
   .nm-showcase__captions {
     display: grid;
@@ -588,7 +588,6 @@ onBeforeUnmount(() => {
     min-height: var(--item-h);
     place-items: center;
     outline: none;
-    transform: translateY(-2rem);
   }
 
   .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
@@ -609,7 +608,7 @@ onBeforeUnmount(() => {
   }
 
   .nm-showcase-title-enter-active,
-  .nm-showcase-title-leave-active { transition: opacity 260ms ease, transform 260ms ease; }
+  .nm-showcase-title-leave-active { transition: opacity 360ms ease-in-out, transform 360ms ease-in-out; }
   .nm-showcase-title-enter-from { opacity: 0; transform: translateY(0.35em); }
   .nm-showcase-title-leave-to { opacity: 0; transform: translateY(-0.35em); }
 }
