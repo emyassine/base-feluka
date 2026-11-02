@@ -170,10 +170,10 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <Timeline
   label="Recent deployments"
   :items="[
-    { title: 'Production Deploy', status: 'success',  href: '#', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' },
-    { title: 'Staging Deploy', status: 'success', commit: 'e4f5g6h', branch: 'staging', duration: '38s', time: '15 minutes ago' },
-    { title: 'Preview Deploy', status: 'failed', commit: 'i7j8k9l', branch: 'feat/auth', duration: '1m 12s', time: '1 hour ago' },
-    { title: 'Production Deploy', status: 'success', commit: 'm0n1o2p', branch: 'main', duration: '45s', time: '3 hours ago' }
+    { title: 'Production Deploy', status: [{ icon: '✓', markerColor: '#00c58a', badge: { text: 'success', color: '#00c58a' } }], href: '#', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' },
+    { title: 'Staging Deploy', status: [{ icon: '✓', markerColor: '#00c58a', badge: { text: 'success', color: '#00c58a' } }], commit: 'e4f5g6h', branch: 'staging', duration: '38s', time: '15 minutes ago' },
+    { title: 'Preview Deploy', status: [{ icon: '×', markerColor: '#f45b62', badge: { text: 'failed', color: '#f45b62' } }], commit: 'i7j8k9l', branch: 'feat/auth', duration: '1m 12s', time: '1 hour ago' },
+    { title: 'Production Deploy', status: [{ icon: '✓', markerColor: '#00c58a', badge: { text: 'success', color: '#00c58a' } }], commit: 'm0n1o2p', branch: 'main', duration: '45s', time: '3 hours ago' }
   ]"
  />
 
