@@ -46,125 +46,88 @@
 
       <div class="yc-quotes">
         <p>
-          <span>YC compresses months of growth into weeks.</span>
-
-          <span class="yc-founder" tabindex="0">
+          <span>Every organization has opportunities waiting to be explored:</span>
+          <span>processes that could run better</span>
+          <span class="yc-illustration" tabindex="0">
             <img
-              alt="Aman Mishra"
+              alt="Collaborative team working through a business process"
               loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/aman-mishra-compressed-f86a1a0caaa317ed5e8770981a0ebb253846a406837c88fe89137ed0c85a7a47.jpg"
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=96&q=80"
             />
-            <span class="yc-founder-preview">
+            <span class="yc-illustration-preview">
               <img
-                alt="Aman Mishra"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/aman-mishra-compressed-f86a1a0caaa317ed5e8770981a0ebb253846a406837c88fe89137ed0c85a7a47.jpg"
+                alt=""
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=680&h=460&q=85"
               />
-              <span>Aman Mishra</span>
+              <span>Processes that work better</span>
             </span>
-          </span>
-
-          <span>
-            The sense of urgency is so infectious among founders
-            that it becomes the most productive period in most
-            people’s lives.
-          </span>
-
-          <span class="yc-founder" tabindex="0">
+          </span>,
+          <span>information that could support faster decisions</span>
+          <span class="yc-illustration" tabindex="0">
             <img
-              alt="Adith Reddi"
+              alt="Business data and charts used to support decisions"
               loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/adith-reddi-compressed-1c81fcfa8ef9cf7a23b35d0c34648d1b79ab613b0fdced3ea015d23ffb984cdc.jpg"
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=96&h=96&q=80"
             />
-            <span class="yc-founder-preview">
+            <span class="yc-illustration-preview">
               <img
-                alt="Adith Reddi"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/adith-reddi-compressed-1c81fcfa8ef9cf7a23b35d0c34648d1b79ab613b0fdced3ea015d23ffb984cdc.jpg"
+                alt=""
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=680&h=460&q=85"
               />
-              <span>Adith Reddi</span>
+              <span>Information for faster decisions</span>
             </span>
-          </span>
+          </span>,
+          <span>new services worth developing</span>
+          <span class="yc-illustration" tabindex="0">
+            <img
+              alt="Team discussing ideas for a new service"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=96&h=96&q=80"
+            />
+            <span class="yc-illustration-preview">
+              <img
+                alt=""
+                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=680&h=460&q=85"
+              />
+              <span>Ideas for new services</span>
+            </span>
+          </span>, and
+          <span>ways to connect people, systems and markets.</span>
         </p>
 
         <p>
-          <span>
-            It’s a community of founders that you can’t find
-            anywhere else.
-          </span>
-
-          <span class="yc-founder" tabindex="0">
+          <span>We combine research, commercial thinking and engineering</span>
+          <span class="yc-illustration" tabindex="0">
             <img
-              alt="Bishesh Khadka"
+              alt="People sharing research and ideas around a table"
               loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/bishesh-khadka-compressed-76f09ec549bbfdb8c7fa25d8ac0e943f2e3bc593cb5cc43af5b7fc5b8ad3ee9c.jpg"
+              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=96&h=96&q=80"
             />
-            <span class="yc-founder-preview">
+            <span class="yc-illustration-preview">
               <img
-                alt="Bishesh Khadka"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/bishesh-khadka-compressed-76f09ec549bbfdb8c7fa25d8ac0e943f2e3bc593cb5cc43af5b7fc5b8ad3ee9c.jpg"
+                alt=""
+                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=680&h=460&q=85"
               />
-              <span>Bishesh Khadka</span>
+              <span>Research, thinking and engineering</span>
             </span>
           </span>
-
-          <span>
-            It feels like having the entire world at your
-            back—from Partners to batchmates.
-          </span>
-
-          <span class="yc-founder" tabindex="0">
-            <img
-              alt="Justin Lee"
-              loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/justin-lee-compressed-d28010cde316d6846b799904d8c9fd74ea60e799a781aa782693ae4e72f38f2b.jpg"
-            />
-            <span class="yc-founder-preview">
-              <img
-                alt="Justin Lee"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/justin-lee-compressed-d28010cde316d6846b799904d8c9fd74ea60e799a781aa782693ae4e72f38f2b.jpg"
-              />
-              <span>Justin Lee</span>
-            </span>
-          </span>
+          <span>to examine these possibilities, shape viable approaches and move selected projects into action.</span>
         </p>
 
         <p>
-          <span>
-            Being surrounded by the top 1% of founders in the
-            world just completely resets the bar.
-          </span>
-
-          <span class="yc-founder" tabindex="0">
+          <span>Our contribution can begin with an idea, a question, an operational challenge or a clear project brief.</span>
+          <span class="yc-illustration" tabindex="0">
             <img
-              alt="Fern Morrison"
+              alt="Colleagues working together on a project brief"
               loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/fern-morrison-compressed-77abc8bb3419c4876f47ec4740fa41af61265d824a093af7d3537ac10f15b898.jpg"
+              src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=96&h=96&q=80"
             />
-            <span class="yc-founder-preview">
+            <span class="yc-illustration-preview">
               <img
-                alt="Fern Morrison"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/fern-morrison-compressed-77abc8bb3419c4876f47ec4740fa41af61265d824a093af7d3537ac10f15b898.jpg"
+                alt=""
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=680&h=460&q=85"
               />
-              <span>Fern Morrison</span>
-            </span>
-          </span>
-
-          <span>
-            You leave with a completely new sense of
-            how fast ‘fast’ can be.
-          </span>
-
-          <span class="yc-founder" tabindex="0">
-            <img
-              alt="Aman Mishra"
-              loading="lazy"
-              src="https://bookface-static.ycombinator.com/assets/ycdc/about/aman-mishra-compressed-f86a1a0caaa317ed5e8770981a0ebb253846a406837c88fe89137ed0c85a7a47.jpg"
-            />
-            <span class="yc-founder-preview">
-              <img
-                alt="Aman Mishra"
-                src="https://bookface-static.ycombinator.com/assets/ycdc/about/aman-mishra-compressed-f86a1a0caaa317ed5e8770981a0ebb253846a406837c88fe89137ed0c85a7a47.jpg"
-              />
-              <span>Aman Mishra</span>
+              <span>From a brief to a project in action</span>
             </span>
           </span>
         </p>
@@ -228,15 +191,15 @@
   line-height: 1.55;
 }
 
-.yc-quotes p > span:not(.yc-founder) {
+.yc-quotes p > span:not(.yc-illustration) {
   text-decoration: underline;
   text-decoration-color: #cbbfae;
   text-underline-offset: 3px;
 }
 
-/* Inline avatars */
+/* Inline illustrations */
 
-.yc-founder {
+.yc-illustration {
   display: inline-block;
   position: relative;
   width: 23px;
@@ -245,30 +208,31 @@
   vertical-align: middle;
   cursor: pointer;
   outline-offset: 3px;
+  white-space: nowrap;
 }
 
-.yc-founder > img {
+.yc-illustration > img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 5px;
   border: 1px solid #d2ccc1;
   transition: transform 180ms ease;
 }
 
-.yc-founder:hover > img,
-.yc-founder:focus-visible > img {
+.yc-illustration:hover > img,
+.yc-illustration:focus-visible > img {
   transform: scale(1.14);
 }
 
-/* Large portrait on hover, below the avatar */
+/* Large illustration preview on hover */
 
-.yc-founder-preview {
+.yc-illustration-preview {
   position: absolute;
   top: calc(100% + 12px);
   left: 50%;
-  width: 170px;
+  width: 210px;
   padding: 5px;
   background: #fff;
   border-radius: 8px;
@@ -285,15 +249,15 @@
     visibility 180ms ease;
 }
 
-.yc-founder-preview img {
+.yc-illustration-preview img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1.48 / 1;
   object-fit: cover;
   border-radius: 5px;
 }
 
-.yc-founder-preview > span {
+.yc-illustration-preview > span {
   display: block;
   padding: 8px 4px 4px;
   font-size: 11px;
@@ -301,8 +265,8 @@
   text-align: center;
 }
 
-.yc-founder:hover .yc-founder-preview,
-.yc-founder:focus-visible .yc-founder-preview {
+.yc-illustration:hover .yc-illustration-preview,
+.yc-illustration:focus-visible .yc-illustration-preview {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0) scale(1);
