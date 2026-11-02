@@ -50,6 +50,12 @@
           "en": "Numerimondes"
         },
         "href": "/"
+      },
+      {
+        "name": {
+          "en": "Account access"
+        },
+        "href": "/account/"
       }
     ],
     "logoImg": "/media/logo-footer-lightmode-filled.png",

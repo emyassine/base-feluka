@@ -121,6 +121,10 @@
         {
           "guide": "008-contact",
           "icon": "@spmpst::icon::message-circle"
+        },
+        {
+          "guide": "009-account",
+          "icon": "@spmpst::icon::circle-user-round"
         }
       ]
     },

@@ -86,6 +86,16 @@
       "uri": {
         "base": "/contact/"
       }
+    },
+    {
+      "path": "009-account",
+      "label": "Account access",
+      "labels": {
+        "en": "Account access"
+      },
+      "uri": {
+        "base": "/account/"
+      }
     }
   ],
   "iconFallback": "circle-help",
