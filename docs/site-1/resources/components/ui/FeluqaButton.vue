@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
   tag?: 'button' | 'a'
   href?: string
   label?: string
+  wrap?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
   color?: ButtonVariant
@@ -38,7 +39,7 @@ const props = withDefaults(defineProps<{
   tag: 'button', type: 'button', size: 'md', color: 'primary', iconPosition: 'before', badgeColor: 'primary',
   tint: '#ffffff', tintOpacity: 0, blur: 0, lineColor: '#ffffff',
   intensity: 1, shineSize: 10, shineFade: 40, thickness: 1, speed: 0.35,
-  followMouse: false, proximity: 250, autoAnimate: true, disabled: false,
+  followMouse: false, proximity: 250, autoAnimate: true, disabled: false, wrap: false,
 })
 
 const shineAngle = ref(0)
@@ -119,7 +120,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     :style="style"
     :class="[
       'feluqa-button', `size-${size}`, `color-${buttonColor}`,
-      { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor) },
+      { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor), 'wrap-label': wrap },
     ]"
     @pointerenter="startHoverAnimation"
     @pointermove="followPointer"
@@ -187,6 +188,8 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   mask-composite: exclude;
 }
 .feluqa-button > span { position: relative; z-index: 1; }
+.button-content { white-space: nowrap; }
+.wrap-label .button-content { white-space: normal; }
 .feluqa-button:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 5px 16px rgb(0 0 0 / .18); }
 .feluqa-button.is-hovered::after { filter: drop-shadow(0 0 3px var(--button-line)); }
 .feluqa-button.is-hovered.is-auto-animated::after { opacity: var(--button-intensity); }
