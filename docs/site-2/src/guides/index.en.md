@@ -84,24 +84,40 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-:::: tip What this can mean for your business
-::: details Better decisions
-Clearer priorities, options and investment choices.
-:::
-::: details More efficient operations
-Less duplicated work, fewer avoidable errors and better coordination.
-:::
-::: details Greater visibility and control
-Accessible information, traceable processes and systems you can manage.
-:::
-::: details New opportunities
-Business concepts, partnerships, products and services evaluated for real-world potential.
-:::
-::: details A clearer route to delivery
-Defined scope, accountable coordination and expertise matched to the assignment.
-:::
-Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
-::::
+<div class="custom-block info nm-business-benefits">
+	<p class="custom-block-title">What this can mean for your business</p>
+	<details class="custom-block details detail-blue">
+	<summary>Better decisions</summary>
+	<p>Clearer priorities, options and investment choices.</p>
+	</details>
+	<details class="custom-block details detail-green">
+	<summary>More efficient operations</summary>
+	<p>
+		Less duplicated work, fewer avoidable errors and better coordination.
+	</p>
+	</details>
+	<details class="custom-block details detail-purple">
+	<summary>Greater visibility and control</summary>
+	<p>
+		Accessible information, traceable processes and systems you can manage.
+	</p>
+	</details>
+	<details class="custom-block details detail-amber">
+	<summary>New opportunities</summary>
+	<p>
+		Business concepts, partnerships, products and services evaluated for real-world potential.
+	</p>
+	</details>
+	<details class="custom-block details detail-teal">
+	<summary>A clearer route to delivery</summary>
+	<p>
+		Defined scope, accountable coordination and expertise matched to the assignment.
+	</p>
+	</details>
+	<p class="nm-business-benefits__note">
+		Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
+	</p>
+</div>
 
 </div>
 

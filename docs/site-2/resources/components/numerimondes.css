@@ -38,3 +38,13 @@
   border-color: #14b8a6;
   background-color: rgba(20, 184, 166, 0.04);
 }
+
+.nm-business-benefits .custom-block.details {
+  margin: .75rem 0;
+}
+
+.nm-business-benefits__note {
+  margin: 1rem 0 0;
+  font-size: .9rem;
+  color: var(--vp-c-text-2);
+}
