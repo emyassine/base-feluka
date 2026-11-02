@@ -26,7 +26,7 @@ const logoSource = computed(() => (isDark.value ? props.logoImgDark : undefined)
     <div class="container footer-cta__content space-y-3 text-center">
       <h2 class="!text-2xl !tracking-tight md:!text-4xl lg:!text-5xl">{{ title }}</h2>
       <p class="text-muted-foreground mx-auto max-w-xl leading-snug text-balance">{{ description }}</p>
-      <div class="mt-4"><FeluqaButton tag="a" :href="actionHref" size="lg">{{ actionLabel }}</FeluqaButton></div>
+      <div class="mt-4"><FeluqaButton tag="a" :href="actionHref" size="sm">{{ actionLabel }}</FeluqaButton></div>
     </div>
     <nav class="container footer-cta__content flex flex-col items-center gap-3">
       <ul v-if="navigation.length" class="footer-navigation flex list-none flex-wrap items-center justify-center gap-x-7 gap-y-2 p-0">
