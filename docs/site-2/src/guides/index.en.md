@@ -22,7 +22,6 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 
-<div style="width: min(100% - 40px, 1280px); margin: clamp(28px, 5vw, 64px) auto clamp(64px, 9vw, 120px); padding: clamp(24px, 5vw, 64px); border: 1px solid var(--vp-c-divider); border-radius: 32px; background: radial-gradient(ellipse at 12% 8%, color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent), transparent 48%), var(--vp-c-bg-soft); box-shadow: 0 24px 80px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);">
 <Acomponent
   title="Numerimondes is an independent consulting and solutions company."
   introduction="We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
@@ -117,10 +116,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
       after: 'or a clear project brief.'
     }
   ]"
- />
-</div>
+/>
 
-<div style="width: min(100% - 40px, 1120px); margin: 0 auto clamp(64px, 9vw, 120px); padding: clamp(24px, 5vw, 64px); border: 1px solid var(--vp-c-divider); border-radius: 32px; background: linear-gradient(145deg, var(--vp-c-bg-soft), color-mix(in srgb, var(--vp-c-brand-1) 5%, var(--vp-c-bg))); box-shadow: 0 24px 80px color-mix(in srgb, var(--vp-c-text-1) 7%, transparent);">
+<div style="width: min(100% - 40px, 544px) !important;  margin-inline: auto!important;">
 
 <h2 style="margin: 0 0 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em;">
 		What this can mean<br>for your business
@@ -141,7 +139,6 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 </div>
 
-<div style="width: min(100% - 40px, 1320px); margin: 0 auto clamp(72px, 10vw, 136px);">
  <NmShowcase
 	 title="What we do"
 		variant="stacked"
@@ -220,12 +217,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
      altAfter: '{name}: possible outcome',
    }"
  />
-</div>
 
 
-<div style="width: min(100% - 40px, 1240px); margin: 0 auto;">
-
-<div style="margin: 0 0 clamp(56px, 8vw, 104px); padding: clamp(24px, 5vw, 64px); border: 1px solid var(--vp-c-divider); border-radius: 32px; background: radial-gradient(ellipse at 90% 0%, color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent), transparent 44%), var(--vp-c-bg-soft); box-shadow: 0 24px 80px color-mix(in srgb, var(--vp-c-text-1) 7%, transparent);">
+<div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
 # One space with many possibilities.
 
@@ -306,7 +300,6 @@ Discover the areas we explore and the kinds of value that can be created. Browse
 />
 
 <FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
-</div>
 
 
 <!-- Showcase implementation:
@@ -317,7 +310,6 @@ Suggested interaction: one large visual canvas with switchable categories, layer
 and a clear click-through to the relevant project or service page.
 -->
 
-<div style="margin: 0 0 clamp(56px, 8vw, 104px); padding: clamp(24px, 5vw, 64px); border: 1px solid var(--vp-c-divider); border-left: 4px solid var(--vp-c-brand-1); border-radius: 28px; background: linear-gradient(120deg, color-mix(in srgb, var(--vp-c-brand-1) 7%, var(--vp-c-bg-soft)), var(--vp-c-bg-soft)); box-shadow: 0 20px 64px color-mix(in srgb, var(--vp-c-text-1) 6%, transparent);">
 ## Built around the mission.
 
 Numerimondes operates **on a project-by-project basis**. Every assignment begins with an agreed objective and a clear scope. We assemble the combination of developers, consultants, operators and specialist partners suited to the work.
@@ -377,10 +369,7 @@ flowchart TD
 <FeluqaButton tag="a" href="/about#delivery-model"
 	label="How we work"/>
 
-</div>
 
-
-<div style="margin: 0 0 clamp(56px, 8vw, 104px); padding: clamp(24px, 5vw, 64px); border: 1px solid var(--vp-c-divider); border-radius: 28px; background: linear-gradient(145deg, var(--vp-c-bg-soft), color-mix(in srgb, var(--vp-c-brand-1) 5%, var(--vp-c-bg))); box-shadow: 0 20px 64px color-mix(in srgb, var(--vp-c-text-1) 6%, transparent);">
 
 ## Independent by design. Curious by nature.
 
@@ -393,9 +382,6 @@ This combination of field experience and technical inquiry shapes an approach gr
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
 
-
- </div>
-<div style="margin: 0 0 clamp(56px, 8vw, 104px); padding: clamp(24px, 4vw, 48px); border: 1px solid var(--vp-c-divider); border-radius: 28px; background: radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent), transparent 46%), var(--vp-c-bg-soft); box-shadow: 0 20px 64px color-mix(in srgb, var(--vp-c-text-1) 6%, transparent);">
 
 :::: info Become a partner and grow with us
 We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
@@ -415,7 +401,6 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 ::: details Freelancers and specialist partners
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 :::
-::::
 
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
@@ -423,10 +408,8 @@ Join project teams when your expertise fits an assignment — across software en
 <FeluqaButton tag="a" color="dark" href="/about" label="More about us"/>
 </div>
 
-</div>
+::::
 
-
-<div style="padding: clamp(24px, 4vw, 48px) 0;">
 
 ## Initiatives in development
 
@@ -468,9 +451,6 @@ Our internal initiatives are part of the way we research, experiment and build f
   }"
   :card-height="220"
 />
-</div>
-
-<div style="margin: 0 0 clamp(56px, 8vw, 104px); padding: clamp(24px, 4vw, 48px); border: 1px solid var(--vp-c-divider); border-radius: 28px; background: var(--vp-c-bg-soft); box-shadow: 0 20px 64px color-mix(in srgb, var(--vp-c-text-1) 6%, transparent);">
 
 ## Clear scope. Clear commercial terms.
 
@@ -485,9 +465,6 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 -->
 
 
- </div>
-
-<div style="margin: 0 0 clamp(40px, 6vw, 80px); padding: clamp(28px, 5vw, 64px); border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 28%, var(--vp-c-divider)); border-radius: 32px; background: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-brand-1) 14%, var(--vp-c-bg-soft)), var(--vp-c-bg-soft)); box-shadow: 0 24px 80px color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);">
 
 ## What could your next opportunity become?
 
@@ -500,8 +477,6 @@ Share a challenge, an idea, a business objective or a project you want to explor
 	<FeluqaButton tag="a"
 		color="gray"
 		href="/partners" label="Become a partner"/>
-</div>
-
 </div>
 
 
