@@ -11,7 +11,17 @@ js-events:
 
 # Morocco-only opportunities
 
-Numerimondes is an independent Moroccan company headquartered in Casablanca. This opportunity path is for advisers and organizations operating in Morocco and supporting local businesses.
+## Independent by design. Curious by nature.
+
+Numerimondes was founded by Yassine El Moumen, whose background brings together operational management, project delivery, training, consulting, and software engineering. An ongoing interest in research, technology, markets, and how organizations work informs the ideas and initiatives explored at Numerimondes.
+
+This combination of field experience and technical inquiry shapes an approach grounded in business realities, creative problem-solving, and practical execution.
+
+Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment, and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
+
+## Morocco-only opportunity
+
+This opportunity path is for advisers and organizations operating in Morocco and supporting local businesses.
 
 Introduce clients who could benefit from operational, organizational, or technical support. You retain your trusted advisory relationship; introductions happen only with the client's consent, and each assignment is scoped individually.
 

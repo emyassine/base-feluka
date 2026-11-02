@@ -2,5 +2,5 @@
   "labels": {
     "en": "Morocco"
   },
-  "icon": "@spmpst::icon::morocco"
+  "icon": "../../../../public/media/morocco.svg"
 }
