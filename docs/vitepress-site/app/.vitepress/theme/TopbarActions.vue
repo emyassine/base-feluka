@@ -53,9 +53,11 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
       :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
     >
       <span class="DocSearch-Button-Container">
-        <span class="vp-icon docs-topbar-action-icon" aria-hidden="true">
-          <img v-if="action.mobile?.icon?.startsWith('/')" :src="action.mobile.icon" alt="" />
-        </span>
+        <span
+          class="vp-icon docs-topbar-action-icon"
+          :style="{ '--icon': `url('${action.mobile?.icon ?? ''}')` }"
+          aria-hidden="true"
+        />
       </span>
     </a>
   </div>
@@ -67,11 +69,10 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 @media (max-width: 768px) {
   .docs-topbar-actions { margin-inline-start: .35rem; }
   .docs-topbar-action--desktop { display: none !important; }
-  .docs-topbar-actions .docs-topbar-action--mobile { text-decoration: none; }
-  .docs-topbar-actions .docs-topbar-action-icon img { display: block; width: 1.15rem; height: 1.15rem; }
-  .docs-topbar-actions .docs-topbar-action--mobile.color-gray { color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); border: 1px solid var(--vp-c-divider); border-radius: 8px; }
-  .docs-topbar-actions .docs-topbar-action--mobile.color-gray:hover { background: var(--vp-c-bg-mute); }
-  .dark .docs-topbar-actions .docs-topbar-action-icon img { filter: invert(1); }
+  .docs-topbar-actions .docs-topbar-action--mobile { text-decoration: none; background: transparent; border: 0; }
+  .docs-topbar-actions .docs-topbar-action--mobile.color-gray { color: var(--vp-c-text-2); }
+  .docs-topbar-actions .docs-topbar-action--mobile:hover { color: var(--vp-c-text-1); }
+  .docs-topbar-actions .docs-topbar-action-icon { width: 16px; height: 16px; }
 }
 @media (min-width: 769px) { .docs-topbar-action--mobile { display: none !important; } }
 </style>
