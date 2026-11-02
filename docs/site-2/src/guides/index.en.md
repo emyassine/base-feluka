@@ -108,16 +108,16 @@ Expected benefits are assessed for each engagement; specific results depend on t
 	  }
 		]'
    :labels="{
-     region: 'Company showcase',
-     before: 'During YC',
-     after: 'After YC',
-     timelineStart: 'During YC',
-     timelineEnd: 'After YC',
-     companies: 'Companies',
-     stories: 'Showcase stories',
-     compare: 'Compare {name} during YC and after YC',
-     altBefore: '{name} during YC',
-     altAfter: '{name} after YC',
+     region: 'Our capabilities',
+     before: 'Starting point',
+     after: 'Possible outcome',
+     timelineStart: 'Starting point',
+     timelineEnd: 'Possible outcome',
+     companies: 'Capabilities',
+     stories: 'Capability examples',
+     compare: 'Compare the starting point and possible outcome for {name}',
+     altBefore: '{name}: starting point',
+     altAfter: '{name}: possible outcome',
    }"
  />
 
