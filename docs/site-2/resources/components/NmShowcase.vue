@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface ShowcaseStory {
   name: string
+  description: string
   beforeImage: string
   afterImage: string
   beforeText: string
@@ -244,6 +245,7 @@ onBeforeUnmount(() => {
             <span class="nm-showcase__scrim" />
             <div class="nm-showcase__copy">
               <span class="nm-showcase__name">{{ story.name }}</span>
+              <span class="nm-showcase__description">{{ story.description }}</span>
               <span class="nm-showcase__story">
                 <span class="nm-showcase__story-text" :style="{ opacity: 1 - progressFor(index) / 100 }">{{ story.beforeText }}</span>
                 <span class="nm-showcase__story-text nm-showcase__story-text--after" :style="{ opacity: progressFor(index) / 100 }">{{ story.afterText }}</span>
@@ -459,6 +461,7 @@ onBeforeUnmount(() => {
 }
 
 .nm-showcase__name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
+.nm-showcase__description { max-width: 42rem; font-size: 13px; font-weight: 400; line-height: 1.4; }
 .nm-showcase__story { position: relative; display: block; min-height: 3.7rem; font-size: 16px; font-weight: 400; line-height: 24px; }
 .nm-showcase__story-text { display: block; }
 .nm-showcase__story-text--after { position: absolute; inset: 0; }

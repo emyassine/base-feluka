@@ -50,7 +50,7 @@ Expected benefits are assessed for each engagement; specific results depend on t
 	 footnote="Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required."
 	 citation="El Moumen Yassine"
 	 footnote-marker="*"
-		:stories = [
+		:stories='[
 	  {
 	    name: "Business Consulting & Development",
 	    description: "Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.",
@@ -101,7 +101,7 @@ Expected benefits are assessed for each engagement; specific results depend on t
 	    linkText: "Explore innovation",
 	    linkUrl: "/innovation"
 	  }
-		];
+		]'
    :labels="{
      region: 'Company showcase',
      before: 'During YC',
