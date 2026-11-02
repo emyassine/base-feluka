@@ -236,36 +236,39 @@ onBeforeUnmount(() => {
               draggable="false"
             />
             <span class="nm-showcase__scrim" />
-            <div class="nm-showcase__copy">
-              <span class="nm-showcase__name">{{ story.name }}</span>
-              <span class="nm-showcase__description">{{ story.description }}</span>
-              <span class="nm-showcase__story">
-                <span class="nm-showcase__story-state">{{ progressFor(index) < 50 ? labels.before : labels.after }}</span>
-                <Transition name="nm-showcase-copy" mode="out-in">
-                  <span v-if="progressFor(index) < 50" :key="`${story.name}-before`" class="nm-showcase__story-text">{{ story.beforeText }}</span>
-                  <span v-else :key="`${story.name}-after`" class="nm-showcase__story-text">{{ story.afterText }}</span>
-                </Transition>
-              </span>
-              <div class="nm-showcase__timeline">
-                <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineStart }}</span>
-                <span class="nm-showcase__timeline-track">
-                  <span class="nm-showcase__timeline-rail">
-                    <span class="nm-showcase__timeline-fill" />
-                    <span class="nm-showcase__timeline-thumb" />
-                  </span>
-                  <input
-                    class="nm-showcase__range"
-                    type="range"
-                    min="0"
-                    max="100"
-                    step="1"
-                    :value="progressFor(index)"
-                    :aria-label="fill(labels.compare, story.name)"
-                    :aria-valuetext="progressFor(index) < 50 ? labels.before : labels.after"
-                    @input="onRangeInput(index, $event)"
-                  />
+            <div class="nm-showcase__timeline nm-showcase__timeline--overlay">
+              <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineStart }}</span>
+              <span class="nm-showcase__timeline-track">
+                <span class="nm-showcase__timeline-rail">
+                  <span class="nm-showcase__timeline-fill" />
+                  <span class="nm-showcase__timeline-thumb" />
                 </span>
-                <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineEnd }}</span>
+                <input
+                  class="nm-showcase__range"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  :value="progressFor(index)"
+                  :aria-label="fill(labels.compare, story.name)"
+                  :aria-valuetext="progressFor(index) < 50 ? labels.before : labels.after"
+                  @input="onRangeInput(index, $event)"
+                />
+              </span>
+              <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineEnd }}</span>
+            </div>
+          </div>
+          <div class="nm-showcase__copy">
+            <span class="nm-showcase__name">{{ story.name }}</span>
+            <span class="nm-showcase__description">{{ story.description }}</span>
+            <div class="nm-showcase__mobile-captions">
+              <div class="nm-showcase__mobile-caption">
+                <span class="nm-showcase__mobile-caption-label">{{ labels.before }}</span>
+                <p>{{ story.beforeText }}</p>
+              </div>
+              <div class="nm-showcase__mobile-caption">
+                <span class="nm-showcase__mobile-caption-label">{{ labels.after }}</span>
+                <p>{{ story.afterText }}</p>
               </div>
             </div>
           </div>
@@ -277,7 +280,6 @@ onBeforeUnmount(() => {
       <div class="nm-showcase__sticky">
         <div class="nm-showcase__stage" :style="{ '--story-color': stories[active]?.color ?? '#7c3aed' }">
           <figure class="nm-showcase__col">
-            <figcaption class="nm-showcase__label">{{ labels.before }}</figcaption>
             <div class="nm-showcase__frame">
               <img
                 v-for="(story, index) in stories"
@@ -291,6 +293,7 @@ onBeforeUnmount(() => {
                 draggable="false"
               />
             </div>
+            <figcaption class="nm-showcase__label">{{ labels.before }}</figcaption>
             <div class="nm-showcase__captions">
               <p
                 v-for="(story, index) in stories"
@@ -313,7 +316,6 @@ onBeforeUnmount(() => {
           </nav>
 
           <figure class="nm-showcase__col">
-            <figcaption class="nm-showcase__label">{{ labels.after }}</figcaption>
             <div class="nm-showcase__frame">
               <img
                 v-for="(story, index) in stories"
@@ -327,6 +329,7 @@ onBeforeUnmount(() => {
                 draggable="false"
               />
             </div>
+            <figcaption class="nm-showcase__label">{{ labels.after }}</figcaption>
             <div class="nm-showcase__captions">
               <p
                 v-for="(story, index) in stories"
@@ -373,7 +376,7 @@ onBeforeUnmount(() => {
 }
 
 .nm-showcase__footnote {
-  order: 3;
+  order: 2;
   width: min(85vw, 32rem);
   margin: 1.5rem auto 3rem;
   font-family: inherit;
@@ -386,7 +389,7 @@ onBeforeUnmount(() => {
 .nm-showcase__footnote-marker { font-style: normal; }
 .nm-showcase__footnote cite { display: block; margin-top: 0.6rem; font-size: 0.95em; text-align: right; }
 
-.nm-showcase__carousel { order: 2; display: block; }
+.nm-showcase__carousel { order: 3; display: block; }
 
 .nm-showcase__scroller {
   display: flex;
@@ -407,7 +410,7 @@ onBeforeUnmount(() => {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 2px solid var(--story-color, #7c3aed);
   border-radius: 0.8rem;
@@ -434,25 +437,20 @@ onBeforeUnmount(() => {
 }
 
 .nm-showcase__copy {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  padding: 1.5rem;
+  gap: 0.75rem;
+  padding: 1rem 0.25rem 1.5rem;
   font-family: var(--vp-font-family-base);
+  color: var(--vp-c-text-1);
 }
 
 .nm-showcase__name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
 .nm-showcase__description { max-width: 42rem; font-size: 13px; font-weight: 400; line-height: 1.4; }
-.nm-showcase__story { display: flex; min-height: 4.8rem; flex-direction: column; align-items: flex-start; font-size: 16px; font-weight: 400; line-height: 24px; }
-.nm-showcase__story-state { color: rgb(255 255 255 / 0.82); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; line-height: 1.3; text-transform: uppercase; }
-.nm-showcase__story-text { display: block; }
-.nm-showcase-copy-enter-active,
-.nm-showcase-copy-leave-active { transition: opacity 160ms ease-in-out; }
-.nm-showcase-copy-enter-from,
-.nm-showcase-copy-leave-to { opacity: 0; }
+.nm-showcase__mobile-captions { display: grid; gap: 0.85rem; }
+.nm-showcase__mobile-caption-label { display: block; color: var(--vp-c-brand-1); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+.nm-showcase__mobile-caption p { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.5; }
+.nm-showcase__timeline--overlay { position: absolute; inset: auto 0 0; z-index: 2; padding: 0 1rem 0.5rem; }
 
 .nm-showcase__timeline { display: flex; align-items: center; gap: 0.75rem; }
 .nm-showcase__timeline-label { flex: none; color: rgb(255 255 255 / 0.9); font-size: 14px; font-weight: 500; line-height: 20px; }
@@ -553,6 +551,7 @@ onBeforeUnmount(() => {
     font-style: italic;
     line-height: 24px;
     text-align: center;
+    text-transform: uppercase;
   }
 
   .nm-showcase__frame {
@@ -625,8 +624,6 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .nm-showcase__layer,
-  .nm-showcase__caption,
-  .nm-showcase-copy-enter-active,
-  .nm-showcase-copy-leave-active { transition: none; }
+  .nm-showcase__caption { transition: none; }
 }
 </style>
