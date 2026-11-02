@@ -5,6 +5,8 @@ icon: "@spmpst::icon::circle-user-round"
 description: "Choose your Numerimondes account space."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <div class="nm-home-copy" style="margin-top:4rem;align:center;">
 

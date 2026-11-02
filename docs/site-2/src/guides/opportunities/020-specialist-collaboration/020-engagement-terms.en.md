@@ -5,6 +5,8 @@ icon: "@spmpst::icon::file-check-2"
 description: "How specialist collaborations are scoped."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Engagement terms

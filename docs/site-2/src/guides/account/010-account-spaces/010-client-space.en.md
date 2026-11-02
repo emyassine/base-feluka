@@ -5,6 +5,8 @@ icon: "@spmpst::icon::user-round"
 description: "Access the Numerimondes client project space."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Espace client

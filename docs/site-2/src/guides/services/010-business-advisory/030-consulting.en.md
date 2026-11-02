@@ -5,6 +5,8 @@ icon: "@spmpst::icon::badge-check"
 description: "Business consulting, operational discovery and opportunity development."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

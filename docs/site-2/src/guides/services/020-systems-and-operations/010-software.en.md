@@ -5,6 +5,8 @@ icon: "@spmpst::icon::code-xml"
 description: "Custom applications, information systems, integrations and automation."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

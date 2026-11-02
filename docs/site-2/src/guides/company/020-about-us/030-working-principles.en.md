@@ -5,6 +5,8 @@ icon: "@spmpst::icon::list-checks"
 description: "Working Principles at Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Working Principles

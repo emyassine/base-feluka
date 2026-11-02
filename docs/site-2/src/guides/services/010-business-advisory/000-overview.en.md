@@ -5,6 +5,8 @@ icon: "@spmpst::icon::layout-grid"
 description: "Consulting, opportunity development, systems, infrastructure and operational capabilities, scoped to each mission."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

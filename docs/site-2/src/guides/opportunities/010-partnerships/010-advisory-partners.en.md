@@ -5,6 +5,8 @@ icon: "@spmpst::icon::briefcase-business"
 description: "Advisory Partners opportunities with Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Advisory Partners

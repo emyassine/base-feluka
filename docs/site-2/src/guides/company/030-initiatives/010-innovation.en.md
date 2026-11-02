@@ -5,6 +5,8 @@ icon: "@spmpst::icon::sparkles"
 description: "Research, experimentation and venture development at Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

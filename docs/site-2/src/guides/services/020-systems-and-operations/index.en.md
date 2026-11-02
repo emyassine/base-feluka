@@ -5,6 +5,8 @@ icon: "@spmpst::icon::server-cog"
 description: "Software, infrastructure and operational capabilities."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Systems & Operations

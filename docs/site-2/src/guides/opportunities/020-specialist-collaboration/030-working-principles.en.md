@@ -5,6 +5,8 @@ icon: "@spmpst::icon::list-checks"
 description: "Shared principles for collaboration."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Working principles

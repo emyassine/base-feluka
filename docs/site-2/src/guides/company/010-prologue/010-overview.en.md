@@ -5,6 +5,8 @@ icon: "@spmpst::icon::building-2"
 description: "Learn about Numerimondes, our innovation work and the initiatives we build."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 <NmEffectHero

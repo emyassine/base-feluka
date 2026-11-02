@@ -5,6 +5,8 @@ icon: "@spmpst::icon::users"
 description: "The Best Recruit is an emerging recruitment and talent initiative from Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

@@ -5,6 +5,8 @@ icon: "@spmpst::icon::folder-tree"
 description: "SPMPST is a proposed standard for portable structured Markdown trees and site-building workflows."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

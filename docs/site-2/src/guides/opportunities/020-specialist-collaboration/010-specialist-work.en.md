@@ -5,6 +5,8 @@ icon: "@spmpst::icon::users-round"
 description: "Freelance and specialist company opportunities."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Specialist work

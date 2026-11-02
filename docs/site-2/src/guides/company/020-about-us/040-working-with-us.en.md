@@ -5,6 +5,8 @@ icon: "@spmpst::icon::handshake"
 description: "Working With Us at Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Working With Us

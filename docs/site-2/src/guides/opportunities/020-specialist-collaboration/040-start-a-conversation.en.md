@@ -5,6 +5,8 @@ icon: "@spmpst::icon::message-circle"
 description: "Start a conversation about a partnership opportunity."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Start a conversation

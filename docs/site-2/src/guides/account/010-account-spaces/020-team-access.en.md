@@ -5,6 +5,8 @@ icon: "@spmpst::icon::shield-check"
 description: "Access the Numerimondes team workspace."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Accès équipe

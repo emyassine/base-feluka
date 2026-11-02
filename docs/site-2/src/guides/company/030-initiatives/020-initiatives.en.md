@@ -5,6 +5,8 @@ icon: "@spmpst::icon::rocket"
 description: "Research and internal initiatives in development at Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

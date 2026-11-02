@@ -5,6 +5,8 @@ icon: "@spmpst::icon::list-checks"
 description: "Operational improvement, training and organizational solutions."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

@@ -5,6 +5,8 @@ icon: "@spmpst::icon::briefcase-business"
 description: "Delivery Model at Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Delivery Model

@@ -5,6 +5,8 @@ icon: "@spmpst::icon::server"
 description: "Infrastructure design, operations and scoped security improvements."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 <NmEffectHero
   :full-bleed="false"

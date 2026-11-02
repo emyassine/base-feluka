@@ -5,6 +5,8 @@ icon: "@spmpst::icon::handshake"
 description: "Commercial and delivery partnerships with Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Commercial & delivery partners

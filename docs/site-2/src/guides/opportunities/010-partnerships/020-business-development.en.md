@@ -5,6 +5,8 @@ icon: "@spmpst::icon::handshake"
 description: "Business Development opportunities with Numerimondes."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Business Development
