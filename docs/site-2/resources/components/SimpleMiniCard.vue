@@ -30,9 +30,8 @@ const emit = defineEmits(['click'])
       v-for="(cat, catIndex) in categories"
       :key="catIndex"
       class="simple-mini-card-section"
-      style="margin-bottom: 32px;"
     >
-      <h3 style="margin: 0 0 16px 0; font-size: inherit; font-weight: 600; color: inherit;">
+      <h3 class="simple-mini-card-title">
         {{ cat.title }}
       </h3>
 
@@ -71,11 +70,9 @@ const emit = defineEmits(['click'])
             borderRadius: 'var(--card-radius)',
             boxShadow: 'var(--card-shadow)',
             border: 'var(--card-border)',
-            padding: '14px 16px',
             display: 'flex',
             flexDirection: stacked ? 'column' : 'row',
             alignItems: stacked ? 'flex-start' : 'center',
-            gap: '12px',
             textDecoration: 'none',
             cursor: (clickable || item.url) ? 'pointer' : 'default',
             transition: 'background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
@@ -84,16 +81,14 @@ const emit = defineEmits(['click'])
         >
           <div
             class="simple-mini-card-icon"
-            style="display: flex; align-items: center; justify-content: center; color: var(--icon-color); flex-shrink: 0;"
           >
             <img
               v-if="item.icon"
               :src="item.icon"
-              style="width: 20px; height: 20px; display: block;"
             />
           </div>
 
-          <p style="margin: 0; color: inherit; font-weight: 500;">
+          <p class="simple-mini-card-label">
             {{ item.title }}
           </p>
         </component>
@@ -107,8 +102,49 @@ const emit = defineEmits(['click'])
 .simple-mini-card-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: clamp(8px, 2.2cqi, 12px);
   width: 100%;
+}
+
+.simple-mini-card-section {
+  margin-bottom: clamp(20px, 6cqi, 32px);
+}
+
+.simple-mini-card-title {
+  margin: 0 0 clamp(8px, 3cqi, 16px);
+  color: inherit;
+  font-size: clamp(.95rem, 3.3cqi, 1.1rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.simple-mini-card {
+  min-width: 0;
+  gap: clamp(8px, 2.5cqi, 12px);
+  padding: clamp(10px, 3cqi, 16px);
+  font-size: clamp(.82rem, 2.8cqi, 1rem);
+  line-height: 1.4;
+}
+
+.simple-mini-card-icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-color);
+}
+
+.simple-mini-card-icon img {
+  display: block;
+  width: clamp(16px, 4cqi, 20px);
+  height: clamp(16px, 4cqi, 20px);
+}
+
+.simple-mini-card-label {
+  min-width: 0;
+  margin: 0;
+  color: inherit;
+  font-weight: 500;
 }
 
 /* Switch as soon as the component itself has enough room for its columns. */

@@ -1,8 +1,10 @@
 
 <script setup>
+import { toRefs } from 'vue'
+
 defineOptions({ name: 'Acomponent' })
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: '',
@@ -24,6 +26,8 @@ defineProps({
     default: () => [],
   },
 })
+
+const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
 </script>
 
 <template>
@@ -40,12 +44,21 @@ defineProps({
 
     <!-- Gallery -->
     <div v-if="gallery.length" class="nm-about-gallery">
-      <img
-        v-for="(image, index) in gallery"
-        :key="index"
-        :src="image.src"
-        :alt="image.alt || ''"
-        loading="lazy"
+      <BounceCards
+        :images="gallery.map((image) => image.src)"
+        :alts="gallery.map((image) => image.alt || '')"
+        container-width="100%"
+        :container-height="320"
+        card-width="180px"
+        aspect-ratio="1:1"
+        hover-push="140px"
+        expanded-width="82%"
+        expanded-height="90%"
+        mobile-expanded-width="94%"
+        mobile-expanded-height="88%"
+        :expanded-z-index="40"
+        overflow-mode="visible"
+        enable-hover
       />
     </div>
 
@@ -116,20 +129,8 @@ defineProps({
 
 /* Gallery */
 .nm-about-gallery {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
   width: 100%;
-  margin: 0 0 64px;
-}
-
-.nm-about-gallery > img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 5px;
-  min-width: 0;
+  margin: 0 !important;
 }
 
 /* Content */
@@ -234,28 +235,11 @@ defineProps({
   }
 
   .nm-about-introduction {
-    margin-bottom: 36px;
+    margin-bottom: 0;
   }
 
   .nm-about-gallery {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 0 12px 8px;
     margin-bottom: 44px;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-
-  .nm-about-gallery::-webkit-scrollbar {
-    display: none;
-  }
-
-  .nm-about-gallery > img {
-    flex: 0 0 72%;
-    width: 72%;
-    aspect-ratio: 1 / 1;
-    scroll-snap-align: center;
   }
 }
 </style>
