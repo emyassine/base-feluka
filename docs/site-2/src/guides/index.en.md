@@ -84,40 +84,27 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-<div class="custom-block info nm-business-benefits">
-	<p class="custom-block-title">What this can mean for your business</p>
-	<details class="custom-block details detail-blue">
-	<summary>Better decisions</summary>
-	<p>Clearer priorities, options and investment choices.</p>
-	</details>
-	<details class="custom-block details detail-green">
-	<summary>More efficient operations</summary>
-	<p>
-		Less duplicated work, fewer avoidable errors and better coordination.
-	</p>
-	</details>
-	<details class="custom-block details detail-purple">
-	<summary>Greater visibility and control</summary>
-	<p>
-		Accessible information, traceable processes and systems you can manage.
-	</p>
-	</details>
-	<details class="custom-block details detail-amber">
-	<summary>New opportunities</summary>
-	<p>
-		Business concepts, partnerships, products and services evaluated for real-world potential.
-	</p>
-	</details>
-	<details class="custom-block details detail-teal">
-	<summary>A clearer route to delivery</summary>
-	<p>
-		Defined scope, accountable coordination and expertise matched to the assignment.
-	</p>
-	</details>
-	<p class="nm-business-benefits__note">
-		Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
-	</p>
-</div>
+<h2 style="margin: 0 0 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em;">
+		What this can mean<br>for your business
+</h2>
+
+::: details Better decisions
+Clearer priorities, options and investment choices.
+:::
+::: details More efficient operations
+Less duplicated work, fewer avoidable errors and better coordination.
+:::
+::: details Greater visibility and control
+Accessible information, traceable processes and systems you can manage.
+:::
+::: details New opportunities
+Business concepts, partnerships, products and services evaluated for real-world potential.
+:::
+::: details A clearer route to delivery
+Defined scope, accountable coordination and expertise matched to the assignment.
+:::
+
+Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
 
 </div>
 
@@ -337,9 +324,34 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/about"
-	label="More about us"/>
 
+
+:::: info Become a partner and grow with us
+We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
+
+**Morocco Only Opportunity**
+
+::: details Accounting and advisory firms
+Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.
+:::
+
+**World wide opportunities**
+
+::: details Business development and referral partners
+Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.
+:::
+
+::: details Freelancers and specialist partners
+Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
+:::
+
+
+<div style="display: flex; gap: 15px;margin-bottom:.5rem;">
+<FeluqaButton tag="a" color="dark" href="/partners" label="Explore partnerships"/>
+<FeluqaButton tag="a" color="dark" href="/about" label="More about us"/>
+</div>
+
+::::
 
 
 ## Initiatives in development
@@ -382,38 +394,6 @@ Our internal initiatives are part of the way we research, experiment and build f
   }"
   :card-height="220"
 />
-
-<!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
-do not place it among current offerings. -->
-
-## Become a partner and grow with us
-
-We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
-
-:::: info Become a partner and grow with us
-We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
-
-<details class="custom-block details detail-blue">
-<summary>Accounting and advisory firms</summary>
-<p>Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.</p>
-</details>
-
-<details class="custom-block details detail-amber">
-<summary>Business development and referral partners</summary>
-<p>Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.</p>
-</details>
-
-<details class="custom-block details detail-green">
-<summary>Freelancers and specialist partners</summary>
-<p>Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.</p>
-</details>
-::::
-
-<div style="display: flex; gap: 15px;">
-<FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
-<FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
-</div>
-
 
 ## Clear scope. Clear commercial terms.
 

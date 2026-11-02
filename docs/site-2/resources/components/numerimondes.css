@@ -10,41 +10,16 @@
 
 /** Custom details Containers ***/
 /* Bleu */
-.custom-block.details.detail-blue {
-  border-color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.04);
+.vp-doc details.custom-block.details {
+  border-color: var(--vp-c-divider);
+  background-color: var(--vp-c-bg-soft);
 }
 
-/* Vert */
-.custom-block.details.detail-green {
-  border-color: #10b981;
-  background-color: rgba(16, 185, 129, 0.04);
+.vp-doc details.custom-block.details > summary {
+  color: var(--vp-c-text-1);
 }
 
-/* Violet */
-.custom-block.details.detail-purple {
-  border-color: #8b5cf6;
-  background-color: rgba(139, 92, 246, 0.04);
+.vp-doc details.custom-block.details > summary:hover {
+  color: var(--vp-c-brand-1);
 }
 
-/* Ambre / Orange */
-.custom-block.details.detail-amber {
-  border-color: #f59e0b;
-  background-color: rgba(245, 158, 11, 0.04);
-}
-
-/* Teal / Cyan */
-.custom-block.details.detail-teal {
-  border-color: #14b8a6;
-  background-color: rgba(20, 184, 166, 0.04);
-}
-
-.nm-business-benefits .custom-block.details {
-  margin: .75rem 0;
-}
-
-.nm-business-benefits__note {
-  margin: 1rem 0 0;
-  font-size: .9rem;
-  color: var(--vp-c-text-2);
-}
