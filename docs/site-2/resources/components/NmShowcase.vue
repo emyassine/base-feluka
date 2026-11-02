@@ -73,6 +73,10 @@ function nameParts(name: string) {
   }
 }
 
+function descriptionSentences(description: string) {
+  return description.match(/[^.]+(?:\.|$)/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [description]
+}
+
 function stageMetrics() {
   const element = stageTrack.value
   if (!element) return null
@@ -344,7 +348,11 @@ onBeforeUnmount(() => {
                 <span class="nm-showcase__name-title">
                   {{ nameParts(stories[active]?.name ?? '').first }}<template v-if="nameParts(stories[active]?.name ?? '').second"><br />{{ nameParts(stories[active]?.name ?? '').second }}</template>
                 </span>
-                <p class="nm-showcase__story-description">{{ stories[active]?.description }}</p>
+                <p class="nm-showcase__story-description">
+                  <template v-for="(sentence, sentenceIndex) in descriptionSentences(stories[active]?.description ?? '')" :key="sentenceIndex">
+                    {{ sentence }}<br v-if="sentenceIndex < descriptionSentences(stories[active]?.description ?? '').length - 1" />
+                  </template>
+                </p>
               </div>
             </Transition>
           </nav>
