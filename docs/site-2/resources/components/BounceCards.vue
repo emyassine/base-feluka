@@ -18,6 +18,8 @@ interface BounceCardsProps {
   aspectRatio?: string
   expandedWidth?: string
   expandedHeight?: string
+  mobileExpandedWidth?: string
+  mobileExpandedHeight?: string
   expandedZIndex?: number
   overflowMode?: 'visible' | 'hidden' | 'auto'
   customStyles?: Record<string, string | number>
@@ -45,6 +47,8 @@ const props = withDefaults(defineProps<BounceCardsProps>(), {
   aspectRatio: '1:1',
   expandedWidth: '100%',
   expandedHeight: '100%',
+  mobileExpandedWidth: '94%',
+  mobileExpandedHeight: '88%',
   expandedZIndex: 30,
   overflowMode: 'visible',
   customStyles: () => ({}),
@@ -68,6 +72,8 @@ function rootStyle(): CSSProperties {
     '--bounce-aspect-ratio': cssAspectRatio(props.aspectRatio),
     '--bounce-expanded-width': props.expandedWidth,
     '--bounce-expanded-height': props.expandedHeight,
+    '--bounce-mobile-expanded-width': props.mobileExpandedWidth,
+    '--bounce-mobile-expanded-height': props.mobileExpandedHeight,
     '--bounce-expanded-z': props.expandedZIndex,
     '--bounce-overflow': props.overflowMode,
     '--bounce-easing': props.easeType,
@@ -88,16 +94,19 @@ function cardStyle(index: number): CSSProperties {
     :class="['bounce-cards', className, { 'bounce-cards--hover': enableHover }]"
     :style="rootStyle()"
   >
-    <details
+    <label
       v-for="(src, index) in images"
       :key="`${src}-${index}`"
       class="bounce-cards__card"
       :style="cardStyle(index)"
     >
-      <summary>
-        <img :src="src" :alt="alts[index] ?? `Expand image ${index + 1}`" draggable="false">
-      </summary>
-    </details>
+      <input
+        class="bounce-cards__toggle"
+        type="checkbox"
+        :aria-label="`Toggle focus for image ${index + 1}`"
+      >
+      <img :src="src" :alt="alts[index] ?? `Expand image ${index + 1}`" draggable="false">
+    </label>
   </div>
 </template>
 
@@ -142,24 +151,21 @@ function cardStyle(index: number): CSSProperties {
     box-shadow 260ms ease;
 }
 
-.bounce-cards__card summary {
+.bounce-cards__toggle {
   position: absolute;
   inset: 0;
-  display: block;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  cursor: zoom-in;
-  list-style: none;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
 }
 
-.bounce-cards__card summary::-webkit-details-marker {
-  display: none;
-}
-
-.bounce-cards__card summary::marker {
-  content: '';
+.bounce-cards__card:has(> .bounce-cards__toggle:focus-visible) {
+  outline: 3px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
 }
 
 .bounce-cards__card img {
@@ -175,7 +181,7 @@ function cardStyle(index: number): CSSProperties {
   pointer-events: none;
 }
 
-.bounce-cards__card[open] {
+.bounce-cards__card:has(> .bounce-cards__toggle:checked) {
   top: 50%;
   left: 50%;
   width: var(--bounce-expanded-width, 100%);
@@ -192,32 +198,26 @@ function cardStyle(index: number): CSSProperties {
   margin-top: 0;
 }
 
-.bounce-cards__card[open] summary {
-  cursor: zoom-out;
-}
-
-.bounce-cards__card[open] img {
-  object-fit: cover;
-}
-
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(n+3),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(n+4),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
+@media (hover: hover) {
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(n+3),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(n+4),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
   translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
 }
 
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
   translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
 }
 
-.bounce-cards--hover:not(:has(.bounce-cards__card[open])) .bounce-cards__card:hover {
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)) .bounce-cards__card:hover {
   z-index: 5;
   scale: 1.07;
   box-shadow: 0 18px 42px rgb(0 0 0 / 32%);
+}
 }
 
 @keyframes bounce-cards-enter {
@@ -239,14 +239,26 @@ function cardStyle(index: number): CSSProperties {
     transition-duration: 1ms;
   }
 
-  .bounce-cards__card summary {
+  .bounce-cards__toggle {
     animation: none;
   }
 }
 
 @media (max-width: 600px) {
-  .bounce-cards__card:not([open]) {
+  .bounce-cards__card:not(:has(> .bounce-cards__toggle:checked)) {
     width: min(var(--bounce-card-width, 180px), 38vw);
+  }
+
+  .bounce-cards__card:nth-child(1) { transform: rotate(-9deg) translate(-112px, 0); }
+  .bounce-cards__card:nth-child(2) { transform: rotate(-5deg) translate(-56px, 0); }
+  .bounce-cards__card:nth-child(3) { transform: rotate(0deg); }
+  .bounce-cards__card:nth-child(4) { transform: rotate(5deg) translate(56px, 0); }
+  .bounce-cards__card:nth-child(5) { transform: rotate(9deg) translate(112px, 0); }
+
+  .bounce-cards__card:has(> .bounce-cards__toggle:checked) {
+    width: var(--bounce-mobile-expanded-width, 94%);
+    height: var(--bounce-mobile-expanded-height, 88%);
+    transform: translate(-50%, -50%);
   }
 }
 </style>
