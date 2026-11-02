@@ -168,7 +168,7 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
   height: 100%;
   object-fit: cover;
   border: 1px solid #d2ccc1;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   transition: transform 160ms ease;
 }
 
@@ -184,7 +184,7 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
   left: 50%;
   width: 190px;
   padding: 5px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: #fff;
   box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
   opacity: 0;
@@ -202,7 +202,7 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
   width: 100%;
   aspect-ratio: 1.5 / 1;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: var(--radius-md);
 }
 
 .nm-about-illustration-preview > span {

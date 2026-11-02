@@ -51,7 +51,7 @@ const emit = defineEmits(['click'])
             '--card-bg-hover': '#f8fafc',
             '--card-bg-dark': '#1e293b',
             '--card-bg-dark-hover': '#334155',
-            '--card-radius': '12px',
+            '--card-radius': 'var(--radius-md)',
             '--card-shadow': '0 4px 16px rgba(0, 0, 0, 0.08)',
             '--card-shadow-hover': '0 8px 24px rgba(0, 0, 0, 0.12)',
             '--card-shadow-dark': '0 4px 16px rgba(0, 0, 0, 0.4)',

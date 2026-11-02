@@ -21,7 +21,7 @@ const iconGlyph = computed(() => props.icon?.replace(/^heroicon-[os]-/, '').repl
   margin: 0.75rem 0;
   padding: 1rem 1.15rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft);
 }
 .nm-card__icon {

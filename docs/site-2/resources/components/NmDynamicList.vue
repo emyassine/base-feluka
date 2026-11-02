@@ -8,7 +8,7 @@ defineProps({ title: { type: String, default: 'Updates' }, items: { type: Array,
   margin: 1.5rem 0;
   padding: 1rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft);
 }
 </style>

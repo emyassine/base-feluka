@@ -17,7 +17,7 @@ defineProps({ label: String, value: String, description: String, color: String, 
   gap: 0.35rem;
   padding: 1rem 1.15rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft);
 }
 .nm-stat__label { color: var(--vp-c-text-2); font-size: 0.8rem; }

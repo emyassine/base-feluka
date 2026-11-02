@@ -9,6 +9,6 @@ onMounted(() => { headings.value = [...document.querySelectorAll('.vp-doc h2, .v
 .nm-contents {
   padding: 1rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
 }
 </style>

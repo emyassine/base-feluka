@@ -113,7 +113,7 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
 .cards-modern--2 .cards-modern__grid { --cards-columns: 2; }
 .cards-modern--3 .cards-modern__grid { --cards-columns: 3; }
 .cards-modern--4 .cards-modern__grid { --cards-columns: 4; }
-.cards-modern__card { position: relative; isolation: isolate; display: flex; min-width: 0; min-height: 26.25rem; align-items: end; overflow: hidden; padding: 1.5rem; border-radius: 1rem; color: #fafafa; background: #18181b; color-scheme: dark; }
+.cards-modern__card { position: relative; isolation: isolate; display: flex; min-width: 0; min-height: 26.25rem; align-items: end; overflow: hidden; padding: 1.5rem; border-radius: var(--radius-md); color: #fafafa; background: #18181b; color-scheme: dark; }
 .cards-modern__card::after { position: absolute; z-index: 0; inset: 0; content: ''; background: linear-gradient(180deg, rgb(9 9 11 / .12), rgb(9 9 11 / .88)); pointer-events: none; }
 .cards-modern__image { position: absolute; z-index: -1; inset: 0; }
 .cards-modern__image img { display: block; width: 100%; height: 100%; object-fit: cover; }

@@ -147,7 +147,7 @@ const gridStyle = computed(() => ({
   flex-direction: column;
   justify-content: space-between;
   padding: 18px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   color: #fff !important;
   text-decoration: none;
   overflow: hidden;

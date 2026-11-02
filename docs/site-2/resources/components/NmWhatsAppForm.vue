@@ -43,14 +43,14 @@ function sendMessage() {
 </template>
 
 <style scoped>
-.nm-contact-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 46rem; margin: 2rem auto; padding: 1.5rem; border: 1px solid var(--vp-c-divider); border-radius: 1rem; background: var(--vp-c-bg-soft); }
+.nm-contact-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 46rem; margin: 2rem auto; padding: 1.5rem; border: 1px solid var(--vp-c-divider); border-radius: var(--radius-md); background: var(--vp-c-bg-soft); }
 .nm-contact-form label { display: grid; gap: .45rem; color: var(--vp-c-text-1); font-size: .9rem; font-weight: 600; }
 .nm-contact-form small, .nm-contact-form__note { color: var(--vp-c-text-2); font-weight: 400; }
-.nm-contact-form input, .nm-contact-form textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--vp-c-divider); border-radius: .55rem; padding: .7rem .8rem; background: var(--vp-c-bg); color: var(--vp-c-text-1); font: inherit; }
+.nm-contact-form input, .nm-contact-form textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--vp-c-divider); border-radius: var(--radius-md); padding: .7rem .8rem; background: var(--vp-c-bg); color: var(--vp-c-text-1); font: inherit; }
 .nm-contact-form input:focus, .nm-contact-form textarea:focus { outline: 2px solid var(--vp-c-brand-1); outline-offset: 1px; }
 .nm-contact-form__message { grid-column: 1 / -1; }
 .nm-contact-form__submit { justify-self: start; }
-.nm-contact-form button { justify-self: start; border: 0; border-radius: 999px; padding: .75rem 1.1rem; background: var(--vp-c-brand-1); color: var(--vp-c-white); font: inherit; font-weight: 700; cursor: pointer; }
+.nm-contact-form button { justify-self: start; border: 0; border-radius: var(--radius-md); padding: .75rem 1.1rem; background: var(--vp-c-brand-1); color: var(--vp-c-white); font: inherit; font-weight: 700; cursor: pointer; }
 .nm-contact-form button:hover { filter: brightness(1.08); }
 .nm-contact-form__note { grid-column: 1 / -1; margin: 0; font-size: .85rem; line-height: 1.55; }
 @media (max-width: 640px) { .nm-contact-form { grid-template-columns: 1fr; padding: 1rem; } .nm-contact-form__message, .nm-contact-form__note { grid-column: auto; } }

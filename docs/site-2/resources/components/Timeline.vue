@@ -116,7 +116,7 @@ withDefaults(defineProps<{
 .timeline__title-link { display: inline-flex; align-items: center; gap: 6px; color: inherit; font-size: 1.1rem; font-weight: 600; line-height: 1.35; text-decoration: none; }
 .timeline__title-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .timeline__title-link svg { width: 15px; height: 15px; flex: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; opacity: .72; }
-.timeline__badge { padding: 2px 7px; border: 1px solid var(--timeline-badge-color, currentColor); border-radius: 8px; color: var(--timeline-badge-color, currentColor); background: color-mix(in srgb, var(--timeline-badge-color, currentColor) 10%, transparent); font-size: .82rem; line-height: 1.35; }
+.timeline__badge { padding: 2px 7px; border: 1px solid var(--timeline-badge-color, currentColor); border-radius: var(--radius-md); color: var(--timeline-badge-color, currentColor); background: color-mix(in srgb, var(--timeline-badge-color, currentColor) 10%, transparent); font-size: .82rem; line-height: 1.35; }
 .timeline__metadata { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-top: 4px; color: var(--timeline-muted); font-size: .98rem; line-height: 1.45; }
 .timeline__metadata code { color: inherit; font: inherit; }
 .timeline__time { display: block; margin-top: 3px; color: var(--timeline-muted); font-size: .98rem; line-height: 1.45; }

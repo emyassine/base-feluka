@@ -543,7 +543,7 @@ onBeforeUnmount(() => {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 2px solid var(--story-color, #7c3aed);
-  border-radius: 0.8rem;
+  border-radius: var(--radius-md);
   background: #242424;
   color: #fff;
   isolation: isolate;
@@ -586,7 +586,7 @@ onBeforeUnmount(() => {
 .nm-showcase__timeline { display: flex; align-items: center; gap: 0.75rem; }
 .nm-showcase__timeline-label { flex: none; color: rgb(255 255 255 / 0.9); font-size: 14px; font-weight: 500; line-height: 20px; }
 .nm-showcase__timeline-track { position: relative; display: flex; flex: 1; height: 1.75rem; align-items: center; }
-.nm-showcase__timeline-rail { position: relative; display: block; width: 100%; height: 2px; border-radius: 2px; background: rgb(255 255 255 / 0.38); }
+.nm-showcase__timeline-rail { position: relative; display: block; width: 100%; height: 2px; border-radius: var(--radius-md); background: rgb(255 255 255 / 0.38); }
 .nm-showcase__timeline-fill { position: absolute; inset: 0 auto 0 0; width: var(--comparison-progress, 0%); border-radius: inherit; background: #fff; }
 
 .nm-showcase__timeline-thumb {
@@ -678,7 +678,7 @@ onBeforeUnmount(() => {
     z-index: 1;
     width: min(96vw, 1440px);
     height: min(60svh, 560px);
-    border-radius: 1.25rem;
+    border-radius: var(--radius-md);
   }
   .nm-showcase__stack-card::before {
     position: absolute;
@@ -700,7 +700,7 @@ onBeforeUnmount(() => {
     gap: clamp(1.25rem, 3vw, 2.75rem);
     padding: clamp(1.25rem, 3vw, 2.5rem);
     border: 1px solid rgb(210 222 237 / 0.18);
-    border-radius: 1.25rem;
+    border-radius: var(--radius-md);
     color: #f3f6fa;
     overflow: hidden;
     background: #141d2a;
@@ -712,7 +712,7 @@ onBeforeUnmount(() => {
   .nm-showcase__stack-side,
   .nm-showcase__stack-copy { position: relative; z-index: 1; }
   .nm-showcase__stack-side { min-width: 0; margin: 0; }
-  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 0.9rem; }
+  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-md); }
   .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: #b7c5d5; font-size: 0.76rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
   .nm-showcase__stack-side figcaption span { color: #77889d; font-variant-numeric: tabular-nums; }
   .nm-showcase__stack-side:last-child figcaption { color: #a9c4df; }
@@ -771,7 +771,7 @@ onBeforeUnmount(() => {
     aspect-ratio: 1 / 1;
     overflow: hidden;
     border: 3px solid var(--story-color, #7c3aed);
-    border-radius: 1rem;
+    border-radius: var(--radius-md);
     background: #242424;
     box-shadow: 0 10px 40px rgb(22 20 15 / 0.14);
   }
@@ -814,7 +814,7 @@ onBeforeUnmount(() => {
 
   .nm-showcase__story-heading { width: 100%; margin-inline: auto; text-align: center; }
 
-  .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
+  .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: var(--radius-md); }
 
   .nm-showcase__name-title {
     display: block;

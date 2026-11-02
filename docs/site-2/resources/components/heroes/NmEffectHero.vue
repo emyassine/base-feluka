@@ -246,7 +246,7 @@ const buttonClass = (button: HeroButton, index: number) =>
 .nm-effect-hero__actions :deep(.feluqa-button) {
   min-height: 2.25rem;
   padding: 0.45rem 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   font-size: 0.8125rem;
   font-weight: 550;
   box-shadow: none;

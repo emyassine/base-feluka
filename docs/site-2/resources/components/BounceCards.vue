@@ -135,7 +135,7 @@ function cardStyle(index: number): CSSProperties {
   aspect-ratio: var(--bounce-aspect-ratio, 1 / 1);
   overflow: hidden;
   border: 6px solid var(--vp-c-bg, #fff);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft, #f6f6f7);
   box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
   translate: -50% -50%;
@@ -197,7 +197,7 @@ function cardStyle(index: number): CSSProperties {
   transform: translate(-50%, -50%);
   translate: 0 0;
   z-index: var(--bounce-expanded-z, 30);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   box-shadow: 0 18px 60px rgb(0 0 0 / 38%);
   opacity: 1;
   scale: 1;

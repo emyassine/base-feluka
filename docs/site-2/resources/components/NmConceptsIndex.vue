@@ -33,7 +33,7 @@ const groups = computed(() => {
 .nm-concepts__search input {
   padding: 0.65rem 0.8rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg);
 }
 .nm-concepts__family { margin: 2rem 0; }
@@ -48,7 +48,7 @@ const groups = computed(() => {
   gap: 0.5rem;
   padding: 1rem 1.15rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft);
   text-decoration: none;
 }
