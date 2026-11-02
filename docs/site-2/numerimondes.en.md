@@ -79,11 +79,13 @@ Research, validate and shape opportunities that may lead to new services, produc
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-**Business performance** — operational diagnostics, commercial workflows, dashboards and process improvement.  
-**Software & automation** — tailored applications, integrations, document workflows and AI-assisted tasks.  
-**Infrastructure & connected operations** — self-hosted systems, monitoring, equipment and field applications.  
-**People & organizations** — training, coordination and emerging talent solutions.  
-**Research & ventures** — internal standards, experimental platforms and new business concepts.
+| Category | Scope |
+| :--- | :--- |
+| **Business performance** | • Operational diagnostics · • Commercial workflows · • Dashboards and process improvement |
+| **Software and automation** | • Tailored applications · • Integrations · • Document workflows and AI-assisted tasks |
+| **Infrastructure and connected operations** | • Self-hosted systems · • Monitoring · • Equipment and field applications |
+| **People and organizations** | • Training · • Coordination · • Emerging talent solutions |
+| **Research and ventures** | • Internal standards · • Experimental platforms · • New business concepts |
 
 <FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
 

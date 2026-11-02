@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { gsap } from 'gsap'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface BounceCardsProps {
@@ -33,6 +32,7 @@ const props = withDefaults(defineProps<BounceCardsProps>(), {
 })
 
 const cardRefs = ref<HTMLElement[]>([])
+const animationFrames = new Map<HTMLElement, number>()
 const containerStyle = () => ({
   width: `${props.containerWidth}px`,
   height: `${props.containerHeight}px`,
@@ -60,31 +60,120 @@ function getPushedTransform(transform: string, offsetX: number): string {
   return transform === 'none' ? `translate(${offsetX}px)` : `${transform} translate(${offsetX}px)`
 }
 
+function elasticOut(amplitude: number, period: number): (progress: number) => number {
+  const safeAmplitude = Math.max(1, amplitude)
+  const shift = safeAmplitude === 1
+    ? period / 4
+    : period * Math.asin(1 / safeAmplitude) / (2 * Math.PI)
+  return (progress) => safeAmplitude * 2 ** (-10 * progress)
+    * Math.sin((progress - shift) * (2 * Math.PI) / period) + 1
+}
+
+function backOut(overshoot: number): (progress: number) => number {
+  return (progress) => {
+    const shifted = progress - 1
+    return 1 + shifted * shifted * ((overshoot + 1) * shifted + overshoot)
+  }
+}
+
+function easeFunction(ease: string): (progress: number) => number {
+  const elastic = ease.match(/elastic\.out\(\s*([\d.]+)?\s*(?:,\s*([\d.]+)\s*)?\)/i)
+  if (elastic) return elasticOut(Number(elastic[1] ?? 1), Number(elastic[2] ?? 0.3))
+  const back = ease.match(/back\.out\(\s*([\d.]+)?\s*\)/i)
+  if (back) return backOut(Number(back[1] ?? 1.70158))
+  const power = ease.match(/power([1-4])\.out/i)
+  if (power) {
+    const exponent = Number(power[1]) + 1
+    return (progress) => 1 - (1 - progress) ** exponent
+  }
+  if (/power[1-4]\.in/i.test(ease)) {
+    const exponent = Number(ease.match(/power([1-4])\.in/i)?.[1] ?? 1) + 1
+    return (progress) => progress ** exponent
+  }
+  return (progress) => progress
+}
+
+function cancelTween(element: HTMLElement): void {
+  const frame = animationFrames.get(element)
+  if (frame !== undefined) cancelAnimationFrame(frame)
+  animationFrames.delete(element)
+}
+
+function tween(
+  element: HTMLElement,
+  duration: number,
+  delay: number,
+  ease: (progress: number) => number,
+  update: (progress: number) => void,
+): void {
+  cancelTween(element)
+  let startTime: number | undefined
+  const tick = (now: number) => {
+    if (startTime === undefined) startTime = now + delay * 1000
+    if (now < startTime) {
+      animationFrames.set(element, requestAnimationFrame(tick))
+      return
+    }
+    const progress = Math.min(1, (now - startTime) / (duration * 1000))
+    update(ease(progress))
+    if (progress < 1) animationFrames.set(element, requestAnimationFrame(tick))
+    else animationFrames.delete(element)
+  }
+  animationFrames.set(element, requestAnimationFrame(tick))
+}
+
+function interpolateTransform(from: string, to: string, progress: number): string {
+  const fromParts = [...from.matchAll(/([a-zA-Z0-9]+)\(([^)]*)\)/g)]
+  const toParts = [...to.matchAll(/([a-zA-Z0-9]+)\(([^)]*)\)/g)]
+  if (fromParts.length && fromParts.length === toParts.length
+    && fromParts.every((part, index) => part[1] === toParts[index][1])) {
+    let result = ''
+    fromParts.forEach((part, index) => {
+      const fromValues = part[2].match(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi) ?? []
+      const toValues = toParts[index][2].match(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi) ?? []
+      const fromNumbers = [...part[2].matchAll(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi)]
+      if (fromValues.length !== toValues.length || fromValues.length !== fromNumbers.length) return
+      let valueIndex = 0
+      const args = part[2].replace(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi, () => {
+        const start = Number.parseFloat(fromValues[valueIndex])
+        const end = Number.parseFloat(toValues[valueIndex])
+        const unit = fromValues[valueIndex].replace(/^-?(?:\d+\.?\d*|\.\d+)/, '')
+        valueIndex += 1
+        return `${start + (end - start) * progress}${unit}`
+      })
+      result += `${index ? ' ' : ''}${part[1]}(${args})`
+    })
+    if (result && fromParts.length === toParts.length) return result
+  }
+
+  const fromMatrix = new DOMMatrix(from === 'none' ? undefined : from)
+  const toMatrix = new DOMMatrix(to === 'none' ? undefined : to)
+  const values = ['a', 'b', 'c', 'd', 'e', 'f'] as const
+  return `matrix(${values.map((key) => fromMatrix[key] + (toMatrix[key] - fromMatrix[key]) * progress).join(',')})`
+}
+
+function animateTransform(element: HTMLElement, target: string, delay = 0): void {
+  const source = element.dataset.currentTransform ?? baseTransform(cardRefs.value.indexOf(element))
+  tween(element, 0.4, delay, backOut(1.4), (progress) => {
+    const value = interpolateTransform(source, target, progress)
+    element.style.transform = value
+    element.dataset.currentTransform = value
+  })
+}
+
 function pushSiblings(hoveredIndex: number): void {
   if (!props.enableHover) return
 
   cardRefs.value.forEach((card, index) => {
     if (!card) return
-    gsap.killTweensOf(card)
     if (index === hoveredIndex) {
-      gsap.to(card, {
-        transform: getNoRotationTransform(baseTransform(index)),
-        duration: 0.4,
-        ease: 'back.out(1.4)',
-        overwrite: 'auto',
-      })
+      animateTransform(card, getNoRotationTransform(baseTransform(index)))
       return
     }
 
     const offsetX = index < hoveredIndex ? -160 : 160
     const distance = Math.abs(hoveredIndex - index)
-    gsap.to(card, {
-      transform: getPushedTransform(baseTransform(index), offsetX),
-      duration: 0.4,
-      ease: 'back.out(1.4)',
-      delay: distance * 0.05,
-      overwrite: 'auto',
-    })
+    animateTransform(card, getPushedTransform(baseTransform(index), offsetX), distance * 0.05)
   })
 }
 
@@ -93,27 +182,19 @@ function resetSiblings(): void {
 
   cardRefs.value.forEach((card, index) => {
     if (!card) return
-    gsap.killTweensOf(card)
-    gsap.to(card, {
-      transform: baseTransform(index),
-      duration: 0.4,
-      ease: 'back.out(1.4)',
-      overwrite: 'auto',
-    })
+    animateTransform(card, baseTransform(index))
   })
 }
 
 function playEntranceAnimation(): void {
   const cards = cardRefs.value.filter(Boolean)
-  if (!cards.length) return
-
-  gsap.killTweensOf(cards)
-  gsap.fromTo(cards, { scale: 0 }, {
-    scale: 1,
-    stagger: props.animationStagger,
-    ease: props.easeType,
-    delay: props.animationDelay,
-    overwrite: 'auto',
+  const ease = easeFunction(props.easeType)
+  cards.forEach((card, index) => {
+    cancelTween(card)
+    card.style.setProperty('scale', '0')
+    tween(card, 0.5, props.animationDelay + index * props.animationStagger, ease, (progress) => {
+      card.style.setProperty('scale', String(progress))
+    })
   })
 }
 
@@ -128,7 +209,7 @@ watch(
 )
 
 onUnmounted(() => {
-  gsap.killTweensOf(cardRefs.value)
+  cardRefs.value.forEach(cancelTween)
 })
 </script>
 
@@ -171,7 +252,7 @@ onUnmounted(() => {
   background: var(--vp-c-bg-soft);
   box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
   transform-origin: center;
-  will-change: transform;
+  will-change: transform, scale;
 }
 
 .bounce-cards__card img {

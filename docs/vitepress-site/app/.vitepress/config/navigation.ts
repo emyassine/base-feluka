@@ -151,6 +151,7 @@ function iconSource(icon: string, link?: string): string | undefined {
     return `/${inherited.replace(/^\/+/, '')}`
   }
   if (!icon) return undefined
+  if (icon.startsWith('icons/spmpst/')) return `/${icon}`
   if (isAbsolute(icon) && existsSync(icon)) {
     return `data:image/svg+xml;base64,${readFileSync(icon).toString('base64')}`
   }

@@ -192,13 +192,20 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
+<div class="simple-mini-card" style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); padding: 16px; display: inline-flex; align-items: center;">
+    <div class="simple-mini-card-icon" style="display: flex; align-items: center; gap: 12px;">
+        <img src="@spmpst::icon::car" style="width: 24px; height: 24px;" />
+        <p style="margin: 0;">Card Text</p>
+    </div>
+</div>
+
 | Category | Scope |
-| : | : |
-| **Business performance** | <ul><li>Operational diagnostics</li><li>Commercial workflows</li><li>Dashboards and process improvement</li></ul> |
-| **Software and automation** | <ul><li>Tailored applications</li><li>Integrations</li><li>Document workflows and AI-assisted tasks</li></ul> |
-| **Infrastructure and connected operations** | <ul><li>Self-hosted systems</li><li>Monitoring</li><li>Equipment and field applications</li></ul> |
-| **People and organizations** | <ul><li>Training</li><li>Coordination</li><li>Emerging talent solutions</li></ul> |
-| **Research and ventures** | <ul><li>Internal standards</li><li>Experimental platforms</li><li>New business concepts</li></ul> |
+| :--- | :--- |
+| **Business performance** | Operational diagnostics · Commercial workflows · Dashboards and process improvement |
+| **Software and automation** | Tailored applications · Integrations · Document workflows and AI-assisted tasks |
+| **Infrastructure and connected operations** | Self-hosted systems · Monitoring · Equipment and field applications |
+| **People and organizations** | Training · Coordination · Emerging talent solutions |
+| **Research and ventures** | Internal standards · Experimental platforms · New business concepts |
 
 <FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
 
@@ -315,8 +322,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   ]"
   :composition="[
     { items: [0, 1] },
-    { items: [2] },
-    { items: ['more'] }
+    { items: [2] }
   ]"
   :more="{
     title: 'Discover all our 3 initiatives',

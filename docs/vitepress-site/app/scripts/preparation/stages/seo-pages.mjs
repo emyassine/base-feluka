@@ -3,7 +3,7 @@ import { localePrefix } from '../../spmpst/routing.mjs'
 import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
 
 export async function runSeoPages(ctx) {
-  const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
+  const { siteDirectory, configDirectory, copyAsset, copyIcon, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
 let generatedSeoPages = 0
 const seoPath = config.seo?.path ?? 'faq'
 const seoLocales = config.seo?.locales ?? {}
@@ -27,7 +27,7 @@ for (const [language, locale] of Object.entries(seoLocales)) {
     throw new Error(`seo.locales.${language}.icon must name an SVG in project.iconLibrary`)
   }
   const iconPath = isAbsolute(icon) ? icon : resolveIcon(icon, `seo.locales.${language}`)
-  const iconAsset = await copyAsset(iconPath)
+  const iconAsset = await copyIcon(iconPath)
   const content = `---\ntitle: ${JSON.stringify(title)}\nsidebarTitle: ${JSON.stringify(locale.pageNavTitle)}\nicon: ${JSON.stringify(icon)}\ndescription: ${JSON.stringify(description)}\nlang: ${JSON.stringify(language)}\n---\n\n# ${title}\n\n${locale.quickLinks?.length ? `## ${locale.quickLinksTitle}\n\n${quickLinks}\n\n` : ''}${locale.faq?.length ? `## ${locale.faqTitle}\n\n${answers}\n` : ''}`
   sidebarPageIcons[publicMarkdownLink(indexPath)] = iconAsset
   sidebarPageIcons[publicMarkdownLink(noSlashAlias)] = iconAsset

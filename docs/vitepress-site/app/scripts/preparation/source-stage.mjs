@@ -550,6 +550,20 @@ async function copyAsset(sourceFile) {
   return published
 }
 
+/** Publish only referenced tool icons under a stable, site-local public URL. */
+async function copyIcon(sourceFile) {
+  const local = relative(layout.paths.icons, sourceFile)
+  const insideIconLibrary = local !== '..' && !local.startsWith(`..${sep}`) && !isAbsolute(local)
+  if (!insideIconLibrary) return copyAsset(sourceFile)
+
+  const publishedPath = join('icons', 'spmpst', local)
+  const target = join(outputDirectory, 'public', publishedPath)
+  generatedFiles.add(target)
+  await mkdir(dirname(target), { recursive: true })
+  await writeIfChanged(target, await readFile(sourceFile))
+  return publishedPath.split(sep).join('/')
+}
+
 function publicPagePath(outputPath) {
   const page = relative(outputDirectory, outputPath).split(sep).join('/')
   return page
@@ -633,7 +647,7 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
         if (!icon) throw new Error(`Every published Markdown page must define a valid icon: ${from}`)
         if (!projectDirectories.iconLibrary) throw new Error(`paths.icons is required to validate page icons in ${from}; set it in ${layout.paths.declaration}`)
         const iconPath = resolveIcon(icon, from)
-        const iconAsset = await copyAsset(iconPath)
+        const iconAsset = await copyIcon(iconPath)
         sidebarPageIcons[publicMarkdownLink(to)] = iconAsset
         records.push({ from, to, sourceRoot, icon, iconAsset })
       }
@@ -712,8 +726,28 @@ async function publishDirectory(source, destination, field, relativePath = '') {
 }
 await publishDirectory(layout.paths.public, join(outputDirectory, 'public'), 'public')
 
+// Menu configuration is consumed later by the generated VitePress config.
+// Publish namespaced tool icons now and replace their source paths with site URLs.
+async function publishConfiguredIcons(value) {
+  if (Array.isArray(value)) {
+    for (const entry of value) await publishConfiguredIcons(entry)
+    return
+  }
+  if (!value || typeof value !== 'object') return
+  for (const [key, entry] of Object.entries(value)) {
+    if (key === 'icon' && typeof entry === 'string' && isAbsolute(entry) && extname(entry).toLowerCase() === '.svg') {
+      const local = relative(layout.paths.icons, entry)
+      const insideIconLibrary = local !== '..' && !local.startsWith(`..${sep}`) && !isAbsolute(local)
+      if (insideIconLibrary) value[key] = await copyIcon(entry)
+    } else {
+      await publishConfiguredIcons(entry)
+    }
+  }
+}
+await publishConfiguredIcons(config.topbar?.items)
+
 
   return {
-    configDirectory, configFiles, config, styleFiles, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, diagramsCached, diagramsRendered
+    configDirectory, configFiles, config, styleFiles, copyAsset, copyIcon, publicPagePath, publicUrl, publicMarkdownLink, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, prefixDefaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, diagramsCached, diagramsRendered
   }
 }

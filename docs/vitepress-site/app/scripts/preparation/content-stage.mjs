@@ -16,6 +16,7 @@ export async function prepareContent(ctx) {
     configDirectory,
     configFiles,
     copyAsset,
+    copyIcon,
     publicPagePath,
     publicUrl,
     publicMarkdownLink,
@@ -439,7 +440,7 @@ const generatedSidebar = {}
 for (const [path, metadata] of sidebarConfigurations) {
   generatedSidebar[path] = {
     labels: metadata.labels,
-    icon: metadata.icon ? await copyAsset(metadata.icon) : null,
+    icon: metadata.icon ? await copyIcon(metadata.icon) : null,
     ...(metadata.menu && Object.keys(metadata.menu).length ? { menu: metadata.menu } : {}),
   }
 }
