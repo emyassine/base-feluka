@@ -209,6 +209,12 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   :container-height="300"
   :animation-delay="0.2"
   :animation-stagger="0.08"
+  aspect-ratio="1:1"
+  hover-push="220px"
+  expanded-width="75%"
+  expanded-height="90%"
+  expanded-z-index="40"
+  overflow-mode="visible"
   enable-hover
 />
 
@@ -278,8 +284,9 @@ Numerimondes operates **on a project-by-project basis**. Every assignment begins
 
 Our founder acts as the central point of contact for project qualification, solution direction and delivery coordination. Numerimondes remains accountable to the client for the work it undertakes, including work performed by specialists engaged for the mission.
 
-### How an engagement works
+:::: info See how an engagement works
 
+::: details Open the flowchart diagram
 ```mermaid
 %%{init: {
   'theme': 'base',
@@ -325,7 +332,8 @@ flowchart TD
 
     Q5 -- Yes --> End([Project Handover & Success])
 ```
-
+:::
+::::
 <FeluqaButton tag="a" href="/about#delivery-model"
 	label="How we work"/>
 

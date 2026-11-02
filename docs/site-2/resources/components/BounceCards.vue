@@ -1,266 +1,159 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import type { CSSProperties } from 'vue'
 
 interface BounceCardsProps {
   className?: string
   images?: string[]
-  containerWidth?: number
-  containerHeight?: number
+  alts?: string[]
+  containerWidth?: number | string
+  containerHeight?: number | string
   animationDelay?: number
   animationStagger?: number
   easeType?: string
   transformStyles?: string[]
   enableHover?: boolean
+  hoverPush?: string
+  cardWidth?: string
+  cardHeight?: string
+  aspectRatio?: string
+  expandedWidth?: string
+  expandedHeight?: string
+  expandedZIndex?: number
+  overflowMode?: 'visible' | 'hidden' | 'auto'
+  customStyles?: Record<string, string | number>
 }
 
 const props = withDefaults(defineProps<BounceCardsProps>(), {
   className: '',
   images: () => [],
-  containerWidth: 400,
-  containerHeight: 400,
-  animationDelay: 0.5,
-  animationStagger: 0.06,
-  easeType: 'power2.out',
+  alts: () => [],
+  containerWidth: 640,
+  containerHeight: 360,
+  animationDelay: 0.15,
+  animationStagger: 0.07,
+  easeType: 'cubic-bezier(0.2, 0.8, 0.25, 1)',
   transformStyles: () => [
-    'rotate(10deg) translate(-170px)',
-    'rotate(5deg) translate(-85px)',
-    'rotate(-3deg)',
-    'rotate(-10deg) translate(85px)',
-    'rotate(2deg) translate(170px)',
+    'rotate(9deg) translate(-220px, 0)',
+    'rotate(5deg) translate(-110px, 0)',
+    'rotate(-2deg)',
+    'rotate(-7deg) translate(110px, 0)',
+    'rotate(3deg) translate(220px, 0)',
   ],
-  enableHover: false,
+  enableHover: true,
+  hoverPush: '180px',
+  cardWidth: '180px',
+  aspectRatio: '1:1',
+  expandedWidth: '100%',
+  expandedHeight: '100%',
+  expandedZIndex: 30,
+  overflowMode: 'visible',
+  customStyles: () => ({}),
 })
 
-const cardRefs = ref<HTMLElement[]>([])
-const animationFrames = new Map<HTMLElement, number>()
-const containerStyle = () => ({
-  width: `${props.containerWidth}px`,
-  height: `${props.containerHeight}px`,
-})
-
-function baseTransform(index: number): string {
-  return props.transformStyles[index] ?? 'none'
+function dimension(value: number | string): string {
+  return typeof value === 'number' ? `${value}px` : value
 }
 
-function getNoRotationTransform(transform: string): string {
-  if (/rotate\([\s\S]*?\)/.test(transform)) {
-    return transform.replace(/rotate\([\s\S]*?\)/, 'rotate(0deg)')
-  }
-  return transform === 'none' ? 'rotate(0deg)' : `${transform} rotate(0deg)`
+function cssAspectRatio(value: string): string {
+  return value.replace(':', ' / ')
 }
 
-function getPushedTransform(transform: string, offsetX: number): string {
-  const translateRegex = /translate\(\s*(-?[\d.]+)(px)?\s*\)/
-  const match = transform.match(translateRegex)
-  if (match) {
-    const currentX = Number.parseFloat(match[1])
-    const unit = match[2] ?? 'px'
-    return transform.replace(translateRegex, `translate(${currentX + offsetX}${unit})`)
-  }
-  return transform === 'none' ? `translate(${offsetX}px)` : `${transform} translate(${offsetX}px)`
+function rootStyle(): CSSProperties {
+  return {
+    width: dimension(props.containerWidth),
+    height: dimension(props.containerHeight),
+    '--bounce-hover-push': props.hoverPush,
+    '--bounce-card-width': props.cardWidth,
+    '--bounce-card-height': props.cardHeight,
+    '--bounce-aspect-ratio': cssAspectRatio(props.aspectRatio),
+    '--bounce-expanded-width': props.expandedWidth,
+    '--bounce-expanded-height': props.expandedHeight,
+    '--bounce-expanded-z': props.expandedZIndex,
+    '--bounce-overflow': props.overflowMode,
+    '--bounce-easing': props.easeType,
+    ...props.customStyles,
+  } as CSSProperties
 }
 
-function elasticOut(amplitude: number, period: number): (progress: number) => number {
-  const safeAmplitude = Math.max(1, amplitude)
-  const shift = safeAmplitude === 1
-    ? period / 4
-    : period * Math.asin(1 / safeAmplitude) / (2 * Math.PI)
-  return (progress) => safeAmplitude * 2 ** (-10 * progress)
-    * Math.sin((progress - shift) * (2 * Math.PI) / period) + 1
+function cardStyle(index: number): CSSProperties {
+  return {
+    '--bounce-transform': props.transformStyles[index] ?? 'none',
+    '--bounce-delay': `${props.animationDelay + index * props.animationStagger}s`,
+  } as CSSProperties
 }
-
-function backOut(overshoot: number): (progress: number) => number {
-  return (progress) => {
-    const shifted = progress - 1
-    return 1 + shifted * shifted * ((overshoot + 1) * shifted + overshoot)
-  }
-}
-
-function smoothInOut(progress: number): number {
-  return progress < 0.5
-    ? 2 * progress * progress
-    : 1 - ((-2 * progress + 2) ** 2) / 2
-}
-
-function easeFunction(ease: string): (progress: number) => number {
-  const elastic = ease.match(/elastic\.out\(\s*([\d.]+)?\s*(?:,\s*([\d.]+)\s*)?\)/i)
-  if (elastic) return elasticOut(Number(elastic[1] ?? 1), Number(elastic[2] ?? 0.3))
-  const back = ease.match(/back\.out\(\s*([\d.]+)?\s*\)/i)
-  if (back) return backOut(Number(back[1] ?? 1.70158))
-  const power = ease.match(/power([1-4])\.out/i)
-  if (power) {
-    const exponent = Number(power[1]) + 1
-    return (progress) => 1 - (1 - progress) ** exponent
-  }
-  if (/power[1-4]\.in/i.test(ease)) {
-    const exponent = Number(ease.match(/power([1-4])\.in/i)?.[1] ?? 1) + 1
-    return (progress) => progress ** exponent
-  }
-  return (progress) => progress
-}
-
-function cancelTween(element: HTMLElement): void {
-  const frame = animationFrames.get(element)
-  if (frame !== undefined) cancelAnimationFrame(frame)
-  animationFrames.delete(element)
-}
-
-function tween(
-  element: HTMLElement,
-  duration: number,
-  delay: number,
-  ease: (progress: number) => number,
-  update: (progress: number) => void,
-): void {
-  cancelTween(element)
-  let startTime: number | undefined
-  const tick = (now: number) => {
-    if (startTime === undefined) startTime = now + delay * 1000
-    if (now < startTime) {
-      animationFrames.set(element, requestAnimationFrame(tick))
-      return
-    }
-    const progress = Math.min(1, (now - startTime) / (duration * 1000))
-    update(ease(progress))
-    if (progress < 1) animationFrames.set(element, requestAnimationFrame(tick))
-    else animationFrames.delete(element)
-  }
-  animationFrames.set(element, requestAnimationFrame(tick))
-}
-
-function interpolateTransform(from: string, to: string, progress: number): string {
-  const fromParts = [...from.matchAll(/([a-zA-Z0-9]+)\(([^)]*)\)/g)]
-  const toParts = [...to.matchAll(/([a-zA-Z0-9]+)\(([^)]*)\)/g)]
-  if (fromParts.length && fromParts.length === toParts.length
-    && fromParts.every((part, index) => part[1] === toParts[index][1])) {
-    let result = ''
-    fromParts.forEach((part, index) => {
-      const fromValues = part[2].match(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi) ?? []
-      const toValues = toParts[index][2].match(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi) ?? []
-      const fromNumbers = [...part[2].matchAll(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi)]
-      if (fromValues.length !== toValues.length || fromValues.length !== fromNumbers.length) return
-      let valueIndex = 0
-      const args = part[2].replace(/-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/gi, () => {
-        const start = Number.parseFloat(fromValues[valueIndex])
-        const end = Number.parseFloat(toValues[valueIndex])
-        const unit = fromValues[valueIndex].replace(/^-?(?:\d+\.?\d*|\.\d+)/, '')
-        valueIndex += 1
-        return `${start + (end - start) * progress}${unit}`
-      })
-      result += `${index ? ' ' : ''}${part[1]}(${args})`
-    })
-    if (result && fromParts.length === toParts.length) return result
-  }
-
-  const fromMatrix = new DOMMatrix(from === 'none' ? undefined : from)
-  const toMatrix = new DOMMatrix(to === 'none' ? undefined : to)
-  const values = ['a', 'b', 'c', 'd', 'e', 'f'] as const
-  return `matrix(${values.map((key) => fromMatrix[key] + (toMatrix[key] - fromMatrix[key]) * progress).join(',')})`
-}
-
-function animateTransform(element: HTMLElement, target: string, delay = 0): void {
-  const source = element.dataset.currentTransform ?? baseTransform(cardRefs.value.indexOf(element))
-  tween(element, 0.28, delay, smoothInOut, (progress) => {
-    const value = interpolateTransform(source, target, progress)
-    element.style.transform = value
-    element.dataset.currentTransform = value
-  })
-}
-
-function pushSiblings(hoveredIndex: number): void {
-  if (!props.enableHover) return
-
-  cardRefs.value.forEach((card, index) => {
-    if (!card) return
-    if (index === hoveredIndex) {
-      animateTransform(card, getNoRotationTransform(baseTransform(index)))
-      return
-    }
-
-    const offsetX = index < hoveredIndex ? -180 : 180
-    const distance = Math.abs(hoveredIndex - index)
-    animateTransform(card, getPushedTransform(baseTransform(index), offsetX), distance * 0.008)
-  })
-}
-
-function resetSiblings(): void {
-  if (!props.enableHover) return
-
-  cardRefs.value.forEach((card, index) => {
-    if (!card) return
-    animateTransform(card, baseTransform(index))
-  })
-}
-
-function playEntranceAnimation(): void {
-  const cards = cardRefs.value.filter(Boolean)
-  const ease = easeFunction(props.easeType)
-  cards.forEach((card, index) => {
-    cancelTween(card)
-    card.style.setProperty('scale', '0')
-    card.style.opacity = '0'
-    tween(card, 0.85, props.animationDelay + index * props.animationStagger, ease, (progress) => {
-      card.style.setProperty('scale', String(progress))
-      card.style.opacity = String(Math.min(1, progress * 1.2))
-    })
-  })
-}
-
-onMounted(playEntranceAnimation)
-
-watch(
-  () => [props.images, props.animationDelay, props.animationStagger, props.easeType],
-  async () => {
-    await nextTick()
-    playEntranceAnimation()
-  },
-)
-
-onUnmounted(() => {
-  cardRefs.value.forEach(cancelTween)
-})
 </script>
 
 <template>
   <div
-    :class="['bounce-cards', props.className]"
-    :style="containerStyle()"
+    :class="['bounce-cards', className, { 'bounce-cards--hover': enableHover }]"
+    :style="rootStyle()"
   >
-    <div
-      v-for="(src, index) in props.images"
+    <details
+      v-for="(src, index) in images"
       :key="`${src}-${index}`"
-      ref="cardRefs"
-      :class="['bounce-cards__card', `bounce-cards__card--${index}`]"
-      :style="{ transform: baseTransform(index) }"
-      @mouseenter="pushSiblings(index)"
-      @mouseleave="resetSiblings"
+      class="bounce-cards__card"
+      :style="cardStyle(index)"
     >
-      <img :src="src" :alt="`Card ${index + 1}`">
-    </div>
+      <summary>
+        <img :src="src" :alt="alts[index] ?? `Expand image ${index + 1}`" draggable="false">
+      </summary>
+    </details>
   </div>
 </template>
 
 <style scoped>
 .bounce-cards {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   max-width: 100%;
   margin-inline: auto;
+  overflow: var(--bounce-overflow, visible);
+  isolation: isolate;
 }
 
 .bounce-cards__card {
   position: absolute;
-  width: 200px;
-  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  width: var(--bounce-card-width, 180px);
+  height: var(--bounce-card-height, auto);
+  aspect-ratio: var(--bounce-aspect-ratio, 1 / 1);
   overflow: hidden;
-  border: 8px solid #fff;
-  border-radius: 30px;
-  background: var(--vp-c-bg-soft);
-  box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
+  border: 6px solid var(--vp-c-bg, #fff);
+  border-radius: 24px;
+  background: var(--vp-c-bg-soft, #f6f6f7);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+  translate: -50% -50%;
+  transform: var(--bounce-transform, none);
   transform-origin: center;
-  will-change: transform, scale;
+  z-index: 1;
+  opacity: 0;
+  animation: bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both;
+  transition:
+    transform var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
+    translate var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
+    scale var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
+    width 360ms cubic-bezier(.2, .75, .25, 1),
+    height 360ms cubic-bezier(.2, .75, .25, 1),
+    top 360ms cubic-bezier(.2, .75, .25, 1),
+    left 360ms cubic-bezier(.2, .75, .25, 1),
+    border-radius 360ms ease,
+    box-shadow 260ms ease;
+}
+
+.bounce-cards__card summary {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-in;
+  list-style: none;
+}
+
+.bounce-cards__card summary::-webkit-details-marker {
+  display: none;
+}
+
+.bounce-cards__card summary::marker {
+  content: '';
 }
 
 .bounce-cards__card img {
@@ -268,13 +161,67 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
 }
 
-@media (max-width: 540px) {
-  .bounce-cards__card { width: min(40vw, 170px); }
+.bounce-cards__card[open] {
+  top: 50%;
+  left: 50%;
+  width: var(--bounce-expanded-width, 100%);
+  height: var(--bounce-expanded-height, 100%);
+  max-width: none;
+  transform: translate(-50%, -50%);
+  translate: 0 0;
+  z-index: var(--bounce-expanded-z, 30);
+  border-radius: 16px;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 38%);
+}
+
+.bounce-cards__card[open] summary {
+  cursor: zoom-out;
+}
+
+.bounce-cards__card[open] img {
+  object-fit: contain;
+  background: var(--vp-c-bg, #fff);
+}
+
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(n+3),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(n+4),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
+  translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
+}
+
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
+.bounce-cards--hover:has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
+  translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
+}
+
+.bounce-cards--hover .bounce-cards__card:hover {
+  z-index: 5;
+  scale: 1.07;
+  box-shadow: 0 18px 42px rgb(0 0 0 / 32%);
+}
+
+.bounce-cards--hover .bounce-cards__card[open]:hover {
+  scale: 1;
+}
+
+@keyframes bounce-cards-enter {
+  0% { opacity: 0; scale: .58; }
+  58% { opacity: 1; scale: 1.12; }
+  74% { scale: .94; }
+  88% { scale: 1.035; }
+  100% { opacity: 1; scale: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bounce-cards__card { will-change: auto; }
+  .bounce-cards__card {
+    animation-duration: 1ms;
+    transition-duration: 1ms;
+  }
 }
 </style>
