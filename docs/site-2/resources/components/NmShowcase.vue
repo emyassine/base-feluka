@@ -453,7 +453,7 @@ onBeforeUnmount(() => {
 .nm-showcase__scroller {
   display: flex;
   gap: 1.25rem;
-  padding-inline: 7.5vw;
+  padding-inline: max(7.5vw, calc((100vw - min(85vw, 24rem)) / 2));
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   overscroll-behavior-inline: contain;
@@ -548,7 +548,10 @@ onBeforeUnmount(() => {
 .nm-showcase__scrolltrack { display: none; }
 
 @media (min-width: 640px) {
-  .nm-showcase__scroller { gap: 1.5rem; padding-inline: 8vw; }
+  .nm-showcase__scroller {
+    gap: 1.5rem;
+    padding-inline: max(8vw, calc((100vw - min(60vw, 24rem)) / 2));
+  }
   .nm-showcase__slide { flex-basis: min(60vw, 24rem); }
 }
 

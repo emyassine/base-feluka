@@ -386,9 +386,10 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
+<div style="display: flex; gap: 15px;">
 <FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
 <FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
-
+</div>
 
 
 ## Clear scope. Clear commercial terms.
@@ -409,9 +410,14 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
-**Primary action:** Start a conversation → `/contact`
-**Secondary action:** Become a partner → `/partners`
-
+<div style="display: flex; gap: 15px;">
+	<FeluqaButton tag="a"
+		variant="primary"
+		href="/contact" label="Start a conversation"/>
+	<FeluqaButton tag="a"
+		variant="secondary"
+		href="/partners" label="Become a partner"/>
+</div>
 
 
 <!-- INTERNAL PUBLISHING NOTES — DO NOT RENDER
