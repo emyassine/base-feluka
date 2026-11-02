@@ -113,7 +113,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </script>
 
 <template>
-  <div class="nm-simple-hero-dock__outer" :style="{ height: `${props.panelHeight}px`, '--nm-dock-mobile-item-size': `${props.mobileItemSize}px` }">
+  <div class="nm-simple-hero-dock__outer" :style="{ height: `${props.panelHeight}px`, '--nm-dock-panel-height': `${props.panelHeight}px`, '--nm-dock-mobile-item-size': `${props.mobileItemSize}px` }">
     <div
       class="nm-simple-hero-dock"
       :class="props.className"
@@ -165,6 +165,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 <style scoped>
 .nm-simple-hero-dock__outer {
   display: flex;
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
   align-items: center;
   justify-content: center;
@@ -240,6 +242,15 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   width: 1.75rem;
   height: 1.75rem;
   flex: 0 0 auto;
+  transition: transform 150ms cubic-bezier(0.25, 1, 0.5, 1), opacity 150ms ease;
+}
+
+@media (hover: hover) {
+  .nm-simple-hero-dock__item:hover .nm-simple-hero-dock__icon,
+  .nm-simple-hero-dock__item:hover .nm-simple-hero-dock__custom-icon {
+    transform: scale(0.9);
+    opacity: 0.78;
+  }
 }
 
 .nm-simple-hero-dock__tooltip {
@@ -274,17 +285,18 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
 @media (max-width: 640px) {
   .nm-simple-hero-dock__outer {
-    justify-content: flex-start;
+    height: calc(var(--nm-dock-panel-height) + 1rem) !important;
+    justify-content: center;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
   .nm-simple-hero-dock__outer::-webkit-scrollbar { display: none; }
-  .nm-simple-hero-dock { width: max-content; max-width: none; gap: 0.4rem; margin-inline: auto; }
+  .nm-simple-hero-dock { width: max-content; max-width: none; gap: 0.55rem; margin-inline: auto; }
   .nm-simple-hero-dock__item { width: var(--nm-dock-mobile-item-size, 64px) !important; height: var(--nm-dock-mobile-item-size, 64px) !important; flex-direction: column; gap: 0.25rem; }
-  .nm-simple-hero-dock__icon { width: 1.25rem; height: 1.25rem; }
-  .nm-simple-hero-dock__custom-icon { width: 1.25rem; height: 1.25rem; }
+  .nm-simple-hero-dock__icon { width: 1.5rem; height: 1.5rem; }
+  .nm-simple-hero-dock__custom-icon { width: 1.5rem; height: 1.5rem; }
   .nm-simple-hero-dock__divider { height: 42px; margin-inline: 0.1rem; }
   .nm-simple-hero-dock__tooltip {
     position: static;
