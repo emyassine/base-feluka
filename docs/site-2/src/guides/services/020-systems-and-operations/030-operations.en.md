@@ -1,6 +1,7 @@
 ---
 title: "Operations & Capabilities | Numerimondes"
 sidebarTitle: "Operations"
+menuImage: "/images/services/operations.jpg"
 icon: "@spmpst::icon::list-checks"
 description: "Operational improvement, training and organizational solutions."
 lang: en

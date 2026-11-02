@@ -1,6 +1,7 @@
 ---
 title: "Consulting | Numerimondes"
 sidebarTitle: "Consulting"
+menuImage: "/images/services/consulting.jpg"
 icon: "@spmpst::icon::badge-check"
 description: "Business consulting, operational discovery and opportunity development."
 lang: en

@@ -1,6 +1,7 @@
 ---
 title: "Software & Systems | Numerimondes"
 sidebarTitle: "Software"
+menuImage: "/images/services/software.jpg"
 icon: "@spmpst::icon::code-xml"
 description: "Custom applications, information systems, integrations and automation."
 lang: en

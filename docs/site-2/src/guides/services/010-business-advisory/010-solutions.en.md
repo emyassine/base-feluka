@@ -1,6 +1,7 @@
 ---
 title: "Solutions | Numerimondes"
 sidebarTitle: "Solutions"
+menuImage: "/images/services/solutions.jpg"
 icon: "@spmpst::icon::shapes"
 description: "Explore practical solution directions for business performance, connected operations and technology-enabled growth."
 lang: en

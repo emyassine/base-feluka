@@ -1,6 +1,7 @@
 ---
 title: "Pricing & Engagements | Numerimondes"
 sidebarTitle: "Pricing"
+menuImage: "/images/services/pricing.jpg"
 icon: "@spmpst::icon::scale"
 description: "How Numerimondes structures consulting, development and operational projects."
 lang: en

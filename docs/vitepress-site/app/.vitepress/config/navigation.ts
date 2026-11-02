@@ -231,13 +231,14 @@ function navigation(language = defaultLanguage): any[] {
         .sort((left, right) => left.name.localeCompare(right.name))
         .map((entry) => {
           const file = join(directory, entry.name)
+          const pageMenuImage = readFileSync(file, 'utf8').match(/^menuImage:\s*["']?(.+?)["']?\s*$/m)?.[1]?.trim()
           const slug = entry.name.replace(/\.[a-z]{2,3}(?:-[A-Z]{2})?\.md$/i, '').replace(/\.md$/i, '').replace(/^\d+[.-]/, '')
           const link = `${localePrefix}/${[...routeParts, slug].filter(Boolean).join('/')}`
           const icon = sidebarPageIcons[link] ?? sidebarPageIcons[`${link}/`]
           return {
             text: itemText(titleOf(file), undefined, link, typeof icon === 'string' ? `/${icon.replace(/^\/+/, '')}` : undefined),
             link,
-            ...(image ? { image } : {}),
+            ...(pageMenuImage || image ? { image: pageMenuImage || image } : {}),
             ...(showIcons && icon ? { icon: `/${icon.replace(/^\/+/, '')}` } : {}),
           }
         })
