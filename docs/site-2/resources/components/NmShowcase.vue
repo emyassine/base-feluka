@@ -14,7 +14,9 @@ export interface ShowcaseStory {
 export interface ShowcaseLabels {
   region: string
   before: string
+  beforeColor?: string
   after: string
+  afterColor?: string
   timelineStart: string
   timelineEnd: string
   companies: string
@@ -211,7 +213,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section class="nm-showcase" :aria-label="labels.region">
+  <section
+    class="nm-showcase"
+    :aria-label="labels.region"
+    :style="{
+      '--nm-showcase-before-color': labels.beforeColor ?? '#e5484d',
+      '--nm-showcase-after-color': labels.afterColor ?? 'var(--vp-c-brand-1)',
+    }"
+  >
     <header class="nm-showcase__intro">
       <h2>{{ title }}</h2>
       <p v-if="footnote" class="nm-showcase__footnote">
@@ -456,7 +465,8 @@ onBeforeUnmount(() => {
 .nm-showcase__name {  font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
 .nm-showcase__description { max-width: 42rem; font-weight: 400; line-height: 1.4; }
 .nm-showcase__mobile-captions { display: grid; gap: 0.85rem; }
-.nm-showcase__mobile-caption-label { display: block; color: var(--vp-c-brand-1);  font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+.nm-showcase__mobile-caption-label { display: block; color: var(--nm-showcase-before-color); font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+.nm-showcase__mobile-caption:nth-child(2) .nm-showcase__mobile-caption-label { color: var(--nm-showcase-after-color); }
 .nm-showcase__mobile-caption p { margin: 0.2rem 0 0; line-height: 1.5; }
 .nm-showcase__timeline--overlay { position: absolute; inset: auto 0 0; z-index: 2; padding: 0 1rem 0.5rem; }
 
@@ -561,6 +571,9 @@ onBeforeUnmount(() => {
     text-align: center;
     text-transform: uppercase;
   }
+
+  .nm-showcase__col:first-child .nm-showcase__label { color: var(--nm-showcase-before-color); }
+  .nm-showcase__col:last-child .nm-showcase__label { color: var(--nm-showcase-after-color); }
 
   .nm-showcase__frame {
     position: relative;

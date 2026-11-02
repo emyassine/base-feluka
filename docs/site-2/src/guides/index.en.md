@@ -110,7 +110,9 @@ Expected benefits are assessed for each engagement; specific results depend on t
    :labels="{
      region: 'Our capabilities',
      before: 'Starting point',
+     beforeColor: '#e5484d',
      after: 'Possible outcome',
+     afterColor: 'var(--vp-c-brand-1)',
      timelineStart: 'Starting point',
      timelineEnd: 'Possible outcome',
      companies: 'Capabilities',
