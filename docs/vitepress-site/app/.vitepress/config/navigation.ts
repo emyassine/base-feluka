@@ -82,8 +82,9 @@ function escapeHtml(value: string): string {
   })[character]!)
 }
 
-function iconTitle(label: string, icon: string): string {
-  return `<span class="sidebar-group-label"><span class="sidebar-group-icon" style="--sidebar-group-icon-url: url('/${escapeHtml(icon)}')" aria-hidden="true"></span><span>${label}</span></span>`
+function iconTitle(label: string, icon: string, iconMode = 'monochrome'): string {
+  const iconClass = iconMode === 'full-color' ? ' sidebar-group-icon--full-color' : ''
+  return `<span class="sidebar-group-label"><span class="sidebar-group-icon${iconClass}" style="--sidebar-group-icon-url: url('/${escapeHtml(icon)}')" aria-hidden="true"></span><span>${label}</span></span>`
 }
 
 function groupTitle(path: string, fallback: string, language = defaultLanguage): string {
@@ -91,7 +92,7 @@ function groupTitle(path: string, fallback: string, language = defaultLanguage):
   const label = metadata?.labels?.[language] ?? metadata?.labels?.[defaultLanguage] ?? fallback
   const escapedLabel = escapeHtml(label)
   if (!metadata?.icon) return escapedLabel
-  return iconTitle(escapedLabel, metadata.icon)
+  return iconTitle(escapedLabel, metadata.icon, metadata.iconMode)
 }
 
 function pageTitle(file: string): string {

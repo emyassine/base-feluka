@@ -628,10 +628,14 @@ async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath 
     if (typeof sidebarConfig.icon !== 'string' || !sidebarConfig.icon.trim()) {
       throw new Error(`spmpst.sidebar.json must define an icon path relative to that file: ${join(sourcePath, 'spmpst.sidebar.json')}`)
     }
+    if (sidebarConfig.iconMode !== undefined && !['monochrome', 'full-color'].includes(sidebarConfig.iconMode)) {
+      throw new Error(`spmpst.sidebar.json iconMode must be "monochrome" or "full-color": ${join(sourcePath, 'spmpst.sidebar.json')}`)
+    }
     const iconPath = resolveSidebarIcon(sourcePath, sidebarConfig.icon, join(sourcePath, 'spmpst.sidebar.json'))
     sidebarConfigurations.set(outputRelativePath, {
       labels: sidebarConfig.labels,
       icon: iconPath,
+      iconMode: sidebarConfig.iconMode ?? 'monochrome',
       menu: sidebarConfig.menu && typeof sidebarConfig.menu === 'object' && !Array.isArray(sidebarConfig.menu)
         ? sidebarConfig.menu
         : {},

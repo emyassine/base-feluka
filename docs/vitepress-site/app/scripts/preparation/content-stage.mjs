@@ -442,6 +442,7 @@ for (const [path, metadata] of sidebarConfigurations) {
   generatedSidebar[path] = {
     labels: metadata.labels,
     icon: metadata.icon ? await copyIcon(metadata.icon) : null,
+    iconMode: metadata.iconMode ?? 'monochrome',
     ...(metadata.menu && Object.keys(metadata.menu).length ? { menu: metadata.menu } : {}),
   }
 }

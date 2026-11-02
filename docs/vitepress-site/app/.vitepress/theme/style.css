@@ -464,6 +464,16 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   mask-size: contain;
 }
 
+.sidebar-group-icon--full-color {
+  background-color: transparent;
+  background-image: var(--sidebar-group-icon-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 .sidebar-group-label {
   display: inline-flex;
   min-height: 24px;

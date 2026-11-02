@@ -2,5 +2,6 @@
   "labels": {
     "en": "Morocco"
   },
-  "icon": "../../../../public/media/morocco.svg"
+  "icon": "../../../../public/media/morocco.svg",
+  "iconMode": "full-color"
 }
