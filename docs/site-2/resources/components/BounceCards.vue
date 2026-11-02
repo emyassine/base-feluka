@@ -218,6 +218,23 @@ function cardStyle(index: number): CSSProperties {
 }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:active)
+    .bounce-cards__card:active ~ .bounce-cards__card {
+    translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
+  }
+
+  .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:active)
+    .bounce-cards__card:has(~ .bounce-cards__card:active) {
+    translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
+  }
+
+  .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)) .bounce-cards__card:active {
+    z-index: 5;
+    scale: 1.04;
+  }
+}
+
 @keyframes bounce-cards-enter {
   0% { opacity: 0; scale: .58; }
   58% { opacity: 1; scale: 1.12; }
