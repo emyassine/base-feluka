@@ -131,9 +131,9 @@ function cardStyle(index: number): CSSProperties {
     bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both,
     bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
   transition:
-    transform var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
-    translate var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
-    scale var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
+    transform var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
+    translate var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
+    scale var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
     width 360ms cubic-bezier(.2, .75, .25, 1),
     height 360ms cubic-bezier(.2, .75, .25, 1),
     top 360ms cubic-bezier(.2, .75, .25, 1),
