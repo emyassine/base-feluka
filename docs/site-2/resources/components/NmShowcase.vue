@@ -359,7 +359,6 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .nm-showcase {
-  --showcase-ink: #16140f;
   --scroll-per-item: 45svh;
   position: relative;
   display: flex;
@@ -368,8 +367,11 @@ onBeforeUnmount(() => {
   margin: 3rem calc(50% - 50vw) 4rem;
   padding: 2.25rem 0 0;
   overflow-x: clip;
-  background: #faf9f6;
-  color: var(--showcase-ink);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .nm-showcase__intro { display: contents; }
@@ -378,11 +380,11 @@ onBeforeUnmount(() => {
   order: 1;
   width: min(85vw, 32rem);
   margin: 0 auto 1.5rem;
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 2rem;
-  font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 1.2;
+  font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 32px;
   text-align: center;
 }
 
@@ -390,10 +392,10 @@ onBeforeUnmount(() => {
   order: 3;
   width: min(85vw, 32rem);
   margin: 1.5rem auto 3rem;
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 1rem;
+  font-family: inherit;
+  font-size: 16px;
   font-style: italic;
-  line-height: 1.6;
+  line-height: 24px;
   text-align: left;
 }
 
@@ -454,16 +456,16 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 0.55rem;
   padding: 1.5rem;
-  font-family: Outfit, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--vp-font-family-base);
 }
 
-.nm-showcase__name { font-size: 1.25rem; font-weight: 400; letter-spacing: -0.02em; line-height: 1.3; }
-.nm-showcase__story { position: relative; display: block; min-height: 3.7rem; font-size: 0.875rem; font-weight: 300; line-height: 1.4; }
+.nm-showcase__name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
+.nm-showcase__story { position: relative; display: block; min-height: 3.7rem; font-size: 16px; font-weight: 400; line-height: 24px; }
 .nm-showcase__story-text { display: block; }
 .nm-showcase__story-text--after { position: absolute; inset: 0; }
 
 .nm-showcase__timeline { display: flex; align-items: center; gap: 0.75rem; }
-.nm-showcase__timeline-label { flex: none; color: rgb(255 255 255 / 0.9); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em; }
+.nm-showcase__timeline-label { flex: none; color: rgb(255 255 255 / 0.9); font-size: 14px; font-weight: 500; line-height: 20px; }
 .nm-showcase__timeline-track { position: relative; display: flex; flex: 1; height: 1.75rem; align-items: center; }
 .nm-showcase__timeline-rail { position: relative; display: block; width: 100%; height: 2px; border-radius: 2px; background: rgb(255 255 255 / 0.38); }
 .nm-showcase__timeline-fill { position: absolute; inset: 0 auto 0 0; width: var(--comparison-progress, 0%); border-radius: inherit; background: #fff; }
@@ -477,7 +479,7 @@ onBeforeUnmount(() => {
   transform: translate(-50%, -50%);
   border: 2px solid #fff;
   border-radius: 50%;
-  background: #16140f;
+  background: var(--vp-c-bg);
   box-shadow: 0 1px 5px rgb(0 0 0 / 0.5);
 }
 
@@ -498,8 +500,6 @@ onBeforeUnmount(() => {
 .nm-showcase__scrolltrack { display: none; }
 
 @media (min-width: 640px) {
-  .nm-showcase__intro h2 { font-size: 2.75rem; }
-  .nm-showcase__footnote { font-size: 1.125rem; }
   .nm-showcase__scroller { gap: 1.5rem; padding-inline: 8vw; }
   .nm-showcase__slide { flex-basis: min(60vw, 24rem); }
 }
@@ -525,11 +525,11 @@ onBeforeUnmount(() => {
     width: auto;
     max-width: 950px;
     margin: 0 auto;
-    font-size: clamp(3rem, 5vw + 1rem, 5.25rem);
-    line-height: 1.1;
+    font-size: 24px;
+    line-height: 32px;
   }
 
-  .nm-showcase__footnote { order: 0; width: auto; max-width: 420px; margin: 1.5rem auto 0; font-size: clamp(1rem, 1vw + 0.5rem, 1.125rem); }
+  .nm-showcase__footnote { order: 0; width: auto; max-width: 420px; margin: 1.5rem auto 0; font-size: 16px; }
 
   .nm-showcase__carousel { display: none; }
 
@@ -559,9 +559,11 @@ onBeforeUnmount(() => {
   .nm-showcase__col { display: flex; min-width: 0; flex-direction: column; gap: 1rem; margin: 0; }
 
   .nm-showcase__label {
-    font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 1.1rem;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
     font-style: italic;
+    line-height: 24px;
     text-align: center;
   }
 
@@ -590,9 +592,9 @@ onBeforeUnmount(() => {
 
   .nm-showcase__captions {
     display: grid;
-    font-family: Outfit, Inter, ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.45;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
     text-align: center;
   }
 
@@ -628,22 +630,15 @@ onBeforeUnmount(() => {
     background: none;
     color: inherit;
     cursor: pointer;
-    font-family: 'Source Serif 4', Georgia, serif;
-    font-size: clamp(1.5rem, 2.6vw, 2.8rem);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 28px;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
-
-html.dark .nm-showcase {
-  --showcase-ink: #f4f2ed;
-  background: #101114;
-}
-
-html.dark .nm-showcase__frame { box-shadow: 0 10px 40px rgb(0 0 0 / 0.5); }
 
 @media (prefers-reduced-motion: reduce) {
   .nm-showcase__layer,
