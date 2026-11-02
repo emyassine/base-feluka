@@ -19,7 +19,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', variant: 'outline' }]"
+  :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', color: 'gray' }]"
 />
 
 

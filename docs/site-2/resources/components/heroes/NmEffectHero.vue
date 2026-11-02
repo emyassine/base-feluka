@@ -30,7 +30,7 @@ interface HeroBackground {
 interface HeroButton {
   label: string
   href: string
-  variant?: 'primary' | 'outline' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
+  color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark'
   external?: boolean
   icon?: 'whatsapp'
 }
@@ -122,13 +122,6 @@ const descriptionStyles = computed(() => ({
   ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
   ...(typeof props.description === 'string' || props.description.color === undefined ? {} : { color: resolveColor(props.description.color) }),
 }))
-const buttonVariant = (button: HeroButton, index: number) => button.variant ?? (index === 0 ? 'primary' : 'outline')
-const buttonColor = (button: HeroButton, index: number) => buttonVariant(button, index) === 'outline' ? 'gray' : buttonVariant(button, index)
-const isOutlinedButton = (button: HeroButton, index: number) => ['outline', 'gray'].includes(buttonVariant(button, index))
-const buttonClass = (button: HeroButton, index: number) =>
-  buttonVariant(button, index) === 'primary'
-    ? 'nm-effect-hero__button--primary'
-    : isOutlinedButton(button, index) ? 'nm-effect-hero__button--secondary' : undefined
 </script>
 
 <template>
@@ -148,9 +141,7 @@ const buttonClass = (button: HeroButton, index: number) =>
           tag="a"
           :href="button.href"
           size="md"
-          :color="buttonColor(button, index)"
-          :outlined="isOutlinedButton(button, index)"
-          :class="buttonClass(button, index)"
+          :color="button.color ?? (index === 0 ? 'primary' : 'gray')"
           :target="button.external ? '_blank' : undefined"
           :rel="button.external ? 'noopener noreferrer' : undefined"
         >
@@ -260,28 +251,6 @@ const buttonClass = (button: HeroButton, index: number) =>
 
 .nm-effect-hero__actions :deep(.feluqa-button:hover:not(:disabled):not(.is-disabled)) {
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
-}
-
-.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--primary) {
-  border-color: #fff;
-  background: #fff;
-  color: #111827 !important;
-}
-
-.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--primary:hover) {
-  background: #f1f5f9;
-}
-
-.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary) {
-  border-color: rgb(255 255 255 / 0.42);
-  background: rgb(15 23 42 / 0.28);
-  color: #fff !important;
-  backdrop-filter: blur(8px);
-}
-
-.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary:hover) {
-  border-color: rgb(255 255 255 / 0.68);
-  background: rgb(255 255 255 / 0.12);
 }
 
 /* Light theme: pearl surface with recognizable, saturated Silk waves. */

@@ -20,7 +20,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss a solution', href: '/company/prologue/contact?topic=solution' }, { label: 'Explore our services', href: '/services/', variant: 'outline' }]"
+  :buttons="[{ label: 'Discuss a solution', href: '/company/prologue/contact?topic=solution' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
 />
 
 

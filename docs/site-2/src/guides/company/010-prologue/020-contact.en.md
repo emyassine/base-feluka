@@ -18,7 +18,7 @@ status: "ready-for-review"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact?topic=project' }, { label: 'Explore partnerships', href: '/opportunities/', variant: 'outline' }]"
+  :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact?topic=project' }, { label: 'Explore partnerships', href: '/opportunities/', color: 'gray' }]"
 />
 
 <div class="nm-home-copy">

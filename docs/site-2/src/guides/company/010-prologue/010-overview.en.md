@@ -20,7 +20,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', variant: 'outline' }]"
+  :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"
 />
 
 
