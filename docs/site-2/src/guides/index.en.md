@@ -126,7 +126,7 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-# One space. Many possibilities.
+# One space with many possibilities.
 
 **An interactive showcase of ideas, systems and solutions.**
 

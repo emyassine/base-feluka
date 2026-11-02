@@ -6,6 +6,8 @@
   max-width: 100%;
 }
 
+.vp-doc h2 { border-top: 0; }
+
 /* Use the compact navigation while the full desktop menu does not fit. */
 @media (min-width: 768px) and (max-width: 959px) {
   .VPNavBar .content-body > .menu,
