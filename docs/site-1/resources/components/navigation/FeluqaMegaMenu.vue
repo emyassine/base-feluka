@@ -35,11 +35,10 @@ const options = computed(() => template.value[2] ?? {})
 const totalCount = computed(() => children.value.length)
 const more = computed(() => options.value.more)
 const displayChildren = computed(() => {
-  const repeated = Array.from({ length: 3 }, () => children.value).flat()
   const childLimit = options.value.maxItems && more.value
     ? Math.max(0, options.value.maxItems - 1)
     : options.value.maxItems
-  return childLimit === undefined ? repeated : repeated.slice(0, childLimit)
+  return childLimit === undefined ? children.value : children.value.slice(0, childLimit)
 })
 const cardHeight = computed(() => options.value.cardHeight ?? 260)
 function compositionItems(column: CompositionColumn): Array<number | 'more'> {

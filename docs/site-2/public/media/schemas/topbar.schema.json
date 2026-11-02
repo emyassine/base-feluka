@@ -46,6 +46,7 @@
               {
                 "type": "object",
                 "properties": {
+                  "maxItems": { "type": "integer", "minimum": 1 },
                   "cardHeight": { "type": "integer", "minimum": 1 },
                   "composition": {
                     "type": "object",

@@ -13,7 +13,7 @@
         "en": "Services"
       },
       "menuTemplate": [
-        "mega.columns",
+        "mega.background-icon",
         [
           "title",
           "image",
@@ -22,7 +22,17 @@
           "children"
         ],
         {
-          "mobileToo": false
+          "mobileToo": false,
+          "cardHeight": 110,
+          "maxItems": 8,
+          "composition": {
+            "columns": [
+              [0],
+              [1, 2, 3],
+              [4],
+              [5, 6, 7]
+            ]
+          }
         }
       ]
     },
