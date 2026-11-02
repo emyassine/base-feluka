@@ -138,11 +138,11 @@ Discover the areas we explore and the kinds of value that can be created. Browse
 - **People and organizations** — training, coordination and emerging talent solutions.
 - **Research and ventures** — internal standards, experimental platforms and new business concepts.
 
-<FeluqaButton tag="a" :href="/showcase">Explore the showcase
-</FeluqaButton>
-
 </div>
 
+
+
+<FeluqaButton tag="a" :href="/showcase" label="Explore the showcase"/>
 
 <!-- Showcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
