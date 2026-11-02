@@ -48,7 +48,7 @@ For each selected site, starts `site.mjs serve --site <id>`. That command prepar
 
 ### `./serve.sh --sites=site-1 --preview`
 
-This shell mode first builds every selected site. It then starts a static preview server for each built output and starts a watcher in rebuild mode. Edits rebuild only the changed site's output; the static server continues to serve the output directory after its atomic replacement.
+This shell mode first builds every selected site. It then starts a static preview server for each built output and starts a watcher in rebuild mode. Edits rebuild only the changed site's output. Each build clears that site's old output before starting, so a failed rebuild leaves no stale site to serve.
 
 This mode is distinct from `node app/scripts/site.mjs preview --site <id>` (also exposed by `npm run docs:preview`). The latter builds once and launches a static preview server; it does not start the shell wrapper's rebuild watcher.
 
@@ -222,14 +222,14 @@ The following is what `./serve.sh --sites=site-1 --build` currently delegates to
 2. **Check host dependencies.** The wrapper requires `docs/vitepress-site/node_modules/.bin/vitepress`; if missing it prints the `npm install` command and exits. `site.mjs` prefers the app-local VitePress binary, then the host-level binary. Mermaid rendering also expects the host-level `mmdc` binary.
 3. **Select site again in the app.** The shell invokes `node app/scripts/site.mjs build --site <id>`. The app registry resolves the declaration and validates required fields.
 4. **Construct paths/environment.** The app derives site, shared-resource, site-resource, output, and per-site trash roots. It fixes the working directory to the host app directory, not the user's shell directory.
-5. **Create isolated staging paths.** The final output's parent contains `tmp/<output-basename>.stage-<pid>` and a corresponding backup. Build preparation and the declared build action receive the stage through `SPMPST_PATHS.output`, `SPMPST_STAGE_DIR`, and `SPMPST_OUT_DIR`, with `<site-trash>/build` as `SPMPST_CACHE_DIR`. VitePress runs from a per-build project root under that cache directory; dev uses a separate project root. Each therefore owns its internally fixed `.temp` directory as well as its generated tree and cache.
+5. **Clear old output and create isolated staging paths.** The build removes the configured final output before toolchain installation or preparation, then renders into `tmp/<output-basename>.stage-<pid>`. Build preparation and the declared build action receive the stage through `SPMPST_PATHS.output`, `SPMPST_STAGE_DIR`, and `SPMPST_OUT_DIR`, with `<site-trash>/build` as `SPMPST_CACHE_DIR`. VitePress runs from a per-build project root under that cache directory; dev uses a separate project root. Each therefore owns its internally fixed `.temp` directory as well as its generated tree and cache.
 6. **Prepare source (`prepareSources`).** Load/validate config; validate site config, languages, guide/collection paths, project component/hook/icon directories and theme slots; scan guides and collections; normalize ordered directory/file prefixes; infer locale suffixes; map source paths to routes; collect frontmatter/sidebar records; verify required sidebar labels and icons; copy ordinary assets; stage public files and optional flags.
 7. **Prepare content (`prepareContent`).** Resolve/copy logos, fonts and Open Graph images; read each guide config; derive localized collection indexes and article metadata; register discovered Vue SFCs; validate configured theme slots against discovered component names; emit generated JSON/TS modules for colors, fonts, collections, components, theme, hooks, styles, site content, navigation/sidebar metadata, and SEO helpers.
 8. **Run ordered preparation stages.** The pipeline transforms Markdown and local links/assets and renders Mermaid; creates missing locale fallback pages from the default-language page; generates configured SEO/FAQ pages; generates missing directory indexes/aliases; computes previous/next page frontmatter; removes stale generated files. Each stage writes through helpers that preserve unchanged bytes and preserve the pager-owned frontmatter block.
 9. **Load VitePress/Vite configuration.** VitePress reads `app/.vitepress/config.ts`, which re-exports the config composition root. It loads the generated site model and metadata, constructs navigation/sidebars/locales and head transforms, then uses `app/config/vite.config.ts`. Vite aliases `@docs` to the generated tree and `@generated` to generated metadata; the plugin resolves imports from site components using host dependencies, serves selected generated public assets, and provides generated-Markdown HMR behavior in dev. The host-owned Vite config is loaded by the adapter.
 10. **Render static pages.** `vitepress build` compiles the client and server bundles, renders all routes, and writes static HTML/assets to the staging directory. Vite's chunk-size warning is reported; the warning is not suppressed by the current site Vite config.
 11. **Stamp and validate stage.** The command adds `.spmpst/build-timestamp` to staging and runs `check-file-links.mjs` against the staging tree. VitePress's HTML transform inserts a generated timestamp comment when each page is rendered.
-12. **Publish atomically.** Existing final output is renamed to a backup, stage is renamed to final output, then backup is removed. If any earlier step fails, the stage is deleted and the backup is restored. The user sees a final path such as `docs-output/site-1/`.
+12. **Publish the completed stage.** After the build and generated-link checks pass, the stage is renamed to the final output path, such as `docs-output/site-1/`. If any step fails, the stage is deleted and the final output remains absent; an earlier build is never restored.
 
 The publication directory contains rendered static files. The app, Node, VitePress, and dependency installation are build/preview concerns; the static host only needs to serve the produced files.
 
@@ -254,11 +254,11 @@ On termination the app sends SIGTERM to both VitePress and the watcher. The top-
 
 `./serve.sh --sites=site-1 --preview` does not use the VitePress dev server:
 
-1. Build each selected site with the same isolated, checked, atomically published static-build pipeline described above.
+1. Build each selected site with the same isolated, checked, clean-output static-build pipeline described above.
 2. Find distinct available ports starting from `PORT` and print a URL per site.
 3. Start `site.mjs serve-build`, which runs `preview-server.mjs`; VitePress `serve()` serves the already-built output over HTTP.
 4. Start `site.mjs watch`, setting `DOCS_WATCH_BUILD=1`. The same source/config/resource watcher now invokes `site.mjs build` after each debounced batch instead of incremental preparation.
-5. The static server serves the configured final output path. Build publication swaps that directory atomically. Reload the browser after a rebuild so its HTML and hashed client chunks come from the same build; keeping old chunks available to already-open pages remains a limitation.
+5. The static server serves the configured final output path. That path is absent during a rebuild and appears only after the new build passes validation. Reload the browser after a rebuild so its HTML and hashed client chunks come from the same build; keeping old chunks available to already-open pages remains a limitation.
 
 This gives a production-like static preview and rebuild loop. It does not provide Vite client HMR; each rebuild changes the generated files, and the browser should be refreshed to load the matching HTML and client assets.
 
@@ -335,7 +335,7 @@ VitePress owns the renderer lifecycle. Vite owns dev transforms, Vue compilation
 - Invalid JSON, missing required config/locale/site declaration fields, duplicate config ownership, invalid paths, missing page icons/fallbacks, bad collection metadata, route conflicts detected by specific generators, or bad Mermaid config stop preparation/build with an error.
 - Missing/unknown icons can use `iconFallback`; the resolver warns once per missing name. Missing configured fallback is fatal.
 - Local asset paths are confined to allowed source/resource roots. Logical resources are confined to shared catalogues. Output cleanup is scoped to selected site staging/output and selected site cache roots.
-- Production builds use an isolated stage, cache namespace, and VitePress project root, so a concurrent dev server does not lose its generated Markdown or VitePress temporary modules. Output replacement is rename-based and restores a previous output on failure. Static-preview sessions still need a reload after replacement because old hashed assets are not retained.
+- Production builds use an isolated stage, cache namespace, and VitePress project root, so a concurrent dev server does not lose its generated Markdown or VitePress temporary modules. The configured output is deleted before build work begins and only recreated after the staged build passes validation. A failure leaves no output to mask the failure with stale files. Static-preview sessions still need a reload after replacement because old hashed assets are not retained.
 - Incremental preparation writes only changed bytes, retains the pager block owned by the last stage, and removes files no longer in the generated set.
 - VitePress dev and static preview are different products: dev has Vite module HMR; static preview serves rendered HTML and relies on rebuilds.
 - `check-file-links.mjs` validates local generated HTML links after the build. It is not a full external link check or browser interaction test.
@@ -354,7 +354,7 @@ VitePress owns the renderer lifecycle. Vite owns dev transforms, Vue compilation
 | Responsibility | Implementation |
 |---|---|
 | Multi-site shell, mode selection, port allocation, child process lifecycle | `docs/vitepress-site/serve.sh` |
-| Host registry lookup, site selection, environment construction, command dispatch, atomic build, serve/watch/clean | `app/scripts/site-registry.mjs`, `app/scripts/site.mjs` |
+| Host registry lookup, site selection, environment construction, command dispatch, clean-output build, serve/watch/clean | `app/scripts/site-registry.mjs`, `app/scripts/site.mjs` |
 | Root and per-site path resolution | `app/scripts/paths.mjs`, `app/scripts/spmpst/layout.mjs` |
 | Config file discovery, ownership, validation, typed resource references | `app/scripts/spmpst/config/`, `app/scripts/spmpst/resources.mjs` |
 | Site config conversion and resource lookup | `app/scripts/preparation/runtime.mjs`, `resolve-resource.mjs` |

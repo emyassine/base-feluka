@@ -33,7 +33,7 @@ const env = {
 function run(binary, commandArgs, runEnv = env) {
   const result = spawnSync(binary, commandArgs, { cwd: appDirectory, env: runEnv, stdio: 'inherit' })
   if (result.error) throw result.error
-  if (result.status !== 0) process.exit(result.status ?? 1)
+  if (result.status !== 0) throw new Error(`Command failed with exit code ${result.status}: ${binary} ${commandArgs.join(' ')}`)
 }
 
 function toolchainVariables(runEnv = env) {
@@ -66,7 +66,7 @@ function runAction(action, runEnv = env) {
   process.stdout.write(`[spmpst] ${executable} ${commandArgs.join(' ')} (cwd: ${site.toolchainCwd})\n`)
   const result = spawnSync(executable, commandArgs, { cwd: site.toolchainCwd, env: runEnv, stdio: 'inherit' })
   if (result.error) throw result.error
-  if (result.status !== 0) process.exit(result.status ?? 1)
+  if (result.status !== 0) throw new Error(`Toolchain action failed with exit code ${result.status}: ${executable} ${commandArgs.join(' ')}`)
 }
 
 function xmlEscape(value) {
@@ -272,11 +272,18 @@ if (command === 'prepare') {
   }[command]
   run(process.execPath, [join(appDirectory, script), ...forwardedArgs()])
 } else if (command === 'build') {
+  await rm(site.paths.output, { recursive: true, force: true })
   installToolchain()
   await mkdir(dirname(site.paths.output), { recursive: true })
   const stagingRoot = resolve(dirname(site.paths.output), 'tmp')
-  const stage = join(stagingRoot, `${basename(site.paths.output)}.stage-${process.pid}`)
-  const backup = join(stagingRoot, `${basename(site.paths.output)}.backup-${process.pid}`)
+  await mkdir(stagingRoot, { recursive: true })
+  const outputName = basename(site.paths.output)
+  for (const entry of await readdir(stagingRoot)) {
+    if (entry.startsWith(`${outputName}.stage-`) || entry.startsWith(`${outputName}.backup-`)) {
+      await rm(join(stagingRoot, entry), { recursive: true, force: true })
+    }
+  }
+  const stage = join(stagingRoot, `${outputName}.stage-${process.pid}`)
   await rm(stage, { recursive: true, force: true })
   // Keep a production build isolated from a concurrently running dev server.
   // A normal preparation clears its generated Markdown tree, and sharing that
@@ -294,16 +301,6 @@ if (command === 'prepare') {
   try {
     await ensureVitepressProject(buildEnv.SPMPST_GENERATED_DIR)
     prepare(buildEnv)
-    await writeEarlySitemap(
-      site,
-      join(trashDirectory, 'build/generated-guides'),
-      join(site.paths.output, 'sitemap.xml'),
-    )
-    await writeEarlyRss(
-      site,
-      join(trashDirectory, 'build/generated-guides'),
-      join(site.paths.output, 'rss.xml'),
-    )
     await writeEarlySitemap(
       site,
       join(trashDirectory, 'build/generated-guides'),
@@ -325,13 +322,10 @@ if (command === 'prepare') {
     await mkdir(join(stage, '.spmpst'), { recursive: true })
     await writeFile(join(stage, '.spmpst', 'build-timestamp'), `${new Date().toISOString()}\n`)
     run(process.execPath, [join(appDirectory, 'scripts/build/check-file-links.mjs'), stage], buildEnv)
-    try { await rename(site.paths.output, backup) } catch (error) { if (error.code !== 'ENOENT') throw error }
     await rename(stage, site.paths.output)
-    await rm(backup, { recursive: true, force: true })
     process.stdout.write(`[site] ${site.name} built to ${site.paths.output}\n`)
   } catch (error) {
     await rm(stage, { recursive: true, force: true })
-    try { await rename(backup, site.paths.output) } catch (restoreError) { if (restoreError.code !== 'ENOENT') throw restoreError }
     throw error
   }
 } else if (command === 'serve') {

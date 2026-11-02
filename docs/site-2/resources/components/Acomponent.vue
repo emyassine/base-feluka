@@ -150,13 +150,6 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
   line-height: 1.55;
 }
 
-.nm-about-paragraphs p > span:not(.nm-about-illustration) {
-  text-decoration: underline;
-  text-decoration-color: var(--vp-c-brand-1, #cbbfae);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-
 /* Inline illustrations */
 .nm-about-illustration {
   position: relative;
