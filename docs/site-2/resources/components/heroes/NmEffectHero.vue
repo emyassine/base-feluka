@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import type { CSSProperties } from 'vue'
-type Effect = 'aurora' | 'silk' | 'shape-grid' | 'prismatic-burst'
+type EffectName = 'aurora' | 'silk' | 'shape-grid' | 'prismatic-burst'
+type Effect = readonly [EffectName, { inject?: Record<string, unknown> }?]
 
 interface HeroButton {
   label: string
@@ -30,27 +31,34 @@ const props = withDefaults(defineProps<{
 })
 
 const { isDark } = useData()
+const selectedEffect = computed(() => props.effect[0])
 const effectComponent = computed(() => ({
   aurora: 'Aurora',
   silk: 'Silk',
   'shape-grid': 'ShapeGrid',
   'prismatic-burst': 'PrismaticBurst',
-}[props.effect]))
+}[selectedEffect.value]))
 const effectProps = computed<Record<string, unknown>>(() => {
-  switch (props.effect) {
+  let defaults: Record<string, unknown> = {}
+  switch (selectedEffect.value) {
     case 'aurora':
-      return { colorStops: ['#3A29FF', '#FF94B4', '#FF3232'], blend: 0.5, amplitude: 1.0, speed: 0.5 }
+      defaults = { colorStops: ['#3A29FF', '#FF94B4', '#FF3232'], blend: 0.5, amplitude: 1.0, speed: 0.5 }
+      break
     case 'silk':
-      return { speed: 5, scale: 1, color: '#7B7481', noiseIntensity: 1.5, rotation: 0 }
+      defaults = { speed: 5, scale: 1, color: '#7B7481', noiseIntensity: 1.5, rotation: 0 }
+      break
     case 'shape-grid':
-      return { speed: 0.5, squareSize: 40, direction: 'diagonal', borderColor: '#fff', hoverFillColor: '#222', shape: 'square', hoverTrailAmount: 5 }
+      defaults = { speed: 0.5, squareSize: 40, direction: 'diagonal', borderColor: '#fff', hoverFillColor: '#222', shape: 'square', hoverTrailAmount: 5 }
+      break
     case 'prismatic-burst':
-      return {
+      defaults = {
         animationType: 'rotate3d', intensity: 2, speed: 0.5, distort: 1.0, paused: false,
         offset: { x: 0, y: 0 }, hoverDampness: 0.25, rayCount: 24,
         mixBlendMode: 'lighten', colors: ['#ff007a', '#4d3dff', '#ffffff'],
       }
+      break
   }
+  return { ...defaults, ...(props.effect[1]?.inject ?? {}) }
 })
 const titleStyles = computed(() => ({
   ...props.titleStyle,

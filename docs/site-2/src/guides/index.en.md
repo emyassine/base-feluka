@@ -3,11 +3,11 @@ title: "Technology you can own, understand, and operate"
 sidebarTitle: "Home"
 icon: "@spmpst::icon::home"
 layout: home
-description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
+description: "Numerimondes helps organizations design, build, and operate dependable systems."
 ---
 <div></div>
 <NmEffectHero
-  effect="silk"
+  :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '90vh' }"
   eyebrow="Insight. Innovation. Strategy. Execution."
   title="Ideas and operations that move businesses forward."
