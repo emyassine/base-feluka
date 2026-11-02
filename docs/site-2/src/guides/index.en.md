@@ -21,21 +21,35 @@ description: "Numerimondes helps organizations design, build, and operate depend
     { label: 'Explore our capabilities', href: '/services/', color: 'gray' }
   ]"
 >
-  <template #dock>
-    <NmSimpleHeroDock
-      :panel-height="68"
-      :base-item-size="50"
-      :magnification="70"
-      :separators="[0]"
-      :indicator-index="0"
-      :items="[
-        { icon: 'briefcase', label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/' },
-        { icon: 'server', label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/' },
-        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/' },
-        { icon: 'building', label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us' }
-      ]"
-    />
-  </template>
+	<template #dock>
+  <NmSimpleHeroDock
+    default-group="Our Products"
+    :panel-height="68"
+    :base-item-size="50"
+    :magnification="70"
+    :groups="[
+      {
+        label: 'Our Products',
+        indicatorIndex: 0,
+        items: [
+          { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa',  icon: 'https://s3-new.macosicons.com/macosicons/parse/low_res_Wavve_34meXh0rYu-541538d359.png' },
+          { id: 'best-recruit', label: 'The Best Recruit', mobileLabel: 'Recruit', href: '/company/initiatives/the-best-recruit', icon: 'https://s3-new.macosicons.com/macosicons/parse/low_res_Mornye_7c8Y4p0Cnr-12343d0015.png' },
+        ],
+      },
+      {
+        label: 'Quick Links',
+        separators: [0],
+        indicatorIndex: 0,
+        items: [
+          { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
+          { label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/', icon: '@spmpst::icon::server' },
+          { label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', icon: '@spmpst::icon::sparkles' },
+          { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', icon: '@spmpst::icon::building' },
+        ],
+      },
+    ]"
+  />
+	</template>
 </NmEffectHero>
 
 <Acomponent
