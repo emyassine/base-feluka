@@ -25,7 +25,7 @@ const emit = defineEmits(['click'])
 </script>
 
 <template>
-  <div class="simple-mini-card-wrapper" style="width: 100%;">
+  <div class="simple-mini-card-wrapper" style="width: 100%; container: simple-mini-card / inline-size;">
     <div
       v-for="(cat, catIndex) in categories"
       :key="catIndex"
@@ -78,7 +78,7 @@ const emit = defineEmits(['click'])
             gap: '12px',
             textDecoration: 'none',
             cursor: (clickable || item.url) ? 'pointer' : 'default',
-            transition: 'all 0.2s ease',
+            transition: 'background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
             boxSizing: 'border-box'
           }"
         >
@@ -103,7 +103,7 @@ const emit = defineEmits(['click'])
 </template>
 
 <style scoped>
-/* Mobile par défaut: 1 colonne */
+/* Small available width: one column */
 .simple-mini-card-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -111,10 +111,10 @@ const emit = defineEmits(['click'])
   width: 100%;
 }
 
-/* Desktop: bascule dynamiquement selon la prop columns */
-@media (min-width: 768px) {
+/* Switch as soon as the component itself has enough room for its columns. */
+@container simple-mini-card (min-width: 480px) {
   .simple-mini-card-grid {
-    grid-template-columns: repeat(var(--grid-cols, 2), 1fr);
+    grid-template-columns: repeat(var(--grid-cols, 2), minmax(0, 1fr));
   }
 }
 
