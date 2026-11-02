@@ -1,7 +1,7 @@
 {
   "socialLinks": [
     {
-    	"icon": "@spmpst::icon::whatsapp",
+      "icon": "@spmpst::icon::whatsapp",
       "link": "https://wa.me/212620990692",
       "ariaLabel": "Contactez-nous"
     },
@@ -11,5 +11,5 @@
       "ariaLabel": "Numerimondes on LinkedIn"
     }
   ],
-  "$schema": "../public/api/schemas/links.schema.json"
+  "$schema": "../public/media/schemas/links.schema.json"
 }

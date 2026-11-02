@@ -9,7 +9,7 @@ status: "ready-for-review"
 
 # Numerimondes website — English content pack
 
-`index.md` is the approved homepage copy used as the basis for the remaining pages. All other pages are new drafts for review.
+`src/guides/index.en.md` is the approved homepage copy used as the basis for the remaining pages. All other pages are new drafts for review.
 
 ## Main navigation
 
