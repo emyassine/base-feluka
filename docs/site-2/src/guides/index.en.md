@@ -84,7 +84,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-:::: info What this can mean for your business
+:::: tip What this can mean for your business
 ::: details Better decisions
 Clearer priorities, options and investment choices.
 :::
@@ -377,17 +377,20 @@ We collaborate with independent professionals and organizations that identify op
 :::: info Become a partner and grow with us
 We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
 
-::: details Accounting and advisory firms {class="detail-blue"}
-Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.
-:::
+<details class="custom-block details detail-blue">
+<summary>Accounting and advisory firms</summary>
+<p>Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.</p>
+</details>
 
-::: details Business development and referral partners {class="detail-amber"}
-Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.
-:::
+<details class="custom-block details detail-amber">
+<summary>Business development and referral partners</summary>
+<p>Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.</p>
+</details>
 
-::: details Freelancers and specialist partners {class="detail-green"}
-Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
-:::
+<details class="custom-block details detail-green">
+<summary>Freelancers and specialist partners</summary>
+<p>Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.</p>
+</details>
 ::::
 
 <div style="display: flex; gap: 15px;">
