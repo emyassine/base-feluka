@@ -1,7 +1,7 @@
-		<script setup>
-		defineOptions({ name: 'SimpleMiniCard' })
+<script setup>
+defineOptions({ name: 'SimpleMiniCard' })
 
-		defineProps({
+defineProps({
   categories: {
     type: Array,
     required: true,
@@ -19,12 +19,12 @@
     type: Boolean,
     default: false
   }
-		})
+})
 
-		const emit = defineEmits(['click'])
-		</script>
+const emit = defineEmits(['click'])
+</script>
 
-		<template>
+<template>
   <div class="simple-mini-card-wrapper" style="width: 100%;">
     <div
       v-for="(cat, catIndex) in categories"
@@ -37,13 +37,8 @@
       </h3>
 
       <div
-        class="simple-mini-card-container"
-        :style="{
-          display: 'grid',
-          gridTemplateColumns: columns == 2 ? 'repeat(2, 1fr)' : '1fr',
-          gap: '12px',
-          width: '100%'
-        }"
+        class="simple-mini-card-grid"
+        :style="{ '--grid-cols': columns }"
       >
         <component
           :is="item.url ? 'a' : 'div'"
@@ -105,17 +100,32 @@
       </div>
     </div>
   </div>
-		</template>
+</template>
 
-		<style scoped>
-		.simple-mini-card:hover {
+<style scoped>
+/* Mobile par défaut: 1 colonne */
+.simple-mini-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Desktop: bascule dynamiquement selon la prop columns */
+@media (min-width: 768px) {
+  .simple-mini-card-grid {
+    grid-template-columns: repeat(var(--grid-cols, 2), 1fr);
+  }
+}
+
+.simple-mini-card:hover {
   background: var(--card-bg-hover) !important;
   box-shadow: var(--card-shadow-hover) !important;
   border-color: var(--card-border-hover) !important;
   transform: translateY(-2px);
-		}
+}
 
-		@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   .simple-mini-card {
     background: var(--card-bg-dark) !important;
     color: var(--card-text-dark) !important;
@@ -130,5 +140,5 @@
   .simple-mini-card .simple-mini-card-icon {
     color: var(--icon-color-dark) !important;
   }
-		}
-		</style>
+}
+</style>

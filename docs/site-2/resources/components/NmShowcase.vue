@@ -50,8 +50,8 @@ const prefersReducedMotion = ref(false)
 
 const active = computed(() => Math.round(pos.value))
 
-let observer: IntersectionObserver | undefined
 let scrollFrame = 0
+let carouselFrame = 0
 let animationFrame = 0
 let animatedStory: number | null = null
 const visibleCard = ref<number | null>(null)
@@ -154,16 +154,9 @@ function animateStory(index: number) {
     } else {
       animationFrame = 0
       animatedStory = null
-      if (window.matchMedia('(max-width: 1023px)').matches && count.value > 1 && scroller.value) {
+      if (window.matchMedia('(max-width: 1023px)').matches && count.value > 1) {
         const nextIndex = (index + 1) % count.value
-        const nextCard = cards.value[nextIndex]
-        if (nextCard) {
-          const scrollerRect = scroller.value.getBoundingClientRect()
-          const cardRect = nextCard.getBoundingClientRect()
-          const left = scroller.value.scrollLeft + cardRect.left - scrollerRect.left
-            - (scroller.value.clientWidth - cardRect.width) / 2
-          scroller.value.scrollTo({ left, behavior: prefersReducedMotion.value ? 'auto' : 'smooth' })
-        }
+        scrollCarouselToIndex(nextIndex)
       }
     }
   }
@@ -182,46 +175,71 @@ function setCardRef(element: unknown, index: number) {
   if (element) cards.value[index] = element as HTMLElement
 }
 
-function handleIntersections(entries: IntersectionObserverEntry[]) {
-  const mostVisible = entries
-    .filter((entry) => entry.isIntersecting)
-    .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0]
+function updateActiveCarouselCard() {
+  carouselFrame = 0
+  const viewport = scroller.value
+  if (!viewport || !cards.value.length || window.matchMedia('(min-width: 1024px)').matches) return
 
-  if (!mostVisible) {
-    const activeCardLeft = entries.some(
-      (entry) => Number((entry.target as HTMLElement).dataset.storyIndex) === visibleCard.value && !entry.isIntersecting,
-    )
-    if (activeCardLeft) {
-      visibleCard.value = null
-      stopAnimation()
+  const viewportCenter = viewport.getBoundingClientRect().left + viewport.clientWidth / 2
+  let closestIndex = -1
+  let closestDistance = Number.POSITIVE_INFINITY
+
+  cards.value.forEach((card, index) => {
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const distance = Math.abs(rect.left + rect.width / 2 - viewportCenter)
+    if (distance < closestDistance) {
+      closestDistance = distance
+      closestIndex = index
     }
-    return
-  }
+  })
 
-  const index = Number((mostVisible.target as HTMLElement).dataset.storyIndex)
-  if (!Number.isInteger(index) || index === visibleCard.value) return
-  visibleCard.value = index
-  animateStory(index)
+  if (closestIndex < 0 || closestIndex === visibleCard.value) return
+  visibleCard.value = closestIndex
+  animateStory(closestIndex)
+}
+
+function requestActiveCarouselUpdate() {
+  if (carouselFrame) return
+  carouselFrame = requestAnimationFrame(updateActiveCarouselCard)
+}
+
+function scrollCarouselToIndex(index: number) {
+  const viewport = scroller.value
+  const card = cards.value[index]
+  if (!viewport || !card) return
+
+  const viewportRect = viewport.getBoundingClientRect()
+  const cardRect = card.getBoundingClientRect()
+  const delta = cardRect.left + cardRect.width / 2 - (viewportRect.left + viewport.clientWidth / 2)
+  viewport.scrollTo({
+    left: viewport.scrollLeft + delta,
+    behavior: prefersReducedMotion.value ? 'auto' : 'smooth',
+  })
+}
+
+function onWindowResize() {
+  requestScrollUpdate()
+  requestActiveCarouselUpdate()
 }
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   window.addEventListener('scroll', requestScrollUpdate, { passive: true })
-  window.addEventListener('resize', requestScrollUpdate, { passive: true })
+  window.addEventListener('resize', onWindowResize, { passive: true })
+  scroller.value?.addEventListener('scroll', requestActiveCarouselUpdate, { passive: true })
   updateFromScroll()
-
-  if (prefersReducedMotion.value || !scroller.value || !('IntersectionObserver' in window)) return
-  observer = new IntersectionObserver(handleIntersections, { root: scroller.value, threshold: [0.65, 0.8, 1] })
-  cards.value.forEach((card) => observer?.observe(card))
+  requestActiveCarouselUpdate()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', requestScrollUpdate)
-  window.removeEventListener('resize', requestScrollUpdate)
+  window.removeEventListener('resize', onWindowResize)
+  scroller.value?.removeEventListener('scroll', requestActiveCarouselUpdate)
   if (scrollFrame) cancelAnimationFrame(scrollFrame)
+  if (carouselFrame) cancelAnimationFrame(carouselFrame)
   stopAnimation()
-  observer?.disconnect()
 })
 </script>
 
@@ -445,7 +463,7 @@ onBeforeUnmount(() => {
 
 .nm-showcase__scroller::-webkit-scrollbar { display: none; }
 
-.nm-showcase__slide { flex: 0 0 min(85vw, 24rem); scroll-snap-align: center; }
+.nm-showcase__slide { flex: 0 0 min(85vw, 24rem); scroll-snap-align: center; scroll-snap-stop: always; }
 
 .nm-showcase__card {
   position: relative;
