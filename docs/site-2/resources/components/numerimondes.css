@@ -30,5 +30,5 @@
 }
 
 .account-spaces-cards .cards-modern__body { display: flex; min-height: 16rem; flex-direction: column; }
-.account-spaces-cards .cards-modern__actions { min-height: 5.25rem; align-content: flex-start; margin-top: auto; }
+.account-spaces-cards .cards-modern__actions { align-content: flex-start; margin-top: auto; }
 
