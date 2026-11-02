@@ -10,8 +10,10 @@ import { DocumentationLastModified, DocumentationNotice } from '@generated/theme
 import { projectComponents, registerProjectComponents } from '@generated/components'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import TopbarActions from './TopbarActions.vue'
+import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
 import './style.css'
+import './x-tooltip.css'
 import '@generated/configured-styles'
 
 const zoomStep = 0.25
@@ -674,6 +676,7 @@ export default {
   Layout: MermaidLayout,
   enhanceApp(context: Parameters<NonNullable<typeof DefaultTheme.enhanceApp>>[0]) {
     DefaultTheme.enhanceApp?.(context)
+    installXTooltip()
     context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
     registerProjectComponents(context.app)
   },

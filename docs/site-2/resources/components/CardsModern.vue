@@ -10,6 +10,7 @@ type CardAction = {
   iconOnly?: boolean
   iconPosition?: 'before' | 'after'
   tooltip?: LocalizedText
+  tooltipPlacement?: 'top' | 'right' | 'bottom' | 'left'
   color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
   outlined?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -83,9 +84,9 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
               :color="action.color ?? (actionIndex === 0 ? 'gray' : 'primary')"
               :outlined="action.outlined ?? false"
               :size="action.size ?? 'sm'"
-              :tooltip="text(action.tooltip)"
               :aria-label="action.iconOnly ? (text(action.tooltip) || text(action.label)) : undefined"
               :class="{ 'cards-modern__action--icon-only': action.iconOnly }"
+              v-bind="action.tooltip ? { [`x-tooltip.${action.tooltipPlacement ?? 'top'}`]: text(action.tooltip) } : {}"
               :icon-position="action.iconPosition ?? 'before'"
               :target="action.external ? '_blank' : undefined"
               :rel="action.external ? 'noopener noreferrer' : undefined"
