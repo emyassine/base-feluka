@@ -169,7 +169,16 @@
           "color": { "enum": ["primary", "gray", "info", "success", "warning", "danger", "dark", "secondary"] },
           "size": { "enum": ["xs", "sm", "md", "lg", "xl"] },
           "outlined": { "type": "boolean" },
-          "external": { "type": "boolean" }
+          "external": { "type": "boolean" },
+          "mobile": {
+            "type": "object",
+            "properties": {
+              "color": { "enum": ["primary", "gray", "info", "success", "warning", "danger", "dark", "secondary"] },
+              "icon": { "type": "string", "minLength": 1 },
+              "tooltip": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
         },
         "additionalProperties": false
       }

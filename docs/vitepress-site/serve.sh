@@ -9,6 +9,7 @@ sites_option=0
 build=0
 preview=0
 list_sites=0
+retry_seconds=''
 
 if [[ -t 1 && -n "${TERM:-}" && "$TERM" != "dumb" && -z "${NO_COLOR:-}" ]]; then
   RESET=$'\033[0m'
@@ -43,6 +44,7 @@ Usage: ./serve.sh [OPTIONS]
   --build             Build selected sites instead of starting servers.
   --preview           Build selected sites, serve the static output, and rebuild
                       only the site whose sources change.
+  --retry[=SECONDS]   Restart failed servers after SECONDS (default: 10).
   --help              Show this help.
   new <sitename>      Create and register a site from the SPMPST schema defaults.
 
@@ -52,6 +54,8 @@ Examples:
   ./serve.sh --sites=site-1,site-2
   ./serve.sh --sites=site-1 --build
   ./serve.sh --sites=site-1 --preview
+  ./serve.sh --sites=site-2 --retry
+  ./serve.sh --sites=site-2 --retry=5
 
 Without --sites, an interactive terminal prompts for a selection. Non-interactive
 execution selects all registered sites. Servers use distinct available ports,
@@ -74,6 +78,15 @@ while (($#)); do
     --sites) (($# >= 2)) || { error '--sites needs a comma-separated list.'; exit 2; }; requested_sites="$2"; sites_option=1; shift 2 ;;
     --build) build=1; shift ;;
     --preview) preview=1; shift ;;
+    --retry)
+      retry_seconds=10
+      if (($# >= 2)) && [[ "$2" =~ ^[0-9]+$ ]]; then retry_seconds="$2"; shift 2; else shift; fi
+      ;;
+    --retry=*)
+      retry_seconds="${1#*=}"
+      [[ "$retry_seconds" =~ ^[0-9]+$ ]] || { error '--retry needs a positive number of seconds.'; exit 2; }
+      shift
+      ;;
     --help|-h) usage; exit 0 ;;
     *) error "Unknown option: $1"; usage >&2; exit 2 ;;
   esac
@@ -91,6 +104,16 @@ fi
 
 if ((build && preview)); then
   error '--build and --preview cannot be combined.'
+  exit 2
+fi
+
+if [[ -n "$retry_seconds" ]] && ((build || list_sites)); then
+  error '--retry can only be used when starting servers.'
+  exit 2
+fi
+
+if [[ -n "$retry_seconds" ]] && ((10#$retry_seconds < 1)); then
+  error '--retry needs a positive number of seconds.'
   exit 2
 fi
 
@@ -219,28 +242,49 @@ else
 fi
 
 pids=()
+retry_sleep_pid=''
+stop_children() {
+  if [[ -n "$retry_sleep_pid" ]]; then kill -TERM "$retry_sleep_pid" 2>/dev/null || true; fi
+  for pid in "${pids[@]}"; do kill -TERM "$pid" 2>/dev/null || true; done
+  if [[ -n "$retry_sleep_pid" ]]; then wait "$retry_sleep_pid" 2>/dev/null || true; retry_sleep_pid=''; fi
+  for pid in "${pids[@]}"; do wait "$pid" 2>/dev/null || true; done
+  pids=()
+}
 shutdown() {
   trap - EXIT INT TERM
-  for pid in "${pids[@]}"; do kill -TERM "$pid" 2>/dev/null || true; done
-  for pid in "${pids[@]}"; do wait "$pid" 2>/dev/null || true; done
+  stop_children
 }
 trap shutdown EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-for index in "${!sites[@]}"; do
-  IFS=$'\t' read -r site_id site_name output_root <<<"${sites[$index]}"
-  port="${ports[$index]}"
-  printf '  %s%-24s%s %s (%s)\n' "$BOLD" "$site_name" "$RESET" "http://$host:$port/" "$site_id"
-  if ((preview)); then
-    (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve-build --site "$site_id") &
-    pids+=("$!")
-    (cd -- "$site_dir" && exec node app/scripts/site.mjs watch --site "$site_id") &
-    pids+=("$!")
-  else
-    (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve --site "$site_id") &
-    pids+=("$!")
-  fi
-done
+while :; do
+  for index in "${!sites[@]}"; do
+    IFS=$'\t' read -r site_id site_name output_root <<<"${sites[$index]}"
+    port="${ports[$index]}"
+    printf '  %s%-24s%s %s (%s)\n' "$BOLD" "$site_name" "$RESET" "http://$host:$port/" "$site_id"
+    if ((preview)); then
+      (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve-build --site "$site_id") &
+      pids+=("$!")
+      (cd -- "$site_dir" && exec node app/scripts/site.mjs watch --site "$site_id") &
+      pids+=("$!")
+    else
+      (cd -- "$site_dir" && PORT="$port" HOST="$host" exec node app/scripts/site.mjs serve --site "$site_id") &
+      pids+=("$!")
+    fi
+  done
 
-wait -n "${pids[@]}"
+  if wait -n "${pids[@]}"; then
+    exit_code=0
+  else
+    exit_code=$?
+  fi
+  if [[ -z "$retry_seconds" || "$exit_code" -eq 0 ]]; then exit "$exit_code"; fi
+
+  warning "A server process exited (status $exit_code); restarting in $retry_seconds second(s). Press Ctrl+C to stop."
+  stop_children
+  sleep "$retry_seconds" &
+  retry_sleep_pid=$!
+  wait "$retry_sleep_pid" || exit 130
+  retry_sleep_pid=''
+done

@@ -11,6 +11,7 @@ type TopbarAction = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   outlined?: boolean
   external?: boolean
+  mobile?: { color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'; icon?: string; tooltip?: string }
 }
 
 const { lang } = useData()
@@ -39,35 +40,38 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
       :outlined="action.outlined ?? false"
       :target="isExternal(action) ? '_blank' : undefined"
       :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
+      :class="{ 'docs-topbar-action--desktop': action.mobile }"
     />
+    <a
+      v-for="(action, index) in actions.filter((item) => item.mobile)"
+      :key="`mobile-${href(action)}-${index}`"
+      :class="['DocSearch', 'DocSearch-Button', 'docs-topbar-action--mobile', `color-${action.mobile?.color ?? action.color ?? 'primary'}`]"
+      :href="href(action)"
+      :title="action.mobile?.tooltip"
+      :aria-label="action.mobile?.tooltip ?? localized(action.label)"
+      :target="isExternal(action) ? '_blank' : undefined"
+      :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
+    >
+      <span class="DocSearch-Button-Container">
+        <span class="vp-icon docs-topbar-action-icon" aria-hidden="true">
+          <img v-if="action.mobile?.icon?.startsWith('/')" :src="action.mobile.icon" alt="" />
+        </span>
+      </span>
+    </a>
   </div>
 </template>
 
 <style>
 .docs-topbar-actions { display: flex; align-items: center; gap: .5rem; margin-inline-start: .75rem; }
 .docs-topbar-actions .feluqa-button { white-space: nowrap; }
-@media (max-width: 768px) { .docs-topbar-actions { margin-inline-start: .35rem; } }
 @media (max-width: 768px) {
-  .docs-topbar-actions a[href="/account/"] {
-    display: inline-flex;
-    width: 2.25rem;
-    min-width: 2.25rem;
-    height: 2.25rem;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    overflow: hidden;
-    font-size: 0;
-  }
-
-  .docs-topbar-actions a[href="/account/"]::before {
-    width: 1.2rem;
-    height: 1.2rem;
-    flex: 0 0 1.2rem;
-    background: currentColor;
-    content: "";
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3C/svg%3E") center / contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3C/svg%3E") center / contain no-repeat;
-  }
+  .docs-topbar-actions { margin-inline-start: .35rem; }
+  .docs-topbar-action--desktop { display: none !important; }
+  .docs-topbar-actions .docs-topbar-action--mobile { text-decoration: none; }
+  .docs-topbar-actions .docs-topbar-action-icon img { display: block; width: 1.15rem; height: 1.15rem; }
+  .docs-topbar-actions .docs-topbar-action--mobile.color-gray { color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); border: 1px solid var(--vp-c-divider); border-radius: 8px; }
+  .docs-topbar-actions .docs-topbar-action--mobile.color-gray:hover { background: var(--vp-c-bg-mute); }
+  .dark .docs-topbar-actions .docs-topbar-action-icon img { filter: invert(1); }
 }
+@media (min-width: 769px) { .docs-topbar-action--mobile { display: none !important; } }
 </style>

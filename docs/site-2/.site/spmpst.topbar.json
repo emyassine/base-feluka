@@ -84,7 +84,12 @@
       },
       "link": "/account/",
       "color": "primary",
-      "size": "sm"
+      "size": "sm",
+      "mobile": {
+        "color": "gray",
+        "icon": "users",
+        "tooltip": "Accounts"
+      }
     }
   ]
 }
