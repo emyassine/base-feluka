@@ -45,6 +45,7 @@ cat > "$CONFIG_FILE" << 'EOF'
 #
 # Example:
 #   ["Production"]="/var/www/app:webkernel"
+#   SOURCE_DIRS["Production"]="docs-output/site-1"
 # ============================================================
 
 # Remote server hostname or IP
@@ -73,6 +74,15 @@ declare -A INSTANCES=(
   ["Staging"]="/var/www/staging:webkernel"
   ["Static"]="/var/www/static:static"
 )
+
+# Optional per-instance local source. Omit an entry to be prompted at runtime.
+declare -A SOURCE_DIRS=()
+
+# Passwords are disabled unless UNSAFE_MODE=true. Prefer SSH keys and
+# passwordless sudo for rsync. Configured passwords require sshpass.
+UNSAFE_MODE=false
+SSH_PASSWORD=""
+SUDO_PASSWORD=""
 
 # ------------------------------------------------------------
 # Deployment methods
@@ -143,6 +153,11 @@ run_post_deploy() {
 
 source "$CONFIG_FILE"
 
+if [[ "${UNSAFE_MODE:-false}" != "true" ]]; then
+  SSH_PASSWORD=""
+  SUDO_PASSWORD=""
+fi
+
 echo ""
 echo ""
 echo "WEB SYNC (•) DEPLOY"
@@ -158,20 +173,6 @@ echo ""
 echo "Server: $SERVER"
 echo "User: $USER"
 echo ""
-
-echo "Choose a local source directory to sync. Enter a path relative to the repository or an absolute path."
-read -r -p "Source directory [.] : " source_input
-source_input="${source_input:-.}"
-if [[ "$source_input" = /* ]]; then
-  SOURCE="$source_input"
-else
-  SOURCE="$SCRIPT_DIR/$source_input"
-fi
-if [[ ! -d "$SOURCE" ]]; then
-  echo "Source directory does not exist: $SOURCE"
-  exit 1
-fi
-SOURCE="$(cd -- "$SOURCE" && pwd)/"
 
 if [[ ${#INSTANCES[@]} -eq 0 ]]; then
   echo "No instances configured"
@@ -204,6 +205,16 @@ INSTANCE=${instance_names[$choice]}
 TARGET=${instance_paths[$choice]}
 CONTEXT=${instance_contexts[$choice]}
 
+source_input="${SOURCE_DIRS[$INSTANCE]:-}"
+if [[ -z "$source_input" ]]; then
+  echo "Choose a local source directory to sync (relative to this script or absolute)."
+  read -r -p "Source directory [.] : " source_input
+  source_input="${source_input:-.}"
+fi
+if [[ "$source_input" = /* ]]; then SOURCE="$source_input"; else SOURCE="$SCRIPT_DIR/$source_input"; fi
+if [[ ! -d "$SOURCE" ]]; then echo "Source directory does not exist: $SOURCE"; exit 1; fi
+SOURCE="$(cd -- "$SOURCE" && pwd)/"
+
 echo ""
 echo "Available methods:"
 for i in "${!METHODS[@]}"; do
@@ -220,6 +231,13 @@ fi
 
 METHOD=${METHODS[$((method_choice-1))]}
 HOST="$USER@$SERVER"
+
+if [[ -n "$SSH_PASSWORD" ]]; then
+  command -v sshpass >/dev/null || { echo "SSH_PASSWORD requires sshpass"; exit 1; }
+  export SSHPASS="$SSH_PASSWORD"
+  ssh() { command sshpass -e ssh "$@"; }
+  rsync() { command sshpass -e rsync -e "sshpass -e ssh" "$@"; }
+fi
 
 echo ""
 echo "Deploying $SOURCE to $INSTANCE [$CONTEXT] via $METHOD..."

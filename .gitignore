@@ -1,3 +1,5 @@
+web-sync.config
+
 /target/
 **/target/
 **/node_modules/
