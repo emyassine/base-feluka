@@ -46,31 +46,31 @@ Our work connects consulting, innovation and delivery. Each engagement is define
 
 Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.
 
-**Explore consulting** → `/services/consulting`
+<FeluqaButton tag="a" href="/services/consulting" label="Explore consulting"/>
 
 ### Digital systems & software
 
 Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.
 
-**Explore software & systems** → `/services/software`
+<FeluqaButton tag="a" href="/services/software" label="Explore software & systems"/>
 
 ### Infrastructure, equipment & security
 
 Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.
 
-**Explore infrastructure** → `/services/infrastructure`
+<FeluqaButton tag="a" href="/services/infrastructure" label="Explore infrastructure"/>
 
 ### Operations, people & capabilities
 
 Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.
 
-**Explore operations** → `/services/operations`
+<FeluqaButton tag="a" href="/services/operations" label="Explore operations"/>
 
 ### Innovation & new ventures
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
-**Explore innovation** → `/innovation`
+<FeluqaButton tag="a" href="/innovation" label="Explore innovation"/>
 
 ---
 
@@ -86,7 +86,7 @@ Discover the areas we explore and the kinds of value that can be created. Browse
 **People & organizations** — training, coordination and emerging talent solutions.  
 **Research & ventures** — internal standards, experimental platforms and new business concepts.
 
-**Explore the showcase** → `/showcase`
+<FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
 
 <!-- Showcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
@@ -112,7 +112,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-**How we work** → `/about#delivery-model`
+<FeluqaButton tag="a" href="/about#delivery-model" label="How we work"/>
 
 ---
 
@@ -126,7 +126,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-**More about us** → `/about`
+<FeluqaButton tag="a" href="/about" label="More about us"/>
 
 ---
 
@@ -138,19 +138,20 @@ Our internal initiatives are part of the way we research, experiment and build f
 
 A Rust-based, cross-platform application framework under development, exploring efficient application systems across different deployment environments.
 
-**Discover Feluqa** → `/initiatives/feluqa`
+<FeluqaButton tag="a" href="/initiatives/feluqa" label="Discover Feluqa"/>
 
 ### The Best Recruit — Coming soon
 
 A recruitment and talent initiative being prepared to help employers discover and evaluate relevant profiles through a structured qualification process.
 
-**Discover The Best Recruit** → `/initiatives/the-best-recruit`
+<FeluqaButton tag="a" href="/initiatives/the-best-recruit"
+	label="Discover The Best Recruit"/>
 
 ### SPMPST — Specification in development
 
 A proposed standard for portable, structured Markdown content trees and site-building workflows. Currently an internal specification and research initiative.
 
-**Discover SPMPST** → `/initiatives/spmpst`
+<FeluqaButton tag="a" href="/initiatives/spmpst" label="Discover SPMPST"/>
 
 <!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
 do not place it among current offerings. -->
@@ -173,8 +174,8 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
-**Explore partnerships** → `/partners`  
-**Propose a collaboration** → `/contact?topic=partnership`
+<FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
+<FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
 
 ---
 
@@ -184,7 +185,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-**Our pricing approach** → `/pricing`
+<FeluqaButton tag="a" href="/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.

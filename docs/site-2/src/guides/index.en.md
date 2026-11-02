@@ -293,19 +293,20 @@ Our internal initiatives are part of the way we research, experiment and build f
 
 A Rust-based, cross-platform application framework under development, exploring efficient application systems across different deployment environments.
 
-**Discover Feluqa** → `/initiatives/feluqa`
+<FeluqaButton tag="a" href="/initiatives/feluqa" label="Discover Feluqa"/>
 
 ### The Best Recruit — Coming soon
 
 A recruitment and talent initiative being prepared to help employers discover and evaluate relevant profiles through a structured qualification process.
 
-**Discover The Best Recruit** → `/initiatives/the-best-recruit`
+<FeluqaButton tag="a" href="/initiatives/the-best-recruit"
+	label="Discover The Best Recruit"/>
 
 ### SPMPST — Specification in development
 
 A proposed standard for portable, structured Markdown content trees and site-building workflows. Currently an internal specification and research initiative.
 
-**Discover SPMPST** → `/initiatives/spmpst`
+<FeluqaButton tag="a" href="/initiatives/spmpst" label="Discover SPMPST"/>
 
 <!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
 do not place it among current offerings. -->
@@ -328,8 +329,8 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
-**Explore partnerships** → `/partners`
-**Propose a collaboration** → `/contact?topic=partnership`
+<FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
+<FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
 
 ---
 
@@ -339,7 +340,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-**Our pricing approach** → `/pricing`
+<FeluqaButton tag="a" href="/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
