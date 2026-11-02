@@ -79,7 +79,7 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
               tag="a"
               :href="action.href"
               :color="action.color ?? (actionIndex === 0 ? 'gray' : 'primary')"
-              :outlined="action.outlined ?? actionIndex === 0"
+              :outlined="action.outlined ?? false"
               :size="action.size ?? 'sm'"
               :icon-position="action.iconPosition ?? 'before'"
               :target="action.external ? '_blank' : undefined"
