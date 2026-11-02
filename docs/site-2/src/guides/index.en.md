@@ -374,28 +374,20 @@ do not place it among current offerings. -->
 
 We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
 
-:::: info What this can mean for your business
-::: details Better decisions {class="detail-blue"}
-Clearer priorities, options and investment choices.
+:::: info Become a partner and grow with us
+We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
+
+::: details Accounting and advisory firms {class="detail-blue"}
+Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.
 :::
 
-::: details More efficient operations {class="detail-green"}
-Less duplicated work, fewer avoidable errors and better coordination.
+::: details Business development and referral partners {class="detail-amber"}
+Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.
 :::
 
-::: details Greater visibility and control {class="detail-purple"}
-Accessible information, traceable processes and systems you can manage.
+::: details Freelancers and specialist partners {class="detail-green"}
+Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 :::
-
-::: details New opportunities {class="detail-amber"}
-Business concepts, partnerships, products and services evaluated for real-world potential.
-:::
-
-::: details A clearer route to delivery {class="detail-teal"}
-Defined scope, accountable coordination and expertise matched to the assignment.
-:::
-
-Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
 ::::
 
 <div style="display: flex; gap: 15px;">
