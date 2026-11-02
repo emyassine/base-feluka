@@ -406,30 +406,40 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <div v-else ref="stageTrack" class="nm-showcase__stack-track">
-      <div class="nm-showcase__stack-list">
+    <div v-else ref="stageTrack" class="nm-showcase__stack-track" :style="{ '--n': count }">
+      <div class="nm-showcase__stack-sticky">
+        <div class="nm-showcase__stack-deck" :style="{ '--active-index': active }">
         <article
           v-for="(story, index) in stories"
           :key="`stack-${story.name}-${index}`"
           class="nm-showcase__stack-card"
-          :class="{ 'is-revealed': index <= active }"
-          :style="{ '--stack-index': index, '--story-color': story.color }"
+          :class="{ 'is-active': index === active, 'is-past': index < active }"
+          :aria-hidden="index !== active"
+          :style="{ '--stack-index': index, '--stack-order': index === active ? count + 1 : index, '--stack-offset': `${(index - active) * 0.65}rem`, '--story-color': story.color }"
         >
           <figure class="nm-showcase__stack-side">
             <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
-            <figcaption>{{ labels.before }}</figcaption>
+            <figcaption><span>01</span>{{ labels.before }}</figcaption>
             <p>{{ story.beforeText }}</p>
           </figure>
           <div class="nm-showcase__stack-copy">
+            <span class="nm-showcase__stack-count">{{ String(index + 1).padStart(2, '0') }} <span>/ {{ String(count).padStart(2, '0') }}</span></span>
             <span class="nm-showcase__name-title">{{ story.name }}</span>
-            <p>{{ story.description }}</p>
+            <p class="nm-showcase__stack-description">
+              <span
+                v-for="(sentence, sentenceIndex) in descriptionSentences(story.description)"
+                :key="sentenceIndex"
+                class="nm-showcase__story-sentence"
+              >{{ sentence }}</span>
+            </p>
           </div>
           <figure class="nm-showcase__stack-side">
             <img :src="story.afterImage" :alt="fill(labels.altAfter, story.name)" loading="lazy" draggable="false" />
-            <figcaption>{{ labels.after }}</figcaption>
+            <figcaption><span>02</span>{{ labels.after }}</figcaption>
             <p>{{ story.afterText }}</p>
           </figure>
         </article>
+        </div>
       </div>
     </div>
   </section>
@@ -613,34 +623,51 @@ onBeforeUnmount(() => {
 
   .nm-showcase__carousel { display: none; }
 
-  .nm-showcase__stack-track { display: block; }
-  .nm-showcase__stack-list { width: min(92vw, 1180px); margin: 0 auto; padding-bottom: 60svh; }
-  .nm-showcase__stack-card {
-    position: sticky;
-    top: calc(8svh + var(--stack-index) * 1.25rem);
-    z-index: calc(var(--stack-index) + 1);
-    display: grid;
-    min-height: clamp(18rem, 58svh, 34rem);
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.8fr) minmax(0, 1fr);
-    align-items: center;
-    gap: clamp(1rem, 3vw, 2.5rem);
-    margin-bottom: 55svh;
-    padding: clamp(1rem, 3vw, 2.25rem);
-    border: 2px solid var(--story-color, #7c3aed);
-    border-radius: 1.25rem;
-    background: var(--vp-c-bg);
-    box-shadow: 0 18px 50px rgb(22 20 15 / 0.16);
-    opacity: 0.18;
-    transform: translateY(1.5rem) scale(0.985);
-    transition: opacity 500ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  .nm-showcase__stack-track {
+    display: block;
+    height: calc(100svh + (var(--n) - 1) * var(--scroll-per-item));
   }
-  .nm-showcase__stack-card.is-revealed { opacity: 1; transform: translateY(0) scale(1); }
-  .nm-showcase__stack-side { min-width: 0; margin: 0; text-align: center; }
-  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.8rem; }
-  .nm-showcase__stack-side figcaption { margin-top: 0.8rem; color: var(--nm-showcase-before-color); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .nm-showcase__stack-sticky {
+    position: sticky;
+    top: 0;
+    display: grid;
+    height: 100svh;
+    place-items: center;
+  }
+  .nm-showcase__stack-deck { position: relative; width: min(96vw, 1440px); height: min(68svh, 620px); }
+  .nm-showcase__stack-card {
+    position: absolute;
+    inset: 0;
+    z-index: var(--stack-order);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.75fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.75rem);
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    border: 2px solid var(--story-color, #7c3aed);
+    border-radius: 1.5rem;
+    background: var(--vp-c-bg);
+    box-shadow: 0 24px 70px rgb(22 20 15 / 0.16);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(2.5rem) scale(0.97);
+    transition: opacity 420ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nm-showcase__stack-card.is-past {
+    opacity: 0.42;
+    pointer-events: none;
+    transform: translateY(var(--stack-offset)) scale(0.97);
+  }
+  .nm-showcase__stack-card.is-active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+  .nm-showcase__stack-side { min-width: 0; margin: 0; }
+  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.9rem; }
+  .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: var(--nm-showcase-before-color); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nm-showcase__stack-side figcaption span { color: var(--vp-c-text-3); font-variant-numeric: tabular-nums; }
   .nm-showcase__stack-side:last-child figcaption { color: var(--nm-showcase-after-color); }
-  .nm-showcase__stack-side p { margin: 0.4rem 0 0; font-size: 0.95rem; line-height: 1.5; }
+  .nm-showcase__stack-side p { margin: 0.55rem 0 0; font-size: 0.96rem; line-height: 1.55; }
   .nm-showcase__stack-copy { text-align: center; }
+  .nm-showcase__stack-count { display: block; margin-bottom: 1rem; color: var(--story-color); font-size: 0.9rem; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0.1em; }
+  .nm-showcase__stack-count span { color: var(--vp-c-text-3); font-weight: 500; }
   .nm-showcase__stack-copy .nm-showcase__name-title { font-size: clamp(1.25rem, 2vw, 1.75rem); }
   .nm-showcase__stack-copy p { margin: 1rem 0 0; color: var(--vp-c-text-2); line-height: 1.55; }
 
