@@ -27,7 +27,7 @@ Sélectionnez votre profil pour accéder à votre espace d’authentification.
       image: '/images/accounts/world-1-1280.webp',
       actions: [
         { label: 'Déjà utilisateur ? Connexion', href: 'https://numerimondes.com/account/connect/authentication/login', icon: 'circle-user-round', color: 'gray', external: true },
-        { label: 'Créer un compte', href: 'https://numerimondes.com/account/connect/authentication/register', icon: 'user-plus', external: true }
+        { label: 'Créer un compte', tooltip: 'Créer un compte', iconOnly: true, href: 'https://numerimondes.com/account/connect/authentication/register', icon: 'user-plus', external: true }
       ]
     },
     {

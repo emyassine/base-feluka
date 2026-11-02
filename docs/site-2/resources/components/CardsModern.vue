@@ -7,7 +7,9 @@ type CardAction = {
   label: LocalizedText
   href: string
   icon?: string
+  iconOnly?: boolean
   iconPosition?: 'before' | 'after'
+  tooltip?: LocalizedText
   color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
   outlined?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -81,6 +83,9 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
               :color="action.color ?? (actionIndex === 0 ? 'gray' : 'primary')"
               :outlined="action.outlined ?? false"
               :size="action.size ?? 'sm'"
+              :tooltip="text(action.tooltip)"
+              :aria-label="action.iconOnly ? (text(action.tooltip) || text(action.label)) : undefined"
+              :class="{ 'cards-modern__action--icon-only': action.iconOnly }"
               :icon-position="action.iconPosition ?? 'before'"
               :target="action.external ? '_blank' : undefined"
               :rel="action.external ? 'noopener noreferrer' : undefined"
@@ -118,6 +123,8 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
 .cards-modern__description { margin: .75rem 0 0; color: #e4e4e7; font-size: .875rem; line-height: 1.75; }
 .cards-modern__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-top: 1.25rem; }
 .cards-modern__actions :deep(.feluqa-button) { min-height: 2.25rem; font-size: .75rem; }
+.cards-modern__actions :deep(.cards-modern__action--icon-only) { width: 2.25rem; min-width: 2.25rem; padding-inline: 0; }
+.cards-modern__actions :deep(.cards-modern__action--icon-only .button-content) { display: none; }
 .cards-modern__action-icon { width: 1rem; height: 1rem; }
 @media (max-width: 760px) { .cards-modern__grid { grid-template-columns: 1fr; gap: 1rem; } .cards-modern__card { min-height: 22.5rem; padding: 1.25rem; } .cards-modern__section-title { margin-top: 2.25rem; } }
 </style>
