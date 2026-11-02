@@ -20,7 +20,18 @@ description: "Numerimondes helps organizations design, build, and operate depend
     { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', color: 'primary' },
     { label: 'Explore our capabilities', href: '/services/', color: 'gray' }
   ]"
-/>
+>
+  <template #dock>
+    <NmSimpleHeroDock
+      :items="[
+        { label: 'Business Advisory', href: '/services/business-advisory/' },
+        { label: 'Systems & Operations', href: '/services/systems-and-operations/' },
+        { label: 'Opportunities', href: '/opportunities/introduction/' },
+        { label: 'About Numerimondes', href: '/company/about-us/about-us' }
+      ]"
+    />
+  </template>
+</NmEffectHero>
 
 <Acomponent
   title="Numerimondes is an independent consulting and solutions company."
