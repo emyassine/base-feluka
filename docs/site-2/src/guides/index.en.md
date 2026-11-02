@@ -7,32 +7,24 @@ description: "Numerimondes helps organizations design, build, and operate depend
 ---
 <div></div>
 <NmEffectHero
-  :effect="['silk', { inject: { color: '#141D2A', colorLight: '#4f86e6', noiseIntensityLight: 0.3 } }]"
-  :hero-style="{
-    minHeight: '90vh',
-    '--nm-effect-hero-light-background': 'radial-gradient(ellipse at 14% 20%, rgb(52 211 153 / 0.2), transparent 36%), radial-gradient(ellipse at 88% 24%, rgb(96 165 250 / 0.3), transparent 40%), radial-gradient(ellipse at 52% 115%, rgb(99 132 230 / 0.2), transparent 46%), linear-gradient(128deg, #f8fbff 0%, #eef5ff 48%, #f7f9ff 100%)',
-    '--nm-effect-hero-light-eyebrow-color': '#1f5fae',
-    '--nm-effect-hero-light-primary-border': '#172033',
-    '--nm-effect-hero-light-primary-background': '#172033',
-    '--nm-effect-hero-light-primary-color': '#ffffff',
-    '--nm-effect-hero-light-primary-hover-background': '#263b5a',
-    '--nm-effect-hero-light-secondary-border': 'rgb(23 32 51 / 0.28)',
-    '--nm-effect-hero-light-secondary-background': 'rgb(255 255 255 / 0.62)',
-    '--nm-effect-hero-light-secondary-color': '#172033',
-    '--nm-effect-hero-light-secondary-backdrop-filter': 'blur(40px)',
-    '--nm-effect-hero-light-secondary-hover-border': 'rgb(23 32 51 / 0.48)',
-    '--nm-effect-hero-light-secondary-hover-background': 'rgb(255 255 255 / 0.85)',
+  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :hero-style="{ minHeight: '90vh' }"
+  light-silk-color="#4f86e6"
+  :light-silk-noise-intensity="0.3"
+  :light-background="{
+    start: '#f8fbff',
+    middle: '#eef5ff',
+    end: '#f7f9ff',
+    mint: '#34d399',
+    sky: '#60a5fa',
+    indigo: '#6384e6',
   }"
-  eyebrow="Insight. Innovation. Strategy. Execution."
-  title="Ideas and operations that move businesses forward."
-  :description="'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>.'"
-  :title-style-light="{ color: '#ffffff' }"
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: '#fff' }"
+  :title="{ text: 'Ideas and operations that move businesses forward.', color: '#ffffff' }"
+  :description="{ text: 'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>.', color: '#e2e8f0' }"
   :buttons="[
-    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', style: 'primary' },
-    { label: 'Explore our capabilities', href: '/services/', style: 'gray' }
+    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', color: 'primary' },
+    { label: 'Explore our capabilities', href: '/services/', color: 'gray' }
   ]"
 />
 

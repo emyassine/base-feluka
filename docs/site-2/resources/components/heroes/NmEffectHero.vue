@@ -5,21 +5,38 @@ import type { CSSProperties } from 'vue'
 type EffectName = 'aurora' | 'silk' | 'shape-grid' | 'prismatic-burst'
 type Effect = readonly [EffectName, { inject?: Record<string, unknown> }?]
 
+interface TextContent {
+  text: string
+  color?: string
+}
+
+interface LightBackground {
+  start: string
+  middle: string
+  end: string
+  mint: string
+  sky: string
+  indigo: string
+}
+
 interface HeroButton {
   label: string
   href: string
-  style?: 'primary' | 'secondary'
+  color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
   external?: boolean
   icon?: 'whatsapp'
 }
 
 const props = withDefaults(defineProps<{
   effect: Effect
-  eyebrow?: string
+  lightSilkColor?: string
+  lightSilkNoiseIntensity?: number
+  lightBackground?: LightBackground
+  eyebrow?: string | TextContent
   fullBleed?: boolean
   heroStyle?: CSSProperties
-  title: string
-  description: string
+  title: string | TextContent
+  description: string | TextContent
   buttons?: HeroButton[]
   titleStyle?: CSSProperties
   titleStyleLight?: CSSProperties
@@ -34,6 +51,22 @@ const props = withDefaults(defineProps<{
 
 const { isDark } = useData()
 const selectedEffect = computed(() => props.effect[0])
+const lightBackgroundStyle = computed<CSSProperties | undefined>(() => {
+  const palette = props.lightBackground
+  if (isDark.value || !palette) return undefined
+  return {
+    '--nm-hero-light-start': palette.start,
+    '--nm-hero-light-middle': palette.middle,
+    '--nm-hero-light-end': palette.end,
+    '--nm-hero-light-mint': palette.mint,
+    '--nm-hero-light-sky': palette.sky,
+    '--nm-hero-light-indigo': palette.indigo,
+  }
+})
+const eyebrowText = computed(() => typeof props.eyebrow === 'string' ? props.eyebrow : props.eyebrow?.text)
+const eyebrowColor = computed(() => typeof props.eyebrow === 'string' ? undefined : props.eyebrow?.color)
+const titleText = computed(() => typeof props.title === 'string' ? props.title : props.title.text)
+const descriptionText = computed(() => typeof props.description === 'string' ? props.description : props.description.text)
 const effectComponent = computed(() => ({
   aurora: 'Aurora',
   silk: 'Silk',
@@ -60,39 +93,41 @@ const effectProps = computed<Record<string, unknown>>(() => {
       }
       break
   }
-  const { colorLight, noiseIntensityLight, ...injected } = (props.effect[1]?.inject ?? {}) as Record<string, unknown>
+  const injected = props.effect[1]?.inject ?? {}
   const merged = { ...defaults, ...injected }
 
   if (isDark.value || selectedEffect.value !== 'silk') return merged
 
   return {
     ...merged,
-    ...(colorLight === undefined ? {} : { color: colorLight }),
-    ...(noiseIntensityLight === undefined ? {} : { noiseIntensity: noiseIntensityLight }),
+    ...(props.lightSilkColor === undefined ? {} : { color: props.lightSilkColor }),
+    ...(props.lightSilkNoiseIntensity === undefined ? {} : { noiseIntensity: props.lightSilkNoiseIntensity }),
   }
 })
 const titleStyles = computed(() => ({
   ...props.titleStyle,
   ...(isDark.value ? props.titleStyleDark : props.titleStyleLight),
+  ...(typeof props.title === 'string' || props.title.color === undefined ? {} : { color: props.title.color }),
 }))
 const descriptionStyles = computed(() => ({
   ...props.descriptionStyle,
   ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
+  ...(typeof props.description === 'string' || props.description.color === undefined ? {} : { color: props.description.color }),
 }))
-const isSecondaryButton = (button: HeroButton, index: number) =>
-  (button.style ?? (index === 0 ? 'primary' : 'secondary')) === 'secondary'
+const buttonColor = (button: HeroButton, index: number) => button.color ?? (index === 0 ? 'primary' : 'gray')
+const isOutlinedButton = (button: HeroButton, index: number) => buttonColor(button, index) === 'gray'
 </script>
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
     </div>
     <div class="nm-effect-hero__content">
-      <p v-if="props.eyebrow" class="nm-effect-hero__eyebrow">{{ props.eyebrow }}</p>
-      <h1 :style="titleStyles">{{ props.title }}</h1>
-      <p :style="descriptionStyles" v-html="props.description" />
+      <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="eyebrowColor ? { color: eyebrowColor } : undefined">{{ eyebrowText }}</p>
+      <h1 :style="titleStyles">{{ titleText }}</h1>
+      <p :style="descriptionStyles" v-html="descriptionText" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
         <FeluqaButton
           v-for="(button, index) in props.buttons"
@@ -100,9 +135,9 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
           tag="a"
           :href="button.href"
           size="md"
-          :color="isSecondaryButton(button, index) ? 'gray' : 'primary'"
-          :outlined="isSecondaryButton(button, index)"
-          :class="isSecondaryButton(button, index) ? 'nm-effect-hero__button--secondary' : 'nm-effect-hero__button--primary'"
+          :color="buttonColor(button, index)"
+          :outlined="isOutlinedButton(button, index)"
+          :class="isOutlinedButton(button, index) ? 'nm-effect-hero__button--secondary' : 'nm-effect-hero__button--primary'"
           :target="button.external ? '_blank' : undefined"
           :rel="button.external ? 'noopener noreferrer' : undefined"
         >
@@ -214,24 +249,24 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
 }
 
-.nm-effect-hero__actions :deep(.nm-effect-hero__button--primary) {
+.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--primary) {
   border-color: #fff;
   background: #fff;
   color: #111827 !important;
 }
 
-.nm-effect-hero__actions :deep(.nm-effect-hero__button--primary:hover) {
+.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--primary:hover) {
   background: #f1f5f9;
 }
 
-.nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary) {
+.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary) {
   border-color: rgb(255 255 255 / 0.42);
   background: rgb(15 23 42 / 0.28);
   color: #fff !important;
   backdrop-filter: blur(8px);
 }
 
-.nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary:hover) {
+.nm-effect-hero--dark .nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary:hover) {
   border-color: rgb(255 255 255 / 0.68);
   background: rgb(255 255 255 / 0.12);
 }
@@ -239,7 +274,11 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 /* Light theme: pearl surface with recognizable, saturated Silk waves. */
 .nm-effect-hero--light {
   isolation: isolate;
-  background: var(--nm-effect-hero-light-background, transparent);
+  background:
+    radial-gradient(ellipse at 14% 20%, color-mix(in srgb, var(--nm-hero-light-mint) 20%, transparent), transparent 36%),
+    radial-gradient(ellipse at 88% 24%, color-mix(in srgb, var(--nm-hero-light-sky) 30%, transparent), transparent 40%),
+    radial-gradient(ellipse at 52% 115%, color-mix(in srgb, var(--nm-hero-light-indigo) 20%, transparent), transparent 46%),
+    linear-gradient(128deg, var(--nm-hero-light-start), var(--nm-hero-light-middle) 48%, var(--nm-hero-light-end));
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
@@ -250,32 +289,6 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 .nm-effect-hero--light:not(.nm-effect-hero--silk) .nm-effect-hero__background {
   opacity: 0.5;
-}
-
-.nm-effect-hero--light .nm-effect-hero__eyebrow {
-  color: var(--nm-effect-hero-light-eyebrow-color, inherit);
-}
-
-.nm-effect-hero--light :deep(.nm-effect-hero__button--primary) {
-  border-color: var(--nm-effect-hero-light-primary-border, currentColor);
-  background: var(--nm-effect-hero-light-primary-background, transparent);
-  color: var(--nm-effect-hero-light-primary-color, inherit) !important;
-}
-
-.nm-effect-hero--light :deep(.nm-effect-hero__button--primary:hover) {
-  background: var(--nm-effect-hero-light-primary-hover-background, var(--nm-effect-hero-light-primary-background, transparent));
-}
-
-.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary) {
-  border-color: var(--nm-effect-hero-light-secondary-border, currentColor);
-  background: var(--nm-effect-hero-light-secondary-background, transparent);
-  color: var(--nm-effect-hero-light-secondary-color, inherit) !important;
-  backdrop-filter: var(--nm-effect-hero-light-secondary-backdrop-filter, none);
-}
-
-.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary:hover) {
-  border-color: var(--nm-effect-hero-light-secondary-hover-border, var(--nm-effect-hero-light-secondary-border, currentColor));
-  background: var(--nm-effect-hero-light-secondary-hover-background, var(--nm-effect-hero-light-secondary-background, transparent));
 }
 
 @media (max-width: 640px) {

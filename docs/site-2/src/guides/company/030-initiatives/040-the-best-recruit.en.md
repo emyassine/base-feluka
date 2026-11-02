@@ -19,7 +19,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', style: 'secondary' }]"
+  :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />
 
 

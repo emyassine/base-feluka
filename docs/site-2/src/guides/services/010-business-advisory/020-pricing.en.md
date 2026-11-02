@@ -20,7 +20,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Request a proposal', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', style: 'secondary' }]"
+  :buttons="[{ label: 'Request a proposal', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
 />
 
 
