@@ -17,6 +17,7 @@ Sélectionnez votre profil pour accéder à votre espace d’authentification.
 <br>
 
 <CardsModern
+  class="account-spaces-cards"
   :cards="[
     {
       meta: 'Votre espace projet',
