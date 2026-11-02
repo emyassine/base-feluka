@@ -77,6 +77,11 @@
   color-scheme: dark;
 }
 
+/* VitePress makes the desktop navbar transparent on pages with a sidebar. */
+.VPNav .VPNavBar.has-sidebar:not(.home) {
+  background-color: var(--vp-nav-bg-color);
+}
+
 .vp-doc h2{border-top:0;}
 .nm-home-links{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0 2rem}.nm-home-links a{display:inline-flex;align-items:center;padding:.55rem .9rem;border:1px solid var(--vp-c-divider);border-radius:var(--radius-md);text-decoration:none;font-weight:600}.nm-home-links a:first-child{background:var(--vp-c-brand-1);border-color:var(--vp-c-brand-1);color:var(--vp-c-white)}.nm-home-links a:hover{border-color:var(--vp-c-brand-1);color:var(--vp-c-brand-1)}
 .nm-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.5rem 0 2rem}
