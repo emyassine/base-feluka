@@ -126,7 +126,7 @@ function cardStyle(index: number): CSSProperties {
   transform: var(--bounce-transform, none);
   transform-origin: center;
   z-index: 1;
-  opacity: 0;
+  opacity: 1;
   animation:
     bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both,
     bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
@@ -178,6 +178,8 @@ function cardStyle(index: number): CSSProperties {
   z-index: var(--bounce-expanded-z, 30);
   border-radius: 16px;
   box-shadow: 0 18px 60px rgb(0 0 0 / 38%);
+  opacity: 1;
+  scale: 1;
   animation: none;
   margin-top: 0;
 }
