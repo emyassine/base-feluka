@@ -52,7 +52,7 @@ let observer: IntersectionObserver | undefined
 let scrollFrame = 0
 let animationFrame = 0
 let animatedStory: number | null = null
-let visibleCard: number | null = null
+const visibleCard = ref<number | null>(null)
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -139,6 +139,17 @@ function animateStory(index: number) {
     } else {
       animationFrame = 0
       animatedStory = null
+      if (window.matchMedia('(max-width: 1023px)').matches && count.value > 1 && scroller.value) {
+        const nextIndex = (index + 1) % count.value
+        const nextCard = cards.value[nextIndex]
+        if (nextCard) {
+          const scrollerRect = scroller.value.getBoundingClientRect()
+          const cardRect = nextCard.getBoundingClientRect()
+          const left = scroller.value.scrollLeft + cardRect.left - scrollerRect.left
+            - (scroller.value.clientWidth - cardRect.width) / 2
+          scroller.value.scrollTo({ left, behavior: prefersReducedMotion.value ? 'auto' : 'smooth' })
+        }
+      }
     }
   }
 
@@ -163,18 +174,18 @@ function handleIntersections(entries: IntersectionObserverEntry[]) {
 
   if (!mostVisible) {
     const activeCardLeft = entries.some(
-      (entry) => Number((entry.target as HTMLElement).dataset.storyIndex) === visibleCard && !entry.isIntersecting,
+      (entry) => Number((entry.target as HTMLElement).dataset.storyIndex) === visibleCard.value && !entry.isIntersecting,
     )
     if (activeCardLeft) {
-      visibleCard = null
+      visibleCard.value = null
       stopAnimation()
     }
     return
   }
 
   const index = Number((mostVisible.target as HTMLElement).dataset.storyIndex)
-  if (!Number.isInteger(index) || index === visibleCard) return
-  visibleCard = index
+  if (!Number.isInteger(index) || index === visibleCard.value) return
+  visibleCard.value = index
   animateStory(index)
 }
 
@@ -258,7 +269,7 @@ onBeforeUnmount(() => {
               <span class="nm-showcase__timeline-label" aria-hidden="true">{{ labels.timelineEnd }}</span>
             </div>
           </div>
-          <div class="nm-showcase__copy">
+          <div v-if="index === (visibleCard ?? 0)" class="nm-showcase__copy">
             <span class="nm-showcase__name">{{ story.name }}</span>
             <span class="nm-showcase__description">{{ story.description }}</span>
             <div class="nm-showcase__mobile-captions">
@@ -358,7 +369,6 @@ onBeforeUnmount(() => {
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-base);
-  font-size: 16px;
   line-height: 24px;
 }
 
@@ -368,7 +378,6 @@ onBeforeUnmount(() => {
   order: 1;
   margin: 0 auto 1.5rem;
   font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
-  font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 32px;
@@ -380,14 +389,13 @@ onBeforeUnmount(() => {
   width: min(85vw, 32rem);
   margin: 1.5rem auto 3rem;
   font-family: inherit;
-  font-size: 16px;
   font-style: italic;
   line-height: 24px;
   text-align: left;
 }
 
 .nm-showcase__footnote-marker { font-style: normal; }
-.nm-showcase__footnote cite { display: block; margin-top: 0.6rem; font-size: 0.95em; text-align: right; }
+.nm-showcase__footnote cite { display: block; margin-top: 0.6rem;  text-align: right; }
 
 .nm-showcase__carousel { order: 3; display: block; }
 
@@ -445,11 +453,11 @@ onBeforeUnmount(() => {
   color: var(--vp-c-text-1);
 }
 
-.nm-showcase__name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
-.nm-showcase__description { max-width: 42rem; font-size: 13px; font-weight: 400; line-height: 1.4; }
+.nm-showcase__name {  font-weight: 600; letter-spacing: -0.01em; line-height: 24px; }
+.nm-showcase__description { max-width: 42rem; font-weight: 400; line-height: 1.4; }
 .nm-showcase__mobile-captions { display: grid; gap: 0.85rem; }
-.nm-showcase__mobile-caption-label { display: block; color: var(--vp-c-brand-1); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
-.nm-showcase__mobile-caption p { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.5; }
+.nm-showcase__mobile-caption-label { display: block; color: var(--vp-c-brand-1);  font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+.nm-showcase__mobile-caption p { margin: 0.2rem 0 0; line-height: 1.5; }
 .nm-showcase__timeline--overlay { position: absolute; inset: auto 0 0; z-index: 2; padding: 0 1rem 0.5rem; }
 
 .nm-showcase__timeline { display: flex; align-items: center; gap: 0.75rem; }
