@@ -61,6 +61,11 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
 }
 
+function smoothstep(value: number) {
+  const progress = clamp(value, 0, 1)
+  return progress * progress * (3 - 2 * progress)
+}
+
 function fill(template: string, name: string) {
   return template.replace('{name}', name)
 }
@@ -79,18 +84,23 @@ function descriptionSentences(description: string) {
 }
 
 function stackCardStyle(index: number) {
-  const reveal = clamp(pos.value - index + 1, 0, 1)
-  const scaleProgress = clamp(pos.value - index, 0, 1)
+  const readingLead = 0.28
+  const transitionSpan = 1 - readingLead
+  const arrivalProgress = index === 0
+    ? 1
+    : clamp((pos.value - index + 1 - readingLead) / transitionSpan, 0, 1)
+  const arrival = smoothstep(arrivalProgress)
+  const scaleProgress = smoothstep(clamp((pos.value - index - readingLead) / transitionSpan, 0, 1))
   const targetScale = 0.85 + index * 0.03
   const scale = 1 - scaleProgress * (1 - targetScale)
-  const translateY = index * 30 + (1 - reveal) * 80
-  const rotation = (1 - reveal) * -2
+  const translateY = `${index * 36}px + ${(1 - arrival) * 60}svh`
+  const rotation = (1 - arrival) * -1.25
 
   return {
-    zIndex: reveal > 0 ? count.value + index : index,
-    opacity: reveal,
+    zIndex: index,
+    opacity: 1,
     pointerEvents: index === active.value ? 'auto' : 'none',
-    transform: `perspective(1200px) translate3d(0, ${translateY}px, 0) scale(${scale}) rotateX(${rotation}deg)`,
+    transform: `perspective(1400px) translate3d(0, calc(${translateY}), 0) scale(${scale}) rotateX(${rotation}deg)`,
   }
 }
 
@@ -263,6 +273,7 @@ onBeforeUnmount(() => {
 <template>
   <section
     class="nm-showcase"
+    :class="{ 'nm-showcase--stacked': variant === 'stacked' }"
     :aria-label="labels.region"
     :style="{
       '--nm-showcase-before-color': labels.beforeColor ?? '#e5484d',
@@ -618,6 +629,8 @@ onBeforeUnmount(() => {
     margin: 4rem calc(50% - 50vw) 5rem;
   }
 
+  .nm-showcase--stacked { --scroll-per-item: 100svh; }
+
   .nm-showcase__intro {
     display: flex;
     flex-direction: column;
@@ -648,7 +661,9 @@ onBeforeUnmount(() => {
     top: 0;
     display: grid;
     height: 100svh;
-    place-items: center;
+    place-items: start center;
+    padding-top: 16svh;
+    box-sizing: border-box;
     overflow: hidden;
     isolation: isolate;
   }
@@ -656,7 +671,7 @@ onBeforeUnmount(() => {
     position: relative;
     z-index: 1;
     width: min(96vw, 1440px);
-    height: min(68svh, 620px);
+    height: min(60svh, 560px);
   }
   .nm-showcase__stack-card {
     position: absolute;
@@ -666,7 +681,7 @@ onBeforeUnmount(() => {
     grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.75fr) minmax(0, 1fr);
     align-items: center;
     gap: clamp(1.25rem, 3vw, 2.75rem);
-    padding: clamp(1.5rem, 4vw, 3.5rem);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
     border: 1px solid rgb(210 222 237 / 0.18);
     border-radius: 1.25rem;
     color: #f3f6fa;
@@ -680,7 +695,7 @@ onBeforeUnmount(() => {
   }
   .nm-showcase__stack-card.is-active { border-color: rgb(210 222 237 / 0.26); pointer-events: auto; }
   .nm-showcase__stack-side { min-width: 0; margin: 0; }
-  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.9rem; }
+  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 0.9rem; }
   .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: #b7c5d5; font-size: 0.76rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
   .nm-showcase__stack-side figcaption span { color: #77889d; font-variant-numeric: tabular-nums; }
   .nm-showcase__stack-side:last-child figcaption { color: #a9c4df; }
