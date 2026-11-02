@@ -8,6 +8,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
 <NmEffectHero
   effect="silk"
+  :hero-style="{ minHeight: '90vh' }"
   eyebrow="Insight. Innovation. Strategy. Execution."
   title="Ideas and operations that move businesses forward."
   description="Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>."

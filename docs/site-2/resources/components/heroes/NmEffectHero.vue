@@ -15,6 +15,7 @@ interface HeroButton {
 const props = withDefaults(defineProps<{
   effect: Effect
   eyebrow?: string
+  heroStyle?: CSSProperties
   title: string
   description: string
   buttons?: HeroButton[]
@@ -64,7 +65,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </script>
 
 <template>
-  <section class="nm-effect-hero" :class="isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light'">
+  <section class="nm-effect-hero" :class="isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light'" :style="props.heroStyle">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" v-bind="effectProps" />
     </div>
