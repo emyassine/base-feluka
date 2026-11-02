@@ -242,7 +242,7 @@ case $METHOD in
       rsync_identity_options=()
     fi
     if [[ "${RSYNC_REMOTE_SUDO:-false}" == "true" ]]; then
-      rsync_options+=(--rsync-path="sudo rsync")
+      rsync_options+=(--rsync-path="sudo -n rsync")
     fi
     # Deliberately omit --delete: files on the server that are absent from this
     # selected source must be preserved.
@@ -253,20 +253,24 @@ case $METHOD in
       (
         cd -- "$SOURCE"
         find . -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chown -- '$REMOTE_CHOWN'"
+      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chown -- '$REMOTE_CHOWN'"
       (
         cd -- "$SOURCE"
         find . -type d -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chmod '$REMOTE_DIR_MODE' --"
+      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chmod '$REMOTE_DIR_MODE' --"
       (
         cd -- "$SOURCE"
         find . -type f -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chmod '$REMOTE_FILE_MODE' --"
+      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chmod '$REMOTE_FILE_MODE' --"
     fi
 
     run_post_deploy "$HOST" "$TARGET" "$CONTEXT"
     ;;
   sftp)
+    if [[ -n "${REMOTE_CHOWN:-}" || "${RSYNC_REMOTE_SUDO:-false}" == "true" ]]; then
+      echo "SFTP cannot apply REMOTE_CHOWN, remote sudo, or configured permissions. Select SSH (rsync) instead."
+      exit 1
+    fi
     echo "WARNING: SFTP does not support context-aware deployment"
     echo "Use SSH method for WebKernel/Laravel projects"
     echo ""
