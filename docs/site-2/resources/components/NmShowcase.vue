@@ -378,7 +378,6 @@ onBeforeUnmount(() => {
 
 .nm-showcase__intro h2 {
   order: 1;
-  width: min(85vw, 32rem);
   margin: 0 auto 1.5rem;
   font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
   font-size: 24px;
@@ -508,12 +507,10 @@ onBeforeUnmount(() => {
   .nm-showcase {
     --scroll-per-item: 45svh;
     margin: 4rem calc(50% - 50vw) 5rem;
-    padding: 6rem 0 0;
   }
 
   .nm-showcase__intro {
     display: flex;
-    min-height: 80svh;
     flex-direction: column;
     justify-content: center;
     width: min(85vw, 1000px);
@@ -542,7 +539,6 @@ onBeforeUnmount(() => {
     position: sticky;
     top: 0;
     display: flex;
-    height: 100svh;
     align-items: center;
     justify-content: center;
   }
@@ -625,16 +621,14 @@ onBeforeUnmount(() => {
   .nm-showcase__name-btn {
     max-width: 100%;
     padding: 0;
-    overflow: hidden;
     border: 0;
     background: none;
     color: inherit;
     cursor: pointer;
     font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
-    font-size: 20px;
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
     font-weight: 600;
     letter-spacing: -0.01em;
-    line-height: 28px;
     text-overflow: ellipsis;
     white-space: nowrap;
   }

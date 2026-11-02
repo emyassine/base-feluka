@@ -14,6 +14,7 @@ interface HeroButton {
 
 const props = withDefaults(defineProps<{
   effect: Effect
+  eyebrow?: string
   title: string
   description: string
   buttons?: HeroButton[]
@@ -68,8 +69,9 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
       <component :is="effectComponent" v-bind="effectProps" />
     </div>
     <div class="nm-effect-hero__content">
+      <p v-if="props.eyebrow" class="nm-effect-hero__eyebrow">{{ props.eyebrow }}</p>
       <h1 :style="titleStyles">{{ props.title }}</h1>
-      <p :style="descriptionStyles">{{ props.description }}</p>
+      <p :style="descriptionStyles" v-html="props.description" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
         <FeluqaButton
           v-for="(button, index) in props.buttons"
@@ -139,6 +141,16 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.08;
+}
+
+.nm-effect-hero .nm-effect-hero__eyebrow {
+  margin: 0 auto 1rem;
+  color: rgb(255 255 255 / 0.82);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .nm-effect-hero p {
