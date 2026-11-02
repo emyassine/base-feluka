@@ -185,13 +185,18 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   align-items: flex-end;
   gap: 0.5rem;
   overflow: visible;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid rgb(255 255 255 / 0.34);
   border-radius: var(--nm-dock-panel-radius, 19px);
   padding: 0.75rem 0.75rem 1rem;
-  background: color-mix(in srgb, var(--vp-c-bg) 48%, transparent);
-  box-shadow: 0 8px 28px rgb(0 0 0 / 0.3);
-  -webkit-backdrop-filter: blur(30px) saturate(1.25);
-  backdrop-filter: blur(30px) saturate(1.25);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.24), rgb(255 255 255 / 0.04) 48%, rgb(255 255 255 / 0.1)),
+    color-mix(in srgb, var(--vp-c-bg) 38%, transparent);
+  box-shadow:
+    0 8px 28px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.42),
+    inset 0 -1px 0 rgb(255 255 255 / 0.1);
+  -webkit-backdrop-filter: blur(30px) saturate(1.35);
+  backdrop-filter: blur(30px) saturate(1.35);
 }
 
 .nm-simple-hero-dock__item {
