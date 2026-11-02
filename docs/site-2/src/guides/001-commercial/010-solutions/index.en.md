@@ -74,7 +74,7 @@ Assess offline-capable tools, mobile data collection, device integrations and op
 
 A first conversation identifies the operational need and what a successful result would mean. Complex initiatives may start with a separately scoped discovery study. We then recommend a route, budget and phases appropriate to the case.
 
-**See examples and concepts** → `/showcase`  
+**See examples and concepts** → [Explore the showcase](/#showcase)  
 **Discuss a solution** → `/contact?topic=solution`
 
 </div>

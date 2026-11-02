@@ -221,7 +221,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-# One space with many possibilities.
+# One space with many possibilities. {#showcase}
 
 **An interactive showcase of ideas, systems and solutions.**
 
@@ -299,7 +299,7 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   ]"
 />
 
-<FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
+<FeluqaButton tag="a" href="/#showcase" label="Explore the showcase"/>
 
 
 <!-- Showcase implementation:

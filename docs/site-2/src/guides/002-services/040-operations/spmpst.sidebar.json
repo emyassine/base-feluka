@@ -1,0 +1,8 @@
+{
+  "labels": { "en": "Operations" },
+  "icon": "@spmpst::icon::list-checks",
+  "menu": {
+    "image": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80",
+    "description": "Processes, people and organizational capabilities."
+  }
+}

@@ -75,9 +75,12 @@ const selectedChild = computed(() => {
 const selectedLink = computed(() => selectedChild.value?.value
   ?? items.value.find((item) => pathContainsRoute(item.value))?.value
   ?? activeLink.value)
-const openSection = computed(() => items.value.findIndex((item) =>
-  item.children?.some((child) => child.value === selectedLink.value || pathContainsRoute(child.value)),
-))
+const openSection = computed(() => {
+  const selected = items.value.findIndex((item) =>
+    item.children?.some((child) => child.value === selectedLink.value || pathContainsRoute(child.value)),
+  )
+  return selected >= 0 ? selected : items.value.findIndex((item) => item.children?.length)
+})
 function navigate(path: string): void {
   void router.go(path)
 }

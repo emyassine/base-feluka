@@ -1,6 +1,9 @@
 {
   "$schema": "../public/media/schemas/hooks.schema.json",
-  "components": {},
+  "components": {
+    "sidebarNavigationBefore": "BranchedSidebar",
+    "navigationAfter": "CollectionArticleSubnav"
+  },
   "documentationNotices": {},
   "banner": {
     "enabled": false,

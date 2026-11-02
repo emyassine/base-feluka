@@ -6,12 +6,13 @@
   "subguides": [
     {
       "path": "001-commercial",
-      "label": "Home",
+      "label": "Solutions",
       "labels": {
-        "en": "Home"
+        "en": "Solutions"
       },
       "uri": {
-        "base": "/"
+        "base": "/",
+        "entry": "solutions"
       }
     },
     {
@@ -21,7 +22,8 @@
         "en": "Services"
       },
       "uri": {
-        "base": "/services/"
+        "base": "/services/",
+        "entry": "consulting"
       }
     },
     {
@@ -41,7 +43,8 @@
         "en": "Initiatives"
       },
       "uri": {
-        "base": "/initiatives/"
+        "base": "/initiatives/",
+        "entry": "feluqa"
       }
     },
     {
@@ -72,6 +75,16 @@
       },
       "uri": {
         "base": "/about/"
+      }
+    },
+    {
+      "path": "008-contact",
+      "label": "Contact",
+      "labels": {
+        "en": "Contact"
+      },
+      "uri": {
+        "base": "/contact/"
       }
     }
   ],

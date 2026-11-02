@@ -3,127 +3,101 @@
   "theme": "switch",
   "items": [
     {
-      "text": {
-        "en": "Home"
-      },
-      "link": "/",
-      "icon": "@spmpst::icon::home"
+      "guide": "001-commercial"
     },
     {
-      "text": {
+      "guide": "002-services",
+      "items": {
+        "source": "subguides no-guide-index",
+        "icon": true
+      },
+      "menuTitle": {
         "en": "Services"
       },
-      "icon": "@spmpst::icon::briefcase-business",
-      "items": [
+      "menuTemplate": [
+        "mega.background-icon",
+        [
+          "title",
+          "image",
+          "icon",
+          "description",
+          "children"
+        ],
         {
-          "text": {
-            "en": "Services overview"
+          "mobileToo": false,
+          "maxItems": 5,
+          "cardHeight": 205,
+          "composition": {
+            "columns": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                "more"
+              ]
+            ]
           },
-          "link": "/services/",
-          "icon": "@spmpst::icon::layout-grid",
-          "description": "Our capabilities and approach."
-        },
-        {
-          "text": {
-            "en": "Consulting"
-          },
-          "link": "/services/consulting",
-          "icon": "@spmpst::icon::badge-check",
-          "description": "Research, diagnosis and business development."
-        },
-        {
-          "text": {
-            "en": "Software & systems"
-          },
-          "link": "/services/software",
-          "icon": "@spmpst::icon::code-xml",
-          "description": "Applications, integrations and automation."
-        },
-        {
-          "text": {
-            "en": "Infrastructure"
-          },
-          "link": "/services/infrastructure",
-          "icon": "@spmpst::icon::server",
-          "description": "Infrastructure, equipment and security."
-        },
-        {
-          "text": {
-            "en": "Operations"
-          },
-          "link": "/services/operations",
-          "icon": "@spmpst::icon::list-checks",
-          "description": "People, processes and organizational capabilities."
+          "more": {
+            "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+            "text": {
+              "en": "Explore all services"
+            },
+            "link": "/services/",
+            "position": "after"
+          }
         }
       ]
     },
     {
-      "text": {
-        "en": "Solutions"
+      "guide": "003-innovation"
+    },
+    {
+      "guide": "004-initiatives",
+      "items": {
+        "source": "subguides no-guide-index",
+        "icon": true
       },
-      "link": "/solutions/",
-      "icon": "@spmpst::icon::shapes"
-    },
-    {
-      "text": {
-        "en": "Showcase"
-      },
-      "link": "/#showcase",
-      "icon": "@spmpst::icon::gallery-horizontal"
-    },
-    {
-      "guide": "003-innovation",
-      "icon": "@spmpst::icon::sparkles"
-    },
-    {
-      "text": {
+      "menuTitle": {
         "en": "Initiatives"
       },
-      "icon": "@spmpst::icon::rocket",
       "menuTemplate": [
-        "mega.cards",
+        "mega.background-icon",
         [
           "title",
+          "image",
           "icon",
-          "description"
+          "description",
+          "children"
         ],
         {
+          "mobileToo": false,
           "maxItems": 4,
-          "cardHeight": 150
-        }
-      ],
-      "items": [
-        {
-          "text": {
-            "en": "All initiatives"
+          "cardHeight": 205,
+          "composition": {
+            "columns": [
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                "more"
+              ]
+            ]
           },
-          "link": "/initiatives/",
-          "icon": "@spmpst::icon::layout-grid",
-          "description": "Research projects and initiatives in development."
-        },
-        {
-          "text": {
-            "en": "Feluqa"
-          },
-          "link": "/initiatives/feluqa/",
-          "icon": "@spmpst::icon::rust",
-          "description": "A Rust-based application framework in development."
-        },
-        {
-          "text": {
-            "en": "The Best Recruit"
-          },
-          "link": "/initiatives/the-best-recruit/",
-          "icon": "@spmpst::icon::users",
-          "description": "A recruitment initiative being prepared for launch."
-        },
-        {
-          "text": {
-            "en": "SPMPST"
-          },
-          "link": "/initiatives/spmpst/",
-          "icon": "@spmpst::icon::folder-tree",
-          "description": "A draft specification for portable content trees."
+          "more": {
+            "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+            "text": {
+              "en": "Discover all initiatives"
+            },
+            "link": "/initiatives/",
+            "position": "after"
+          }
         }
       ]
     },
@@ -131,19 +105,6 @@
       "text": {
         "en": "Company"
       },
-      "icon": "@spmpst::icon::building-2",
-      "menuTemplate": [
-        "mega.cards",
-        [
-          "title",
-          "icon",
-          "description"
-        ],
-        {
-          "maxItems": 4,
-          "cardHeight": 150
-        }
-      ],
       "items": [
         {
           "guide": "005-partnerships",
@@ -158,17 +119,30 @@
           "icon": "@spmpst::icon::building-2"
         },
         {
-          "collection": "legal",
-          "icon": "@spmpst::icon::shield-check"
+          "guide": "008-contact",
+          "icon": "@spmpst::icon::message-circle"
         }
       ]
     },
     {
       "text": {
-        "en": "Contact"
+        "en": "Resources"
       },
-      "link": "/contact/",
-      "icon": "@spmpst::icon::message-circle"
+      "items": {
+        "source": "collections",
+        "depth": "all",
+        "icon": true,
+        "hideIcon": false,
+        "collections": {
+          "order": [
+            "legal"
+          ],
+          "showIconFromParents": [
+            "legal"
+          ],
+          "showParentsName": false
+        }
+      }
     }
   ]
 }

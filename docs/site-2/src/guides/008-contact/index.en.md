@@ -3,6 +3,7 @@ title: "Contact Numerimondes"
 sidebarTitle: "Contact"
 icon: "@spmpst::icon::message-circle"
 description: "Discuss a project, consulting mission, partnership or idea with Numerimondes."
+layout: home
 lang: en
 status: "ready-for-review"
 ---
@@ -50,7 +51,7 @@ Describe your expertise, client network, geography and proposed collaboration. I
 
 ## Company
 
-**Numerimondes SARL AU**  
+**Numerimondes SARL AU**
 Casablanca, Morocco
 
 For formal company information and legal notices, refer to the relevant site legal page when published.
