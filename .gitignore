@@ -1,4 +1,4 @@
-web-sync.config
+web-sync.config.json
 
 /target/
 **/target/
