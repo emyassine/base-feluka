@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter, useData } from 'vitepress'
 import type { BranchedMenuChild, BranchedMenuItem } from './BranchedMenu.vue'
 
@@ -12,6 +12,10 @@ interface SidebarEntry {
 const route = useRoute()
 const router = useRouter()
 const { theme, frontmatter } = useData()
+const jsEvents = computed(() => {
+  const events = frontmatter.value['js-events']
+  return Array.isArray(events) ? events.filter((event): event is string => typeof event === 'string') : []
+})
 
 function plainText(value: string): string {
   return value.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim()
@@ -81,6 +85,19 @@ const openSection = computed(() => {
   )
   return selected >= 0 ? selected : items.value.findIndex((item) => item.children?.length)
 })
+const defaultOpenSections = computed(() => jsEvents.value.includes('uncollapse-sidebar')
+  ? items.value.flatMap((item, index) => item.children?.length ? [index] : [])
+  : openSection.value)
+
+function dispatchFrontmatterEvents(): void {
+  for (const eventName of jsEvents.value) {
+    window.dispatchEvent(new CustomEvent(`js-event:${eventName}`, { detail: frontmatter.value }))
+  }
+}
+
+onMounted(dispatchFrontmatterEvents)
+watch(() => route.path, dispatchFrontmatterEvents, { flush: 'post' })
+
 function navigate(path: string): void {
   void router.go(path)
 }
@@ -91,7 +108,7 @@ function navigate(path: string): void {
     <BranchedMenu
       :key="route.path"
       :items="items"
-      :default-open="openSection"
+      :default-open="defaultOpenSections"
       :default-active="selectedLink"
       :width="248"
       :row-height="34"
