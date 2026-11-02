@@ -75,7 +75,7 @@ declare -A INSTANCES=(
   ["Static"]="/var/www/static:static"
 )
 
-# Optional per-instance local source. Omit an entry to be prompted at runtime.
+# Optional per-instance local source. Configure each entry to deploy without prompts.
 declare -A SOURCE_DIRS=()
 
 # Passwords are disabled unless UNSAFE_MODE=true. Prefer SSH keys and
@@ -179,57 +179,16 @@ if [[ ${#INSTANCES[@]} -eq 0 ]]; then
   exit 1
 fi
 
-echo "Available instances:"
-declare -a instance_names
-declare -a instance_paths
-declare -a instance_contexts
-i=1
-for name in "${!INSTANCES[@]}"; do
-  IFS=':' read -r path context <<< "${INSTANCES[$name]}"
-  echo "$i) $name -> $path [$context]"
-  instance_names[$i]=$name
-  instance_paths[$i]=$path
-  instance_contexts[$i]=$context
-  ((i++))
-done
-echo ""
-
-read -p "Choose instance [1-${#instance_names[@]}]: " choice
-
-if [[ ! "$choice" =~ ^[0-9]+$ ]] || [[ $choice -lt 1 ]] || [[ $choice -gt ${#instance_names[@]} ]]; then
-  echo "Invalid choice"
-  exit 1
+if [[ ${#METHODS[@]} -eq 0 ]]; then echo "No deployment method configured"; exit 1; fi
+if [[ ${#METHODS[@]} -eq 1 ]]; then
+  METHOD=${METHODS[0]}
+else
+  echo "Available methods:"
+  for i in "${!METHODS[@]}"; do echo "$((i+1))) ${METHODS[$i]}"; done
+  read -r -p "Choose method [1-${#METHODS[@]}]: " method_choice
+  if [[ ! "$method_choice" =~ ^[0-9]+$ ]] || (( method_choice < 1 || method_choice > ${#METHODS[@]} )); then echo "Invalid choice"; exit 1; fi
+  METHOD=${METHODS[$((method_choice-1))]}
 fi
-
-INSTANCE=${instance_names[$choice]}
-TARGET=${instance_paths[$choice]}
-CONTEXT=${instance_contexts[$choice]}
-
-source_input="${SOURCE_DIRS[$INSTANCE]:-}"
-if [[ -z "$source_input" ]]; then
-  echo "Choose a local source directory to sync (relative to this script or absolute)."
-  read -r -p "Source directory [.] : " source_input
-  source_input="${source_input:-.}"
-fi
-if [[ "$source_input" = /* ]]; then SOURCE="$source_input"; else SOURCE="$SCRIPT_DIR/$source_input"; fi
-if [[ ! -d "$SOURCE" ]]; then echo "Source directory does not exist: $SOURCE"; exit 1; fi
-SOURCE="$(cd -- "$SOURCE" && pwd)/"
-
-echo ""
-echo "Available methods:"
-for i in "${!METHODS[@]}"; do
-  echo "$((i+1))) ${METHODS[$i]}"
-done
-echo ""
-
-read -p "Choose method [1-${#METHODS[@]}]: " method_choice
-
-if [[ ! "$method_choice" =~ ^[0-9]+$ ]] || [[ $method_choice -lt 1 ]] || [[ $method_choice -gt ${#METHODS[@]} ]]; then
-  echo "Invalid choice"
-  exit 1
-fi
-
-METHOD=${METHODS[$((method_choice-1))]}
 HOST="$USER@$SERVER"
 
 if [[ -n "$SSH_PASSWORD" ]]; then
@@ -240,10 +199,21 @@ if [[ -n "$SSH_PASSWORD" ]]; then
 fi
 
 echo ""
-echo "Deploying $SOURCE to $INSTANCE [$CONTEXT] via $METHOD..."
-echo ""
+for INSTANCE in "${!INSTANCES[@]}"; do
+  IFS=':' read -r TARGET CONTEXT <<< "${INSTANCES[$INSTANCE]}"
+  source_input="${SOURCE_DIRS[$INSTANCE]:-}"
+  if [[ -z "$source_input" ]]; then
+    echo "Source not configured for '$INSTANCE'."
+    read -r -p "Source directory (relative to this script or absolute): " source_input
+  fi
+  if [[ -z "$source_input" ]]; then echo "No source provided for $INSTANCE"; exit 1; fi
+  if [[ "$source_input" = /* ]]; then SOURCE="$source_input"; else SOURCE="$SCRIPT_DIR/$source_input"; fi
+  if [[ ! -d "$SOURCE" ]]; then echo "Source directory does not exist: $SOURCE"; exit 1; fi
+  SOURCE="$(cd -- "$SOURCE" && pwd)/"
 
-case $METHOD in
+  echo "Deploying $SOURCE to $INSTANCE [$CONTEXT] via $METHOD..."
+  echo ""
+  case $METHOD in
   ssh)
     build_rsync_excludes "$CONTEXT"
     if [[ -n "${REMOTE_CHOWN:-}" ]]; then
@@ -294,13 +264,6 @@ case $METHOD in
       exit 1
     fi
     echo "WARNING: SFTP does not support context-aware deployment"
-    echo "Use SSH method for WebKernel/Laravel projects"
-    echo ""
-    read -p "Continue anyway? (y/N): " confirm
-    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-      echo "Deployment cancelled"
-      exit 0
-    fi
     sftp "$HOST" <<EOF
 cd $TARGET
 put -r ${SOURCE%/}/*
@@ -311,6 +274,7 @@ EOF
     exit 1
     ;;
 esac
+done
 
 echo ""
 echo "Deployment completed successfully"
