@@ -15,6 +15,42 @@
       }
     },
     {
+      "path": "002-innovation",
+      "label": "Innovation",
+      "labels": { "en": "Innovation" },
+      "uri": { "base": "/innovation/" }
+    },
+    {
+      "path": "003-partners",
+      "label": "Partnerships",
+      "labels": { "en": "Partnerships" },
+      "uri": { "base": "/partners/" }
+    },
+    {
+      "path": "004-pricing",
+      "label": "Pricing",
+      "labels": { "en": "Pricing" },
+      "uri": { "base": "/pricing/" }
+    },
+    {
+      "path": "007-initiatives-feluqa",
+      "label": "Feluqa",
+      "labels": { "en": "Feluqa" },
+      "uri": { "base": "/initiatives/feluqa/" }
+    },
+    {
+      "path": "008-initiatives-the-best-recruit",
+      "label": "The Best Recruit",
+      "labels": { "en": "The Best Recruit" },
+      "uri": { "base": "/initiatives/the-best-recruit/" }
+    },
+    {
+      "path": "009-initiatives-spmpst",
+      "label": "SPMPST",
+      "labels": { "en": "SPMPST" },
+      "uri": { "base": "/initiatives/spmpst/" }
+    },
+    {
       "path": "005-about",
       "label": "About",
       "labels": {
