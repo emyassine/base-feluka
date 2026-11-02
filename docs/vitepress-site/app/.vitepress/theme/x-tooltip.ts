@@ -47,9 +47,15 @@ function resolveTooltipText(element: TooltipTrigger): string {
 }
 
 function findTrigger(target: EventTarget | null): TooltipTrigger | undefined {
-  return target instanceof Element
-    ? target.closest<HTMLElement>('[x-tooltip], [x-tooltip.top], [x-tooltip.right], [x-tooltip.bottom], [x-tooltip.left]') as TooltipTrigger | null ?? undefined
-    : undefined
+  if (!(target instanceof Element)) return undefined
+  let element: Element | null = target
+  while (element) {
+    if (element.hasAttribute('x-tooltip') || placementNames.some((placement) => element?.hasAttribute(`x-tooltip.${placement}`))) {
+      return element as TooltipTrigger
+    }
+    element = element.parentElement
+  }
+  return undefined
 }
 
 function tooltipElement(): HTMLDivElement {
@@ -131,18 +137,20 @@ function clearDescription(trigger: TooltipTrigger): void {
   else trigger.removeAttribute('aria-describedby')
 }
 
-function showTooltip(trigger: TooltipTrigger, delay = 450): void {
+function showTooltip(trigger: TooltipTrigger, delay = 0): void {
   if (hideTimer) clearTimeout(hideTimer)
   if (showTimer) clearTimeout(showTimer)
   if (activeTrigger && activeTrigger !== trigger) clearDescription(activeTrigger)
   activeTrigger = trigger
-  showTimer = setTimeout(() => {
+  const show = () => {
     showTimer = undefined
     if (activeTrigger === trigger) {
       updateTooltip()
       if (tooltipElement().dataset.state === 'visible' && !refreshTimer) refreshTimer = setInterval(updateTooltip, 160)
     }
-  }, delay)
+  }
+  if (delay <= 0) show()
+  else showTimer = setTimeout(show, delay)
 }
 
 function hideTooltip(): void {

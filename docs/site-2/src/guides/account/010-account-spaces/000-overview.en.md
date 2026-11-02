@@ -10,9 +10,9 @@ js-events:
 ---
 
 
-# Accès aux espaces dédiés
+# Choose your account space
 
-Sélectionnez votre profil pour accéder à votre espace d’authentification.
+Select your profile to access the right sign-in area.
 
 <br>
 
@@ -20,24 +20,24 @@ Sélectionnez votre profil pour accéder à votre espace d’authentification.
   class="no--account-spaces-cards"
   :cards="[
     {
-      meta: 'Votre espace projet',
-      title: 'Espace client',
-      description: 'Retrouvez vos projets, vos factures, vos livrables et le support.',
+      meta: 'Client project space',
+      title: 'Client space',
+      description: 'Access your projects, invoices, deliverables and support.',
       icon: 'user-round',
       image: '/images/accounts/world-1-1280.webp',
       actions: [
-        { label: 'Déjà utilisateur ? Connexion', href: 'https://numerimondes.com/account/connect/authentication/login', icon: 'circle-user-round', color: 'gray', external: true },
-        { label: 'Créer un compte', tooltip: 'Créer un compte', iconOnly: true, href: 'https://numerimondes.com/account/connect/authentication/register', icon: 'user-plus', external: true }
+        { label: 'Already a client? Sign in', href: 'https://numerimondes.com/account/connect/authentication/login', icon: 'circle-user-round', color: 'gray', external: true },
+        { label: 'Create an account', tooltip: 'Create an account', iconOnly: true, href: 'https://numerimondes.com/account/connect/authentication/register', icon: 'user-plus', external: true }
       ]
     },
     {
-      meta: 'Accès équipe',
+      meta: 'Team access',
       title: 'Administration',
-      description: 'L’espace de travail des équipes et des intervenants Numerimondes.',
+      description: 'The workspace for Numerimondes team members and collaborators.',
       icon: 'shield-check',
       image: '/images/accounts/world-2-1280.webp',
       actions: [
-        { label: 'Connexion équipe', href: 'https://numerimondes.com/account/connect/admin/authentication', icon: 'arrow-up-right', iconPosition: 'after', color: 'gray', external: true }
+        { label: 'Team sign in', href: 'https://numerimondes.com/account/connect/admin/authentication', icon: 'arrow-up-right', iconPosition: 'after', color: 'gray', external: true }
       ]
     }
   ]"
