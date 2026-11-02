@@ -4,6 +4,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 export interface ShowcaseStory {
   name: string
   description: string
+  color: string
   beforeImage: string
   afterImage: string
   beforeText: string
@@ -219,7 +220,7 @@ onBeforeUnmount(() => {
           :data-story-index="index"
           @pointerenter="animateStory(index)"
         >
-          <div class="nm-showcase__card" :style="{ '--comparison-progress': `${progressFor(index)}%` }">
+          <div class="nm-showcase__card" :style="{ '--comparison-progress': `${progressFor(index)}%`, '--story-color': story.color }">
             <img
               class="nm-showcase__image nm-showcase__image--before"
               :src="story.beforeImage"
@@ -271,7 +272,7 @@ onBeforeUnmount(() => {
 
     <div ref="stageTrack" class="nm-showcase__scrolltrack" :style="{ '--n': count }">
       <div class="nm-showcase__sticky">
-        <div class="nm-showcase__stage">
+        <div class="nm-showcase__stage" :style="{ '--story-color': stories[active]?.color ?? '#7c3aed' }">
           <figure class="nm-showcase__col">
             <figcaption class="nm-showcase__label">{{ labels.before }}</figcaption>
             <div class="nm-showcase__frame">
@@ -282,7 +283,7 @@ onBeforeUnmount(() => {
                 :class="{ 'is-active': index === active }"
                 :src="story.beforeImage"
                 :alt="fill(labels.altBefore, story.name)"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 draggable="false"
               />
@@ -318,7 +319,7 @@ onBeforeUnmount(() => {
                 :class="{ 'is-active': index === active }"
                 :src="story.afterImage"
                 :alt="fill(labels.altAfter, story.name)"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 draggable="false"
               />
@@ -405,6 +406,7 @@ onBeforeUnmount(() => {
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  border: 2px solid var(--story-color, #7c3aed);
   border-radius: 0.8rem;
   background: #242424;
   color: #fff;
@@ -551,6 +553,7 @@ onBeforeUnmount(() => {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    border: 3px solid var(--story-color, #7c3aed);
     border-radius: 1rem;
     background: #242424;
     box-shadow: 0 10px 40px rgb(22 20 15 / 0.14);
@@ -563,7 +566,7 @@ onBeforeUnmount(() => {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 550ms ease-in-out;
+    transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
     user-select: none;
   }
 
