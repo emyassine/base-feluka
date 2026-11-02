@@ -78,6 +78,23 @@ function descriptionSentences(description: string) {
   return description.match(/[^.]+(?:\.|$)/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [description]
 }
 
+function stackCardStyle(index: number, color: string) {
+  const reveal = clamp(pos.value - index + 1, 0, 1)
+  const scaleProgress = clamp(pos.value - index, 0, 1)
+  const targetScale = 0.85 + index * 0.03
+  const scale = 1 - scaleProgress * (1 - targetScale)
+  const translateY = index * 30 + (1 - reveal) * 80
+  const rotation = (1 - reveal) * -2
+
+  return {
+    '--story-color': color,
+    zIndex: reveal > 0 ? count.value + index : index,
+    opacity: reveal,
+    pointerEvents: index === active.value ? 'auto' : 'none',
+    transform: `perspective(1200px) translate3d(0, ${translateY}px, 0) scale(${scale}) rotateX(${rotation}deg)`,
+  }
+}
+
 function stageMetrics() {
   const element = stageTrack.value
   if (!element) return null
@@ -415,7 +432,7 @@ onBeforeUnmount(() => {
           class="nm-showcase__stack-card"
           :class="{ 'is-active': index === active, 'is-past': index < active }"
           :aria-hidden="index !== active"
-          :style="{ '--stack-index': index, '--stack-order': index === active ? count + 1 : index, '--stack-offset': `${(index - active) * 0.65}rem`, '--story-color': story.color }"
+          :style="stackCardStyle(index, story.color)"
         >
           <figure class="nm-showcase__stack-side">
             <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
@@ -650,15 +667,10 @@ onBeforeUnmount(() => {
     box-shadow: 0 24px 70px rgb(22 20 15 / 0.16);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(2.5rem) scale(0.97);
-    transition: opacity 420ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: top center;
+    will-change: transform, opacity;
   }
-  .nm-showcase__stack-card.is-past {
-    opacity: 0.42;
-    pointer-events: none;
-    transform: translateY(var(--stack-offset)) scale(0.97);
-  }
-  .nm-showcase__stack-card.is-active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+  .nm-showcase__stack-card.is-active { pointer-events: auto; }
   .nm-showcase__stack-side { min-width: 0; margin: 0; }
   .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.9rem; }
   .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: var(--nm-showcase-before-color); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
