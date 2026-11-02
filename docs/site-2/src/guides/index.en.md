@@ -129,11 +129,11 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <Timeline
   label="Business benefits"
   :items="[
-    { title: 'Better decisions', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/consulting', time: 'Clearer priorities, options and investment choices.' },
-    { title: 'More efficient operations', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/operations', time: 'Less duplicated work, fewer avoidable errors and better coordination.' },
-    { title: 'Greater visibility and control', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/software', time: 'Accessible information, traceable processes and systems you can manage.' },
-    { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
-    { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
+    { title: 'Better decisions', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: 'Clearer priorities, options and investment choices.' },
+    { title: 'More efficient operations', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: 'Less duplicated work, fewer avoidable errors and better coordination.' },
+    { title: 'Greater visibility and control', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: 'Accessible information, traceable processes and systems you can manage.' },
+    { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
+    { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
  />
 
@@ -155,7 +155,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
 	    afterText: "Structured business roadmap, clear decision-making frameworks, and accelerated commercial expansion.",
 	    linkText: "Explore consulting",
-	    linkUrl: "/services/consulting"
+	    linkUrl: "/services/business-advisory/consulting"
 	  },
 	  {
 	    name: "Digital Systems and Software",
@@ -166,7 +166,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
 	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
 	    linkText: "Explore software and systems",
-	    linkUrl: "/services/software"
+	    linkUrl: "/services/systems-and-operations/software"
 	  },
 	  {
 	    name: "Infrastructure, Equipment and Security",
@@ -177,7 +177,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
 	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
 	    linkText: "Explore infrastructure",
-	    linkUrl: "/services/infrastructure"
+	    linkUrl: "/services/systems-and-operations/infrastructure"
 	  },
 	  {
 	    name: "Operations, People and Capabilities",
@@ -188,7 +188,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
 	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
 	    linkText: "Explore operations",
-	    linkUrl: "/services/operations"
+	    linkUrl: "/services/systems-and-operations/operations"
 	  },
 	  {
 	    name: "Innovation and New Ventures",
@@ -199,7 +199,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Untapped commercial concepts and high-potential ideas stalled without a practical path to execution.",
 	    afterText: "Validated product-market strategy, robust system architecture, and new venture models deployed for growth.",
 	    linkText: "Explore innovation",
-	    linkUrl: "/company/innovation"
+	    linkUrl: "/company/initiatives/innovation"
 	  }
 		]'
    :labels="{
@@ -366,7 +366,7 @@ flowchart TD
 ```
 :::
 ::::
-<FeluqaButton tag="a" href="/company/about#delivery-model"
+<FeluqaButton tag="a" href="/company/about-us/delivery-model"
 	label="How we work"/>
 
 
@@ -405,7 +405,7 @@ Join project teams when your expertise fits an assignment — across software en
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
 <FeluqaButton tag="a" color="dark" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" color="dark" href="/company/about" label="More about us"/>
+<FeluqaButton tag="a" color="dark" href="/company/about-us/about-us" label="More about us"/>
 </div>
 
 ::::
@@ -420,21 +420,21 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/innovation/initiatives/feluqa',
+      href: '/company/initiatives/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/company/innovation/initiatives/the-best-recruit',
+      href: '/company/initiatives/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/innovation/initiatives/spmpst',
+      href: '/company/initiatives/spmpst',
       image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
@@ -446,7 +446,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   :more="{
     title: 'Discover all our 3 initiatives',
     description: 'Explore our current and upcoming projects',
-    href: '/company/innovation/initiatives/',
+    href: '/company/initiatives/initiatives',
     image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
   }"
   :card-height="220"
@@ -458,7 +458,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/services/pricing" label="Our pricing approach"/>
+<FeluqaButton tag="a" href="/services/business-advisory/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
@@ -473,7 +473,7 @@ Share a challenge, an idea, a business objective or a project you want to explor
 <div style="display: flex; gap: 15px;">
 	<FeluqaButton tag="a"
 		color="gray"
-		href="/company/contact" label="Start a conversation"/>
+		href="/company/prologue/contact" label="Start a conversation"/>
 	<FeluqaButton tag="a"
 		color="gray"
 		href="/opportunities" label="Become a partner"/>

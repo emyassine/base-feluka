@@ -17,7 +17,7 @@ status: "ready-for-review"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss your needs', href: '/company/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/pricing/', style: 'secondary' }]"
+  :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', style: 'secondary' }]"
 />
 
 <div class="nm-home-copy">
@@ -29,7 +29,7 @@ status: "ready-for-review"
 
 Numerimondes supports organizations from early investigation and strategic decisions through implementation and operational support. We bring together business understanding, creative research and specialist expertise to shape each assignment.
 
-**Discuss your needs** → `/company/contact?topic=project`
+**Discuss your needs** → `/company/prologue/contact?topic=project`
 
 ## Consulting & business development
 
@@ -39,7 +39,7 @@ We investigate business models, customer needs, market opportunities, operationa
 
 **Potential deliverables:** opportunity brief, operational assessment, business case, roadmap, requirements, proposal or implementation plan.
 
-**Explore consulting** → `/services/consulting`
+**Explore consulting** → `/services/business-advisory/consulting`
 
 ## Software & information systems
 
@@ -49,7 +49,7 @@ We scope and develop custom applications, operational dashboards, internal porta
 
 **Potential deliverables:** architecture, application, API, integration, migration plan, documentation and handover.
 
-**Explore systems** → `/services/software`
+**Explore systems** → `/services/systems-and-operations/software`
 
 ## Infrastructure, equipment & security
 
@@ -59,7 +59,7 @@ Infrastructure architecture, deployment, self-hosted solutions, maintenance plan
 
 **Potential deliverables:** infrastructure assessment, deployment design, migration, operating procedures, monitoring or remediation plan.
 
-**Explore infrastructure** → `/services/infrastructure`
+**Explore infrastructure** → `/services/systems-and-operations/infrastructure`
 
 ## Operations, training & organizational capabilities
 
@@ -67,7 +67,7 @@ Infrastructure architecture, deployment, self-hosted solutions, maintenance plan
 
 We examine handoffs, reporting, training needs, service operations and organizational processes. Selected missions may combine process redesign, learning resources, digital tools and operational coordination. Recruitment-related services will be introduced separately when ready.
 
-**Explore operations** → `/services/operations`
+**Explore operations** → `/services/systems-and-operations/operations`
 
 ## Innovation & opportunity development
 
@@ -75,7 +75,7 @@ We examine handoffs, reporting, training needs, service operations and organizat
 
 Research and shape new products, service concepts, sector-focused solutions and technology initiatives. An assignment can begin with an early hypothesis and progress through feasibility, prototyping and a delivery decision.
 
-**Explore innovation** → `/company/innovation`
+**Explore innovation** → `/company/initiatives/innovation`
 
 ## What your organization can gain
 
@@ -95,7 +95,7 @@ These are potential outcomes, evaluated and scoped for each mission.
 4. **Mission delivery** — specialist mobilization, execution and reporting.
 5. **Handover or support** — as agreed in the statement of work.
 
-**Our pricing approach** → `/services/pricing`  
-**Discuss a mission** → `/company/contact`
+**Our pricing approach** → `/services/business-advisory/pricing`
+**Discuss a mission** → `/company/prologue/contact`
 
 </div>

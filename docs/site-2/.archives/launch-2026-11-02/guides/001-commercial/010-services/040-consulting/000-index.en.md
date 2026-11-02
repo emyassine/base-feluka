@@ -34,7 +34,7 @@ To keep this clear against our other four services:
         <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Consulting does not include</template>
             <template #description>
-                Mapping your current tools (that's <a href="/services/audit">Audit</a>). Writing the code (that's <a href="/services/development">Development</a>). Running the systems day to day (that's <a href="/services/infrastructure">Infrastructure</a>).
+                Mapping your current tools (that's <a href="/services/audit">Audit</a>). Writing the code (that's <a href="/services/development">Development</a>). Running the systems day to day (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>).
             </template>
         </NmCard>
     </div>
@@ -68,7 +68,7 @@ That framing is not ours alone. It is how Julie Sweet, CEO of Accenture, describ
 </div>
 
 
-Full context on where that framing comes from, and the story behind why pretty PowerPoints no longer buy loyalty, is on the [methodology subpage →](/services/consulting/how-we-sprint)
+Full context on where that framing comes from, and the story behind why pretty PowerPoints no longer buy loyalty, is on the [methodology subpage →](/services/business-advisory/consulting/how-we-sprint)
 
 ## What we cover
 
@@ -135,7 +135,7 @@ Leadership teams who have already sat through a strategy deck that told them wha
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-book-open" color="primary">
-            <template #heading><a href="/services/consulting/how-we-sprint" style="text-decoration:none;">How we sprint — the eight-week story</a></template>
+            <template #heading><a href="/services/business-advisory/consulting/how-we-sprint" style="text-decoration:none;">How we sprint — the eight-week story</a></template>
             <template #description>
                 Where our sprint model comes from, why fixed-length engagements beat open retainers, and what "founder in the room" actually means in practice.
             </template>

@@ -25,7 +25,7 @@ Read the question, not the label.
 <div class="grid-container grid-cols-1" style="margin: 1.5rem 0 2.5rem; gap: 0.75rem;">
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-chat-bubble-left-right" color="primary">
-            <template #heading><a href="/services/consulting" style="text-decoration:none;">"Should we do this, and how?" → Consulting</a></template>
+            <template #heading><a href="/services/business-advisory/consulting" style="text-decoration:none;">"Should we do this, and how?" → Consulting</a></template>
             <template #description>
                 A decision needs to be made — go-to-market, IS strategy, security posture, AI priorities — and you want it grounded in things we've actually done, not a generic framework.
             </template>
@@ -65,7 +65,7 @@ Read the question, not the label.
     </div>
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-server-stack" color="warning">
-            <template #heading><a href="/services/infrastructure" style="text-decoration:none;">"Keep it running." → Infrastructure</a></template>
+            <template #heading><a href="/services/systems-and-operations/infrastructure" style="text-decoration:none;">"Keep it running." → Infrastructure</a></template>
             <template #description>
                 Software already exists (yours or ours) and needs to stay healthy — hosting ops as a mission, monitoring, migrations, and training your team to operate it without us.
             </template>

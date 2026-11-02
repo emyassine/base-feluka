@@ -1,8 +1,0 @@
-{
-  "labels": { "en": "Initiatives" },
-  "icon": "@spmpst::icon::rocket",
-  "menu": {
-    "image": "/images/home/initiatives/feluqa.svg",
-    "description": "Products and platforms developed through Numerimondes initiatives."
-  }
-}

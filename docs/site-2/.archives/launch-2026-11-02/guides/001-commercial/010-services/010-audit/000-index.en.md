@@ -32,7 +32,7 @@ description: "What do we have, and what is it costing us? Packaged Audit + confe
         <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Audit does not include</template>
             <template #description>
-                Deciding what to do about the findings (that's <a href="/services/consulting">Consulting</a>). Building the fix (that's <a href="/services/development">Development</a> or <a href="/services/automation">Automation</a>).
+                Deciding what to do about the findings (that's <a href="/services/business-advisory/consulting">Consulting</a>). Building the fix (that's <a href="/services/development">Development</a> or <a href="/services/automation">Automation</a>).
             </template>
         </NmCard>
     </div>

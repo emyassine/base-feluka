@@ -1,8 +1,0 @@
-{
-  "labels": { "en": "SPMPST" },
-  "icon": "@spmpst::icon::folder-tree",
-  "menu": {
-    "image": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
-    "description": "A draft specification for portable content trees."
-  }
-}

@@ -171,7 +171,7 @@ Payment stays milestone-based: never fully upfront, never a single invoice at th
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-shield-check" color="warning">
-            <template #heading><a href="/services/infrastructure/self-hosting" style="text-decoration:none;">Why self-hosting, and when it doesn't make sense</a></template>
+            <template #heading><a href="/services/systems-and-operations/infrastructure/self-hosting" style="text-decoration:none;">Why self-hosting, and when it doesn't make sense</a></template>
             <template #description>
                 An honest look at the sovereignty argument — including the cases where renting is still the right call.
             </template>

@@ -11,7 +11,7 @@ status: "ready-for-review"
 
 Numerimondes helps organizations identify what holds them back, design practical solutions and put the right systems to work. From a critical spreadsheet to an interconnected business platform, we bring strategic thinking and technical execution together — without losing sight of the people who use the tools every day.
 
-**Primary action:** Discuss your project → `/company/contact`
+**Primary action:** Discuss your project → `/company/prologue/contact`
 
 **Secondary action:** Explore our services → `/services`
 
@@ -25,7 +25,7 @@ When information is scattered, processes depend on manual work or existing softw
 
 We start by understanding the workflow, the constraints and the intended outcome. We may recommend improving what you already have, integrating existing tools, automating a recurring task or developing dedicated software. When an off-the-shelf solution is the better choice, we say so.
 
-**Action:** Tell us what is slowing you down → `/company/contact`
+**Action:** Tell us what is slowing you down → `/company/prologue/contact`
 
 ---
 
@@ -95,7 +95,7 @@ Numerimondes works across these layers, whether the engagement covers one integr
 
 **Tools and standards under development** — Explore our technical initiatives, including Feluqa (a Rust application platform in development) and SPMPST (an emerging specification for portable, structured site content). These are R&D initiatives, not finished commercial products.
 
-**Action:** Explore solutions → `/services/solutions`
+**Action:** Explore solutions → `/services/business-advisory/solutions`
 
 ---
 
@@ -112,7 +112,7 @@ You deal with a clearly identified lead, defined deliverables and an agreed scop
 3. **Build** — Implement, integrate, test and document the agreed solution.
 4. **Operate** — Handover, training and ongoing support where contracted.
 
-**Action:** Discuss an operational challenge → `/company/contact`
+**Action:** Discuss an operational challenge → `/company/prologue/contact`
 
 ---
 
@@ -134,7 +134,7 @@ Work with us on suitable software, systems and infrastructure assignments, inclu
 
 **Primary action:** Become a partner → `/opportunities`
 
-**Secondary action:** Introduce a project → `/company/contact`
+**Secondary action:** Introduce a project → `/company/prologue/contact`
 
 ---
 
@@ -144,7 +144,7 @@ Numerimondes is an independent technology company based in Casablanca, Morocco. 
 
 Our engineering interests include Rust, PHP, Linux, databases, automation and cross-platform software. Technology choices follow the project's needs — not the other way around.
 
-**Action:** About Numerimondes → `/company/about`
+**Action:** About Numerimondes → `/company/about-us/about-us`
 
 ---
 
@@ -152,7 +152,7 @@ Our engineering interests include Rust, PHP, Linux, databases, automation and cr
 
 Tell us what your organization does today, what is getting in the way and what you want to achieve. We can start with a conversation and determine whether a focused improvement, technical assessment or full project is appropriate.
 
-**Primary action:** Start a conversation → `/company/contact`
+**Primary action:** Start a conversation → `/company/prologue/contact`
 
 **Secondary action:** Partner with us → `/opportunities`
 

@@ -10,7 +10,7 @@ description: "An honest look at the sovereignty argument for self-hosting infras
     <span class="nm-eyebrow">Infrastructure · Methodology</span>
     <h1 class="nm-headline">Self-hosting is a <span class="nm-headline-accent">trade-off</span>, not a religion.</h1>
     <p style="max-width: 38rem; margin: 1rem auto 0; opacity: 0.85;">
-        A subpage of <a href="/services/infrastructure">Infrastructure</a>. We are known for pushing
+        A subpage of <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>. We are known for pushing
         sovereignty and self-hosting — but we would rather lose a sale than sell you the wrong architecture.
     </p>
 </div>

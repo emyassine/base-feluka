@@ -32,7 +32,7 @@ description: "Remove the manual work. No-code and AI workflows for sales, HR, an
         <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Automation does not include</template>
             <template #description>
-                Custom software from scratch for a full new product (that's <a href="/services/development">Development</a>). Ongoing hosting of the tools involved (that's <a href="/services/infrastructure">Infrastructure</a>).
+                Custom software from scratch for a full new product (that's <a href="/services/development">Development</a>). Ongoing hosting of the tools involved (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>).
             </template>
         </NmCard>
     </div>
@@ -154,7 +154,7 @@ Automation workflows run on infrastructure you control — on-prem, a private cl
         <NmCard compact="true" icon="heroicon-o-chat-bubble-left-right" color="success">
             <template #heading>From strategic consulting</template>
             <template #description>
-                <a href="/services/consulting">Consulting</a> decides where AI and automation change a P&L. This service is where that decision becomes a running workflow.
+                <a href="/services/business-advisory/consulting">Consulting</a> decides where AI and automation change a P&L. This service is where that decision becomes a running workflow.
             </template>
         </NmCard>
     </div>

@@ -10,7 +10,7 @@ description: "The eight-week sprint model behind Numerimondes consulting — why
     <span class="nm-eyebrow">Consulting · Methodology</span>
     <h1 class="nm-headline">Why our sprints are <span class="nm-headline-accent">fixed-length</span>, and end in a plan.</h1>
     <p style="max-width: 38rem; margin: 1rem auto 0; opacity: 0.85;">
-        A subpage of <a href="/services/consulting">Consulting</a> — the reasoning behind the sprint model,
+        A subpage of <a href="/services/business-advisory/consulting">Consulting</a> — the reasoning behind the sprint model,
         not the commercial terms. For pricing, see the parent page.
     </p>
 </div>

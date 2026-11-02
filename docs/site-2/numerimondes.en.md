@@ -12,7 +12,7 @@ Numerimondes is an independent consulting and solutions company based in Casabla
 
 Across business operations, technology and new ventures, our work is guided by a simple ambition: **help organizations improve performance, gain control and create lasting value.**
 
-**Primary action:** Discuss a project → `/company/contact`
+**Primary action:** Discuss a project → `/company/prologue/contact`
 **Secondary action:** Explore our capabilities → `/services`
 
 ---
@@ -45,31 +45,31 @@ Our work connects consulting, innovation and delivery. Each engagement is define
 
 Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.
 
-<FeluqaButton tag="a" href="/services/consulting" label="Explore consulting"/>
+<FeluqaButton tag="a" href="/services/business-advisory/consulting" label="Explore consulting"/>
 
 ### Digital systems & software
 
 Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.
 
-<FeluqaButton tag="a" href="/services/software" label="Explore software & systems"/>
+<FeluqaButton tag="a" href="/services/systems-and-operations/software" label="Explore software & systems"/>
 
 ### Infrastructure, equipment & security
 
 Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.
 
-<FeluqaButton tag="a" href="/services/infrastructure" label="Explore infrastructure"/>
+<FeluqaButton tag="a" href="/services/systems-and-operations/infrastructure" label="Explore infrastructure"/>
 
 ### Operations, people & capabilities
 
 Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.
 
-<FeluqaButton tag="a" href="/services/operations" label="Explore operations"/>
+<FeluqaButton tag="a" href="/services/systems-and-operations/operations" label="Explore operations"/>
 
 ### Innovation & new ventures
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
-<FeluqaButton tag="a" href="/company/innovation" label="Explore innovation"/>
+<FeluqaButton tag="a" href="/company/initiatives/innovation" label="Explore innovation"/>
 
 ---
 
@@ -113,7 +113,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-<FeluqaButton tag="a" href="/company/about#delivery-model" label="How we work"/>
+<FeluqaButton tag="a" href="/company/about-us/delivery-model" label="How we work"/>
 
 ---
 
@@ -127,7 +127,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/company/about" label="More about us"/>
+<FeluqaButton tag="a" href="/company/about-us/about-us" label="More about us"/>
 
 ---
 
@@ -195,7 +195,7 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
 <FeluqaButton tag="a" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" href="/company/contact?topic=partnership" label="Propose a collaboration"/>
+<FeluqaButton tag="a" href="/company/prologue/contact?topic=partnership" label="Propose a collaboration"/>
 
 ---
 
@@ -205,7 +205,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/services/pricing" label="Our pricing approach"/>
+<FeluqaButton tag="a" href="/services/business-advisory/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
@@ -217,7 +217,7 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
-**Primary action:** Start a conversation → `/company/contact`
+**Primary action:** Start a conversation → `/company/prologue/contact`
 **Secondary action:** Become a partner → `/opportunities`
 
 ---

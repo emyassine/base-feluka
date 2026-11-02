@@ -33,7 +33,7 @@ description: "Server management, hosting, and infrastructure resale — shared h
         <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Cloud does not include</template>
             <template #description>
-                Writing application code (that's <a href="/services/development">Development</a>). Strategic decisions about your infrastructure roadmap (that's <a href="/services/infrastructure">Infrastructure</a> consulting). Automating a business process (that's <a href="/services/automation">Automation</a>).
+                Writing application code (that's <a href="/services/development">Development</a>). Strategic decisions about your infrastructure roadmap (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a> consulting). Automating a business process (that's <a href="/services/automation">Automation</a>).
             </template>
         </NmCard>
     </div>
@@ -112,7 +112,7 @@ Full detail on what is configured, monitored, and maintained is on the [features
 
 ## Who this is for
 
-Clients who came through an [Audit](/services/audit) or [Infrastructure](/services/infrastructure) engagement and want a straightforward place to host the result, and anyone — services client or not — who wants a directly-invoiced, actively managed server without negotiating with a foreign hosting provider themselves.
+Clients who came through an [Audit](/services/audit) or [Infrastructure](/services/systems-and-operations/infrastructure) engagement and want a straightforward place to host the result, and anyone — services client or not — who wants a directly-invoiced, actively managed server without negotiating with a foreign hosting provider themselves.
 
 ---
 

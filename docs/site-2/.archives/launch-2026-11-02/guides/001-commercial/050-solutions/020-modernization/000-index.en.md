@@ -76,10 +76,10 @@ Detail for each brick lives on its service page. Here is only the assembly.
     </div>
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-chat-bubble-left-right" color="primary">
-            <template #heading><a href="/services/consulting" style="text-decoration:none;">Phase 2 — Consulting</a></template>
+            <template #heading><a href="/services/business-advisory/consulting" style="text-decoration:none;">Phase 2 — Consulting</a></template>
             <template #description>
                 “Should we do this, and how?” Prioritise findings, size ROI, close decisions before anyone writes code.
-                → <a href="/services/consulting">Consulting service</a>.
+                → <a href="/services/business-advisory/consulting">Consulting service</a>.
             </template>
         </NmCard>
     </div>
@@ -112,10 +112,10 @@ Detail for each brick lives on its service page. Here is only the assembly.
     </div>
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-server-stack" color="warning">
-            <template #heading><a href="/services/infrastructure" style="text-decoration:none;">Phase 4 — Infrastructure</a> · <a href="/services/cloud" style="text-decoration:none;">Cloud</a></template>
+            <template #heading><a href="/services/systems-and-operations/infrastructure" style="text-decoration:none;">Phase 4 — Infrastructure</a> · <a href="/services/cloud" style="text-decoration:none;">Cloud</a></template>
             <template #description>
                 “Keep it running.” Mission-based ops and training, and/or Numerimondes Cloud as the hosting product — together or separately.
-                → <a href="/services/infrastructure">Infrastructure</a> · <a href="/services/cloud">Cloud</a>.
+                → <a href="/services/systems-and-operations/infrastructure">Infrastructure</a> · <a href="/services/cloud">Cloud</a>.
             </template>
         </NmCard>
     </div>

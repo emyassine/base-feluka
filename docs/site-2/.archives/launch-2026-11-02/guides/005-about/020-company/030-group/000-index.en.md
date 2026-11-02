@@ -20,7 +20,7 @@ description: "The future shape of Numerimondes — a holding structure with asso
 
 Our registered legal purpose (RC 152844) is intentionally broad — it covers recruitment and HR strategy, training and pedagogical engineering, call-centre operation, and more, alongside the technology consulting we lead with. That breadth exists because Moroccan company statutes are written to anticipate growth, not because we intend to run all of it under one roof at once.
 
-We are concentrating deliberately on what compounds fastest right now: [Audit](/services/audit), [Consulting](/services/consulting), [Development](/services/development), [Intelligence](/services/intelligence), [Automation](/services/automation), and hosting through [Numerimondes Cloud](/services/cloud). That focus is the whole point of the current four-person, founder-led model described on the [Services](/services) page.
+We are concentrating deliberately on what compounds fastest right now: [Audit](/services/audit), [Consulting](/services/business-advisory/consulting), [Development](/services/development), [Intelligence](/services/intelligence), [Automation](/services/automation), and hosting through [Numerimondes Cloud](/services/cloud). That focus is the whole point of the current four-person, founder-led model described on the [Services](/services) page.
 
 ## The direction: a holding, with associates
 

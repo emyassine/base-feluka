@@ -21,13 +21,13 @@ hero:
 features:
   - title: "Advice and strategy"
     details: "Make technology decisions with a clear, grounded roadmap."
-    link: "/services/consulting/"
+    link: "/services/business-advisory/consulting/"
   - title: "Software engineering"
     details: "Applications and integrations designed around your requirements."
     link: "/services/development/"
   - title: "Sovereign infrastructure"
     details: "Hosting, automation, and private AI under your control."
-    link: "/services/infrastructure/"
+    link: "/services/systems-and-operations/infrastructure/"
   - title: "The Best Recruit"
     details: "A self-hosted HR and learning suite for recruitment and talent operations."
     link: "/services/cloud/platforms/"
@@ -45,7 +45,7 @@ Numerimondes helps organizations make clear technology decisions, build software
 
 ## Services for the whole journey
 
-Start with an [operational audit](/services/audit/) or [consulting](/services/consulting/), then move into [software development](/services/development/), [automation](/services/automation/), [private intelligence](/services/intelligence/), or [managed cloud](/services/cloud/). We keep each engagement clear about its scope, owner, and deliverables.
+Start with an [operational audit](/services/audit/) or [consulting](/services/business-advisory/consulting/), then move into [software development](/services/development/), [automation](/services/automation/), [private intelligence](/services/intelligence/), or [managed cloud](/services/cloud/). We keep each engagement clear about its scope, owner, and deliverables.
 
 ## A partner network built on useful work
 

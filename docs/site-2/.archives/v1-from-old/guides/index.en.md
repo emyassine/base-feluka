@@ -129,9 +129,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <Timeline
   label="Business benefits"
   :items="[
-    { title: 'Better decisions', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/consulting', time: 'Clearer priorities, options and investment choices.' },
-    { title: 'More efficient operations', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/operations', time: 'Less duplicated work, fewer avoidable errors and better coordination.' },
-    { title: 'Greater visibility and control', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/software', time: 'Accessible information, traceable processes and systems you can manage.' },
+    { title: 'Better decisions', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: 'Clearer priorities, options and investment choices.' },
+    { title: 'More efficient operations', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: 'Less duplicated work, fewer avoidable errors and better coordination.' },
+    { title: 'Greater visibility and control', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: 'Accessible information, traceable processes and systems you can manage.' },
     { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
     { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
@@ -155,7 +155,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
 	    afterText: "Structured business roadmap, clear decision-making frameworks, and accelerated commercial expansion.",
 	    linkText: "Explore consulting",
-	    linkUrl: "/services/consulting"
+	    linkUrl: "/services/business-advisory/consulting"
 	  },
 	  {
 	    name: "Digital Systems and Software",
@@ -166,7 +166,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
 	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
 	    linkText: "Explore software and systems",
-	    linkUrl: "/services/software"
+	    linkUrl: "/services/systems-and-operations/software"
 	  },
 	  {
 	    name: "Infrastructure, Equipment and Security",
@@ -177,7 +177,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
 	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
 	    linkText: "Explore infrastructure",
-	    linkUrl: "/services/infrastructure"
+	    linkUrl: "/services/systems-and-operations/infrastructure"
 	  },
 	  {
 	    name: "Operations, People and Capabilities",
@@ -188,7 +188,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
 	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
 	    linkText: "Explore operations",
-	    linkUrl: "/services/operations"
+	    linkUrl: "/services/systems-and-operations/operations"
 	  },
 	  {
 	    name: "Innovation and New Ventures",

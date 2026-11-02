@@ -53,7 +53,7 @@ When we scope a Development engagement, Webkernel is one path we can propose —
 ## How it fits with the rest of Numerimondes
 
 - An [Audit](/services/audit) can identify where a self-hosted foundation would remove ongoing SaaS cost — Webkernel is often the concrete answer to that finding.
-- Once a Webkernel-based system ships, running it long-term is [Infrastructure](/services/infrastructure) work: hosting, monitoring, and operator training. It can also run on [Numerimondes Cloud](/services/cloud) if you choose managed hosting instead of your own hardware.
+- Once a Webkernel-based system ships, running it long-term is [Infrastructure](/services/systems-and-operations/infrastructure) work: hosting, monitoring, and operator training. It can also run on [Numerimondes Cloud](/services/cloud) if you choose managed hosting instead of your own hardware.
 - Webkernel itself has its own [product page](/numerimondes/docs/oss/webkernel) with technical documentation, separate from this services context.
 
 ---

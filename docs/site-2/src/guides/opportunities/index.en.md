@@ -18,7 +18,7 @@ status: "ready-for-review"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss a partnership', href: '/company/contact?topic=partnership' }, { label: 'About Numerimondes', href: '/company/about/', style: 'secondary' }]"
+  :buttons="[{ label: 'Discuss a partnership', href: '/company/prologue/contact?topic=partnership' }, { label: 'About Numerimondes', href: '/company/about-us/about-us', style: 'secondary' }]"
 />
 
 <div class="nm-home-copy">
@@ -29,9 +29,9 @@ Numerimondes works with independent businesses, professional advisers, commercia
 
 ## Explore collaboration paths
 
-- [Advisory Partners](./advisory-partners/) — accounting and advisory firms.
-- [Business Development](./business-development/) — independent developers, referral partners and delivery partners.
-- [Specialist Collaborations](./specialist-collaborations/) — freelancers and specialist companies.
-- [Working Together](./working-together/) — shared principles and next steps.
+- [Advisory Partners](/opportunities/partnerships/advisory-partners) — accounting and advisory firms.
+- [Business Development](/opportunities/partnerships/business-development) — independent developers, referral partners and delivery partners.
+- [Specialist Collaborations](/opportunities/specialist-collaboration/specialist-work) — freelancers and specialist companies.
+- [Working Together](/opportunities/specialist-collaboration/working-principles) — shared principles and next steps.
 
 </div>

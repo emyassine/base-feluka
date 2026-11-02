@@ -32,7 +32,7 @@ description: "Build it. Custom software you own outright — designed once, ship
         <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Development does not include</template>
             <template #description>
-                Hosting or running what we build long-term (that's <a href="/services/infrastructure">Infrastructure</a>). Automating a specific repetitive process with no-code tools (that's <a href="/services/automation">Automation</a>).
+                Hosting or running what we build long-term (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>). Automating a specific repetitive process with no-code tools (that's <a href="/services/automation">Automation</a>).
             </template>
         </NmCard>
     </div>
@@ -139,7 +139,7 @@ Development is bespoke by nature, so we do not pretend to fix a price before sco
 
 - **Audit-informed builds** — when useful, start from an [Audit](/services/audit) pack so scope is grounded in your real stack and value chain
 - **No perpetual dependency** — we design for your operators, not for infinite billable change requests
-- Once shipped, ongoing hosting and operations move to [Infrastructure](/services/infrastructure) — a separate, optional engagement
+- Once shipped, ongoing hosting and operations move to [Infrastructure](/services/systems-and-operations/infrastructure) — a separate, optional engagement
 
 Registered purpose includes information-systems consulting and software development. Day-to-day positioning lives here; official identifiers under [Legal](/about/legal).
 

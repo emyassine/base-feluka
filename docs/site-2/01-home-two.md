@@ -13,7 +13,7 @@ Numerimondes is an independent consulting and solutions company based in Morocco
 
 Our work spans business development, technology, operations and specialist projects. We bring together the thinking, people and capabilities each assignment needs — from the first question to implementation.
 
-**Primary CTA:** Discuss an opportunity → `/company/contact`
+**Primary CTA:** Discuss an opportunity → `/company/prologue/contact`
 **Secondary CTA:** Explore what we do → `/services`
 
 ---
@@ -86,7 +86,7 @@ Training concepts, talent-related initiatives, recruitment solutions in preparat
 
 These initiatives reflect our experimentation and engineering direction; they are not presented as completed commercial products.
 
-**CTA:** Explore our work and ideas → `/services/solutions`
+**CTA:** Explore our work and ideas → `/services/business-advisory/solutions`
 
 ---
 
@@ -132,7 +132,7 @@ This is our corporate scope, **not a claim that every activity is already offere
 
 Our model is project-driven: a clear point of contact, an agreed scope and an appropriate combination of expertise and resources for each engagement.
 
-**CTA:** Learn about Numerimondes → `/company/about`
+**CTA:** Learn about Numerimondes → `/company/about-us/about-us`
 
 ---
 
@@ -140,7 +140,7 @@ Our model is project-driven: a clear point of contact, an agreed scope and an ap
 
 You do not need a finished specification to start a conversation. Tell us what you are trying to achieve, what is holding you back or what you believe could be built. We'll assess whether there is a practical way forward.
 
-**Primary CTA:** Let's discuss → `/company/contact`
+**Primary CTA:** Let's discuss → `/company/prologue/contact`
 **Secondary CTA:** Become a partner → `/opportunities`
 
 ---

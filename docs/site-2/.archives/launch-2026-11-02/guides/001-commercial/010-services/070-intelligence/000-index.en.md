@@ -149,7 +149,7 @@ The line that matters most: anything under this service runs on infrastructure y
 
 - **No data leakage** — your archives, trade secrets, and client records never travel through a public third-party API as part of this service.
 - **Full ownership** — you keep the data indices, local model configurations, training materials, and workflows outright.
-- Once deployed, ongoing hardware and hosting move to [Infrastructure](/services/infrastructure) or [Numerimondes Cloud](/services/cloud) — separate, optional engagements.
+- Once deployed, ongoing hardware and hosting move to [Infrastructure](/services/systems-and-operations/infrastructure) or [Numerimondes Cloud](/services/cloud) — separate, optional engagements.
 
 Registered purpose includes information-systems consulting, digital transformation, and HR strategy consulting. Day-to-day positioning lives here; official identifiers under [Legal](/about/legal).
 
@@ -177,7 +177,7 @@ Payment stays milestone-based, as on every Numerimondes service.
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
         <NmCard compact="true" icon="heroicon-o-cpu-chip" color="warning">
-            <template #heading><a href="/services/infrastructure/self-hosting" style="text-decoration:none;">Sizing local inference hardware</a></template>
+            <template #heading><a href="/services/systems-and-operations/infrastructure/self-hosting" style="text-decoration:none;">Sizing local inference hardware</a></template>
             <template #description>
                 How to choose workstation GPUs, edge nodes, or local server capacity for private intelligence workloads.
             </template>
