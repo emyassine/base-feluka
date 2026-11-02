@@ -34,7 +34,6 @@ const href = (action: TopbarAction) => typeof action.link === 'string'
   : action.link[language.value] ?? action.link.en ?? Object.values(action.link)[0] ?? '/'
 
 const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/\//i.test(href(action))
-const mobileColor = (action: TopbarAction) => action.mobile?.color === 'gray' ? 'var(--vp-c-text-2)' : 'var(--vp-c-text-1)'
 </script>
 
 <template>
@@ -49,6 +48,7 @@ const mobileColor = (action: TopbarAction) => action.mobile?.color === 'gray' ? 
       :outlined="action.outlined ?? false"
       :target="isExternal(action) ? '_blank' : undefined"
       :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
+      :style="{ marginInlineStart: '0.75rem' }"
     />
     <div v-else class="VPNavBarSearch search">
       <div>
@@ -59,11 +59,10 @@ const mobileColor = (action: TopbarAction) => action.mobile?.color === 'gray' ? 
           :aria-label="action.mobile.tooltip ?? localized(action.label)"
           :target="isExternal(action) ? '_blank' : undefined"
           :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
-          :style="{ color: mobileColor(action) }"
         >
           <span class="DocSearch-Button-Container">
             <span
-              class="vp-icon"
+              class="vp-icon DocSearch-Search-Icon"
               :style="{ '--icon': `url('${action.mobile.icon ?? ''}')` }"
               aria-hidden="true"
             />
