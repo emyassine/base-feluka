@@ -129,6 +129,9 @@ const descriptionStyles = computed(() => ({
   <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, backgroundPreset ? `nm-effect-hero--background-${backgroundPreset}` : '', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
+      <div v-if="$slots.background" class="nm-effect-hero__background-slot">
+        <slot name="background" />
+      </div>
     </div>
     <div class="nm-effect-hero__content">
       <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }">{{ eyebrowText }}</p>
@@ -154,6 +157,12 @@ const descriptionStyles = computed(() => ({
           {{ button.label }}
         </FeluqaButton>
       </div>
+      <div v-if="$slots.content" class="nm-effect-hero__content-slot">
+        <slot name="content" />
+      </div>
+    </div>
+    <div v-if="$slots.dock" class="nm-effect-hero__dock">
+      <slot name="dock" />
     </div>
   </section>
 </template>
@@ -186,6 +195,11 @@ const descriptionStyles = computed(() => ({
   height: 100%;
 }
 
+.nm-effect-hero__background-slot {
+  position: absolute;
+  inset: 0;
+}
+
 .nm-effect-hero__content {
   position: relative;
   z-index: 1;
@@ -193,6 +207,22 @@ const descriptionStyles = computed(() => ({
   padding: 3.5rem 0;
   text-align: center;
   pointer-events: none;
+}
+
+.nm-effect-hero__content-slot {
+  margin-top: 1.5rem;
+  pointer-events: auto;
+}
+
+.nm-effect-hero__dock {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  bottom: clamp(1rem, 4vw, 2.5rem);
+  display: flex;
+  justify-content: center;
+  padding-inline: 1rem;
+  pointer-events: auto;
 }
 
 .nm-effect-hero--dark { color: #fff; }
