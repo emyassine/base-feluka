@@ -25,6 +25,66 @@ const { transformDocumentationHead } = loadSiteModule(join(sitePaths.generatedMe
   transformDocumentationHead: (options: DocumentationSeoOptions) => unknown[][]
 }
 
+const siteThemeInitScript = String.raw`(() => {
+  const root = document.documentElement;
+  const choices = ['system', 'light', 'dark'];
+  const appearanceKey = 'vitepress-theme-appearance';
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  let preference = 'system';
+  let scrollReadyFrame;
+
+  const readPreference = () => {
+    try {
+      const saved = localStorage.getItem(appearanceKey);
+      preference = choices.includes(saved) ? saved : 'system';
+    } catch (_) {
+      preference = 'system';
+    }
+  };
+
+  const apply = () => {
+    const theme = preference === 'system' ? (media.matches ? 'dark' : 'light') : preference;
+    root.classList.toggle('dark', theme === 'dark');
+    root.dataset.themePreference = preference;
+    root.dataset.theme = theme;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = theme === 'dark' ? '#0d1117' : '#fcfdfd';
+    document.dispatchEvent(new CustomEvent('numerimondes:theme', { detail: { preference, theme } }));
+  };
+
+  const syncFromVitePress = () => {
+    readPreference();
+    apply();
+  };
+
+  root.classList.add('has-mobile-sidebar');
+  window.addEventListener('pageshow', () => {
+    scrollReadyFrame = requestAnimationFrame(() => root.classList.add('scroll-ready'));
+    syncFromVitePress();
+  });
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(scrollReadyFrame);
+    root.classList.remove('scroll-ready');
+  });
+  window.NumerimondesTheme = {
+    get: () => preference,
+    set: (next) => {
+      if (!choices.includes(next)) return;
+      preference = next;
+      try {
+        if (next === 'system') localStorage.removeItem(appearanceKey);
+        else localStorage.setItem(appearanceKey, next);
+      } catch (_) {}
+      apply();
+    },
+  };
+
+  new MutationObserver(syncFromVitePress).observe(root, { attributes: true, attributeFilter: ['class'] });
+  media.addEventListener('change', () => { if (preference === 'system') apply(); });
+  document.addEventListener('DOMContentLoaded', syncFromVitePress, { once: true });
+  syncFromVitePress();
+})();`
+
 /** Assemble VitePress from independently constructed data, navigation, and head providers. */
 export function composeVitePressConfig(dependencies: SiteConfigCompositionDependencies) {
   const { siteDirectory, configSource, navigationFactory, headFactory, seoHeadTransform } = dependencies
@@ -63,7 +123,11 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   lang: defaultLanguage,
   locales: vitepressLocales,
   appearance: ({ switch: true, system: 'force-auto', light: false, dark: 'force-dark' } as const)[siteConfig.topbar?.theme ?? 'switch'],
-  head: [['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }]],
+  head: [
+    ['meta', { name: 'theme-color', content: '#fcfdfd' }],
+    ['script', { id: 'site-theme-init' }, siteThemeInitScript],
+    ['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }],
+  ],
   srcDir: context.generatedDirectory,
   cacheDir: cacheDirectory,
   outDir: outputDirectory,
