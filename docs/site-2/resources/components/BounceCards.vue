@@ -135,6 +135,8 @@ function cardStyle(index: number): CSSProperties {
   aspect-ratio: var(--bounce-aspect-ratio, 1 / 1);
   overflow: hidden;
   border: 6px solid var(--vp-c-bg, #fff);
+  outline: 1px solid var(--vp-c-gutter);
+  outline-offset: -1px;
   border-radius: var(--radius-md);
   background: var(--vp-c-bg-soft, #f6f6f7);
   box-shadow: 0 8px 24px rgb(0 0 0 / 18%);

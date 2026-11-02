@@ -27,10 +27,10 @@ description: "Numerimondes helps organizations design, build, and operate depend
       :base-item-size="50"
       :magnification="70"
       :items="[
-        { icon: 'briefcase', label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', hoverColor: 'primary' },
-        { icon: 'server', label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/', hoverColor: 'primary' },
-        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', hoverColor: 'primary' },
-        { icon: 'building', label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', hoverColor: 'primary' }
+        { icon: 'briefcase', label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/' },
+        { icon: 'server', label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/' },
+        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/' },
+        { icon: 'building', label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us' }
       ]"
     />
   </template>
