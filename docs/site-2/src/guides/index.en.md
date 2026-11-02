@@ -124,7 +124,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
 		What this can mean<br>for your business
 </h2>
 
-<MegaCards
+<p>Expected benefits are assessed for each engagement; Specific results depend on the project and its implementation.</p>
+
+<Benefits
   :items="[
     {
       title: 'Better decisions',
@@ -162,10 +164,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
     [2],
     [3, 4]
   ]"
-  :card-height="220"
+  :image-height="300"
 />
-
-Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
 
 </div>
 
