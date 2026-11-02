@@ -210,7 +210,7 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'hideIcon', 'collections'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'hideIcon', 'includeArticles', 'collections'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
@@ -248,6 +248,9 @@ function validateSubguideSelector(value, location) {
   }
   if (value.icon !== undefined && typeof value.icon !== 'boolean') {
     throw new Error(`${location}.icon must be a boolean`)
+  }
+  if (value.includeArticles !== undefined && typeof value.includeArticles !== 'boolean') {
+    throw new Error(`${location}.includeArticles must be a boolean`)
   }
 }
 function validateTopbarItems(items, location = 'topbar.items') {

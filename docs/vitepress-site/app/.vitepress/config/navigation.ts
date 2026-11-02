@@ -191,7 +191,7 @@ function navigation(language = defaultLanguage): any[] {
     const label = typeof title === 'string' ? title : title?.[language] ?? title?.[defaultLanguage] ?? guide.labels?.[language] ?? guide.label
     return { text: itemText(label, icon, link), link, activeMatch }
   }
-  const guideSubguides = (path: string, depth: number | number[] | 'all' | undefined, showIcons: boolean) => {
+  const guideSubguides = (path: string, depth: number | number[] | 'all' | undefined, showIcons: boolean, includeArticles = false) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
     const guideConfig = guideConfigs[path]
     if (!guide || !guideConfig) throw new Error(`cannot discover topbar children for unknown guide: ${path}`)
@@ -211,6 +211,23 @@ function navigation(language = defaultLanguage): any[] {
       const value = readFileSync(source, 'utf8').match(new RegExp(`^${key}:\\s*["']?(.+?)["']?\\s*$`, 'm'))?.[1]
       return value?.trim() || undefined
     }
+    const articleItems = (directory: string, routeParts: string[]): any[] => includeArticles
+      ? readdirSync(directory, { withFileTypes: true })
+        .filter((entry) => entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'index.md')
+        .filter((entry) => !existsSync(join(directory, entry.name.slice(0, -'.md'.length))))
+        .sort((left, right) => left.name.localeCompare(right.name))
+        .map((entry) => {
+          const file = join(directory, entry.name)
+          const slug = entry.name.replace(/\.[a-z]{2,3}(?:-[A-Z]{2})?\.md$/i, '').replace(/\.md$/i, '').replace(/^\d+[.-]/, '')
+          const link = `${localePrefix}/${[...routeParts, slug].filter(Boolean).join('/')}`
+          const icon = sidebarPageIcons[link] ?? sidebarPageIcons[`${link}/`]
+          return {
+            text: itemText(titleOf(file), undefined, link, typeof icon === 'string' ? `/${icon.replace(/^\/+/, '')}` : undefined),
+            link,
+            ...(showIcons && icon ? { icon: `/${icon.replace(/^\/+/, '')}` } : {}),
+          }
+        })
+      : []
     const visit = (directory: string, routeParts: string[], level: number): any[] =>
       sortDirectories(directory).flatMap(({ name }) => {
         const segment = name.replace(/^\d+[.-]/, '')
@@ -219,7 +236,10 @@ function navigation(language = defaultLanguage): any[] {
         const childRouteParts = [...routeParts, segment]
         const metadataKey = childRouteParts.join('/')
         const metadata = sidebarMetadata[metadataKey]
-        const nestedItems = visit(childDirectory, childRouteParts, level + 1)
+        const nestedItems = [
+          ...visit(childDirectory, childRouteParts, level + 1),
+          ...articleItems(childDirectory, childRouteParts),
+        ]
         if (!metadata || (selectedDepths && !selectedDepths.has(level))) return nestedItems
         const link = `${localePrefix}/${childRouteParts.join('/')}/`
         const label = metadata.labels?.[language] ?? metadata.labels?.[defaultLanguage]
@@ -374,7 +394,7 @@ function navigation(language = defaultLanguage): any[] {
           activeMatch: guide.activeMatch,
           items: [
             ...(item.items.source === 'subguides' ? [overview] : []),
-            ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false),
+            ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false, item.items.includeArticles === true),
           ],
         }
         return applyMenuTemplate(resolved, item.menuTemplate)

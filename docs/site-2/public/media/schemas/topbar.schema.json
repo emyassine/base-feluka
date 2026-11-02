@@ -130,7 +130,8 @@
                     ],
                     "default": "all"
                   },
-                  "icon": { "type": "boolean", "default": true }
+                  "icon": { "type": "boolean", "default": true },
+                  "includeArticles": { "type": "boolean", "default": false }
                 },
                 "allOf": [
                   {

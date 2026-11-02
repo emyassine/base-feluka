@@ -6,13 +6,14 @@
       "guide": "services",
       "items": {
         "source": "subguides no-guide-index",
-        "icon": true
+        "icon": true,
+        "includeArticles": true
       },
       "menuTitle": {
         "en": "Services"
       },
       "menuTemplate": [
-        "mega.background-icon",
+        "mega.columns",
         [
           "title",
           "image",
@@ -21,25 +22,14 @@
           "children"
         ],
         {
-          "mobileToo": false,
-          "cardHeight": 220,
-          "composition": {
-            "columns": [
-              [
-                0
-              ],
-              [
-                1
-              ]
-            ]
-          }
+          "mobileToo": false
         }
       ]
     },
     {
       "guide": "opportunities",
       "items": {
-        "source": "subguides",
+        "source": "subguides no-guide-index",
         "icon": true
       },
       "menuTitle": {
@@ -49,7 +39,7 @@
     {
       "guide": "company",
       "items": {
-        "source": "subguides",
+        "source": "subguides no-guide-index",
         "icon": true
       },
       "menuTitle": {
