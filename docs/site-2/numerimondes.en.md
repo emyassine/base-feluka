@@ -4,7 +4,6 @@ description: "Numerimondes is an independent consulting and solutions company br
 lang: en
 status: "ready-for-review"
 ---
-
 # Ideas that move businesses forward.
 
 **Insight. Innovation. Strategy. Execution.**
@@ -134,7 +133,43 @@ Numerimondes SARL AU is an independent Moroccan company headquartered in Casabla
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
-<MegaCards />
+<MegaCards
+  :items="[
+    {
+      title: 'Feluqa',
+      description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
+      href: '/initiatives/feluqa',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
+      icon: '/images/home/initiatives/feluqa.svg'
+    },
+    {
+      title: 'The Best Recruit',
+      description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
+      href: '/initiatives/the-best-recruit',
+      image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
+      icon: '/images/home/initiatives/the-best-recruit.svg'
+    },
+    {
+      title: 'SPMPST',
+      description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
+      href: '/initiatives/spmpst',
+      image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
+      icon: '/images/home/initiatives/spmpst.svg'
+    }
+  ]"
+  :composition="[
+    { items: [0, 1] },
+    { items: [2] },
+    { items: ['more'] }
+  ]"
+  :more="{
+    title: 'Discover all our 3 initiatives',
+    description: 'Explore our current and upcoming projects',
+    href: '/initiatives/',
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
+  }"
+  :card-height="220"
+/>
 
 <!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
 do not place it among current offerings. -->

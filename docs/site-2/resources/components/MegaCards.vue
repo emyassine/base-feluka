@@ -1,30 +1,93 @@
 <script setup lang="ts">
-const cards = [
-  {
-    title: 'Feluqa — Coming soon',
-    description: 'A Rust-based, cross-platform application framework under development, exploring efficient application systems across different deployment environments.',
-    href: '/initiatives/feluqa',
-  },
-  {
-    title: 'The Best Recruit — Coming soon',
-    description: 'A recruitment and talent initiative being prepared to help employers discover and evaluate relevant profiles through a structured qualification process.',
-    href: '/initiatives/the-best-recruit',
-  },
-  {
-    title: 'SPMPST — Specification in development',
-    description: 'A proposed standard for portable, structured Markdown content trees and site-building workflows. Currently an internal specification and research initiative.',
-    href: '/initiatives/spmpst',
-  },
-]
+import { computed } from 'vue'
+
+export interface MegaCardItem {
+  title: string
+  description?: string
+  href: string
+  image: string
+  icon?: string
+}
+
+export interface MegaCardColumn {
+  items: Array<number | 'more'>
+  width?: string
+  gap?: number
+}
+
+interface MegaCardsProps {
+  items: MegaCardItem[]
+  composition?: MegaCardColumn[]
+  cardHeight?: number
+  more?: {
+    title: string
+    description?: string
+    href: string
+    image: string
+  }
+}
+
+const props = withDefaults(defineProps<MegaCardsProps>(), {
+  composition: undefined,
+  cardHeight: 220,
+  more: undefined,
+})
+
+const columns = computed(() => (props.composition ?? [
+  ...props.items.map((_, index) => ({ items: [index] })),
+]).map((column) => ({
+  width: column.width ?? '1fr',
+  gap: column.gap ?? 12,
+  cards: column.items.flatMap((entry) => {
+    if (entry === 'more') return props.more ? [{ kind: 'more' as const, item: props.more }] : []
+    const item = props.items[entry]
+    return item ? [{ kind: 'card' as const, item }] : []
+  }),
+})))
+
+const gridStyle = computed(() => ({
+  '--mega-card-height': `${props.cardHeight}px`,
+  gridTemplateColumns: columns.value.map((column) => column.width).join(' ') || '1fr',
+}))
 </script>
 
 <template>
-  <div class="mega-cards">
-    <article v-for="card in cards" :key="card.href" class="mega-cards__card">
-      <h3>{{ card.title }}</h3>
-      <p>{{ card.description }}</p>
-      <FeluqaButton tag="a" :href="card.href" label="Get Started" />
-    </article>
+  <div class="mega-cards" :style="gridStyle">
+    <div
+      v-for="(column, columnIndex) in columns"
+      :key="`column-${columnIndex}`"
+      class="mega-cards__column"
+      :style="{
+        gap: `${column.gap}px`,
+        gridTemplateRows: `repeat(${column.cards.length}, minmax(0, 1fr))`,
+      }"
+    >
+      <a
+        v-for="(card, cardIndex) in column.cards"
+        :key="`${card.item.href}-${cardIndex}`"
+        class="mega-cards__card"
+        :class="{ 'mega-cards__card--more': card.kind === 'more' }"
+        :href="card.item.href"
+      >
+        <img class="mega-cards__image" :src="card.item.image" alt="">
+        <img
+          v-if="card.kind === 'card' && card.item.icon"
+          class="mega-cards__icon"
+          :src="card.item.icon"
+          alt=""
+        >
+        <span class="mega-cards__content">
+          <strong>{{ card.item.title }}</strong>
+          <small v-if="card.kind === 'more' && card.item.description" class="mega-cards__more-hint">
+            {{ card.item.description }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </small>
+          <small v-else-if="card.kind === 'card'">{{ card.item.description }}</small>
+        </span>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -33,44 +96,86 @@ const cards = [
   display: grid;
   width: 100%;
   min-width: 0;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  align-items: stretch;
+}
+
+.mega-cards__column {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
 }
 
 .mega-cards__card {
+  position: relative;
   display: flex;
   min-width: 0;
-  min-height: 190px;
+  min-height: var(--mega-card-height, 220px);
   box-sizing: border-box;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  justify-content: space-between;
   padding: 18px;
-  border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
-  overflow-wrap: anywhere;
-  transition: border-color .2s ease, transform .36s cubic-bezier(.22, 1, .36, 1);
+  color: #fff !important;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow .4s cubic-bezier(.22, 1, .36, 1);
 }
 
-.mega-cards__card:hover { border-color: var(--vp-c-brand-1); }
-.mega-cards__card:nth-child(1) { animation-delay: .16s; }
-.mega-cards__card:nth-child(2) { animation-delay: .1s; }
-.mega-cards__card:nth-child(3) { animation-delay: .04s; }
-.mega-cards__card { animation: mega-card-in .36s cubic-bezier(.22, 1, .36, 1) both; }
-.mega-cards__card h3 { margin: 0; font-size: 1.05rem; }
-.mega-cards__card p { flex: 1; margin: 0; color: var(--vp-c-text-2); font-size: .88rem; }
+.mega-cards__card::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / .06), rgb(0 0 0 / .82));
+  content: '';
+}
+
+.mega-cards__card:hover { box-shadow: 0 12px 28px rgb(0 0 0 / .2); }
+
+.mega-cards__image {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+
+.mega-cards__card:hover .mega-cards__image { transform: scale(1.08); }
+
+.mega-cards__icon {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.mega-cards__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mega-cards__content strong { overflow-wrap: anywhere; font-size: 1.05rem; }
+.mega-cards__content small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgb(255 255 255 / .84);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow-wrap: anywhere;
+}
+
+.mega-cards__more-hint { display: inline-flex !important; align-items: center; gap: 6px; }
+.mega-cards__more-hint svg { width: 14px; height: 14px; flex: none; }
 
 @media (max-width: 768px) {
-  .mega-cards { grid-template-columns: minmax(0, 1fr); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mega-cards__card { animation: none; transition: none; }
-}
-
-@keyframes mega-card-in {
-  from { opacity: 0; transform: translateX(12px); }
-  to { opacity: 1; transform: translateX(0); }
+  .mega-cards { grid-template-columns: minmax(0, 1fr) !important; }
+  .mega-cards__card { min-height: 220px; }
 }
 </style>
