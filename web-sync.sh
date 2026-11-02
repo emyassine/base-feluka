@@ -28,6 +28,13 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/web-sync.config.json"
 GITIGNORE_FILE="$SCRIPT_DIR/.gitignore"
 
+BASE_DEPENDENCIES=(jq)
+SSH_DEPENDENCIES=(ssh rsync)
+SFTP_DEPENDENCIES=(sftp)
+SSH_PASSWORD_DEPENDENCIES=(sshpass)
+SUDO_PASSWORD_DEPENDENCIES=(base64 tr)
+GITIGNORE_DEPENDENCIES=(sed)
+
 check_dependencies() {
   local dependency
   local -a missing=()
@@ -39,6 +46,27 @@ check_dependencies() {
   if (( ${#missing[@]} )); then
     printf 'Missing required dependencies: %s\n' "${missing[*]}" >&2
     exit 1
+  fi
+}
+
+ensure_config_file_is_in_gitignore() {
+  local config_entry="${CONFIG_FILE##*/}"
+  local ignore_line
+  local last_line=""
+  local found=false
+
+  [[ -f "$GITIGNORE_FILE" ]] || : > "$GITIGNORE_FILE"
+
+  while IFS= read -r ignore_line || [[ -n "$ignore_line" ]]; do
+    last_line="$ignore_line"
+    if [[ "$ignore_line" == "$config_entry" || "$ignore_line" == "/$config_entry" ]]; then
+      found=true
+    fi
+  done < "$GITIGNORE_FILE"
+
+  if [[ "$found" != true ]]; then
+    [[ -z "$last_line" ]] || printf '\n' >> "$GITIGNORE_FILE"
+    printf '%s\n' "$config_entry" >> "$GITIGNORE_FILE"
   fi
 }
 
@@ -115,9 +143,10 @@ run_post_deploy() {
   esac
 }
 
+ensure_config_file_is_in_gitignore
 [[ ! -f "$CONFIG_FILE" ]] && create_default_config
 
-check_dependencies jq
+check_dependencies "${BASE_DEPENDENCIES[@]}"
 jq -e 'type == "object" and (.deploys | type == "object")' "$CONFIG_FILE" >/dev/null || {
   echo "Invalid JSON config or missing deploys object: $CONFIG_FILE"
   exit 1
@@ -141,14 +170,14 @@ if [[ "$UNSAFE_MODE" != "true" && "$UNSAFE_MODE" != "1" ]]; then
   SUDO_PASSWORD=""
 fi
 
-DEPENDENCIES=(jq)
+DEPENDENCIES=("${BASE_DEPENDENCIES[@]}")
 case "$METHOD" in
-  ssh) DEPENDENCIES+=(ssh rsync) ;;
-  sftp) DEPENDENCIES+=(sftp) ;;
+  ssh) DEPENDENCIES+=("${SSH_DEPENDENCIES[@]}") ;;
+  sftp) DEPENDENCIES+=("${SFTP_DEPENDENCIES[@]}") ;;
 esac
-if [[ -n "$SSH_PASSWORD" ]]; then DEPENDENCIES+=(sshpass); fi
-if [[ -n "$SUDO_PASSWORD" ]]; then DEPENDENCIES+=(base64 tr); fi
-if [[ -f "$GITIGNORE_FILE" ]]; then DEPENDENCIES+=(sed); fi
+if [[ -n "$SSH_PASSWORD" ]]; then DEPENDENCIES+=("${SSH_PASSWORD_DEPENDENCIES[@]}"); fi
+if [[ -n "$SUDO_PASSWORD" ]]; then DEPENDENCIES+=("${SUDO_PASSWORD_DEPENDENCIES[@]}"); fi
+if [[ -f "$GITIGNORE_FILE" ]]; then DEPENDENCIES+=("${GITIGNORE_DEPENDENCIES[@]}"); fi
 check_dependencies "${DEPENDENCIES[@]}"
 
 echo ""

@@ -1,5 +1,3 @@
-web-sync.config.json
-
 /target/
 **/target/
 **/node_modules/
@@ -13,3 +11,5 @@ products/feluqa-cli/dist/
 /docs-output/
 /.docs-output.stage-*/
 /.docs-output.backup-*/
+
+web-sync.config.json
