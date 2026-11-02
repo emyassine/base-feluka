@@ -54,34 +54,34 @@ description: "Numerimondes helps organizations design, build, and operate depend
    footnote="A formidable person is one who seems like they’ll get what they want, regardless of whatever obstacles are in the way."
    citation="Paul Graham"
    footnote-marker="[1]"
-   :stories={[
+   :stories='[
    {
-     name: 'Airbnb',
-     beforeImage: 'https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-batch-2-a1df9c49bacc25254fe05a3bac4921eff5ac37109de97b1d2337f6fd86a488be.jpg',
-     afterImage: 'https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-now-1-26d764d24e2486fd91a902dbd06b7bb05a3613e5af6273baffecf6f24090f6d1.jpg',
-     beforeText: 'Brian, Joe, and Nate did YC in W09.',
-     afterText: 'Airbnb went public in 2020 at an over $100B valuation.',
+     name: "Airbnb",
+     beforeImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-batch-2-a1df9c49bacc25254fe05a3bac4921eff5ac37109de97b1d2337f6fd86a488be.jpg",
+     afterImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/airbnb-now-1-26d764d24e2486fd91a902dbd06b7bb05a3613e5af6273baffecf6f24090f6d1.jpg",
+     beforeText: "Brian, Joe, and Nate did YC in W09.",
+     afterText: "Airbnb went public in 2020 at an over $100B valuation.",
    },
    {
-     name: 'OpenAI',
-     beforeImage: 'https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-batch-2-bd451c2a6d1966e17822ce4a22aeaec5167daad588cf0a99a9a68c563b6b4028.jpg',
-     afterImage: 'https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-now-1-14b338a4c66a1ad05c34b311d1d4c1b535cb960ef24109be329fe552358ebba9.jpg',
-     beforeText: "Sam was part of YC's inaugural batch in S05 and founded OpenAI as YC Research in 2015.",
-     afterText: 'Sam built OpenAI into a $500B company.',
+     name: "OpenAI",
+     beforeImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-batch-2-bd451c2a6d1966e17822ce4a22aeaec5167daad588cf0a99a9a68c563b6b4028.jpg",
+     afterImage: "https://bookface-static.ycombinator.com/assets/ycdc/beforevsnow/openai-now-1-14b338a4c66a1ad05c34b311d1d4c1b535cb960ef24109be329fe552358ebba9.jpg",
+     beforeText: "Sam was part of YC’s inaugural batch in S05 and founded OpenAI as YC Research in 2015.",
+     afterText: "Sam built OpenAI into a $500B company.",
    },
-   ]}
-   :labels="{[
-		  region: 'Company showcase',
-		  before: 'During YC',
-		  after: 'Now',
-		  timelineStart: 'YC',
-		  timelineEnd: 'Now',
-		  companies: 'Companies',
-		  stories: 'Showcase stories',
-		  compare: 'Compare {name} during YC and now',
-		  altBefore: '{name} during YC',
-		  altAfter: '{name} now',
-   ]}"
+   ]'
+   :labels="{
+     region: 'Company showcase',
+     before: 'During YC',
+     after: 'After YC',
+     timelineStart: 'During YC',
+     timelineEnd: 'After YC',
+     companies: 'Companies',
+     stories: 'Showcase stories',
+     compare: 'Compare {name} during YC and after YC',
+     altBefore: '{name} during YC',
+     altAfter: '{name} after YC',
+   }"
  />
 ## One foundation. All your operations.
 
