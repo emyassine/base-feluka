@@ -124,21 +124,25 @@ Expected benefits are assessed for each engagement; specific results depend on t
  />
 
 
----
+<div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-## One space. Many possibilities.
+# One space. Many possibilities.
 
 **An interactive showcase of ideas, systems and solutions.**
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-**Business performance** — operational diagnostics, commercial workflows, dashboards and process improvement.
-**Software and automation** — tailored applications, integrations, document workflows and AI-assisted tasks.
-**Infrastructure and connected operations** — self-hosted systems, monitoring, equipment and field applications.
-**People and organizations** — training, coordination and emerging talent solutions.
-**Research and ventures** — internal standards, experimental platforms and new business concepts.
+- **Business performance** — operational diagnostics, commercial workflows, dashboards and process improvement.
+- **Software and automation** — tailored applications, integrations, document workflows and AI-assisted tasks.
+- **Infrastructure and connected operations** — self-hosted systems, monitoring, equipment and field applications.
+- **People and organizations** — training, coordination and emerging talent solutions.
+- **Research and ventures** — internal standards, experimental platforms and new business concepts.
 
-**Explore the showcase** → `/showcase`
+<FeluqaButton tag="a" :href="/showcase">Explore the showcase
+</FeluqaButton>
+
+</div>
+
 
 <!-- Showcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.

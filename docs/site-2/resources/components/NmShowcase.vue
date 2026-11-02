@@ -349,9 +349,11 @@ onBeforeUnmount(() => {
                   {{ nameParts(stories[active]?.name ?? '').first }}<template v-if="nameParts(stories[active]?.name ?? '').second"><br />{{ nameParts(stories[active]?.name ?? '').second }}</template>
                 </span>
                 <p class="nm-showcase__story-description">
-                  <template v-for="(sentence, sentenceIndex) in descriptionSentences(stories[active]?.description ?? '')" :key="sentenceIndex">
-                    {{ sentence }}<br v-if="sentenceIndex < descriptionSentences(stories[active]?.description ?? '').length - 1" />
-                  </template>
+                  <span
+                    v-for="(sentence, sentenceIndex) in descriptionSentences(stories[active]?.description ?? '')"
+                    :key="sentenceIndex"
+                    class="nm-showcase__story-sentence"
+                  >{{ sentence }}</span>
                 </p>
               </div>
             </Transition>
@@ -669,13 +671,16 @@ onBeforeUnmount(() => {
 
   .nm-showcase__story-description {
     max-width: 34rem;
-    margin: 0.75rem auto 0;
+    margin: 1rem auto 0;
     color: var(--vp-c-text-2);
     font-size: var(--vp-font-size-base, 14px);
     line-height: 1.5;
     text-align: center;
     overflow-wrap: anywhere;
   }
+
+  .nm-showcase__story-sentence { display: block; }
+  .nm-showcase__story-sentence + .nm-showcase__story-sentence { margin-top: 0.4em; }
 
   .nm-showcase-title-enter-active,
   .nm-showcase-title-leave-active { transition: opacity 360ms ease-in-out, transform 360ms ease-in-out; }
