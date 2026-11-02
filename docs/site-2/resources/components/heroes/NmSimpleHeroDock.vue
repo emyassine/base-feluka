@@ -8,6 +8,7 @@ interface DockItem {
   href?: string
   onClick?: () => void
   className?: string
+  dividerBefore?: boolean
   hoverColor?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark'
 }
 
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<{
   mobileItemSize?: number
   magnification?: number
   radius?: string | number
+  panelRadius?: string | number
 }>(), {
   label: 'Explore Numerimondes',
   className: '',
@@ -30,6 +32,7 @@ const props = withDefaults(defineProps<{
   mobileItemSize: 64,
   magnification: 70,
   radius: 'calc(var(--radius-lg) * 1.2)',
+  panelRadius: '19px',
 })
 
 const itemElements: Array<HTMLElement | null> = []
@@ -118,41 +121,43 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
         height: `${props.panelHeight}px`,
         '--nm-dock-panel-height': `${props.panelHeight}px`,
         '--nm-dock-radius': typeof props.radius === 'number' ? `${props.radius}px` : props.radius,
+        '--nm-dock-panel-radius': typeof props.panelRadius === 'number' ? `${props.panelRadius}px` : props.panelRadius,
       }"
       role="toolbar"
       :aria-label="props.label"
       @pointermove="handlePointerMove"
       @pointerleave="handlePointerLeave"
     >
-      <component
-        :is="item.href ? 'a' : 'button'"
-        v-for="(item, index) in props.items"
-        :key="`${item.label}-${index}`"
-        :ref="element => setItemElement(element as Element | null, index)"
-        class="nm-simple-hero-dock__item"
-        :class="[item.className, { 'has-hover-color': item.hoverColor }]"
-        :href="item.href"
-        :type="item.href ? undefined : 'button'"
-        :aria-label="item.label"
-        :title="item.label"
-        :style="[
-          { width: `${itemSize(index)}px`, height: `${itemSize(index)}px` },
-          itemHoverStyle(item),
-        ]"
-        @click="activate(item)"
-        @focus="focusItem(index)"
-        @blur="pointerX = null"
-        @keydown="moveFocus($event, index)"
-      >
-        <component :is="item.icon" v-if="typeof item.icon === 'function'" class="nm-simple-hero-dock__custom-icon" aria-hidden="true" />
-        <svg v-else class="nm-simple-hero-dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path :d="iconPaths[item.icon ?? 'link'] ?? iconPaths.link" />
-        </svg>
-        <span class="nm-simple-hero-dock__tooltip" role="tooltip">
-          <span class="nm-simple-hero-dock__desktop-label">{{ item.label }}</span>
-          <span class="nm-simple-hero-dock__mobile-label">{{ item.mobileLabel ?? item.label }}</span>
-        </span>
-      </component>
+      <template v-for="(item, index) in props.items" :key="`${item.label}-${index}`">
+        <span v-if="item.dividerBefore" class="nm-simple-hero-dock__divider" aria-hidden="true"></span>
+        <component
+          :is="item.href ? 'a' : 'button'"
+          :ref="element => setItemElement(element as Element | null, index)"
+          class="nm-simple-hero-dock__item"
+          :class="[item.className, typeof item.icon === 'string' ? `icon--${item.icon}` : '', { 'has-hover-color': item.hoverColor }]"
+          :href="item.href"
+          :type="item.href ? undefined : 'button'"
+          :aria-label="item.label"
+          :title="item.label"
+          :style="[
+            { width: `${itemSize(index)}px`, height: `${itemSize(index)}px` },
+            itemHoverStyle(item),
+          ]"
+          @click="activate(item)"
+          @focus="focusItem(index)"
+          @blur="pointerX = null"
+          @keydown="moveFocus($event, index)"
+        >
+          <component :is="item.icon" v-if="typeof item.icon === 'function'" class="nm-simple-hero-dock__custom-icon" aria-hidden="true" />
+          <svg v-else class="nm-simple-hero-dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path :d="iconPaths[item.icon ?? 'link'] ?? iconPaths.link" />
+          </svg>
+          <span class="nm-simple-hero-dock__tooltip" role="tooltip">
+            <span class="nm-simple-hero-dock__desktop-label">{{ item.label }}</span>
+            <span class="nm-simple-hero-dock__mobile-label">{{ item.mobileLabel ?? item.label }}</span>
+          </span>
+        </component>
+      </template>
     </div>
   </div>
 </template>
@@ -177,10 +182,12 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   gap: 0.5rem;
   overflow: visible;
   border: 1px solid var(--vp-c-divider);
-  border-radius: var(--nm-dock-radius, calc(var(--radius-lg) * 1.2));
+  border-radius: var(--nm-dock-panel-radius, 19px);
   padding: 0.45rem;
-  background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-2);
+  background: color-mix(in srgb, var(--vp-c-bg) 48%, transparent);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.3);
+  -webkit-backdrop-filter: blur(30px) saturate(1.25);
+  backdrop-filter: blur(30px) saturate(1.25);
 }
 
 .nm-simple-hero-dock__item {
@@ -189,16 +196,31 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid rgb(255 255 255 / 0.24);
   border-radius: var(--nm-dock-radius, calc(var(--radius-lg) * 1.2));
-  background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-1);
-  color: var(--vp-c-text-1);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 58%, white), var(--vp-c-brand-1));
+  box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
+  color: var(--vp-c-white);
   cursor: pointer;
   outline: none;
   text-decoration: none;
   transform-origin: center bottom;
-  transition: width 150ms ease-out, height 150ms ease-out, background-color 180ms ease, color 180ms ease;
+  transition: width 150ms cubic-bezier(0.25, 1, 0.5, 1), height 150ms cubic-bezier(0.25, 1, 0.5, 1), background-color 180ms ease, color 180ms ease, transform 150ms ease;
+}
+
+.nm-simple-hero-dock__item.icon--server { background: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
+.nm-simple-hero-dock__item.icon--sparkles { background: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }
+.nm-simple-hero-dock__item.icon--building { background: linear-gradient(145deg, var(--vp-c-brand-2), var(--vp-c-brand-3)); }
+
+.nm-simple-hero-dock__item:active { transform: translateY(-8px) scale(0.97); }
+
+.nm-simple-hero-dock__divider {
+  width: 1px;
+  height: 48px;
+  flex: 0 0 1px;
+  margin-inline: 0.25rem;
+  background: var(--vp-c-text-1);
+  opacity: 0.2;
 }
 
 .nm-simple-hero-dock__item:focus-visible {
@@ -215,8 +237,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
 .nm-simple-hero-dock__icon,
 .nm-simple-hero-dock__custom-icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.75rem;
+  height: 1.75rem;
   flex: 0 0 auto;
 }
 
@@ -228,12 +250,14 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   width: max-content;
   max-width: 12rem;
   transform: translate(-50%, 4px);
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid rgb(255 255 255 / 0.2);
   border-radius: var(--nm-dock-radius, calc(var(--radius-lg) * 1.2));
   padding: 0.3rem 0.55rem;
-  background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-1);
-  color: var(--vp-c-text-1);
+  background: rgb(0 0 0 / 0.58);
+  box-shadow: 0 5px 15px rgb(0 0 0 / 0.25);
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  color: rgb(255 255 255 / 0.92);
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.2;
@@ -259,9 +283,9 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   .nm-simple-hero-dock__outer::-webkit-scrollbar { display: none; }
   .nm-simple-hero-dock { width: max-content; max-width: none; gap: 0.4rem; margin-inline: auto; }
   .nm-simple-hero-dock__item { width: var(--nm-dock-mobile-item-size, 64px) !important; height: var(--nm-dock-mobile-item-size, 64px) !important; flex-direction: column; gap: 0.25rem; }
-  .nm-simple-hero-dock__icon,
-  .nm-simple-hero-dock__custom-icon { width: 1.25rem; height: 1.25rem; }
   .nm-simple-hero-dock__icon { width: 1.25rem; height: 1.25rem; }
+  .nm-simple-hero-dock__custom-icon { width: 1.25rem; height: 1.25rem; }
+  .nm-simple-hero-dock__divider { height: 42px; margin-inline: 0.1rem; }
   .nm-simple-hero-dock__tooltip {
     position: static;
     inset: auto;
