@@ -78,7 +78,7 @@ function descriptionSentences(description: string) {
   return description.match(/[^.]+(?:\.|$)/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [description]
 }
 
-function stackCardStyle(index: number, color: string) {
+function stackCardStyle(index: number) {
   const reveal = clamp(pos.value - index + 1, 0, 1)
   const scaleProgress = clamp(pos.value - index, 0, 1)
   const targetScale = 0.85 + index * 0.03
@@ -87,7 +87,6 @@ function stackCardStyle(index: number, color: string) {
   const rotation = (1 - reveal) * -2
 
   return {
-    '--story-color': color,
     zIndex: reveal > 0 ? count.value + index : index,
     opacity: reveal,
     pointerEvents: index === active.value ? 'auto' : 'none',
@@ -425,14 +424,14 @@ onBeforeUnmount(() => {
 
     <div v-else ref="stageTrack" class="nm-showcase__stack-track" :style="{ '--n': count }">
       <div class="nm-showcase__stack-sticky">
-        <div class="nm-showcase__stack-deck" :style="{ '--active-index': active }">
+        <div class="nm-showcase__stack-deck">
         <article
           v-for="(story, index) in stories"
           :key="`stack-${story.name}-${index}`"
           class="nm-showcase__stack-card"
           :class="{ 'is-active': index === active, 'is-past': index < active }"
           :aria-hidden="index !== active"
-          :style="stackCardStyle(index, story.color)"
+          :style="stackCardStyle(index)"
         >
           <figure class="nm-showcase__stack-side">
             <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
@@ -643,6 +642,8 @@ onBeforeUnmount(() => {
   .nm-showcase__stack-track {
     display: block;
     height: calc(100svh + (var(--n) - 1) * var(--scroll-per-item));
+    background: #080d14;
+    color: #f3f6fa;
   }
   .nm-showcase__stack-sticky {
     position: sticky;
@@ -650,8 +651,16 @@ onBeforeUnmount(() => {
     display: grid;
     height: 100svh;
     place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: #080d14;
   }
-  .nm-showcase__stack-deck { position: relative; width: min(96vw, 1440px); height: min(68svh, 620px); }
+  .nm-showcase__stack-deck {
+    position: relative;
+    z-index: 1;
+    width: min(96vw, 1440px);
+    height: min(68svh, 620px);
+  }
   .nm-showcase__stack-card {
     position: absolute;
     inset: 0;
@@ -661,27 +670,28 @@ onBeforeUnmount(() => {
     align-items: center;
     gap: clamp(1.25rem, 3vw, 2.75rem);
     padding: clamp(1.5rem, 4vw, 3.5rem);
-    border: 2px solid var(--story-color, #7c3aed);
-    border-radius: 1.5rem;
-    background: var(--vp-c-bg);
-    box-shadow: 0 24px 70px rgb(22 20 15 / 0.16);
+    border: 1px solid rgb(210 222 237 / 0.18);
+    border-radius: 1.25rem;
+    background: linear-gradient(145deg, rgb(20 29 42 / 0.94), rgb(12 18 28 / 0.96));
+    box-shadow: 0 30px 90px rgb(0 0 0 / 0.42), inset 0 1px rgb(255 255 255 / 0.055);
+    backdrop-filter: blur(18px);
     opacity: 0;
     pointer-events: none;
     transform-origin: top center;
     will-change: transform, opacity;
   }
-  .nm-showcase__stack-card.is-active { pointer-events: auto; }
+  .nm-showcase__stack-card.is-active { border-color: rgb(210 222 237 / 0.26); pointer-events: auto; }
   .nm-showcase__stack-side { min-width: 0; margin: 0; }
   .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.9rem; }
-  .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: var(--nm-showcase-before-color); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-  .nm-showcase__stack-side figcaption span { color: var(--vp-c-text-3); font-variant-numeric: tabular-nums; }
-  .nm-showcase__stack-side:last-child figcaption { color: var(--nm-showcase-after-color); }
-  .nm-showcase__stack-side p { margin: 0.55rem 0 0; font-size: 0.96rem; line-height: 1.55; }
+  .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: #b7c5d5; font-size: 0.76rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
+  .nm-showcase__stack-side figcaption span { color: #77889d; font-variant-numeric: tabular-nums; }
+  .nm-showcase__stack-side:last-child figcaption { color: #a9c4df; }
+  .nm-showcase__stack-side p { margin: 0.55rem 0 0; color: #d0d8e2; font-size: 0.94rem; line-height: 1.55; }
   .nm-showcase__stack-copy { text-align: center; }
-  .nm-showcase__stack-count { display: block; margin-bottom: 1rem; color: var(--story-color); font-size: 0.9rem; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0.1em; }
-  .nm-showcase__stack-count span { color: var(--vp-c-text-3); font-weight: 500; }
+  .nm-showcase__stack-count { display: block; margin-bottom: 1rem; color: #adc4dd; font-size: 0.78rem; font-variant-numeric: tabular-nums; font-weight: 650; letter-spacing: 0.14em; }
+  .nm-showcase__stack-count span { color: #7f8da0; font-weight: 500; }
   .nm-showcase__stack-copy .nm-showcase__name-title { font-size: clamp(1.25rem, 2vw, 1.75rem); }
-  .nm-showcase__stack-copy p { margin: 1rem 0 0; color: var(--vp-c-text-2); line-height: 1.55; }
+  .nm-showcase__stack-copy p { margin: 1rem 0 0; color: #b9c4d1; line-height: 1.6; }
 
   .nm-showcase__scrolltrack {
     display: block;
