@@ -23,7 +23,7 @@ Sélectionnez votre profil pour accéder à votre espace d’authentification.
       title: 'Espace client',
       description: 'Retrouvez vos projets, vos factures, vos livrables et le support.',
       icon: 'user-round',
-      image: '/images/home/showcase-capabilities/digital-after.jpg',
+      image: '/images/accounts/world-1-1280.webp',
       actions: [
         { label: 'Déjà utilisateur ? Connexion', href: 'https://numerimondes.com/account/connect/authentication/login', icon: 'circle-user-round', color: 'gray', external: true },
         { label: 'Créer un compte', href: 'https://numerimondes.com/account/connect/authentication/register', icon: 'user-plus', external: true }
@@ -34,7 +34,7 @@ Sélectionnez votre profil pour accéder à votre espace d’authentification.
       title: 'Administration',
       description: 'L’espace de travail des équipes et des intervenants Numerimondes.',
       icon: 'shield-check',
-      image: '/images/home/showcase-capabilities/operations-after.jpg',
+      image: '/images/accounts/world-2-1280.webp',
       actions: [
         { label: 'Connexion équipe', href: 'https://numerimondes.com/account/connect/admin/authentication', icon: 'arrow-up-right', iconPosition: 'after', color: 'gray', external: true }
       ]
