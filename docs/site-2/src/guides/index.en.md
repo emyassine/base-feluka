@@ -47,12 +47,40 @@ description: "Numerimondes helps organizations design, build, and operate depend
       alt: 'A team working together in a bright office'
     },
     {
-      src: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=1200&q=85',
-      alt: 'A notebook and pen ready for planning'
+      src: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A team planning together around a table'
     },
     {
       src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85',
       alt: 'A collaborative modern office'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85',
+      alt: 'Colleagues collaborating around a laptop'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A team sharing ideas at a meeting'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A project team working through ideas'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A collaborative business meeting'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=85',
+      alt: 'Colleagues planning at a whiteboard'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A team collaborating in a workshop'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A shared workspace with a long table'
     }
   ]"
   section-title="Possibility<br>becomes valuable<br>through execution."
@@ -411,7 +439,7 @@ Our internal initiatives are part of the way we research, experiment and build f
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
       href: '/initiatives/spmpst',
-      image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
   ]"
