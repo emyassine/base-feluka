@@ -146,6 +146,7 @@ function cardStyle(index: number): CSSProperties {
   height: 100%;
   cursor: zoom-in;
   list-style: none;
+  animation: bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
 }
 
 .bounce-cards__card summary::-webkit-details-marker {
@@ -218,10 +219,19 @@ function cardStyle(index: number): CSSProperties {
   100% { opacity: 1; scale: 1; }
 }
 
+@keyframes bounce-cards-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bounce-cards__card {
     animation-duration: 1ms;
     transition-duration: 1ms;
+  }
+
+  .bounce-cards__card summary {
+    animation: none;
   }
 }
 </style>
