@@ -3,13 +3,16 @@ import { computed, onUnmounted, ref, type CSSProperties } from 'vue'
 
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 type ButtonColor = 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark'
+type ButtonVariant = ButtonColor | 'secondary'
 
 const props = withDefaults(defineProps<{
   tag?: 'button' | 'a'
   href?: string
+  label?: string
   type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
-  color?: ButtonColor
+  color?: ButtonVariant
+  variant?: ButtonVariant
   outlined?: boolean
   iconPosition?: 'before' | 'after'
   tooltip?: string
@@ -41,6 +44,9 @@ const props = withDefaults(defineProps<{
 const shineAngle = ref(0)
 const shineOpacity = ref(0)
 const isHovered = ref(false)
+const selectedVariant = computed(() => props.variant ?? props.color)
+const buttonColor = computed(() => selectedVariant.value === 'secondary' ? 'gray' : selectedVariant.value)
+const buttonOutlined = computed(() => props.outlined || selectedVariant.value === 'secondary')
 let animationFrame = 0
 let previousFrame = 0
 const style = computed(() => ({
@@ -112,8 +118,8 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     :title="tooltip"
     :style="style"
     :class="[
-      'feluqa-button', `size-${size}`, `color-${color}`,
-      { outlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor) },
+      'feluqa-button', `size-${size}`, `color-${buttonColor}`,
+      { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor) },
     ]"
     @pointerenter="startHoverAnimation"
     @pointermove="followPointer"
@@ -121,7 +127,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     @click="preventDisabledLink"
   >
     <span v-if="$slots.icon && iconPosition === 'before'" class="button-icon"><slot name="icon" /></span>
-    <span class="button-content"><slot>Get Started</slot></span>
+    <span class="button-content"><slot>{{ label || 'Get Started' }}</slot></span>
     <span v-if="$slots.icon && iconPosition === 'after'" class="button-icon"><slot name="icon" /></span>
     <span v-if="$slots.badge || badge !== undefined" :class="['button-badge', `badge-${badgeColor}`]"><slot name="badge">{{ badge }}</slot></span>
   </component>

@@ -412,10 +412,10 @@ Share a challenge, an idea, a business objective or a project you want to explor
 
 <div style="display: flex; gap: 15px;">
 	<FeluqaButton tag="a"
-		variant="primary"
+		color="gray"
 		href="/contact" label="Start a conversation"/>
 	<FeluqaButton tag="a"
-		variant="secondary"
+		color="gray"
 		href="/partners" label="Become a partner"/>
 </div>
 
