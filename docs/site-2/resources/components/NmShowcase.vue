@@ -576,6 +576,10 @@ onBeforeUnmount(() => {
 
   .nm-showcase__col { display: flex; min-width: 0; flex-direction: column; gap: 1rem; margin: 0; }
 
+  .nm-showcase__col .nm-showcase__frame { order: 2; }
+  .nm-showcase__col .nm-showcase__label { order: 1; }
+  .nm-showcase__col .nm-showcase__captions { order: 3; }
+
   .nm-showcase__label {
     font-family: inherit;
     font-size: 16px;
@@ -632,10 +636,11 @@ onBeforeUnmount(() => {
     min-height: var(--item-h);
     align-items: center;
     justify-content: center;
+    text-align: center;
     outline: none;
   }
 
-  .nm-showcase__story-heading { width: 100%; }
+  .nm-showcase__story-heading { width: 100%; margin-inline: auto; text-align: center; }
 
   .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
 
