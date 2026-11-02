@@ -213,7 +213,7 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   hover-push="220px"
   expanded-width="75%"
   expanded-height="90%"
-  expanded-z-index="40"
+  :expanded-z-index="40"
   overflow-mode="visible"
   enable-hover
 />

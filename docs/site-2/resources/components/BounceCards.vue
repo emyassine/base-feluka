@@ -143,9 +143,13 @@ function cardStyle(index: number): CSSProperties {
 }
 
 .bounce-cards__card summary {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   cursor: zoom-in;
   list-style: none;
 }
@@ -159,9 +163,14 @@ function cardStyle(index: number): CSSProperties {
 }
 
 .bounce-cards__card img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
+  object-position: center;
   object-fit: cover;
   pointer-events: none;
 }
