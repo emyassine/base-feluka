@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Discuss infrastructure', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Infrastructure, equipment & security
@@ -51,4 +51,4 @@ Assessment, options, proposal, implementation and agreed ongoing support. Availa
 **Discuss infrastructure** → `/company/prologue/contact?topic=project`  
 **All services** → `/services`
 
-</div>
+

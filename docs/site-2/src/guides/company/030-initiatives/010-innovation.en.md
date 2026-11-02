@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Innovation
@@ -69,4 +69,4 @@ We welcome conversations with organizations, researchers, independent profession
 
 **Propose an idea or collaboration** → `/company/prologue/contact?topic=innovation`
 
-</div>
+

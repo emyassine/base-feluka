@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Discuss a solution', href: '/company/prologue/contact?topic=solution' }, { label: 'Explore our services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Solutions
@@ -81,4 +81,4 @@ A first conversation identifies the operational need and what a successful resul
 **See examples and concepts** → [Explore the showcase](/#showcase)  
 **Discuss a solution** → `/company/prologue/contact?topic=solution`
 
-</div>
+

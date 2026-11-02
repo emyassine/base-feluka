@@ -8,14 +8,14 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 ---
-<div class="nm-home-copy" style="margin-top:4rem;align:center;">
+
 
 # Accès aux espaces dédiés
 
 Sélectionnez votre profil pour accéder à votre espace d’authentification.
 
 <br>
-</div>
+
 <CardsModern
   :cards="[
     {

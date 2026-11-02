@@ -371,7 +371,7 @@ function findIcon(name) {
   if (!projectDirectories.iconLibrary || typeof name !== 'string') return null
   const resource = parseResourceReference(name)
   if (resource) {
-    if (resource.kind !== 'icon' && resource.kind !== 'media') return null
+    if (!['icon', 'media', 'flag'].includes(resource.kind)) return null
     return resolveVitepressResource(resource, layout)
   }
   if (isAbsolute(name)) {

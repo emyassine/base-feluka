@@ -1,4 +1,6 @@
 {
-  "labels": { "en": "Morocco" },
-  "icon": "@spmpst::icon::map-pin"
+  "labels": {
+    "en": "Morocco"
+  },
+  "icon": "@spmpst::flag::ma"
 }

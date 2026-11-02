@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # The Best Recruit
@@ -53,4 +53,4 @@ Organizations and potential collaborators can contact Numerimondes to discuss fu
 **Contact Numerimondes** → `/company/prologue/contact?topic=partnership`  
 **Back to innovation** → `/company/initiatives/innovation`
 
-</div>
+

@@ -1,7 +1,7 @@
 ---
 title: "Morocco Partnerships | Numerimondes Opportunities"
 sidebarTitle: "Morocco Partnerships"
-icon: "@spmpst::icon::handshake"
+icon: "@spmpst::flag::ma"
 description: "Advisory partnerships grounded in the Moroccan business and professional context."
 lang: en
 status: "ready-for-review"

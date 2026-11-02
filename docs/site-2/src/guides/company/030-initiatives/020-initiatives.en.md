@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Discuss an idea', href: '/company/prologue/contact?topic=innovation' }, { label: 'How we innovate', href: '/company/initiatives/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 ## Work in progress, shared clearly.
 
@@ -40,4 +40,4 @@ These internal initiatives are at different stages of development. Their pages d
 
 <FeluqaButton tag="a" href="/company/prologue/contact?topic=innovation" label="Discuss a collaboration" />
 
-</div>
+

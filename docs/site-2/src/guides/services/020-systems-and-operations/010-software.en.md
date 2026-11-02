@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Discuss a system', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Software & information systems
@@ -51,4 +51,4 @@ Projects may include discovery, design, implementation, testing, training, docum
 **Discuss a system** → `/company/prologue/contact?topic=project`  
 **All services** → `/services`
 
-</div>
+

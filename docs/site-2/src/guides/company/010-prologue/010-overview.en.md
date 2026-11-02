@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 ## Company
 
@@ -41,4 +41,4 @@ Discuss a project, ask a question or start a conversation about working together
 
 <FeluqaButton tag="a" href="/company/prologue/contact" label="Contact Numerimondes" />
 
-</div>
+

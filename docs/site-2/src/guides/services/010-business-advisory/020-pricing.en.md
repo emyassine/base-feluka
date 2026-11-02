@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Request a proposal', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Pricing & engagements
@@ -81,4 +81,4 @@ Share the background, desired outcome, current obstacles and target date. A shor
 
 <!-- Internal: No public price list or blanket guarantees without approved commercial policy. -->
 
-</div>
+

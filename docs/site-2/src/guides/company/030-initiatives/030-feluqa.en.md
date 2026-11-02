@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Feluqa
@@ -53,4 +53,4 @@ Numerimondes can discuss custom software and Rust engineering missions independe
 **Discuss Rust engineering** → `/company/prologue/contact?topic=project`  
 **Back to innovation** → `/company/initiatives/innovation`
 
-</div>
+

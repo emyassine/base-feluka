@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Discuss SPMPST', href: '/company/prologue/contact?topic=innovation' }, { label: 'Explore innovation', href: '/company/initiatives/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # SPMPST
@@ -53,4 +53,4 @@ We welcome technical discussions around content portability, static site generat
 **Discuss SPMPST** → `/company/prologue/contact?topic=innovation`  
 **Back to innovation** → `/company/initiatives/innovation`
 
-</div>
+

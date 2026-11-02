@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Discuss operations', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Operations, people & capabilities
@@ -53,4 +53,4 @@ Discuss the organizational challenge, the people involved and the outcome you wa
 **Discuss operations** → `/company/prologue/contact?topic=consulting`  
 **All services** → `/services`
 
-</div>
+

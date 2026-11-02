@@ -22,7 +22,7 @@ js-events:
   :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Services
@@ -100,4 +100,4 @@ These are potential outcomes, evaluated and scoped for each mission.
 **Our pricing approach** → `/services/business-advisory/pricing`
 **Discuss a mission** → `/company/prologue/contact`
 
-</div>
+

@@ -23,7 +23,7 @@ js-events:
   :buttons="[{ label: 'Discuss consulting', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', style: 'secondary' }]"
 />
 
-<div class="nm-home-copy">
+
 
 
 # Consulting & business development
@@ -51,4 +51,4 @@ We begin with a qualification discussion. Where substantial investigation is req
 **Discuss consulting** → `/company/prologue/contact?topic=consulting`  
 **All services** → `/services`
 
-</div>
+
