@@ -59,6 +59,7 @@ REMOTE_CHOWN=""
 REMOTE_DIR_MODE="755"
 REMOTE_FILE_MODE="644"
 RSYNC_REMOTE_SUDO="false"
+REMOTE_STAGING_ROOT="$HOME/.web-sync-staging"
 
 # ------------------------------------------------------------
 # Deployment instances
@@ -227,8 +228,6 @@ echo ""
 case $METHOD in
   ssh)
     build_rsync_excludes "$CONTEXT"
-    rsync_options=(--chmod="D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}")
-    rsync_identity_options=(--no-owner --no-group)
     if [[ -n "${REMOTE_CHOWN:-}" ]]; then
       if [[ ! "${REMOTE_CHOWN}" =~ ^[^:]+:[^:]+$ ]]; then
         echo "REMOTE_CHOWN must use owner:group form, for example yassine:www-data"
@@ -238,30 +237,28 @@ case $METHOD in
         echo "REMOTE_CHOWN requires RSYNC_REMOTE_SUDO=true"
         exit 1
       fi
-      rsync_options+=(--chown="$REMOTE_CHOWN")
-      rsync_identity_options=()
     fi
     if [[ "${RSYNC_REMOTE_SUDO:-false}" == "true" ]]; then
-      rsync_options+=(--rsync-path="sudo -n rsync")
-    fi
-    # Deliberately omit --delete: files on the server that are absent from this
-    # selected source must be preserved.
-    rsync -avz --progress "${rsync_identity_options[@]}" "${rsync_options[@]}" "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
+      stage_instance="${INSTANCE//[^A-Za-z0-9_.-]/_}"
+      remote_stage="${REMOTE_STAGING_ROOT%/}/$stage_instance"
+      printf -v remote_stage_q '%q' "$remote_stage"
+      printf -v remote_target_q '%q' "$TARGET"
+      ssh "$HOST" "mkdir -p -- $remote_stage_q"
+      rsync -avz --progress --no-perms --no-owner --no-group "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$remote_stage/"
 
-    if [[ -n "${REMOTE_CHOWN:-}" ]]; then
-      printf -v remote_target '%q' "$TARGET"
-      (
-        cd -- "$SOURCE"
-        find . -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chown -- '$REMOTE_CHOWN'"
-      (
-        cd -- "$SOURCE"
-        find . -type d -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chmod '$REMOTE_DIR_MODE' --"
-      (
-        cd -- "$SOURCE"
-        find . -type f -print0
-      ) | ssh "$HOST" "cd $remote_target && sudo -n xargs -0 -r chmod '$REMOTE_FILE_MODE' --"
+      printf -v remote_chmod_arg '%q' "D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}"
+      publish_command="sudo rsync -av --ignore-times --chmod=$remote_chmod_arg"
+      if [[ -n "${REMOTE_CHOWN:-}" ]]; then
+        printf -v remote_chown_arg '%q' "--chown=$REMOTE_CHOWN"
+        publish_command+=" $remote_chown_arg"
+      fi
+      publish_command+=" -- $remote_stage_q/ $remote_target_q/"
+      ssh -tt "$HOST" "$publish_command"
+      ssh "$HOST" "rm -rf -- $remote_stage_q"
+    else
+      rsync_options=(--chmod="D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}")
+      rsync_identity_options=(--no-owner --no-group)
+      rsync -avz --progress "${rsync_identity_options[@]}" "${rsync_options[@]}" "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
     fi
 
     run_post_deploy "$HOST" "$TARGET" "$CONTEXT"
