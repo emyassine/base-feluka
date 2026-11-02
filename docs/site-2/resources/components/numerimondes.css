@@ -32,3 +32,48 @@
 .account-spaces-cards .cards-modern__body { display: flex; min-height: 16rem; flex-direction: column; }
 .account-spaces-cards .cards-modern__actions { align-content: flex-start; margin-top: auto; }
 
+/* NmEffectHero light theme: a pearl-and-sky treatment that lets the existing
+   Silk texture read as a subtle material while reserving the full Silk look for dark mode. */
+.nm-effect-hero--light {
+  color: #172033 !important;
+  background:
+    radial-gradient(ellipse at 16% 18%, rgb(52 211 153 / 0.21), transparent 34%),
+    radial-gradient(ellipse at 84% 28%, rgb(96 165 250 / 0.28), transparent 38%),
+    radial-gradient(ellipse at 54% 112%, rgb(129 140 248 / 0.18), transparent 44%),
+    linear-gradient(128deg, #f8fbff 0%, #edf5ff 48%, #f7f8ff 100%) !important;
+  isolation: isolate;
+}
+.nm-effect-hero--light .nm-effect-hero__background {
+  opacity: 0.13;
+  filter: saturate(1.5) brightness(1.25);
+  mix-blend-mode: multiply;
+}
+.nm-effect-hero--light h1,
+.nm-effect-hero--light p:not(.nm-effect-hero__eyebrow) {
+  color: #172033 !important;
+}
+.nm-effect-hero--light .nm-effect-hero__eyebrow {
+  color: #2563a8 !important;
+}
+.nm-effect-hero--light .nm-effect-hero__content {
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.45);
+}
+.nm-effect-hero--light .nm-effect-hero__button--primary {
+  border-color: #172033;
+  background: #172033;
+  color: #fff !important;
+}
+.nm-effect-hero--light .nm-effect-hero__button--primary:hover {
+  background: #263b5a;
+}
+.nm-effect-hero--light .nm-effect-hero__button--secondary {
+  border-color: rgb(23 32 51 / 0.28);
+  background: rgb(255 255 255 / 0.56);
+  color: #172033 !important;
+  backdrop-filter: blur(10px);
+}
+.nm-effect-hero--light .nm-effect-hero__button--secondary:hover {
+  border-color: rgb(23 32 51 / 0.48);
+  background: rgb(255 255 255 / 0.82);
+}
+
