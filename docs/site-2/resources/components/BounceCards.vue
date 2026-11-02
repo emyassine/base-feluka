@@ -148,7 +148,6 @@ function cardStyle(index: number): CSSProperties {
   height: 100%;
   cursor: zoom-in;
   list-style: none;
-  animation: bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
 }
 
 .bounce-cards__card summary::-webkit-details-marker {
