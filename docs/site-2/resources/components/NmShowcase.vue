@@ -642,8 +642,6 @@ onBeforeUnmount(() => {
   .nm-showcase__stack-track {
     display: block;
     height: calc(100svh + (var(--n) - 1) * var(--scroll-per-item));
-    background: #080d14;
-    color: #f3f6fa;
   }
   .nm-showcase__stack-sticky {
     position: sticky;
@@ -653,7 +651,6 @@ onBeforeUnmount(() => {
     place-items: center;
     overflow: hidden;
     isolation: isolate;
-    background: #080d14;
   }
   .nm-showcase__stack-deck {
     position: relative;
@@ -672,6 +669,7 @@ onBeforeUnmount(() => {
     padding: clamp(1.5rem, 4vw, 3.5rem);
     border: 1px solid rgb(210 222 237 / 0.18);
     border-radius: 1.25rem;
+    color: #f3f6fa;
     background: linear-gradient(145deg, rgb(20 29 42 / 0.94), rgb(12 18 28 / 0.96));
     box-shadow: 0 30px 90px rgb(0 0 0 / 0.42), inset 0 1px rgb(255 255 255 / 0.055);
     backdrop-filter: blur(18px);
