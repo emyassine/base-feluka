@@ -1,5 +1,7 @@
 ---
 title: "About Numerimondes"
+sidebarTitle: "About"
+icon: "@spmpst::icon::building-2"
 description: "Independent consulting, innovation and mission-based delivery led by founder Yassine El Moumen."
 lang: en
 status: "ready-for-review"

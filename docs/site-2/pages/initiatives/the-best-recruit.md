@@ -1,5 +1,7 @@
 ---
 title: "The Best Recruit | Coming Soon"
+sidebarTitle: "The Best Recruit"
+icon: "@spmpst::icon::users"
 description: "The Best Recruit is an emerging recruitment and talent initiative from Numerimondes."
 lang: en
 status: "ready-for-review"

@@ -1,5 +1,7 @@
 ---
 title: "Partnerships | Numerimondes"
+sidebarTitle: "Partnerships"
+icon: "@spmpst::icon::users"
 description: "Referral, advisory, business development and mission-based specialist collaboration with Numerimondes."
 lang: en
 status: "ready-for-review"

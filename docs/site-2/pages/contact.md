@@ -1,5 +1,7 @@
 ---
 title: "Contact Numerimondes"
+sidebarTitle: "Contact"
+icon: "@spmpst::icon::message-circle"
 description: "Discuss a project, consulting mission, partnership or idea with Numerimondes."
 lang: en
 status: "ready-for-review"

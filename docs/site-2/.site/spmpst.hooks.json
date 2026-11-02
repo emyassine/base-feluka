@@ -3,7 +3,7 @@
   "components": {},
   "documentationNotices": {},
   "banner": {
-    "enabled": true,
+    "enabled": false,
     "text": "Welcome to our website",
     "icon": {
       "name": "@spmpst::icon::lucide/megaphone",

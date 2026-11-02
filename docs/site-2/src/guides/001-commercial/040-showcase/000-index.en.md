@@ -1,8 +1,10 @@
 ---
 title: "Showcase | Numerimondes"
+sidebarTitle: "Showcase"
 description: "A transparent overview of Numerimondes concepts, demonstrations and engineering initiatives."
 lang: en
 status: "ready-for-review"
+icon: "@spmpst::icon::sparkles"
 ---
 
 # Showcase
@@ -17,29 +19,29 @@ Explore problems worth investigating, solution designs and initiatives being dev
 
 ### Business operations
 
-**From critical spreadsheets to traceable applications**  
+**From critical spreadsheets to traceable applications**
 *Concept / solution pattern.* Replace fragile manual tracking with access controls, change histories, backups and a better operational view.
 
-**Quotes, orders and invoices flowing together**  
+**Quotes, orders and invoices flowing together**
 *Concept / solution pattern.* Assess connected commercial records, approvals and follow-up to reduce re-entry.
 
-**Stock across locations**  
+**Stock across locations**
 *Concept / solution pattern.* Explore barcode tracking, location visibility and reorder alerts where the operating case supports them.
 
 ### Automation & intelligence
 
-**Document processing workflow**  
+**Document processing workflow**
 *Concept / solution pattern.* Intake, classification, structured review and routing for business documents.
 
-**Private knowledge assistance**  
+**Private knowledge assistance**
 *Research / solution pattern.* Evaluate retrieval and question-answering over controlled document sets with access boundaries.
 
 ### Infrastructure & connected work
 
-**Field application with offline access**  
+**Field application with offline access**
 *Concept / solution pattern.* Data capture and operational follow-up in low-connectivity environments.
 
-**Self-hosted operations**  
+**Self-hosted operations**
 *Solution pattern.* Deployment, monitoring, backup and maintenance plans designed for organizational control.
 
 ### Engineering research

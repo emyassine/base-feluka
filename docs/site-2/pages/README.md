@@ -1,3 +1,12 @@
+---
+title: "Numerimondes website — English content pack"
+sidebarTitle: "Website content pack"
+icon: "@spmpst::icon::book-open"
+description: "English page drafts, navigation structure and publishing guidance for the Numerimondes website."
+lang: en
+status: "ready-for-review"
+---
+
 # Numerimondes website — English content pack
 
 `index.md` is the approved homepage copy used as the basis for the remaining pages. All other pages are new drafts for review.

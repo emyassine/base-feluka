@@ -1,5 +1,7 @@
 ---
 title: "Infrastructure & Security | Numerimondes"
+sidebarTitle: "Infrastructure"
+icon: "@spmpst::icon::server"
 description: "Infrastructure design, operations and scoped security improvements."
 lang: en
 status: "ready-for-review"

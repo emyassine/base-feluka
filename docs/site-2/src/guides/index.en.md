@@ -5,7 +5,7 @@ icon: "@spmpst::icon::home"
 layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
 ---
-<div class="block h-6 md:hidden" aria-hidden="true"></div>
+<div></div>
 <NmEffectHero
   effect="silk"
   :hero-style="{ minHeight: '90vh' }"
@@ -21,7 +21,67 @@ description: "Numerimondes helps organizations design, build, and operate depend
     { label: 'Explore our capabilities', href: '/services/', style: 'secondary' }
   ]"
 />
-<Acomponent/>
+
+<Acomponent
+  title="Numerimondes is an independent consulting and solutions company."
+  introduction="We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
+  :gallery="[
+    {
+      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-2-compressed-a5f4c41c8c039e0bb0b38bb9d316b79ea9f8211d9e4fa19cf80a1377e74b3036.jpg',
+      alt: 'Founder'
+    },
+    {
+      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-4-compressed-077596611ae3be172d6407ab7a9423f205939fbcfeef24fd54ca8da4f1370b27.jpg',
+      alt: 'Founders in San Francisco'
+    },
+    {
+      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-6-compressed-cd04f86654c60d7c2642aeb14a7c7cd42719036be4e7764fd58a386383671fb6.jpg',
+      alt: 'Founders gathering'
+    },
+    {
+      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-1-compressed-569ab168698179832828d33e2cec6a76f2180fe19425d688788badc68a676d34.jpg',
+      alt: 'Founder presentation'
+    },
+    {
+      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-7-compressed-7f5971e8a87c7c6925fb2f68db87e098033291969eba2a5cabb46398978193e5.jpg',
+      alt: 'Founders speaking'
+    }
+  ]"
+  section-title="Possibility<br>becomes valuable<br>through execution."
+  :paragraphs="[
+    {
+      before: 'Every organization has opportunities waiting to be explored:',
+      image: {
+        thumb: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80',
+        src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85',
+        alt: 'A team collaborating around a table',
+        caption: 'People working through opportunities together'
+      },
+      after: 'processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.'
+    },
+    {
+      before: 'We combine research, commercial thinking and engineering',
+      image: {
+        thumb: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80',
+        src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85',
+        alt: 'A workspace set up for focused research and planning',
+        caption: 'Research and planning workspace'
+      },
+      after: 'to examine these possibilities, shape viable approaches and move selected projects into action.'
+    },
+    {
+      before: 'Our contribution can begin with an idea, a question, an operational challenge',
+      image: {
+        thumb: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80',
+        src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85',
+        alt: 'Colleagues discussing a project together',
+        caption: 'Project discussion and planning'
+      },
+      after: 'or a clear project brief.'
+    }
+  ]"
+/>
+
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
 :::: info What this can mean for your business
@@ -159,13 +219,54 @@ Our founder acts as the central point of contact for project qualification, solu
 
 ### How an engagement works
 
-1. **Understand** — Review the context, objectives, constraints and opportunities.
-2. **Investigate** — Research options, technical feasibility and commercial relevance.
-3. **Define** — Agree on the approach, expected deliverables, responsibilities, budget and schedule.
-4. **Mobilize** — Bring together the skills and resources the mission requires.
-5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#f4f6f8',
+    'primaryTextColor': '#0a0d10',
+    'primaryBorderColor': '#0a0d10',
+    'lineColor': '#0a0d10',
+    'textColor': '#0a0d10',
+    'nodeBorder': '#0a0d10'
+  }
+}}%%
+flowchart TD
+    Start([Opportunity / Project Brief]) --> P1["1. Understand<br/><i>Audit context, goals & constraints</i>"]
 
-**How we work** → `/about#delivery-model`
+    P1 --> Q1{"Clear alignment<br/>& viability?"}
+    Q1 -- No --> Redefine1["Re-evaluate scope<br/>or abort engagement"]
+    Redefine1 --> P1
+
+    Q1 -- Yes --> P2["2. Investigate<br/><i>Research options, tech stack & ROI</i>"]
+
+    P2 --> Q2{"Technical & commercial<br/>feasibility validated?"}
+    Q2 -- No --> Pivot["Pivot strategy /<br/>Explore alternative tech"]
+    Pivot --> P2
+
+    Q2 -- Yes --> P3["3. Define<br/><i>Scope deliverables, budget & schedule</i>"]
+
+    P3 --> Q3{"Proposal & SLA<br/>approved by client?"}
+    Q3 -- No --> Adjust["Adjust terms,<br/>budget or timeline"]
+    Adjust --> P3
+
+    Q3 -- Yes --> P4["4. Mobilize<br/><i>Assemble experts, tools & environment</i>"]
+
+    P4 --> Q4{"Resources & stack<br/>fully operational?"}
+    Q4 -- No --> Resolve["Resolve bottlenecks<br/>/ Onboard specialists"]
+    Resolve --> P4
+
+    Q4 -- Yes --> P5["5. Deliver<br/><i>Execute, test, document & handover</i>"]
+
+    P5 --> Q5{"Deliverables validated<br/>& accepted?"}
+    Q5 -- No --> Refine["Iterate & refine<br/>implementation"]
+    Refine --> P5
+
+    Q5 -- Yes --> End([Project Handover & Success])
+```
+
+<FeluqaButton tag="a" href="/about#delivery-model"
+	label="How we work"/>
 
 ---
 
@@ -179,7 +280,8 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-**More about us** → `/about`
+<FeluqaButton tag="a" href="/about"
+	label="More about us"/>
 
 ---
 

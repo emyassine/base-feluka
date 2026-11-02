@@ -1,5 +1,7 @@
 ---
 title: "SPMPST | Specification in Development"
+sidebarTitle: "SPMPST"
+icon: "@spmpst::icon::folder-tree"
 description: "SPMPST is a proposed standard for portable structured Markdown trees and site-building workflows."
 lang: en
 status: "ready-for-review"

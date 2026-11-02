@@ -1,5 +1,7 @@
 ---
 title: "Software & Systems | Numerimondes"
+sidebarTitle: "Software"
+icon: "@spmpst::icon::code-xml"
 description: "Custom applications, information systems, integrations and automation."
 lang: en
 status: "ready-for-review"

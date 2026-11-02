@@ -1,5 +1,7 @@
 ---
 title: "Innovation | Numerimondes"
+sidebarTitle: "Innovation"
+icon: "@spmpst::icon::sparkles"
 description: "Research, experimentation and venture development at Numerimondes."
 lang: en
 status: "ready-for-review"

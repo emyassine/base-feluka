@@ -1,96 +1,86 @@
 
+<script setup>
+defineOptions({ name: 'Acomponent' })
+
+defineProps({
+  title: {
+    type: String,
+    default: '',
+  },
+  introduction: {
+    type: String,
+    default: '',
+  },
+  gallery: {
+    type: Array,
+    default: () => [],
+  },
+  sectionTitle: {
+    type: String,
+    default: '',
+  },
+  paragraphs: {
+    type: Array,
+    default: () => [],
+  },
+})
+</script>
+
 <template>
-  <section class="yc-about">
-    <div class="yc-introduction">
-    <h1>
-     Numerimondes is an independent consulting and solutions company.
-     <br>
-     <br>
-    </h1>
-     <p class="yc-dropcap">
-     We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen.
-     </p>
-     <br>
+  <section class="nm-about">
+    <!-- Introduction -->
+    <div class="nm-about-introduction">
+      <h1 v-if="title" v-html="title"></h1>
+      <p
+        v-if="introduction"
+        class="nm-about-dropcap"
+        v-html="introduction"
+      ></p>
     </div>
 
-    <div class="yc-gallery">
+    <!-- Gallery -->
+    <div v-if="gallery.length" class="nm-about-gallery">
       <img
-        alt="Founder"
+        v-for="(image, index) in gallery"
+        :key="index"
+        :src="image.src"
+        :alt="image.alt || ''"
         loading="lazy"
-        src="https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-2-compressed-a5f4c41c8c039e0bb0b38bb9d316b79ea9f8211d9e4fa19cf80a1377e74b3036.jpg"
-      />
-      <img
-        alt="Founders in San Francisco"
-        loading="lazy"
-        src="https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-4-compressed-077596611ae3be172d6407ab7a9423f205939fbcfeef24fd54ca8da4f1370b27.jpg"
-      />
-      <img
-        alt="Founders gathering"
-        loading="lazy"
-        src="https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-6-compressed-cd04f86654c60d7c2642aeb14a7c7cd42719036be4e7764fd58a386383671fb6.jpg"
-      />
-      <img
-        alt="Founder presentation"
-        loading="lazy"
-        src="https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-1-compressed-569ab168698179832828d33e2cec6a76f2180fe19425d688788badc68a676d34.jpg"
-      />
-      <img
-        alt="Founders speaking"
-        loading="lazy"
-        src="https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-7-compressed-7f5971e8a87c7c6925fb2f68db87e098033291969eba2a5cabb46398978193e5.jpg"
       />
     </div>
 
-    <div class="yc-testimonials">
-      <h2>Possibility<br>becomes valuable<br>through execution.</h2>
+    <!-- Content -->
+    <div class="nm-about-content">
+      <h2 v-if="sectionTitle" v-html="sectionTitle"></h2>
 
-      <div class="yc-quotes">
-        <p>
-          <span>Every organization has opportunities waiting to be explored:</span>
-          <span class="yc-illustration" tabindex="0">
+      <div class="nm-about-paragraphs">
+        <p v-for="(paragraph, index) in paragraphs" :key="index">
+          <span v-html="paragraph.before"></span>
+
+          <span
+            v-if="paragraph.image"
+            class="nm-about-illustration"
+            tabindex="0"
+          >
             <img
-              alt="A team collaborating around a table"
+              :src="paragraph.image.thumb || paragraph.image.src"
+              :alt="paragraph.image.alt || ''"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80"
             />
-            <span class="yc-illustration-preview">
-              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85" />
-              <span>People working through opportunities together</span>
+
+            <span class="nm-about-illustration-preview">
+              <img
+                :src="paragraph.image.src"
+                alt=""
+                loading="lazy"
+              />
+              <span v-if="paragraph.image.caption">
+                {{ paragraph.image.caption }}
+              </span>
             </span>
           </span>
-          <span>processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.</span>
-        </p>
 
-        <p>
-          <span>We combine research, commercial thinking and engineering</span>
-          <span class="yc-illustration" tabindex="0">
-            <img
-              alt="A workspace set up for focused research and planning"
-              loading="lazy"
-              src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80"
-            />
-            <span class="yc-illustration-preview">
-              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85" />
-              <span>Research and planning workspace</span>
-            </span>
-          </span>
-          <span>to examine these possibilities, shape viable approaches and move selected projects into action.</span>
-        </p>
-
-        <p>
-          <span>Our contribution can begin with an idea, a question, an operational challenge</span>
-          <span class="yc-illustration" tabindex="0">
-            <img
-              alt="Colleagues discussing a project together"
-              loading="lazy"
-              src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80"
-            />
-            <span class="yc-illustration-preview">
-              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85" />
-              <span>Project discussion and planning</span>
-            </span>
-          </span>
-          <span>or a clear project brief.</span>
+          <span v-html="paragraph.after"></span>
         </p>
       </div>
     </div>
@@ -98,36 +88,42 @@
 </template>
 
 <style scoped>
-.yc-about {
+.nm-about {
   color: var(--vp-c-text-1);
   padding: 28px 0 100px;
   line-height: 1.52;
 }
 
-/* Narrow editorial text */
-
-.yc-introduction,
-.yc-testimonials {
+/* Shared editorial layout */
+.nm-about-introduction,
+.nm-about-content {
   width: min(100% - 40px, 544px);
   margin-inline: auto;
 }
 
-.yc-introduction p {
-  margin: 0 0 20px;
+/* Introduction */
+.nm-about-introduction {
+  margin-bottom: 56px;
 }
 
+.nm-about-introduction h1 {
+  margin: 0 0 28px;
+}
 
-/* Full-width photo strip */
+.nm-about-introduction p {
+  margin: 0;
+}
 
-.yc-gallery {
+/* Gallery */
+.nm-about-gallery {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   width: 100%;
-  margin: 46px 0 44px;
+  margin: 0 0 64px;
 }
 
-.yc-gallery > img {
+.nm-about-gallery > img {
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -136,30 +132,32 @@
   min-width: 0;
 }
 
-/* Testimonials */
+/* Content */
+.nm-about-content {
+  margin-top: 0;
+}
 
-.yc-testimonials h2 {
-  margin: 0 0 16px;
+.nm-about-content h2 {
+  margin: 0 0 24px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
 
-.yc-quotes p {
+.nm-about-paragraphs p {
   margin: 0 0 20px;
   line-height: 1.55;
 }
 
-.yc-quotes p > span:not(.yc-illustration) {
+.nm-about-paragraphs p > span:not(.nm-about-illustration) {
   text-decoration: underline;
   text-decoration-color: var(--vp-c-brand-1, #cbbfae);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
-/* Inline images */
-
-.yc-illustration {
+/* Inline illustrations */
+.nm-about-illustration {
   position: relative;
   display: inline-block;
   width: 28px;
@@ -170,7 +168,7 @@
   outline-offset: 3px;
 }
 
-.yc-illustration > img {
+.nm-about-illustration > img {
   display: block;
   width: 100%;
   height: 100%;
@@ -180,10 +178,12 @@
   transition: transform 160ms ease;
 }
 
-.yc-illustration:hover > img,
-.yc-illustration:focus-visible > img { transform: scale(1.08); }
+.nm-about-illustration:hover > img,
+.nm-about-illustration:focus-visible > img {
+  transform: scale(1.08);
+}
 
-.yc-illustration-preview {
+.nm-about-illustration-preview {
   position: absolute;
   z-index: 20;
   top: calc(100% + 10px);
@@ -197,10 +197,13 @@
   visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, -5px) scale(0.97);
-  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    visibility 160ms ease;
 }
 
-.yc-illustration-preview img {
+.nm-about-illustration-preview img {
   display: block;
   width: 100%;
   aspect-ratio: 1.5 / 1;
@@ -208,7 +211,7 @@
   border-radius: 5px;
 }
 
-.yc-illustration-preview > span {
+.nm-about-illustration-preview > span {
   display: block;
   padding: 7px 4px 3px;
   color: #292929;
@@ -217,34 +220,38 @@
   text-align: center;
 }
 
-.yc-illustration:hover .yc-illustration-preview,
-.yc-illustration:focus-visible .yc-illustration-preview {
+.nm-about-illustration:hover .nm-about-illustration-preview,
+.nm-about-illustration:focus-visible .nm-about-illustration-preview {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0) scale(1);
 }
 
 /* Responsive */
-
 @media (max-width: 700px) {
-  .yc-about {
+  .nm-about {
     padding-top: 28px;
   }
 
-  .yc-gallery {
+  .nm-about-introduction {
+    margin-bottom: 36px;
+  }
+
+  .nm-about-gallery {
     display: flex;
     gap: 8px;
     overflow-x: auto;
     padding: 0 12px 8px;
+    margin-bottom: 44px;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
   }
 
-  .yc-gallery::-webkit-scrollbar {
+  .nm-about-gallery::-webkit-scrollbar {
     display: none;
   }
 
-  .yc-gallery > img {
+  .nm-about-gallery > img {
     flex: 0 0 72%;
     width: 72%;
     aspect-ratio: 1 / 1;

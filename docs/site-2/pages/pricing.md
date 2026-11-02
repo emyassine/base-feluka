@@ -1,5 +1,7 @@
 ---
 title: "Pricing & Engagements | Numerimondes"
+sidebarTitle: "Pricing"
+icon: "@spmpst::icon::scale"
 description: "How Numerimondes structures consulting, development and operational projects."
 lang: en
 status: "ready-for-review"
