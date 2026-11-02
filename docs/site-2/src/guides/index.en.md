@@ -17,8 +17,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[
-    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp' },
-    { label: 'Explore our capabilities', href: '/services/', style: 'secondary' }
+    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', style: 'primary' },
+    { label: 'Explore our capabilities', href: '/services/', style: 'gray' }
   ]"
 />
 

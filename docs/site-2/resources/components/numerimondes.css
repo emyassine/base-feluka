@@ -44,9 +44,9 @@
   isolation: isolate;
 }
 .nm-effect-hero--light .nm-effect-hero__background {
-  opacity: 0.13;
-  filter: saturate(1.5) brightness(1.25);
-  mix-blend-mode: multiply;
+  opacity: 0.22;
+  filter: grayscale(1) invert(1) contrast(1.2);
+  mix-blend-mode: screen;
 }
 .nm-effect-hero--light h1,
 .nm-effect-hero--light p:not(.nm-effect-hero__eyebrow) {
