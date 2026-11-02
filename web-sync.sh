@@ -234,6 +234,10 @@ case $METHOD in
         echo "REMOTE_CHOWN must use owner:group form, for example yassine:www-data"
         exit 1
       fi
+      if [[ "${RSYNC_REMOTE_SUDO:-false}" != "true" ]]; then
+        echo "REMOTE_CHOWN requires RSYNC_REMOTE_SUDO=true"
+        exit 1
+      fi
       rsync_options+=(--chown="$REMOTE_CHOWN")
       rsync_identity_options=()
     fi
@@ -243,6 +247,22 @@ case $METHOD in
     # Deliberately omit --delete: files on the server that are absent from this
     # selected source must be preserved.
     rsync -avz --progress "${rsync_identity_options[@]}" "${rsync_options[@]}" "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
+
+    if [[ -n "${REMOTE_CHOWN:-}" ]]; then
+      printf -v remote_target '%q' "$TARGET"
+      (
+        cd -- "$SOURCE"
+        find . -print0
+      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chown -- '$REMOTE_CHOWN'"
+      (
+        cd -- "$SOURCE"
+        find . -type d -print0
+      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chmod '$REMOTE_DIR_MODE' --"
+      (
+        cd -- "$SOURCE"
+        find . -type f -print0
+      ) | ssh "$HOST" "cd $remote_target && sudo xargs -0 -r chmod '$REMOTE_FILE_MODE' --"
+    fi
 
     run_post_deploy "$HOST" "$TARGET" "$CONTEXT"
     ;;
