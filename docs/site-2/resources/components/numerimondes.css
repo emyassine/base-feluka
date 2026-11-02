@@ -83,6 +83,7 @@
 }
 
 @media (min-width: 960px) {
+  /* Keep the sidebar edge visible above VitePress' curtain overlay. */
   .VPSidebar {
     box-sizing: border-box;
   }
@@ -97,6 +98,8 @@
     content: '';
     pointer-events: none;
   }
+
+  /* Align the navbar title divider with the sidebar edge. */
   .VPNavBar.has-sidebar .container > .title {
     box-sizing: border-box;
     border-inline-end: 1px solid var(--vp-c-gutter);
