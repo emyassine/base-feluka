@@ -53,10 +53,9 @@ SERVER="your-server.com"
 # SSH user used for deployment
 USER="your-username"
 
-# Optional remote ownership and permissions. Set RSYNC_REMOTE_SUDO=true when
-# the SSH user needs sudo rsync to apply the configured owner/group.
-REMOTE_OWNER=""
-REMOTE_GROUP=""
+# Optional remote chown in owner:group form. Set RSYNC_REMOTE_SUDO=true when
+# the SSH user needs sudo rsync to apply it.
+REMOTE_CHOWN=""
 REMOTE_DIR_MODE="755"
 REMOTE_FILE_MODE="644"
 RSYNC_REMOTE_SUDO="false"
@@ -230,12 +229,12 @@ case $METHOD in
     build_rsync_excludes "$CONTEXT"
     rsync_options=(--chmod="D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}")
     rsync_identity_options=(--no-owner --no-group)
-    if [[ -n "${REMOTE_OWNER:-}" || -n "${REMOTE_GROUP:-}" ]]; then
-      if [[ -z "${REMOTE_OWNER:-}" || -z "${REMOTE_GROUP:-}" ]]; then
-        echo "REMOTE_OWNER and REMOTE_GROUP must either both be set or both be empty"
+    if [[ -n "${REMOTE_CHOWN:-}" ]]; then
+      if [[ ! "${REMOTE_CHOWN}" =~ ^[^:]+:[^:]+$ ]]; then
+        echo "REMOTE_CHOWN must use owner:group form, for example yassine:www-data"
         exit 1
       fi
-      rsync_options+=(--chown="$REMOTE_OWNER:$REMOTE_GROUP")
+      rsync_options+=(--chown="$REMOTE_CHOWN")
       rsync_identity_options=()
     fi
     if [[ "${RSYNC_REMOTE_SUDO:-false}" == "true" ]]; then
