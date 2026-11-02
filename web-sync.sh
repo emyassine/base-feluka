@@ -24,8 +24,9 @@
 
 set -euo pipefail
 
-CONFIG_FILE="./web-sync.config"
-GITIGNORE_FILE=".gitignore"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="$SCRIPT_DIR/web-sync.config"
+GITIGNORE_FILE="$SCRIPT_DIR/.gitignore"
 
 create_default_config() {
 cat > "$CONFIG_FILE" << 'EOF'
@@ -86,11 +87,11 @@ EOF
 
 build_rsync_excludes() {
   local context="$1"
-  local excludes="--exclude='.git'"
+  local -a excludes=(--exclude=.git)
 
   case $context in
     webkernel|laravel)
-      excludes="$excludes --exclude='.env' --exclude='bootstrap/cache/'"
+      excludes+=(--exclude=.env --exclude=bootstrap/cache/)
       ;;
   esac
 
@@ -98,12 +99,14 @@ build_rsync_excludes() {
     while IFS= read -r line || [[ -n "$line" ]]; do
       line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
       [[ -z "$line" || "$line" =~ ^# ]] && continue
-      excludes="$excludes --exclude='$line'"
+      excludes+=(--exclude="$line")
     done < "$GITIGNORE_FILE"
   fi
 
-  echo "$excludes"
+  RSYNC_EXCLUDES=("${excludes[@]}")
 }
+
+RSYNC_EXCLUDES=()
 
 run_post_deploy() {
   local host="$1"
@@ -147,6 +150,20 @@ echo ""
 echo "Server: $SERVER"
 echo "User: $USER"
 echo ""
+
+echo "Choose a local source directory to sync. Enter a path relative to the repository or an absolute path."
+read -r -p "Source directory [.] : " source_input
+source_input="${source_input:-.}"
+if [[ "$source_input" = /* ]]; then
+  SOURCE="$source_input"
+else
+  SOURCE="$SCRIPT_DIR/$source_input"
+fi
+if [[ ! -d "$SOURCE" ]]; then
+  echo "Source directory does not exist: $SOURCE"
+  exit 1
+fi
+SOURCE="$(cd -- "$SOURCE" && pwd)/"
 
 if [[ ${#INSTANCES[@]} -eq 0 ]]; then
   echo "No instances configured"
@@ -194,7 +211,6 @@ if [[ ! "$method_choice" =~ ^[0-9]+$ ]] || [[ $method_choice -lt 1 ]] || [[ $met
 fi
 
 METHOD=${METHODS[$((method_choice-1))]}
-SOURCE="$PWD/"
 HOST="$USER@$SERVER"
 
 echo ""
@@ -203,8 +219,10 @@ echo ""
 
 case $METHOD in
   ssh)
-    EXCLUDES=$(build_rsync_excludes "$CONTEXT")
-    eval rsync -avz --delete --progress --no-perms --no-owner --no-group $EXCLUDES "$SOURCE" "$HOST:$TARGET/"
+    build_rsync_excludes "$CONTEXT"
+    # Deliberately omit --delete: files on the server that are absent from this
+    # selected source must be preserved.
+    rsync -avz --progress --no-perms --no-owner --no-group "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
 
     run_post_deploy "$HOST" "$TARGET" "$CONTEXT"
     ;;
@@ -219,7 +237,7 @@ case $METHOD in
     fi
     sftp "$HOST" <<EOF
 cd $TARGET
-put -r $SOURCE/*
+put -r ${SOURCE%/}/*
 EOF
     ;;
   *)
