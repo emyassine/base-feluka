@@ -517,7 +517,7 @@ onBeforeUnmount(() => {
     flex-direction: column;
     justify-content: center;
     width: min(85vw, 1000px);
-    margin: 0 auto 2.5rem;
+    margin: 0 auto 5.5rem;
   }
 
   .nm-showcase__intro h2 {
@@ -540,14 +540,15 @@ onBeforeUnmount(() => {
 
   .nm-showcase__sticky {
     position: sticky;
-    top: 0;
+    top: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: translateY(-50%);
   }
 
   .nm-showcase__stage {
-    --item-h: clamp(3rem, 6vw, 5.5rem);
+    --item-h: clamp(4rem, 6vw, 6rem);
     display: grid;
     width: min(94vw, 1180px, calc(2.8 * (100svh - 9rem) + 5rem));
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr);
@@ -632,8 +633,10 @@ onBeforeUnmount(() => {
     font-size: clamp(2rem, 3.6vw, 3.25rem);
     font-weight: 600;
     letter-spacing: -0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.05;
+    overflow-wrap: break-word;
+    text-align: center;
+    white-space: normal;
   }
 }
 
