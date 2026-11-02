@@ -118,27 +118,52 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 
-<div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
+<div style="width: min(100% - 40px, 544px) !important;  margin-inline: auto!important;">
 
 <h2 style="margin: 0 0 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em;">
 		What this can mean<br>for your business
 </h2>
 
-::: details Better decisions
-Clearer priorities, options and investment choices.
-:::
-::: details More efficient operations
-Less duplicated work, fewer avoidable errors and better coordination.
-:::
-::: details Greater visibility and control
-Accessible information, traceable processes and systems you can manage.
-:::
-::: details New opportunities
-Business concepts, partnerships, products and services evaluated for real-world potential.
-:::
-::: details A clearer route to delivery
-Defined scope, accountable coordination and expertise matched to the assignment.
-:::
+<MegaCards
+  :items="[
+    {
+      title: 'Better decisions',
+      description: 'Clearer priorities, options and investment choices.',
+      href: '/services/consulting',
+      image: '/images/home/showcase-capabilities/business-after.jpg'
+    },
+    {
+      title: 'More efficient operations',
+      description: 'Less duplicated work, fewer avoidable errors and better coordination.',
+      href: '/services/operations',
+      image: '/images/home/showcase-capabilities/operations-after.jpg'
+    },
+    {
+      title: 'Greater visibility and control',
+      description: 'Accessible information, traceable processes and systems you can manage.',
+      href: '/services/software',
+      image: '/images/home/showcase-capabilities/digital-after.jpg'
+    },
+    {
+      title: 'New opportunities',
+      description: 'Business concepts, partnerships, products and services evaluated for real-world potential.',
+      href: '/innovation',
+      image: '/images/home/showcase-capabilities/innovation-after.jpg'
+    },
+    {
+      title: 'A clearer route to delivery',
+      description: 'Defined scope, accountable coordination and expertise matched to the assignment.',
+      href: '/contact',
+      image: '/images/home/showcase-capabilities/business-before.jpg'
+    }
+  ]"
+  :rows="[
+    [0, 1],
+    [2],
+    [3, 4]
+  ]"
+  :card-height="220"
+/>
 
 Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
 

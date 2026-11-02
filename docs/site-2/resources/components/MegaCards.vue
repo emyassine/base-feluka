@@ -18,6 +18,7 @@ export interface MegaCardColumn {
 interface MegaCardsProps {
   items: MegaCardItem[]
   composition?: MegaCardColumn[]
+  rows?: number[][]
   cardHeight?: number
   more?: {
     title: string
@@ -45,15 +46,42 @@ const columns = computed(() => (props.composition ?? [
   }),
 })))
 
+const rows = computed(() => props.rows?.map((indices) => indices.flatMap((index) => {
+  const item = props.items[index]
+  return item ? [{ kind: 'card' as const, item }] : []
+})))
+
 const gridStyle = computed(() => ({
   '--mega-card-height': `${props.cardHeight}px`,
-  gridTemplateColumns: columns.value.map((column) => column.width).join(' ') || '1fr',
+  gridTemplateColumns: props.rows ? 'minmax(0, 1fr)' : columns.value.map((column) => column.width).join(' ') || '1fr',
 }))
 </script>
 
 <template>
-  <div class="mega-cards" :style="gridStyle">
+  <div class="mega-cards" :class="{ 'mega-cards--rows': rows }" :style="gridStyle">
     <div
+      v-if="rows"
+      v-for="(row, rowIndex) in rows"
+      :key="`row-${rowIndex}`"
+      class="mega-cards__row"
+      :class="{ 'mega-cards__row--single': row.length === 1 }"
+    >
+      <a
+        v-for="(card, cardIndex) in row"
+        :key="`${card.item.href}-${cardIndex}`"
+        class="mega-cards__card"
+        :href="card.item.href"
+      >
+        <img class="mega-cards__image" :src="card.item.image" alt="">
+        <img v-if="card.item.icon" class="mega-cards__icon" :src="card.item.icon" alt="">
+        <span class="mega-cards__content">
+          <strong>{{ card.item.title }}</strong>
+          <small>{{ card.item.description }}</small>
+        </span>
+      </a>
+    </div>
+    <template v-else>
+      <div
       v-for="(column, columnIndex) in columns"
       :key="`column-${columnIndex}`"
       class="mega-cards__column"
@@ -87,7 +115,8 @@ const gridStyle = computed(() => ({
           <small v-else-if="card.kind === 'card'">{{ card.item.description }}</small>
         </span>
       </a>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -104,6 +133,10 @@ const gridStyle = computed(() => ({
   min-width: 0;
   min-height: 0;
 }
+
+.mega-cards--rows { grid-template-columns: minmax(0, 1fr); }
+.mega-cards__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mega-cards__row--single > .mega-cards__card { grid-column: 1 / -1; width: 100%; }
 
 .mega-cards__card {
   position: relative;
@@ -177,5 +210,7 @@ const gridStyle = computed(() => ({
 @media (max-width: 768px) {
   .mega-cards { grid-template-columns: minmax(0, 1fr) !important; }
   .mega-cards__card { min-height: 220px; }
+  .mega-cards__row { grid-template-columns: minmax(0, 1fr); }
+  .mega-cards__row--single > .mega-cards__card { grid-column: auto; width: 100%; }
 }
 </style>
