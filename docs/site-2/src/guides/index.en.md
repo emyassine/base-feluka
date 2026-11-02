@@ -27,24 +27,32 @@ description: "Numerimondes helps organizations design, build, and operate depend
   introduction="We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
   :gallery="[
     {
-      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-2-compressed-a5f4c41c8c039e0bb0b38bb9d316b79ea9f8211d9e4fa19cf80a1377e74b3036.jpg',
-      alt: 'Founder'
+      src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A team collaborating around a table'
     },
     {
-      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-4-compressed-077596611ae3be172d6407ab7a9423f205939fbcfeef24fd54ca8da4f1370b27.jpg',
-      alt: 'Founders in San Francisco'
+      src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A bright workspace prepared for focused work'
     },
     {
-      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-6-compressed-cd04f86654c60d7c2642aeb14a7c7cd42719036be4e7764fd58a386383671fb6.jpg',
-      alt: 'Founders gathering'
+      src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85',
+      alt: 'Colleagues discussing a project together'
     },
     {
-      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-1-compressed-569ab168698179832828d33e2cec6a76f2180fe19425d688788badc68a676d34.jpg',
-      alt: 'Founder presentation'
+      src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=85',
+      alt: 'Electronic components on a circuit board'
     },
     {
-      src: 'https://bookface-static.ycombinator.com/assets/ycdc/about/strip-picture-7-compressed-7f5971e8a87c7c6925fb2f68db87e098033291969eba2a5cabb46398978193e5.jpg',
-      alt: 'Founders speaking'
+      src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A team working together in a bright office'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A notebook and pen ready for planning'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85',
+      alt: 'A collaborative modern office'
     }
   ]"
   section-title="Possibility<br>becomes valuable<br>through execution."

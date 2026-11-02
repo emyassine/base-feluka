@@ -35,11 +35,13 @@ const props = withDefaults(defineProps<BounceCardsProps>(), {
   animationStagger: 0.07,
   easeType: 'cubic-bezier(0.2, 0.8, 0.25, 1)',
   transformStyles: () => [
-    'rotate(9deg) translate(-220px, 0)',
-    'rotate(5deg) translate(-110px, 0)',
-    'rotate(-2deg)',
-    'rotate(-7deg) translate(110px, 0)',
-    'rotate(3deg) translate(220px, 0)',
+    'rotate(12deg) translate(-330px, 0)',
+    'rotate(8deg) translate(-220px, 0)',
+    'rotate(4deg) translate(-110px, 0)',
+    'rotate(0deg)',
+    'rotate(-4deg) translate(110px, 0)',
+    'rotate(-8deg) translate(220px, 0)',
+    'rotate(-12deg) translate(330px, 0)',
   ],
   enableHover: true,
   hoverPush: '180px',
@@ -203,11 +205,19 @@ function cardStyle(index: number): CSSProperties {
 .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
   translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
 }
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(n+6),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(6):hover) .bounce-cards__card:nth-child(n+7) {
+  translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
+}
 
 .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
 .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
 .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
 .bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
+  translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
+}
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(6):hover) .bounce-cards__card:nth-child(-n+5),
+.bounce-cards--hover:not(:has(.bounce-cards__toggle:checked)):has(.bounce-cards__card:nth-child(7):hover) .bounce-cards__card:nth-child(-n+6) {
   translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
 }
 
@@ -248,10 +258,12 @@ function cardStyle(index: number): CSSProperties {
   }
 
   .bounce-cards__card:nth-child(1) { transform: rotate(-9deg) translate(-112px, 0); }
-  .bounce-cards__card:nth-child(2) { transform: rotate(-5deg) translate(-56px, 0); }
-  .bounce-cards__card:nth-child(3) { transform: rotate(0deg); }
-  .bounce-cards__card:nth-child(4) { transform: rotate(5deg) translate(56px, 0); }
-  .bounce-cards__card:nth-child(5) { transform: rotate(9deg) translate(112px, 0); }
+  .bounce-cards__card:nth-child(2) { transform: rotate(-7deg) translate(-75px, 0); }
+  .bounce-cards__card:nth-child(3) { transform: rotate(-4deg) translate(-38px, 0); }
+  .bounce-cards__card:nth-child(4) { transform: rotate(0deg); }
+  .bounce-cards__card:nth-child(5) { transform: rotate(4deg) translate(38px, 0); }
+  .bounce-cards__card:nth-child(6) { transform: rotate(7deg) translate(75px, 0); }
+  .bounce-cards__card:nth-child(7) { transform: rotate(9deg) translate(112px, 0); }
 
   .bounce-cards__card:has(> .bounce-cards__toggle:checked) {
     width: var(--bounce-mobile-expanded-width, 94%);
