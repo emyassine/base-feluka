@@ -1,9 +1,8 @@
 ---
 title: "Account access | Numerimondes"
-sidebarTitle: "Account access"
+sidebarTitle: "Overview"
 icon: "@spmpst::icon::circle-user-round"
 description: "Choose your Numerimondes account space."
-layout: home
 lang: en
 status: "ready-for-review"
 ---

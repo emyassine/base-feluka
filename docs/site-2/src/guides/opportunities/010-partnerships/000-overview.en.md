@@ -1,6 +1,6 @@
 ---
 title: "Opportunities | Numerimondes"
-sidebarTitle: "Opportunities"
+sidebarTitle: "Overview"
 icon: "@spmpst::icon::users"
 description: "Referral, advisory, business development and mission-based specialist collaboration with Numerimondes."
 lang: en
