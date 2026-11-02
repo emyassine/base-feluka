@@ -177,4 +177,19 @@ const emit = defineEmits(['click'])
     color: var(--icon-color-dark) !important;
   }
 }
+
+:global(html.dark) .simple-mini-card {
+  border-color: #334155 !important;
+  background: var(--card-bg-dark) !important;
+  color: var(--card-text-dark) !important;
+  box-shadow: var(--card-shadow-dark) !important;
+}
+:global(html.dark) .simple-mini-card:hover {
+  border-color: var(--card-border-dark-hover) !important;
+  background: var(--card-bg-dark-hover) !important;
+  box-shadow: var(--card-shadow-dark-hover) !important;
+}
+:global(html.dark) .simple-mini-card-icon { color: var(--icon-color-dark) !important; }
+.simple-mini-card-icon { gap: 12px; }
+.simple-mini-card-icon img { width: 24px; height: 24px; }
 </style>

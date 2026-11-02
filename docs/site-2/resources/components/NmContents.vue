@@ -4,3 +4,11 @@ import { onMounted, ref } from 'vue'
 const headings = ref([])
 onMounted(() => { headings.value = [...document.querySelectorAll('.vp-doc h2, .vp-doc h3')].map((h) => ({ id: h.id, text: h.textContent || '' })).filter((h) => h.id) })
 </script>
+
+<style scoped>
+.nm-contents {
+  padding: 1rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+}
+</style>

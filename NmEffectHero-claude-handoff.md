@@ -4,7 +4,7 @@ Copie ce fichier dans Claude. Réponds avec **le fichier complet `NmEffectHero.v
 
 ## Objectif visuel
 
-Le branding Numerimondes s'appuie sur la matière ondulée « Endless Silk ». En mode sombre, conserve l'apparence actuelle : Silk sombre, texte blanc. En mode clair, garde un fond lumineux perle avec des accents bleu et émeraude, mais fais voir clairement les ondulations Silk en couleur bleu ardoise/bleu profond. Le dernier essai est devenu gris et granuleux : évite les filtres monochromes, les ombres grises, le bruit trop visible et les dégradés multicolores/arc-en-ciel. On veut une matière Silk reconnaissable, colorée, élégante et lisible.
+Le branding Numerimondes s'appuie sur la matière ondulée « Endless Silk ». En mode sombre, conserve l'apparence actuelle : Silk sombre, texte blanc. En mode clair, garde un fond lumineux perle avec des accents bleu et émeraude, fais voir les ondulations Silk en couleur, et n’ajoute pas de halo. Toutes les couleurs du mode clair, y compris les couleurs du texte, doivent venir des props/styles transmis par la page appelante, pas de valeurs de couleur codées dans le composant. Le dernier essai est devenu gris et granuleux : évite les filtres monochromes, les ombres grises, le bruit trop visible et les dégradés multicolores/arc-en-ciel. On veut une matière Silk reconnaissable, colorée, élégante et lisible.
 
 ## Contraintes d'intégration
 
@@ -14,7 +14,7 @@ Le branding Numerimondes s'appuie sur la matière ondulée « Endless Silk ». E
 - Conserve les props, les effets pris en charge, les valeurs par défaut, la logique de thème, les boutons et l'icône WhatsApp existants.
 - N'ajoute pas de dépendance, n'utilise pas d'image distante et ne change pas les contrats publics.
 - Le dark mode doit rester visuellement comme aujourd'hui.
-- La solution claire ne doit pas rendre toute la surface sombre ou grise. Évite `grayscale()` et garde une palette cohérente Numerimondes (bleu/ardoise, blanc/perle, petite touche émeraude).
+- La solution claire ne doit pas rendre toute la surface sombre ou grise. Évite `grayscale()` et les halos. Les couleurs viennent de l’appelant via `effect.inject`, `heroStyle` et les styles de texte; le composant ne fixe pas de couleurs light.
 - Si tu proposes un réglage d'effet qui nécessite d'adapter `effectProps`, explique-le brièvement après le code, sans omettre le composant complet.
 
 ## Exemple réel d'utilisation
@@ -24,8 +24,8 @@ Les pages utilisent notamment :
 ```vue
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
-  :hero-style="{ minHeight: '56vh' }"
+  :effect="['silk', { inject: { color: '#141D2A', colorLight: '#4f86e6', noiseIntensityLight: 0.3 } }]"
+  :hero-style="{ minHeight: '90vh', '--nm-effect-hero-light-background': 'linear-gradient(128deg, #f8fbff, #eef5ff, #f7f9ff)', '--nm-effect-hero-light-eyebrow-color': '#1f5fae' }"
   eyebrow="NUMERIMONDES · COMPANY"
   title="Ideas, strategy and the ability to act."
   description="An independent consulting and solutions company in Casablanca."
@@ -37,7 +37,7 @@ Les pages utilisent notamment :
 />
 ```
 
-Note : les pages fournissent actuellement du texte blanc dans les styles `*-light`. Le CSS existant les remplace avec `!important`. Le composant proposé doit continuer à garantir la lisibilité du texte clair en mode light même si ces anciennes valeurs restent passées.
+Les styles `titleStyleLight` / `titleStyleDark` et `descriptionStyleLight` / `descriptionStyleDark` sont la source de vérité pour les couleurs du texte. Ne les remplace pas par des couleurs CSS dans le composant.
 
 ## Composant complet à faire évoluer : `NmEffectHero.vue`
 
@@ -104,7 +104,16 @@ const effectProps = computed<Record<string, unknown>>(() => {
       }
       break
   }
-  return { ...defaults, ...(props.effect[1]?.inject ?? {}) }
+  const { colorLight, noiseIntensityLight, ...injected } = (props.effect[1]?.inject ?? {}) as Record<string, unknown>
+  const merged = { ...defaults, ...injected }
+
+  if (isDark.value || selectedEffect.value !== 'silk') return merged
+
+  return {
+    ...merged,
+    ...(colorLight === undefined ? {} : { color: colorLight }),
+    ...(noiseIntensityLight === undefined ? {} : { noiseIntensity: noiseIntensityLight }),
+  }
 })
 const titleStyles = computed(() => ({
   ...props.titleStyle,
@@ -120,9 +129,9 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
     <div class="nm-effect-hero__background" aria-hidden="true">
-      <component :is="effectComponent" v-bind="effectProps" />
+      <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
     </div>
     <div class="nm-effect-hero__content">
       <p v-if="props.eyebrow" class="nm-effect-hero__eyebrow">{{ props.eyebrow }}</p>
@@ -191,7 +200,6 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   pointer-events: none;
 }
 
-.nm-effect-hero--light,
 .nm-effect-hero--dark { color: #fff; }
 
 .nm-effect-hero h1 {
@@ -272,58 +280,54 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   background: rgb(255 255 255 / 0.12);
 }
 
+/* Light theme: pearl surface with recognizable, saturated Silk waves. */
+.nm-effect-hero--light {
+  isolation: isolate;
+  background: var(--nm-effect-hero-light-background, transparent);
+}
+
+.nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
+  opacity: 0.58;
+  mix-blend-mode: multiply;
+  filter: saturate(1.7) contrast(1.05);
+}
+
+.nm-effect-hero--light:not(.nm-effect-hero--silk) .nm-effect-hero__background {
+  opacity: 0.5;
+}
+
+.nm-effect-hero--light .nm-effect-hero__eyebrow {
+  color: var(--nm-effect-hero-light-eyebrow-color, inherit);
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--primary) {
+  border-color: var(--nm-effect-hero-light-primary-border, currentColor);
+  background: var(--nm-effect-hero-light-primary-background, transparent);
+  color: var(--nm-effect-hero-light-primary-color, inherit) !important;
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--primary:hover) {
+  background: var(--nm-effect-hero-light-primary-hover-background, var(--nm-effect-hero-light-primary-background, transparent));
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary) {
+  border-color: var(--nm-effect-hero-light-secondary-border, currentColor);
+  background: var(--nm-effect-hero-light-secondary-background, transparent);
+  color: var(--nm-effect-hero-light-secondary-color, inherit) !important;
+  backdrop-filter: var(--nm-effect-hero-light-secondary-backdrop-filter, none);
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary:hover) {
+  border-color: var(--nm-effect-hero-light-secondary-hover-border, var(--nm-effect-hero-light-secondary-border, currentColor));
+  background: var(--nm-effect-hero-light-secondary-hover-background, var(--nm-effect-hero-light-secondary-background, transparent));
+}
+
 @media (max-width: 640px) {
   .nm-effect-hero { min-height: 34rem; margin-top: -20px; }
   .nm-effect-hero--contained { margin-top: 0; }
   .nm-effect-hero__content { padding: 2.5rem 0; }
   .nm-effect-hero h1 { font-size: clamp(2rem, 8vw, 2.75rem); }
   .nm-effect-hero__actions { gap: 0.5rem; margin-top: 1.5rem; }
-}
-
-/* Light-theme concept to refine: keep this styling in the component, not site-wide CSS. */
-/* NmEffectHero light theme: a pearl-and-sky treatment that lets the existing
-   Silk texture read as a subtle material while reserving the full Silk look for dark mode. */
-.nm-effect-hero--light {
-  color: #172033 !important;
-  background:
-    radial-gradient(ellipse at 16% 18%, rgb(52 211 153 / 0.21), transparent 34%),
-    radial-gradient(ellipse at 84% 28%, rgb(96 165 250 / 0.28), transparent 38%),
-    radial-gradient(ellipse at 54% 112%, rgb(129 140 248 / 0.18), transparent 44%),
-    linear-gradient(128deg, #f8fbff 0%, #edf5ff 48%, #f7f8ff 100%) !important;
-  isolation: isolate;
-}
-.nm-effect-hero--light .nm-effect-hero__background {
-  opacity: 0.25;
-  filter: brightness(3) saturate(2.2) blur(0.25px);
-  mix-blend-mode: multiply;
-}
-.nm-effect-hero--light h1,
-.nm-effect-hero--light p:not(.nm-effect-hero__eyebrow) {
-  color: #172033 !important;
-}
-.nm-effect-hero--light .nm-effect-hero__eyebrow {
-  color: #2563a8 !important;
-}
-.nm-effect-hero--light .nm-effect-hero__content {
-  text-shadow: 0 1px 0 rgb(255 255 255 / 0.45);
-}
-.nm-effect-hero--light :deep(.nm-effect-hero__button--primary) {
-  border-color: #172033;
-  background: #172033;
-  color: #fff !important;
-}
-.nm-effect-hero--light :deep(.nm-effect-hero__button--primary:hover) {
-  background: #263b5a;
-}
-.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary) {
-  border-color: rgb(23 32 51 / 0.28);
-  background: rgb(255 255 255 / 0.56);
-  color: #172033 !important;
-  backdrop-filter: blur(10px);
-}
-.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary:hover) {
-  border-color: rgb(23 32 51 / 0.48);
-  background: rgb(255 255 255 / 0.82);
 }
 </style>
 ```

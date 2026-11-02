@@ -22,3 +22,35 @@ const groups = computed(() => {
   return Object.fromEntries(Object.entries(result).sort(([a], [b]) => a.localeCompare(b)).map(([family, items]) => [family, items.sort((a,b) => a.title.localeCompare(b.title))]))
 })
 </script>
+
+<style scoped>
+.nm-concepts__search {
+  display: grid;
+  max-width: 32rem;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+.nm-concepts__search input {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+}
+.nm-concepts__family { margin: 2rem 0; }
+.nm-concepts__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.75rem;
+}
+.nm-concepts__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  text-decoration: none;
+}
+.nm-concepts__card span { color: var(--vp-c-text-2); font-size: 0.9rem; }
+</style>

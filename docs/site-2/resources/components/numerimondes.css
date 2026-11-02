@@ -9,8 +9,6 @@
 .nm-home-links{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0 2rem}.nm-home-links a{display:inline-flex;align-items:center;padding:.55rem .9rem;border:1px solid var(--vp-c-divider);border-radius:999px;text-decoration:none;font-weight:600}.nm-home-links a:first-child{background:var(--vp-c-brand-1);border-color:var(--vp-c-brand-1);color:var(--vp-c-white)}.nm-home-links a:hover{border-color:var(--vp-c-brand-1);color:var(--vp-c-brand-1)}
 .nm-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.5rem 0 2rem}
 .nm-home-copy{width:calc(100% - 40px);max-width:544px;margin-inline:auto}
-.simple-mini-card{display:inline-flex;align-items:center;padding:16px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#0f172a;box-shadow:0 4px 16px rgba(0,0,0,.08)}.simple-mini-card-icon{display:flex;align-items:center;gap:12px;color:#2563eb}.simple-mini-card-icon img{width:24px;height:24px}.simple-mini-card-icon p{margin:0;color:inherit}html.dark .simple-mini-card{border-color:#334155;background:#1e293b;color:#f8fafc;box-shadow:0 4px 16px rgba(0,0,0,.4)}html.dark .simple-mini-card-icon{color:#60a5fa}
-.nm-card,.nm-stat,.nm-concepts__card{border:1px solid var(--vp-c-divider);border-radius:12px;background:var(--vp-c-bg-soft);padding:1rem 1.15rem}.nm-card{display:flex;gap:.9rem;margin:.75rem 0}.nm-card__icon{color:var(--vp-c-brand-1);font-size:.8rem;text-transform:capitalize}.nm-card__body{min-width:0}.nm-card__title{margin:0 0 .45rem;font-size:1.05rem}.nm-card__description{margin:0;color:var(--vp-c-text-2)}.nm-stat{display:flex;flex-direction:column;gap:.35rem;height:100%}.nm-stat__label{font-size:.8rem;color:var(--vp-c-text-2)}.nm-stat__value{font-size:1.45rem}.nm-stat__description{font-size:.85rem;color:var(--vp-c-text-2)}.nm-triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:2rem 0}.nm-triptych span{min-height:8rem;display:grid;place-items:end start;padding:1rem;border-radius:12px;background:linear-gradient(135deg,var(--vp-c-brand-soft),var(--vp-c-bg-soft));font-weight:650}.nm-contents{border:1px solid var(--vp-c-divider);border-radius:12px;padding:1rem}.nm-concepts__search{display:grid;gap:.5rem;max-width:32rem;margin:1.5rem 0}.nm-concepts__search input{border:1px solid var(--vp-c-divider);border-radius:8px;padding:.65rem .8rem;background:var(--vp-c-bg)}.nm-concepts__family{margin:2rem 0}.nm-concepts__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.75rem}.nm-concepts__card{display:flex;flex-direction:column;gap:.5rem;text-decoration:none}.nm-concepts__card span{font-size:.9rem;color:var(--vp-c-text-2)}.nm-dynamic-list{margin:1.5rem 0;padding:1rem;border:1px solid var(--vp-c-divider);border-radius:12px}@media(max-width:640px){.nm-triptych{grid-template-columns:1fr}}
 
 
 
@@ -31,49 +29,3 @@
 
 .account-spaces-cards .cards-modern__body { display: flex; min-height: 16rem; flex-direction: column; }
 .account-spaces-cards .cards-modern__actions { align-content: flex-start; margin-top: auto; }
-
-/* NmEffectHero light theme: a pearl-and-sky treatment that lets the existing
-   Silk texture read as a subtle material while reserving the full Silk look for dark mode. */
-.nm-effect-hero--light {
-  color: #172033 !important;
-  background:
-    radial-gradient(ellipse at 16% 18%, rgb(52 211 153 / 0.21), transparent 34%),
-    radial-gradient(ellipse at 84% 28%, rgb(96 165 250 / 0.28), transparent 38%),
-    radial-gradient(ellipse at 54% 112%, rgb(129 140 248 / 0.18), transparent 44%),
-    linear-gradient(128deg, #f8fbff 0%, #edf5ff 48%, #f7f8ff 100%) !important;
-  isolation: isolate;
-}
-.nm-effect-hero--light .nm-effect-hero__background {
-  opacity: 0.25;
-  filter: brightness(3) saturate(2.2) blur(0.25px);
-  mix-blend-mode: multiply;
-}
-.nm-effect-hero--light h1,
-.nm-effect-hero--light p:not(.nm-effect-hero__eyebrow) {
-  color: #172033 !important;
-}
-.nm-effect-hero--light .nm-effect-hero__eyebrow {
-  color: #2563a8 !important;
-}
-.nm-effect-hero--light .nm-effect-hero__content {
-  text-shadow: 0 1px 0 rgb(255 255 255 / 0.45);
-}
-.nm-effect-hero--light .nm-effect-hero__button--primary {
-  border-color: #172033;
-  background: #172033;
-  color: #fff !important;
-}
-.nm-effect-hero--light .nm-effect-hero__button--primary:hover {
-  background: #263b5a;
-}
-.nm-effect-hero--light .nm-effect-hero__button--secondary {
-  border-color: rgb(23 32 51 / 0.28);
-  background: rgb(255 255 255 / 0.56);
-  color: #172033 !important;
-  backdrop-filter: blur(10px);
-}
-.nm-effect-hero--light .nm-effect-hero__button--secondary:hover {
-  border-color: rgb(23 32 51 / 0.48);
-  background: rgb(255 255 255 / 0.82);
-}
-

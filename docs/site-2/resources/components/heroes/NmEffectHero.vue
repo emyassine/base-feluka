@@ -60,7 +60,16 @@ const effectProps = computed<Record<string, unknown>>(() => {
       }
       break
   }
-  return { ...defaults, ...(props.effect[1]?.inject ?? {}) }
+  const { colorLight, noiseIntensityLight, ...injected } = (props.effect[1]?.inject ?? {}) as Record<string, unknown>
+  const merged = { ...defaults, ...injected }
+
+  if (isDark.value || selectedEffect.value !== 'silk') return merged
+
+  return {
+    ...merged,
+    ...(colorLight === undefined ? {} : { color: colorLight }),
+    ...(noiseIntensityLight === undefined ? {} : { noiseIntensity: noiseIntensityLight }),
+  }
 })
 const titleStyles = computed(() => ({
   ...props.titleStyle,
@@ -76,9 +85,9 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
     <div class="nm-effect-hero__background" aria-hidden="true">
-      <component :is="effectComponent" v-bind="effectProps" />
+      <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
     </div>
     <div class="nm-effect-hero__content">
       <p v-if="props.eyebrow" class="nm-effect-hero__eyebrow">{{ props.eyebrow }}</p>
@@ -147,7 +156,6 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   pointer-events: none;
 }
 
-.nm-effect-hero--light,
 .nm-effect-hero--dark { color: #fff; }
 
 .nm-effect-hero h1 {
@@ -226,6 +234,48 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 .nm-effect-hero__actions :deep(.nm-effect-hero__button--secondary:hover) {
   border-color: rgb(255 255 255 / 0.68);
   background: rgb(255 255 255 / 0.12);
+}
+
+/* Light theme: pearl surface with recognizable, saturated Silk waves. */
+.nm-effect-hero--light {
+  isolation: isolate;
+  background: var(--nm-effect-hero-light-background, transparent);
+}
+
+.nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
+  opacity: 0.58;
+  mix-blend-mode: multiply;
+  filter: saturate(1.7) contrast(1.05);
+}
+
+.nm-effect-hero--light:not(.nm-effect-hero--silk) .nm-effect-hero__background {
+  opacity: 0.5;
+}
+
+.nm-effect-hero--light .nm-effect-hero__eyebrow {
+  color: var(--nm-effect-hero-light-eyebrow-color, inherit);
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--primary) {
+  border-color: var(--nm-effect-hero-light-primary-border, currentColor);
+  background: var(--nm-effect-hero-light-primary-background, transparent);
+  color: var(--nm-effect-hero-light-primary-color, inherit) !important;
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--primary:hover) {
+  background: var(--nm-effect-hero-light-primary-hover-background, var(--nm-effect-hero-light-primary-background, transparent));
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary) {
+  border-color: var(--nm-effect-hero-light-secondary-border, currentColor);
+  background: var(--nm-effect-hero-light-secondary-background, transparent);
+  color: var(--nm-effect-hero-light-secondary-color, inherit) !important;
+  backdrop-filter: var(--nm-effect-hero-light-secondary-backdrop-filter, none);
+}
+
+.nm-effect-hero--light :deep(.nm-effect-hero__button--secondary:hover) {
+  border-color: var(--nm-effect-hero-light-secondary-hover-border, var(--nm-effect-hero-light-secondary-border, currentColor));
+  background: var(--nm-effect-hero-light-secondary-hover-background, var(--nm-effect-hero-light-secondary-background, transparent));
 }
 
 @media (max-width: 640px) {

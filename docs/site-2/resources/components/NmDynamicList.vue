@@ -2,3 +2,13 @@
 <script setup>
 defineProps({ title: { type: String, default: 'Updates' }, items: { type: Array, default: () => [] }, emptyMessage: { type: String, default: 'No items have been published yet.' } })
 </script>
+
+<style scoped>
+.nm-dynamic-list {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+</style>
