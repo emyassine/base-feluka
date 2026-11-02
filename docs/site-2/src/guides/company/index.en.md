@@ -18,7 +18,7 @@ status: "ready-for-review"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Explore innovation', href: '/company/innovation/' }, { label: 'See our initiatives', href: '/company/initiatives/', style: 'secondary' }]"
+  :buttons="[{ label: 'Explore innovation', href: '/company/innovation/' }, { label: 'See our initiatives', href: '/company/innovation/initiatives/', style: 'secondary' }]"
 />
 
 <div class="nm-home-copy">

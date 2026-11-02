@@ -420,21 +420,21 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/initiatives/feluqa',
+      href: '/company/innovation/initiatives/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/company/initiatives/the-best-recruit',
+      href: '/company/innovation/initiatives/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/initiatives/spmpst',
+      href: '/company/innovation/initiatives/spmpst',
       image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
@@ -446,7 +446,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   :more="{
     title: 'Discover all our 3 initiatives',
     description: 'Explore our current and upcoming projects',
-    href: '/company/initiatives/',
+    href: '/company/innovation/initiatives/',
     image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
   }"
   :card-height="220"

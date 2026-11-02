@@ -28,9 +28,9 @@ These internal initiatives are at different stages of development. Their pages d
 
 <MegaCards
   :items="[
-    { title: 'Feluqa', description: 'A Rust-based application framework in development.', href: '/company/initiatives/feluqa/', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/feluqa.svg' },
-    { title: 'The Best Recruit', description: 'A recruitment and talent initiative being prepared for launch.', href: '/company/initiatives/the-best-recruit/', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/the-best-recruit.svg' },
-    { title: 'SPMPST', description: 'A draft specification for portable structured Markdown site trees.', href: '/company/initiatives/spmpst/', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/spmpst.svg' }
+    { title: 'Feluqa', description: 'A Rust-based application framework in development.', href: '/company/innovation/initiatives/feluqa/', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/feluqa.svg' },
+    { title: 'The Best Recruit', description: 'A recruitment and talent initiative being prepared for launch.', href: '/company/innovation/initiatives/the-best-recruit/', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/the-best-recruit.svg' },
+    { title: 'SPMPST', description: 'A draft specification for portable structured Markdown site trees.', href: '/company/innovation/initiatives/spmpst/', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/spmpst.svg' }
   ]"
   :composition="[{ items: [0, 1] }, { items: [2] }]"
   :card-height="220"

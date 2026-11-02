@@ -5,7 +5,7 @@
   },
   "subguides": [
     {
-      "path": "001-services",
+      "path": "services",
       "label": "Services",
       "labels": {
         "en": "Services"
@@ -16,7 +16,7 @@
       }
     },
     {
-      "path": "002-opportunities",
+      "path": "opportunities",
       "label": "Opportunities",
       "labels": {
         "en": "Opportunities"
@@ -26,7 +26,7 @@
       }
     },
     {
-      "path": "003-company",
+      "path": "company",
       "label": "Company",
       "labels": {
         "en": "Company"
@@ -36,7 +36,7 @@
       }
     },
     {
-      "path": "009-account",
+      "path": "account",
       "label": "Account access",
       "labels": {
         "en": "Account access"

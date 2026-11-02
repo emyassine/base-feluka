@@ -41,7 +41,7 @@ A clearer process, operating guide, dashboard specification, training plan, impl
 
 Recruitment is a separate initiative in preparation under **The Best Recruit**. It is not presented here as a live staffing or placement offering.
 
-**The Best Recruit — Coming soon** → `/company/initiatives/the-best-recruit`
+**The Best Recruit — Coming soon** → `/company/innovation/initiatives/the-best-recruit`
 
 ### Next step
 

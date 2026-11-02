@@ -17,7 +17,7 @@ status: "ready-for-review"
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/' }, { label: 'Propose an idea', href: '/company/contact?topic=innovation', style: 'secondary' }]"
+  :buttons="[{ label: 'Explore our initiatives', href: '/company/innovation/initiatives/' }, { label: 'Propose an idea', href: '/company/contact?topic=innovation', style: 'secondary' }]"
 />
 
 <div class="nm-home-copy">
@@ -47,19 +47,19 @@ The process depends on available evidence and the maturity of each initiative.
 
 An experimental Rust-based application framework exploring efficient, cross-platform applications and systems. **In development — coming soon.**
 
-**Explore Feluqa** → `/company/initiatives/feluqa`
+**Explore Feluqa** → `/company/innovation/initiatives/feluqa`
 
 ### SPMPST
 
 A draft standard for organizing portable Markdown content trees across site-building targets. **Specification in development.**
 
-**Explore SPMPST** → `/company/initiatives/spmpst`
+**Explore SPMPST** → `/company/innovation/initiatives/spmpst`
 
 ### The Best Recruit
 
 An emerging recruitment and talent initiative built around structured profile qualification and useful employer information. **Coming soon.**
 
-**Explore The Best Recruit** → `/company/initiatives/the-best-recruit`
+**Explore The Best Recruit** → `/company/innovation/initiatives/the-best-recruit`
 
 ## Collaborate on an idea
 

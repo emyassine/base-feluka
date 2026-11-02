@@ -3,7 +3,7 @@
   "theme": "switch",
   "items": [
     {
-      "guide": "001-services",
+      "guide": "services",
       "items": {
         "source": "subguides no-guide-index",
         "icon": true
@@ -53,10 +53,10 @@
       ]
     },
     {
-      "guide": "002-opportunities"
+      "guide": "opportunities"
     },
     {
-      "guide": "003-company",
+      "guide": "company",
       "items": {
         "source": "subguides",
         "icon": true
