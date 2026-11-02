@@ -4,9 +4,10 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { execFile as execFileCallback } from 'node:child_process'
 import { promisify } from 'node:util'
 import { writeStagedMarkdownIfChanged } from '../../spmpst/fs-utils.mjs'
+import { parseResourceReference } from '../../spmpst/resources.mjs'
 
 export async function runTransformMarkdown(ctx) {
-  const { siteDirectory, configDirectory, copyAsset, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
+  const { siteDirectory, configDirectory, copyAsset, copyIcon, publicPagePath, publicUrl, publicMarkdownLink, config, styleFiles, collections, siteThemeSlots, themeSlots, iconNamePattern, flowchartPalette, nodeBorderWidth, defaultLanguage, projectConfig, projectDirectories, findIcon, resolveIcon, resolveSidebarIcon, outputDirectory, generatedDirectory, mermaidCache, mermaidConfigPath, mermaidConfig, darkMessageTextColor, incremental, records, routeMap, generatedFiles, navigationOrder, sidebarConfigurations, sidebarIconSources, sidebarPageIcons, directories, guideUris, cleanDir, cleanFile, sourceLanguage, sourceRoot, collectionMetadata, localizedValue, stagedPath, copyIfChanged, writeIfChanged, scan, readSourceText, frontmatterScalar, humanize, readingMetrics, generatedFonts, generatedGuideColors, generatedOgImages, generatedCollectionNavigation, generatedCollectionPages, generatedMarkdown, generatedGuideThemeSlotsByRoute, prefixDefaultLanguage } = ctx
   const execFile = promisify(execFileCallback)
   let diagramsCached = ctx.diagramsCached
   let diagramsRendered = ctx.diagramsRendered
@@ -43,6 +44,18 @@ async function createDarkVariant(lightPath, darkPath) {
 await mkdir(mermaidCache, { recursive: true })
 await Promise.all(records.map(async (record) => {
   let markdown = await readSourceText(record.from)
+  const sourceFrontmatter = markdown.match(/^---\s*\r?\n[\s\S]*?\r?\n---/)
+  const frontmatterText = sourceFrontmatter?.[0] ?? ''
+  let markdownBody = frontmatterText ? markdown.slice(frontmatterText.length) : markdown
+  const iconReferences = [...new Set([...markdownBody.matchAll(/@spmpst::icon::[\p{L}\p{N}][\p{L}\p{N}._/-]*/gu)]
+    .map(([reference]) => reference)
+    .filter((reference) => parseResourceReference(reference)?.kind === 'icon'))]
+  for (const reference of iconReferences) {
+    const iconPath = resolveIcon(reference, record.from)
+    const publicIconPath = await copyIcon(iconPath)
+    markdownBody = markdownBody.replaceAll(reference, `/${publicIconPath}`)
+  }
+  markdown = `${frontmatterText}${markdownBody}`
   const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
   if (owningCollection) {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
