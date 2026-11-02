@@ -146,6 +146,32 @@
         }
       }
     },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "link"],
+        "properties": {
+          "label": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } }
+            ]
+          },
+          "link": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } }
+            ]
+          },
+          "color": { "enum": ["primary", "gray", "info", "success", "warning", "danger", "dark", "secondary"] },
+          "size": { "enum": ["xs", "sm", "md", "lg", "xl"] },
+          "outlined": { "type": "boolean" },
+          "external": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
     "theme": {
       "enum": [
         "switch",

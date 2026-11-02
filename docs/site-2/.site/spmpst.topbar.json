@@ -54,50 +54,38 @@
       ]
     },
     {
-      "guide": "003-innovation"
-    },
-    {
-      "guide": "004-initiatives",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
+      "text": {
+        "en": "Innovation & Initiatives"
       },
-      "menuTitle": {
-        "en": "Initiatives"
-      },
-      "menuTemplate": [
-        "mega.background-icon",
-        [
-          "title",
-          "image",
-          "icon",
-          "description",
-          "children"
-        ],
+      "items": [
         {
-          "mobileToo": false,
-          "maxItems": 4,
-          "cardHeight": 205,
-          "composition": {
-            "columns": [
-              [
-                0,
-                1
-              ],
-              [
-                2,
-                "more"
-              ]
-            ]
+          "guide": "003-innovation",
+          "icon": "@spmpst::icon::sparkles"
+        },
+        {
+          "guide": "004-initiatives",
+          "icon": "@spmpst::icon::rocket"
+        },
+        {
+          "text": {
+            "en": "Feluqa"
           },
-          "more": {
-            "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-            "text": {
-              "en": "Discover all initiatives"
-            },
-            "link": "/initiatives/",
-            "position": "after"
-          }
+          "link": "/initiatives/feluqa/",
+          "icon": "@spmpst::icon::rust"
+        },
+        {
+          "text": {
+            "en": "The Best Recruit"
+          },
+          "link": "/initiatives/the-best-recruit/",
+          "icon": "@spmpst::icon::users"
+        },
+        {
+          "text": {
+            "en": "SPMPST"
+          },
+          "link": "/initiatives/spmpst/",
+          "icon": "@spmpst::icon::folder-tree"
         }
       ]
     },
@@ -121,10 +109,6 @@
         {
           "guide": "008-contact",
           "icon": "@spmpst::icon::message-circle"
-        },
-        {
-          "guide": "009-account",
-          "icon": "@spmpst::icon::circle-user-round"
         }
       ]
     },
@@ -147,6 +131,16 @@
           "showParentsName": false
         }
       }
+    }
+  ],
+  "actions": [
+    {
+      "label": {
+        "en": "Account access"
+      },
+      "link": "/account/",
+      "color": "primary",
+      "size": "sm"
     }
   ]
 }

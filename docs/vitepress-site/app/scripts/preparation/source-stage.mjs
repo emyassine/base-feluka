@@ -287,6 +287,20 @@ function validateTopbarItems(items, location = 'topbar.items') {
   }
 }
 if (topbar.items !== undefined) validateTopbarItems(topbar.items)
+if (topbar.actions !== undefined) {
+  if (!Array.isArray(topbar.actions)) throw new Error('topbar.actions must be an array')
+  for (const [index, action] of topbar.actions.entries()) {
+    const location = `topbar.actions[${index}]`
+    if (!action || typeof action !== 'object' || Array.isArray(action)) throw new Error(`${location} must be an object`)
+    if (Object.keys(action).some((key) => !['label', 'link', 'color', 'size', 'outlined', 'external'].includes(key))) throw new Error(`${location} contains an unsupported property`)
+    if (typeof action.label !== 'string' && (!action.label || typeof action.label !== 'object' || Array.isArray(action.label))) throw new Error(`${location}.label must be text or translated text`)
+    if (!validLocalizedLink(action.link)) throw new Error(`${location}.link must be a non-empty link or localized links`)
+    if (action.color !== undefined && !['primary', 'gray', 'info', 'success', 'warning', 'danger', 'dark', 'secondary'].includes(action.color)) throw new Error(`${location}.color must be a supported FeluqaButton color`)
+    if (action.size !== undefined && !['xs', 'sm', 'md', 'lg', 'xl'].includes(action.size)) throw new Error(`${location}.size must be a supported FeluqaButton size`)
+    if (action.outlined !== undefined && typeof action.outlined !== 'boolean') throw new Error(`${location}.outlined must be a boolean`)
+    if (action.external !== undefined && typeof action.external !== 'boolean') throw new Error(`${location}.external must be a boolean`)
+  }
+}
 for (const language of config.languages) {
   if (typeof config.languageLabels?.[language] !== 'string' || !config.languageLabels[language].trim()) {
     throw new Error(`languageLabels.${language} must be a non-empty string`)

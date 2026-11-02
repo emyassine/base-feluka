@@ -387,6 +387,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   languages: config.languages,
   defaultLanguage,
   showLanguageFlags: config.topbar?.language?.showFlags ?? false,
+  topbarActions: config.topbar?.actions ?? [],
   themeSlots: { site: siteThemeSlots, guides: generatedGuideThemeSlotsByRoute },
   siteFooter: config.siteFooter ?? null,
   inlineLogo: config.inlineLogo === true,

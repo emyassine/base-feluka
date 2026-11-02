@@ -9,6 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
+import TopbarActions from './TopbarActions.vue'
 import './tailwind.css'
 import './style.css'
 import '@generated/configured-styles'
@@ -652,9 +653,12 @@ const MermaidLayout = {
       return h(DefaultTheme.Layout, null, {
       ...layoutSlots,
       'layout-top': siteBanner,
-      'nav-bar-content-after': () => articleLayout() && subnavComponent
-        ? h(subnavComponent, null, { actions: () => h(PageActions) })
-        : renderedSubnav,
+      'nav-bar-content-after': () => h(Fragment, null, [
+        articleLayout() && subnavComponent
+          ? h(subnavComponent, null, { actions: () => h(PageActions) })
+          : renderedSubnav,
+        h(TopbarActions),
+      ]),
       'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
         h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
