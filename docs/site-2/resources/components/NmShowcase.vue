@@ -48,7 +48,6 @@ const pos = ref(0)
 const storyProgress = ref<number[]>([])
 const manuallyControlled = ref<boolean[]>([])
 const prefersReducedMotion = ref(false)
-const desktopShowcase = ref(false)
 
 const active = computed(() => Math.round(pos.value))
 
@@ -57,11 +56,6 @@ let carouselFrame = 0
 let animationFrame = 0
 let animatedStory: number | null = null
 const visibleCard = ref<number | null>(null)
-let desktopMediaQuery: MediaQueryList | null = null
-
-function updateDesktopShowcase(event?: MediaQueryListEvent) {
-  desktopShowcase.value = event?.matches ?? desktopMediaQuery?.matches ?? false
-}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -89,7 +83,7 @@ function descriptionSentences(description: string) {
   return description.match(/[^.]+(?:\.|$)/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [description]
 }
 
-function stackCardStyle(index: number) {
+function stackCardMetrics(index: number) {
   const readingLead = 0.28
   const transitionSpan = 1 - readingLead
   const arrivalProgress = index === 0
@@ -99,14 +93,20 @@ function stackCardStyle(index: number) {
   const scaleProgress = smoothstep(clamp((pos.value - index - readingLead) / transitionSpan, 0, 1))
   const targetScale = 0.85 + index * 0.03
   const scale = 1 - scaleProgress * (1 - targetScale)
-  const translateY = `${index * 36}px + ${(1 - arrival) * 60}svh`
+
+  return { arrival, scale }
+}
+
+function stackCardStyle(index: number) {
+  const { arrival, scale } = stackCardMetrics(index)
   const rotation = (1 - arrival) * -1.25
 
   return {
     zIndex: index,
     opacity: 1,
     pointerEvents: index === active.value ? 'auto' : 'none',
-    transform: `perspective(1400px) translate3d(0, calc(${translateY}), 0) scale(${scale}) rotateX(${rotation}deg)`,
+    '--silk-counter-scale': String(1 / scale),
+    transform: `perspective(1400px) translate3d(0, calc(${index * 36}px + ${(1 - arrival) * 60}svh), 0) scale(${scale}) rotateX(${rotation}deg)`,
   }
 }
 
@@ -258,9 +258,6 @@ function onWindowResize() {
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  desktopMediaQuery = window.matchMedia('(min-width: 1024px)')
-  updateDesktopShowcase()
-  desktopMediaQuery.addEventListener('change', updateDesktopShowcase)
 
   window.addEventListener('scroll', requestScrollUpdate, { passive: true })
   window.addEventListener('resize', onWindowResize, { passive: true })
@@ -272,8 +269,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', requestScrollUpdate)
   window.removeEventListener('resize', onWindowResize)
-  desktopMediaQuery?.removeEventListener('change', updateDesktopShowcase)
-  desktopMediaQuery = null
   scroller.value?.removeEventListener('scroll', requestActiveCarouselUpdate)
   if (scrollFrame) cancelAnimationFrame(scrollFrame)
   if (carouselFrame) cancelAnimationFrame(carouselFrame)
@@ -447,41 +442,36 @@ onBeforeUnmount(() => {
     <div v-else ref="stageTrack" class="nm-showcase__stack-track" :style="{ '--n': count }">
       <div class="nm-showcase__stack-sticky">
         <div class="nm-showcase__stack-deck">
-          <Silk
-            v-if="desktopShowcase"
-            class="nm-showcase__stack-silk"
-            color="#141D2A"
-          />
           <article
-          v-for="(story, index) in stories"
-          :key="`stack-${story.name}-${index}`"
-          class="nm-showcase__stack-card"
-          :class="{ 'is-active': index === active, 'is-past': index < active }"
-          :aria-hidden="index !== active"
-          :style="stackCardStyle(index)"
-        >
-          <figure class="nm-showcase__stack-side">
-            <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
-            <figcaption><span>01</span>{{ labels.before }}</figcaption>
-            <p>{{ story.beforeText }}</p>
-          </figure>
-          <div class="nm-showcase__stack-copy">
-            <span class="nm-showcase__stack-count">{{ String(index + 1).padStart(2, '0') }} <span>/ {{ String(count).padStart(2, '0') }}</span></span>
-            <span class="nm-showcase__name-title">{{ story.name }}</span>
-            <p class="nm-showcase__stack-description">
-              <span
-                v-for="(sentence, sentenceIndex) in descriptionSentences(story.description)"
-                :key="sentenceIndex"
-                class="nm-showcase__story-sentence"
-              >{{ sentence }}</span>
-            </p>
-          </div>
-          <figure class="nm-showcase__stack-side">
-            <img :src="story.afterImage" :alt="fill(labels.altAfter, story.name)" loading="lazy" draggable="false" />
-            <figcaption><span>02</span>{{ labels.after }}</figcaption>
-            <p>{{ story.afterText }}</p>
-          </figure>
-        </article>
+            v-for="(story, index) in stories"
+            :key="`stack-${story.name}-${index}`"
+            class="nm-showcase__stack-card"
+            :class="{ 'is-active': index === active, 'is-past': index < active }"
+            :aria-hidden="index !== active"
+            :style="stackCardStyle(index)"
+          >
+            <figure class="nm-showcase__stack-side">
+              <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
+              <figcaption><span>01</span>{{ labels.before }}</figcaption>
+              <p>{{ story.beforeText }}</p>
+            </figure>
+            <div class="nm-showcase__stack-copy">
+              <span class="nm-showcase__stack-count">{{ String(index + 1).padStart(2, '0') }} <span>/ {{ String(count).padStart(2, '0') }}</span></span>
+              <span class="nm-showcase__name-title">{{ story.name }}</span>
+              <p class="nm-showcase__stack-description">
+                <span
+                  v-for="(sentence, sentenceIndex) in descriptionSentences(story.description)"
+                  :key="sentenceIndex"
+                  class="nm-showcase__story-sentence"
+                >{{ sentence }}</span>
+              </p>
+            </div>
+            <figure class="nm-showcase__stack-side">
+              <img :src="story.afterImage" :alt="fill(labels.altAfter, story.name)" loading="lazy" draggable="false" />
+              <figcaption><span>02</span>{{ labels.after }}</figcaption>
+              <p>{{ story.afterText }}</p>
+            </figure>
+          </article>
         </div>
       </div>
     </div>
@@ -690,14 +680,16 @@ onBeforeUnmount(() => {
     height: min(60svh, 560px);
     border-radius: 1.25rem;
   }
-  .nm-showcase__stack-silk {
+  .nm-showcase__stack-card::before {
     position: absolute;
     z-index: 0;
     inset: 0;
-    overflow: hidden;
     border-radius: inherit;
-    opacity: 0.68;
+    background: #141d2a url('/images/home/showcase-silk.webp') center / 100% 100% no-repeat;
+    content: '';
     pointer-events: none;
+    transform: scale(var(--silk-counter-scale, 1));
+    transform-origin: top center;
   }
   .nm-showcase__stack-card {
     position: absolute;
@@ -710,12 +702,11 @@ onBeforeUnmount(() => {
     border: 1px solid rgb(210 222 237 / 0.18);
     border-radius: 1.25rem;
     color: #f3f6fa;
-    background: linear-gradient(145deg, rgb(20 29 42 / 0.78), rgb(12 18 28 / 0.84));
+    overflow: hidden;
+    background: #141d2a;
     box-shadow: 0 30px 90px rgb(0 0 0 / 0.42), inset 0 1px rgb(255 255 255 / 0.055);
-    backdrop-filter: blur(18px);
     pointer-events: none;
     transform-origin: top center;
-    will-change: transform, opacity;
   }
   .nm-showcase__stack-card.is-active { border-color: rgb(210 222 237 / 0.26); pointer-events: auto; }
   .nm-showcase__stack-side,
