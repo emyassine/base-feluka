@@ -30,6 +30,7 @@ const props = defineProps<{
   title: string
   stories: ShowcaseStory[]
   labels: ShowcaseLabels
+  variant?: 'carousel' | 'stacked'
   footnote?: string
   footnoteMarker?: string
   citation?: string
@@ -327,7 +328,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <div ref="stageTrack" class="nm-showcase__scrolltrack" :style="{ '--n': count }">
+    <div v-if="variant !== 'stacked'" ref="stageTrack" class="nm-showcase__scrolltrack" :style="{ '--n': count }">
       <div class="nm-showcase__sticky">
         <div class="nm-showcase__stage" :style="{ '--story-color': stories[active]?.color ?? '#7c3aed' }">
           <figure class="nm-showcase__col">
@@ -402,6 +403,33 @@ onBeforeUnmount(() => {
             </div>
           </figure>
         </div>
+      </div>
+    </div>
+
+    <div v-else ref="stageTrack" class="nm-showcase__stack-track">
+      <div class="nm-showcase__stack-list">
+        <article
+          v-for="(story, index) in stories"
+          :key="`stack-${story.name}-${index}`"
+          class="nm-showcase__stack-card"
+          :class="{ 'is-revealed': index <= active }"
+          :style="{ '--stack-index': index, '--story-color': story.color }"
+        >
+          <figure class="nm-showcase__stack-side">
+            <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
+            <figcaption>{{ labels.before }}</figcaption>
+            <p>{{ story.beforeText }}</p>
+          </figure>
+          <div class="nm-showcase__stack-copy">
+            <span class="nm-showcase__name-title">{{ story.name }}</span>
+            <p>{{ story.description }}</p>
+          </div>
+          <figure class="nm-showcase__stack-side">
+            <img :src="story.afterImage" :alt="fill(labels.altAfter, story.name)" loading="lazy" draggable="false" />
+            <figcaption>{{ labels.after }}</figcaption>
+            <p>{{ story.afterText }}</p>
+          </figure>
+        </article>
       </div>
     </div>
   </section>
@@ -546,6 +574,9 @@ onBeforeUnmount(() => {
 .nm-showcase__timeline-track:focus-within .nm-showcase__timeline-thumb { outline: 3px solid #fff; outline-offset: 3px; }
 
 .nm-showcase__scrolltrack { display: none; }
+.nm-showcase__scrolltrack,
+.nm-showcase__stack-track { order: 4; }
+.nm-showcase__stack-track { display: none; }
 
 @media (min-width: 640px) {
   .nm-showcase__scroller {
@@ -581,6 +612,37 @@ onBeforeUnmount(() => {
   .nm-showcase__footnote { order: 0; width: auto; max-width: 420px; margin: 1.5rem auto 0; font-size: 16px; }
 
   .nm-showcase__carousel { display: none; }
+
+  .nm-showcase__stack-track { display: block; }
+  .nm-showcase__stack-list { width: min(92vw, 1180px); margin: 0 auto; padding-bottom: 60svh; }
+  .nm-showcase__stack-card {
+    position: sticky;
+    top: calc(8svh + var(--stack-index) * 1.25rem);
+    z-index: calc(var(--stack-index) + 1);
+    display: grid;
+    min-height: clamp(18rem, 58svh, 34rem);
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.8fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    margin-bottom: 55svh;
+    padding: clamp(1rem, 3vw, 2.25rem);
+    border: 2px solid var(--story-color, #7c3aed);
+    border-radius: 1.25rem;
+    background: var(--vp-c-bg);
+    box-shadow: 0 18px 50px rgb(22 20 15 / 0.16);
+    opacity: 0.18;
+    transform: translateY(1.5rem) scale(0.985);
+    transition: opacity 500ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nm-showcase__stack-card.is-revealed { opacity: 1; transform: translateY(0) scale(1); }
+  .nm-showcase__stack-side { min-width: 0; margin: 0; text-align: center; }
+  .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.8rem; }
+  .nm-showcase__stack-side figcaption { margin-top: 0.8rem; color: var(--nm-showcase-before-color); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .nm-showcase__stack-side:last-child figcaption { color: var(--nm-showcase-after-color); }
+  .nm-showcase__stack-side p { margin: 0.4rem 0 0; font-size: 0.95rem; line-height: 1.5; }
+  .nm-showcase__stack-copy { text-align: center; }
+  .nm-showcase__stack-copy .nm-showcase__name-title { font-size: clamp(1.25rem, 2vw, 1.75rem); }
+  .nm-showcase__stack-copy p { margin: 1rem 0 0; color: var(--vp-c-text-2); line-height: 1.55; }
 
   .nm-showcase__scrolltrack {
     display: block;
@@ -711,6 +773,7 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .nm-showcase__layer,
-  .nm-showcase__caption { transition: none; }
+  .nm-showcase__caption,
+  .nm-showcase__stack-card { transition: none; }
 }
 </style>

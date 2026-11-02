@@ -146,6 +146,7 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
  <NmShowcase
 	 title="What we do"
+		variant="stacked"
 	 footnote="Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required."
 	 citation="El Moumen Yassine"
 	 footnote-marker="*"
