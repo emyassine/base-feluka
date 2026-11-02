@@ -53,6 +53,14 @@ SERVER="your-server.com"
 # SSH user used for deployment
 USER="your-username"
 
+# Optional remote ownership and permissions. Set RSYNC_REMOTE_SUDO=true when
+# the SSH user needs sudo rsync to apply the configured owner/group.
+REMOTE_OWNER=""
+REMOTE_GROUP=""
+REMOTE_DIR_MODE="755"
+REMOTE_FILE_MODE="644"
+RSYNC_REMOTE_SUDO="false"
+
 # ------------------------------------------------------------
 # Deployment instances
 # ------------------------------------------------------------
@@ -220,9 +228,20 @@ echo ""
 case $METHOD in
   ssh)
     build_rsync_excludes "$CONTEXT"
+    rsync_options=(--chmod="D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}")
+    if [[ -n "${REMOTE_OWNER:-}" || -n "${REMOTE_GROUP:-}" ]]; then
+      if [[ -z "${REMOTE_OWNER:-}" || -z "${REMOTE_GROUP:-}" ]]; then
+        echo "REMOTE_OWNER and REMOTE_GROUP must either both be set or both be empty"
+        exit 1
+      fi
+      rsync_options+=(--chown="$REMOTE_OWNER:$REMOTE_GROUP")
+    fi
+    if [[ "${RSYNC_REMOTE_SUDO:-false}" == "true" ]]; then
+      rsync_options+=(--rsync-path="sudo rsync")
+    fi
     # Deliberately omit --delete: files on the server that are absent from this
     # selected source must be preserved.
-    rsync -avz --progress --no-perms --no-owner --no-group "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
+    rsync -avz --progress --no-perms --no-owner --no-group "${rsync_options[@]}" "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$TARGET/"
 
     run_post_deploy "$HOST" "$TARGET" "$CONTEXT"
     ;;
