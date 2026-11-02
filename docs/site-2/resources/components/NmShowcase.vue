@@ -105,10 +105,10 @@ function onNamesKeydown(event: KeyboardEvent) {
 }
 
 function nameStyle(index: number) {
-  const distance = Math.abs(index - pos.value)
+  const isActive = index === active.value
   return {
-    opacity: clamp(1 - distance * 0.72, 0, 1),
-    transform: `scale(${1 - Math.min(distance, 1) * 0.08})`,
+    opacity: isActive ? 1 : 0,
+    transform: `scale(${isActive ? 1 : 0.96})`,
   }
 }
 
@@ -311,7 +311,7 @@ onBeforeUnmount(() => {
             tabindex="0"
             @keydown="onNamesKeydown"
           >
-            <ul class="nm-showcase__names-list" :style="{ '--pos': pos }">
+            <ul class="nm-showcase__names-list" :style="{ '--active': active }">
               <li
                 v-for="(story, index) in stories"
                 :key="`name-${story.name}-${index}`"
@@ -548,7 +548,7 @@ onBeforeUnmount(() => {
   }
 
   .nm-showcase__stage {
-    --item-h: clamp(4rem, 6vw, 6rem);
+    --item-h: clamp(3.5rem, 5.5vw, 5rem);
     display: grid;
     width: min(94vw, 1180px, calc(2.8 * (100svh - 9rem) + 5rem));
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1fr);
@@ -603,26 +603,29 @@ onBeforeUnmount(() => {
 
   .nm-showcase__names {
     position: relative;
-    height: calc(var(--item-h) * 5);
+    width: 100%;
+    min-width: 0;
+    height: calc(var(--item-h) * 3);
     overflow: hidden;
     outline: none;
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
+    transform: translateY(-2rem);
   }
 
   .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
 
   .nm-showcase__names-list {
+    width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
-    transform: translateY(calc((2 - var(--pos, 0)) * var(--item-h)));
-    will-change: transform;
+    transform: translateY(calc((1 - var(--active, 0)) * var(--item-h)));
   }
 
-  .nm-showcase__names-item { display: flex; height: var(--item-h); align-items: center; justify-content: center; }
+  .nm-showcase__names-item { display: flex; width: 100%; height: var(--item-h); align-items: center; justify-content: center; transition: opacity 160ms ease, transform 160ms ease; }
 
   .nm-showcase__name-btn {
+    display: block;
+    width: 100%;
     max-width: 100%;
     padding: 0;
     border: 0;
@@ -630,7 +633,7 @@ onBeforeUnmount(() => {
     color: inherit;
     cursor: pointer;
     font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
-    font-size: clamp(2rem, 3.6vw, 3.25rem);
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.05;

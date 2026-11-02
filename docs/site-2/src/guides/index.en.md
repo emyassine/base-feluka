@@ -52,50 +52,50 @@ Expected benefits are assessed for each engagement; specific results depend on t
 	 footnote-marker="*"
 		:stories='[
 	  {
-	    name: "Business Consulting & Development",
+	    name: "Business Consulting and Development",
 	    description: "Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.",
-	    beforeImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1200&auto=format&fit=crop",
-	    afterImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
+	    beforeImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80andw=1200andauto=formatandfit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80andw=1200andauto=formatandfit=crop",
 	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
 	    afterText: "Structured business roadmap, clear decision-making frameworks, and accelerated commercial expansion.",
 	    linkText: "Explore consulting",
 	    linkUrl: "/services/consulting"
 	  },
 	  {
-	    name: "Digital Systems & Software",
+	    name: "Digital Systems and Software",
 	    description: "Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.",
-	    beforeImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop",
-	    afterImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+	    beforeImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80andw=1200andauto=formatandfit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80andw=1200andauto=formatandfit=crop",
 	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
 	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
-	    linkText: "Explore software & systems",
+	    linkText: "Explore software and systems",
 	    linkUrl: "/services/software"
 	  },
 	  {
-	    name: "Infrastructure, Equipment & Security",
+	    name: "Infrastructure, Equipment and Security",
 	    description: "Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.",
-	    beforeImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop",
-	    afterImage: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1200&auto=format&fit=crop",
+	    beforeImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80andw=1200andauto=formatandfit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80andw=1200andauto=formatandfit=crop",
 	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
 	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
 	    linkText: "Explore infrastructure",
 	    linkUrl: "/services/infrastructure"
 	  },
 	  {
-	    name: "Operations, People & Capabilities",
+	    name: "Operations, People and Capabilities",
 	    description: "Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.",
-	    beforeImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
-	    afterImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop",
+	    beforeImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80andw=1200andauto=formatandfit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80andw=1200andauto=formatandfit=crop",
 	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
 	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
 	    linkText: "Explore operations",
 	    linkUrl: "/services/operations"
 	  },
 	  {
-	    name: "Innovation & New Ventures",
+	    name: "Innovation and New Ventures",
 	    description: "Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.",
-	    beforeImage: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1200&auto=format&fit=crop",
-	    afterImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop",
+	    beforeImage: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80andw=1200andauto=formatandfit=crop",
+	    afterImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80andw=1200andauto=formatandfit=crop",
 	    beforeText: "Untapped commercial concepts and high-potential ideas stalled without a practical path to execution.",
 	    afterText: "Validated product-market strategy, robust system architecture, and new venture models deployed for growth.",
 	    linkText: "Explore innovation",
@@ -116,31 +116,31 @@ Expected benefits are assessed for each engagement; specific results depend on t
    }"
  />
 
-### Business consulting & development
+### Business consulting and development
 
 Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.
 
 **Explore consulting** → `/services/consulting`
 
-### Digital systems & software
+### Digital systems and software
 
 Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.
 
-**Explore software & systems** → `/services/software`
+**Explore software and systems** → `/services/software`
 
-### Infrastructure, equipment & security
+### Infrastructure, equipment and security
 
 Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.
 
 **Explore infrastructure** → `/services/infrastructure`
 
-### Operations, people & capabilities
+### Operations, people and capabilities
 
 Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.
 
 **Explore operations** → `/services/operations`
 
-### Innovation & new ventures
+### Innovation and new ventures
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
@@ -155,10 +155,10 @@ Research, validate and shape opportunities that may lead to new services, produc
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
 **Business performance** — operational diagnostics, commercial workflows, dashboards and process improvement.
-**Software & automation** — tailored applications, integrations, document workflows and AI-assisted tasks.
-**Infrastructure & connected operations** — self-hosted systems, monitoring, equipment and field applications.
-**People & organizations** — training, coordination and emerging talent solutions.
-**Research & ventures** — internal standards, experimental platforms and new business concepts.
+**Software and automation** — tailored applications, integrations, document workflows and AI-assisted tasks.
+**Infrastructure and connected operations** — self-hosted systems, monitoring, equipment and field applications.
+**People and organizations** — training, coordination and emerging talent solutions.
+**Research and ventures** — internal standards, experimental platforms and new business concepts.
 
 **Explore the showcase** → `/showcase`
 
@@ -235,15 +235,15 @@ do not place it among current offerings. -->
 
 We collaborate with independent professionals and organizations that identify opportunities, contribute specialist expertise or open access to new markets.
 
-### Accounting & advisory firms
+### Accounting and advisory firms
 
 Introduce clients who could benefit from operational, organizational or technical support. You retain your trusted advisory relationship; introductions occur with the client's consent and each assignment is scoped individually.
 
-### Business development & referral partners
+### Business development and referral partners
 
 Identify qualified opportunities, introduce prospective clients and collaborate on selected commercial activities. Commission and referral terms are agreed in writing for eligible assignments.
 
-### Freelancers & specialist partners
+### Freelancers and specialist partners
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
@@ -282,9 +282,9 @@ Share a challenge, an idea, a business objective or a project you want to explor
 4. Founder visibility is intentional; avoid implying a large permanent employee base.
 5. Feluqa and The Best Recruit: Coming soon. SPMPST: specification in development.
 6. The Best Recruit must not advertise live placements or an active candidate service before launch.
-7. Showcases must distinguish real delivered work from concepts and R&D.
+7. Showcases must distinguish real delivered work from concepts and RandD.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.
 9. Pricing page explains methodology and commercial models, not an unverified price list.
-10. Main navigation suggestion: Services / Solutions & Showcase / Innovation / Partners / About / Contact.
+10. Main navigation suggestion: Services / Solutions and Showcase / Innovation / Partners / About / Contact.
 11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
 -->

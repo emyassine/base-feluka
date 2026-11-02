@@ -42,7 +42,7 @@
     </div>
 
     <div class="yc-testimonials">
-      <h2>Possibility becomes valuable through execution.</h2>
+      <h2>Possibility<br>becomes valuable<br>through execution.</h2>
 
       <div class="yc-quotes">
         <p>
