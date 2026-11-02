@@ -265,7 +265,14 @@ case $METHOD in
       rsync -avz --progress --no-perms --no-owner --no-group "${RSYNC_EXCLUDES[@]}" "$SOURCE" "$HOST:$remote_stage/"
 
       printf -v remote_chmod_arg '%q' "D${REMOTE_DIR_MODE:-755},F${REMOTE_FILE_MODE:-644}"
-      publish_command="sudo rsync -av --ignore-times --chmod=$remote_chmod_arg"
+      sudo_prefix="sudo"
+      if [[ -n "$SUDO_PASSWORD" ]]; then
+        encoded_sudo_password="$(printf '%s' "$SUDO_PASSWORD" | base64 | tr -d '\n')"
+        askpass_path="$remote_stage/.askpass"
+        ssh "$HOST" "mkdir -p -- $remote_stage_q && printf '%s' '$encoded_sudo_password' | base64 -d > '$askpass_path' && chmod 700 '$askpass_path'"
+        sudo_prefix="SUDO_ASKPASS=$askpass_path sudo -A"
+      fi
+      publish_command="$sudo_prefix rsync -av --ignore-times --chmod=$remote_chmod_arg"
       if [[ -n "${REMOTE_CHOWN:-}" ]]; then
         printf -v remote_chown_arg '%q' "--chown=$REMOTE_CHOWN"
         publish_command+=" $remote_chown_arg"
