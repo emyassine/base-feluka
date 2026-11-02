@@ -1,10 +1,10 @@
----
+
 title: "Technology you can own, understand, and operate"
 sidebarTitle: "Home"
 icon: "@spmpst::icon::home"
 layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable digital systems from Casablanca, Morocco."
----
+
 <div></div>
 <NmEffectHero
   effect="silk"
@@ -193,7 +193,7 @@ Expected benefits are assessed for each engagement; specific results depend on t
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
 | Category | Scope |
-| :--- | :--- |
+| : | : |
 | **Business performance** | <ul><li>Operational diagnostics</li><li>Commercial workflows</li><li>Dashboards and process improvement</li></ul> |
 | **Software and automation** | <ul><li>Tailored applications</li><li>Integrations</li><li>Document workflows and AI-assisted tasks</li></ul> |
 | **Infrastructure and connected operations** | <ul><li>Self-hosted systems</li><li>Monitoring</li><li>Equipment and field applications</li></ul> |
@@ -268,7 +268,7 @@ flowchart TD
 <FeluqaButton tag="a" href="/about#delivery-model"
 	label="How we work"/>
 
----
+
 
 ## Independent by design. Curious by nature.
 
@@ -283,35 +283,18 @@ Numerimondes SARL AU is an independent Moroccan company headquartered in Casabla
 <FeluqaButton tag="a" href="/about"
 	label="More about us"/>
 
----
+
 
 ## Initiatives in development
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
-### Feluqa — Coming soon
-
-A Rust-based, cross-platform application framework under development, exploring efficient application systems across different deployment environments.
-
-<FeluqaButton tag="a" href="/initiatives/feluqa" label="Discover Feluqa"/>
-
-### The Best Recruit — Coming soon
-
-A recruitment and talent initiative being prepared to help employers discover and evaluate relevant profiles through a structured qualification process.
-
-<FeluqaButton tag="a" href="/initiatives/the-best-recruit"
-	label="Discover The Best Recruit"/>
-
-### SPMPST — Specification in development
-
-A proposed standard for portable, structured Markdown content trees and site-building workflows. Currently an internal specification and research initiative.
-
-<FeluqaButton tag="a" href="/initiatives/spmpst" label="Discover SPMPST"/>
+<MegaCards />
 
 <!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
 do not place it among current offerings. -->
 
----
+
 
 ## Grow with us
 
@@ -332,7 +315,7 @@ Join project teams when your expertise fits an assignment — across software en
 <FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
 <FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
 
----
+
 
 ## Clear scope. Clear commercial terms.
 
@@ -346,7 +329,7 @@ Explore how we scope engagements and prepare commercial proposals.
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
 -->
 
----
+
 
 ## What could your next opportunity become?
 
@@ -355,7 +338,7 @@ Share a challenge, an idea, a business objective or a project you want to explor
 **Primary action:** Start a conversation → `/contact`
 **Secondary action:** Become a partner → `/partners`
 
----
+
 
 <!-- INTERNAL PUBLISHING NOTES — DO NOT RENDER
 1. Website position: consulting + innovation + solutions + execution. Do not reduce Numerimondes to software.

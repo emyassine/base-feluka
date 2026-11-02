@@ -134,24 +134,7 @@ Numerimondes SARL AU is an independent Moroccan company headquartered in Casabla
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
-### Feluqa — Coming soon
-
-A Rust-based, cross-platform application framework under development, exploring efficient application systems across different deployment environments.
-
-<FeluqaButton tag="a" href="/initiatives/feluqa" label="Discover Feluqa"/>
-
-### The Best Recruit — Coming soon
-
-A recruitment and talent initiative being prepared to help employers discover and evaluate relevant profiles through a structured qualification process.
-
-<FeluqaButton tag="a" href="/initiatives/the-best-recruit"
-	label="Discover The Best Recruit"/>
-
-### SPMPST — Specification in development
-
-A proposed standard for portable, structured Markdown content trees and site-building workflows. Currently an internal specification and research initiative.
-
-<FeluqaButton tag="a" href="/initiatives/spmpst" label="Discover SPMPST"/>
+<MegaCards />
 
 <!-- Webkernel was an earlier, discontinued project. Keep it in the engineering history if useful;
 do not place it among current offerings. -->
