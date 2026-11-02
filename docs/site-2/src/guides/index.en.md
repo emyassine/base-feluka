@@ -23,11 +23,14 @@ description: "Numerimondes helps organizations design, build, and operate depend
 >
   <template #dock>
     <NmSimpleHeroDock
+      :panel-height="68"
+      :base-item-size="50"
+      :magnification="70"
       :items="[
-        { label: 'Business Advisory', href: '/services/business-advisory/' },
-        { label: 'Systems & Operations', href: '/services/systems-and-operations/' },
-        { label: 'Opportunities', href: '/opportunities/introduction/' },
-        { label: 'About Numerimondes', href: '/company/about-us/about-us' }
+        { icon: 'briefcase', label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', hoverColor: 'primary' },
+        { icon: 'server', label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/', hoverColor: 'primary' },
+        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', hoverColor: 'primary' },
+        { icon: 'building', label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', hoverColor: 'primary' }
       ]"
     />
   </template>
