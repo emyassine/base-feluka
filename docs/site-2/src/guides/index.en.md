@@ -26,10 +26,12 @@ description: "Numerimondes helps organizations design, build, and operate depend
       :panel-height="68"
       :base-item-size="50"
       :magnification="70"
+      :separators="[0]"
+      :indicator-index="0"
       :items="[
         { icon: 'briefcase', label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/' },
         { icon: 'server', label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/' },
-        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', dividerBefore: true },
+        { icon: 'sparkles', label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/' },
         { icon: 'building', label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us' }
       ]"
     />
