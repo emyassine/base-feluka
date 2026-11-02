@@ -19,7 +19,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
+  :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', variant: 'outline' }]"
 />
 
 

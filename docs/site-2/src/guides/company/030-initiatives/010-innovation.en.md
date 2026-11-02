@@ -19,7 +19,7 @@ js-events:
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', color: 'gray' }]"
+  :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', variant: 'outline' }]"
 />
 
 

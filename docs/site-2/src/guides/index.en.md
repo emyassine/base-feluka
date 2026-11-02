@@ -7,24 +7,18 @@ description: "Numerimondes helps organizations design, build, and operate depend
 ---
 <div></div>
 <NmEffectHero
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#4f86e6', darkColor: '#141D2A', noise: 0.3 } }]"
   :hero-style="{ minHeight: '90vh' }"
-  light-silk-color="#4f86e6"
-  :light-silk-noise-intensity="0.3"
-  :light-background="{
-    start: '#f8fbff',
-    middle: '#eef5ff',
-    end: '#f7f9ff',
-    mint: '#34d399',
-    sky: '#60a5fa',
-    indigo: '#6384e6',
+  :background="{
+    light: { start: '#f8fbff', middle: '#eef5ff', end: '#f7f9ff', accent: '#60a5fa' },
+    dark: { preset: 'numerimondes-brand-silk' },
   }"
-  :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: '#fff' }"
-  :title="{ text: 'Ideas and operations that move businesses forward.', color: '#ffffff' }"
-  :description="{ text: 'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>.', color: '#e2e8f0' }"
+  :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: { light: '#1e293b', dark: '#ffffff' } }"
+  :title="{ text: 'Ideas and operations that move businesses forward.', color: { light: '#0f172a', dark: '#ffffff' } }"
+  :description="{ text: 'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>', color: { light: '#475569', dark: '#e2e8f0' } }"
   :buttons="[
-    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', color: 'primary' },
-    { label: 'Explore our capabilities', href: '/services/', color: 'gray' }
+    { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', variant: 'primary' },
+    { label: 'Explore our capabilities', href: '/services/', variant: 'outline' }
   ]"
 />
 

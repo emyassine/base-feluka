@@ -7,31 +7,37 @@ type Effect = readonly [EffectName, { inject?: Record<string, unknown> }?]
 
 interface TextContent {
   text: string
-  color?: string
+  color?: string | ModeColor
+}
+
+interface ModeColor {
+  light?: string
+  dark?: string
 }
 
 interface LightBackground {
   start: string
   middle: string
   end: string
-  mint: string
-  sky: string
-  indigo: string
+  accent: string
+}
+
+interface HeroBackground {
+  light?: LightBackground
+  dark?: { preset?: 'numerimondes-brand-silk' }
 }
 
 interface HeroButton {
   label: string
   href: string
-  color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
+  variant?: 'primary' | 'outline' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'
   external?: boolean
   icon?: 'whatsapp'
 }
 
 const props = withDefaults(defineProps<{
   effect: Effect
-  lightSilkColor?: string
-  lightSilkNoiseIntensity?: number
-  lightBackground?: LightBackground
+  background?: HeroBackground
   eyebrow?: string | TextContent
   fullBleed?: boolean
   heroStyle?: CSSProperties
@@ -52,21 +58,21 @@ const props = withDefaults(defineProps<{
 const { isDark } = useData()
 const selectedEffect = computed(() => props.effect[0])
 const lightBackgroundStyle = computed<CSSProperties | undefined>(() => {
-  const palette = props.lightBackground
+  const palette = props.background?.light
   if (isDark.value || !palette) return undefined
   return {
     '--nm-hero-light-start': palette.start,
     '--nm-hero-light-middle': palette.middle,
     '--nm-hero-light-end': palette.end,
-    '--nm-hero-light-mint': palette.mint,
-    '--nm-hero-light-sky': palette.sky,
-    '--nm-hero-light-indigo': palette.indigo,
+    '--nm-hero-light-accent': palette.accent,
   }
 })
+const backgroundPreset = computed(() => isDark.value ? props.background?.dark?.preset : undefined)
 const eyebrowText = computed(() => typeof props.eyebrow === 'string' ? props.eyebrow : props.eyebrow?.text)
-const eyebrowColor = computed(() => typeof props.eyebrow === 'string' ? undefined : props.eyebrow?.color)
 const titleText = computed(() => typeof props.title === 'string' ? props.title : props.title.text)
 const descriptionText = computed(() => typeof props.description === 'string' ? props.description : props.description.text)
+const resolveColor = (color?: string | ModeColor) =>
+  typeof color === 'string' ? color : color?.[isDark.value ? 'dark' : 'light']
 const effectComponent = computed(() => ({
   aurora: 'Aurora',
   silk: 'Silk',
@@ -93,39 +99,46 @@ const effectProps = computed<Record<string, unknown>>(() => {
       }
       break
   }
-  const injected = props.effect[1]?.inject ?? {}
+  const { lightColor, darkColor, noise, ...injected } = props.effect[1]?.inject ?? {}
   const merged = { ...defaults, ...injected }
 
-  if (isDark.value || selectedEffect.value !== 'silk') return merged
+  if (selectedEffect.value !== 'silk') return merged
+
+  const modeColor = isDark.value ? darkColor : lightColor
 
   return {
     ...merged,
-    ...(props.lightSilkColor === undefined ? {} : { color: props.lightSilkColor }),
-    ...(props.lightSilkNoiseIntensity === undefined ? {} : { noiseIntensity: props.lightSilkNoiseIntensity }),
+    ...(modeColor === undefined ? {} : { color: modeColor }),
+    ...(noise === undefined ? {} : { noiseIntensity: noise }),
   }
 })
 const titleStyles = computed(() => ({
   ...props.titleStyle,
   ...(isDark.value ? props.titleStyleDark : props.titleStyleLight),
-  ...(typeof props.title === 'string' || props.title.color === undefined ? {} : { color: props.title.color }),
+  ...(typeof props.title === 'string' || props.title.color === undefined ? {} : { color: resolveColor(props.title.color) }),
 }))
 const descriptionStyles = computed(() => ({
   ...props.descriptionStyle,
   ...(isDark.value ? props.descriptionStyleDark : props.descriptionStyleLight),
-  ...(typeof props.description === 'string' || props.description.color === undefined ? {} : { color: props.description.color }),
+  ...(typeof props.description === 'string' || props.description.color === undefined ? {} : { color: resolveColor(props.description.color) }),
 }))
-const buttonColor = (button: HeroButton, index: number) => button.color ?? (index === 0 ? 'primary' : 'gray')
-const isOutlinedButton = (button: HeroButton, index: number) => buttonColor(button, index) === 'gray'
+const buttonVariant = (button: HeroButton, index: number) => button.variant ?? (index === 0 ? 'primary' : 'outline')
+const buttonColor = (button: HeroButton, index: number) => buttonVariant(button, index) === 'outline' ? 'gray' : buttonVariant(button, index)
+const isOutlinedButton = (button: HeroButton, index: number) => ['outline', 'gray'].includes(buttonVariant(button, index))
+const buttonClass = (button: HeroButton, index: number) =>
+  buttonVariant(button, index) === 'primary'
+    ? 'nm-effect-hero__button--primary'
+    : isOutlinedButton(button, index) ? 'nm-effect-hero__button--secondary' : undefined
 </script>
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, backgroundPreset ? `nm-effect-hero--background-${backgroundPreset}` : '', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
     </div>
     <div class="nm-effect-hero__content">
-      <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="eyebrowColor ? { color: eyebrowColor } : undefined">{{ eyebrowText }}</p>
+      <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }">{{ eyebrowText }}</p>
       <h1 :style="titleStyles">{{ titleText }}</h1>
       <p :style="descriptionStyles" v-html="descriptionText" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
@@ -137,7 +150,7 @@ const isOutlinedButton = (button: HeroButton, index: number) => buttonColor(butt
           size="md"
           :color="buttonColor(button, index)"
           :outlined="isOutlinedButton(button, index)"
-          :class="isOutlinedButton(button, index) ? 'nm-effect-hero__button--secondary' : 'nm-effect-hero__button--primary'"
+          :class="buttonClass(button, index)"
           :target="button.external ? '_blank' : undefined"
           :rel="button.external ? 'noopener noreferrer' : undefined"
         >
@@ -275,10 +288,14 @@ const isOutlinedButton = (button: HeroButton, index: number) => buttonColor(butt
 .nm-effect-hero--light {
   isolation: isolate;
   background:
-    radial-gradient(ellipse at 14% 20%, color-mix(in srgb, var(--nm-hero-light-mint) 20%, transparent), transparent 36%),
-    radial-gradient(ellipse at 88% 24%, color-mix(in srgb, var(--nm-hero-light-sky) 30%, transparent), transparent 40%),
-    radial-gradient(ellipse at 52% 115%, color-mix(in srgb, var(--nm-hero-light-indigo) 20%, transparent), transparent 46%),
+    radial-gradient(ellipse at 14% 20%, color-mix(in srgb, var(--nm-hero-light-accent) 20%, transparent), transparent 36%),
+    radial-gradient(ellipse at 88% 24%, color-mix(in srgb, var(--nm-hero-light-accent) 30%, transparent), transparent 40%),
+    radial-gradient(ellipse at 52% 115%, color-mix(in srgb, var(--nm-hero-light-accent) 18%, transparent), transparent 46%),
     linear-gradient(128deg, var(--nm-hero-light-start), var(--nm-hero-light-middle) 48%, var(--nm-hero-light-end));
+}
+
+.nm-effect-hero--dark.nm-effect-hero--background-numerimondes-brand-silk {
+  background: #0c0c13;
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
