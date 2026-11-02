@@ -5,53 +5,57 @@
   },
   "subguides": [
     {
-      "path": "001-commercial",
-      "label": "Commercial",
+      "path": "commercial",
+      "label": "Services",
       "labels": {
-        "en": "Commercial"
+        "en": "Services"
       },
       "uri": {
         "base": "/"
       }
     },
     {
-      "path": "002-innovation",
+      "path": "innovation",
       "label": "Innovation",
-      "labels": { "en": "Innovation" },
-      "uri": { "base": "/innovation/" }
+      "labels": {
+        "en": "Innovation"
+      },
+      "uri": {
+        "base": "/innovation/"
+      }
     },
     {
-      "path": "003-partners",
+      "path": "initiatives",
+      "label": "Initiatives",
+      "labels": {
+        "en": "Initiatives"
+      },
+      "uri": {
+        "base": "/initiatives/"
+      }
+    },
+    {
+      "path": "partnerships",
       "label": "Partnerships",
-      "labels": { "en": "Partnerships" },
-      "uri": { "base": "/partners/" }
+      "labels": {
+        "en": "Partnerships"
+      },
+      "uri": {
+        "base": "/partners/"
+      }
     },
     {
-      "path": "004-pricing",
+      "path": "pricing",
       "label": "Pricing",
-      "labels": { "en": "Pricing" },
-      "uri": { "base": "/pricing/" }
+      "labels": {
+        "en": "Pricing"
+      },
+      "uri": {
+        "base": "/pricing/"
+      }
     },
     {
-      "path": "007-initiatives-feluqa",
-      "label": "Feluqa",
-      "labels": { "en": "Feluqa" },
-      "uri": { "base": "/initiatives/feluqa/" }
-    },
-    {
-      "path": "008-initiatives-the-best-recruit",
-      "label": "The Best Recruit",
-      "labels": { "en": "The Best Recruit" },
-      "uri": { "base": "/initiatives/the-best-recruit/" }
-    },
-    {
-      "path": "009-initiatives-spmpst",
-      "label": "SPMPST",
-      "labels": { "en": "SPMPST" },
-      "uri": { "base": "/initiatives/spmpst/" }
-    },
-    {
-      "path": "005-about",
+      "path": "about",
       "label": "About",
       "labels": {
         "en": "About"
@@ -61,7 +65,7 @@
       }
     },
     {
-      "path": "006-privacy",
+      "path": "privacy",
       "label": "Privacy",
       "labels": {
         "en": "Privacy"

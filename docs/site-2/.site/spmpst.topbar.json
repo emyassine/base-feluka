@@ -6,25 +6,112 @@
       "text": {
         "en": "Services"
       },
-      "link": "/services/"
+      "link": "/services/",
+      "icon": "@spmpst::icon::briefcase-business",
+      "items": [
+        {
+          "text": {
+            "en": "Overview"
+          },
+          "link": "/services/",
+          "icon": "@spmpst::icon::layout-grid"
+        },
+        {
+          "text": {
+            "en": "Consulting"
+          },
+          "link": "/services/consulting",
+          "icon": "@spmpst::icon::badge-check"
+        },
+        {
+          "text": {
+            "en": "Software & systems"
+          },
+          "link": "/services/software",
+          "icon": "@spmpst::icon::code-xml"
+        },
+        {
+          "text": {
+            "en": "Infrastructure"
+          },
+          "link": "/services/infrastructure",
+          "icon": "@spmpst::icon::server"
+        },
+        {
+          "text": {
+            "en": "Operations"
+          },
+          "link": "/services/operations",
+          "icon": "@spmpst::icon::list-checks"
+        }
+      ]
     },
     {
       "text": {
         "en": "Solutions"
       },
-      "link": "/solutions/"
+      "link": "/solutions/",
+      "icon": "@spmpst::icon::shapes"
+    },
+    {
+      "guide": "innovation",
+      "icon": "@spmpst::icon::sparkles"
     },
     {
       "text": {
-        "en": "About"
+        "en": "Initiatives"
       },
-      "link": "/about/"
+      "link": "/initiatives/",
+      "icon": "@spmpst::icon::rocket",
+      "items": [
+        {
+          "text": {
+            "en": "Feluqa"
+          },
+          "link": "/initiatives/feluqa/",
+          "icon": "@spmpst::icon::rust"
+        },
+        {
+          "text": {
+            "en": "The Best Recruit"
+          },
+          "link": "/initiatives/the-best-recruit/",
+          "icon": "@spmpst::icon::users"
+        },
+        {
+          "text": {
+            "en": "SPMPST"
+          },
+          "link": "/initiatives/spmpst/",
+          "icon": "@spmpst::icon::folder-tree"
+        }
+      ]
+    },
+    {
+      "text": {
+        "en": "Company"
+      },
+      "items": [
+        {
+          "guide": "partnerships",
+          "icon": "@spmpst::icon::handshake"
+        },
+        {
+          "guide": "about",
+          "icon": "@spmpst::icon::building-2"
+        },
+        {
+          "guide": "pricing",
+          "icon": "@spmpst::icon::scale"
+        }
+      ]
     },
     {
       "text": {
         "en": "Contact"
       },
-      "link": "/contact/"
+      "link": "/contact/",
+      "icon": "@spmpst::icon::message-circle"
     }
   ]
 }
