@@ -12,6 +12,7 @@ interface SilkProps {
   color?: string;
   noiseIntensity?: number;
   rotation?: number;
+  paused?: boolean;
   className?: string;
   style?: CSSProperties;
 }
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<SilkProps>(), {
   color: '#7B7481',
   noiseIntensity: 1.5,
   rotation: 0,
+  paused: false,
   className: '',
   style: () => ({})
 });
@@ -106,6 +108,10 @@ let mesh: Mesh | null = null;
 let program: Program | null = null;
 let camera: Camera | null = null;
 let animateId = 0;
+let startAnimation = () => {};
+let stopAnimation = () => {};
+let visibilityObserver: IntersectionObserver | null = null;
+let isVisible = false;
 
 const initSilk = () => {
   const container = containerRef.value;
@@ -193,9 +199,9 @@ const initSilk = () => {
   gl.canvas.style.left = '0';
   gl.canvas.style.zIndex = '1';
 
-  let lastTime = 0;
+  let lastTime = performance.now();
   const update = (t: number) => {
-    animateId = requestAnimationFrame(update);
+    animateId = 0;
     const deltaTime = (t - lastTime) / 1000;
     lastTime = t;
 
@@ -208,10 +214,31 @@ const initSilk = () => {
       program.uniforms.uRotation.value = props.rotation;
       renderer!.render({ scene: mesh, camera });
     }
+    if (!props.paused && isVisible) animateId = requestAnimationFrame(update);
   };
-  animateId = requestAnimationFrame(update);
+  startAnimation = () => {
+    if (animateId || props.paused || !isVisible || !renderer || !mesh || !camera) return;
+    lastTime = performance.now();
+    animateId = requestAnimationFrame(update);
+  };
+  stopAnimation = () => {
+    if (animateId) cancelAnimationFrame(animateId);
+    animateId = 0;
+  };
 
   resize();
+  renderer.render({ scene: mesh, camera });
+  isVisible = !('IntersectionObserver' in window);
+  if ('IntersectionObserver' in window) {
+    visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) startAnimation();
+      else stopAnimation();
+    });
+    visibilityObserver.observe(container);
+  } else if (!props.paused) {
+    startAnimation();
+  }
 
   return () => {
     cancelAnimationFrame(animateId);
@@ -224,9 +251,10 @@ const initSilk = () => {
 };
 
 const cleanup = () => {
-  if (animateId) {
-    cancelAnimationFrame(animateId);
-  }
+  stopAnimation();
+  visibilityObserver?.disconnect();
+  visibilityObserver = null;
+  isVisible = false;
   if (renderer) {
     const gl = renderer.gl;
     const container = containerRef.value;
@@ -239,6 +267,8 @@ const cleanup = () => {
   mesh = null;
   camera = null;
   program = null;
+  startAnimation = () => {};
+  stopAnimation = () => {};
 };
 
 onMounted(() => {
@@ -249,10 +279,10 @@ onUnmounted(() => {
   cleanup();
 });
 
-watch(
-  () => [props.speed, props.scale, props.color, props.noiseIntensity, props.rotation],
-  () => {}
-);
+watch(() => props.paused, (paused) => {
+  if (paused) stopAnimation();
+  else startAnimation();
+});
 </script>
 
 <style scoped>

@@ -48,6 +48,7 @@ const pos = ref(0)
 const storyProgress = ref<number[]>([])
 const manuallyControlled = ref<boolean[]>([])
 const prefersReducedMotion = ref(false)
+const desktopShowcase = ref(false)
 
 const active = computed(() => Math.round(pos.value))
 
@@ -56,6 +57,11 @@ let carouselFrame = 0
 let animationFrame = 0
 let animatedStory: number | null = null
 const visibleCard = ref<number | null>(null)
+let desktopMediaQuery: MediaQueryList | null = null
+
+function updateDesktopShowcase(event?: MediaQueryListEvent) {
+  desktopShowcase.value = event?.matches ?? desktopMediaQuery?.matches ?? false
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -252,6 +258,9 @@ function onWindowResize() {
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  desktopMediaQuery = window.matchMedia('(min-width: 1024px)')
+  updateDesktopShowcase()
+  desktopMediaQuery.addEventListener('change', updateDesktopShowcase)
 
   window.addEventListener('scroll', requestScrollUpdate, { passive: true })
   window.addEventListener('resize', onWindowResize, { passive: true })
@@ -263,6 +272,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', requestScrollUpdate)
   window.removeEventListener('resize', onWindowResize)
+  desktopMediaQuery?.removeEventListener('change', updateDesktopShowcase)
+  desktopMediaQuery = null
   scroller.value?.removeEventListener('scroll', requestActiveCarouselUpdate)
   if (scrollFrame) cancelAnimationFrame(scrollFrame)
   if (carouselFrame) cancelAnimationFrame(carouselFrame)
@@ -436,7 +447,12 @@ onBeforeUnmount(() => {
     <div v-else ref="stageTrack" class="nm-showcase__stack-track" :style="{ '--n': count }">
       <div class="nm-showcase__stack-sticky">
         <div class="nm-showcase__stack-deck">
-        <article
+          <Silk
+            v-if="desktopShowcase"
+            class="nm-showcase__stack-silk"
+            color="#141D2A"
+          />
+          <article
           v-for="(story, index) in stories"
           :key="`stack-${story.name}-${index}`"
           class="nm-showcase__stack-card"
@@ -672,11 +688,20 @@ onBeforeUnmount(() => {
     z-index: 1;
     width: min(96vw, 1440px);
     height: min(60svh, 560px);
+    border-radius: 1.25rem;
+  }
+  .nm-showcase__stack-silk {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    opacity: 0.68;
+    pointer-events: none;
   }
   .nm-showcase__stack-card {
     position: absolute;
     inset: 0;
-    z-index: var(--stack-order);
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.75fr) minmax(0, 1fr);
     align-items: center;
@@ -685,15 +710,16 @@ onBeforeUnmount(() => {
     border: 1px solid rgb(210 222 237 / 0.18);
     border-radius: 1.25rem;
     color: #f3f6fa;
-    background: linear-gradient(145deg, rgb(20 29 42 / 0.94), rgb(12 18 28 / 0.96));
+    background: linear-gradient(145deg, rgb(20 29 42 / 0.78), rgb(12 18 28 / 0.84));
     box-shadow: 0 30px 90px rgb(0 0 0 / 0.42), inset 0 1px rgb(255 255 255 / 0.055);
     backdrop-filter: blur(18px);
-    opacity: 0;
     pointer-events: none;
     transform-origin: top center;
     will-change: transform, opacity;
   }
   .nm-showcase__stack-card.is-active { border-color: rgb(210 222 237 / 0.26); pointer-events: auto; }
+  .nm-showcase__stack-side,
+  .nm-showcase__stack-copy { position: relative; z-index: 1; }
   .nm-showcase__stack-side { min-width: 0; margin: 0; }
   .nm-showcase__stack-side img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 0.9rem; }
   .nm-showcase__stack-side figcaption { display: flex; align-items: center; gap: 0.55rem; margin-top: 1rem; color: #b7c5d5; font-size: 0.76rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
