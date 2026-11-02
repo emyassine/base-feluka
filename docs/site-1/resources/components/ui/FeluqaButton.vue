@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   tag: 'button', type: 'button', size: 'md', color: 'primary', iconPosition: 'before', badgeColor: 'primary',
-  tint: '#ffffff', tintOpacity: 0, blur: 0, lineColor: '#ffffff',
+  tint: '#ffffff', tintOpacity: 0, blur: 0,
   intensity: 1, shineSize: 10, shineFade: 40, thickness: 1, speed: 0.35,
   followMouse: false, proximity: 250, autoAnimate: true, disabled: false, wrap: false,
 })
@@ -56,7 +56,7 @@ const style = computed(() => ({
   '--button-tint-opacity': `${Math.min(1, Math.max(0, props.tintOpacity)) * 100}%`,
   '--button-blur': `${Math.max(0, props.blur)}px`,
   ...(props.textColor ? { '--button-text': props.textColor } : {}),
-  '--button-line': props.lineColor,
+  '--button-line': props.lineColor ?? (buttonColor.value === 'gray' || buttonOutlined.value ? 'var(--vp-c-brand-1)' : 'var(--vp-c-white)'),
   ...(props.baseColor ? { '--button-base': props.baseColor } : {}),
   '--button-intensity': String(Math.max(0, props.intensity)),
   '--button-shine-size': `${Math.min(180, Math.max(0, props.shineSize))}deg`,
@@ -190,7 +190,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .feluqa-button > span { position: relative; z-index: 1; }
 .button-content { white-space: nowrap; }
 .wrap-label .button-content { white-space: normal; }
-.feluqa-button:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 5px 16px rgb(0 0 0 / .18); }
+.feluqa-button:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 3px 10px rgb(0 0 0 / .14); }
 .feluqa-button.is-hovered::after { filter: drop-shadow(0 0 3px var(--button-line)); }
 .feluqa-button.is-hovered.is-auto-animated::after { opacity: var(--button-intensity); }
 .size-xs { min-height: 1.75rem; padding: .35rem .55rem; font-size: .75rem; }
@@ -201,7 +201,10 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .color-primary { background: var(--vp-c-brand-1); color: var(--vp-c-white)!important; }
 .color-primary:hover { opacity: .88; }
 .color-gray { background: var(--vp-c-bg-soft); color: var(--vp-c-text-1)!important; border-color: var(--vp-c-divider); }
-.color-gray:hover { background: var(--vp-c-bg-mute); }
+.color-gray:hover {
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 93%, var(--vp-c-text-1));
+  border-color: color-mix(in srgb, var(--vp-c-divider) 55%, var(--vp-c-text-1));
+}
 .color-info,.color-success,.color-warning,.color-danger { background: var(--vp-c-brand-1); color: var(--vp-c-white)!important; }
 .color-dark { background: #18181b; color: #fff!important; border-color: rgb(255 255 255 / .28); }
 .color-dark:hover { background: #27272a; }
