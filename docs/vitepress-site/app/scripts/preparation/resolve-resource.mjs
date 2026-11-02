@@ -26,8 +26,10 @@ export function resolveVitepressResource(reference, layout) {
     const target = containedFile(layout.paths.media, reference.id, 'media')
     if (target) return target
   } else if (reference.kind === 'flag') {
-    const target = containedFile(resolve(layout.paths.flags, 'language'), reference.id, 'flag')
-    if (target) return target
+    const languageFlag = containedFile(resolve(layout.paths.flags, 'language'), reference.id, 'flag')
+    if (languageFlag) return languageFlag
+    const countryFlag = containedFile(resolve(layout.paths.flags, 'catalog/countries'), reference.id, 'flag')
+    if (countryFlag) return countryFlag
   } else if (reference.kind === 'icon') {
     const slash = reference.id.indexOf('/')
     const family = slash > 0 ? reference.id.slice(0, slash) : null

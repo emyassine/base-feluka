@@ -2,6 +2,6 @@
   "labels": {
     "en": "Morocco"
   },
-  "icon": "../../../../public/media/morocco.svg",
+  "icon": "@spmpst::flag::ma",
   "iconMode": "full-color"
 }
