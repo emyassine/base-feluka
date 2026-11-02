@@ -24,13 +24,13 @@
         {
           "mobileToo": false,
           "cardHeight": 110,
-          "maxItems": 7,
+          "maxItems": 8,
           "composition": {
             "columns": [
               [0],
               [1, 2, 3],
               [4],
-              [5, 6]
+              [5, 6, 7]
             ]
           }
         }
