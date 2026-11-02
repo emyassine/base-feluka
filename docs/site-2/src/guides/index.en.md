@@ -132,17 +132,16 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-- **Business performance** — operational diagnostics, commercial workflows, dashboards and process improvement.
-- **Software and automation** — tailored applications, integrations, document workflows and AI-assisted tasks.
-- **Infrastructure and connected operations** — self-hosted systems, monitoring, equipment and field applications.
-- **People and organizations** — training, coordination and emerging talent solutions.
-- **Research and ventures** — internal standards, experimental platforms and new business concepts.
+| Category | Scope |
+| :--- | :--- |
+| **Business performance** | <ul><li>Operational diagnostics</li><li>Commercial workflows</li><li>Dashboards and process improvement</li></ul> |
+| **Software and automation** | <ul><li>Tailored applications</li><li>Integrations</li><li>Document workflows and AI-assisted tasks</li></ul> |
+| **Infrastructure and connected operations** | <ul><li>Self-hosted systems</li><li>Monitoring</li><li>Equipment and field applications</li></ul> |
+| **People and organizations** | <ul><li>Training</li><li>Coordination</li><li>Emerging talent solutions</li></ul> |
+| **Research and ventures** | <ul><li>Internal standards</li><li>Experimental platforms</li><li>New business concepts</li></ul> |
 
-</div>
+<FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
 
-
-
-<FeluqaButton tag="a" :href="/showcase" label="Explore the showcase"/>
 
 <!-- Showcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
@@ -151,8 +150,6 @@ from Numerimondes experiments and illustrative solution concepts.
 Suggested interaction: one large visual canvas with switchable categories, layered examples,
 and a clear click-through to the relevant project or service page.
 -->
-
----
 
 ## Built around the mission.
 
@@ -270,3 +267,5 @@ Share a challenge, an idea, a business objective or a project you want to explor
 10. Main navigation suggestion: Services / Solutions and Showcase / Innovation / Partners / About / Contact.
 11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
 -->
+
+</div>
