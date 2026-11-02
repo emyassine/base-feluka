@@ -4,45 +4,56 @@
   "items": [
     {
       "text": {
+        "en": "Home"
+      },
+      "link": "/",
+      "icon": "@spmpst::icon::home"
+    },
+    {
+      "text": {
         "en": "Services"
       },
-      "link": "/services/",
       "icon": "@spmpst::icon::briefcase-business",
       "items": [
         {
           "text": {
-            "en": "Overview"
+            "en": "Services overview"
           },
           "link": "/services/",
-          "icon": "@spmpst::icon::layout-grid"
+          "icon": "@spmpst::icon::layout-grid",
+          "description": "Our capabilities and approach."
         },
         {
           "text": {
             "en": "Consulting"
           },
           "link": "/services/consulting",
-          "icon": "@spmpst::icon::badge-check"
+          "icon": "@spmpst::icon::badge-check",
+          "description": "Research, diagnosis and business development."
         },
         {
           "text": {
             "en": "Software & systems"
           },
           "link": "/services/software",
-          "icon": "@spmpst::icon::code-xml"
+          "icon": "@spmpst::icon::code-xml",
+          "description": "Applications, integrations and automation."
         },
         {
           "text": {
             "en": "Infrastructure"
           },
           "link": "/services/infrastructure",
-          "icon": "@spmpst::icon::server"
+          "icon": "@spmpst::icon::server",
+          "description": "Infrastructure, equipment and security."
         },
         {
           "text": {
             "en": "Operations"
           },
           "link": "/services/operations",
-          "icon": "@spmpst::icon::list-checks"
+          "icon": "@spmpst::icon::list-checks",
+          "description": "People, processes and organizational capabilities."
         }
       ]
     },
@@ -54,36 +65,58 @@
       "icon": "@spmpst::icon::shapes"
     },
     {
-      "guide": "innovation",
+      "guide": "002-innovation",
       "icon": "@spmpst::icon::sparkles"
     },
     {
       "text": {
         "en": "Initiatives"
       },
-      "link": "/initiatives/",
       "icon": "@spmpst::icon::rocket",
+      "menuTemplate": [
+        "mega.cards",
+        [
+          "title",
+          "icon",
+          "description"
+        ],
+        {
+          "maxItems": 4,
+          "cardHeight": 150
+        }
+      ],
       "items": [
+        {
+          "text": {
+            "en": "All initiatives"
+          },
+          "link": "/initiatives/",
+          "icon": "@spmpst::icon::layout-grid",
+          "description": "Research projects and initiatives in development."
+        },
         {
           "text": {
             "en": "Feluqa"
           },
           "link": "/initiatives/feluqa/",
-          "icon": "@spmpst::icon::rust"
+          "icon": "@spmpst::icon::rust",
+          "description": "A Rust-based application framework in development."
         },
         {
           "text": {
             "en": "The Best Recruit"
           },
           "link": "/initiatives/the-best-recruit/",
-          "icon": "@spmpst::icon::users"
+          "icon": "@spmpst::icon::users",
+          "description": "A recruitment initiative being prepared for launch."
         },
         {
           "text": {
             "en": "SPMPST"
           },
           "link": "/initiatives/spmpst/",
-          "icon": "@spmpst::icon::folder-tree"
+          "icon": "@spmpst::icon::folder-tree",
+          "description": "A draft specification for portable content trees."
         }
       ]
     },
@@ -91,18 +124,35 @@
       "text": {
         "en": "Company"
       },
+      "icon": "@spmpst::icon::building-2",
+      "menuTemplate": [
+        "mega.cards",
+        [
+          "title",
+          "icon",
+          "description"
+        ],
+        {
+          "maxItems": 4,
+          "cardHeight": 150
+        }
+      ],
       "items": [
         {
-          "guide": "partnerships",
+          "guide": "003-partnerships",
           "icon": "@spmpst::icon::handshake"
         },
         {
-          "guide": "about",
+          "guide": "004-pricing",
+          "icon": "@spmpst::icon::scale"
+        },
+        {
+          "guide": "005-about",
           "icon": "@spmpst::icon::building-2"
         },
         {
-          "guide": "pricing",
-          "icon": "@spmpst::icon::scale"
+          "collection": "legal",
+          "icon": "@spmpst::icon::shield-check"
         }
       ]
     },

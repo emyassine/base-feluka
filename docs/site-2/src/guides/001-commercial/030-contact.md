@@ -36,7 +36,7 @@ A short description is a good starting point. Useful context includes your organ
 
 **Suggested contact-form fields:** name, business or organization, work email, optional phone, inquiry type, message and consent to be contacted.
 
-<!-- Add an actual form endpoint or verified company contact method before publication. Do not render a dead form. -->
+<NmWhatsAppForm />
 
 ## What happens next
 

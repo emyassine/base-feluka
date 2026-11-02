@@ -5,7 +5,7 @@
   },
   "subguides": [
     {
-      "path": "commercial",
+      "path": "001-commercial",
       "label": "Services",
       "labels": {
         "en": "Services"
@@ -15,7 +15,7 @@
       }
     },
     {
-      "path": "innovation",
+      "path": "002-innovation",
       "label": "Innovation",
       "labels": {
         "en": "Innovation"
@@ -25,17 +25,7 @@
       }
     },
     {
-      "path": "initiatives",
-      "label": "Initiatives",
-      "labels": {
-        "en": "Initiatives"
-      },
-      "uri": {
-        "base": "/initiatives/"
-      }
-    },
-    {
-      "path": "partnerships",
+      "path": "003-partnerships",
       "label": "Partnerships",
       "labels": {
         "en": "Partnerships"
@@ -45,7 +35,7 @@
       }
     },
     {
-      "path": "pricing",
+      "path": "004-pricing",
       "label": "Pricing",
       "labels": {
         "en": "Pricing"
@@ -55,7 +45,7 @@
       }
     },
     {
-      "path": "about",
+      "path": "005-about",
       "label": "About",
       "labels": {
         "en": "About"
@@ -65,13 +55,13 @@
       }
     },
     {
-      "path": "privacy",
-      "label": "Privacy",
+      "path": "006-initiatives",
+      "label": "Initiatives",
       "labels": {
-        "en": "Privacy"
+        "en": "Initiatives"
       },
       "uri": {
-        "base": "/privacy/"
+        "base": "/initiatives/"
       }
     }
   ],

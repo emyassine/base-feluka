@@ -1,8 +1,23 @@
 {
-  "collections": [],
+  "collections": [
+    {
+      "id": "legal",
+      "dir": "001-legal",
+      "route": "legal",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": {
+        "en": "Legal notices"
+      },
+      "description": {
+        "en": "Privacy, publisher identity and legal information for Numerimondes."
+      },
+      "categoryFile": "spmpst.category.json"
+    }
+  ],
   "$schema": "../public/media/schemas/collections.schema.json",
   "emptyCollection": {
-    "en": "No content published yet.",
-    "fr": "No content published yet."
+    "en": "No legal notices published yet.",
+    "fr": "No legal notices published yet."
   }
 }
