@@ -127,7 +127,9 @@ function cardStyle(index: number): CSSProperties {
   transform-origin: center;
   z-index: 1;
   opacity: 0;
-  animation: bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both;
+  animation:
+    bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both,
+    bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
   transition:
     transform var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
     translate var(--bounce-hover-duration, 420ms) var(--bounce-hover-easing, cubic-bezier(.34, 1.38, .64, 1)),
@@ -176,6 +178,8 @@ function cardStyle(index: number): CSSProperties {
   z-index: var(--bounce-expanded-z, 30);
   border-radius: 16px;
   box-shadow: 0 18px 60px rgb(0 0 0 / 38%);
+  animation: none;
+  margin-top: 0;
 }
 
 .bounce-cards__card[open] summary {
@@ -187,28 +191,24 @@ function cardStyle(index: number): CSSProperties {
   background: var(--vp-c-bg, #fff);
 }
 
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(n+3),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(n+4),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(n+3),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(n+4),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(n+5) {
   translate: calc(-50% + var(--bounce-hover-push, 180px)) -50%;
 }
 
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
-.bounce-cards--hover:has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(2):hover) .bounce-cards__card:nth-child(-n+1),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(3):hover) .bounce-cards__card:nth-child(-n+2),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(4):hover) .bounce-cards__card:nth-child(-n+3),
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(5):hover) .bounce-cards__card:nth-child(-n+4) {
   translate: calc(-50% - var(--bounce-hover-push, 180px)) -50%;
 }
 
-.bounce-cards--hover .bounce-cards__card:hover {
+.bounce-cards--hover:not(:has(.bounce-cards__card[open])) .bounce-cards__card:hover {
   z-index: 5;
   scale: 1.07;
   box-shadow: 0 18px 42px rgb(0 0 0 / 32%);
-}
-
-.bounce-cards--hover .bounce-cards__card[open]:hover {
-  scale: 1;
 }
 
 @keyframes bounce-cards-enter {
@@ -220,8 +220,8 @@ function cardStyle(index: number): CSSProperties {
 }
 
 @keyframes bounce-cards-float {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -8px; }
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
