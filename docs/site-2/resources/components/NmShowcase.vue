@@ -64,6 +64,15 @@ function fill(template: string, name: string) {
   return template.replace('{name}', name)
 }
 
+function nameParts(name: string) {
+  const andIndex = name.indexOf(' and ')
+  if (andIndex < 0) return { first: name, second: '' }
+  return {
+    first: name.slice(0, andIndex),
+    second: name.slice(andIndex + 1),
+  }
+}
+
 function stageMetrics() {
   const element = stageTrack.value
   if (!element) return null
@@ -332,7 +341,9 @@ onBeforeUnmount(() => {
           >
             <Transition name="nm-showcase-title" mode="out-in">
               <div :key="stories[active]?.name" class="nm-showcase__story-heading">
-                <span class="nm-showcase__name-title">{{ stories[active]?.name }}</span>
+                <span class="nm-showcase__name-title">
+                  {{ nameParts(stories[active]?.name ?? '').first }}<template v-if="nameParts(stories[active]?.name ?? '').second"><br />{{ nameParts(stories[active]?.name ?? '').second }}</template>
+                </span>
                 <p class="nm-showcase__story-description">{{ stories[active]?.description }}</p>
               </div>
             </Transition>
