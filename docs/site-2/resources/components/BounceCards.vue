@@ -188,8 +188,7 @@ function cardStyle(index: number): CSSProperties {
 }
 
 .bounce-cards__card[open] img {
-  object-fit: contain;
-  background: var(--vp-c-bg, #fff);
+  object-fit: cover;
 }
 
 .bounce-cards--hover:not(:has(.bounce-cards__card[open])):has(.bounce-cards__card:nth-child(1):hover) .bounce-cards__card:nth-child(n+2),
@@ -233,6 +232,12 @@ function cardStyle(index: number): CSSProperties {
 
   .bounce-cards__card summary {
     animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .bounce-cards__card:not([open]) {
+    width: min(var(--bounce-card-width, 180px), 38vw);
   }
 }
 </style>
