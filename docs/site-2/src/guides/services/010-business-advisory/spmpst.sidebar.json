@@ -1,4 +1,10 @@
 {
-  "labels": { "en": "Business Advisory" },
-  "icon": "@spmpst::icon::briefcase-business"
+  "labels": {
+    "en": "Business Advisory"
+  },
+  "icon": "@spmpst::icon::briefcase-business",
+  "menu": {
+    "image": "/images/home/showcase-capabilities/business-after.jpg",
+    "description": "Consulting, practical solutions and clear engagement models."
+  }
 }

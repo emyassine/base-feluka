@@ -22,32 +22,16 @@
         ],
         {
           "mobileToo": false,
-          "maxItems": 7,
-          "cardHeight": 205,
+          "cardHeight": 220,
           "composition": {
             "columns": [
               [
-                0,
+                0
+              ],
+              [
                 1
-              ],
-              [
-                2,
-                3
-              ],
-              [
-                4,
-                5,
-                "more"
               ]
             ]
-          },
-          "more": {
-            "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-            "text": {
-              "en": "Explore all {number} service groups"
-            },
-            "link": "/services/",
-            "position": "after"
           }
         }
       ]
