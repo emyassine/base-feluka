@@ -192,17 +192,54 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-
-<div class="simple-mini-card" style="--card-bg: #ffffff; --card-bg-dark: #1e293b; --card-radius: 12px; --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); --card-shadow-dark: 0 4px 16px rgba(0, 0, 0, 0.4); --card-border: 1px solid #e2e8f0; --card-border-dark: 1px solid #334155; --card-text: #0f172a; --card-text-dark: #f8fafc; --icon-color: #2563eb; --icon-color-dark: #60a5fa; background: var(--card-bg); color: var(--card-text); border-radius: var(--card-radius); box-shadow: var(--card-shadow); border: var(--card-border); padding: 16px; display: inline-flex; align-items: center;"><div class="simple-mini-card-icon" style="display: flex; align-items: center; gap: 12px; color: var(--icon-color);"><img src="@spmpst::icon::car" style="width: 24px; height: 24px; filter: drop-shadow(0 0 0 var(--icon-color));" /><p style="margin: 0; color: inherit;">Card Text</p></div><style>@media (prefers-color-scheme: dark) { .simple-mini-card { background: var(--card-bg-dark) !important; color: var(--card-text-dark) !important; box-shadow: var(--card-shadow-dark) !important; border: var(--card-border-dark) !important; } .simple-mini-card-icon { color: var(--icon-color-dark) !important; } }</style></div>
-
-
-| Category | Scope |
-| :--- | :--- |
-| **Business performance** | Operational diagnostics · Commercial workflows · Dashboards and process improvement |
-| **Software and automation** | Tailored applications · Integrations · Document workflows and AI-assisted tasks |
-| **Infrastructure and connected operations** | Self-hosted systems · Monitoring · Equipment and field applications |
-| **People and organizations** | Training · Coordination · Emerging talent solutions |
-| **Research and ventures** | Internal standards · Experimental platforms · New business concepts |
+<SimpleMiniCard
+  :columns="2"
+  :categories="[
+    {
+      title: 'Business performance',
+      items: [
+        { icon: '@spmpst::icon::activity', title: 'Operational diagnostics' },
+        { icon: '@spmpst::icon::workflow', title: 'Commercial workflows' },
+        { icon: '@spmpst::icon::layout-dashboard', title: 'Dashboards' },
+        { icon: '@spmpst::icon::layout-dashboard', title: 'Process improvement' }
+      ]
+    },
+    {
+      title: 'Software and automation',
+      items: [
+        { icon: '@spmpst::icon::code', title: 'Tailored applications' },
+        { icon: '@spmpst::icon::layers', title: 'Integrations' },
+        { icon: '@spmpst::icon::bot', title: 'Document workflows' },
+        { icon: '@spmpst::icon::bot', title: 'AI-assisted tasks' }
+      ]
+    },
+    {
+      title: 'Infrastructure and connected operations',
+      items: [
+        { icon: '@spmpst::icon::server', title: 'Self-hosted systems' },
+        { icon: '@spmpst::icon::activity', title: 'Monitoring' },
+        { icon: '@spmpst::icon::cpu', title: 'Equipment' },
+        { icon: '@spmpst::icon::cpu', title: 'Field applications' }
+      ]
+    },
+    {
+      title: 'People and organizations',
+      items: [
+        { icon: '@spmpst::icon::graduation-cap', title: 'Training' },
+        { icon: '@spmpst::icon::users', title: 'Coordination' },
+        { icon: '@spmpst::icon::sparkles', title: 'Emerging talent solutions' }
+      ]
+    },
+    {
+      title: 'Research and ventures',
+      items: [
+        { icon: '@spmpst::icon::file-code', title: 'Internal standards' },
+        { icon: '@spmpst::icon::flask-conical', title: 'Experimental platforms' },
+        { icon: '@spmpst::icon::rocket', title: 'New business concepts' }
+      ]
+    }
+  ]"
+/>
 
 <FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
 
