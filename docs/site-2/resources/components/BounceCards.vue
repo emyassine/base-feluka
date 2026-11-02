@@ -140,7 +140,7 @@ function cardStyle(index: number): CSSProperties {
     bounce-cards-enter 760ms var(--bounce-easing, ease-out) var(--bounce-delay, 0s) both,
     bounce-cards-float 2.8s ease-in-out calc(var(--bounce-delay, 0s) + 760ms) infinite;
   transition:
-    transform var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
+    transform var(--bounce-return-duration, 760ms) var(--bounce-return-easing, cubic-bezier(.22, 1.25, .36, 1)),
     translate var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
     scale var(--bounce-hover-duration, 520ms) var(--bounce-hover-easing, cubic-bezier(.2, .8, .2, 1)),
     width 360ms cubic-bezier(.2, .75, .25, 1),
@@ -194,8 +194,6 @@ function cardStyle(index: number): CSSProperties {
   box-shadow: 0 18px 60px rgb(0 0 0 / 38%);
   opacity: 1;
   scale: 1;
-  animation: none;
-  margin-top: 0;
 }
 
 @media (hover: hover) {
