@@ -14,7 +14,7 @@
     },
     "action": {
       "label": "Click here",
-      "href": "/contact",
+      "href": "/company/contact",
       "variant": "button"
     },
     "style": {

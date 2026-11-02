@@ -13,7 +13,7 @@ Numerimondes is an independent consulting and solutions company based in Morocco
 
 Our work spans business development, technology, operations and specialist projects. We bring together the thinking, people and capabilities each assignment needs — from the first question to implementation.
 
-**Primary CTA:** Discuss an opportunity → `/contact`  
+**Primary CTA:** Discuss an opportunity → `/company/contact`
 **Secondary CTA:** Explore what we do → `/services`
 
 ---
@@ -80,13 +80,13 @@ Training concepts, talent-related initiatives, recruitment solutions in preparat
 
 ### Research & engineering
 
-**Feluqa** — Rust-based cross-platform application framework under development.  
-**SPMPST** — an emerging specification for portable structured Markdown site content.  
+**Feluqa** — Rust-based cross-platform application framework under development.
+**SPMPST** — an emerging specification for portable structured Markdown site content.
 **Webkernel** — an earlier, discontinued engineering initiative.
 
 These initiatives reflect our experimentation and engineering direction; they are not presented as completed commercial products.
 
-**CTA:** Explore our work and ideas → `/solutions`
+**CTA:** Explore our work and ideas → `/services/solutions`
 
 ---
 
@@ -120,7 +120,7 @@ Identify opportunities, introduce qualified projects and collaborate on sales or
 
 Collaborate on projects where your expertise creates value, including custom applications, Rust engineering, infrastructure and other defined assignments.
 
-**CTA:** Explore partnerships → `/partners`
+**CTA:** Explore partnerships → `/opportunities`
 
 ---
 
@@ -132,7 +132,7 @@ This is our corporate scope, **not a claim that every activity is already offere
 
 Our model is project-driven: a clear point of contact, an agreed scope and an appropriate combination of expertise and resources for each engagement.
 
-**CTA:** Learn about Numerimondes → `/about`
+**CTA:** Learn about Numerimondes → `/company/about`
 
 ---
 
@@ -140,8 +140,8 @@ Our model is project-driven: a clear point of contact, an agreed scope and an ap
 
 You do not need a finished specification to start a conversation. Tell us what you are trying to achieve, what is holding you back or what you believe could be built. We'll assess whether there is a practical way forward.
 
-**Primary CTA:** Let's discuss → `/contact`  
-**Secondary CTA:** Become a partner → `/partners`
+**Primary CTA:** Let's discuss → `/company/contact`
+**Secondary CTA:** Become a partner → `/opportunities`
 
 ---
 

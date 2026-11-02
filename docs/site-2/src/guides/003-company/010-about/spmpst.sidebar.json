@@ -1,0 +1,8 @@
+{
+  "labels": { "en": "About" },
+  "icon": "@spmpst::icon::building-2",
+  "menu": {
+    "image": "/images/home/showcase-capabilities/business-after.jpg",
+    "description": "How Numerimondes works and what guides our delivery."
+  }
+}

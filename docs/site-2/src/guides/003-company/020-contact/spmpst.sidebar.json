@@ -1,0 +1,8 @@
+{
+  "labels": { "en": "Contact" },
+  "icon": "@spmpst::icon::message-circle",
+  "menu": {
+    "image": "/images/home/showcase-capabilities/operations-after.jpg",
+    "description": "Start a conversation about a project or opportunity."
+  }
+}

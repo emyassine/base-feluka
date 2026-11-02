@@ -12,7 +12,7 @@ Numerimondes is an independent consulting and solutions company based in Casabla
 
 Across business operations, technology and new ventures, our work is guided by a simple ambition: **help organizations improve performance, gain control and create lasting value.**
 
-**Primary action:** Discuss a project → `/contact`  
+**Primary action:** Discuss a project → `/company/contact`
 **Secondary action:** Explore our capabilities → `/services`
 
 ---
@@ -69,7 +69,7 @@ Organizational workflows, reporting, service operations, training and people-rel
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
-<FeluqaButton tag="a" href="/innovation" label="Explore innovation"/>
+<FeluqaButton tag="a" href="/company/innovation" label="Explore innovation"/>
 
 ---
 
@@ -113,7 +113,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-<FeluqaButton tag="a" href="/about#delivery-model" label="How we work"/>
+<FeluqaButton tag="a" href="/company/about#delivery-model" label="How we work"/>
 
 ---
 
@@ -127,7 +127,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/about" label="More about us"/>
+<FeluqaButton tag="a" href="/company/about" label="More about us"/>
 
 ---
 
@@ -140,21 +140,21 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/initiatives/feluqa',
+      href: '/company/initiatives/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/initiatives/the-best-recruit',
+      href: '/company/initiatives/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/initiatives/spmpst',
+      href: '/company/initiatives/spmpst',
       image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
@@ -167,7 +167,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   :more="{
     title: 'Discover all our 3 initiatives',
     description: 'Explore our current and upcoming projects',
-    href: '/initiatives/',
+    href: '/company/initiatives/',
     image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
   }"
   :card-height="220"
@@ -194,8 +194,8 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
-<FeluqaButton tag="a" href="/partners" label="Explore partnerships"/>
-<FeluqaButton tag="a" href="/contact?topic=partnership" label="Propose a collaboration"/>
+<FeluqaButton tag="a" href="/opportunities" label="Explore partnerships"/>
+<FeluqaButton tag="a" href="/company/contact?topic=partnership" label="Propose a collaboration"/>
 
 ---
 
@@ -205,7 +205,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/pricing" label="Our pricing approach"/>
+<FeluqaButton tag="a" href="/services/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
@@ -217,8 +217,8 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
-**Primary action:** Start a conversation → `/contact`  
-**Secondary action:** Become a partner → `/partners`
+**Primary action:** Start a conversation → `/company/contact`
+**Secondary action:** Become a partner → `/opportunities`
 
 ---
 

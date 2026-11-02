@@ -1,5 +1,5 @@
 {
   "title": "Account access",
-  "showSiteTitle": true,
+  "showSiteTitle": false,
   "favicon": "../../../public/media/favicon.png"
 }

@@ -1,0 +1,8 @@
+{
+  "labels": { "en": "Solutions" },
+  "icon": "@spmpst::icon::shapes",
+  "menu": {
+    "image": "/images/home/showcase-capabilities/business-after.jpg",
+    "description": "Business systems and capabilities shaped around your objectives."
+  }
+}

@@ -48,6 +48,8 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     assetMime, assetDataUri, primaryGuide, primaryGuideConfig, primaryConfig,
     defaultSeoLocale,
   } = navigationModel
+  const primaryGuideColorKey = primaryGuide.uri.base.replace(/^\/+|\/+$/g, '').split('/')[0] || 'root'
+  const primaryGuideBrand = generatedGuideColors[primaryGuideColorKey] ?? generatedGuideColors[primaryGuide.path] ?? generatedGuideColors.root ?? {}
   const transformHead = headFactory({
     site, siteConfig, guideConfigs, defaultLanguage, defaultSeoLocale, primaryGuide,
     primaryGuideConfig, primaryConfig, generatedOgImages, generatedGuideColors,
@@ -102,11 +104,11 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     aside: true,
     footer: siteConfig.footer?.[siteConfig.languages[0]] ?? siteConfig.footer?.root,
     logo: {
-      light: generatedGuideColors.root?.logoLight,
-      dark: generatedGuideColors.root?.logoDark,
-      alt: generatedGuideColors.root?.logoAlt ?? siteConfig.logo?.alt ?? siteConfig.site?.name ?? 'Documentation',
-      ...(generatedGuideColors.root?.logoWidth ? { width: generatedGuideColors.root.logoWidth } : {}),
-      ...(generatedGuideColors.root?.logoHeight ? { height: generatedGuideColors.root.logoHeight } : {}),
+      light: primaryGuideBrand.logoLight ?? siteConfig.logo?.light,
+      dark: primaryGuideBrand.logoDark ?? siteConfig.logo?.dark,
+      alt: primaryGuideBrand.logoAlt ?? siteConfig.logo?.alt ?? siteConfig.site?.name ?? 'Documentation',
+      ...(primaryGuideBrand.logoWidth ? { width: primaryGuideBrand.logoWidth } : {}),
+      ...(primaryGuideBrand.logoHeight ? { height: primaryGuideBrand.logoHeight } : {}),
     },
     siteTitle: primaryConfig.showSiteTitle ? primaryConfig.title : false,
   },

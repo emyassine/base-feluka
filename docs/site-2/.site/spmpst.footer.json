@@ -23,13 +23,13 @@
         "name": {
           "en": "Solutions"
         },
-        "href": "/solutions/"
+        "href": "/services/solutions/"
       },
       {
         "name": {
           "en": "About"
         },
-        "href": "/about/"
+        "href": "/company/about/"
       },
       {
         "name": {
@@ -43,7 +43,7 @@
         "name": {
           "en": "Contact"
         },
-        "href": "/contact/"
+        "href": "/company/contact/"
       },
       {
         "name": {

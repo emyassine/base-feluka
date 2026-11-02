@@ -59,7 +59,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
     subguides: model.subguides,
     languages: model.languages,
     fallbackLanguage: model.fallbackLanguage,
-    topbar: { items: model.items, language: model.selector, theme: model.theme },
+    topbar: { items: model.items, language: model.selector, theme: model.theme, actions: model.actions ?? [] },
     collections: (model.collections ?? []).map(({ dir, ...collection }) => ({ ...collection, path: dir ?? collection.id })),
     siteFooter: footer.component,
     fonts: model.fonts,

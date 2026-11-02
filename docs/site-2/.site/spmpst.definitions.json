@@ -5,18 +5,7 @@
   },
   "subguides": [
     {
-      "path": "001-commercial",
-      "label": "Solutions",
-      "labels": {
-        "en": "Solutions"
-      },
-      "uri": {
-        "base": "/",
-        "entry": "solutions"
-      }
-    },
-    {
-      "path": "002-services",
+      "path": "001-services",
       "label": "Services",
       "labels": {
         "en": "Services"
@@ -27,64 +16,23 @@
       }
     },
     {
-      "path": "003-innovation",
-      "label": "Innovation",
+      "path": "002-opportunities",
+      "label": "Opportunities",
       "labels": {
-        "en": "Innovation"
+        "en": "Opportunities"
       },
       "uri": {
-        "base": "/innovation/"
+        "base": "/opportunities/"
       }
     },
     {
-      "path": "004-initiatives",
-      "label": "Initiatives",
+      "path": "003-company",
+      "label": "Company",
       "labels": {
-        "en": "Initiatives"
+        "en": "Company"
       },
       "uri": {
-        "base": "/initiatives/",
-        "entry": "feluqa"
-      }
-    },
-    {
-      "path": "005-partnerships",
-      "label": "Partnerships",
-      "labels": {
-        "en": "Partnerships"
-      },
-      "uri": {
-        "base": "/partners/"
-      }
-    },
-    {
-      "path": "006-pricing",
-      "label": "Pricing",
-      "labels": {
-        "en": "Pricing"
-      },
-      "uri": {
-        "base": "/pricing/"
-      }
-    },
-    {
-      "path": "007-about",
-      "label": "About",
-      "labels": {
-        "en": "About"
-      },
-      "uri": {
-        "base": "/about/"
-      }
-    },
-    {
-      "path": "008-contact",
-      "label": "Contact",
-      "labels": {
-        "en": "Contact"
-      },
-      "uri": {
-        "base": "/contact/"
+        "base": "/company/"
       }
     },
     {

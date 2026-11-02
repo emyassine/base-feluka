@@ -32,4 +32,4 @@ The hosting environment may process technical request information, including IP 
 
 ## Questions or corrections
 
-For questions about this notice, use the [contact page](/contact/). This draft should be reviewed against the final hosting configuration and company privacy process before being treated as a complete legal notice.
+For questions about this notice, use the [contact page](/company/contact/). This draft should be reviewed against the final hosting configuration and company privacy process before being treated as a complete legal notice.
