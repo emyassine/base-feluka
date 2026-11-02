@@ -265,8 +265,9 @@ function navigation(language = defaultLanguage): any[] {
           ? `/${metadata.icon.replace(/^\/+/, '')}`
           : undefined
         const description = frontmatter(childDirectory, 'description')
+        const itemClass = metadata.iconMode === 'full-color' ? 'docs-topbar-item--full-color' : undefined
         return [{
-          text: itemText(label, undefined, undefined, icon),
+          text: itemText(label, undefined, undefined, icon, itemClass),
           link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
           ...(icon ? { icon } : {}),

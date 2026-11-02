@@ -92,6 +92,16 @@
   -webkit-mask: var(--docs-topbar-icon-url) center / contain no-repeat;
 }
 
+.docs-topbar-item--full-color .docs-topbar-icon {
+  background-color: transparent;
+  background-image: var(--docs-topbar-icon-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mask: none;
+  -webkit-mask: none;
+}
+
 .docs-language-label img {
   width: 18px;
   height: 18px;
