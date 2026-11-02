@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{
   distance?: number
   panelHeight?: number
   baseItemSize?: number
+  mobileItemSize?: number
   magnification?: number
   radius?: string | number
 }>(), {
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<{
   distance: 180,
   panelHeight: 68,
   baseItemSize: 50,
+  mobileItemSize: 64,
   magnification: 70,
   radius: 'calc(var(--radius-lg) * 1.2)',
 })
@@ -108,7 +110,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </script>
 
 <template>
-  <div class="nm-simple-hero-dock__outer" :style="{ height: `${props.panelHeight}px` }">
+  <div class="nm-simple-hero-dock__outer" :style="{ height: `${props.panelHeight}px`, '--nm-dock-mobile-item-size': `${props.mobileItemSize}px` }">
     <div
       class="nm-simple-hero-dock"
       :class="props.className"
@@ -177,9 +179,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   border: 1px solid var(--vp-c-divider);
   border-radius: var(--nm-dock-radius, calc(var(--radius-lg) * 1.2));
   padding: 0.45rem;
-  background: color-mix(in srgb, var(--vp-c-bg) 76%, transparent);
+  background: var(--vp-c-bg-elv);
   box-shadow: var(--vp-shadow-2);
-  backdrop-filter: blur(16px);
 }
 
 .nm-simple-hero-dock__item {
@@ -190,7 +191,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   justify-content: center;
   border: 1px solid var(--vp-c-divider);
   border-radius: var(--nm-dock-radius, calc(var(--radius-lg) * 1.2));
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg-elv);
   box-shadow: var(--vp-shadow-1);
   color: var(--vp-c-text-1);
   cursor: pointer;
@@ -257,9 +258,10 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   }
   .nm-simple-hero-dock__outer::-webkit-scrollbar { display: none; }
   .nm-simple-hero-dock { width: max-content; max-width: none; gap: 0.4rem; margin-inline: auto; }
-  .nm-simple-hero-dock__item { width: 50px !important; height: 50px !important; flex-direction: column; gap: 0.15rem; }
+  .nm-simple-hero-dock__item { width: var(--nm-dock-mobile-item-size, 64px) !important; height: var(--nm-dock-mobile-item-size, 64px) !important; flex-direction: column; gap: 0.25rem; }
   .nm-simple-hero-dock__icon,
-  .nm-simple-hero-dock__custom-icon { width: 1rem; height: 1rem; }
+  .nm-simple-hero-dock__custom-icon { width: 1.25rem; height: 1.25rem; }
+  .nm-simple-hero-dock__icon { width: 1.25rem; height: 1.25rem; }
   .nm-simple-hero-dock__tooltip {
     position: static;
     inset: auto;
@@ -269,7 +271,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
     border: 0;
     background: transparent;
     box-shadow: none;
-    font-size: 0.5rem;
+    font-size: 0.625rem;
     line-height: 1.05;
     opacity: 1;
   }
