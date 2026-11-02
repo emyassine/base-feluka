@@ -243,14 +243,22 @@ fi
 
 if [[ -n "$retry_seconds" ]]; then
   retry_site_ids=()
-  for entry in "${sites[@]}"; do
-    IFS=$'\t' read -r site_id _ _ <<<"$entry"
+  printf '\n'
+  info "A server failure restarts all selected sites after $retry_seconds second(s)."
+  printf 'A normal exit stops the script without retrying; Ctrl+C stops the servers and any active wait.\n'
+  printf 'The retry loop stays attached to this terminal; no daemon or PID file is created.\n\n'
+  info 'Selected sites:'
+  for index in "${!sites[@]}"; do
+    entry="${sites[$index]}"
+    IFS=$'\t' read -r site_id site_name _ <<<"$entry"
     retry_site_ids+=("$site_id")
+    printf '  - %s (%s): http://%s:%s/\n' "$site_name" "$site_id" "$host" "${ports[$index]}"
   done
   retry_sites_csv=$(IFS=,; printf '%s' "${retry_site_ids[*]}")
-  retry_command="${site_dir}/serve.sh --sites=${retry_sites_csv}"
-  if ((preview)); then retry_command+=' --preview'; fi
-  info "Retry loop: while ! ${retry_command}; do sleep ${retry_seconds}; done (Ctrl+C to stop)."
+  info 'Equivalent shell loop:'
+  printf '  while ! %q --sites=%q' "$site_dir/serve.sh" "$retry_sites_csv"
+  if ((preview)); then printf ' --preview'; fi
+  printf '; do sleep %s; done\n\n' "$retry_seconds"
 fi
 
 pids=()
