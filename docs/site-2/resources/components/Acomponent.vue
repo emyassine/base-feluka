@@ -46,88 +46,46 @@
 
       <div class="yc-quotes">
         <p>
-          <span>Every organization has opportunities waiting to be explored:</span>
-          <span>processes that could run better</span>
+          <span>Every organization has opportunities waiting to be explored: processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.</span>
           <span class="yc-illustration" tabindex="0">
             <img
-              alt="Collaborative team working through a business process"
+              alt="A team collaborating around a table"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=96&q=80"
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80"
             />
             <span class="yc-illustration-preview">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=680&h=460&q=85"
-              />
-              <span>Processes that work better</span>
+              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85" />
+              <span>People working through opportunities together</span>
             </span>
-          </span>,
-          <span>information that could support faster decisions</span>
-          <span class="yc-illustration" tabindex="0">
-            <img
-              alt="Business data and charts used to support decisions"
-              loading="lazy"
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=96&h=96&q=80"
-            />
-            <span class="yc-illustration-preview">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=680&h=460&q=85"
-              />
-              <span>Information for faster decisions</span>
-            </span>
-          </span>,
-          <span>new services worth developing</span>
-          <span class="yc-illustration" tabindex="0">
-            <img
-              alt="Team discussing ideas for a new service"
-              loading="lazy"
-              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=96&h=96&q=80"
-            />
-            <span class="yc-illustration-preview">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=680&h=460&q=85"
-              />
-              <span>Ideas for new services</span>
-            </span>
-          </span>, and
-          <span>ways to connect people, systems and markets.</span>
+          </span>
         </p>
 
         <p>
-          <span>We combine research, commercial thinking and engineering</span>
+          <span>We combine research, commercial thinking and engineering to examine these possibilities, shape viable approaches and move selected projects into action.</span>
           <span class="yc-illustration" tabindex="0">
             <img
-              alt="People sharing research and ideas around a table"
+              alt="A workspace set up for focused research and planning"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=96&h=96&q=80"
+              src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80"
             />
             <span class="yc-illustration-preview">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=680&h=460&q=85"
-              />
-              <span>Research, thinking and engineering</span>
+              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85" />
+              <span>Research and planning workspace</span>
             </span>
           </span>
-          <span>to examine these possibilities, shape viable approaches and move selected projects into action.</span>
         </p>
 
         <p>
           <span>Our contribution can begin with an idea, a question, an operational challenge or a clear project brief.</span>
           <span class="yc-illustration" tabindex="0">
             <img
-              alt="Colleagues working together on a project brief"
+              alt="Colleagues discussing a project together"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=96&h=96&q=80"
+              src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80"
             />
             <span class="yc-illustration-preview">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=680&h=460&q=85"
-              />
-              <span>From a brief to a project in action</span>
+              <img alt="" loading="lazy" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85" />
+              <span>Project discussion and planning</span>
             </span>
           </span>
         </p>
@@ -197,18 +155,17 @@
   text-underline-offset: 3px;
 }
 
-/* Inline illustrations */
+/* Inline images */
 
 .yc-illustration {
-  display: inline-block;
   position: relative;
-  width: 23px;
-  height: 23px;
-  margin: 0 3px;
+  display: inline-block;
+  width: 28px;
+  height: 22px;
+  margin-inline: 8px;
   vertical-align: middle;
   cursor: pointer;
   outline-offset: 3px;
-  white-space: nowrap;
 }
 
 .yc-illustration > img {
@@ -216,50 +173,43 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px;
   border: 1px solid #d2ccc1;
-  transition: transform 180ms ease;
+  border-radius: 4px;
+  transition: transform 160ms ease;
 }
 
 .yc-illustration:hover > img,
-.yc-illustration:focus-visible > img {
-  transform: scale(1.14);
-}
-
-/* Large illustration preview on hover */
+.yc-illustration:focus-visible > img { transform: scale(1.08); }
 
 .yc-illustration-preview {
   position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  width: 210px;
-  padding: 5px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.17);
   z-index: 20;
-
+  top: calc(100% + 10px);
+  left: 50%;
+  width: 190px;
+  padding: 5px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -6px) scale(0.96);
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease,
-    visibility 180ms ease;
+  transform: translate(-50%, -5px) scale(0.97);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
 }
 
 .yc-illustration-preview img {
   display: block;
   width: 100%;
-  aspect-ratio: 1.48 / 1;
+  aspect-ratio: 1.5 / 1;
   object-fit: cover;
   border-radius: 5px;
 }
 
 .yc-illustration-preview > span {
   display: block;
-  padding: 8px 4px 4px;
+  padding: 7px 4px 3px;
+  color: #292929;
   font-size: 11px;
   line-height: 1.3;
   text-align: center;

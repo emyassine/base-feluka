@@ -393,6 +393,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   footer: config.footer ?? {},
   seo: config.seo ?? {},
   documentationNotices: config.documentationNotices ?? {},
+  banner: config.banner ?? null,
 }, null, 2))
 
 /** THEME EXTENSIONS — emit stable adapters for project components and hooks. */

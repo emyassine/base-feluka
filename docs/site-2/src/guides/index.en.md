@@ -22,7 +22,26 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 <Acomponent/>
-
+<div style="width: min(100% - 40px, 544px);"
+:::: info What this can mean for your business
+::: details Better decisions
+Clearer priorities, options and investment choices.
+:::
+::: details More efficient operations
+Less duplicated work, fewer avoidable errors and better coordination.
+:::
+::: details Greater visibility and control
+Accessible information, traceable processes and systems you can manage.
+:::
+::: details New opportunities
+Business concepts, partnerships, products and services evaluated for real-world potential.
+:::
+::: details A clearer route to delivery
+Defined scope, accountable coordination and expertise matched to the assignment.
+:::
+Expected benefits are assessed for each engagement; specific results depend on the project and its implementation.
+::::
+</div>
  <NmShowcase
    title="Numerimondes is an independent consulting and solutions company. We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
    footnote="Possibility becomes valuable through execution.

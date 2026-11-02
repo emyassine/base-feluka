@@ -9,7 +9,7 @@ export const CONCERNS = Object.freeze({
   links: ['socialLinks'],
   seo: ['siteUrl', 'path', 'icon', 'pageTitle', 'pageNavTitle', 'description', 'quickLinksTitle', 'faqTitle', 'quickLinks', 'faq'],
   layout: ['layouts', 'rules'],
-  hooks: ['components', 'documentationNotices'],
+  hooks: ['components', 'documentationNotices', 'banner'],
   search: ['provider', 'miniSearch', 'excludePaths', 'searchLabels'],
   outline: ['level', 'label'],
   markdown: ['lineNumbers', 'image'],

@@ -1,5 +1,23 @@
 {
   "$schema": "../public/media/schemas/hooks.schema.json",
   "components": {},
-  "documentationNotices": {}
+  "documentationNotices": {},
+  "banner": {
+    "enabled": true,
+    "text": "Welcome to our website",
+    "icon": {
+      "name": "@spmpst::icon::lucide/megaphone",
+      "position": "before"
+    },
+    "action": {
+      "label": "Click here",
+      "href": "/contact",
+      "variant": "button"
+    },
+    "style": {
+      "backgroundColor": "#102a35",
+      "color": "#ffffff",
+      "padding": "0.65rem 1rem"
+    }
+  }
 }

@@ -281,7 +281,69 @@ async function inlineConfiguredLogo(image: HTMLImageElement | SVGSVGElement, sou
 const MermaidLayout = {
   setup() {
     const route = useRoute()
-    const { frontmatter: pageFrontmatter } = useData()
+    const { frontmatter: pageFrontmatter, lang } = useData()
+    const bannerContent = (siteContent as typeof siteContent & {
+      banner?: {
+        enabled?: boolean
+        text?: string | Record<string, string>
+        backgroundImage?: string
+        style?: Record<string, string | number>
+        icon?: { position?: 'before' | 'after'; svg?: string; style?: Record<string, string | number> }
+        action?: {
+          label?: string | Record<string, string>
+          href?: string
+          variant?: 'button' | 'link'
+          target?: '_self' | '_blank'
+          style?: Record<string, string | number>
+        }
+      }
+      languages?: string[]
+      defaultLanguage?: string
+    }).banner
+    const bannerText = (value?: string | Record<string, string>) => {
+      if (typeof value === 'string') return value
+      if (!value) return ''
+      const locale = String(pageFrontmatter.value.requestedLanguage || lang.value).toLowerCase()
+      const baseLocale = locale.split('-')[0]
+      return value[locale] ?? value[baseLocale] ?? value[(siteContent as typeof siteContent & { defaultLanguage?: string }).defaultLanguage ?? 'en'] ?? Object.values(value)[0] ?? ''
+    }
+    const siteBanner = () => {
+      if (!bannerContent || bannerContent.enabled === false) return null
+      const message = bannerText(bannerContent.text)
+      if (!message) return null
+      const style: Record<string, string | number> = { ...bannerContent.style }
+      if (bannerContent.backgroundImage) {
+        const background = bannerContent.backgroundImage
+        style.backgroundImage = /^url\(/i.test(background) ? background : `url(${JSON.stringify(background)})`
+      }
+      const icon = bannerContent.icon?.svg
+        ? h('span', { class: 'site-announcement-banner__icon', style: bannerContent.icon.style, 'aria-hidden': 'true', innerHTML: bannerContent.icon.svg })
+        : null
+      const action = bannerContent.action?.label && bannerContent.action.href
+        ? h('a', {
+            class: ['site-announcement-banner__action', bannerContent.action.variant === 'link' ? 'is-link' : 'is-button'],
+            href: bannerContent.action.href,
+            target: bannerContent.action.target,
+            rel: bannerContent.action.target === '_blank' ? 'noopener noreferrer' : undefined,
+            style: bannerContent.action.style,
+          }, bannerText(bannerContent.action.label))
+        : null
+      return h('div', { class: 'site-announcement-banner', role: 'region', 'aria-label': 'Announcement', style }, [
+        ...(bannerContent.icon?.position === 'after' ? [h('span', message), ...(icon ? [icon] : [])] : [...(icon ? [icon] : []), h('span', message)]),
+        ...(action ? [action] : []),
+      ])
+    }
+    let bannerObserver: ResizeObserver | undefined
+    const syncLayoutTopHeight = () => {
+      const layout = document.querySelector<HTMLElement>('.Layout')
+      const banner = layout?.querySelector<HTMLElement>(':scope > .site-announcement-banner')
+      if (!layout || !banner) {
+        layout?.style.setProperty('--vp-layout-top-height', '0px')
+        return
+      }
+      const height = banner.getBoundingClientRect().height
+      layout.style.setProperty('--vp-layout-top-height', `${window.scrollY === 0 ? height : 0}px`)
+    }
     const configuredLayoutSlots = () => {
       const content = siteContent as typeof siteContent & {
         languages?: string[]
@@ -545,6 +607,16 @@ const MermaidLayout = {
     applyGuideColors()
     document.addEventListener('click', handleClick)
     document.addEventListener('keydown', handleKeydown)
+    void nextTick(() => {
+      syncLayoutTopHeight()
+      const banner = document.querySelector<HTMLElement>('.Layout > .site-announcement-banner')
+      if (banner) {
+        bannerObserver = new ResizeObserver(syncLayoutTopHeight)
+        bannerObserver.observe(banner)
+      }
+      window.addEventListener('resize', syncLayoutTopHeight)
+      window.addEventListener('scroll', syncLayoutTopHeight, { passive: true })
+    })
     observer = new MutationObserver(installPageEnhancements)
     observer.observe(document.body, { childList: true, subtree: true })
     themeObserver = new MutationObserver(() => { applyGuideColors(); syncDiagramTheme() })
@@ -556,11 +628,14 @@ const MermaidLayout = {
     stopWatchingRoute()
     observer?.disconnect()
     themeObserver?.disconnect()
+    bannerObserver?.disconnect()
+    window.removeEventListener('resize', syncLayoutTopHeight)
+    window.removeEventListener('scroll', syncLayoutTopHeight)
     document.removeEventListener('click', handleClick)
     document.removeEventListener('keydown', handleKeydown)
     dialog?.remove()
   })
-    const { frontmatter, lang } = useData()
+    const { frontmatter } = useData()
     const collectionForPage = () => (generatedCollections as Array<{ id: string; layout: string; links: Record<string, string>; titles: Record<string, string> }>)
       .find((collection) => collection.id === frontmatter.value.collection)
     const articleLayout = () => collectionForPage()?.layout === 'article'
@@ -576,6 +651,7 @@ const MermaidLayout = {
       const subnavComponent = renderedSubnav?.type as Component | undefined
       return h(DefaultTheme.Layout, null, {
       ...layoutSlots,
+      'layout-top': siteBanner,
       'nav-bar-content-after': () => articleLayout() && subnavComponent
         ? h(subnavComponent, null, { actions: () => h(PageActions) })
         : renderedSubnav,

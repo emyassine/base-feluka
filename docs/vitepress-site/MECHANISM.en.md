@@ -312,6 +312,8 @@ The host recognizes site hooks by conventional names under `project.hooks`:
 - `documentation-hooks` plus optional `documentation-hooks.css` exports `DocumentationNotice` and `DocumentationLastModified`; when absent, generated no-op Vue components are emitted.
 - `documentation-seo` exports `transformDocumentationHead`; when absent, a no-op transform is emitted. `head.ts` calls the hook with page/title/description/site/language/OG image inputs.
 
+`spmpst.hooks.json` also accepts an optional `banner` object. The VitePress adapter renders it in the `layout-top` slot, before the navigation header. It supports localized text, an optional icon resource before or after the message, a link or button action, CSS `backgroundImage`, and inline style objects for the banner, icon, and action. The banner is disabled with `enabled: false`.
+
 Configured styles are emitted as imports in a generated TypeScript module. Vite compiles them along with the host theme CSS and any hook CSS. The browser theme extends the VitePress default theme and adds route-specific color/font/logo/favicon application, configured theme slots, page action controls, Mermaid diagram zoom/theme handling, image zoom, notices/last-modified slots, and pager/sidebar icon integration.
 
 ## 13. Vite and VitePress configuration ownership

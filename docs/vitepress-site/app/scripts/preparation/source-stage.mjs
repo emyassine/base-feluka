@@ -22,6 +22,39 @@ const configFiles = paths.configFiles
 const configDirectory = layout.paths.root
 const loadedConfig = loadSiteModelSync(layout)
 const config = toVitepressRuntime(loadedConfig.model, layout, loadedConfig.concerns)
+const banner = config.banner
+if (banner != null) {
+  if (typeof banner !== 'object' || Array.isArray(banner)) throw new Error(`hooks.banner must be an object in ${configFiles.hooks}`)
+  if (banner.enabled !== undefined && typeof banner.enabled !== 'boolean') throw new Error('hooks.banner.enabled must be a boolean')
+  const isLocalizedText = (value) => typeof value === 'string'
+    || (value && typeof value === 'object' && !Array.isArray(value) && Object.values(value).every((text) => typeof text === 'string'))
+  if (!isLocalizedText(banner.text)) throw new Error('hooks.banner.text must be a string or localized text object')
+  if (banner.icon !== undefined && (!banner.icon || typeof banner.icon !== 'object' || typeof banner.icon.svg !== 'string')) {
+    throw new Error('hooks.banner.icon.name must resolve to a valid icon resource')
+  }
+  if (banner.icon?.position !== undefined && !['before', 'after'].includes(banner.icon.position)) {
+    throw new Error('hooks.banner.icon.position must be before or after')
+  }
+  if (banner.action !== undefined) {
+    if (!banner.action || typeof banner.action !== 'object' || !isLocalizedText(banner.action.label) || typeof banner.action.href !== 'string' || !banner.action.href.trim()) {
+      throw new Error('hooks.banner.action requires a label and href')
+    }
+    if (banner.action.variant !== undefined && !['button', 'link'].includes(banner.action.variant)) {
+      throw new Error('hooks.banner.action.variant must be button or link')
+    }
+    if (banner.action.target !== undefined && !['_self', '_blank'].includes(banner.action.target)) {
+      throw new Error('hooks.banner.action.target must be _self or _blank')
+    }
+  }
+  for (const [name, styles] of [['style', banner.style], ['icon.style', banner.icon?.style], ['action.style', banner.action?.style]]) {
+    if (styles !== undefined && (!styles || typeof styles !== 'object' || Array.isArray(styles))) {
+      throw new Error(`hooks.banner.${name} must be an inline style object`)
+    }
+  }
+  if (banner.backgroundImage !== undefined && (typeof banner.backgroundImage !== 'string' || !banner.backgroundImage.trim())) {
+    throw new Error('hooks.banner.backgroundImage must be a CSS image value or URL')
+  }
+}
 const configuredStyles = config.styles ?? []
 if (!Array.isArray(configuredStyles)) throw new Error(`styles must be an array of CSS paths in ${configFiles.appearance}`)
 const styleFiles = configuredStyles.map((stylePath) => {

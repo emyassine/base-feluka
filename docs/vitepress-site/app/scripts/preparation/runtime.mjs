@@ -39,6 +39,10 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
     ...(model.components?.sidebarNavigationBefore ? { 'sidebar-nav-before': model.components.sidebarNavigationBefore } : {}),
     ...(model.components?.navigationAfter ? { 'nav-bar-content-after': model.components.navigationAfter } : {}),
   }
+  const banner = model.banner ? { ...model.banner } : null
+  if (banner?.icon?.name && isAbsolute(banner.icon.name) && existsSync(banner.icon.name)) {
+    banner.icon = { ...banner.icon, svg: readFileSync(banner.icon.name, 'utf8') }
+  }
   const socialLinks = (model.socialLinks ?? []).map((item) => ({
     ...item,
     icon: typeof item.icon === 'string' && isAbsolute(item.icon) && existsSync(item.icon)
@@ -74,6 +78,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
         .filter(([, value]) => value !== undefined),
     )])),
     documentationNotices: Object.fromEntries(model.languages.map((language) => [language, localizeTree(model.documentationNotices ?? {}, language)])),
+    banner,
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, { emptyCollection: localizeTree(model.emptyCollection ?? {}, language) }])),
     styles: (model.styles ?? []).map((path) => resolve(layout.paths.resources, path)),
