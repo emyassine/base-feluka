@@ -7,6 +7,7 @@ lang: en
 status: "ready-for-review"
 ---
 <NmEffectHero
+  :full-bleed="false"
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="SOFTWARE &amp; SYSTEMS · NUMERIMONDES"

@@ -16,6 +16,7 @@ interface HeroButton {
 const props = withDefaults(defineProps<{
   effect: Effect
   eyebrow?: string
+  fullBleed?: boolean
   heroStyle?: CSSProperties
   title: string
   description: string
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<{
   descriptionStyleDark?: CSSProperties
 }>(), {
   buttons: () => [],
+  fullBleed: true,
 })
 
 const { isDark } = useData()
@@ -74,7 +76,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light'" :style="props.heroStyle">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="props.heroStyle">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" v-bind="effectProps" />
     </div>
@@ -119,6 +121,11 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   margin: 0 calc(50% - 50vw) 3rem;
   overflow: hidden;
   background: #0c0c13;
+}
+
+.nm-effect-hero--contained {
+  width: 100%;
+  margin-inline: 0;
 }
 
 .nm-effect-hero__background {
@@ -223,6 +230,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 @media (max-width: 640px) {
   .nm-effect-hero { min-height: 34rem; margin-top: -20px; }
+  .nm-effect-hero--contained { margin-top: 0; }
   .nm-effect-hero__content { padding: 2.5rem 0; }
   .nm-effect-hero h1 { font-size: clamp(2rem, 8vw, 2.75rem); }
   .nm-effect-hero__actions { gap: 0.5rem; margin-top: 1.5rem; }
