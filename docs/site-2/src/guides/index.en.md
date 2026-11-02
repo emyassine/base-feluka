@@ -195,6 +195,23 @@ Expected benefits are assessed for each engagement; specific results depend on t
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
+## A few areas we explore
+
+<BounceCards
+  :images="[
+    '/images/home/showcase-capabilities/business-after.jpg',
+    '/images/home/showcase-capabilities/digital-after.jpg',
+    '/images/home/showcase-capabilities/infrastructure-after.jpg',
+    '/images/home/showcase-capabilities/operations-after.jpg',
+    '/images/home/showcase-capabilities/innovation-after.jpg'
+  ]"
+  :container-width="640"
+  :container-height="300"
+  :animation-delay="0.2"
+  :animation-stagger="0.08"
+  enable-hover
+/>
+
 <SimpleMiniCard
   :columns="2"
   :categories="[

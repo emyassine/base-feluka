@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<BounceCardsProps>(), {
   containerHeight: 400,
   animationDelay: 0.5,
   animationStagger: 0.06,
-  easeType: 'elastic.out(1, 0.8)',
+  easeType: 'power2.out',
   transformStyles: () => [
     'rotate(10deg) translate(-170px)',
     'rotate(5deg) translate(-85px)',
@@ -74,6 +74,12 @@ function backOut(overshoot: number): (progress: number) => number {
     const shifted = progress - 1
     return 1 + shifted * shifted * ((overshoot + 1) * shifted + overshoot)
   }
+}
+
+function smoothInOut(progress: number): number {
+  return progress < 0.5
+    ? 2 * progress * progress
+    : 1 - ((-2 * progress + 2) ** 2) / 2
 }
 
 function easeFunction(ease: string): (progress: number) => number {
@@ -154,7 +160,7 @@ function interpolateTransform(from: string, to: string, progress: number): strin
 
 function animateTransform(element: HTMLElement, target: string, delay = 0): void {
   const source = element.dataset.currentTransform ?? baseTransform(cardRefs.value.indexOf(element))
-  tween(element, 0.4, delay, backOut(1.4), (progress) => {
+  tween(element, 0.28, delay, smoothInOut, (progress) => {
     const value = interpolateTransform(source, target, progress)
     element.style.transform = value
     element.dataset.currentTransform = value
@@ -171,9 +177,9 @@ function pushSiblings(hoveredIndex: number): void {
       return
     }
 
-    const offsetX = index < hoveredIndex ? -160 : 160
+    const offsetX = index < hoveredIndex ? -180 : 180
     const distance = Math.abs(hoveredIndex - index)
-    animateTransform(card, getPushedTransform(baseTransform(index), offsetX), distance * 0.05)
+    animateTransform(card, getPushedTransform(baseTransform(index), offsetX), distance * 0.008)
   })
 }
 
@@ -192,8 +198,10 @@ function playEntranceAnimation(): void {
   cards.forEach((card, index) => {
     cancelTween(card)
     card.style.setProperty('scale', '0')
-    tween(card, 0.5, props.animationDelay + index * props.animationStagger, ease, (progress) => {
+    card.style.opacity = '0'
+    tween(card, 0.85, props.animationDelay + index * props.animationStagger, ease, (progress) => {
       card.style.setProperty('scale', String(progress))
+      card.style.opacity = String(Math.min(1, progress * 1.2))
     })
   })
 }
