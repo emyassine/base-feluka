@@ -211,11 +211,23 @@ function navigation(language = defaultLanguage): any[] {
       const value = readFileSync(source, 'utf8').match(new RegExp(`^${key}:\\s*["']?(.+?)["']?\\s*$`, 'm'))?.[1]
       return value?.trim() || undefined
     }
-    const articleItems = (directory: string, routeParts: string[], image?: string): any[] => includeArticles
-      ? readdirSync(directory, { withFileTypes: true })
-        .filter((entry) => entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'index.md')
+    const articleItems = (directory: string, routeParts: string[], image?: string): any[] => {
+      if (!includeArticles) return []
+      const entries = readdirSync(directory, { withFileTypes: true })
+      const hasSourceIndex = entries.some((entry) => entry.isFile() && /^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
+      const firstImplicitIndex = noGuideIndex && !hasSourceIndex
+        ? sortNavigationEntries(
+          entries.filter((entry) => entry.isFile() && entry.name.endsWith('.md') && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
+            .map((entry) => ({ name: entry.name })),
+        )[0]?.name
+        : undefined
+      return entries
+        .filter((entry) => entry.isFile() && entry.name.endsWith('.md') && !/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name))
         .filter((entry) => !existsSync(join(directory, entry.name.slice(0, -'.md'.length))))
-        .filter((entry) => !(noGuideIndex && /^\d+[.-]overview(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(entry.name)))
+        // With no source index, the generated directory index mirrors the first
+        // article. The group tile already links to that content, so omit its
+        // duplicate article card from this no-guide-index menu.
+        .filter((entry) => entry.name !== firstImplicitIndex)
         .sort((left, right) => left.name.localeCompare(right.name))
         .map((entry) => {
           const file = join(directory, entry.name)
@@ -229,7 +241,7 @@ function navigation(language = defaultLanguage): any[] {
             ...(showIcons && icon ? { icon: `/${icon.replace(/^\/+/, '')}` } : {}),
           }
         })
-      : []
+    }
     const visit = (directory: string, routeParts: string[], level: number): any[] =>
       sortDirectories(directory).flatMap(({ name }) => {
         const segment = name.replace(/^\d+[.-]/, '')
