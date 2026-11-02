@@ -20,6 +20,12 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 
+<NmShowcase
+  title="YC turns builders into formidable founders"
+  footnote="A formidable person is one who seems like they’ll get what they want, regardless of whatever obstacles are in the way."
+  citation="Paul Graham"
+/>
+
 ## One foundation. All your operations.
 
 **Infrastructure → Data & Private AI → Business Software → Operations**

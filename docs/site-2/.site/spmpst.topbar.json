@@ -6,29 +6,25 @@
       "text": {
         "en": "Services"
       },
-      "link": "/services/",
-      "icon": "@spmpst::icon::layout-grid"
+      "link": "/services/"
     },
     {
       "text": {
         "en": "Solutions"
       },
-      "link": "/solutions/",
-      "icon": "@spmpst::icon::sparkles"
+      "link": "/solutions/"
     },
     {
       "text": {
         "en": "About"
       },
-      "link": "/about/",
-      "icon": "@spmpst::icon::building-2"
+      "link": "/about/"
     },
     {
       "text": {
         "en": "Contact"
       },
-      "link": "/contact/",
-      "icon": "@spmpst::icon::message-circle"
+      "link": "/contact/"
     }
   ]
 }
