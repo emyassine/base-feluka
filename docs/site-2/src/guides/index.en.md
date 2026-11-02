@@ -116,35 +116,6 @@ Expected benefits are assessed for each engagement; specific results depend on t
    }"
  />
 
-### Business consulting and development
-
-Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.
-
-**Explore consulting** → `/services/consulting`
-
-### Digital systems and software
-
-Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.
-
-**Explore software and systems** → `/services/software`
-
-### Infrastructure, equipment and security
-
-Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.
-
-**Explore infrastructure** → `/services/infrastructure`
-
-### Operations, people and capabilities
-
-Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.
-
-**Explore operations** → `/services/operations`
-
-### Innovation and new ventures
-
-Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
-
-**Explore innovation** → `/innovation`
 
 ---
 

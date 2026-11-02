@@ -104,14 +104,6 @@ function onNamesKeydown(event: KeyboardEvent) {
   }
 }
 
-function nameStyle(index: number) {
-  const isActive = index === active.value
-  return {
-    opacity: isActive ? 1 : 0,
-    transform: `scale(${isActive ? 1 : 0.96})`,
-  }
-}
-
 function progressFor(index: number) {
   return storyProgress.value[index] ?? 0
 }
@@ -311,22 +303,9 @@ onBeforeUnmount(() => {
             tabindex="0"
             @keydown="onNamesKeydown"
           >
-            <ul class="nm-showcase__names-list" :style="{ '--active': active }">
-              <li
-                v-for="(story, index) in stories"
-                :key="`name-${story.name}-${index}`"
-                class="nm-showcase__names-item"
-                :style="nameStyle(index)"
-              >
-                <button
-                  type="button"
-                  class="nm-showcase__name-btn"
-                  :aria-current="index === active ? 'true' : undefined"
-                  tabindex="-1"
-                  @click="scrollToIndex(index)"
-                >{{ story.name }}</button>
-              </li>
-            </ul>
+            <Transition name="nm-showcase-title" mode="out-in">
+              <span :key="stories[active]?.name" class="nm-showcase__name-title">{{ stories[active]?.name }}</span>
+            </Transition>
           </nav>
 
           <figure class="nm-showcase__col">
@@ -603,35 +582,22 @@ onBeforeUnmount(() => {
 
   .nm-showcase__names {
     position: relative;
+    display: grid;
     width: 100%;
     min-width: 0;
-    height: calc(var(--item-h) * 3);
-    overflow: hidden;
+    min-height: var(--item-h);
+    place-items: center;
     outline: none;
     transform: translateY(-2rem);
   }
 
   .nm-showcase__names:focus-visible { outline: 2px solid #2364e8; outline-offset: 4px; border-radius: 0.5rem; }
 
-  .nm-showcase__names-list {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    transform: translateY(calc((1 - var(--active, 0)) * var(--item-h)));
-  }
-
-  .nm-showcase__names-item { display: flex; width: 100%; height: var(--item-h); align-items: center; justify-content: center; transition: opacity 160ms ease, transform 160ms ease; }
-
-  .nm-showcase__name-btn {
+  .nm-showcase__name-title {
     display: block;
     width: 100%;
     max-width: 100%;
-    padding: 0;
-    border: 0;
-    background: none;
     color: inherit;
-    cursor: pointer;
     font-family: var(--vp-font-family-heading, var(--vp-font-family-base));
     font-size: clamp(1.25rem, 2.2vw, 1.75rem);
     font-weight: 600;
@@ -641,6 +607,11 @@ onBeforeUnmount(() => {
     text-align: center;
     white-space: normal;
   }
+
+  .nm-showcase-title-enter-active,
+  .nm-showcase-title-leave-active { transition: opacity 260ms ease, transform 260ms ease; }
+  .nm-showcase-title-enter-from { opacity: 0; transform: translateY(0.35em); }
+  .nm-showcase-title-leave-to { opacity: 0; transform: translateY(-0.35em); }
 }
 
 @media (prefers-reduced-motion: reduce) {
