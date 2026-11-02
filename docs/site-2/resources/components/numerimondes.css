@@ -1,10 +1,82 @@
 @import '../../../site-1/resources/components/components.css';
-:root{
+
+:root {
+  color-scheme: light dark;
+
+  --background: light-dark(#fcfdfd, #0d1117);
+  --surface: light-dark(#ffffff, #161b22);
+  --surface-soft: light-dark(#f2f4f6, #151b23);
+  --foreground: light-dark(#252a32, #f0f6fc);
+  --muted: light-dark(#626873, #9198a1);
+  --subtle: light-dark(#727986, #9198a1);
+  --border: light-dark(#e0e3e8, #3d444d);
+  --hover: light-dark(#f2f4f6, #212830);
+  --accent: light-dark(#252a32, #f0f6fc);
+  --accent-hover: light-dark(#404751, #d1d9e0);
+  --accent-soft: light-dark(#eef0f3, #212830);
+  --accent-ink: light-dark(#ffffff, #0d1117);
+  --header-surface: light-dark(#f6f8fa, #010409);
+  --shadow-sm: light-dark(0 1px 2px rgb(37 42 50 / 0.04), none);
+  --shadow: light-dark(0 4px 8px rgb(37 42 50 / 0.03), none);
+  --display: Geist, Arial, sans-serif;
+  --sans: Geist, Arial, sans-serif;
+  --mono: GeistMono, ui-monospace, monospace;
+  --rail-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+  --gutter: 24px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+
+  /* Map the site palette to VitePress' light/dark surface and navigation tokens. */
+  --vp-c-bg: var(--background);
+  --vp-c-bg-alt: var(--header-surface);
+  --vp-c-bg-elv: var(--surface);
+  --vp-c-bg-soft: var(--surface-soft);
+  --vp-c-border: var(--border);
+  --vp-c-divider: var(--border);
+  --vp-c-gutter: var(--surface-soft);
+  --vp-c-text-1: var(--foreground);
+  --vp-c-text-2: var(--muted);
+  --vp-c-text-3: var(--subtle);
+  --vp-c-default-1: var(--foreground);
+  --vp-c-default-2: var(--muted);
+  --vp-c-default-3: var(--border);
+  --vp-c-default-soft: var(--surface-soft);
+  --vp-nav-bg-color: var(--header-surface);
+  --vp-nav-home-bg-color: var(--header-surface);
+  --vp-nav-screen-bg-color: var(--header-surface);
+  --vp-nav-divider-color: var(--border);
+  --vp-local-nav-bg-color: var(--header-surface);
+  --vp-nav-backdrop-filter: none;
+  --vp-shadow-1: var(--shadow-sm);
+  --vp-shadow-2: var(--shadow);
+  /* Keep the existing Feluqa/VitePress primary button brand blue. */
   --vp-c-brand-1: oklch(0.623 0.214 259.815);
   --vp-c-brand-2: color-mix(in oklch, var(--vp-c-brand-1) 88%, black);
   --vp-c-brand-3: color-mix(in oklch, var(--vp-c-brand-1) 76%, black);
   --vp-c-brand-soft: color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);
 }
+
+:root:not(.dark) {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
 .vp-doc h2{border-top:0;}
 .nm-home-links{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0 2rem}.nm-home-links a{display:inline-flex;align-items:center;padding:.55rem .9rem;border:1px solid var(--vp-c-divider);border-radius:999px;text-decoration:none;font-weight:600}.nm-home-links a:first-child{background:var(--vp-c-brand-1);border-color:var(--vp-c-brand-1);color:var(--vp-c-white)}.nm-home-links a:hover{border-color:var(--vp-c-brand-1);color:var(--vp-c-brand-1)}
 .nm-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.5rem 0 2rem}
