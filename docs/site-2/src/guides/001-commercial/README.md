@@ -16,7 +16,7 @@ status: "ready-for-review"
 - `/` — Home
 - `/services` — Services; details under `/services/`
 - `/solutions` — Solutions
-- `/showcase` — Showcase
+- `/#showcase` — Showcase
 - `/innovation` — Innovation
 - `/partners` — Partnerships
 - `/about` — About

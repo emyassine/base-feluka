@@ -4,6 +4,7 @@ WEB:
 CLI:
 - web-sync as a standalone tool and a nadim command
 - x-monorepo as a standalone tool and a nadim command
+- My bashTools in Nadim
 
 DESKTOP:
 - kiln as a standalone tool and a nadim command

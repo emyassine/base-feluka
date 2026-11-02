@@ -65,7 +65,14 @@
       "icon": "@spmpst::icon::shapes"
     },
     {
-      "guide": "002-innovation",
+      "text": {
+        "en": "Showcase"
+      },
+      "link": "/#showcase",
+      "icon": "@spmpst::icon::gallery-horizontal"
+    },
+    {
+      "guide": "003-innovation",
       "icon": "@spmpst::icon::sparkles"
     },
     {
@@ -139,15 +146,15 @@
       ],
       "items": [
         {
-          "guide": "003-partnerships",
+          "guide": "005-partnerships",
           "icon": "@spmpst::icon::handshake"
         },
         {
-          "guide": "004-pricing",
+          "guide": "006-pricing",
           "icon": "@spmpst::icon::scale"
         },
         {
-          "guide": "005-about",
+          "guide": "007-about",
           "icon": "@spmpst::icon::building-2"
         },
         {
