@@ -23,7 +23,7 @@ js-events:
   :paragraphs="[
     { before: 'His experience spans contact-centre operations, project management, training, consulting and software engineering.', after: 'Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.' },
     { before: 'Research and continued learning are central to his work.', after: 'He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.' },
-    { before: '<strong>Founder and Managing Director</strong>', after: '<FeluqaButton tag=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot; href="/company/contact/contact?topic=project" label=&quotConnect on LinkedIn&quot' }
+    { before: '<strong>Founder and Managing Director</strong>', after: '<FeluqaButton tag=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot; label=&quotConnect on LinkedIn&quot' }
   ]"
 />
 
