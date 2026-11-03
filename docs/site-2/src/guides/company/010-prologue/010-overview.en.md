@@ -29,9 +29,11 @@ Numerimondes brings together business understanding, software, infrastructure an
 
 ### About Numerimondes
 
-Start with the company and founder, then explore our current delivery model, working principles, future team ambition and business strategy.
+Start with the company, meet its founder and learn about the current and intended team model. Then explore how we work, our principles and our business strategy.
 
 <FeluqaButton tag="a" href="/company/about-us/about-us" label="About Numerimondes" />
+
+<FeluqaButton tag="a" href="/company/about-us/people-and-team" label="People & Team" />
 
 <FeluqaButton tag="a" href="/company/about-us/ambition" label="Our ambition" />
 

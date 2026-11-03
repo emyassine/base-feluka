@@ -27,19 +27,7 @@ js-events:
 
 Numerimondes SARL AU is an independent consulting and solutions company established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop <span class="silky-i">practical projects</span> across business operations, technology and related fields.
 
-Our work spans business consulting, systems and operations, and the development of new initiatives. This page introduces the company and its founder; the pages below explain how we work and what we aim to build.
-
-## Founder
-
-### Yassine El Moumen
-
-**Founder & Managing Director**
-
-Yassine's background spans contact-centre operations, project management, training, consulting and software engineering. Experience with operational teams and business projects informs his approach to practical problem-solving and the needs of decision-makers.
-
-Research and continued learning are a central part of his work, from business models and markets to systems architecture and emerging technologies. This exploration feeds the company's consulting, innovation and project development activities.
-
-**LinkedIn** → `https://www.linkedin.com/in/elmoumenyassine/`
+Our work spans business consulting, systems and operations, and the development of new initiatives. This page introduces the company; the [People & Team page](/company/about-us/people-and-team) introduces its founder and the team model.
 
 ## How the company works
 
@@ -47,10 +35,11 @@ Research and continued learning are a central part of his work, from business mo
   label="About Numerimondes"
   :start-margin="false"
   :items="[
-    { title: 'How We Work', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our current founder-led, project-based delivery model.' },
-    { title: 'Working Principles', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/working-principles', time: 'The commitments that guide our work and decisions.' },
-    { title: 'Our Ambition', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/company/about-us/ambition', time: 'The small, technical team and partner network we aim to build.' },
-    { title: 'Business Strategy', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/about-us/business-strategy', time: 'The planned flagship offer and the activities intended to support it.' },
-    { title: 'Working With Us', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/about-us/working-with-us', time: 'How clients, partners and specialists can start a conversation.' }
+    { title: 'People & Team', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/people-and-team', time: 'Meet the founder and understand the team model, today and in the future.' },
+    { title: 'How We Work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our current founder-led, project-based delivery model.' },
+    { title: 'Working Principles', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/company/about-us/working-principles', time: 'The commitments that guide our work and decisions.' },
+    { title: 'Our Ambition', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/about-us/ambition', time: 'The small, technical team and partner network we aim to build.' },
+    { title: 'Business Strategy', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/about-us/business-strategy', time: 'The planned flagship offer and the activities intended to support it.' },
+    { title: 'Working With Us', status: [{ icon: '06', markerColor: '#3977c8' }], href: '/company/about-us/working-with-us', time: 'How clients, partners and specialists can start a conversation.' }
   ]"
 />
