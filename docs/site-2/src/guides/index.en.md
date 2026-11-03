@@ -49,7 +49,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 </NmEffectHero>
 
 <Acomponent
-  title="Numerimondes <span class='silky-bbi'>is an independent consulting and solutions company.</span>"
+	title="<h1>Numerimondes <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>is an <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>independent</span> consulting and solutions <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>company</span></span></h1>"
   introduction="We explore <span class='silky-i+115'>opportunities</span>, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
   :gallery="[
     {
@@ -109,7 +109,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
       alt: 'A shared workspace with a long table'
     }
   ]"
-  section-title="Possibility<br><span class='silky-bbi+115'>becomes valuable</span><br>through execution."
+  section-title="<h1 style=''>Possibility<br><span class='silky-bbi+115' style='color:var(--vp-c-brand-1);'>becomes valuable</span><br>through execution.</h1><br><br>"
   :paragraphs="[
     {
       before: `Every organization has opportunities waiting to be explored:`,
@@ -119,10 +119,10 @@ description: "Numerimondes helps organizations design, build, and operate depend
         alt: 'A team collaborating around a table',
         caption: 'People working through opportunities together'
       },
-      after: `processes that could run better, information that could support <span class='silky-i'>faster decisions</span>, new services worth developing, and ways to connect people, systems and markets.`
+      after: `processes that could run better, information that could support <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>faster decisions</span>, new services worth developing, and ways to connect people, systems and markets.`
     },
     {
-      before: `We combine research, <span class='silky-i'>commercial thinking</span> and engineering`,
+      before: `We combine research, <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>commercial thinking</span> and engineering`,
       image: {
         thumb: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80',
         src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85',
@@ -132,7 +132,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
       after: `to examine these possibilities, shape viable approaches and move selected projects into action.`
     },
     {
-      before: `Our contribution can begin with an idea, a question, an <span class='silky-i'>operational challenge</span>`,
+      before: `Our contribution can begin with an idea, a question, an <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>operational challenge</span>`,
       image: {
         thumb: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80',
         src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85',

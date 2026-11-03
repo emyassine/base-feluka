@@ -40,7 +40,7 @@ defineProps<{ homeLayout?: boolean }>()
   </div>
 </template>
 
-<style>
+<style scoped>
 .footer-deluqa-docs {
   box-sizing: border-box;
   width: 100%;

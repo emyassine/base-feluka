@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .docs-home {
   position: relative;
   isolation: isolate;

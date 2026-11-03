@@ -1596,7 +1596,7 @@ watch(modalOpen, (open) => {
   </section>
 </template>
 
-<style>
+<style scoped>
 @keyframes flex-carousel-title {
   from {
     opacity: 0;

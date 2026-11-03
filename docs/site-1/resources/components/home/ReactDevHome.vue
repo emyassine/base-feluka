@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .react-home {
   overflow-x: hidden;
   isolation: isolate;
