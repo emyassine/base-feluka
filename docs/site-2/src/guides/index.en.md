@@ -29,7 +29,6 @@ description: "Numerimondes helps organizations design, build, and operate depend
         indicatorIndex: 0,
         items: [
           { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa', icon: '/images/products/feluqa.png' },
-          { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
           { id: 'best-recruit', label: 'The Best Recruit', mobileLabel: 'Recruit', href: '/company/initiatives/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
         ],
       },
