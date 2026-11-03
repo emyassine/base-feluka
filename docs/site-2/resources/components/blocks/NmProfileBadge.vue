@@ -25,13 +25,19 @@ type ProfileName = {
   type?: 'geometric' | 'normal'
 }
 
+type ResponsiveWidth = {
+  mobile?: string
+  tablet?: string
+  desktop?: string
+}
+
 const props = withDefaults(defineProps<{
   name: ProfileName
   role?: string
   image?: string
   hoverImage?: string
   imageAlt?: string
-  widthOnParent?: string
+  widthOnParent?: ResponsiveWidth
   links?: ProfileLink[]
   logos?: ProfileLogo[]
 }>(), {
@@ -39,7 +45,7 @@ const props = withDefaults(defineProps<{
   image: '',
   hoverImage: '',
   imageAlt: '',
-  widthOnParent: '100%',
+  widthOnParent: () => ({ mobile: '100%', tablet: '100%', desktop: '100%' }),
   links: () => [],
   logos: () => [],
 })
@@ -61,7 +67,15 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
 </script>
 
 <template>
-  <article class="nm-profile-badge" :aria-label="label" :style="{ width: widthOnParent }">
+  <article
+    class="nm-profile-badge"
+    :aria-label="label"
+    :style="{
+      '--nm-width-mobile': widthOnParent.mobile ?? '100%',
+      '--nm-width-tablet': widthOnParent.tablet ?? widthOnParent.mobile ?? '100%',
+      '--nm-width-desktop': widthOnParent.desktop ?? widthOnParent.tablet ?? widthOnParent.mobile ?? '100%',
+    }"
+  >
     <div class="nm-profile-badge__card">
       <figure class="nm-profile-badge__portrait">
         <div class="nm-profile-badge__photo">
@@ -149,11 +163,23 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
  */
 .nm-profile-badge {
   container-type: inline-size;
-  width: 100%;
+  width: var(--nm-width-mobile, 100%);
   max-width: 42rem;
   margin-block: var(--space-3, 24px);
   color: var(--vp-c-text-1);
   font-family: var(--sans, Arial, Helvetica, sans-serif);
+}
+
+@media (min-width: 641px) {
+  .nm-profile-badge {
+    width: var(--nm-width-tablet, 100%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .nm-profile-badge {
+    width: var(--nm-width-desktop, 100%);
+  }
 }
 
 .nm-profile-badge__card {
