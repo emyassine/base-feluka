@@ -58,6 +58,10 @@ js-events:
 | **Distinction** | First Prize in Oratory, HEM Casablanca, 2018 |
 | **Working Languages** | French, English, Arabic, Darija, Spanish (written) |
 
+### Personal Interests
+
+Outside work, Yassine writes short stories and essays, reads poetry and books, and enjoys cycling alone. He also values meaningful conversations, discovering how things work, and solving problems.
+
 ## Your first conversation
 
 The person you speak to first is the person accountable for the work. Tell him the problem, the stakes and the timeframe.
