@@ -28,9 +28,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
         label: 'Our Products',
         indicatorIndex: 0,
         items: [
-          { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa', icon: 'https://cdn.builtin.com/cdn-cgi/image/f=auto,fit=scale-down,w=200,h=200/sites/www.builtin.com/files/2024-10/webflow_inc__logo.jpeg' },
+          { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa', icon: '/images/products/feluqa.png' },
           { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
-          { id: 'best-recruit', label: 'The Best Recruit', mobileLabel: 'Recruit', href: '/company/initiatives/the-best-recruit', icon: 'https://s3-new.macosicons.com/macosicons/parse/low_res_Mornye_7c8Y4p0Cnr-12343d0015.png' },
+          { id: 'best-recruit', label: 'The Best Recruit', mobileLabel: 'Recruit', href: '/company/initiatives/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
         ],
       },
       {
