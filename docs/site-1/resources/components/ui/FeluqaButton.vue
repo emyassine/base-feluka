@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
   tag?: 'button' | 'a'
   href?: string
   label?: string
+  icon?: string
   wrap?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
@@ -127,9 +128,13 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     @pointerleave="leavePointer"
     @click="preventDisabledLink"
   >
-    <span v-if="$slots.icon && iconPosition === 'before'" class="button-icon"><slot name="icon" /></span>
+    <span v-if="(icon || $slots.icon) && iconPosition === 'before'" class="button-icon">
+      <slot name="icon"><img v-if="icon" :src="icon" alt="" aria-hidden="true" /></slot>
+    </span>
     <span class="button-content"><slot>{{ label || 'Get Started' }}</slot></span>
-    <span v-if="$slots.icon && iconPosition === 'after'" class="button-icon"><slot name="icon" /></span>
+    <span v-if="(icon || $slots.icon) && iconPosition === 'after'" class="button-icon">
+      <slot name="icon"><img v-if="icon" :src="icon" alt="" aria-hidden="true" /></slot>
+    </span>
     <span v-if="$slots.badge || badge !== undefined" :class="['button-badge', `badge-${badgeColor}`]"><slot name="badge">{{ badge }}</slot></span>
   </component>
 </template>
@@ -212,6 +217,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .color-primary.outlined { color: var(--vp-c-brand-1)!important; }
 .color-gray.outlined { border-color: var(--vp-c-divider); }
 .button-icon { display: inline-flex; width: 1em; height: 1em; align-items: center; justify-content: center; }
+.button-icon img { width: 100%; height: 100%; object-fit: contain; }
 .button-badge { border-radius: 999px; padding: .2rem .4rem; font-size: .7em; background: rgb(255 255 255 / .2); }
 .is-disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
