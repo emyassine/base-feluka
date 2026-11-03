@@ -34,8 +34,7 @@ Research and continued learning are central to his work. He explores business mo
 <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
 
 <NmProfileBadge
-  :name="{ label: 'Yassine El Moumen', type: 'normal' }"
-  role="Founder and Managing Director. Connect with me on your favorite platform."
+  :name="{ label: 'Find Numerimondes’ founder on your preferred platforms. Get in touch for business advice, project discussions, or collaboration opportunities.', type: 'normal' }"
   image="/images/company/founder/yassine-01.jpeg"
   image-alt="Yassine El Moumen"
   :links="[
@@ -43,10 +42,6 @@ Research and continued learning are central to his work. He explores business mo
     { label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '@spmpst::icon::instagram', iconOnly: true },
     { label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '@spmpst::icon::whatsapp', iconOnly: true },
     { label: 'X', href: 'https://x.com/elmoumenyassine', icon: '@spmpst::icon::x', iconOnly: true }
-  ]"
-  :logos="[
-    { src: '/images/products/feluqa.png', alt: 'Feluqa' },
-    { src: '/images/products/TheBestRecruit.png', alt: 'The Best Recruit' }
   ]"
 />
 
