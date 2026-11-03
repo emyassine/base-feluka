@@ -309,10 +309,6 @@ const descriptionStyles = computed(() => ({
   background: #0c0c13;
 }
 
-.nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
-  opacity: 0.22;
-}
-
 .nm-effect-hero--light .nm-effect-hero__eyebrow,
 .nm-effect-hero--light p {
   color: #334155;
