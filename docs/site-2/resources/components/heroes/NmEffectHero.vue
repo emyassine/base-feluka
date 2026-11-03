@@ -238,13 +238,6 @@ const descriptionStyles = computed(() => ({
   line-height: 1.08;
 }
 
-.nm-effect-hero :deep(.nm-effect-hero__title-accent) {
-  font-family: "Romie", Georgia, serif;
-  font-size: 1.14em;
-  font-style: italic;
-  font-weight: 500;
-}
-
 .nm-effect-hero .nm-effect-hero__eyebrow {
   margin: 0 auto 1rem;
   color: rgb(255 255 255 / 0.82);
