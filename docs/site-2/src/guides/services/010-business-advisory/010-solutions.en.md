@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="SOLUTIONS · NUMERIMONDES"
-  title="Solutions for stronger <span class='silky-bi'>business performance</span>."
+  title="Solutions for stronger <span class='silky-bbi'>business performance</span>."
   description="We shape practical approaches around your organization, its operating context and the results it needs."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

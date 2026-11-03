@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="IN DEVELOPMENT · NUMERIMONDES"
-  title="<span class='silky-bi'>Engineering</span> across platforms and environments."
+  title="<span class='silky-bbi'>Engineering</span> across platforms and environments."
   description="Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

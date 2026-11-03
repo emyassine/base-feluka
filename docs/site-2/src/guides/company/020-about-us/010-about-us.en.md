@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="ABOUT NUMERIMONDES · NUMERIMONDES"
-  title="Ideas, strategy and the ability to <span class='silky-bi'>act</span>."
+  title="Ideas, strategy and the ability to <span class='silky-bbi'>act</span>."
   description="An independent consulting and solutions company in Casablanca, working across business operations, technology and new ventures."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="PREPARING FOR LAUNCH · NUMERIMONDES"
-  title="Better information. More <span class='silky-bi'>meaningful introductions</span>."
+  title="Better information. More <span class='silky-bbi'>meaningful introductions</span>."
   description="The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

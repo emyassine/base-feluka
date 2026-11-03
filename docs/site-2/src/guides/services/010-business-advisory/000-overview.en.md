@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="OUR SERVICES · NUMERIMONDES"
-  title="Expertise organized around your <span class='silky-bi'>objectives</span>."
+  title="Expertise organized around your <span class='silky-bbi'>objectives</span>."
   description="From early investigation to implementation and operational support, each mission is shaped around the work that matters."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

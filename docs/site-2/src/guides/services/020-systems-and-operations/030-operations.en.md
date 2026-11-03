@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="OPERATIONS · NUMERIMONDES"
-  title="Make <span class='silky-bi'>everyday work</span> easier to coordinate and improve."
+  title="Make <span class='silky-bbi'>everyday work</span> easier to coordinate and improve."
   description="We connect processes, information, people and tools to support more capable operations."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

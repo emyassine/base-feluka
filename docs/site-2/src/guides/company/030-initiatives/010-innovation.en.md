@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="RESEARCH &amp; NEW VENTURES · NUMERIMONDES"
-  title="<span class='silky-bi'>Curiosity</span> with a direction."
+  title="<span class='silky-bbi'>Curiosity</span> with a direction."
   description="We connect business insight and technological inquiry to explore ideas with a practical path to action."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

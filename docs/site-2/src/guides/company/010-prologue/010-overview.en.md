@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '40vh' }"
   eyebrow="NUMERIMONDES · COMPANY"
-  title="People, ideas and <span class='silky-bi'>initiatives</span> behind the work."
+  title="People, ideas and <span class='silky-bbi'>initiatives</span> behind the work."
   description="Explore how we work, what we are building and how to get in touch."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

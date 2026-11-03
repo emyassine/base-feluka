@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="BUSINESS CONSULTING · NUMERIMONDES"
-  title="Better <span class='silky-bi'>questions</span>. Clearer decisions. Actionable plans."
+  title="Better <span class='silky-bbi'>questions</span>. Clearer decisions. Actionable plans."
   description="We investigate operating challenges and opportunities, then help shape a practical route forward."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

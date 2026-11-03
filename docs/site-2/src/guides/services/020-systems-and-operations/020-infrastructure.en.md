@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="INFRASTRUCTURE · NUMERIMONDES"
-  title="Technical foundations for <span class='silky-bi'>dependable operations</span>."
+  title="Technical foundations for <span class='silky-bbi'>dependable operations</span>."
   description="We help organizations assess, plan and operate infrastructure for their applications, information and connected activities."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

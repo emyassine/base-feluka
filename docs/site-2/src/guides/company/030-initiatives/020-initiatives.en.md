@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="RESEARCH · PROTOTYPES · NEW VENTURES"
-  title="<span class='silky-bi'>Ideas</span> taking shape."
+  title="<span class='silky-bbi'>Ideas</span> taking shape."
   description="Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"

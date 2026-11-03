@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="DRAFT SPECIFICATION · NUMERIMONDES"
-  title="<span class='silky-bi'>Portable</span> content structures for site-building workflows."
+  title="<span class='silky-bbi'>Portable</span> content structures for site-building workflows."
   description="SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
