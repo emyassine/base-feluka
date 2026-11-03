@@ -193,6 +193,7 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   max-width: 100%;
   padding: 10px 18px 12px;
   background:
+    linear-gradient(181deg, var(--vp-c-brand-1) 0 8px, #fff0 9px 100%),
     linear-gradient(40deg, var(--vp-c-text-1) 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
     linear-gradient(-53deg, #fff0 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
     linear-gradient(-55deg, var(--vp-c-text-1) 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
@@ -215,7 +216,7 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   margin: 0;
   padding: 24px 0 28px;
   color: var(--vp-c-bg);
-  font-size: clamp(1.05rem, 3.5vw, 1.55rem);
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
   max-width: 100%;
   line-height: 1.35;
   transform: rotate(-2deg);
@@ -232,7 +233,7 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   color: var(--vp-c-brand-1);
   font-family: var(--display, var(--sans, Arial, Helvetica, sans-serif));
   font-size: clamp(0.92rem, 2.8vw, 1.2rem);
-  line-height: 1.4;
+  line-height: 1.65;
   list-style: none;
 }
 
@@ -291,7 +292,7 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   gap: 0.5rem;
   width: 100%;
   margin-top: 1.1rem;
-  padding-inline: 6px;
+  padding: 12px 6px;
 }
 
 .nm-profile-badge__logos a,
