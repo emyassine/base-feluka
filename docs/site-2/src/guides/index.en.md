@@ -110,7 +110,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
       alt: 'A shared workspace with a long table'
     }
   ]"
-  section-title="Possibility<br><span class='silky-bi+115'>becomes valuable</span><br>through execution."
+  section-title="Possibility<br><span class='silky-bbi+115'>becomes valuable</span><br>through execution."
   :paragraphs="[
     {
       before: `Every organization has opportunities waiting to be explored:`,
