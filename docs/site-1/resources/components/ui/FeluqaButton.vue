@@ -4,13 +4,14 @@ import { computed, onUnmounted, ref, type CSSProperties } from 'vue'
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 type ButtonColor = 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark'
 type ButtonVariant = ButtonColor | 'secondary'
+type ThemeIconColor = string | readonly [light: string, dark: string] | { light?: string; dark?: string }
 
 const props = withDefaults(defineProps<{
   tag?: 'button' | 'a'
   href?: string
   label?: string
   icon?: string
-  iconColor?: string
+  iconColor?: ThemeIconColor
   wrap?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
@@ -54,7 +55,11 @@ let animationFrame = 0
 let previousFrame = 0
 const iconStyle = computed<CSSProperties>(() => ({
   '--button-icon-src': props.icon ? `url(\"${props.icon}\")` : undefined,
-  '--button-icon-color': props.iconColor ?? 'currentColor',
+  ...(typeof props.iconColor === 'string'
+    ? { '--button-icon-color-light': props.iconColor, '--button-icon-color-dark': props.iconColor }
+    : Array.isArray(props.iconColor)
+      ? { '--button-icon-color-light': props.iconColor[0], '--button-icon-color-dark': props.iconColor[1] }
+      : { '--button-icon-color-light': props.iconColor?.light, '--button-icon-color-dark': props.iconColor?.dark }),
 }) as CSSProperties)
 const style = computed(() => ({
   ...(props.radius === undefined ? {} : { '--button-radius': `${Math.max(0, props.radius)}px` }),
@@ -179,6 +184,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   opacity: var(--button-tint-opacity);
 }
 .feluqa-button::after {
+  z-index: 2;
   inset: 0;
   padding: var(--button-thickness);
   border-radius: inherit;
@@ -222,7 +228,8 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .color-primary.outlined { color: var(--vp-c-brand-1)!important; }
 .color-gray.outlined { border-color: var(--vp-c-divider); }
 .button-icon { display: inline-flex; width: 1em; height: 1em; align-items: center; justify-content: center; }
-.button-icon-image { display: inline-block; width: 100%; height: 100%; background-color: var(--button-icon-color); -webkit-mask: var(--button-icon-src) center / contain no-repeat; mask: var(--button-icon-src) center / contain no-repeat; }
+.button-icon-image { display: inline-block; width: 100%; height: 100%; background-color: var(--button-icon-color-light, currentColor); -webkit-mask: var(--button-icon-src) center / contain no-repeat; mask: var(--button-icon-src) center / contain no-repeat; }
+.dark .button-icon-image { background-color: var(--button-icon-color-dark, var(--button-icon-color-light, currentColor)); }
 .button-badge { border-radius: 999px; padding: .2rem .4rem; font-size: .7em; background: rgb(255 255 255 / .2); }
 .is-disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {

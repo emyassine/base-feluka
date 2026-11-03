@@ -27,7 +27,7 @@ js-events:
   ]"
 >
   <template #actions>
-    <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" icon-color="#0A66C2" />
+    <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
   </template>
 </Acomponent>
 
