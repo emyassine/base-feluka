@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<{
   href?: string
   label?: string
   icon?: string
+  iconColor?: string
   wrap?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
@@ -51,6 +52,10 @@ const buttonColor = computed(() => selectedVariant.value === 'secondary' ? 'gray
 const buttonOutlined = computed(() => props.outlined || selectedVariant.value === 'secondary')
 let animationFrame = 0
 let previousFrame = 0
+const iconStyle = computed<CSSProperties>(() => ({
+  '--button-icon-src': props.icon ? `url(\"${props.icon}\")` : undefined,
+  '--button-icon-color': props.iconColor ?? 'currentColor',
+}) as CSSProperties)
 const style = computed(() => ({
   ...(props.radius === undefined ? {} : { '--button-radius': `${Math.max(0, props.radius)}px` }),
   '--button-tint': props.tint,
@@ -129,11 +134,11 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     @click="preventDisabledLink"
   >
     <span v-if="(icon || $slots.icon) && iconPosition === 'before'" class="button-icon">
-      <slot name="icon"><img v-if="icon" :src="icon" alt="" aria-hidden="true" /></slot>
+      <slot name="icon"><span v-if="icon" class="button-icon-image" :style="iconStyle" aria-hidden="true" /></slot>
     </span>
     <span class="button-content"><slot>{{ label || 'Get Started' }}</slot></span>
     <span v-if="(icon || $slots.icon) && iconPosition === 'after'" class="button-icon">
-      <slot name="icon"><img v-if="icon" :src="icon" alt="" aria-hidden="true" /></slot>
+      <slot name="icon"><span v-if="icon" class="button-icon-image" :style="iconStyle" aria-hidden="true" /></slot>
     </span>
     <span v-if="$slots.badge || badge !== undefined" :class="['button-badge', `badge-${badgeColor}`]"><slot name="badge">{{ badge }}</slot></span>
   </component>
@@ -217,7 +222,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 .color-primary.outlined { color: var(--vp-c-brand-1)!important; }
 .color-gray.outlined { border-color: var(--vp-c-divider); }
 .button-icon { display: inline-flex; width: 1em; height: 1em; align-items: center; justify-content: center; }
-.button-icon img { width: 100%; height: 100%; object-fit: contain; }
+.button-icon-image { display: inline-block; width: 100%; height: 100%; background-color: var(--button-icon-color); -webkit-mask: var(--button-icon-src) center / contain no-repeat; mask: var(--button-icon-src) center / contain no-repeat; }
 .button-badge { border-radius: 999px; padding: .2rem .4rem; font-size: .7em; background: rgb(255 255 255 / .2); }
 .is-disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
