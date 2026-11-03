@@ -19,9 +19,7 @@ js-events:
 
 # Yassine El Moumen
 
-Founder and Managing Director of Numerimondes.
-
-His work brings together business operations, consulting and software engineering.
+Founder and Managing Director of Numerimondes. His work brings together business operations, consulting and software engineering.
 
 ## From the operations floor to <span class='silky-bbi+115'>system design</span>
 
