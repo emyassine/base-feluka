@@ -148,7 +148,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <div style="width: min(100% - 40px, 544px) !important;  margin-inline: auto!important;">
 
   <h2 style="margin: 0 0 24px; font-weight: 500;">
-		What this can mean<br>for your <span class="silky-bi">business</span>
+		What this can mean<br>for your <span class="silky-bbi+115">business</span>
 </h2>
 
 <p>Expected benefits are assessed for each engagement; <span class="silky-i">specific results</span> depend on the project and its implementation.</p>
@@ -158,7 +158,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :items="[
     { title: `Better <span class='silky-bbi+115'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and investment choices.` },
     { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
-    { title: `Greater visibility and <span class='silky-i'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: `Accessible information, traceable processes and systems you can manage.` },
+    { title: `Greater visibility and <span class='silky-bbi+115'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: `Accessible information, traceable processes and systems you can manage.` },
     { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
     { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
@@ -248,13 +248,13 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px);  margin-inline: auto;">
 
-# One space with many possibilities. {#showcase}
+# One space with many <span class='silky-bbi+115'>possibilities.</span> {#showcase}
 
-**An interactive showcase of ideas, systems and solutions.**
+**An interactive showcase of <span class='silky-bi'>ideas, systems and solutions.</span>**
 
 Discover the areas we explore and the kinds of value that can be created. Browse by business challenge, sector or capability, and open individual stories, prototypes or demonstrations for further detail.
 
-## A few areas we explore
+## A few areas we <span class='silky-bbi+115'>explore</span>
 
 <BounceCards
   :images="[
@@ -337,7 +337,7 @@ Suggested interaction: one large visual canvas with switchable categories, layer
 and a clear click-through to the relevant project or service page.
 -->
 
-## Built around the mission.
+## Built around the <span class='silky-bbi+115'>mission.</span>
 
 Numerimondes operates **on a project-by-project basis**. Every assignment begins with an agreed objective and a clear scope. We assemble the combination of developers, consultants, operators and specialist partners suited to the work.
 
@@ -398,7 +398,7 @@ flowchart TD
 
 
 
-## Independent by design. Curious by nature.
+## Independent by design. <span class='silky-bbi+115'>Curious by nature.</span>
 
 Numerimondes was founded by **Yassine El Moumen**, its founder and managing director.
 
@@ -438,7 +438,7 @@ Join project teams when your expertise fits an assignment — across software en
 ::::
 
 
-## Initiatives in development
+## Initiatives in <span class='silky-bbi+115'>development</span>
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
@@ -479,7 +479,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   :card-height="220"
 />
 
-## Clear scope. Clear commercial terms.
+## Clear scope. Clear commercial <span class='silky-bbi+115'>terms.</span>
 
 Our proposals are structured around the type of work, the complexity of the mission and the responsibilities involved. Consulting, feasibility studies, implementation and ongoing services may follow different pricing models.
 
@@ -493,7 +493,7 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 
 
 
-## What could your next opportunity become?
+## What could your next opportunity <span class='silky-bbi+115'>become?</span>
 
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
