@@ -3,14 +3,62 @@
   "theme": "switch",
   "items": [
     {
-      "guide": "company",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
+      "text": {
+        "en": "Services"
       },
-      "menuTitle": {
-        "en": "Company"
-      }
+      "items": [
+        {
+          "text": {
+            "en": "Marketplace"
+          },
+          "items": [
+            {
+              "text": {
+                "en": "Explore services"
+              },
+              "link": "/services/marketplace",
+              "icon": "store"
+            }
+          ]
+        },
+        {
+          "text": {
+            "en": "Pricing"
+          },
+          "link": "/services/pricing",
+          "icon": "scale"
+        },
+        {
+          "text": {
+            "en": "Capabilities"
+          },
+          "items": {
+            "source": "collections",
+            "depth": "all",
+            "icon": true,
+            "collections": {
+              "pathPrefix": "002-capabilities",
+              "order": ["capabilities"],
+              "showIconFromParents": ["capabilities"],
+              "showParentsName": false
+            }
+          }
+        },
+        {
+          "text": {
+            "en": "Contact"
+          },
+          "items": [
+            {
+              "text": {
+                "en": "Contact Numerimondes"
+              },
+              "link": "/company/contact/",
+              "icon": "message-circle"
+            }
+          ]
+        }
+      ]
     },
     {
       "guide": "opportunities",
@@ -23,30 +71,14 @@
       }
     },
     {
-      "text": {
-        "en": "Services"
+      "guide": "company",
+      "items": {
+        "source": "subguides no-guide-index",
+        "icon": true
       },
-      "icon": "briefcase-business",
-      "items": [
-        {
-          "collection": "capabilities",
-          "icon": "lightbulb"
-        },
-        {
-          "text": {
-            "en": "Marketplace"
-          },
-          "link": "/services/marketplace",
-          "icon": "store"
-        },
-        {
-          "text": {
-            "en": "Understanding Pricing"
-          },
-          "link": "/services/pricing",
-          "icon": "scale"
-        }
-      ]
+      "menuTitle": {
+        "en": "Company"
+      }
     },
     {
       "text": {
@@ -67,13 +99,6 @@
           "showParentsName": false
         }
       }
-    },
-    {
-      "text": {
-        "en": "Contact"
-      },
-      "link": "/company/contact/",
-      "icon": "message-circle"
     }
   ],
   "actions": [
