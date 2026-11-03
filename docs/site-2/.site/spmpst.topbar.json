@@ -11,30 +11,7 @@
       },
       "menuTitle": {
         "en": "Services"
-      },
-      "menuTemplate": [
-        "mega.background-icon",
-        [
-          "title",
-          "image",
-          "icon",
-          "description",
-          "children"
-        ],
-        {
-          "mobileToo": false,
-          "cardHeight": 110,
-          "maxItems": 8,
-          "composition": {
-            "columns": [
-              [0],
-              [1, 2, 3],
-              [4],
-              [5, 6, 7]
-            ]
-          }
-        }
-      ]
+      }
     },
     {
       "guide": "opportunities",
@@ -67,9 +44,11 @@
         "hideIcon": false,
         "collections": {
           "order": [
+            "capabilities",
             "legal"
           ],
           "showIconFromParents": [
+            "capabilities",
             "legal"
           ],
           "showParentsName": false
