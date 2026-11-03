@@ -27,5 +27,9 @@ const effect = [
     :title-style="{ color: '#e2e8f0' }"
     :description-style="{ color: '#e2e8f0' }"
     :buttons="buttons"
-  />
+  >
+    <template #background><slot name="background" /></template>
+    <template #content><slot name="content"><slot /></slot></template>
+    <template #dock><slot name="dock" /></template>
+  </NmEffectHero>
 </template>
