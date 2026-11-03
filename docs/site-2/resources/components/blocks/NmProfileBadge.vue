@@ -194,7 +194,8 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   max-width: 100%;
   padding: 3px;
   background: var(--vp-c-brand-1);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px));
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  transform: rotate(-1deg);
 }
 
 .nm-profile-badge__name {
@@ -204,7 +205,7 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   padding: 10px 18px 16px;
   border: 0;
   background: var(--vp-c-bg);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
   color: var(--vp-c-brand-1);
   font-family: var(--display, var(--sans, Arial, Helvetica, sans-serif));
   font-size: clamp(1.45rem, 4vw, 1.9rem);
