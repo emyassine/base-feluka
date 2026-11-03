@@ -14,8 +14,8 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '40vh' }"
   eyebrow="NUMERIMONDES · COMPANY"
-  title="People, ideas and <span class='silky-bbi'>initiatives</span> behind the work."
-  description="Explore how we work, what we are building and how to get in touch."
+  title="The people and <span class='silky-bbi'>direction</span> behind the work."
+  description="Learn about Numerimondes, how we work today and what we aim to build."
   :title-style-dark="{ color: '#ffffff' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"
@@ -29,9 +29,13 @@ Numerimondes brings together business understanding, software, infrastructure an
 
 ### About Numerimondes
 
-Learn about our delivery model, principles and the way we work with organizations.
+Start with the company and founder, then explore our current delivery model, working principles, future team ambition and business strategy.
 
 <FeluqaButton tag="a" href="/company/about-us/about-us" label="About Numerimondes" />
+
+<FeluqaButton tag="a" href="/company/about-us/ambition" label="Our ambition" />
+
+<FeluqaButton tag="a" href="/company/about-us/business-strategy" label="Business strategy" />
 
 ### Get in touch
 
