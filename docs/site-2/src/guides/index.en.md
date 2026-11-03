@@ -10,14 +10,13 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '90vh' }"
   :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
-  :title="{ text: 'Ideas and operations that move businesses forward.', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
+  :title="{ text: `Ideas and operations that move businesses forward <span class='nm-effect-hero__title-accent'>sweetly</span>.`, color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
   :description="{ text: 'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
   :buttons="[
     { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', color: 'primary' },
     { label: 'Explore our capabilities', href: '/services/', color: 'gray' }
   ]"
 >
-	<template #title>Ideas and operations that move businesses forward <span class="nm-effect-hero__title-accent">sweetly</span>.</template>
 	<template #dock>
   <NmSimpleHeroDock
     default-group="Our Products"

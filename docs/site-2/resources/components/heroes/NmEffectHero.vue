@@ -136,7 +136,7 @@ const descriptionStyles = computed(() => ({
     </div>
     <div class="nm-effect-hero__content">
       <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }">{{ eyebrowText }}</p>
-      <h1 :style="titleStyles"><slot name="title">{{ titleText }}</slot></h1>
+      <h1 :style="titleStyles" v-html="titleText" />
       <p :style="descriptionStyles" v-html="descriptionText" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
         <FeluqaButton
