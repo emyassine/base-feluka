@@ -35,8 +35,8 @@ Our work spans business consulting, systems and operations, and the development 
   label="About Numerimondes"
   :start-margin="false"
   :items="[
-    { title: 'People & Team', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/people-and-team', time: 'Meet the founder and understand the team model, today and in the future.' },
-    { title: 'How We Work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our current founder-led, project-based delivery model.' },
+    { title: 'People & Team', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/people-and-team', time: 'Meet the founder and learn how contributors work together.' },
+    { title: 'How We Work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our founder-led, project-based delivery model.' },
     { title: 'Working Principles', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/company/about-us/working-principles', time: 'The commitments that guide our work and decisions.' },
     { title: 'Our Ambition', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/about-us/ambition', time: 'The small, technical team and partner network we aim to build.' },
     { title: 'Business Strategy', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/about-us/business-strategy', time: 'The planned flagship offer and the activities intended to support it.' },

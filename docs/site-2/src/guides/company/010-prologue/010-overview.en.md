@@ -15,7 +15,7 @@ js-events:
   :hero-style="{ minHeight: '40vh' }"
   eyebrow="NUMERIMONDES · COMPANY"
   title="The people and <span class='silky-bbi'>direction</span> behind the work."
-  description="Learn about Numerimondes, how we work today and what we aim to build."
+  description="Learn about Numerimondes, its founder-led model, how we work and what we aim to build."
   :title-style="{ color: '#e2e8f0' }"
   :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"

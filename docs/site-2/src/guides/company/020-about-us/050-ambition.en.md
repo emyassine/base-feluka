@@ -16,8 +16,8 @@ js-events:
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '48vh' }"
   eyebrow="OUR AMBITION · NUMERIMONDES"
-  title="Small team. <span class='silky-bbi'>High capability</span>."
-  description="We aim to build a focused, highly technical team that can make good decisions close to the work and move with care and speed."
+  title="Founder-led. Flat teams. <span class='silky-bbi'>High capability</span>."
+  description="We organize work around small, highly capable teams that can make decisions close to the work and deliver with care and speed."
   :title-style="{ color: '#e2e8f0' }"
   :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Our business strategy', href: '/company/about-us/business-strategy' }, { label: 'Work with us', href: '/company/about-us/working-with-us', color: 'gray' }]"
@@ -29,11 +29,11 @@ js-events:
 
 <Acomponent
   title="A team built for <span class='silky-bbi'>focused execution</span>"
-  introduction="Our intended model is a small, technically capable, low-hierarchy team with strong individual ownership. We believe a focused team can keep communication direct, reduce handoffs and spend more time solving the problem."
+  introduction="Founder-led is a deliberate operating principle: clear direction and context from the founder create leverage, while small, technically strong teams act with autonomy and ownership. A flat structure keeps communication direct and decisions close to the work."
   section-title="A strong core, supported by <span class='silky-bbi+115'>trusted partners</span>."
   :paragraphs="[
     { before: 'We want to create the conditions for a durable network of independent specialists and partner organizations.', after: 'Partners can contribute where their experience fits the work, with scope, responsibilities and commercial terms agreed up front.' },
-    { before: 'This is an ambition for how Numerimondes can grow.', after: 'The current company remains founder-led and project-based; our present delivery model is described in How We Work.' }
+    { before: 'By team, we mean the people who coordinate and deliver the work together.', after: 'The term describes how work is organized, not whether contributors are employees, independent specialists or partner organizations. Our founder-led delivery model is described in <a href=&quot;/company/about-us/delivery-model&quot;>How We Work</a>.' }
   ]"
 />
 
