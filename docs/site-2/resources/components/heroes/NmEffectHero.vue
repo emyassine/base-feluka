@@ -58,8 +58,13 @@ const props = withDefaults(defineProps<{
 const { isDark } = useData()
 const selectedEffect = computed(() => props.effect[0])
 const lightBackgroundStyle = computed<CSSProperties | undefined>(() => {
-  const palette = props.background?.light
-  if (isDark.value || !palette) return undefined
+  if (isDark.value) return undefined
+  const palette = props.background?.light ?? {
+    start: '#f6f8ff',
+    middle: '#eaf0ff',
+    end: '#e3edfb',
+    accent: '#3977c8',
+  }
   return {
     '--nm-hero-light-start': palette.start,
     '--nm-hero-light-middle': palette.middle,
@@ -104,7 +109,7 @@ const effectProps = computed<Record<string, unknown>>(() => {
 
   if (selectedEffect.value !== 'silk') return merged
 
-  const modeColor = isDark.value ? darkColor : lightColor
+  const modeColor = isDark.value ? (darkColor ?? merged.color) : (lightColor ?? '#d5e2fa')
 
   return {
     ...merged,
@@ -178,6 +183,7 @@ const descriptionStyles = computed(() => ({
   place-items: center;
   margin: 0 calc(50% - 50vw) 3rem;
   overflow: hidden;
+  border-radius: var(--radius-lg);
   background: #0c0c13;
 }
 
@@ -230,6 +236,7 @@ const descriptionStyles = computed(() => ({
   pointer-events: auto;
 }
 
+.nm-effect-hero--light { color: #172033; }
 .nm-effect-hero--dark { color: #fff; }
 
 .nm-effect-hero h1 {
@@ -303,7 +310,7 @@ const descriptionStyles = computed(() => ({
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
-  opacity: 1;
+  opacity: 0.22;
 }
 
 .nm-effect-hero--light .nm-effect-hero__eyebrow,

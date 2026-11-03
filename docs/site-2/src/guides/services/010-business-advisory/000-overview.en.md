@@ -15,9 +15,7 @@ js-events:
   eyebrow="OUR SERVICES · NUMERIMONDES"
   title="Expertise organized around your <span class='silky-bbi'>objectives</span>."
   description="From early investigation to implementation and operational support, each mission is shaped around the work that matters."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', color: 'gray' }]"
 />

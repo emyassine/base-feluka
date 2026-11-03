@@ -16,9 +16,7 @@ js-events:
   eyebrow="NUMERIMONDES · COMPANY"
   title="People, ideas and <span class='silky-bbi'>initiatives</span> behind the work."
   description="Explore how we work, what we are building and how to get in touch."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"
 />

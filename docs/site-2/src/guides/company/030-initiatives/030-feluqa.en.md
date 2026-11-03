@@ -15,9 +15,7 @@ js-events:
   eyebrow="IN DEVELOPMENT · NUMERIMONDES"
   title="<span class='silky-bbi'>Engineering</span> across platforms and environments."
   description="Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />

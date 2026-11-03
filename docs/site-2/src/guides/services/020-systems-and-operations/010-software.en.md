@@ -16,9 +16,7 @@ js-events:
   eyebrow="SOFTWARE &amp; SYSTEMS · NUMERIMONDES"
   title="Technology shaped by the <span class='silky-bbi'>work</span> it supports."
   description="We scope applications, workflows and information systems around the people and processes that rely on them."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss a system', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />

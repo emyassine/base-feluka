@@ -16,9 +16,7 @@ js-events:
   eyebrow="INFRASTRUCTURE · NUMERIMONDES"
   title="Technical foundations for <span class='silky-bbi'>dependable operations</span>."
   description="We help organizations assess, plan and operate infrastructure for their applications, information and connected activities."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss infrastructure', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />

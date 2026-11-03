@@ -16,9 +16,7 @@ js-events:
   eyebrow="ENGAGEMENTS &amp; PRICING · NUMERIMONDES"
   title="The right <span class='silky-bbi'>commercial model</span> for the mission."
   description="A useful proposal explains what you receive, which decisions you need to make and what the engagement will cost."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Request a proposal', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
 />

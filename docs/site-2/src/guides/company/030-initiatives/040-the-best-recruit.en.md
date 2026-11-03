@@ -15,9 +15,7 @@ js-events:
   eyebrow="PREPARING FOR LAUNCH · NUMERIMONDES"
   title="Better information. More <span class='silky-bbi'>meaningful introductions</span>."
   description="The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />

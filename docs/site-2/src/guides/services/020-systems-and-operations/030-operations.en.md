@@ -16,9 +16,7 @@ js-events:
   eyebrow="OPERATIONS · NUMERIMONDES"
   title="Make <span class='silky-bbi'>everyday work</span> easier to coordinate and improve."
   description="We connect processes, information, people and tools to support more capable operations."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss operations', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />

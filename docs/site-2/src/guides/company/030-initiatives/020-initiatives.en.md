@@ -15,9 +15,7 @@ js-events:
   eyebrow="RESEARCH · PROTOTYPES · NEW VENTURES"
   title="<span class='silky-bbi'>Ideas</span> taking shape."
   description="Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss an idea', href: '/company/prologue/contact?topic=innovation' }, { label: 'How we innovate', href: '/company/initiatives/', color: 'gray' }]"
 />

@@ -15,9 +15,7 @@ js-events:
   eyebrow="RESEARCH &amp; NEW VENTURES · NUMERIMONDES"
   title="<span class='silky-bbi'>Curiosity</span> with a direction."
   description="We connect business insight and technological inquiry to explore ideas with a practical path to action."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', color: 'gray' }]"
 />

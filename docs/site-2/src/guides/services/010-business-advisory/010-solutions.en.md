@@ -16,9 +16,7 @@ js-events:
   eyebrow="SOLUTIONS · NUMERIMONDES"
   title="Solutions for stronger <span class='silky-bbi'>business performance</span>."
   description="We shape practical approaches around your organization, its operating context and the results it needs."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss a solution', href: '/company/prologue/contact?topic=solution' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
 />

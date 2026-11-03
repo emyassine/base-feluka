@@ -15,9 +15,7 @@ js-events:
   eyebrow="DRAFT SPECIFICATION · NUMERIMONDES"
   title="<span class='silky-bbi'>Portable</span> content structures for site-building workflows."
   description="SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss SPMPST', href: '/company/prologue/contact?topic=innovation' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />

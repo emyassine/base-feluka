@@ -16,9 +16,7 @@ js-events:
   eyebrow="BUSINESS CONSULTING · NUMERIMONDES"
   title="Better <span class='silky-bbi'>questions</span>. Clearer decisions. Actionable plans."
   description="We investigate operating challenges and opportunities, then help shape a practical route forward."
-  :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
-  :description-style-light="{ color: '#e2e8f0' }"
   :description-style-dark="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss consulting', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />
