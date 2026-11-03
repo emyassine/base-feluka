@@ -442,7 +442,6 @@ const rootStyle = computed(() => ({
                         class="nm-dock__image-wrap"
                         aria-hidden="true"
                       >
-                        <img class="nm-dock__image-blur" :src="item.icon" alt="" draggable="false" decoding="async" />
                         <img class="nm-dock__image" :src="item.icon" alt="" draggable="false" decoding="async" />
                       </span>
                       <component
@@ -644,6 +643,7 @@ const rootStyle = computed(() => ({
   --_p: calc(var(--_v) - var(--_r) / 2);
 
   padding: 0;
+  border: 0;
   background: transparent;
   box-shadow: none;
   overflow: hidden;
@@ -670,11 +670,7 @@ const rootStyle = computed(() => ({
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.24);
-  background: var(--vp-c-bg-soft);
-  box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
 }
-.nm-dock__image-blur,
 .nm-dock__image {
   position: absolute;
   inset: 0;
@@ -682,14 +678,6 @@ const rootStyle = computed(() => ({
   width: 100%;
   height: 100%;
   margin: 0;
-}
-.nm-dock__image-blur {
-  object-fit: cover;
-  filter: blur(8px) saturate(1.25);
-  transform: scale(1.2);
-}
-.nm-dock__image {
-  z-index: 1;
   object-fit: contain;
 }
 .nm-dock__item.tone--server .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
