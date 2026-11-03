@@ -99,7 +99,7 @@ const effectProps = computed<Record<string, unknown>>(() => {
       }
       break
   }
-  const { lightColor, darkColor, noise, ...injected } = props.effect[1]?.inject ?? {}
+  const { lightColor, darkColor, lightNoise, lightSpeed, ...injected } = props.effect[1]?.inject ?? {}
   const merged = { ...defaults, ...injected }
 
   if (selectedEffect.value !== 'silk') return merged
@@ -109,7 +109,9 @@ const effectProps = computed<Record<string, unknown>>(() => {
   return {
     ...merged,
     ...(modeColor === undefined ? {} : { color: modeColor }),
-    ...(noise === undefined ? {} : { noiseIntensity: noise }),
+    ...(isDark.value ? {} : { soft: true }),
+    ...(!isDark.value && lightNoise !== undefined ? { noiseIntensity: lightNoise } : {}),
+    ...(!isDark.value && lightSpeed !== undefined ? { speed: lightSpeed } : {}),
   }
 })
 const titleStyles = computed(() => ({
@@ -198,15 +200,6 @@ const descriptionStyles = computed(() => ({
 .nm-effect-hero__background-slot {
   position: absolute;
   inset: 0;
-}
-
-/* Keep animated effects behind a quiet surface so text stays readable. */
-.nm-effect-hero--light .nm-effect-hero__background::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(180deg, rgb(248 250 255 / 0.34), rgb(248 250 255 / 0.48));
-  pointer-events: none;
 }
 
 .nm-effect-hero__content {
@@ -307,9 +300,8 @@ const descriptionStyles = computed(() => ({
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
-  opacity: 0.34;
-  mix-blend-mode: multiply;
-  filter: saturate(1.25) contrast(0.96);
+  opacity: 0.58;
+  filter: brightness(1.02) saturate(1.22) contrast(1.02);
 }
 
 .nm-effect-hero--light .nm-effect-hero__eyebrow,

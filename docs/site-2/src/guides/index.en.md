@@ -7,7 +7,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 ---
 <div></div>
 <NmEffectHero
-  :effect="['silk', { inject: { lightColor: '#4f86e6', darkColor: '#141D2A', noise: 0.3 } }]"
+  :effect="['silk', { inject: { lightColor: '#3980df', darkColor: '#141D2A', lightNoise: 0.05, lightSpeed: 1.8, noiseIntensity: 0.3, speed: 5 } }]"
   :hero-style="{ minHeight: '90vh' }"
   :background="{
     light: { start: '#f8fbff', middle: '#eef5ff', end: '#f7f9ff', accent: '#60a5fa' },
