@@ -10,13 +10,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '48vh' }"
-  eyebrow="BUSINESS STRATEGY · NUMERIMONDES"
-  title="Build around a <span class='silky-bbi'>clear flagship</span>."
-  description="Our intended strategy is to develop one focused offering, then support it with complementary services, partnerships and useful adjacent initiatives."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "BUSINESS STRATEGY · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Build around a <span class=&#39;silky-bbi&#39;>clear flagship</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "Our intended strategy is to develop one focused offering, then support it with complementary services, partnerships and useful adjacent initiatives.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Explore The Best Recruit', href: '/company/initiatives/the-best-recruit' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
 />
 
@@ -32,6 +30,7 @@ js-events:
 
 <Timeline
   label="How the strategy is intended to work"
+  :start-margin="false"
   :items="[
     { title: 'Develop the flagship', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/initiatives/the-best-recruit', time: 'Prepare The Best Recruit as a focused service with clear value for candidates and employers.' },
     { title: 'Add complementary work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/', time: 'Use relevant consulting and project work to build customer understanding and support sustainable operations.' },

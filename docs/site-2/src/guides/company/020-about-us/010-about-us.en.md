@@ -10,13 +10,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="ABOUT NUMERIMONDES · NUMERIMONDES"
-  title="Ideas, strategy and the ability to <span class='silky-bbi'>act</span>."
-  description="An independent consulting and solutions company in Casablanca, working across business operations, technology and new ventures."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "ABOUT NUMERIMONDES · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Ideas, strategy and the ability to <span class=&#39;silky-bbi&#39;>act</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "An independent consulting and solutions company in Casablanca, working across business operations, technology and new ventures.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact' }, { label: 'Explore innovation', href: '/company/initiatives/innovation', color: 'gray' }]"
 />
 
@@ -45,6 +43,7 @@ Research and continued learning are a central part of his work, from business mo
 
 <Timeline
   label="About Numerimondes"
+  :start-margin="false"
   :items="[
     { title: 'How We Work', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our current founder-led, project-based delivery model.' },
     { title: 'Working Principles', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/working-principles', time: 'The commitments that guide our work and decisions.' },

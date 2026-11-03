@@ -10,13 +10,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="OUR SERVICES · NUMERIMONDES"
-  title="Expertise organized around your <span class='silky-bbi'>objectives</span>."
-  description="From early investigation to implementation and operational support, each mission is shaped around the work that matters."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "OUR SERVICES · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Expertise organized around your <span class=&#39;silky-bbi&#39;>objectives</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "From early investigation to implementation and operational support, each mission is shaped around the work that matters.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Discuss your needs', href: '/company/prologue/contact?topic=project' }, { label: 'See our approach to pricing', href: '/services/business-advisory/pricing', color: 'gray' }]"
 />
 

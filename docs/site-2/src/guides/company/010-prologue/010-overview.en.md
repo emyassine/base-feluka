@@ -11,13 +11,11 @@ js-events:
 
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '40vh' }"
-  eyebrow="NUMERIMONDES · COMPANY"
-  title="The people and <span class='silky-bbi'>direction</span> behind the work."
-  description="Learn about Numerimondes, how we work today and what we aim to build."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "NUMERIMONDES · COMPANY", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "The people and <span class=&#39;silky-bbi&#39;>direction</span> behind the work.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "Learn about Numerimondes, how we work today and what we aim to build.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"
 />
 

@@ -11,13 +11,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="INFRASTRUCTURE · NUMERIMONDES"
-  title="Technical foundations for <span class='silky-bbi'>dependable operations</span>."
-  description="We help organizations assess, plan and operate infrastructure for their applications, information and connected activities."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "INFRASTRUCTURE · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Technical foundations for <span class=&#39;silky-bbi&#39;>dependable operations</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "We help organizations assess, plan and operate infrastructure for their applications, information and connected activities.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Discuss infrastructure', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />
 

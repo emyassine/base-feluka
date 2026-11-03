@@ -10,16 +10,13 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '48vh' }"
-  eyebrow="OUR AMBITION · NUMERIMONDES"
-  title="Small team. <span class='silky-bbi'>High capability</span>."
-  description="We aim to build a focused, highly technical team that can make good decisions close to the work and move with care and speed."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "OUR AMBITION · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Small team. <span class=&#39;silky-bbi&#39;>High capability</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "We aim to build a focused, highly technical team that can make good decisions close to the work and move with care and speed.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Our business strategy', href: '/company/about-us/business-strategy' }, { label: 'Work with us', href: '/company/about-us/working-with-us', color: 'gray' }]"
 />
-
 <Acomponent
   title="A team built for <span class='silky-bbi'>focused execution</span>"
   introduction="Our intended model is a small, technically capable, low-hierarchy team with strong individual ownership. We believe a focused team can keep communication direct, reduce handoffs and spend more time solving the problem."
@@ -29,9 +26,9 @@ js-events:
     { before: 'This is an ambition for how Numerimondes can grow.', after: 'The current company remains founder-led and project-based; our present delivery model is described in <a href="/company/about-us/delivery-model">How We Work</a>.' }
   ]"
 />
-
 <Timeline
   label="What this ambition means in practice"
+  :start-margin="false"
   :items="[
     { title: 'Keep the core focused', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Build a small team with complementary, technically strong skills.' },
     { title: 'Keep decisions close to the work', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'Use a flat structure with clear ownership and direct communication.' },
@@ -39,13 +36,8 @@ js-events:
     { title: 'Build for sustainable delivery', status: [{ icon: '04', markerColor: '#3977c8' }], time: 'Grow through useful offerings and partnerships that create lasting value.' }
   ]"
 />
-
 <div style="width: min(100% - 40px, 720px) !important; margin-inline: auto !important;">
-
-## Work with us
-
-We are interested in meeting people who bring strong technical or domain expertise and enjoy taking responsibility for meaningful work. Collaboration depends on a clear opportunity, a good fit and agreed terms.
-
-**Start a conversation** → `/company/prologue/contact?topic=partnership`
-
+<h2>Work with us</h2
+<p>We are interested in meeting people who bring strong technical or domain expertise and enjoy taking responsibility for meaningful work. Collaboration depends on a clear opportunity, a good fit and agreed terms.</p>
+<FeluqaButton tag="a" href="/company/prologue/contact?topic=partnership" label="Start a conversation"/>
 </div>

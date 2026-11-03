@@ -11,18 +11,17 @@ js-events:
 
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '42vh' }"
-  eyebrow="HOW WE WORK · NUMERIMONDES"
-  title="Principles for <span class='silky-bbi'>useful work</span>."
-  description="A few practical commitments guide how we explore opportunities, make decisions and deliver with others."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "HOW WE WORK · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Principles for <span class=&#39;silky-bbi&#39;>useful work</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "A few practical commitments guide how we explore opportunities, make decisions and deliver with others.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'How we work', href: '/company/about-us/delivery-model' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
 />
 
 <Timeline
   label="Working principles"
+  :start-margin="false"
   :items="[
     { title: 'Clarity', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Make business goals, constraints and decisions understandable.' },
     { title: 'Curiosity', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'Research opportunities and consider thoughtful alternatives.' },

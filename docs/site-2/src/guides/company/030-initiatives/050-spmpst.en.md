@@ -10,13 +10,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="DRAFT SPECIFICATION · NUMERIMONDES"
-  title="<span class='silky-bbi'>Portable</span> content structures for site-building workflows."
-  description="SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "DRAFT SPECIFICATION · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "<span class=&#39;silky-bbi&#39;>Portable</span> content structures for site-building workflows.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Discuss SPMPST', href: '/company/prologue/contact?topic=innovation' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />
 

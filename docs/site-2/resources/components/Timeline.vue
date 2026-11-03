@@ -21,13 +21,15 @@ interface TimelineStatus {
 withDefaults(defineProps<{
   items: TimelineItem[]
   label?: string
+  startMargin?: boolean
 }>(), {
   label: 'Activity timeline',
+  startMargin: true,
 })
 </script>
 
 <template>
-  <ol class="timeline" :aria-label="label">
+  <ol class="timeline" :class="{ 'timeline--no-start-margin': !startMargin }" :aria-label="label">
     <li v-for="(item, index) in items" :key="`${item.commit}-${index}`" class="timeline__item">
       <span
         v-if="item.status?.length"
@@ -77,6 +79,10 @@ withDefaults(defineProps<{
   padding: 0;
   color: inherit;
   list-style: none;
+}
+
+.timeline--no-start-margin {
+  margin-inline-start: 0;
 }
 
 .timeline__item {

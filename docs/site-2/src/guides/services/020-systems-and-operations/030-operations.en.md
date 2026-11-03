@@ -11,13 +11,11 @@ js-events:
 ---
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="OPERATIONS · NUMERIMONDES"
-  title="Make <span class='silky-bbi'>everyday work</span> easier to coordinate and improve."
-  description="We connect processes, information, people and tools to support more capable operations."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "OPERATIONS · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "Make <span class=&#39;silky-bbi&#39;>everyday work</span> easier to coordinate and improve.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "We connect processes, information, people and tools to support more capable operations.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Discuss operations', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />
 

@@ -11,13 +11,11 @@ js-events:
 
 <NmEffectHero
   :full-bleed="false"
-  :effect="['silk', { inject: { color: '#141D2A' } }]"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '42vh' }"
-  eyebrow="DELIVERY MODEL · NUMERIMONDES"
-  title="The right people, around <span class='silky-bbi'>the work</span>."
-  description="We shape each assignment around its goals and bring in relevant expertise when the work calls for it."
-  :title-style-dark="{ color: '#ffffff' }"
-  :description-style-dark="{ color: '#e2e8f0' }"
+  :eyebrow='{ text: "DELIVERY MODEL · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :title='{ text: "The right people, around <span class=&#39;silky-bbi&#39;>the work</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  :description='{ text: "We shape each assignment around its goals and bring in relevant expertise when the work calls for it.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
   :buttons="[{ label: 'Our principles', href: '/company/about-us/working-principles' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
 />
 
