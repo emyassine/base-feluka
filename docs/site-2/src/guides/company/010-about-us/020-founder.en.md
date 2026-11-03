@@ -27,12 +27,8 @@ js-events:
   ]"
 />
 
-<NmProse>
-
 ## Your first conversation
 
 The person you speak to first is the person accountable for the work. Tell him the problem, the stakes and the timeframe.
 
 <FeluqaButton tag="a" href="/company/contact/contact?topic=project" label="Start a conversation" />
-
-</NmProse>

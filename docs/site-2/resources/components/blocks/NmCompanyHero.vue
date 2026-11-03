@@ -28,8 +28,8 @@ const effect = [
     :description-style="{ color: '#e2e8f0' }"
     :buttons="buttons"
   >
-    <template #background><slot name="background" /></template>
-    <template #content><slot name="content"><slot /></slot></template>
-    <template #dock><slot name="dock" /></template>
+    <template v-if="$slots.background" #background><slot name="background" /></template>
+    <template v-if="$slots.content || $slots.default" #content><slot name="content"><slot /></slot></template>
+    <template v-if="$slots.dock" #dock><slot name="dock" /></template>
   </NmEffectHero>
 </template>
