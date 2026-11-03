@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<{
   image?: string
   hoverImage?: string
   imageAlt?: string
+  widthOnParent?: string
   links?: ProfileLink[]
   logos?: ProfileLogo[]
 }>(), {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<{
   image: '',
   hoverImage: '',
   imageAlt: '',
+  widthOnParent: '100%',
   links: () => [],
   logos: () => [],
 })
@@ -59,7 +61,7 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
 </script>
 
 <template>
-  <article class="nm-profile-badge" :aria-label="label">
+  <article class="nm-profile-badge" :aria-label="label" :style="{ width: widthOnParent }">
     <div class="nm-profile-badge__card">
       <figure class="nm-profile-badge__portrait">
         <div class="nm-profile-badge__photo">
