@@ -332,6 +332,7 @@ onBeforeUnmount(() => {
 /* Items                                                               */
 /* ------------------------------------------------------------------ */
 const bouncing = ref<number | null>(null)
+let pendingNavigation: { index: number; href: string; external: boolean; timer: number } | null = null
 
 const itemKey = (item: DockItem, index: number) => item.id ?? String(index)
 const isActive = (group: ResolvedGroup, item: DockItem, index: number) =>
@@ -352,10 +353,48 @@ function itemClasses(item: DockItem) {
   ]
 }
 
-function activate(item: DockItem, index: number) {
+function finishBounce(index: number) {
+  if (!pendingNavigation || pendingNavigation.index !== index) {
+    if (bouncing.value === index) bouncing.value = null
+    return
+  }
+
+  const navigation = pendingNavigation
+  pendingNavigation = null
+  window.clearTimeout(navigation.timer)
+  bouncing.value = null
+
+  if (navigation.external) {
+    window.open(navigation.href, '_blank', 'noopener,noreferrer')
+  } else {
+    window.location.assign(navigation.href)
+  }
+}
+
+function activate(event: MouseEvent, item: DockItem, index: number) {
+  // Keep native modified clicks (new tab/window, middle click) intact.
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+    item.onClick?.()
+    emit('select', item, index)
+    return
+  }
+
+  if (item.href) event.preventDefault()
   item.onClick?.()
   emit('select', item, index)
   bouncing.value = index
+
+  if (!item.href) return
+
+  if (pendingNavigation) window.clearTimeout(pendingNavigation.timer)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    pendingNavigation = { index, href: item.href, external: item.external === true, timer: 0 }
+    finishBounce(index)
+    return
+  }
+
+  const timer = window.setTimeout(() => finishBounce(index), 700)
+  pendingNavigation = { index, href: item.href, external: item.external === true, timer }
 }
 
 const toCss = (value: string | number) => (typeof value === 'number' ? `${value}px` : value)
@@ -421,7 +460,7 @@ const rootStyle = computed(() => ({
                   :aria-label="item.label"
                   :aria-current="isActive(activeGroup, item, index) ? 'true' : undefined"
                   draggable="false"
-                  @click="activate(item, index)"
+                  @click="activate($event, item, index)"
                   @focus="onItemFocus($event, index)"
                   @blur="compute(null)"
                   @keydown="onItemKeydown($event, index)"
@@ -433,7 +472,7 @@ const rootStyle = computed(() => ({
                       'is-image-background': iconMode(item) === 'image',
                     }"
                     :style="tileStyle(item)"
-                    @animationend="bouncing = null"
+                    @animationend="finishBounce(index)"
                   >
                     <!-- One tile: artwork is its background; icons sit centered on it. -->
                     <slot :name="`icon-${itemKey(item, index)}`" :item="item">
