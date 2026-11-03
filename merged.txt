@@ -1,0 +1,843 @@
+==================================================
+STRUCTURE
+==================================================
+
+--- Directory: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company ---
+/home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company
+├── 010-prologue
+│   ├── 010-overview.en.md
+│   ├── 020-contact.en.md
+│   └── spmpst.sidebar.json
+├── 020-about-us
+│   ├── 010-about-us.en.md
+│   ├── 015-people-and-team.en.md
+│   ├── 020-delivery-model.en.md
+│   ├── 030-working-principles.en.md
+│   ├── 040-working-with-us.en.md
+│   ├── 050-ambition.en.md
+│   ├── 060-business-strategy.en.md
+│   └── spmpst.sidebar.json
+├── 030-initiatives
+│   ├── 010-innovation.en.md
+│   ├── 020-initiatives.en.md
+│   ├── 030-feluqa.en.md
+│   ├── 040-the-best-recruit.en.md
+│   ├── 050-spmpst.en.md
+│   └── spmpst.sidebar.json
+└── spmpst.guide.json
+
+4 directories, 18 files
+
+==================================================
+FILE CONTENTS
+==================================================
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/010-prologue/010-overview.en.md
+--------------------------------------------------
+
+---
+title: "Company | Numerimondes"
+sidebarTitle: "Overview"
+icon: "@spmpst::icon::building-2"
+description: "Learn about Numerimondes, our innovation work and the initiatives we build."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '40vh' }"
+  eyebrow="NUMERIMONDES · COMPANY"
+  title="The people and <span class='silky-bbi'>direction</span> behind the work."
+  description="Learn about Numerimondes, its founder-led model, how we work and what we aim to build."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Explore innovation', href: '/company/initiatives/' }, { label: 'See our initiatives', href: '/company/initiatives/initiatives', color: 'gray' }]"
+/>
+
+
+
+## Company
+
+Numerimondes brings together business understanding, software, infrastructure and <span class="silky-i">operations</span>. This section introduces our approach, innovation work and the initiatives we develop.
+
+### About Numerimondes
+
+Start with the company, meet its founder and learn about the current and intended team model. Then explore how we work, our principles and our business strategy.
+
+<FeluqaButton tag="a" href="/company/about-us/about-us" label="About Numerimondes" />
+
+<FeluqaButton tag="a" href="/company/about-us/people-and-team" label="People & Team" />
+
+<FeluqaButton tag="a" href="/company/about-us/ambition" label="Our ambition" />
+
+<FeluqaButton tag="a" href="/company/about-us/business-strategy" label="Business strategy" />
+
+### Get in touch
+
+Discuss a project, ask a question or start a conversation about working together.
+
+<FeluqaButton tag="a" href="/company/prologue/contact" label="Contact Numerimondes" />
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/010-prologue/020-contact.en.md
+--------------------------------------------------
+
+---
+title: "Contact Numerimondes"
+sidebarTitle: "Contact"
+icon: "@spmpst::icon::message-circle"
+description: "Discuss a project, consulting mission, partnership or idea with Numerimondes."
+layout: home
+lang: en
+status: "ready-for-review"
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="LET’S TALK · NUMERIMONDES"
+  title="What would you like to build, improve or <span class='silky-bbi'>explore</span>?"
+  description="Share a business objective, an operational challenge or an idea. We will help identify a useful next conversation."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact?topic=project' }, { label: 'Explore partnerships', href: '/opportunities/', color: 'gray' }]"
+/>
+
+<div class="nm-home-copy">
+
+
+# Contact
+
+## What would you like to build, improve or explore?
+
+Tell us about your business, your objectives and the <span class="silky-i">challenge</span> you have in mind. You can contact Numerimondes about consulting, systems and infrastructure, innovation initiatives, commercial partnerships or specialist collaboration.
+
+## Discuss a project
+
+A short description is a good starting point. Useful context includes your organization, current process or challenge, desired result, location, approximate timeframe and how you prefer to proceed.
+
+**Inquiry type:** Project / Consulting / Solution / Quote / Partnership / Innovation / Specialist collaboration / Other.
+
+**Suggested contact-form fields:** name, business or organization, work email, optional phone, inquiry type, message and consent to be contacted.
+
+<NmWhatsAppForm />
+
+## What happens next
+
+We review your inquiry, clarify the scope of the discussion and identify the appropriate next step. An assessment, quotation or partnership arrangement is confirmed separately where relevant.
+
+## For potential partners
+
+Describe your expertise, client network, geography and proposed collaboration. If you have a specific client opportunity, share identifying information only with appropriate authorization.
+
+**See partnership options** → `/opportunities`
+
+## Company
+
+**Numerimondes SARL AU**
+Casablanca, Morocco
+
+For formal company information and legal notices, refer to the relevant site legal page when published.
+
+<!-- Internal: Insert verified public email, phone, form destination and office address only once approved. -->
+
+</div>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/010-prologue/spmpst.sidebar.json
+--------------------------------------------------
+
+{
+  "labels": {
+    "en": "Prologue",
+    "fr": "Avant-propos"
+  },
+  "icon": "@spmpst::icon::book-open"
+}
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/010-about-us.en.md
+--------------------------------------------------
+
+---
+title: "About Numerimondes"
+sidebarTitle: "About"
+icon: "@spmpst::icon::building-2"
+description: "Independent consulting, innovation and mission-based delivery led by founder Yassine El Moumen."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="ABOUT NUMERIMONDES · NUMERIMONDES"
+  title="Ideas, strategy and the ability to <span class='silky-bbi'>act</span>."
+  description="An independent consulting and solutions company in Casablanca, working across business operations, technology and new ventures."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact' }, { label: 'Explore innovation', href: '/company/initiatives/innovation', color: 'gray' }]"
+/>
+
+
+# About Numerimondes
+
+## Ideas, strategy and the ability to act.
+
+Numerimondes SARL AU is an independent consulting and solutions company established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop <span class="silky-i">practical projects</span> across business operations, technology and related fields.
+
+Our work spans business consulting, systems and operations, and the development of new initiatives. This page introduces the company; the [People & Team page](/company/about-us/people-and-team) introduces its founder and the team model.
+
+## How the company works
+
+<Timeline
+  label="About Numerimondes"
+  :start-margin="false"
+  :items="[
+    { title: 'People & Team', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/people-and-team', time: 'Meet the founder and learn how contributors work together.' },
+    { title: 'How We Work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'Our founder-led, project-based delivery model.' },
+    { title: 'Working Principles', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/company/about-us/working-principles', time: 'The commitments that guide our work and decisions.' },
+    { title: 'Our Ambition', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/about-us/ambition', time: 'The small, technical team and partner network we aim to build.' },
+    { title: 'Business Strategy', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/about-us/business-strategy', time: 'The planned flagship offer and the activities intended to support it.' },
+    { title: 'Working With Us', status: [{ icon: '06', markerColor: '#3977c8' }], href: '/company/about-us/working-with-us', time: 'How clients, partners and specialists can start a conversation.' }
+  ]"
+/>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/015-people-and-team.en.md
+--------------------------------------------------
+
+---
+title: "People & Team | Numerimondes"
+sidebarTitle: "People & Team"
+icon: "@spmpst::icon::users"
+description: "Meet Numerimondes founder Yassine El Moumen and learn how the founder-led team model brings contributors together."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '48vh' }"
+  eyebrow="PEOPLE & TEAM · NUMERIMONDES"
+  title="Founder-led, with a <span class='silky-bbi'>team built to act</span>."
+  description="Meet the founder and learn how Numerimondes brings technical talent and partners together around the work."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Our team model', href: '/company/about-us/ambition' }, { label: 'How we work', href: '/company/about-us/delivery-model', color: 'gray' }]"
+/>
+
+<Acomponent
+  title="The founder"
+  introduction="Numerimondes is founder-led by Yassine El Moumen, Founder and Managing Director. His work brings together business operations, consulting and software engineering."
+  section-title="Yassine El Moumen"
+  :paragraphs="[
+    { before: 'His experience spans contact-centre operations, project management, training, consulting and software engineering.', after: 'Working with operational teams and business projects informs his practical approach to problem-solving and the needs of decision-makers.' },
+    { before: 'Research and continued learning are central to his work.', after: 'He explores business models and markets alongside systems architecture and emerging technologies, informing the company’s consulting, innovation and project development.' },
+    { before: '<strong>Founder &amp; Managing Director</strong>', after: '<a href=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot;>Connect on LinkedIn</a>.' }
+  ]"
+/>
+
+<Timeline
+  label="The founder-led team model"
+  :start-margin="false"
+  :items="[
+    { title: 'Founder-led direction', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/about-us/delivery-model', time: 'The founder provides context, coordination and accountability for project-based work.' },
+    { title: 'Small, flat teams that act', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/company/about-us/ambition', time: 'Technically strong contributors work with clear ownership and direct communication.' },
+    { title: 'A network that extends capability', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'Independent specialists and partner organizations join when their expertise fits the work.' }
+  ]"
+/>
+
+<div style="width: min(100% - 40px, 720px) !important; margin-inline: auto !important;">
+
+“Team” refers to the people who work together to deliver, including the founder, independent specialists and partner organizations. It describes how the work is organized, not anyone’s employment status. Read [Our Ambition](/company/about-us/ambition) for the principles behind this model.
+
+</div>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/020-delivery-model.en.md
+--------------------------------------------------
+
+---
+title: "How We Work | Numerimondes"
+sidebarTitle: "How We Work"
+icon: "@spmpst::icon::briefcase-business"
+description: "How Numerimondes scopes and delivers project-based work with clients and specialist partners."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '42vh' }"
+  eyebrow="FOUNDER-LED DELIVERY · NUMERIMONDES"
+  title="A clear lead. A <span class='silky-bbi'>capable team</span>."
+  description="We shape each assignment around its goals and bring in relevant expertise when the work calls for it."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Our principles', href: '/company/about-us/working-principles' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
+/>
+
+<div style="width: min(100% - 40px, 720px) !important; margin-inline: auto !important;">
+
+## Founder-led by design
+
+Numerimondes is founder-led and works through **project-based assignments**. The founder provides direction and accountability, coordinating qualification, proposal development and delivery.
+
+## Assemble expertise around each assignment
+
+The delivery team is shaped by the assignment. Independent developers, consultants, operators and specialist companies can contribute alongside the founder when their expertise fits the work. Here, “team” means the people who act together on delivery; it does not imply a particular employment relationship.
+
+## Agree on responsibilities
+
+Responsibilities, reporting, confidentiality and deliverables are agreed before work begins. Numerimondes remains accountable to clients for the assignments it contracts to deliver.
+
+</div>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/030-working-principles.en.md
+--------------------------------------------------
+
+---
+title: "Working Principles | Numerimondes"
+sidebarTitle: "Working Principles"
+icon: "@spmpst::icon::list-checks"
+description: "Working Principles at Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '42vh' }"
+  eyebrow="HOW WE WORK · NUMERIMONDES"
+  title="Principles for <span class='silky-bbi'>useful work</span>."
+  description="A few practical commitments guide how we explore opportunities, make decisions and deliver with others."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'How we work', href: '/company/about-us/delivery-model' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
+/>
+
+<Timeline
+  label="Working principles"
+  :start-margin="false"
+  :items="[
+    { title: 'Clarity', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Make business goals, constraints and decisions understandable.' },
+    { title: 'Curiosity', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'Research opportunities and consider thoughtful alternatives.' },
+    { title: 'Practicality', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'Design around the operating realities of people and organizations.' },
+    { title: 'Accountability', status: [{ icon: '04', markerColor: '#3977c8' }], time: 'Agree on responsibility, scope and commercial conditions before execution.' },
+    { title: 'Control', status: [{ icon: '05', markerColor: '#3977c8' }], time: 'Consider ownership, maintainability and operational autonomy in each solution.' }
+  ]"
+/>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/040-working-with-us.en.md
+--------------------------------------------------
+
+---
+title: "Working With Us | Numerimondes"
+sidebarTitle: "Working With Us"
+icon: "@spmpst::icon::handshake"
+description: "Working With Us at Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+
+# Working With Us
+
+Alongside consulting and commissioned projects, Numerimondes develops internal research initiatives, including the Feluqa framework and the SPMPST draft specification. The Best Recruit is being prepared as a future recruitment initiative. Their status is described on their respective pages.
+
+**Explore innovation** → `/company/initiatives/innovation`
+
+## Work with us
+
+Whether you are a prospective client, a business partner or an independent specialist, a useful discussion starts with the opportunity and the contribution each party can make.
+
+**Start a conversation** → `/company/prologue/contact`
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/050-ambition.en.md
+--------------------------------------------------
+
+---
+title: "Our Ambition | Numerimondes"
+sidebarTitle: "Our Ambition"
+icon: "@spmpst::icon::target"
+description: "The team and partner network Numerimondes aims to build."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+
+<div>
+
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '48vh' }"
+  eyebrow="OUR AMBITION · NUMERIMONDES"
+  title="Founder-led. Flat teams. <span class='silky-bbi'>High capability</span>."
+  description="We organize work around small, highly capable teams that can make decisions close to the work and deliver with care and speed."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Our business strategy', href: '/company/about-us/business-strategy' }, { label: 'Work with us', href: '/company/about-us/working-with-us', color: 'gray' }]"
+/>
+
+
+
+
+
+<Acomponent
+  title="A team built for <span class='silky-bbi'>focused execution</span>"
+  introduction="Founder-led is a deliberate operating principle: clear direction and context from the founder create leverage, while small, technically strong teams act with autonomy and ownership. A flat structure keeps communication direct and decisions close to the work."
+  section-title="A strong core, supported by <span class='silky-bbi+115'>trusted partners</span>."
+  :paragraphs="[
+    { before: 'We want to create the conditions for a durable network of independent specialists and partner organizations.', after: 'Partners can contribute where their experience fits the work, with scope, responsibilities and commercial terms agreed up front.' },
+    { before: 'By team, we mean the people who coordinate and deliver the work together.', after: 'The term describes how work is organized, not whether contributors are employees, independent specialists or partner organizations. Our founder-led delivery model is described in <a href=&quot;/company/about-us/delivery-model&quot;>How We Work</a>.' }
+  ]"
+/>
+
+
+
+<Timeline
+  label="What this ambition means in practice"
+  :start-margin="false"
+  :items="[
+    { title: 'Keep the core focused', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Build a small team with complementary, technically strong skills.' },
+    { title: 'Keep decisions close to the work', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'Use a flat structure with clear ownership and direct communication.' },
+    { title: 'Bring in the right expertise', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'Work with trusted partners when a project needs additional specialist capability.' },
+    { title: 'Build for sustainable delivery', status: [{ icon: '04', markerColor: '#3977c8' }], time: 'Grow through useful offerings and partnerships that create lasting value.' }
+  ]"
+/>
+
+</div>
+<div style="width: min(100% - 40px, 720px) !important; margin-inline: auto !important;">
+<h2>Work with us</h2>
+<p>We are interested in meeting people who bring strong technical or domain expertise and enjoy taking responsibility for meaningful work. Collaboration depends on a clear opportunity, a good fit and agreed terms.</p>
+<FeluqaButton tag="a" href="/company/prologue/contact?topic=partnership" label="Start a conversation"/>
+</div>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/060-business-strategy.en.md
+--------------------------------------------------
+
+---
+title: "Our Business Strategy | Numerimondes"
+sidebarTitle: "Business Strategy"
+icon: "@spmpst::icon::chart-no-axes-combined"
+description: "The intended flagship and complementary activities in Numerimondes' business strategy."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '48vh' }"
+  eyebrow="BUSINESS STRATEGY · NUMERIMONDES"
+  title="Build around a <span class='silky-bbi'>clear flagship</span>."
+  description="Our intended strategy is to develop one focused offering, then support it with complementary services, partnerships and useful adjacent initiatives."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Explore The Best Recruit', href: '/company/initiatives/the-best-recruit' }, { label: 'Our ambition', href: '/company/about-us/ambition', color: 'gray' }]"
+/>
+
+<Acomponent
+  title="One central offer, supported by a <span class='silky-bbi'>wider network</span>"
+  introduction="A focused flagship can give customers a clear reason to work with us and give the company a stronger base for sustainable growth. Complementary work can support that offer and help build the partner relationships needed to deliver it well."
+  section-title="The Best Recruit is the <span class='silky-bbi+115'>planned flagship</span>."
+  :paragraphs="[
+    { before: 'We intend to develop The Best Recruit as a central offering around structured talent qualification and relevant employer information.', after: 'Its service, onboarding and commercial model are still being prepared; it is not yet a live placement or searchable candidate service.' },
+    { before: 'Consulting, specialist partnerships and related initiatives can complement the flagship.', after: 'These activities should strengthen the company’s ability to serve customers and build a sustainable network, while each offering remains clear about its scope and status.' }
+  ]"
+/>
+
+<Timeline
+  label="How the strategy is intended to work"
+  :start-margin="false"
+  :items="[
+    { title: 'Develop the flagship', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/company/initiatives/the-best-recruit', time: 'Prepare The Best Recruit as a focused service with clear value for candidates and employers.' },
+    { title: 'Add complementary work', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/', time: 'Use relevant consulting and project work to build customer understanding and support sustainable operations.' },
+    { title: 'Build the partner network', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/opportunities/', time: 'Collaborate with specialists and organizations whose capabilities strengthen delivery.' },
+    { title: 'Expand when evidence supports it', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Develop adjacent initiatives in response to demonstrated needs and practical capacity.' }
+  ]"
+/>
+
+<div style="width: min(100% - 40px, 720px) !important; margin-inline: auto !important;">
+
+## Current status
+
+This page describes the intended business direction. The Best Recruit is in preparation, and the broader strategy is still being developed. See [The Best Recruit](/company/initiatives/the-best-recruit) for the initiative’s current scope and status.
+
+</div>
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/020-about-us/spmpst.sidebar.json
+--------------------------------------------------
+
+{
+  "labels": {
+    "en": "About Us",
+    "fr": "À propos"
+  },
+  "icon": "@spmpst::icon::building-2"
+}
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/010-innovation.en.md
+--------------------------------------------------
+
+---
+title: "Innovation | Numerimondes"
+sidebarTitle: "Innovation"
+icon: "@spmpst::icon::sparkles"
+description: "Research, experimentation and venture development at Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="RESEARCH & NEW VENTURES · NUMERIMONDES"
+  title="<span class='silky-bbi'>Curiosity</span> with a direction."
+  description="We connect business insight and technological inquiry to explore ideas with a practical path to action."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', color: 'gray' }]"
+/>
+
+
+
+
+# Innovation
+
+## Curiosity with a direction.
+
+Ideas can reveal new ways to work, new products to create and unmet needs worth exploring. At Numerimondes, research connects business insight and <span class="silky-i">technological inquiry</span> with the conditions required to put an idea to work.
+
+Our areas of interest span enterprise operations, applications, infrastructure, applied AI, interoperability, publishing workflows and new service models.
+
+## How we develop ideas
+
+1. **Observe and investigate** — find recurring problems, emerging possibilities and market signals.
+2. **Form a hypothesis** — describe who benefits, how and under what conditions.
+3. **Examine feasibility** — evaluate technical, financial and operational constraints.
+4. **Prototype or structure** — create a specification, demonstration, business model or project plan.
+5. **Decide the next step** — develop further, partner, pilot, reposition or stop.
+
+The process depends on available evidence and the maturity of each initiative.
+
+## Current initiatives
+
+### Feluqa
+
+An experimental Rust-based application framework exploring efficient, cross-platform applications and systems. **In development — coming soon.**
+
+**Explore Feluqa** → `/company/initiatives/feluqa`
+
+### SPMPST
+
+A draft standard for organizing portable Markdown content trees across site-building targets. **Specification in development.**
+
+**Explore SPMPST** → `/company/initiatives/spmpst`
+
+### The Best Recruit
+
+An emerging recruitment and talent initiative built around structured profile qualification and useful employer information. **Coming soon.**
+
+**Explore The Best Recruit** → `/company/initiatives/the-best-recruit`
+
+## Collaborate on an idea
+
+We welcome conversations with organizations, researchers, independent professionals and prospective partners around specific problems and opportunities. Collaboration terms, intellectual property, confidentiality and responsibilities are defined before substantive work begins.
+
+**Propose an idea or collaboration** → `/company/prologue/contact?topic=innovation`
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/020-initiatives.en.md
+--------------------------------------------------
+
+---
+title: "Initiatives | Numerimondes"
+sidebarTitle: "Initiatives"
+icon: "@spmpst::icon::rocket"
+description: "Research and internal initiatives in development at Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="RESEARCH · PROTOTYPES · NEW VENTURES"
+  title="<span class='silky-bbi'>Ideas</span> taking shape."
+  description="Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Discuss an idea', href: '/company/prologue/contact?topic=innovation' }, { label: 'How we innovate', href: '/company/initiatives/', color: 'gray' }]"
+/>
+
+
+
+## Work in progress, shared clearly.
+
+These internal initiatives are at different stages of development. Their pages describe the current direction without presenting planned capabilities as launched products.
+
+<MegaCards
+  :items="[
+    { title: 'Feluqa', description: 'A Rust-based application framework in development.', href: '/company/initiatives/feluqa', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/feluqa.svg' },
+    { title: 'The Best Recruit', description: 'A recruitment and talent initiative being prepared for launch.', href: '/company/initiatives/the-best-recruit', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/the-best-recruit.svg' },
+    { title: 'SPMPST', description: 'A draft specification for portable structured Markdown site trees.', href: '/company/initiatives/spmpst', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80', icon: '/images/home/initiatives/spmpst.svg' }
+  ]"
+  :composition="[{ items: [0, 1] }, { items: [2] }]"
+  :card-height="220"
+/>
+
+<FeluqaButton tag="a" href="/company/prologue/contact?topic=innovation" label="Discuss a collaboration" />
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/030-feluqa.en.md
+--------------------------------------------------
+
+---
+title: "Feluqa | Coming Soon"
+sidebarTitle: "Feluqa"
+icon: "@spmpst::icon::rust"
+description: "Feluqa is an experimental Rust-based, cross-platform application framework being developed at Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="IN DEVELOPMENT · NUMERIMONDES"
+  title="<span class='silky-bbi'>Engineering</span> across platforms and environments."
+  description="Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
+/>
+
+
+
+
+# Feluqa
+
+**Coming soon · In development**
+
+## Engineering across platforms and environments.
+
+Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes. Its intended direction is to support efficient application development across <span class="silky-i">different environments</span>, with an emphasis on control, performance and maintainable systems.
+
+### Areas under exploration
+
+- Applications spanning backend, desktop, mobile and connected environments.
+- Reusable components and consistent development conventions.
+- Efficient runtimes and deployment approaches appropriate to demanding use cases.
+- Engineering patterns for operational software and systems integration.
+
+These are **design objectives and research directions**, not claims of available product features or completed production deployments.
+
+## Status
+
+Feluqa remains in development. Public documentation, technical examples, supported platforms, licensing and release plans will be published when ready.
+
+## Commissioned work
+
+Numerimondes can discuss custom software and Rust engineering missions independently of Feluqa's eventual release. Framework adoption is assessed against each project's technical requirements and maturity.
+
+**Discuss Rust engineering** → `/company/prologue/contact?topic=project`  
+**Back to innovation** → `/company/initiatives/innovation`
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/040-the-best-recruit.en.md
+--------------------------------------------------
+
+---
+title: "The Best Recruit | Coming Soon"
+sidebarTitle: "The Best Recruit"
+icon: "@spmpst::icon::users"
+description: "The Best Recruit is an emerging recruitment and talent initiative from Numerimondes."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="PREPARING FOR LAUNCH · NUMERIMONDES"
+  title="Better information. More <span class='silky-bbi'>meaningful introductions</span>."
+  description="The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
+/>
+
+
+
+
+# The Best Recruit
+
+**Coming soon · Preparing for launch**
+
+## Better information. More meaningful introductions.
+
+The Best Recruit is a recruitment and talent initiative in preparation at Numerimondes. Its planned approach centers on <span class="silky-i">candidate qualification</span> and clear, relevant information for employers making recruitment decisions.
+
+### What we are working toward
+
+- A candidate pool organized around skills, experience, availability and relevant preferences.
+- An initial qualification process designed to help employers assess fit.
+- Employer search and filtering based on appropriate, relevant criteria.
+- Clear rules for introductions, contact access, candidate consent and commercial arrangements.
+
+These describe the **planned service direction**, not a live placement service or an existing searchable candidate platform.
+
+## Status
+
+The service is being prepared. Employer onboarding, candidate participation, pricing, privacy information and service commitments will be communicated when the platform and processes are ready.
+
+## Expressions of interest
+
+Organizations and potential collaborators can contact Numerimondes to discuss future needs. No placement, access to candidate records or response timeline is promised at this stage.
+
+**Contact Numerimondes** → `/company/prologue/contact?topic=partnership`  
+**Back to innovation** → `/company/initiatives/innovation`
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/050-spmpst.en.md
+--------------------------------------------------
+
+---
+title: "SPMPST | Specification in Development"
+sidebarTitle: "SPMPST"
+icon: "@spmpst::icon::folder-tree"
+description: "SPMPST is a proposed standard for portable structured Markdown trees and site-building workflows."
+lang: en
+status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
+---
+<NmEffectHero
+  :full-bleed="false"
+  :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
+  :hero-style="{ minHeight: '56vh' }"
+  eyebrow="DRAFT SPECIFICATION · NUMERIMONDES"
+  title="<span class='silky-bbi'>Portable</span> content structures for site-building workflows."
+  description="SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
+  :buttons="[{ label: 'Discuss SPMPST', href: '/company/prologue/contact?topic=innovation' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
+/>
+
+
+
+
+# SPMPST
+
+**Draft specification · In development**
+
+## Portable content structures for site-building workflows.
+
+SPMPST stands for **Standard Portable Markdown Pre-SSG Tree**. It is a specification initiative created at Numerimondes to define a <span class="silky-i">portable structure</span> for Markdown content, configuration and related resources before delivery to site-generation tools.
+
+## Design goals
+
+- Author content as understandable Markdown and structured resources.
+- Keep content organization portable across rendering and build targets.
+- Support multilingual sites, metadata, navigation and related assets.
+- Support offline-capable built outputs, with dependencies controlled by the target implementation.
+- Explore real-time rendering workflows, extensible components and automation-friendly conventions.
+- Produce output and packaging per site.
+
+## Current state
+
+The specification is a draft. A reference preparation workflow and a VitePress-oriented adapter approach are part of the current technical work; a Feluqa/Rust adapter and broader cross-adapter conformance work remain planned. Individual capabilities should be validated against an implementation before being treated as supported.
+
+## Collaboration
+
+We welcome technical discussions around content portability, static site generation, documentation tooling and interoperability.
+
+**Discuss SPMPST** → `/company/prologue/contact?topic=innovation`  
+**Back to innovation** → `/company/initiatives/innovation`
+
+
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/030-initiatives/spmpst.sidebar.json
+--------------------------------------------------
+
+{
+  "labels": {
+    "en": "Initiatives",
+    "fr": "Initiatives"
+  },
+  "icon": "@spmpst::icon::rocket"
+}
+
+
+--------------------------------------------------
+>>> FILE: /home/yassine/Projects/Rust/feluqa/docs/site-2/src/guides/company/spmpst.guide.json
+--------------------------------------------------
+
+{
+  "title": "Company",
+  "showSiteTitle": false,
+  "favicon": "../../../public/media/favicon.png"
+}
+
+
