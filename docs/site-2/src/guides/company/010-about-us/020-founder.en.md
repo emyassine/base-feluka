@@ -31,8 +31,11 @@ Research and continued learning are central to his work. He explores business mo
 
 #### Founder and Managing Director
 
+::: md-lines
 The person you speak to first is the person accountable for the work.
+
 Tell him the problem, the stakes and the timeframe.
+:::
 
 <FeluqaButton tag="a" href="https://numerimondes.com/account/connect/" label="Create an account" icon="@spmpst::icon::webhook" />
 

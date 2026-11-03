@@ -141,7 +141,10 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   vite: { configFile: join(siteDirectory, 'config/vite.config.ts') },
   markdown: {
     ...siteConfig.markdown,
-    config: (md) => { md.use(markdownItContainer, 'md-justify') },
+    config: (md) => {
+      md.use(markdownItContainer, 'md-justify')
+      md.use(markdownItContainer, 'md-lines')
+    },
   },
   transformHtml: (html: string) => html.replace(
     /<html([^>]*)>/,

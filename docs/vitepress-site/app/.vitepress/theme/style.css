@@ -695,3 +695,7 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   text-align: justify;
   text-justify: inter-word;
 }
+
+.vp-doc .md-lines p {
+  white-space: pre-line;
+}
