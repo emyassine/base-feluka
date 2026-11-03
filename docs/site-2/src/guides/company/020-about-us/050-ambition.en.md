@@ -12,9 +12,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '48vh' }"
-  :eyebrow='{ text: "OUR AMBITION · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "Small team. <span class=&#39;silky-bbi&#39;>High capability</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "We aim to build a focused, highly technical team that can make good decisions close to the work and move with care and speed.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="OUR AMBITION · NUMERIMONDES"
+  title="Small team. <span class='silky-bbi'>High capability</span>."
+  description="We aim to build a focused, highly technical team that can make good decisions close to the work and move with care and speed."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Our business strategy', href: '/company/about-us/business-strategy' }, { label: 'Work with us', href: '/company/about-us/working-with-us', color: 'gray' }]"
 />
 <Acomponent

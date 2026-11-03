@@ -13,9 +13,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "SOFTWARE &amp; SYSTEMS · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "Technology shaped by the <span class=&#39;silky-bbi&#39;>work</span> it supports.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "We scope applications, workflows and information systems around the people and processes that rely on them.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="SOFTWARE & SYSTEMS · NUMERIMONDES"
+  title="Technology shaped by the <span class='silky-bbi'>work</span> it supports."
+  description="We scope applications, workflows and information systems around the people and processes that rely on them."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss a system', href: '/company/prologue/contact?topic=project' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />
 

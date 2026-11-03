@@ -12,9 +12,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "RESEARCH · PROTOTYPES · NEW VENTURES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "<span class=&#39;silky-bbi&#39;>Ideas</span> taking shape.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="RESEARCH · PROTOTYPES · NEW VENTURES"
+  title="<span class='silky-bbi'>Ideas</span> taking shape."
+  description="Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss an idea', href: '/company/prologue/contact?topic=innovation' }, { label: 'How we innovate', href: '/company/initiatives/', color: 'gray' }]"
 />
 

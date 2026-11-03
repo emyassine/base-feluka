@@ -12,9 +12,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "RESEARCH &amp; NEW VENTURES · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "<span class=&#39;silky-bbi&#39;>Curiosity</span> with a direction.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "We connect business insight and technological inquiry to explore ideas with a practical path to action.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="RESEARCH & NEW VENTURES · NUMERIMONDES"
+  title="<span class='silky-bbi'>Curiosity</span> with a direction."
+  description="We connect business insight and technological inquiry to explore ideas with a practical path to action."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Explore our initiatives', href: '/company/initiatives/initiatives' }, { label: 'Propose an idea', href: '/company/prologue/contact?topic=innovation', color: 'gray' }]"
 />
 

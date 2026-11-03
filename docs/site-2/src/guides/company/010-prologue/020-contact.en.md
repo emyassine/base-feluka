@@ -11,9 +11,11 @@ status: "ready-for-review"
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "LET’S TALK · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "What would you like to build, improve or <span class=&#39;silky-bbi&#39;>explore</span>?", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "Share a business objective, an operational challenge or an idea. We will help identify a useful next conversation.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="LET’S TALK · NUMERIMONDES"
+  title="What would you like to build, improve or <span class='silky-bbi'>explore</span>?"
+  description="Share a business objective, an operational challenge or an idea. We will help identify a useful next conversation."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Start a conversation', href: '/company/prologue/contact?topic=project' }, { label: 'Explore partnerships', href: '/opportunities/', color: 'gray' }]"
 />
 

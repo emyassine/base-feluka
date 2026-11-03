@@ -251,7 +251,7 @@ const descriptionStyles = computed(() => ({
 
 .nm-effect-hero .nm-effect-hero__eyebrow {
   margin: 0 auto 1rem;
-  color: rgb(255 255 255 / 0.82);
+  color: #e2e8f0;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -311,7 +311,7 @@ const descriptionStyles = computed(() => ({
 
 .nm-effect-hero--light .nm-effect-hero__eyebrow,
 .nm-effect-hero--light p {
-  color: #334155;
+  color: #e2e8f0;
 }
 
 .nm-effect-hero--light:not(.nm-effect-hero--silk) .nm-effect-hero__background {

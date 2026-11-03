@@ -12,9 +12,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "IN DEVELOPMENT · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "<span class=&#39;silky-bbi&#39;>Engineering</span> across platforms and environments.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="IN DEVELOPMENT · NUMERIMONDES"
+  title="<span class='silky-bbi'>Engineering</span> across platforms and environments."
+  description="Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss Rust engineering', href: '/company/prologue/contact?topic=project' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />
 

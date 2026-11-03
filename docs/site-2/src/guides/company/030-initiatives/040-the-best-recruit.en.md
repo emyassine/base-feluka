@@ -12,9 +12,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "PREPARING FOR LAUNCH · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "Better information. More <span class=&#39;silky-bbi&#39;>meaningful introductions</span>.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="PREPARING FOR LAUNCH · NUMERIMONDES"
+  title="Better information. More <span class='silky-bbi'>meaningful introductions</span>."
+  description="The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Register an interest', href: '/company/prologue/contact?topic=partnership' }, { label: 'Explore innovation', href: '/company/initiatives/', color: 'gray' }]"
 />
 

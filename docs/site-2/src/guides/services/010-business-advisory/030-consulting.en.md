@@ -13,9 +13,11 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  :eyebrow='{ text: "BUSINESS CONSULTING · NUMERIMONDES", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :title='{ text: "Better <span class=&#39;silky-bbi&#39;>questions</span>. Clearer decisions. Actionable plans.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
-  :description='{ text: "We investigate operating challenges and opportunities, then help shape a practical route forward.", color: { light: "#e2e8f0", dark: "#e2e8f0" } }'
+  eyebrow="BUSINESS CONSULTING · NUMERIMONDES"
+  title="Better <span class='silky-bbi'>questions</span>. Clearer decisions. Actionable plans."
+  description="We investigate operating challenges and opportunities, then help shape a practical route forward."
+  :title-style="{ color: '#e2e8f0' }"
+  :description-style="{ color: '#e2e8f0' }"
   :buttons="[{ label: 'Discuss consulting', href: '/company/prologue/contact?topic=consulting' }, { label: 'All services', href: '/services/', color: 'gray' }]"
 />
 
