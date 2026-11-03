@@ -387,7 +387,8 @@ function navigation(language = defaultLanguage): any[] {
       const collections = ids.map((id) => submenuById.get(id)).filter(Boolean) as Array<{ title: string; items: any[] }>
       const items = collections.flatMap((collection) => collection.items)
       const text = collections.map((collection) => collection.title).join(' · ')
-      return items.length ? [{ ...(showParentsName ? { text } : {}), items }] : []
+      if (!items.length) return []
+      return showParentsName ? [{ text, items }] : items
     })
   }
   const localize = (value: string | Record<string, string> | undefined) =>
@@ -446,11 +447,8 @@ function navigation(language = defaultLanguage): any[] {
       const collectionOptions = item.items.collections
       const routePrefix = collectionOptions.pathPrefix?.split('/').join('/')
       const activeRoot = routePrefix ?? ''
-      const collectionMenuClass = collectionOptions.separateBetweenCollections === true || (collectionOptions.order?.length ?? 0) > 1
-        ? 'docs-topbar-collection-trigger docs-topbar-collection-separators'
-        : 'docs-topbar-collection-trigger'
       return applyMenuTemplate({
-        text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, collectionMenuClass),
+        text: localize(item.text) ?? '',
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
         items: filterMenuRoutes(collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true, collectionOptions.order ?? []), item.items.include ?? item.include ?? [], item.items.exclude ?? item.exclude ?? []),
       }, item.menuTemplate)
