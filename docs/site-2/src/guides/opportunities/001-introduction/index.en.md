@@ -14,7 +14,7 @@ js-events:
 Numerimondes brings people and organizations together around practical opportunities: free orientation for students, talent and project pathways for companies, and structured conversations for investors and potential business associates.
 
 - [For students](/opportunities/students/) — free initial orientation, skills guidance and selected learning opportunities.
-- [For companies](/opportunities/companies/) — internships, junior roles, project briefs, mentoring and practice launch packs.
+- [For companies](/opportunities/businesses/) — internships, junior roles, project briefs, mentoring and practice launch packs.
 - [Invest or associate](/opportunities/investment/) — explore investment interest, co-founder fit and business partnerships.
 - [Morocco](/opportunities/morocco/) — local advisory and organization partnerships.
 - [International](/opportunities/international/) — cross-border business development and specialist collaboration.

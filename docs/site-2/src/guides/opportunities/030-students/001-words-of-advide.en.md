@@ -68,4 +68,4 @@ So don't set your goals too low.
 
 ---
 
-*Looking for a first step? See [Opportunities for students](/opportunities-for-students): free orientation to help you choose an environment that challenges you.*
+*Looking for a first step? See [Opportunities for students](/opportunities/students/): free orientation to help you choose an environment that challenges you.*

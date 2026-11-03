@@ -10,7 +10,7 @@ layout: home
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref } from 'vue'
-import db from './marketplace.json'
+import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
 const fmt = (n: number) => new Intl.NumberFormat('en-US').format(Math.round(n)) + ' MAD'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
