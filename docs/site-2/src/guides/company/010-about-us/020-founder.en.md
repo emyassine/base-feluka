@@ -45,10 +45,10 @@ The person you speak to first is the person accountable for the work. Tell him t
     bare
     label="Find Yassine El Moumen on social media"
     :items="[
-      { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin', external: true },
-      { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '@spmpst::icon::instagram', external: true },
-      { id: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '@spmpst::icon::whatsapp', external: true },
-      { id: 'x', label: 'X', href: 'https://x.com/elmoumenyassine', icon: '@spmpst::icon::x', external: true }
+      { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '/images/social-media/linkedin.webp', external: true },
+      { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '/images/social-media/instagram.webp', external: true },
+      { id: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '/images/social-media/whatsapp.webp', external: true },
+      { id: 'x', label: 'X', href: 'https://x.com/elmoumenyassine', icon: '/images/social-media/x.com.jpg', external: true }
     ]"
   />
 </NmProfileBadge>
