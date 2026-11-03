@@ -16,20 +16,20 @@ js-events:
   height="36vh"
 />
 
-<Acomponent
-  title="Yassine El Moumen"
-  introduction="Founder and Managing Director of Numerimondes. His work brings together business operations, consulting and software engineering."
-  section-title="From the operations floor to <span class='silky-bbi+115'>system design</span>."
-  :paragraphs="[
-    { before: 'His experience spans contact-centre operations, project management, training, consulting and software engineering.', after: 'Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.' },
-    { before: 'Research and continued learning are central to his work.', after: 'He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.' },
-    { before: '<strong>Founder and Managing Director</strong>' }
-  ]"
->
-  <template #actions>
-    <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
-  </template>
-</Acomponent>
+
+# Yassine El Moumen
+
+Founder and Managing Director of Numerimondes. His work brings together business operations, consulting and software engineering.
+
+## From the operations floor to <span class='silky-bbi+115'>system design</span>
+
+His experience spans contact-centre operations, project management, training, consulting and software engineering.Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.
+
+Research and continued learning are central to his work.He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.
+
+**Founder and Managing Director**
+
+<FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
 
 
 

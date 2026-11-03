@@ -170,6 +170,7 @@
           "size": { "enum": ["xs", "sm", "md", "lg", "xl"] },
           "outlined": { "type": "boolean" },
           "external": { "type": "boolean" },
+          "icon": { "type": "string", "minLength": 1 },
           "mobile": {
             "type": "object",
             "properties": {

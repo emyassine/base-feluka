@@ -11,6 +11,7 @@ type TopbarAction = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   outlined?: boolean
   external?: boolean
+  icon?: string
   mobile?: { color?: 'primary' | 'gray' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'secondary'; icon?: string; tooltip?: string }
 }
 
@@ -43,6 +44,7 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
       tag="a"
       :href="href(action)"
       :label="localized(action.label)"
+      :icon="action.icon"
       :color="action.color ?? 'primary'"
       :size="action.size ?? 'sm'"
       :outlined="action.outlined ?? false"

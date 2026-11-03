@@ -295,13 +295,14 @@ if (topbar.actions !== undefined) {
   for (const [index, action] of topbar.actions.entries()) {
     const location = `topbar.actions[${index}]`
     if (!action || typeof action !== 'object' || Array.isArray(action)) throw new Error(`${location} must be an object`)
-    if (Object.keys(action).some((key) => !['label', 'link', 'color', 'size', 'outlined', 'external', 'mobile'].includes(key))) throw new Error(`${location} contains an unsupported property`)
+    if (Object.keys(action).some((key) => !['label', 'link', 'color', 'size', 'outlined', 'external', 'icon', 'mobile'].includes(key))) throw new Error(`${location} contains an unsupported property`)
     if (typeof action.label !== 'string' && (!action.label || typeof action.label !== 'object' || Array.isArray(action.label))) throw new Error(`${location}.label must be text or translated text`)
     if (!validLocalizedLink(action.link)) throw new Error(`${location}.link must be a non-empty link or localized links`)
     if (action.color !== undefined && !['primary', 'gray', 'info', 'success', 'warning', 'danger', 'dark', 'secondary'].includes(action.color)) throw new Error(`${location}.color must be a supported FeluqaButton color`)
     if (action.size !== undefined && !['xs', 'sm', 'md', 'lg', 'xl'].includes(action.size)) throw new Error(`${location}.size must be a supported FeluqaButton size`)
     if (action.outlined !== undefined && typeof action.outlined !== 'boolean') throw new Error(`${location}.outlined must be a boolean`)
     if (action.external !== undefined && typeof action.external !== 'boolean') throw new Error(`${location}.external must be a boolean`)
+    if (action.icon !== undefined && (typeof action.icon !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/.test(action.icon))) throw new Error(`${location}.icon must be an icon name`)
     if (action.mobile !== undefined) {
       if (!action.mobile || typeof action.mobile !== 'object' || Array.isArray(action.mobile) || Object.keys(action.mobile).some((key) => !['color', 'icon', 'tooltip'].includes(key))) throw new Error(`${location}.mobile must define only color, icon, and tooltip`)
       if (action.mobile.color !== undefined && !['primary', 'gray', 'info', 'success', 'warning', 'danger', 'dark', 'secondary'].includes(action.mobile.color)) throw new Error(`${location}.mobile.color must be a supported FeluqaButton color`)
@@ -588,9 +589,14 @@ async function copyIcon(sourceFile) {
 }
 
 for (const [index, action] of (topbar.actions ?? []).entries()) {
-  if (!action.mobile?.icon) continue
-  const iconPath = resolveIcon(action.mobile.icon, `topbar.actions[${index}].mobile.icon`)
-  action.mobile.icon = `/${await copyIcon(iconPath)}`
+  if (action.icon) {
+    const iconPath = resolveIcon(action.icon, `topbar.actions[${index}].icon`)
+    action.icon = `/${await copyIcon(iconPath)}`
+  }
+  if (action.mobile?.icon) {
+    const iconPath = resolveIcon(action.mobile.icon, `topbar.actions[${index}].mobile.icon`)
+    action.mobile.icon = `/${await copyIcon(iconPath)}`
+  }
 }
 
 function publicPagePath(outputPath) {

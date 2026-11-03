@@ -89,7 +89,8 @@
         "color": "gray",
         "icon": "users",
         "tooltip": "Accounts"
-      }
+      },
+      "icon": "users-round"
     }
   ]
 }
