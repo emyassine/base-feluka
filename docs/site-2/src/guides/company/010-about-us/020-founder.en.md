@@ -34,9 +34,8 @@ Research and continued learning are central to his work. He explores business mo
 The person you speak to first is the person accountable for the work. Tell him the problem, the stakes and the timeframe.
 
 <FeluqaButton tag="a" href="https://numerimondes.com/account/connect/" label="Create an account" icon="@spmpst::icon::webhook" />
-
 <NmProfileBadge
-  :name="{ label: 'Find Numerimondes’ founder on your preferred platforms. Get in touch for business advice, project discussions, or collaboration opportunities.', type: 'normal' }"
+  :name="{ label: 'Find Numerimondes’ founder on your preferred platforms. Get in touch for business advice, project discussions, or&nbsp;collaboration opportunities.', type: 'normal' }"
   width-on-parent="80%"
   image="/images/company/founder/yassine-02.jpeg"
   image-alt="Yassine El Moumen"
