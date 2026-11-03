@@ -5,6 +5,8 @@ icon: "@spmpst::icon::book-open"
 description: "A short reflection on high expectations, learning and personal growth."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Words of advice
