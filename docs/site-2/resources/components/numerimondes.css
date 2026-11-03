@@ -82,6 +82,27 @@
   background-color: var(--vp-nav-bg-color);
 }
 
+/* Keep the navigation chrome from selecting or dragging its labels and logo. */
+.VPNav,
+.VPNav :where(*) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.VPNav input,
+.VPNav textarea,
+.VPNav [contenteditable='true'],
+.VPNav [contenteditable=''] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.VPNav img,
+.VPNav svg {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
 @media (min-width: 960px) {
   /* Keep the sidebar edge visible above VitePress' curtain overlay. */
   .VPSidebar {
