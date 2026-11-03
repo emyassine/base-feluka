@@ -1,6 +1,6 @@
 ---
 title: "Opportunities | Numerimondes"
-sidebarTitle: "Overview"
+sidebarTitle: "Opportunities context"
 icon: "@spmpst::icon::briefcase-business"
 description: "Explore opportunities for students, companies, investors and potential business partners."
 lang: en
