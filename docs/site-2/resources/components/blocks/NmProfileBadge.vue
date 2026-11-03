@@ -8,6 +8,12 @@ type ProfileLink = {
   external?: boolean
 }
 
+type ProfileLogo = {
+  src: string
+  alt: string
+  href?: string
+}
+
 const props = withDefaults(defineProps<{
   name: string
   role?: string
@@ -16,6 +22,7 @@ const props = withDefaults(defineProps<{
   imageAlt?: string
   skills?: string[]
   links?: ProfileLink[]
+  logos?: ProfileLogo[]
 }>(), {
   role: '',
   image: '',
@@ -23,6 +30,7 @@ const props = withDefaults(defineProps<{
   imageAlt: '',
   skills: () => [],
   links: () => [],
+  logos: () => [],
 })
 
 const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((part) => part[0] ?? '').join('').toUpperCase())
@@ -37,6 +45,16 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
             <img v-if="image" class="nm-profile-badge__image" :src="image" :alt="imageAlt || name" loading="lazy" />
             <img v-if="hoverImage" class="nm-profile-badge__image nm-profile-badge__image--hover" :src="hoverImage" alt="" loading="lazy" />
             <span v-if="!image" class="nm-profile-badge__initials" aria-hidden="true">{{ initials }}</span>
+          </div>
+          <div v-if="logos.length" class="nm-profile-badge__logos" aria-label="Products">
+            <template v-for="logo in logos" :key="logo.src">
+              <a v-if="logo.href" :href="logo.href" :aria-label="logo.alt">
+                <img :src="logo.src" :alt="logo.alt" loading="lazy" />
+              </a>
+              <span v-else>
+                <img :src="logo.src" :alt="logo.alt" loading="lazy" />
+              </span>
+            </template>
           </div>
         </div>
 
@@ -68,11 +86,17 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
           {{ link.label }}
         </a>
       </nav>
+
     </div>
   </article>
 </template>
 
 <style scoped>
+.nm-profile-badge,
+.nm-profile-badge * {
+  box-sizing: border-box;
+}
+
 .nm-profile-badge {
   display: inline-block;
   max-width: 100%;
@@ -102,13 +126,15 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
 
 .nm-profile-badge__main {
   display: grid;
-  grid-template-columns: 230px minmax(230px, max-content);
+  grid-template-columns: 230px minmax(0, 1fr);
   align-items: center;
+  width: fit-content;
   max-width: 100%;
 }
 
 .nm-profile-badge__portrait-column {
   width: 230px;
+  max-width: 100%;
   padding-block: 12px;
 }
 
@@ -164,7 +190,6 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
 
 .nm-profile-badge__nameplate {
   width: fit-content;
-  min-width: 230px;
   max-width: 100%;
   padding: 10px 18px 12px;
   background:
@@ -183,7 +208,6 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   font-size: clamp(1.45rem, 4vw, 1.9rem);
   font-weight: 700;
   line-height: 1.2;
-  white-space: nowrap;
 }
 
 .nm-profile-badge__role {
@@ -192,26 +216,24 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   padding: 24px 0 28px;
   color: var(--vp-c-bg);
   font-size: clamp(1.05rem, 3.5vw, 1.55rem);
+  max-width: 100%;
   line-height: 1.35;
-  white-space: nowrap;
   transform: rotate(-2deg);
 }
 
 .nm-profile-badge__skills {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 0.15rem 0.55rem;
   max-width: 100%;
   margin: 0;
-  overflow-x: auto;
   padding: 0 8px 14px;
   color: var(--vp-c-brand-1);
   font-family: var(--display, var(--sans, Arial, Helvetica, sans-serif));
   font-size: clamp(0.92rem, 2.8vw, 1.2rem);
   line-height: 1.4;
   list-style: none;
-  white-space: nowrap;
 }
 
 .nm-profile-badge__skills li + li::before {
@@ -221,13 +243,12 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
 
 .nm-profile-badge__links {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 0.6rem 1.1rem;
   min-height: 80px;
   margin: 0 18px 10px 58px;
-  overflow-x: auto;
   padding: 10px 12px;
 }
 
@@ -239,7 +260,6 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  white-space: nowrap;
   transform: rotate(-2deg);
   transition: color 180ms ease, transform 180ms ease;
 }
@@ -263,6 +283,34 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   mask: var(--profile-link-icon) center / contain no-repeat;
 }
 
+.nm-profile-badge__logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.1rem;
+  padding-inline: 6px;
+}
+
+.nm-profile-badge__logos a,
+.nm-profile-badge__logos > span {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.nm-profile-badge__logos img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 104px);
+  height: 42px;
+  object-fit: contain;
+}
+
 @media (max-width: 560px) {
   .nm-profile-badge__frame {
     width: 100%;
@@ -276,6 +324,10 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   .nm-profile-badge__portrait-column {
     width: 100%;
     padding-block: 12px 22px;
+  }
+
+  .nm-profile-badge__portrait {
+    margin-inline: auto;
   }
 
   .nm-profile-badge__content {

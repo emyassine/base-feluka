@@ -37,6 +37,10 @@ Research and continued learning are central to his work. He explores business mo
   name="Yassine El Moumen"
   role="Founder and Managing Director"
   :skills="['Business operations', 'Consulting', 'Software engineering', 'Systems design']"
+  :logos="[
+    { src: '/images/products/feluqa.svg', alt: 'Feluqa' },
+    { src: '/images/products/TheBestRecruit.png', alt: 'The Best Recruit' }
+  ]"
 />
 
 
