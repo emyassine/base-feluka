@@ -30,7 +30,8 @@ export interface DockGroup {
 </script>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
+import { tabsKey } from '../tabs-context'
 
 const props = withDefaults(defineProps<{
   /** Single dock, no tabs. */
@@ -174,7 +175,7 @@ function resolveInitialIndex(): number {
 const activeIndex = ref(resolveInitialIndex())
 const activeGroup = computed(() => groupList.value[Math.min(activeIndex.value, groupList.value.length - 1)])
 const showTabs = computed(() => groupList.value.length > 1)
-const tabsEl = ref<HTMLElement | null>(null)
+const tabsId = `nm-dock-tabs-${useId()}`
 
 watch(() => groupList.value.length, (length) => {
   if (activeIndex.value > length - 1) activeIndex.value = Math.max(0, length - 1)
@@ -188,17 +189,9 @@ function selectGroup(index: number) {
   emit('change', groupList.value[index].id, index)
 }
 
-function onTabKeydown(event: KeyboardEvent) {
-  const total = groupList.value.length
-  let next = activeIndex.value
-  if (event.key === 'ArrowRight') next = (next + 1) % total
-  else if (event.key === 'ArrowLeft') next = (next - 1 + total) % total
-  else if (event.key === 'Home') next = 0
-  else if (event.key === 'End') next = total - 1
-  else return
-  event.preventDefault()
-  selectGroup(next)
-  tabsEl.value?.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus()
+function selectGroupId(id: string) {
+  const index = groupList.value.findIndex(group => group.id === id)
+  if (index >= 0) selectGroup(index)
 }
 
 /* ------------------------------------------------------------------ */
@@ -381,28 +374,29 @@ const rootStyle = computed(() => ({
 
 <template>
   <div class="nm-dock nm-simple-hero-dock" :class="props.className" :style="rootStyle">
-    <div
+    <Tabs
       v-if="showTabs"
-      ref="tabsEl"
-      class="nm-dock__tabs"
-      role="tablist"
-      :aria-label="props.label"
-      @keydown="onTabKeydown"
+      :id="tabsId"
+      :model-value="activeGroup.id"
+      :label="props.label"
+      align="center"
+      preset="rounded"
+      @update:model-value="selectGroupId"
     >
-      <button
-        v-for="(group, i) in groupList"
+      <TabsItem
+        v-for="group in groupList"
         :key="group.id"
-        type="button"
-        role="tab"
-        class="nm-dock__tab"
-        :class="{ 'is-active': i === activeIndex }"
-        :aria-selected="i === activeIndex"
-        :tabindex="i === activeIndex ? 0 : -1"
-        @click="selectGroup(i)"
-      >{{ group.label }}</button>
-    </div>
+        :value="group.id"
+      >{{ group.label }}</TabsItem>
+    </Tabs>
 
-    <div class="nm-dock__stage" :role="showTabs ? 'tabpanel' : undefined" :aria-label="showTabs ? activeGroup.label : undefined">
+    <div
+      class="nm-dock__stage"
+      :role="showTabs ? 'tabpanel' : undefined"
+      :id="showTabs ? `${tabsId}-panel-${tabsKey(activeGroup.id)}` : undefined"
+      :aria-labelledby="showTabs ? `${tabsId}-tab-${tabsKey(activeGroup.id)}` : undefined"
+      :aria-label="showTabs ? activeGroup.label : undefined"
+    >
       <Transition name="nm-dock-swap" mode="out-in">
         <div :key="activeGroup.id" class="nm-dock__scroller">
           <div
@@ -507,56 +501,6 @@ const rootStyle = computed(() => ({
   flex-direction: column;
   align-items: center;
   pointer-events: auto;
-}
-
-/* ---------------------------------------------------------------- */
-/* Tabs                                                              */
-/* ---------------------------------------------------------------- */
-.nm-dock__tabs {
-  display: flex;
-  max-width: 100%;
-  gap: 2px;
-  margin-bottom: 0.5rem;
-  padding: 3px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border: 1px solid rgb(255 255 255 / 0.3);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--vp-c-bg) 38%, transparent);
-  box-shadow: 0 4px 16px rgb(0 0 0 / 0.18), inset 0 1px 0 rgb(255 255 255 / 0.3);
-  -webkit-backdrop-filter: blur(24px) saturate(1.35);
-  backdrop-filter: blur(24px) saturate(1.35);
-}
-:global(.nm-effect-hero--light) .nm-dock__tabs {
-  border-color: rgb(148 163 184 / 0.4);
-  background: rgb(255 255 255 / 0.82);
-  box-shadow: 0 6px 20px rgb(15 23 42 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.9);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
-  backdrop-filter: blur(18px) saturate(1.15);
-}
-.nm-dock__tabs::-webkit-scrollbar { display: none; }
-
-.nm-dock__tab {
-  flex: 0 0 auto;
-  min-height: 1.75rem;
-  padding: 0.25rem 0.9rem;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--vp-c-text-1);
-  font: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.2;
-  white-space: nowrap;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-.nm-dock__tab.is-active { background: var(--vp-c-brand-1); color: var(--vp-c-white); }
-.nm-dock__tab:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
-@media (hover: hover) {
-  .nm-dock__tab:not(.is-active):hover { background: color-mix(in srgb, var(--vp-c-text-1) 10%, transparent); }
 }
 
 /* ---------------------------------------------------------------- */
@@ -885,7 +829,6 @@ const rootStyle = computed(() => ({
   .nm-dock__tile,
   .nm-dock__divider,
   .nm-dock__tooltip,
-  .nm-dock__tab,
   .nm-dock-swap-enter-active,
   .nm-dock-swap-leave-active { transition: none; }
   .nm-dock__tile.is-bouncing { animation: none; }
