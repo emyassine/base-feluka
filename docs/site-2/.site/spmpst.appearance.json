@@ -39,6 +39,7 @@
   "$schema": "../public/media/schemas/appearance.schema.json",
   "styles": [
     "components/numerimondes.css",
-    "components/numerimondes-silky.css"
+    "components/numerimondes-silky.css",
+    "components/numerimondes-marketplace.css"
   ]
 }
