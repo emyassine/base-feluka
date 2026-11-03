@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="INFRASTRUCTURE · NUMERIMONDES"
-  title="Technical foundations for dependable operations."
+  title="Technical foundations for <span class='silky-bi'>dependable operations</span>."
   description="We help organizations assess, plan and operate infrastructure for their applications, information and connected activities."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## Technical foundations that match operational needs.
 
-We help organizations assess, plan and operate infrastructure for applications, information and connected activities.
+We help organizations <span class="silky-i">assess, plan and operate infrastructure</span> for applications, information and connected activities.
 
 ### Scope examples
 

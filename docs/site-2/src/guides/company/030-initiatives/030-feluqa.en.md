@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="IN DEVELOPMENT · NUMERIMONDES"
-  title="Engineering across platforms and environments."
+  title="<span class='silky-bi'>Engineering</span> across platforms and environments."
   description="Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -31,7 +31,7 @@ js-events:
 
 ## Engineering across platforms and environments.
 
-Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes. Its intended direction is to support efficient application development across different environments, with an emphasis on control, performance and maintainable systems.
+Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes. Its intended direction is to support <span class="silky-i">efficient application development across different environments</span>, with an emphasis on control, performance and maintainable systems.
 
 ### Areas under exploration
 

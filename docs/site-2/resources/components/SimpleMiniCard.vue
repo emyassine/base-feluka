@@ -32,7 +32,7 @@ const emit = defineEmits(['click'])
       class="simple-mini-card-section"
     >
       <h3 class="simple-mini-card-title">
-        {{ cat.title }}
+        <span v-html="cat.title" />
       </h3>
 
       <div
@@ -89,7 +89,7 @@ const emit = defineEmits(['click'])
           </div>
 
           <p class="simple-mini-card-label">
-            {{ item.title }}
+            <span v-html="item.title" />
           </p>
         </component>
       </div>

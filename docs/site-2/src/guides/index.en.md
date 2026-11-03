@@ -10,7 +10,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '90vh' }"
   :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
-  :title="{ text: `Ideas and operations that <span class='silky-i'>move</span> businesses forward <span class='silky-i+110'>smoothly</span>.`, color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
+  :title="{ text: `Ideas and operations that <span class='silky-bi'>move</span> businesses forward <span class='silky-bi+110'>smoothly</span>.`, color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
   :description="{ text: 'Across business operations, technology and new ventures, our work is guided by the ambition to <strong>help organizations improve performance, gain control and create lasting value.</strong>', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
   :buttons="[
     { label: 'Discuss a project', href: 'https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20project.', external: true, icon: 'whatsapp', color: 'primary' },
@@ -50,8 +50,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
 </NmEffectHero>
 
 <Acomponent
-  title="Numerimondes is an independent consulting and solutions company."
-  introduction="We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
+  title="Numerimondes is an <span class='silky-bi'>independent consulting and solutions company</span>."
+  introduction="We explore <span class='silky-i'>opportunities</span>, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
   :gallery="[
     {
       src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85',
@@ -110,30 +110,30 @@ description: "Numerimondes helps organizations design, build, and operate depend
       alt: 'A shared workspace with a long table'
     }
   ]"
-  section-title="Possibility<br>becomes valuable<br>through execution."
+  section-title="Possibility<br><span class='silky-bi+120'>becomes valuable</span><br>through execution."
   :paragraphs="[
     {
-      before: 'Every organization has opportunities waiting to be explored:',
+      before: `Every organization has <span class='silky-i'>opportunities waiting to be explored</span>:`,
       image: {
         thumb: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80',
         src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85',
         alt: 'A team collaborating around a table',
         caption: 'People working through opportunities together'
       },
-      after: 'processes that could run better, information that could support faster decisions, new services worth developing, and ways to connect people, systems and markets.'
+      after: `processes that could run better, information that could support <span class='silky-i'>faster decisions</span>, new services worth developing, and ways to connect people, systems and markets.`
     },
     {
-      before: 'We combine research, commercial thinking and engineering',
+      before: `We combine research, <span class='silky-i'>commercial thinking</span> and engineering`,
       image: {
         thumb: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80',
         src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85',
         alt: 'A workspace set up for focused research and planning',
         caption: 'Research and planning workspace'
       },
-      after: 'to examine these possibilities, shape viable approaches and move selected projects into action.'
+      after: `to examine these possibilities, shape <span class='silky-i'>viable approaches</span> and move selected projects into action.`
     },
     {
-      before: 'Our contribution can begin with an idea, a question, an operational challenge',
+      before: `Our contribution can begin with an idea, a question, an <span class='silky-i'>operational challenge</span>`,
       image: {
         thumb: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80',
         src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85',
@@ -147,18 +147,18 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 <div style="width: min(100% - 40px, 544px) !important;  margin-inline: auto!important;">
 
-<h2 style="margin: 0 0 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em;">
+  <h2 style="margin: 0 0 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em;">
 		What this can mean<br>for your business
 </h2>
 
-<p>Expected benefits are assessed for each engagement; Specific results depend on the project and its implementation.</p>
+<p>Expected benefits are assessed for each engagement; <span class="silky-i">specific results depend on the project and its implementation.</span></p>
 
 <Timeline
   label="Business benefits"
   :items="[
-    { title: 'Better decisions', status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: 'Clearer priorities, options and investment choices.' },
-    { title: 'More efficient operations', status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: 'Less duplicated work, fewer avoidable errors and better coordination.' },
-    { title: 'Greater visibility and control', status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: 'Accessible information, traceable processes and systems you can manage.' },
+    { title: `Better <span class='silky-i'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and <span class='silky-i'>investment choices</span>.` },
+    { title: `More efficient <span class='silky-i'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: `Less duplicated work, fewer avoidable errors and <span class='silky-i'>better coordination</span>.` },
+    { title: `Greater <span class='silky-i'>visibility and control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: `Accessible information, traceable processes and systems you can manage.` },
     { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
     { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
@@ -169,24 +169,24 @@ description: "Numerimondes helps organizations design, build, and operate depend
  <NmShowcase
 	 title="What we do"
 		variant="stacked"
-	 footnote="Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required."
+	 footnote="Our work <span class='silky-i'>connects consulting, innovation and delivery</span>. Each engagement is defined around the organization's priorities and the capabilities required."
 	 citation="El Moumen Yassine"
 	 footnote-marker="*"
 		:stories='[
 	  {
 	    name: "Business Consulting and Development",
-	    description: "Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.",
+	    description: "Opportunity research, <span class=silky-i>commercial strategy</span>, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.",
       color: "#E9A23B",
 	    beforeImage: "/images/home/showcase-capabilities/business-before.jpg",
 	    afterImage: "/images/home/showcase-capabilities/business-after.jpg",
 	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
-	    afterText: "Structured business roadmap, clear decision-making frameworks, and accelerated commercial expansion.",
+	    afterText: "Structured business roadmap, <span class=silky-i>clear decision-making frameworks</span>, and accelerated commercial expansion.",
 	    linkText: "Explore consulting",
 	    linkUrl: "/services/business-advisory/consulting"
 	  },
 	  {
 	    name: "Digital Systems and Software",
-	    description: "Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.",
+	    description: "Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes <span class=silky-i>custom development</span> and Rust-based initiatives where appropriate.",
       color: "#3B82F6",
 	    beforeImage: "/images/home/showcase-capabilities/digital-before.jpg",
 	    afterImage: "/images/home/showcase-capabilities/digital-after.jpg",
@@ -197,7 +197,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	  },
 	  {
 	    name: "Infrastructure, Equipment and Security",
-	    description: "Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.",
+	    description: "Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make <span class=silky-i>informed infrastructure decisions</span> and manage their technical environments.",
       color: "#8B5CF6",
 	    beforeImage: "/images/home/showcase-capabilities/infrastructure-before.jpg",
 	    afterImage: "/images/home/showcase-capabilities/infrastructure-after.jpg",
@@ -208,7 +208,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	  },
 	  {
 	    name: "Operations, People and Capabilities",
-	    description: "Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.",
+	    description: "Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, <span class=silky-i>project scope</span> and operational readiness.",
       color: "#14B8A6",
 	    beforeImage: "/images/home/showcase-capabilities/operations-before.jpg",
 	    afterImage: "/images/home/showcase-capabilities/operations-after.jpg",
@@ -219,7 +219,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	  },
 	  {
 	    name: "Innovation and New Ventures",
-	    description: "Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.",
+	    description: "Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a <span class=silky-i>practical development path</span>.",
       color: "#F43F5E",
 	    beforeImage: "/images/home/showcase-capabilities/innovation-before.jpg",
 	    afterImage: "/images/home/showcase-capabilities/innovation-after.jpg",

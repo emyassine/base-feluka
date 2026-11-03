@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="OUR SERVICES · NUMERIMONDES"
-  title="Expertise organized around your objectives."
+  title="Expertise organized around your <span class='silky-bi'>objectives</span>."
   description="From early investigation to implementation and operational support, each mission is shaped around the work that matters."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -29,7 +29,7 @@ js-events:
 
 ## Expertise organized around your objectives.
 
-Numerimondes supports organizations from early investigation and strategic decisions through implementation and operational support. We bring together business understanding, creative research and specialist expertise to shape each assignment.
+Numerimondes supports organizations from early investigation and strategic decisions through implementation and operational support. We bring together <span class="silky-i">business understanding</span>, creative research and specialist expertise to shape each assignment.
 
 **Discuss your needs** → `/company/prologue/contact?topic=project`
 

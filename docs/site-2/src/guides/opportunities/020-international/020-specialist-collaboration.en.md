@@ -13,7 +13,7 @@ js-events:
 
 ## Specialist work
 
-We assemble project teams according to the mission. Opportunities may involve Rust, PHP, software engineering, infrastructure, security, analysis, documentation, training, design, or other specialist work.
+We assemble project teams according to the mission. Opportunities may involve Rust, PHP, software engineering, infrastructure, security, analysis, documentation, training, design, or other <span class="silky-i">specialist work</span>.
 
 ## Engagement terms
 

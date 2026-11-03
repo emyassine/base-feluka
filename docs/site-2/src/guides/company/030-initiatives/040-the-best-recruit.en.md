@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="PREPARING FOR LAUNCH · NUMERIMONDES"
-  title="Better information. More meaningful introductions."
+  title="Better information. More <span class='silky-bi'>meaningful introductions</span>."
   description="The Best Recruit is a recruitment and talent initiative in preparation, centered on structured candidate qualification."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -31,7 +31,7 @@ js-events:
 
 ## Better information. More meaningful introductions.
 
-The Best Recruit is a recruitment and talent initiative in preparation at Numerimondes. Its planned approach centers on structured candidate qualification and clear, relevant information for employers making recruitment decisions.
+The Best Recruit is a recruitment and talent initiative in preparation at Numerimondes. Its planned approach centers on <span class="silky-i">structured candidate qualification</span> and clear, relevant information for employers making recruitment decisions.
 
 ### What we are working toward
 

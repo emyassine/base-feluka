@@ -287,10 +287,10 @@ onBeforeUnmount(() => {
     }"
   >
     <header class="nm-showcase__intro">
-      <h2>{{ title }}</h2>
+      <h2 v-html="title" />
       <p v-if="footnote" class="nm-showcase__footnote">
         <span v-if="footnoteMarker" class="nm-showcase__footnote-marker">{{ footnoteMarker }}</span>
-        {{ footnote }}
+        <span v-html="footnote" />
         <cite v-if="citation">— {{ citation }}</cite>
       </p>
     </header>
@@ -345,15 +345,15 @@ onBeforeUnmount(() => {
           </div>
           <div v-if="index === (visibleCard ?? 0)" class="nm-showcase__copy">
             <span class="nm-showcase__name">{{ story.name }}</span>
-            <span class="nm-showcase__description">{{ story.description }}</span>
+            <span class="nm-showcase__description" v-html="story.description" />
             <div class="nm-showcase__mobile-captions">
               <div class="nm-showcase__mobile-caption">
                 <span class="nm-showcase__mobile-caption-label">{{ labels.before }}</span>
-                <p>{{ story.beforeText }}</p>
+                <p v-html="story.beforeText" />
               </div>
               <div class="nm-showcase__mobile-caption">
                 <span class="nm-showcase__mobile-caption-label">{{ labels.after }}</span>
-                <p>{{ story.afterText }}</p>
+                <p v-html="story.afterText" />
               </div>
             </div>
           </div>
@@ -385,7 +385,7 @@ onBeforeUnmount(() => {
                 :key="`before-text-${story.name}-${index}`"
                 class="nm-showcase__caption"
                 :class="{ 'is-active': index === active }"
-              >{{ story.beforeText }}</p>
+              v-html="story.beforeText" />
             </div>
           </figure>
 
@@ -405,7 +405,7 @@ onBeforeUnmount(() => {
                     v-for="(sentence, sentenceIndex) in descriptionSentences(stories[active]?.description ?? '')"
                     :key="sentenceIndex"
                     class="nm-showcase__story-sentence"
-                  >{{ sentence }}</span>
+                  v-html="sentence" />
                 </p>
               </div>
             </Transition>
@@ -432,7 +432,7 @@ onBeforeUnmount(() => {
                 :key="`after-text-${story.name}-${index}`"
                 class="nm-showcase__caption"
                 :class="{ 'is-active': index === active }"
-              >{{ story.afterText }}</p>
+              v-html="story.afterText" />
             </div>
           </figure>
         </div>
@@ -453,7 +453,7 @@ onBeforeUnmount(() => {
             <figure class="nm-showcase__stack-side">
               <img :src="story.beforeImage" :alt="fill(labels.altBefore, story.name)" loading="lazy" draggable="false" />
               <figcaption><span>01</span>{{ labels.before }}</figcaption>
-              <p>{{ story.beforeText }}</p>
+              <p v-html="story.beforeText" />
             </figure>
             <div class="nm-showcase__stack-copy">
               <span class="nm-showcase__stack-count">{{ String(index + 1).padStart(2, '0') }} <span>/ {{ String(count).padStart(2, '0') }}</span></span>
@@ -463,13 +463,13 @@ onBeforeUnmount(() => {
                   v-for="(sentence, sentenceIndex) in descriptionSentences(story.description)"
                   :key="sentenceIndex"
                   class="nm-showcase__story-sentence"
-                >{{ sentence }}</span>
+                  v-html="sentence" />
               </p>
             </div>
             <figure class="nm-showcase__stack-side">
               <img :src="story.afterImage" :alt="fill(labels.altAfter, story.name)" loading="lazy" draggable="false" />
               <figcaption><span>02</span>{{ labels.after }}</figcaption>
-              <p>{{ story.afterText }}</p>
+              <p v-html="story.afterText" />
             </figure>
           </article>
         </div>

@@ -29,15 +29,25 @@
   font-weight: 500;
 }
 
+.silky-bi, .silky-bi\+110, .silky-bi\+120, .silky-bi\+130, .silky-bi\+140 {
+  font-family: 'Romie', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.silky-ri, .silky-ri\+110, .silky-ri\+120, .silky-ri\+130, .silky-ri\+140 {
+  font-family: 'Romie', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .silky-m, .silky-m\+110, .silky-m\+120, .silky-m\+130, .silky-m\+140 {
   font-family: 'Romie', Georgia, serif;
-  font-style: normal;
   font-weight: 500;
 }
 
 .silky-b, .silky-b\+110, .silky-b\+120, .silky-b\+130, .silky-b\+140 {
   font-family: 'Romie', Georgia, serif;
-  font-style: normal;
   font-weight: 700;
 }
 
@@ -46,3 +56,11 @@
 .silky-i\+120, .silky-m\+120, .silky-b\+120 { font-size: 120%; }
 .silky-i\+130, .silky-m\+130, .silky-b\+130 { font-size: 130%; }
 .silky-i\+140, .silky-m\+140, .silky-b\+140 { font-size: 140%; }
+.silky-bi\+110 { font-size: 110%; }
+.silky-bi\+120 { font-size: 120%; }
+.silky-bi\+130 { font-size: 130%; }
+.silky-bi\+140 { font-size: 140%; }
+.silky-ri\+110 { font-size: 110%; }
+.silky-ri\+120 { font-size: 120%; }
+.silky-ri\+130 { font-size: 130%; }
+.silky-ri\+140 { font-size: 140%; }

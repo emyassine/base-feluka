@@ -41,9 +41,9 @@ withDefaults(defineProps<{
 
       <div class="timeline__content">
         <div class="timeline__heading">
-          <strong v-if="!item.href">{{ item.title }}</strong>
+          <strong v-if="!item.href" v-html="item.title" />
           <a v-else class="timeline__title-link" :href="item.href">
-            {{ item.title }}
+            <span v-html="item.title" />
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7" /></svg>
           </a>
           <template v-for="(status, statusIndex) in item.status || []" :key="statusIndex">
@@ -61,7 +61,7 @@ withDefaults(defineProps<{
           <span v-if="item.branch && item.duration" aria-hidden="true">·</span>
           <span v-if="item.duration">{{ item.duration }}</span>
         </div>
-        <time v-if="item.time" class="timeline__time">{{ item.time }}</time>
+        <time v-if="item.time" class="timeline__time" v-html="item.time" />
       </div>
     </li>
   </ol>

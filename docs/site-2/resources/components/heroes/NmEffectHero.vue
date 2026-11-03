@@ -135,7 +135,7 @@ const descriptionStyles = computed(() => ({
       </div>
     </div>
     <div class="nm-effect-hero__content">
-      <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }">{{ eyebrowText }}</p>
+      <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }" v-html="eyebrowText" />
       <h1 :style="titleStyles" v-html="titleText" />
       <p :style="descriptionStyles" v-html="descriptionText" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">

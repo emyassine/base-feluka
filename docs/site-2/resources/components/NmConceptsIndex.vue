@@ -2,8 +2,8 @@
   <div class="nm-concepts">
     <label class="nm-concepts__search">Search concepts <input v-model="query" type="search" autocomplete="off" placeholder="Search concepts…" /></label>
     <section v-for="(items, family) in groups" :key="family" class="nm-concepts__family">
-      <h2>{{ family }}</h2>
-      <div class="nm-concepts__grid"><a v-for="item in items" :key="item.url" :href="item.url" class="nm-concepts__card"><strong>{{ item.title }}</strong><span>{{ item.summary }}</span></a></div>
+      <h2 v-html="family" />
+      <div class="nm-concepts__grid"><a v-for="item in items" :key="item.url" :href="item.url" class="nm-concepts__card"><strong v-html="item.title" /><span v-html="item.summary" /></a></div>
     </section>
     <p v-if="!Object.keys(groups).length" role="status">No concepts match this search.</p>
   </div>

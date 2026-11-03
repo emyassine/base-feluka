@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="SOLUTIONS · NUMERIMONDES"
-  title="Solutions for stronger business performance."
+  title="Solutions for stronger <span class='silky-bi'>business performance</span>."
   description="We shape practical approaches around your organization, its operating context and the results it needs."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## Practical paths to stronger business performance.
 
-Our solutions start with business outcomes and are tailored to the organization, existing tools, budget and operating context. The examples below describe **solution types we can assess and propose**, rather than a catalogue of already deployed products.
+Our solutions start with <span class="silky-i">business outcomes</span> and are tailored to the organization, existing tools, budget and operating context. The examples below describe **solution types we can assess and propose**, rather than a catalogue of already deployed products.
 
 ## Operational visibility
 

@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '40vh' }"
   eyebrow="NUMERIMONDES · COMPANY"
-  title="People, ideas and initiatives behind the work."
+  title="People, ideas and <span class='silky-bi'>initiatives</span> behind the work."
   description="Explore how we work, what we are building and how to get in touch."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -27,7 +27,7 @@ js-events:
 
 ## Company
 
-Numerimondes brings together business understanding, software, infrastructure and operations. This section introduces our approach, innovation work and the initiatives we develop.
+Numerimondes brings together <span class="silky-i">business understanding, software, infrastructure and operations</span>. This section introduces our approach, innovation work and the initiatives we develop.
 
 ### About Numerimondes
 

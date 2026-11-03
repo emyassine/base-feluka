@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="ENGAGEMENTS &amp; PRICING · NUMERIMONDES"
-  title="The right commercial model for the mission."
+  title="The right <span class='silky-bi'>commercial model</span> for the mission."
   description="A useful proposal explains what you receive, which decisions you need to make and what the engagement will cost."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## The right commercial model for the mission.
 
-We price work according to its purpose, scope, complexity, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
+We price work according to its <span class="silky-i">purpose, scope and complexity</span>, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
 
 ## Initial qualification
 

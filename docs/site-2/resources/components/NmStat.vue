@@ -1,8 +1,8 @@
 <template>
   <div class="nm-stat">
-    <span class="nm-stat__label">{{ label }}</span>
-    <strong class="nm-stat__value">{{ value }}</strong>
-    <span v-if="description" class="nm-stat__description">{{ description }}</span>
+    <span class="nm-stat__label" v-html="label" />
+    <strong class="nm-stat__value" v-html="value" />
+    <span v-if="description" class="nm-stat__description" v-html="description" />
   </div>
 </template>
 <script setup>

@@ -75,8 +75,8 @@ const gridStyle = computed(() => ({
         <img class="mega-cards__image" :src="card.item.image" alt="">
         <img v-if="card.item.icon" class="mega-cards__icon" :src="card.item.icon" alt="">
         <span class="mega-cards__content">
-          <strong>{{ card.item.title }}</strong>
-          <small>{{ card.item.description }}</small>
+          <strong v-html="card.item.title" />
+          <small v-html="card.item.description" />
         </span>
       </a>
     </div>
@@ -105,14 +105,14 @@ const gridStyle = computed(() => ({
           alt=""
         >
         <span class="mega-cards__content">
-          <strong>{{ card.item.title }}</strong>
+          <strong v-html="card.item.title" />
           <small v-if="card.kind === 'more' && card.item.description" class="mega-cards__more-hint">
-            {{ card.item.description }}
+            <span v-html="card.item.description" />
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m9 18 6-6-6-6" />
             </svg>
           </small>
-          <small v-else-if="card.kind === 'card'">{{ card.item.description }}</small>
+          <small v-else-if="card.kind === 'card'" v-html="card.item.description" />
         </span>
       </a>
       </div>

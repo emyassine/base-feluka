@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="ABOUT NUMERIMONDES · NUMERIMONDES"
-  title="Ideas, strategy and the ability to act."
+  title="Ideas, strategy and the <span class='silky-bi'>ability to act</span>."
   description="An independent consulting and solutions company in Casablanca, working across business operations, technology and new ventures."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -27,7 +27,7 @@ js-events:
 
 ## Ideas, strategy and the ability to act.
 
-Numerimondes SARL AU is an independent consulting and solutions company established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop practical projects across business operations, technology and related fields.
+Numerimondes SARL AU is an <span class="silky-i">independent consulting and solutions company</span> established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop practical projects across business operations, technology and related fields.
 
 Our activities draw on a wide corporate purpose encompassing management and business development consulting, information systems, digital transformation, digital marketing, security, training, contact-centre operations, recruitment and IT-related equipment and solutions. Our active services and developing initiatives are presented separately throughout this website.
 

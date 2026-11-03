@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="RESEARCH · PROTOTYPES · NEW VENTURES"
-  title="Ideas taking shape."
+  title="<span class='silky-bi'>Ideas</span> taking shape."
   description="Our initiatives explore new tools, services and standards. Each is presented with its current status and the work still ahead."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -26,7 +26,7 @@ js-events:
 
 ## Work in progress, shared clearly.
 
-These internal initiatives are at different stages of development. Their pages describe the current direction without presenting planned capabilities as launched products.
+These internal initiatives are at different stages of development. Their pages describe the current direction without presenting <span class="silky-i">planned capabilities as launched products</span>.
 
 <MegaCards
   :items="[

@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="RESEARCH &amp; NEW VENTURES · NUMERIMONDES"
-  title="Curiosity with a direction."
+  title="<span class='silky-bi'>Curiosity</span> with a direction."
   description="We connect business insight and technological inquiry to explore ideas with a practical path to action."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -29,7 +29,7 @@ js-events:
 
 ## Curiosity with a direction.
 
-Ideas can reveal new ways to work, new products to create and unmet needs worth exploring. At Numerimondes, research connects business insight, technological inquiry and the conditions required to put an idea to work.
+Ideas can reveal new ways to work, new products to create and unmet needs worth exploring. At Numerimondes, research connects <span class="silky-i">business insight and technological inquiry</span> with the conditions required to put an idea to work.
 
 Our areas of interest span enterprise operations, applications, infrastructure, applied AI, interoperability, publishing workflows and new service models.
 

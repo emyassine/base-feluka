@@ -141,8 +141,6 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
 .nm-about-content h2 {
   margin: 0 0 24px;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
 }
 
 .nm-about-paragraphs p {

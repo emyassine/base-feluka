@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="OPERATIONS · NUMERIMONDES"
-  title="Make everyday work easier to coordinate and improve."
+  title="Make <span class='silky-bi'>everyday work</span> easier to coordinate and improve."
   description="We connect processes, information, people and tools to support more capable operations."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## Make everyday work easier to coordinate and improve.
 
-Operational performance depends on processes, information, people and the systems they use. Numerimondes brings practical operational experience to assignments addressing these connections.
+Operational performance depends on <span class="silky-i">processes, information and people</span>, and the systems they use. Numerimondes brings practical operational experience to assignments addressing these connections.
 
 ### Possible assignments
 

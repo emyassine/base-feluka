@@ -51,8 +51,8 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   >
     <div class="nm-hero__panel">
       <div class="nm-hero__content">
-        <h1 :style="titleStyles">{{ props.title }}</h1>
-        <p :style="descriptionStyles">{{ props.description }}</p>
+        <h1 :style="titleStyles" v-html="props.title" />
+        <p :style="descriptionStyles" v-html="props.description" />
         <div v-if="props.buttons.length" class="nm-hero__actions">
           <FeluqaButton
             v-for="(button, index) in props.buttons"

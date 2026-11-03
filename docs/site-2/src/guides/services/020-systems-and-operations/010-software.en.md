@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="SOFTWARE &amp; SYSTEMS · NUMERIMONDES"
-  title="Technology shaped by the work it supports."
+  title="Technology shaped by the <span class='silky-bi'>work</span> it supports."
   description="We scope applications, workflows and information systems around the people and processes that rely on them."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## Software shaped by the work it supports.
 
-Numerimondes designs and develops applications, workflows and information systems for organizations with specific operational requirements.
+Numerimondes designs and develops <span class="silky-i">applications, workflows and information systems</span> for organizations with specific operational requirements.
 
 ### Scope examples
 

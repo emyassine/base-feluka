@@ -47,8 +47,8 @@ const rows = computed(() => props.rows?.length
           >
         </div>
         <div class="benefits__copy">
-          <h3><span class="benefits__number">{{ String(benefit.number).padStart(2, '0') }}</span>{{ benefit.item.title }}</h3>
-          <p v-if="benefit.item.description">{{ benefit.item.description }}</p>
+          <h3><span class="benefits__number">{{ String(benefit.number).padStart(2, '0') }}</span><span v-html="benefit.item.title" /></h3>
+          <p v-if="benefit.item.description" v-html="benefit.item.description" />
         </div>
       </component>
     </div>

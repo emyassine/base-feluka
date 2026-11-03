@@ -56,12 +56,12 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
   <section class="cards-modern" :class="`cards-modern--${columns}`">
     <header class="cards-modern__heading">
       <div>
-        <h1>{{ text(title) }}</h1>
-        <p v-if="description" class="cards-modern__intro">{{ text(description) }}</p>
+        <h1 v-html="text(title)" />
+        <p v-if="description" class="cards-modern__intro" v-html="text(description)" />
       </div>
     </header>
 
-    <h2 v-if="sectionTitle" class="cards-modern__section-title">{{ text(sectionTitle) }}</h2>
+    <h2 v-if="sectionTitle" class="cards-modern__section-title" v-html="text(sectionTitle)" />
 
     <div class="cards-modern__grid">
       <article v-for="(card, index) in cards" :key="`${text(card.title)}-${index}`" class="cards-modern__card">
@@ -69,12 +69,12 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
           <img :src="card.image" alt="" loading="lazy" decoding="async">
         </div>
         <div class="cards-modern__body">
-          <p v-if="card.meta" class="cards-modern__meta">{{ text(card.meta) }}</p>
+          <p v-if="card.meta" class="cards-modern__meta" v-html="text(card.meta)" />
           <h3 class="cards-modern__title">
             <svg v-if="icon(card.icon)" class="cards-modern__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="icon(card.icon)" />
-            {{ text(card.title) }}
+            <span v-html="text(card.title)" />
           </h3>
-          <p class="cards-modern__description">{{ text(card.description) }}</p>
+          <p class="cards-modern__description" v-html="text(card.description)" />
           <div v-if="card.actions?.length" class="cards-modern__actions">
             <FeluqaButton
               v-for="(action, actionIndex) in card.actions"
