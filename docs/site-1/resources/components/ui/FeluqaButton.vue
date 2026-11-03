@@ -130,7 +130,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     :title="tooltip"
     :style="style"
     :class="[
-      'feluqa-button', `size-${size}`, `color-${buttonColor}`,
+      'feluqa-button', 'no-icon', `size-${size}`, `color-${buttonColor}`,
       { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor), 'wrap-label': wrap },
     ]"
     @pointerenter="startHoverAnimation"
