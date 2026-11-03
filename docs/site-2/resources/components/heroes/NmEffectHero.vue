@@ -129,7 +129,7 @@ const descriptionStyles = computed(() => ({
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
   <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, backgroundPreset ? `nm-effect-hero--background-${backgroundPreset}` : '', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
     <div class="nm-effect-hero__background" aria-hidden="true">
-      <component :is="effectComponent" :key="isDark ? 'dark' : 'light'" v-bind="effectProps" />
+      <component :is="effectComponent" v-bind="effectProps" />
       <div v-if="$slots.background" class="nm-effect-hero__background-slot">
         <slot name="background" />
       </div>
