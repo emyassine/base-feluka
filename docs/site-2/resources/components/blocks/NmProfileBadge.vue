@@ -69,7 +69,7 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
             v-if="image"
             class="nm-profile-badge__image"
             :src="image"
-            :alt="imageAlt || name"
+            :alt="imageAlt || name.label"
             loading="lazy"
             decoding="async"
           />

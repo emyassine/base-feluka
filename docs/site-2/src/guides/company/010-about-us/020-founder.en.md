@@ -40,13 +40,17 @@ The person you speak to first is the person accountable for the work. Tell him t
   width-on-parent="80%"
   image="/images/company/founder/yassine-01.jpeg"
   image-alt="Yassine El Moumen"
-  :links="[
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin', iconOnly: true },
-    { label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '@spmpst::icon::instagram', iconOnly: true },
-    { label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '@spmpst::icon::whatsapp', iconOnly: true },
-    { label: 'X', href: 'https://x.com/elmoumenyassine', icon: '@spmpst::icon::x', iconOnly: true }
-  ]"
-/>
+>
+  <NmSimpleHeroDock
+    label="Find Yassine El Moumen on social media"
+    :items="[
+      { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin', external: true },
+      { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '@spmpst::icon::instagram', external: true },
+      { id: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '@spmpst::icon::whatsapp', external: true },
+      { id: 'x', label: 'X', href: 'https://x.com/elmoumenyassine', icon: '@spmpst::icon::x', external: true }
+    ]"
+  />
+</NmProfileBadge>
 
 <div style="width: min(100% - 40px, 544px) !important;">
 
