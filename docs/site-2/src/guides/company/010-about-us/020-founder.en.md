@@ -39,7 +39,7 @@ The person you speak to first is the person accountable for the work. Tell him t
   :width-on-parent="{
     mobile: '100%',
     tablet: '92%',
-    desktop: '80%',
+    desktop: '85%',
   }"
   image="/images/company/founder/yassine-02.jpeg"
   image-alt="Yassine El Moumen"
@@ -56,7 +56,7 @@ The person you speak to first is the person accountable for the work. Tell him t
   />
 </NmProfileBadge>
 
-<div style="width: min(100% - 40px, 544px) !important;">
+<div style="width: min(100%, 544px) !important;">
 
 ::: details Technical Skills
 | Domain | Competencies and Technologies |
