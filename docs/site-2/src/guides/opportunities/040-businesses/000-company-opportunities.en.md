@@ -26,6 +26,6 @@ We review each opportunity before sharing it. We agree the selection process, st
 
 Professionals planning to open an independent practice can request a scoped market study and launch plan. This can be useful for a **medical practice or clinic**, a **law firm**, or an **accounting and advisory practice**.
 
-[Explore practice launch packs](/opportunities/businesses/practice-launch-packs)
+[Explore practice launch packs](/opportunities/businesses/company-opportunitiespractice-launch-packs)
 
 **Discuss an opportunity for your company** → `/company/prologue/contact?topic=company-opportunities`

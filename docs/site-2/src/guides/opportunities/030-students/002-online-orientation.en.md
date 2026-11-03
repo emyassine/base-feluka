@@ -5,6 +5,8 @@ icon: "@spmpst::icon::route"
 description: "Reflect on your studies, interests and strengths to discover practical directions worth exploring."
 lang: en
 status: "ready-for-review"
+js-events:
+  - uncollapse-sidebar
 ---
 
 # Online student orientation

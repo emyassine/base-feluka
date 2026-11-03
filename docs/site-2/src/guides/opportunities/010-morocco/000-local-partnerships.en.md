@@ -31,6 +31,6 @@ Local context matters: we qualify each opportunity with the people involved, res
 
 Accounting and advisory firms can identify issues such as manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit a business. Your firm keeps its client relationship and professional remit.
 
-[How Morocco advisory partnerships work](/opportunities/morocco/advisory-partners)
+[How Morocco advisory partnerships work](/opportunities/morocco/local-partnershipsadvisory-partners)
 
 **Discuss a Morocco-only opportunity** → `/company/prologue/contact?topic=partnership`

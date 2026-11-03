@@ -38,7 +38,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
         indicatorIndex: 0,
         items: [
           { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
-          { label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/', icon: '@spmpst::icon::server' },
+          { label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/systems-overview', icon: '@spmpst::icon::server' },
           { label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', icon: '@spmpst::icon::sparkles' },
           { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', icon: '@spmpst::icon::building' },
         ],
@@ -156,8 +156,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
   label="Business benefits"
   :items="[
     { title: `Better <span class='silky-bbi+115'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and investment choices.` },
-    { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
-    { title: `Greater visibility and <span class='silky-bbi+115'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: `Accessible information, traceable processes and systems you can manage.` },
+    { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/systems-overviewoperations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
+    { title: `Greater visibility and <span class='silky-bbi+115'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/systems-overviewsoftware', time: `Accessible information, traceable processes and systems you can manage.` },
     { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
     { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
@@ -192,7 +192,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
 	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
 	    linkText: "Explore software and systems",
-	    linkUrl: "/services/systems-and-operations/software"
+	    linkUrl: "/services/systems-and-operations/systems-overviewsoftware"
 	  },
 	  {
 	    name: "Infrastructure, Equipment and Security",
@@ -203,7 +203,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
 	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
 	    linkText: "Explore infrastructure",
-	    linkUrl: "/services/systems-and-operations/infrastructure"
+	    linkUrl: "/services/systems-and-operations/systems-overviewinfrastructure"
 	  },
 	  {
 	    name: "Operations, People and Capabilities",
@@ -214,7 +214,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
 	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
 	    linkText: "Explore operations",
-	    linkUrl: "/services/systems-and-operations/operations"
+	    linkUrl: "/services/systems-and-operations/systems-overviewoperations"
 	  },
 	  {
 	    name: "Innovation and New Ventures",

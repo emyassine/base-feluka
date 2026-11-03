@@ -15,7 +15,7 @@ js-events:
 
 Students and recent graduates can contact Numerimondes for **free initial orientation**. We help you clarify your interests, identify skills to build, and choose practical next steps toward study, projects or work.
 
-Try the [online student orientation tool](/opportunities/students/online-orientation) to turn your studies, interests and strengths into a few practical paths to explore.
+Try the [online student orientation tool](/opportunities/students/orientationonline-orientation) to turn your studies, interests and strengths into a few practical paths to explore.
 
 ### Free orientation can include
 
@@ -33,6 +33,6 @@ We may share suitable internships, project briefs, workshops or introductions wh
 
 ## Words of advice
 
-Read [Words of advice](/opportunities/students/words-of-advide) on choosing an environment that challenges you to grow.
+Read [Words of advice](/opportunities/students/orientationwords-of-advide) on choosing an environment that challenges you to grow.
 
 **Ask for free orientation** → `/company/prologue/contact?topic=student-orientation`
