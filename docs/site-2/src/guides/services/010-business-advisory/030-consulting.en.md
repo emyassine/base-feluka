@@ -24,7 +24,7 @@ js-events:
 
 
 
-# Consulting & business development
+# Consulting and business development
 
 ## Better questions. Clearer decisions. Actionable plans.
 

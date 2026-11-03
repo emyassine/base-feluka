@@ -1,5 +1,5 @@
 ---
-title: "Infrastructure & Security | Numerimondes"
+title: "Infrastructure and Security | Numerimondes"
 sidebarTitle: "Infrastructure"
 menuImage: "/images/services/infrastructure.jpg"
 icon: "@spmpst::icon::server"
@@ -24,7 +24,7 @@ js-events:
 
 
 
-# Infrastructure, equipment & security
+# Infrastructure, equipment and security
 
 ## Technical foundations that match operational needs.
 

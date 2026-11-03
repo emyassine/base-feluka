@@ -38,7 +38,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
         indicatorIndex: 0,
         items: [
           { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
-          { label: 'Systems & Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/systems-overview', icon: '@spmpst::icon::server' },
+          { label: 'Systems and Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/systems-overview', icon: '@spmpst::icon::server' },
           { label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', icon: '@spmpst::icon::sparkles' },
           { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', icon: '@spmpst::icon::building' },
         ],
@@ -358,37 +358,37 @@ Our founder acts as the central point of contact for project qualification, solu
   }
 }}%%
 flowchart TD
-    Start([Opportunity / Project Brief]) --> P1["1. Understand<br/><i>Audit context, goals & constraints</i>"]
+    Start([Opportunity / Project Brief]) --> P1["1. Understand<br/><i>Audit context, goals and constraints</i>"]
 
-    P1 --> Q1{"Clear alignment<br/>& viability?"}
+    P1 --> Q1{"Clear alignment<br/>and viability?"}
     Q1 -- No --> Redefine1["Re-evaluate scope<br/>or abort engagement"]
     Redefine1 --> P1
 
-    Q1 -- Yes --> P2["2. Investigate<br/><i>Research options, tech stack & ROI</i>"]
+    Q1 -- Yes --> P2["2. Investigate<br/><i>Research options, tech stack and ROI</i>"]
 
-    P2 --> Q2{"Technical & commercial<br/>feasibility validated?"}
+    P2 --> Q2{"Technical and commercial<br/>feasibility validated?"}
     Q2 -- No --> Pivot["Pivot strategy /<br/>Explore alternative tech"]
     Pivot --> P2
 
-    Q2 -- Yes --> P3["3. Define<br/><i>Scope deliverables, budget & schedule</i>"]
+    Q2 -- Yes --> P3["3. Define<br/><i>Scope deliverables, budget and schedule</i>"]
 
-    P3 --> Q3{"Proposal & SLA<br/>approved by client?"}
+    P3 --> Q3{"Proposal and SLA<br/>approved by client?"}
     Q3 -- No --> Adjust["Adjust terms,<br/>budget or timeline"]
     Adjust --> P3
 
-    Q3 -- Yes --> P4["4. Mobilize<br/><i>Assemble experts, tools & environment</i>"]
+    Q3 -- Yes --> P4["4. Mobilize<br/><i>Assemble experts, tools and environment</i>"]
 
-    P4 --> Q4{"Resources & stack<br/>fully operational?"}
+    P4 --> Q4{"Resources and stack<br/>fully operational?"}
     Q4 -- No --> Resolve["Resolve bottlenecks<br/>/ Onboard specialists"]
     Resolve --> P4
 
-    Q4 -- Yes --> P5["5. Deliver<br/><i>Execute, test, document & handover</i>"]
+    Q4 -- Yes --> P5["5. Deliver<br/><i>Execute, test, document and handover</i>"]
 
-    P5 --> Q5{"Deliverables validated<br/>& accepted?"}
-    Q5 -- No --> Refine["Iterate & refine<br/>implementation"]
+    P5 --> Q5{"Deliverables validated<br/>and accepted?"}
+    Q5 -- No --> Refine["Iterate and refine<br/>implementation"]
     Refine --> P5
 
-    Q5 -- Yes --> End([Project Handover & Success])
+    Q5 -- Yes --> End([Project Handover and Success])
 ```
 :::
 ::::

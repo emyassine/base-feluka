@@ -1,5 +1,5 @@
 ---
-title: "Pricing & Engagements | Numerimondes"
+title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
 menuImage: "/images/services/pricing.jpg"
 icon: "@spmpst::icon::scale"
@@ -13,7 +13,7 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="ENGAGEMENTS & PRICING · NUMERIMONDES"
+  eyebrow="ENGAGEMENTS and PRICING · NUMERIMONDES"
   title="The right <span class='silky-bbi'>commercial model</span> for the mission."
   description="A useful proposal explains what you receive, which decisions you need to make and what the engagement will cost."
   :title-style="{ color: '#e2e8f0' }"
@@ -24,7 +24,7 @@ js-events:
 
 
 
-# Pricing & engagements
+# Pricing and engagements
 
 ## The right commercial model for the mission.
 
@@ -52,7 +52,7 @@ A project organized into approved phases, with scope, payment and acceptance poi
 
 Defined consulting, research or engineering capacity over an agreed period, with reporting and limits clearly documented.
 
-### Recurring operations & support
+### Recurring operations and support
 
 An ongoing arrangement for agreed infrastructure, monitoring, maintenance, improvement or advisory responsibilities. Coverage, response commitments and exclusions are stated in the agreement.
 

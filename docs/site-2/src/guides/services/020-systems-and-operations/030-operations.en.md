@@ -1,5 +1,5 @@
 ---
-title: "Operations & Capabilities | Numerimondes"
+title: "Operations and Capabilities | Numerimondes"
 sidebarTitle: "Operations"
 menuImage: "/images/services/operations.jpg"
 icon: "@spmpst::icon::list-checks"
@@ -24,7 +24,7 @@ js-events:
 
 
 
-# Operations, people & capabilities
+# Operations, people and capabilities
 
 ## Make everyday work easier to coordinate and improve.
 

@@ -31,7 +31,7 @@ Numerimondes supports organizations from early investigation and strategic decis
 
 **Discuss your needs** → `/company/prologue/contact?topic=project`
 
-## Consulting & business development
+## Consulting and business development
 
 **Turn questions and opportunities into informed decisions.**
 
@@ -41,7 +41,7 @@ We investigate business models, customer needs, market opportunities, operationa
 
 **Explore consulting** → `/services/business-advisory/consulting`
 
-## Software & information systems
+## Software and information systems
 
 **Equip teams with tools suited to their work.**
 
@@ -51,7 +51,7 @@ We scope and develop custom applications, operational dashboards, internal porta
 
 **Explore systems** → `/services/systems-and-operations/software`
 
-## Infrastructure, equipment & security
+## Infrastructure, equipment and security
 
 **Support dependable operations and clearer technical control.**
 
@@ -61,7 +61,7 @@ Infrastructure architecture, deployment, self-hosted solutions, maintenance plan
 
 **Explore infrastructure** → `/services/systems-and-operations/infrastructure`
 
-## Operations, training & organizational capabilities
+## Operations, training and organizational capabilities
 
 **Improve the way people, information and work come together.**
 
@@ -69,7 +69,7 @@ We examine handoffs, reporting, training needs, service operations and organizat
 
 **Explore operations** → `/services/systems-and-operations/operations`
 
-## Innovation & opportunity development
+## Innovation and opportunity development
 
 **Explore new possibilities with a practical route to action.**
 

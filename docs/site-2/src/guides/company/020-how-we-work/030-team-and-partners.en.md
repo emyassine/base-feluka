@@ -1,6 +1,6 @@
 ---
-title: "Team & Partners | Numerimondes"
-sidebarTitle: "Team & Partners"
+title: "Team and Partners | Numerimondes"
+sidebarTitle: "Team and Partners"
 icon: "@spmpst::icon::handshake"
 description: "Numerimondes works with small, flat teams and a network of trusted independent specialists and partner organizations."
 lang: en
@@ -10,7 +10,7 @@ js-events:
 ---
 
 <NmCompanyHero
-  eyebrow="TEAM & PARTNERS · NUMERIMONDES"
+  eyebrow="TEAM and PARTNERS · NUMERIMONDES"
   title="Small, flat teams. <span class='silky-bbi'>Trusted specialists</span> when needed."
   description="A strong core, extended by independent experts and partner organizations."
   height="40vh"

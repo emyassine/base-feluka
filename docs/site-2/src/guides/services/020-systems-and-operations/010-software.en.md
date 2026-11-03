@@ -1,5 +1,5 @@
 ---
-title: "Software & Systems | Numerimondes"
+title: "Software and Systems | Numerimondes"
 sidebarTitle: "Software"
 menuImage: "/images/services/software.jpg"
 icon: "@spmpst::icon::code-xml"
@@ -13,7 +13,7 @@ js-events:
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
-  eyebrow="SOFTWARE & SYSTEMS · NUMERIMONDES"
+  eyebrow="SOFTWARE and SYSTEMS · NUMERIMONDES"
   title="Technology shaped by the <span class='silky-bbi'>work</span> it supports."
   description="We scope applications, workflows and information systems around the people and processes that rely on them."
   :title-style="{ color: '#e2e8f0' }"
@@ -24,7 +24,7 @@ js-events:
 
 
 
-# Software & information systems
+# Software and information systems
 
 ## Software shaped by the work it supports.
 

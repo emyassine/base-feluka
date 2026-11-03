@@ -23,7 +23,7 @@ js-events:
   :paragraphs="[
     { before: 'His experience spans contact-centre operations, project management, training, consulting and software engineering.', after: 'Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.' },
     { before: 'Research and continued learning are central to his work.', after: 'He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.' },
-    { before: '<strong>Founder &amp; Managing Director</strong>', after: '<a href=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot;>Connect on LinkedIn</a>' }
+    { before: '<strong>Founder and Managing Director</strong>', after: '<a href=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot;>Connect on LinkedIn</a>' }
   ]"
 />
 
@@ -31,26 +31,26 @@ js-events:
 
 ### Technical Skills
 
-| Domain | Competencies & Technologies |
+| Domain | Competencies and Technologies |
 | :--- | :--- |
 | **Programming** | Rust, PHP, Go, Bash, SQL |
 | **Databases** | SQLite, PostgreSQL, ClickHouse, MySQL, MariaDB, MongoDB |
 | **Environments** | Linux (Debian/Arch), Node.js, Self-Hosted and Air-Gapped Architectures |
-| **Markup & Styling** | HTML, CSS, Markdown, LaTeX, SVG |
-| **Tools & Industrialization** | Git, Pandoc, VitePress / Docspress, Rsync, Automation CLI |
+| **Markup and Styling** | HTML, XML, CSS, Markdown, LaTeX, SVG |
+| **Tools and Industrialization** | Git, VitePress, Rsync, Automation CLI, CI/CD |
 
-### Operational Experience & Expertise
+### Operational Experience and Expertise
 
 | Domain | Details |
 | :--- | :--- |
-| **Operations & Quality** | Call-center project management, quality monitoring, training, recruitment, crisis management, and debt recovery (Club Med / Thomas Cook) |
+| **Operations and Quality** | Call-center project management, quality monitoring, training, recruitment, crisis management, and debt recovery (Club Med / Thomas Cook) |
 | **Training** | Implementation of online training programs |
 | **Digital Transformation** | Business support, search engine optimization (SEO), web development |
 | **Dossier Structuring** | Training engineering, public tender responses (Sidi Bou Othmane projects), pitch deck drafting for fundraising in hospitality and green hydrogen |
 | **Management Control** | Business Intelligence: Real-time fraud detection in external training centers (BPO), training mission dispatch optimization for a fleet of +150 trainers |
 | **Engineering** | Software engineering training; design of Webkernel, a sovereign application platform; server administration |
 
-### Background & Miscellaneous
+### Background and Miscellaneous
 
 | Category | Details |
 | :--- | :--- |

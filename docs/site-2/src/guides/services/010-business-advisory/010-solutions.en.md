@@ -42,13 +42,13 @@ Improve workflows that depend on spreadsheets, duplicate entry, paper files or d
 
 **Potential benefit:** fewer avoidable handoffs, errors and delays.
 
-## Document & administrative automation
+## Document and administrative automation
 
 Structure document intake, classification, generation, approvals, notifications and routine coordination. Rules-based automation is the foundation where repeatability matters; AI can assist with less predictable tasks when appropriate.
 
 **Potential benefit:** faster processing with clearer review and exception handling.
 
-## Managed infrastructure & operational continuity
+## Managed infrastructure and operational continuity
 
 Plan cloud or self-hosted environments, deployment, backup, monitoring and operator responsibilities as a defined service arrangement.
 
