@@ -638,9 +638,31 @@ const rootStyle = computed(() => ({
   transition: filter 80ms ease;
 }
 .nm-dock__tile.is-image-background {
+  --r: 50%;
+  --_r: clamp(0%, var(--r) / 2, 25%);
+  --_v: calc(var(--_r) * (1 - sqrt(2) / 4));
+  --_p: calc(var(--_v) - var(--_r) / 2);
+
   padding: 0;
   background: transparent;
   box-shadow: none;
+  overflow: hidden;
+  border-radius: 26%;
+  clip-path: shape(
+    from var(--_v) var(--_p),
+    curve to 50% 0 with var(--_r) 0,
+    curve to calc(100% - var(--_v)) var(--_p) with calc(100% - var(--_r)) 0,
+    curve to calc(100% - var(--_p)) var(--_v) with calc(100% - 2 * var(--_p)) calc(2 * var(--_p)),
+    curve to 100% 50% with 100% var(--_r),
+    curve to calc(100% - var(--_p)) calc(100% - var(--_v)) with 100% calc(100% - var(--_r)),
+    curve to calc(100% - var(--_v)) calc(100% - var(--_p)) with calc(100% - 2 * var(--_p)) calc(100% - 2 * var(--_p)),
+    curve to 50% 100% with calc(100% - var(--_r)) 100%,
+    curve to var(--_v) calc(100% - var(--_p)) with var(--_r) 100%,
+    curve to var(--_p) calc(100% - var(--_v)) with calc(2 * var(--_p)) calc(100% - 2 * var(--_p)),
+    curve to 0 50% with 0 calc(100% - var(--_r)),
+    curve to var(--_p) var(--_v) with 0 var(--_r),
+    curve to var(--_v) var(--_p) with calc(2 * var(--_p)) calc(2 * var(--_p))
+  );
 }
 .nm-dock__image-wrap {
   position: relative;
@@ -649,7 +671,6 @@ const rootStyle = computed(() => ({
   height: 100%;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 0.24);
-  border-radius: var(--nm-radius, calc(var(--radius-lg) * 1.2));
   background: var(--vp-c-bg-soft);
   box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
 }
@@ -670,7 +691,6 @@ const rootStyle = computed(() => ({
 .nm-dock__image {
   z-index: 1;
   object-fit: contain;
-  border-radius: inherit;
 }
 .nm-dock__item.tone--server .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
 .nm-dock__item.tone--sparkles .nm-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }
