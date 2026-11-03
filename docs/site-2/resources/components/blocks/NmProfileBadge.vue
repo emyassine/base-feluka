@@ -19,8 +19,13 @@ type ProfileLogo = {
   href?: string
 }
 
+type ProfileName = {
+  label: string
+  type?: 'geometric' | 'normal'
+}
+
 const props = withDefaults(defineProps<{
-  name: string
+  name: ProfileName
   role?: string
   image?: string
   hoverImage?: string
@@ -39,7 +44,7 @@ const props = withDefaults(defineProps<{
 const slots = useSlots()
 
 const initials = computed(() =>
-  props.name
+  props.name.label
     .trim()
     .split(/\s+/)
     .slice(0, 2)
@@ -48,7 +53,7 @@ const initials = computed(() =>
     .toUpperCase(),
 )
 
-const label = computed(() => [props.name, props.role].filter(Boolean).join(', '))
+const label = computed(() => [props.name.label, props.role].filter(Boolean).join(', '))
 const hasActions = computed(() => props.links.length > 0 || Boolean(slots.default))
 </script>
 
@@ -78,10 +83,11 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
       </figure>
 
       <div class="nm-profile-badge__identity">
-        <div class="nm-profile-badge__nameplate">
-          <p class="nm-profile-badge__name">{{ name }}</p>
+        <div v-if="name.type !== 'normal'" class="nm-profile-badge__nameplate">
+          <p class="nm-profile-badge__name">{{ name.label }}</p>
         </div>
-        <p v-if="role" class="">{{ role }}</p>
+        <h4 v-else class="nm-profile-badge__name-normal">{{ name.label }}</h4>
+        <p v-if="role" class="" style="margin-top:0!important;">{{ role }}</p>
       </div>
 
       <div v-if="hasActions" class="nm-profile-badge__actions">
@@ -100,10 +106,22 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
 
       <ul v-if="logos.length" class="nm-profile-badge__logos" aria-label="Products">
         <li v-for="logo in logos" :key="logo.src">
-          <a v-if="logo.href" :href="logo.href" :aria-label="logo.alt">
+          <a
+            v-if="logo.href"
+            :href="logo.href"
+            :aria-label="logo.alt"
+            v-bind="{ 'x-tooltip.top': logo.alt }"
+          >
             <img :src="logo.src" :alt="logo.alt" loading="lazy" decoding="async" />
           </a>
-          <img v-else :src="logo.src" :alt="logo.alt" loading="lazy" decoding="async" />
+          <img
+            v-else
+            :src="logo.src"
+            :alt="logo.alt"
+            v-bind="{ 'x-tooltip.top': logo.alt }"
+            loading="lazy"
+            decoding="async"
+          />
         </li>
       </ul>
     </div>
@@ -136,7 +154,7 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
   /* Geometry, all derived from the container width. */
   --nm-skew: clamp(6px, 2.4cqi, 20px);
   --nm-stripe: clamp(4px, 1.2cqi, 7px);
-  --nm-gap: clamp(0.75rem, 3.5cqi, 1.75rem);
+  --nm-gap: clamp(0.625rem, 3cqi, 1.5rem);
   --nm-photo: clamp(6.5rem, 34cqi, 8.5rem);
 
   /* The panel stays "ink" in both themes, so everything inside is resolved in dark mode. */
@@ -283,6 +301,10 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
   line-height: 1.2;
   text-wrap: balance;
   overflow-wrap: anywhere;
+}
+
+.nm-profile-badge__name-normal {
+  margin: 0;
 }
 
 .nm-profile-badge__role {

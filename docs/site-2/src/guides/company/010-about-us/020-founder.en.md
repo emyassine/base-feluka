@@ -34,7 +34,7 @@ Research and continued learning are central to his work. He explores business mo
 <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
 
 <NmProfileBadge
-  name="Yassine El Moumen"
+  :name="{ label: 'Yassine El Moumen', type: 'normal' }"
   role="Founder and Managing Director"
   image="/images/company/founder/yassine-01.jpeg"
   image-alt="Yassine El Moumen"
@@ -42,7 +42,7 @@ Research and continued learning are central to his work. He explores business mo
     { label: 'Connect on LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin' }
   ]"
   :logos="[
-    { src: '/images/products/feluqa.svg', alt: 'Feluqa' },
+    { src: '/images/products/feluqa.png', alt: 'Feluqa' },
     { src: '/images/products/TheBestRecruit.png', alt: 'The Best Recruit' }
   ]"
 />
