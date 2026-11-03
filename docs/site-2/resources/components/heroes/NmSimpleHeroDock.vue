@@ -10,8 +10,6 @@ export interface DockItem {
   icon?: string | (() => unknown)
   /** Full-color artwork/logo. It occupies the same fixed-size tile as an icon. */
   image?: string
-  /** Scale for artwork that has transparent padding in its source file. Defaults to 1.2. */
-  imageScale?: number
   /**
    * app    -> artwork drawn as is with a soft drop shadow (a real macOS app icon)
    * glyph  -> white symbol on a colored tile (original Numerimondes look)
@@ -445,10 +443,7 @@ const rootStyle = computed(() => ({
                   :is="item.href ? 'a' : 'button'"
                   class="nm-dock__item"
                   :class="itemClasses(item)"
-                  :style="{
-                    ...(item.color ? { '--tile': item.color } : {}),
-                    ...(item.imageScale ? { '--nm-image-scale': item.imageScale } : {}),
-                  }"
+                  :style="item.color ? { '--tile': item.color } : undefined"
                   :href="item.href"
                   :type="item.href ? undefined : 'button'"
                   :target="item.href && item.external ? '_blank' : undefined"
@@ -738,13 +733,15 @@ const rootStyle = computed(() => ({
 }
 
 /* ---- kind: app (artwork drawn as is) ---- */
-.nm-dock__item.is-app .nm-dock__art { filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.3)); }
+.nm-dock__item.is-app .nm-dock__art {
+  overflow: hidden;
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.3));
+}
 .nm-dock__item.is-app .nm-dock__art :slotted(img),
 .nm-dock__item.is-app .nm-dock__art img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  transform: scale(var(--nm-image-scale, 1.2));
+  object-fit: cover;
 }
 .nm-dock__item.is-app .nm-dock__monogram {
   width: 100%;
@@ -762,9 +759,6 @@ const rootStyle = computed(() => ({
   }
   .nm-dock__slot:hover .nm-dock__icon,
   .nm-dock__slot:hover .nm-dock__custom-icon { transform: scale(0.9); }
-  .nm-dock__slot:hover .nm-dock__item.is-app .nm-dock__art img {
-    transform: scale(calc(var(--nm-image-scale, 1.2) * 0.9));
-  }
 }
 
 /* ---- kind: photo (artwork fills a clipped squircle) ---- */
