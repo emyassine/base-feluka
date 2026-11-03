@@ -1,23 +1,12 @@
 <script lang="ts">
-export type DockTileKind = 'app' | 'glyph' | 'photo'
-
 export interface DockItem {
   /** Stable key. Also the name of the optional `icon-<id>` slot override. Falls back to the index. */
   id?: string
   label: string
   mobileLabel?: string
-  /** Pictogram: built-in name, icon resource/symbol, or functional component. */
+  /** Built-in icon name, icon resource URL, image URL, or icon component. */
   icon?: string | (() => unknown)
-  /** Full-color artwork/logo. It occupies the same fixed-size tile as an icon. */
-  image?: string
-  /**
-   * app    -> artwork drawn as is with a soft drop shadow (a real macOS app icon)
-   * glyph  -> white symbol on a colored tile (original Numerimondes look)
-   * photo  -> artwork fills a clipped squircle
-   * Auto-detected when omitted.
-   */
-  kind?: DockTileKind
-  /** Tile color for `glyph` tiles. Defaults to the brand gradient of the icon. */
+  /** Tile color. Defaults to the brand gradient for built-in icons. */
   color?: string
   /** Pill on the top-right corner, e.g. "Soon". */
   badge?: string
@@ -118,33 +107,20 @@ const SOURCE_PATTERN = /^(@|https?:|\/|data:|blob:)|\.(svg|png|jpe?g|webp|avif|g
 /** Sources that are monochrome symbols, drawn white on a tile. */
 const GLYPH_PATTERN = /^@spmpst::icon::|\.svg(\?.*)?(#.*)?$|^data:image\/svg/i
 
-type IconMode = 'component' | 'builtin' | 'image'
+type IconMode = 'component' | 'builtin' | 'symbol' | 'image'
 
 function iconMode(item: DockItem): IconMode {
-  if (item.image) return 'image'
   if (typeof item.icon === 'function') return 'component'
   const icon = item.icon
   if (!icon) return 'builtin'
   if (icon in iconPaths) return 'builtin'
+  if (GLYPH_PATTERN.test(icon)) return 'symbol'
   return SOURCE_PATTERN.test(icon) ? 'image' : 'builtin'
-}
-
-function imageSource(item: DockItem): string | undefined {
-  if (item.image) return item.image
-  return typeof item.icon === 'string' && iconMode(item) === 'image' ? item.icon : undefined
 }
 
 function builtinPath(item: DockItem): string {
   const name = typeof item.icon === 'string' ? item.icon : ''
   return iconPaths[name] ?? iconPaths.link
-}
-
-function kindOf(item: DockItem): DockTileKind {
-  if (item.kind) return item.kind
-  if (item.image) return 'app'
-  if (iconMode(item) !== 'image') return 'glyph'
-  const src = item.icon as string
-  return GLYPH_PATTERN.test(src) ? 'glyph' : 'app'
 }
 
 /** Brand gradient name: the built-in icon name, or a known name found in the image source. */
@@ -359,24 +335,24 @@ onBeforeUnmount(() => {
 /* Items                                                               */
 /* ------------------------------------------------------------------ */
 const bouncing = ref<number | null>(null)
-const brokenImages = ref<Set<string>>(new Set())
 
 const itemKey = (item: DockItem, index: number) => item.id ?? String(index)
-const showImage = (item: DockItem) => {
-  const src = imageSource(item)
-  return Boolean(src && !brokenImages.value.has(src))
-}
 const isActive = (group: ResolvedGroup, item: DockItem, index: number) =>
   item.active === true || group.indicatorIndex === index
 
-function markBroken(src: string) {
-  brokenImages.value = new Set(brokenImages.value).add(src)
+function tileStyle(item: DockItem) {
+  const style: Record<string, string> = {}
+  if (item.color) style['--tile'] = item.color
+  if (iconMode(item) === 'image' && typeof item.icon === 'string') {
+    const escaped = item.icon.replace(/[\\"\n\r]/g, character => `\\${character}`)
+    style.backgroundImage = `url("${escaped}")`
+  }
+  return style
 }
 
 function itemClasses(item: DockItem) {
   const tone = toneOf(item)
   return [
-    `is-${kindOf(item)}`,
     tone ? `tone--${tone}` : '',
     item.color ? 'has-color' : '',
     item.className,
@@ -443,7 +419,7 @@ const rootStyle = computed(() => ({
                   :is="item.href ? 'a' : 'button'"
                   class="nm-dock__item"
                   :class="itemClasses(item)"
-                  :style="item.color ? { '--tile': item.color } : undefined"
+                  :style="tileStyle(item)"
                   :href="item.href"
                   :type="item.href ? undefined : 'button'"
                   :target="item.href && item.external ? '_blank' : undefined"
@@ -461,39 +437,36 @@ const rootStyle = computed(() => ({
                     :class="{ 'is-bouncing': bouncing === index }"
                     @animationend="bouncing = null"
                   >
-                    <span class="nm-dock__art">
-                      <!-- Optional override: <template #icon-<id>> replaces the default icon. -->
-                      <slot :name="`icon-${itemKey(item, index)}`" :item="item">
-                        <component
-                          :is="item.icon"
-                          v-if="iconMode(item) === 'component'"
-                          class="nm-dock__custom-icon"
-                          aria-hidden="true"
-                        />
-                        <svg
-                          v-else-if="iconMode(item) === 'builtin'"
-                          class="nm-dock__icon"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.65"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path :d="builtinPath(item)" />
-                        </svg>
-                        <img
-                          v-else-if="showImage(item)"
-                          :src="imageSource(item)"
-                          alt=""
-                          draggable="false"
-                          decoding="async"
-                          @error="markBroken(imageSource(item) ?? '')"
-                        />
-                        <span v-else class="nm-dock__monogram" aria-hidden="true">{{ item.label.charAt(0) }}</span>
-                      </slot>
-                    </span>
+                    <!-- One tile: artwork is its background; icons sit centered on it. -->
+                    <slot :name="`icon-${itemKey(item, index)}`" :item="item">
+                      <component
+                        :is="item.icon"
+                        v-if="iconMode(item) === 'component'"
+                        class="nm-dock__custom-icon"
+                        aria-hidden="true"
+                      />
+                      <svg
+                        v-else-if="iconMode(item) === 'builtin'"
+                        class="nm-dock__icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.65"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path :d="builtinPath(item)" />
+                      </svg>
+                      <img
+                        v-else-if="iconMode(item) === 'symbol'"
+                        class="nm-dock__symbol"
+                        :src="item.icon as string"
+                        alt=""
+                        draggable="false"
+                        decoding="async"
+                      />
+                    </slot>
                   </span>
                   <span v-if="item.badge" class="nm-dock__badge">{{ item.badge }}</span>
                 </component>
@@ -659,13 +632,26 @@ const rootStyle = computed(() => ({
 
 .nm-dock__tile {
   position: relative;
-  display: block;
+  display: flex;
   width: 100%;
   height: 100%;
-  border-radius: 22.5%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: var(--nm-radius, calc(var(--radius-lg) * 1.2));
+  background-color: var(--vp-c-brand-1);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 58%, white), var(--vp-c-brand-1));
+  box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
   transition: filter 80ms ease;
 }
-.nm-dock__item.is-glyph .nm-dock__tile { border-radius: var(--nm-radius, calc(var(--radius-lg) * 1.2)); }
+.nm-dock__item.tone--server .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
+.nm-dock__item.tone--sparkles .nm-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }
+.nm-dock__item.tone--building .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-2), var(--vp-c-brand-3)); }
+.nm-dock__item.has-color .nm-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--tile) 62%, white), var(--tile)); }
 
 .nm-dock__item:focus-visible .nm-dock__tile {
   outline: 2px solid var(--vp-c-brand-1);
@@ -674,40 +660,6 @@ const rootStyle = computed(() => ({
 
 /* Keep artwork colors stable; hover only scales/fades the icon below. */
 .nm-dock__item:active .nm-dock__tile { filter: brightness(0.78); }
-
-.nm-dock__art {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  border-radius: inherit;
-  pointer-events: none;
-}
-.nm-dock__art :slotted(img),
-.nm-dock__art :slotted(svg),
-.nm-dock__art img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-  -webkit-user-drag: none;
-}
-
-/* ---- kind: glyph (original brand tile with a white symbol) ---- */
-.nm-dock__item.is-glyph .nm-dock__art {
-  border: 1px solid rgb(255 255 255 / 0.24);
-  background: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 58%, white), var(--vp-c-brand-1));
-  box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
-}
-.nm-dock__item.is-glyph.tone--server .nm-dock__art { background: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
-.nm-dock__item.is-glyph.tone--sparkles .nm-dock__art { background: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }
-.nm-dock__item.is-glyph.tone--building .nm-dock__art { background: linear-gradient(145deg, var(--vp-c-brand-2), var(--vp-c-brand-3)); }
-.nm-dock__item.is-glyph.has-color .nm-dock__art {
-  background: linear-gradient(145deg, color-mix(in srgb, var(--tile) 62%, white), var(--tile));
-}
 
 .nm-dock__icon,
 .nm-dock__custom-icon {
@@ -719,65 +671,24 @@ const rootStyle = computed(() => ({
 .nm-dock :deep(.nm-dock__custom-icon) {
   color: var(--vp-c-white) !important;
 }
-
-.nm-dock__item.is-glyph .nm-dock__art :slotted(img),
-.nm-dock__item.is-glyph .nm-dock__art img {
+.nm-dock__symbol {
+  display: block;
   width: var(--nm-icon-size);
   height: var(--nm-icon-size);
   filter: brightness(0) invert(1);
-}
-.nm-dock__item.is-glyph .nm-dock__art :slotted(svg) {
-  width: var(--nm-icon-size);
-  height: var(--nm-icon-size);
-  color: var(--vp-c-white);
-}
-
-/* ---- kind: app (artwork drawn as is) ---- */
-.nm-dock__item.is-app .nm-dock__art {
-  overflow: hidden;
-  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.3));
-}
-.nm-dock__item.is-app .nm-dock__art :slotted(img),
-.nm-dock__item.is-app .nm-dock__art img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.nm-dock__item.is-app .nm-dock__monogram {
-  width: 100%;
-  height: 100%;
-  border-radius: 22.5%;
-  background: linear-gradient(180deg, #8e8e93, #636366);
+  pointer-events: none;
+  -webkit-user-drag: none;
 }
 
 @media (hover: hover) {
   .nm-dock__slot:hover .nm-dock__icon,
   .nm-dock__slot:hover .nm-dock__custom-icon,
-  .nm-dock__slot:hover .nm-dock__art img {
+  .nm-dock__slot:hover .nm-dock__symbol {
     transform: scale(0.9);
     opacity: 0.75;
   }
   .nm-dock__slot:hover .nm-dock__icon,
   .nm-dock__slot:hover .nm-dock__custom-icon { transform: scale(0.9); }
-}
-
-/* ---- kind: photo (artwork fills a clipped squircle) ---- */
-.nm-dock__item.is-photo .nm-dock__art {
-  overflow: hidden;
-  box-shadow: 0 3px 6px rgb(0 0 0 / 0.3), inset 0 0 0 0.5px rgb(255 255 255 / 0.3);
-}
-.nm-dock__item.is-photo .nm-dock__art :slotted(img),
-.nm-dock__item.is-photo .nm-dock__art img { object-fit: cover; }
-
-.nm-dock__monogram {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: calc(var(--nm-size) * 0.42);
-  font-weight: 700;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 /* ---- bounce when launched ---- */
