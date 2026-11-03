@@ -1,5 +1,29 @@
 @import '../../../site-1/resources/components/components.css';
 
+@font-face {
+  font-family: 'Romie';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Romie-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Romie';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Romie-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Romie';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Romie-Bold.woff2') format('woff2');
+}
+
 :root {
   color-scheme: light dark;
 

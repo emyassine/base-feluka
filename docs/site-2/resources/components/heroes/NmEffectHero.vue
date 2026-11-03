@@ -136,7 +136,7 @@ const descriptionStyles = computed(() => ({
     </div>
     <div class="nm-effect-hero__content">
       <p v-if="eyebrowText" class="nm-effect-hero__eyebrow" :style="typeof props.eyebrow === 'string' ? undefined : { color: resolveColor(props.eyebrow.color) }">{{ eyebrowText }}</p>
-      <h1 :style="titleStyles">{{ titleText }}</h1>
+      <h1 :style="titleStyles"><slot name="title">{{ titleText }}</slot></h1>
       <p :style="descriptionStyles" v-html="descriptionText" />
       <div v-if="props.buttons.length" class="nm-effect-hero__actions">
         <FeluqaButton
@@ -236,6 +236,13 @@ const descriptionStyles = computed(() => ({
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.08;
+}
+
+.nm-effect-hero :deep(.nm-effect-hero__title-accent) {
+  font-family: "Romie", Georgia, serif;
+  font-size: 1.14em;
+  font-style: italic;
+  font-weight: 500;
 }
 
 .nm-effect-hero .nm-effect-hero__eyebrow {
