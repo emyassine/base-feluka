@@ -2,465 +2,348 @@
 title: "Service Marketplace | Numerimondes"
 sidebarTitle: "Marketplace"
 icon: "@spmpst::icon::store"
-description: "A catalogue of outcome-based consulting, software, infrastructure and operations services."
+description: "Outcome-based consulting, software, infrastructure, people and recruitment services delivered by vetted partners."
 lang: en
 status: "demo"
 layout: home
 ---
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
-type Engagement = 'Project' | 'Workshop' | 'Recurring'
-type Delivery = 'Human-led' | 'Automation-assisted' | 'Hybrid'
-
-interface Service {
-  id: string
-  category: string
-  title: string
-  outcome: string
-  engagement: Engagement
-  delivery: Delivery
-  duration: string
-  quoteBasis: string
-  quoteFormula: string
-  deliverables: string[]
-  drivers: string[]
-  cta: string
-  featured?: boolean
-}
-
-const services: Service[] = [
-  {
-    id: 'diagnostic', category: 'Business advisory', title: 'Business and operations diagnostic',
-    outcome: 'A clear picture of how work really happens, where it breaks, and which improvements are worth making first.',
-    engagement: 'Project', delivery: 'Human-led', duration: '2–4 weeks',
-    quoteBasis: 'By quotation', quoteFormula: 'Estimated specialist time × agreed rate, plus any approved travel or research expenses.',
-    deliverables: ['Current-state process summary', 'Prioritised improvement options', 'Short written findings and next steps'],
-    drivers: ['Number of teams, processes or locations involved', 'Availability and quality of existing information', 'Required interviews, analysis and final deliverables'],
-    cta: 'Request a diagnostic quote', featured: true,
-  },
-  {
-    id: 'discovery', category: 'Business advisory', title: 'Project discovery study',
-    outcome: 'An early idea or complex requirement turned into options, risks, requirements and a decision-ready delivery plan.',
-    engagement: 'Project', delivery: 'Hybrid', duration: '3–6 weeks',
-    quoteBasis: 'Fixed scope or milestones', quoteFormula: 'Research and analysis effort + agreed outputs + any approved specialist or third-party costs.',
-    deliverables: ['Requirements and risk register', 'Options and recommendation', 'Delivery plan and indicative budget'],
-    drivers: ['Technical and commercial uncertainty to resolve', 'Systems, integrations and stakeholders to review', 'Depth of the business case, prototype or specification'],
-    cta: 'Scope a discovery study',
-  },
-  {
-    id: 'software', category: 'Software and automation', title: 'Workflow or internal tool',
-    outcome: 'A working application, dashboard, integration or automation built around an agreed operating need.',
-    engagement: 'Project', delivery: 'Automation-assisted', duration: '4–12 weeks',
-    quoteBasis: 'Milestone or fixed-scope quote', quoteFormula: 'Estimated design and development effort + agreed testing and handover + approved licensing or infrastructure.',
-    deliverables: ['Working software in your environment', 'Documentation and handover', 'Agreed warranty or support window'],
-    drivers: ['Number of user roles, workflows and screens', 'Data migration, integrations and access controls', 'Hosting, documentation and ongoing support needs'],
-    cta: 'Discuss a software project', featured: true,
-  },
-  {
-    id: 'reporting', category: 'Software and automation', title: 'Reporting and data cleanup',
-    outcome: 'Reliable recurring reports from the spreadsheets, exports and systems you already use.',
-    engagement: 'Project', delivery: 'Automation-assisted', duration: '1–3 weeks',
-    quoteBasis: 'Fixed scope', quoteFormula: 'Number of sources and reports × cleanup complexity, with agreed review rounds.',
-    deliverables: ['Cleaned and documented data set', 'Automated or repeatable report', 'Short usage guide'],
-    drivers: ['Number and quality of data sources', 'Reports and refresh frequency required', 'Validation rules and access restrictions'],
-    cta: 'Request a reporting quote',
-  },
-  {
-    id: 'infrastructure', category: 'Infrastructure and IT', title: 'Infrastructure and deployment review',
-    outcome: 'Practical recommendations for deployment, backup, monitoring or continuity in a hosted or self-hosted environment.',
-    engagement: 'Project', delivery: 'Human-led', duration: '1–3 weeks',
-    quoteBasis: 'Scoped review or implementation quote', quoteFormula: 'Environment size + review depth + agreed recommendations or implementation tasks.',
-    deliverables: ['Environment and risk overview', 'Prioritised remediation plan', 'Optional implementation of agreed items'],
-    drivers: ['Servers, applications, sites and equipment in scope', 'Access, documentation and operational constraints', 'Required testing, migration and follow-up support'],
-    cta: 'Request an infrastructure quote',
-  },
-  {
-    id: 'managed-it', category: 'Infrastructure and IT', title: 'Managed IT operations',
-    outcome: 'Your IT keeps running: patching, monitoring, user provisioning and alert handling delivered as an ongoing service.',
-    engagement: 'Recurring', delivery: 'Hybrid', duration: 'Monthly, 6-month minimum suggested',
-    quoteBasis: 'Monthly or capacity-based quote', quoteFormula: 'Covered users and systems + service window + reporting, with exclusions listed in writing.',
-    deliverables: ['Routine maintenance and monitoring', 'Incident handling within the agreed window', 'Monthly service report'],
-    drivers: ['Users, devices and systems covered', 'Response expectations and service hours', 'Compliance, reporting and improvement work'],
-    cta: 'Discuss managed IT', featured: true,
-  },
-  {
-    id: 'equipment', category: 'Infrastructure and IT', title: 'IT equipment sourcing and setup',
-    outcome: 'The right equipment selected, supplied, configured and documented for your team or site.',
-    engagement: 'Project', delivery: 'Human-led', duration: '1–4 weeks',
-    quoteBasis: 'Itemised quote', quoteFormula: 'Equipment cost at supplier price + configuration and installation effort + any agreed warranty handling.',
-    deliverables: ['Itemised specification and quote', 'Configured and tested equipment', 'Inventory and handover notes'],
-    drivers: ['Quantity and type of equipment', 'Configuration and on-site installation needs', 'Delivery location and warranty requirements'],
-    cta: 'Request an equipment quote',
-  },
-  {
-    id: 'security', category: 'Security', title: 'Security baseline review',
-    outcome: 'A realistic view of your exposure and a short list of fixes that reduce the most risk first.',
-    engagement: 'Project', delivery: 'Hybrid', duration: '1–3 weeks',
-    quoteBasis: 'Scoped review', quoteFormula: 'Systems and accounts in scope × review depth, plus agreed follow-up on prioritised items.',
-    deliverables: ['Findings ranked by risk', 'Practical remediation steps', 'Basic policy and access recommendations'],
-    drivers: ['Systems, users and sites in scope', 'Existing controls and documentation', 'Retesting and remediation support required'],
-    cta: 'Request a security review',
-  },
-  {
-    id: 'workshop', category: 'People and training', title: 'Process improvement workshop',
-    outcome: 'The people involved in a process agree on friction points, priorities and changes they can put into practice.',
-    engagement: 'Workshop', delivery: 'Human-led', duration: '½–2 days',
-    quoteBasis: 'Per agreed workshop or program', quoteFormula: 'Preparation + session delivery + synthesis and follow-up, based on participants and sessions.',
-    deliverables: ['Facilitated session', 'Process map or friction list', 'Action plan with owners'],
-    drivers: ['Workshop length, format and number of participants', 'Preparation, facilitation and materials required', 'Whether a process map or implementation plan is included'],
-    cta: 'Plan a workshop',
-  },
-  {
-    id: 'training', category: 'People and training', title: 'Team training program',
-    outcome: 'A team that can apply a new tool, process or skill on its own after the sessions end.',
-    engagement: 'Workshop', delivery: 'Human-led', duration: '1–5 sessions',
-    quoteBasis: 'Per session or program', quoteFormula: 'Content preparation + delivery days + materials, adjusted to group size and format.',
-    deliverables: ['Tailored training sessions', 'Practical exercises and materials', 'Follow-up questions window'],
-    drivers: ['Audience size and prior level', 'Custom content versus existing material', 'On-site, remote or mixed delivery'],
-    cta: 'Discuss a training program',
-  },
-  {
-    id: 'recruitment', category: 'Recruitment', title: 'Qualified candidate shortlist',
-    outcome: 'A shortlist of candidates whose profiles have been structured and qualified against your role.',
-    engagement: 'Project', delivery: 'Automation-assisted', duration: '2–6 weeks',
-    quoteBasis: 'Per role or fixed fee', quoteFormula: 'Role definition + sourcing and screening effort + agreed shortlist size; terms confirmed in writing.',
-    deliverables: ['Role profile and criteria', 'Qualified shortlist with notes', 'Interview coordination if requested'],
-    drivers: ['Seniority and rarity of the role', 'Volume of roles and candidates', 'Screening depth and interview support'],
-    cta: 'Brief a recruitment need',
-  },
-  {
-    id: 'contact-centre', category: 'Customer operations', title: 'Contact-centre operations setup',
-    outcome: 'A defined customer-contact process with scripts, tooling and reporting ready to run.',
-    engagement: 'Project', delivery: 'Hybrid', duration: '3–8 weeks',
-    quoteBasis: 'Setup quote, then monthly', quoteFormula: 'Process design + tooling configuration + training, then capacity-based monthly operation if needed.',
-    deliverables: ['Call and message flows', 'Tooling configuration', 'Agent guidance and reporting views'],
-    drivers: ['Channels and expected contact volume', 'Languages and service hours', 'Integration with CRM or ticketing tools'],
-    cta: 'Discuss contact operations',
-  },
-  {
-    id: 'marketing', category: 'Digital marketing', title: 'Digital presence setup',
-    outcome: 'A clear, working online presence: site, profiles and tracking that support how you win clients.',
-    engagement: 'Project', delivery: 'Hybrid', duration: '2–6 weeks',
-    quoteBasis: 'Fixed scope', quoteFormula: 'Pages and channels in scope + content effort + tracking setup + agreed revision rounds.',
-    deliverables: ['Site or landing pages', 'Configured profiles and tracking', 'Content and update guide'],
-    drivers: ['Number of pages, languages and channels', 'Copywriting and visual material needed', 'Ongoing campaign or reporting needs'],
-    cta: 'Request a marketing quote',
-  },
-  {
-    id: 'support', category: 'Business advisory', title: 'Operational support arrangement',
-    outcome: 'A recurring scope of advisory, maintenance or operational help with responsibilities and coverage written down.',
-    engagement: 'Recurring', delivery: 'Hybrid', duration: 'Monthly',
-    quoteBasis: 'Monthly or capacity-based quote', quoteFormula: 'Reserved capacity + covered systems or activities + agreed service window and reporting.',
-    deliverables: ['Reserved monthly capacity', 'Agreed response expectations', 'Regular activity reporting'],
-    drivers: ['Systems, environments and activities covered', 'Expected workload and service hours', 'Reporting, improvement work and exclusions'],
-    cta: 'Discuss ongoing support',
-  },
-]
-
-const engagements: Array<Engagement | 'all'> = ['all', 'Project', 'Workshop', 'Recurring']
-const deliveries: Array<Delivery | 'all'> = ['all', 'Human-led', 'Hybrid', 'Automation-assisted']
-const deliveryHints: Record<Delivery, string> = {
-  'Human-led': 'Specialists do the work.',
-  'Hybrid': 'Specialists and automation share the work.',
-  'Automation-assisted': 'Automation does the repeatable part; specialists review it.',
-}
-
+import { computed, nextTick, onMounted, ref } from 'vue'
+import db from './marketplace.json'
+type Tab = 'scope' | 'pricing' | 'reviews'
+const fmt = (n: number) => new Intl.NumberFormat('en-US').format(Math.round(n)) + ' MAD'
+const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
 const query = ref('')
 const category = ref('all')
-const engagement = ref<Engagement | 'all'>('all')
-const delivery = ref<Delivery | 'all'>('all')
-const sort = ref<'featured' | 'az' | 'category'>('featured')
+const engagement = ref('all')
+const delivery = ref('all')
+const maxPrice = ref(60000)
+const sort = ref('featured')
 const basket = ref<string[]>([])
-const expanded = ref<string[]>([])
-
-const categories = computed(() => {
-  const names = Array.from(new Set(services.map(s => s.category)))
-  return [{ name: 'all', count: services.length }, ...names.map(name => ({ name, count: services.filter(s => s.category === name).length }))]
+const activeId = ref<string | null>(null)
+const tab = ref<Tab>('scope')
+const dlg = ref<HTMLDialogElement | null>(null)
+const localReviews = ref<any[]>([])
+const form = ref({ name: '', rating: 5, text: '' })
+const formSent = ref(false)
+const salary = ref(7000)
+const bonus = ref(0)
+onMounted(() => {
+  try {
+    localReviews.value = JSON.parse(localStorage.getItem('nm-reviews') || '[]')
+    basket.value = JSON.parse(localStorage.getItem('nm-brief') || '[]').filter((id: string) => db.services.some((s: any) => s.id === id))
+  } catch { /* storage unavailable */ }
 })
-
+function persist(key: string, value: unknown) { try { localStorage.setItem(key, JSON.stringify(value)) } catch { /* ignore */ } }
+const allReviews = computed(() => [...localReviews.value, ...db.reviews])
+const ratingOf = (reviews: any[]) => ({ count: reviews.length, avg: reviews.length ? reviews.reduce((t, r) => t + r.rating, 0) / reviews.length : 0 })
+const serviceRating = (id: string) => ratingOf(allReviews.value.filter((r: any) => r.service === id && r.verified))
+const partnerRating = (pid: string) => ratingOf(allReviews.value.filter((r: any) => r.verified && db.services.find((s: any) => s.id === r.service)?.partner === pid))
+const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n))
+const engagements = ['all', 'Project', 'Workshop', 'Recurring']
+const deliveries = ['all', 'Human-led', 'Hybrid', 'Automation-assisted']
+const categories = computed(() => [{ name: 'all', count: db.services.length }, ...db.categories.map((name: string) => ({ name, count: db.services.filter((s: any) => s.cat === name).length }))])
 const results = computed(() => {
   const q = query.value.trim().toLowerCase()
-  const list = services.filter((s) => {
-    if (category.value !== 'all' && s.category !== category.value) return false
-    if (engagement.value !== 'all' && s.engagement !== engagement.value) return false
+  const list = db.services.filter((s: any) => {
+    if (category.value !== 'all' && s.cat !== category.value) return false
+    if (engagement.value !== 'all' && s.type !== engagement.value) return false
     if (delivery.value !== 'all' && s.delivery !== delivery.value) return false
-    if (!q) return true
-    return [s.title, s.outcome, s.category, ...s.deliverables, ...s.drivers].join(' ').toLowerCase().includes(q)
+    if (s.price.from > maxPrice.value) return false
+    return !q || [s.title, s.outcome, s.cat, partners[s.partner].name, ...s.deliverables].join(' ').toLowerCase().includes(q)
   })
-  if (sort.value === 'az') return [...list].sort((a, b) => a.title.localeCompare(b.title))
-  if (sort.value === 'category') return [...list].sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
-  return [...list].sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
+  const by: Record<string, (a: any, b: any) => number> = {
+    featured: (a, b) => Number(!!b.featured) - Number(!!a.featured),
+    rating: (a, b) => serviceRating(b.id).avg - serviceRating(a.id).avg,
+    low: (a, b) => a.price.from - b.price.from,
+    high: (a, b) => b.price.from - a.price.from,
+  }
+  return [...list].sort(by[sort.value])
 })
-
-const hasFilters = computed(() =>
-  !!query.value || category.value !== 'all' || engagement.value !== 'all' || delivery.value !== 'all')
-
-const basketItems = computed(() => services.filter(s => basket.value.includes(s.id)))
-const quoteHref = computed(() =>
-  basket.value.length
-    ? `/company/prologue/contact?topic=quote&services=${basket.value.join(',')}`
-    : '/company/prologue/contact?topic=quote')
-
+const hasFilters = computed(() => !!query.value || category.value !== 'all' || engagement.value !== 'all' || delivery.value !== 'all' || maxPrice.value < 60000)
+function resetFilters() { query.value = ''; category.value = 'all'; engagement.value = 'all'; delivery.value = 'all'; maxPrice.value = 60000; sort.value = 'featured' }
+const active = computed(() => db.services.find((s: any) => s.id === activeId.value) as any)
 const inBasket = (id: string) => basket.value.includes(id)
-const isOpen = (id: string) => expanded.value.includes(id)
+function toggleBasket(id: string) { basket.value = inBasket(id) ? basket.value.filter(x => x !== id) : [...basket.value, id]; persist('nm-brief', basket.value) }
+const basketItems = computed(() => db.services.filter((s: any) => basket.value.includes(s.id)))
+const oneOff = computed(() => basketItems.value.filter((s: any) => s.price.unit !== 'month').reduce((t: number, s: any) => t + s.price.from, 0))
+const monthly = computed(() => basketItems.value.filter((s: any) => s.price.unit === 'month').reduce((t: number, s: any) => t + s.price.from, 0))
+const quoteHref = computed(() => `/company/prologue/contact?topic=quote&services=${basket.value.join(',')}`)
 
-function toggleBasket(id: string) {
-  basket.value = inBasket(id) ? basket.value.filter(x => x !== id) : [...basket.value, id]
+const fee = computed(() => Math.max(db.recruit.floor, Number(salary.value || 0) * db.recruit.rate) + Number(bonus.value || 0))
+
+async function openService(id: string, t: Tab = 'scope') {
+  activeId.value = id; tab.value = t; formSent.value = false
+  await nextTick()
+  dlg.value?.showModal()
 }
-function toggleOpen(id: string) {
-  expanded.value = isOpen(id) ? expanded.value.filter(x => x !== id) : [...expanded.value, id]
+function closeDialog() { dlg.value?.close() }
+function onBackdrop(e: MouseEvent) { if (e.target === dlg.value) closeDialog() }
+function submitReview() {
+  if (!active.value || form.value.text.trim().length < 10 || !form.value.name.trim()) return
+  localReviews.value = [{ id: 'l' + Date.now(), service: active.value.id, author: form.value.name.trim(), role: 'Client', company: '', rating: Number(form.value.rating), date: new Date().toISOString().slice(0, 10), verified: false, text: form.value.text.trim() }, ...localReviews.value]
+  persist('nm-reviews', localReviews.value)
+  form.value = { name: '', rating: 5, text: '' }
+  formSent.value = true
 }
-function resetFilters() {
-  query.value = ''
-  category.value = 'all'
-  engagement.value = 'all'
-  delivery.value = 'all'
-  sort.value = 'featured'
-}
+const pendingFor = (id: string) => localReviews.value.filter(r => r.service === id)
+const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], ['reviews', 'Reviews']]
 </script>
-
-<main class="sm">
-  <header class="sm-hero">
-    <p class="sm-eyebrow">Services · Numerimondes</p>
-    <h1>Choose a clear next step for your <span class="silky-bbi+115">project</span>.</h1>
-    <p class="sm-lead">Browse practical services across advisory, software, infrastructure, people and operations. Each one is sold as an outcome with a defined scope, a delivery process and a written price before work begins.</p>
-    <aside class="sm-notice" role="note">
-      <strong>Demo catalogue:</strong> public fixed prices are not published yet. Each offer shows the basis used to prepare a quote; the final scope, amount, schedule and assumptions are confirmed in a written proposal. Durations are indicative.
-    </aside>
-    <ul class="sm-trust" aria-label="How we work">
-      <li><strong>Outcome first</strong>You buy a result, not hours of a tool.</li>
-      <li><strong>Written price</strong>Scope and amount agreed before work starts.</li>
-      <li><strong>Specialist review</strong>Automation helps; people stay accountable.</li>
+<main class="nm">
+  <header class="nm-hero">
+    <p class="nm-eyebrow">Marketplace · Numerimondes</p>
+    <h1>Buy the <span class="silky-bbi+115">outcome</span>.</h1>
+    <p class="nm-lead">One accountable company, a network of vetted specialist partners. Every service has a defined scope, a visible starting price, verified client reviews and a written proposal before work begins.</p>
+    <div class="nm-hero__cta">
+      <a class="ui-btn ui-btn--primary" href="#catalogue">Browse services</a>
+      <a class="ui-btn ui-btn--outline" href="#recruit">Calculate a recruitment fee</a>
+    </div>
+    <ul class="nm-stats" aria-label="Marketplace at a glance">
+      <li><strong>{{ db.services.length }}</strong>services</li>
+      <li><strong>{{ db.partners.length }}</strong>vetted partners</li>
+      <li><strong>{{ db.reviews.length }}</strong>client reviews</li>
+      <li><strong>{{ (db.reviews.reduce((t: number, r: any) => t + r.rating, 0) / db.reviews.length).toFixed(1) }}/5</strong>average rating</li>
     </ul>
+    <aside class="ui-alert" role="note"><strong>Demo catalogue.</strong> Partners, prices and reviews are illustrative sample data. {{ db.meta.vatNote }} Final amounts are confirmed in writing.</aside>
   </header>
-
-  <section aria-labelledby="sm-catalogue" class="sm-catalogue">
-    <h2 id="sm-catalogue" class="sm-title">Service <span class="silky-bbi+115">catalogue</span></h2>
-
-    <div class="sm-toolbar" role="search">
-      <label class="sm-search">
-        <span class="sm-sr">Search services</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input v-model="query" type="search" placeholder="Search services, deliverables or needs" autocomplete="off" />
-      </label>
-      <label class="sm-select">
-        <span class="sm-sr">Sort by</span>
-        <select v-model="sort">
-          <option value="featured">Featured first</option>
-          <option value="az">Name A–Z</option>
-          <option value="category">By category</option>
-        </select>
-      </label>
+  <section aria-labelledby="nm-how" class="nm-section">
+    <h2 id="nm-how" class="nm-title">How the marketplace <span class="silky-bbi+115">works</span></h2>
+    <ol class="nm-steps">
+      <li><span>1</span><strong>Choose</strong>Compare scope, deliverables, partner and starting price.</li>
+      <li><span>2</span><strong>Build your brief</strong>Add one or several services and get an indicative total.</li>
+      <li><span>3</span><strong>Receive one proposal</strong>Price, schedule and terms in writing. {{ db.meta.terms }}</li>
+      <li><span>4</span><strong>Delivery and review</strong>Partners deliver, Numerimondes stays accountable, you rate the result.</li>
+    </ol>
+  </section>
+  <section id="catalogue" aria-labelledby="nm-cat" class="nm-section">
+    <h2 id="nm-cat" class="nm-title">Service <span class="silky-bbi+115">catalogue</span></h2>
+    <div class="nm-toolbar" role="search">
+      <label class="nm-search"><span class="nm-sr">Search services</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input v-model="query" class="ui-input" type="search" placeholder="Search services, partners or deliverables" autocomplete="off" /></label>
+      <label class="nm-field"><span class="nm-sr">Sort by</span><select v-model="sort" class="ui-input"><option value="featured">Featured first</option><option value="rating">Best rated</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label>
     </div>
-
-    <div class="sm-chips" role="tablist" aria-label="Categories">
-      <button
-        v-for="c in categories" :key="c.name" type="button" role="tab"
-        class="sm-chip" :class="{ 'is-active': category === c.name }"
-        :aria-selected="category === c.name" @click="category = c.name"
-      >{{ c.name === 'all' ? 'All services' : c.name }} <span class="sm-count">{{ c.count }}</span></button>
+    <div class="nm-chips" role="group" aria-label="Categories">
+      <button v-for="c in categories" :key="c.name" type="button" class="ui-chip" :class="{ 'is-active': category === c.name }" :aria-pressed="category === c.name" @click="category = c.name">{{ c.name === 'all' ? 'All services' : c.name }}<span class="ui-chip__n">{{ c.count }}</span></button>
     </div>
-
-    <div class="sm-filters">
-      <div class="sm-group" role="group" aria-label="Engagement type">
-        <span class="sm-group__label">Engagement</span>
-        <button v-for="e in engagements" :key="e" type="button" class="sm-pill" :class="{ 'is-active': engagement === e }" :aria-pressed="engagement === e" @click="engagement = e">{{ e === 'all' ? 'Any' : e }}</button>
-      </div>
-      <div class="sm-group" role="group" aria-label="Delivery model">
-        <span class="sm-group__label">Delivery</span>
-        <button v-for="d in deliveries" :key="d" type="button" class="sm-pill" :class="{ 'is-active': delivery === d }" :aria-pressed="delivery === d" @click="delivery = d">{{ d === 'all' ? 'Any' : d }}</button>
-      </div>
+    <div class="nm-filters">
+      <div class="nm-group" role="group" aria-label="Engagement type"><span class="nm-label">Engagement</span><button v-for="e in engagements" :key="e" type="button" class="ui-pill" :class="{ 'is-active': engagement === e }" :aria-pressed="engagement === e" @click="engagement = e">{{ e === 'all' ? 'Any' : e }}</button></div>
+      <div class="nm-group" role="group" aria-label="Delivery model"><span class="nm-label">Delivery</span><button v-for="d in deliveries" :key="d" type="button" class="ui-pill" :class="{ 'is-active': delivery === d }" :aria-pressed="delivery === d" @click="delivery = d">{{ d === 'all' ? 'Any' : d }}</button></div>
+      <label class="nm-group nm-range"><span class="nm-label">Starting price up to</span><input v-model.number="maxPrice" type="range" min="2000" max="60000" step="1000" /><output>{{ fmt(maxPrice) }}</output></label>
     </div>
-
-    <p class="sm-status" aria-live="polite">
-      {{ results.length }} {{ results.length === 1 ? 'service' : 'services' }}
-      <button v-if="hasFilters" type="button" class="sm-link" @click="resetFilters">Clear filters</button>
-    </p>
-
-    <div v-if="results.length" class="sm-grid">
-      <article v-for="s in results" :key="s.id" class="sm-card" :class="{ 'is-selected': inBasket(s.id) }">
-        <div class="sm-card__top">
-          <p class="sm-eyebrow">{{ s.category }}</p>
-          <span v-if="s.featured" class="sm-badge">Popular</span>
-        </div>
-        <h3>{{ s.title }}</h3>
-        <p class="sm-outcome">{{ s.outcome }}</p>
-        <ul class="sm-meta" aria-label="Service details">
-          <li>{{ s.engagement }}</li>
-          <li :title="deliveryHints[s.delivery]">{{ s.delivery }}</li>
-          <li>{{ s.duration }}</li>
-        </ul>
-        <p class="sm-price">
-          <strong>Price: {{ s.quoteBasis }}</strong>
-          {{ s.quoteFormula }}
-        </p>
-        <h4>What you get</h4>
-        <ul class="sm-list">
-          <li v-for="d in s.deliverables" :key="d">{{ d }}</li>
-        </ul>
-        <button type="button" class="sm-toggle" :aria-expanded="isOpen(s.id)" :aria-controls="`drivers-${s.id}`" @click="toggleOpen(s.id)">
-          What shapes the quote
-          <svg viewBox="0 0 24 24" aria-hidden="true" :class="{ 'is-open': isOpen(s.id) }"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <ul v-show="isOpen(s.id)" :id="`drivers-${s.id}`" class="sm-list sm-list--drivers">
-          <li v-for="d in s.drivers" :key="d">{{ d }}</li>
-        </ul>
-        <div class="sm-actions">
-          <a class="sm-btn sm-btn--primary" :href="`/company/prologue/contact?topic=${s.id}`">{{ s.cta }}</a>
-          <button type="button" class="sm-btn sm-btn--ghost" :aria-pressed="inBasket(s.id)" @click="toggleBasket(s.id)">{{ inBasket(s.id) ? 'Added to brief' : 'Add to brief' }}</button>
+    <p class="nm-status" aria-live="polite">{{ results.length }} {{ results.length === 1 ? 'service' : 'services' }}<button v-if="hasFilters" type="button" class="ui-link" @click="resetFilters">Clear filters</button></p>
+    <div v-if="results.length" class="nm-grid">
+      <article v-for="s in results" :key="s.id" class="ui-card" :class="{ 'is-selected': inBasket(s.id) }">
+        <div class="ui-card__media"><img :src="s.img + '?auto=format&fit=crop&w=800&q=70'" alt="" loading="lazy" width="800" height="450" /><span v-if="s.featured" class="ui-badge ui-badge--solid">Popular</span></div>
+        <div class="ui-card__body">
+          <p class="nm-eyebrow">{{ s.cat }}</p>
+          <h3>{{ s.title }}</h3>
+          <p class="nm-by"><span class="nm-avatar" aria-hidden="true">{{ partners[s.partner].name.slice(0, 2).toUpperCase() }}</span>{{ partners[s.partner].name }} · {{ partners[s.partner].city }}</p>
+          <p class="nm-rating"><span class="nm-stars" :aria-label="`Rated ${serviceRating(s.id).avg.toFixed(1)} out of 5`">{{ stars(serviceRating(s.id).avg) }}</span> <strong>{{ serviceRating(s.id).avg ? serviceRating(s.id).avg.toFixed(1) : 'New' }}</strong> <button type="button" class="ui-link" @click="openService(s.id, 'reviews')">{{ serviceRating(s.id).count }} reviews</button></p>
+          <p class="nm-outcome">{{ s.outcome }}</p>
+          <ul class="nm-meta" aria-label="Service details"><li class="ui-badge">{{ s.type }}</li><li class="ui-badge">{{ s.delivery }}</li><li class="ui-badge">{{ s.duration }}</li></ul>
+          <p class="nm-price"><span>From</span><strong>{{ fmt(s.price.from) }}</strong><span>/ {{ s.price.unit }} HT</span></p>
+          <div class="nm-actions"><button type="button" class="ui-btn ui-btn--primary" @click="openService(s.id)">View details</button><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(s.id)" @click="toggleBasket(s.id)">{{ inBasket(s.id) ? 'In your brief ✓' : 'Add to brief' }}</button></div>
         </div>
       </article>
     </div>
-
-    <div v-else class="sm-empty">
-      <h3>No service matches these filters</h3>
-      <p>Try a broader search, or describe your need and we will point you to the right service.</p>
-      <p><button type="button" class="sm-btn sm-btn--ghost" @click="resetFilters">Clear filters</button> <a class="sm-btn sm-btn--primary" href="/company/prologue/contact?topic=quote">Describe your need</a></p>
+    <div v-else class="ui-empty"><h3>No service matches these filters</h3><p>Broaden the search or describe your need and we will route you to the right partner.</p><p><button type="button" class="ui-btn ui-btn--outline" @click="resetFilters">Clear filters</button> <a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=quote">Describe your need</a></p></div>
+  </section>
+  <section id="recruit" aria-labelledby="nm-rec" class="nm-section nm-recruit">
+    <div>
+      <p class="nm-eyebrow">Powered by The Best Recruit</p>
+      <h2 id="nm-rec" class="nm-title">Recruitment fees, known <span class="silky-bbi+115">before</span> you pay</h2>
+      <p class="nm-lead nm-lead--left">Candidates join for free and are qualified by a human. You browse profiles and pay per profile: 46% of the candidate's minimum monthly salary, with a floor of {{ fmt(db.recruit.floor) }}, plus any bonus supplement.</p>
+      <table class="ui-table"><caption class="nm-sr">Fee examples</caption><thead><tr><th scope="col">Candidate salary</th><th scope="col">Fee (HT)</th></tr></thead><tbody><tr v-for="n in db.recruit.examples" :key="n"><td>{{ fmt(n) }}</td><td>{{ fmt(Math.max(db.recruit.floor, n * db.recruit.rate)) }}</td></tr></tbody></table>
     </div>
+    <form class="ui-card ui-card--pad" @submit.prevent aria-labelledby="nm-calc">
+      <h3 id="nm-calc">Fee calculator</h3>
+      <label class="nm-label" for="sal">Candidate minimum monthly salary (S, MAD)</label>
+      <input id="sal" v-model.number="salary" class="ui-input" type="number" min="0" step="250" inputmode="numeric" />
+      <label class="nm-label" for="bon">Bonus supplement (P, MAD)</label>
+      <input id="bon" v-model.number="bonus" class="ui-input" type="number" min="0" step="100" inputmode="numeric" />
+      <p class="nm-result" aria-live="polite"><span>Estimated fee</span><strong>{{ fmt(fee) }}</strong><small>H = max({{ db.recruit.floor }}; S × 46%) + P · excl. VAT</small></p>
+      <button type="button" class="ui-btn ui-btn--primary" @click="toggleBasket('recruit')">{{ inBasket('recruit') ? 'In your brief ✓' : 'Add recruitment to brief' }}</button>
+    </form>
   </section>
-
-  <section aria-labelledby="sm-process">
-    <h2 id="sm-process" class="sm-title">A clear process from request to <span class="silky-bbi+115">delivery</span></h2>
-    <ol class="sm-process">
-      <li><strong>1. Share the need</strong>Tell us the objective, current situation and any important deadline.</li>
-      <li><strong>2. Confirm the scope</strong>We clarify deliverables, assumptions, dependencies and responsibilities.</li>
-      <li><strong>3. Review the proposal</strong>You receive the price, schedule and terms in writing before approving work.</li>
-      <li><strong>4. Start the engagement</strong>Work begins after approval, with progress and handover handled as agreed.</li>
-    </ol>
-  </section>
-
-  <section aria-labelledby="sm-faq">
-    <h2 id="sm-faq" class="sm-title">Before you <span class="silky-bbi+115">request</span> a quote</h2>
-    <div class="sm-faq">
-      <details><summary>Why are prices not listed?</summary><p>Most engagements depend on scope, data quality and the systems involved. Publishing a single number would hide those assumptions, so each offer shows what the price is built from and you receive the exact amount in writing.</p></details>
-      <details><summary>What does “automation-assisted” mean?</summary><p>Repeatable parts of the work are handled with automation and reviewed by a specialist. You still deal with people who are accountable for the result.</p></details>
-      <details><summary>Can I combine several services?</summary><p>Yes. Add services to your brief and send them together; we will prepare one proposal with a shared scope and schedule.</p></details>
-      <details><summary>What if my need is not listed?</summary><p>Describe the outcome you want. We will tell you which service fits or whether a tailored scope is needed.</p></details>
+  <section aria-labelledby="nm-partners" class="nm-section">
+    <h2 id="nm-partners" class="nm-title">Vetted <span class="silky-bbi+115">partners</span></h2>
+    <div class="nm-partners">
+      <article v-for="p in db.partners" :key="p.id" class="ui-card ui-card--pad">
+        <p class="nm-by"><span class="nm-avatar" aria-hidden="true">{{ p.name.slice(0, 2).toUpperCase() }}</span><strong>{{ p.name }}</strong></p>
+        <p class="nm-eyebrow">{{ p.role }}</p>
+        <p class="nm-outcome">{{ p.bio }}</p>
+        <p class="nm-rating"><span class="nm-stars">{{ stars(partnerRating(p.id).avg) }}</span> <strong>{{ partnerRating(p.id).count ? partnerRating(p.id).avg.toFixed(1) : 'New' }}</strong> · {{ partnerRating(p.id).count }} verified reviews · since {{ p.since }}</p>
+        <ul class="nm-meta"><li v-for="b in p.badges" :key="b" class="ui-badge">{{ b }}</li></ul>
+      </article>
     </div>
+    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/company/prologue/contact?topic=partner">Apply to become a partner</a></aside>
   </section>
-
-  <footer class="sm-footer">
-    <h2>Need a service tailored to your situation?</h2>
-    <p>Send a short description of the outcome you need. We can help determine which service fits and what information is needed for an accurate quote.</p>
-    <a class="sm-btn sm-btn--primary" href="/company/prologue/contact?topic=quote">Request a proposal</a>
+  <section aria-labelledby="nm-faq" class="nm-section">
+    <h2 id="nm-faq" class="nm-title">Before you <span class="silky-bbi+115">request</span> a proposal</h2>
+    <div class="nm-faq"><details v-for="f in db.faq" :key="f.q"><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details></div>
+  </section>
+  <footer class="nm-footer">
+    <h2>Need something tailored?</h2>
+    <p>Describe the outcome you need. We will tell you which service fits, or scope a custom engagement with the right partners.</p>
+    <a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=quote">Request a proposal</a>
   </footer>
-
-  <Transition name="sm-bar">
-    <div v-if="basket.length" class="sm-basket" role="region" aria-label="Your brief">
-      <div class="sm-basket__text">
-        <strong>{{ basket.length }} {{ basket.length === 1 ? 'service' : 'services' }} in your brief</strong>
-        <span>{{ basketItems.map(s => s.title).join(' · ') }}</span>
-      </div>
-      <button type="button" class="sm-btn sm-btn--ghost" @click="basket = []">Clear</button>
-      <a class="sm-btn sm-btn--primary" :href="quoteHref">Request one proposal</a>
+  <Transition name="nm-bar">
+    <div v-if="basket.length" class="nm-basket" role="region" aria-label="Your brief">
+      <div class="nm-basket__text"><strong>{{ basket.length }} {{ basket.length === 1 ? 'service' : 'services' }} in your brief · from {{ oneOff ? fmt(oneOff) : '' }}{{ oneOff && monthly ? ' + ' : '' }}{{ monthly ? fmt(monthly) + '/month' : '' }}</strong><span>{{ basketItems.map((s: any) => s.title).join(' · ') }}</span></div>
+      <button type="button" class="ui-btn ui-btn--outline" @click="basket = []; persist('nm-brief', [])">Clear</button>
+      <a class="ui-btn ui-btn--primary" :href="quoteHref">Request one proposal</a>
     </div>
   </Transition>
+  <dialog ref="dlg" class="ui-dialog" aria-labelledby="dlg-title" @click="onBackdrop" @close="activeId = null">
+    <div v-if="active" class="ui-dialog__inner">
+      <header class="ui-dialog__head">
+        <div><p class="nm-eyebrow">{{ active.cat }} · {{ partners[active.partner].name }}</p><h2 id="dlg-title">{{ active.title }}</h2><p class="nm-rating"><span class="nm-stars">{{ stars(serviceRating(active.id).avg) }}</span> {{ serviceRating(active.id).avg ? serviceRating(active.id).avg.toFixed(1) : 'New' }} · {{ serviceRating(active.id).count }} verified reviews</p></div>
+        <button type="button" class="ui-btn ui-btn--ghost" aria-label="Close details" @click="closeDialog">✕</button>
+      </header>
+      <div class="ui-tabs" role="tablist" aria-label="Service sections"><button v-for="t in tabs" :key="t[0]" type="button" role="tab" class="ui-tab" :class="{ 'is-active': tab === t[0] }" :aria-selected="tab === t[0]" @click="tab = t[0]">{{ t[1] }}</button></div>
+      <div v-if="tab === 'scope'" role="tabpanel" class="ui-panel">
+        <img class="ui-dialog__img" :src="active.img + '?auto=format&fit=crop&w=1000&q=70'" alt="" loading="lazy" />
+        <p>{{ active.outcome }}</p>
+        <h4>What you get</h4><ul class="nm-list"><li v-for="d in active.deliverables" :key="d">{{ d }}</li></ul>
+        <h4>Delivery</h4><p>{{ active.type }} · {{ active.delivery }} · {{ active.duration }}. Delivered by {{ partners[active.partner].name }} ({{ partners[active.partner].city }}) under Numerimondes accountability.</p>
+      </div>
+      <div v-else-if="tab === 'pricing'" role="tabpanel" class="ui-panel">
+        <p class="nm-price nm-price--lg"><span>From</span><strong>{{ fmt(active.price.from) }}</strong><span>/ {{ active.price.unit }} HT</span></p>
+        <p><strong>Basis:</strong> {{ active.price.model }}</p>
+        <h4>What shapes the quote</h4><ul class="nm-list"><li v-for="d in active.drivers" :key="d">{{ d }}</li></ul>
+        <p class="nm-note">{{ db.meta.vatNote }} {{ db.meta.terms }}</p>
+      </div>
+      <div v-else role="tabpanel" class="ui-panel">
+        <article v-for="r in [...pendingFor(active.id), ...allReviews.filter((x: any) => x.service === active.id && x.verified)]" :key="r.id" class="nm-review">
+          <p class="nm-stars">{{ stars(r.rating) }}</p><p>{{ r.text }}</p>
+          <p class="nm-note">{{ r.author }}{{ r.company ? ', ' + r.role + ', ' + r.company : '' }} · {{ r.date }} · <span class="ui-badge" :class="{ 'ui-badge--solid': r.verified }">{{ r.verified ? 'Verified' : 'Pending confirmation' }}</span></p>
+        </article>
+        <form class="nm-reviewform" @submit.prevent="submitReview">
+          <h4>Share your experience</h4>
+          <label class="nm-label" for="rv-name">Your name</label><input id="rv-name" v-model="form.name" class="ui-input" required />
+          <label class="nm-label" for="rv-rate">Rating</label><select id="rv-rate" v-model="form.rating" class="ui-input"><option v-for="n in [5, 4, 3, 2, 1]" :key="n" :value="n">{{ n }} / 5</option></select>
+          <label class="nm-label" for="rv-text">Your review (min. 10 characters)</label><textarea id="rv-text" v-model="form.text" class="ui-input" rows="3" required minlength="10"></textarea>
+          <button type="submit" class="ui-btn ui-btn--outline">Submit review</button>
+          <p v-if="formSent" class="nm-note" role="status">Thank you. Your review is pending confirmation of your engagement.</p>
+        </form>
+      </div>
+      <footer class="ui-dialog__foot"><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(active.id)" @click="toggleBasket(active.id)">{{ inBasket(active.id) ? 'In your brief ✓' : 'Add to brief' }}</button><a class="ui-btn ui-btn--primary" :href="`/company/prologue/contact?topic=${active.id}`">Request a quote</a></footer>
+    </div>
+  </dialog>
 </main>
-
 <style scoped>
-.sm { width: min(calc(100% - 40px), 1120px); margin: 0 auto 6rem; color: var(--vp-c-text-1, #172033); }
-.sm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-.sm-eyebrow { margin: 0; color: var(--vp-c-text-2, #657080); font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.sm-title { margin: 3.5rem 0 1.25rem; font-size: clamp(1.65rem, 3vw, 2.2rem); font-weight: 500; letter-spacing: -.025em; border: 0; padding: 0; }
+.nm { --brand: var(--vp-c-brand-1); width: min(calc(100% - 40px), 1160px); margin: 0 auto 6rem; color: var(--foreground); font-family: var(--sans); }
+.nm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nm-eyebrow { margin: 0; color: var(--muted); font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.nm-title { margin: 0 0 1.25rem; border: 0; padding: 0; font-size: clamp(1.65rem, 3vw, 2.3rem); font-weight: 500; letter-spacing: -.025em; }
+.nm-section { margin-top: clamp(3rem, 7vw, 5rem); }
+.nm-lead { max-width: 700px; margin: 0 auto; color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
+.nm-lead--left { margin: 0 0 1.25rem; }
+.nm-note { color: var(--muted); font-size: .85rem; }
+.nm-label { display: block; margin: .75rem 0 .3rem; color: var(--muted); font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 
 /* Hero */
-.sm-hero { padding: clamp(2.5rem, 7vw, 6rem) 0 2.5rem; text-align: center; }
-.sm-hero h1 { max-width: 850px; margin: 1rem auto 1.25rem; font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.04; }
-.sm-lead { max-width: 700px; margin: 0 auto; color: var(--vp-c-text-2, #657080); font-size: 1.12rem; line-height: 1.7; }
-.sm-notice { max-width: 760px; margin: 1.5rem auto 0; padding: 1rem 1.2rem; border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 12px; background: var(--vp-c-bg-soft, #f6f8fb); color: var(--vp-c-text-2, #657080); font-size: .95rem; line-height: 1.6; text-align: left; }
-.sm-trust { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; max-width: 860px; margin: 1.75rem auto 0; padding: 0; list-style: none; text-align: left; }
-.sm-trust li { padding: .9rem 1rem; border-left: 2px solid var(--vp-c-brand-1, #3977c8); color: var(--vp-c-text-2, #657080); font-size: .92rem; line-height: 1.5; }
-.sm-trust strong { display: block; color: var(--vp-c-text-1, #172033); }
-
-/* Toolbar */
-.sm-toolbar { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
-.sm-search { position: relative; flex: 1 1 280px; }
-.sm-search svg { position: absolute; top: 50%; left: .9rem; width: 1.1rem; height: 1.1rem; transform: translateY(-50%); fill: none; stroke: var(--vp-c-text-2, #657080); stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
-.sm-search input,
-.sm-select select { width: 100%; min-height: 2.9rem; border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 12px; background: var(--vp-c-bg, #fff); color: inherit; font: inherit; font-size: .95rem; }
-.sm-search input { padding: .6rem 1rem .6rem 2.7rem; }
-.sm-select { flex: 0 1 200px; }
-.sm-select select { padding: .6rem .9rem; }
-.sm-search input:focus-visible,
-.sm-select select:focus-visible { outline: 2px solid var(--vp-c-brand-1, #3977c8); outline-offset: 1px; }
-
-/* Chips and pills */
-.sm-chips { display: flex; gap: .5rem; margin-bottom: 1rem; padding-bottom: .25rem; overflow-x: auto; scrollbar-width: none; }
-.sm-chips::-webkit-scrollbar { display: none; }
-.sm-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: .45rem; min-height: 2.4rem; padding: .35rem .95rem; border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 999px; background: var(--vp-c-bg, #fff); color: inherit; font: inherit; font-size: .88rem; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
-.sm-chip.is-active { border-color: var(--vp-c-brand-1, #3977c8); background: var(--vp-c-brand-1, #3977c8); color: #fff; }
-.sm-count { padding: 0 .4rem; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, transparent); font-size: .72rem; }
-.sm-filters { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin-bottom: 1rem; }
-.sm-group { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
-.sm-group__label { margin-right: .35rem; color: var(--vp-c-text-2, #657080); font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-.sm-pill { min-height: 2rem; padding: .2rem .75rem; border: 1px solid transparent; border-radius: 8px; background: var(--vp-c-bg-soft, #f6f8fb); color: inherit; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
-.sm-pill.is-active { border-color: var(--vp-c-brand-1, #3977c8); background: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 12%, transparent); color: var(--vp-c-brand-1, #3977c8); }
-.sm-chip:focus-visible, .sm-pill:focus-visible, .sm-toggle:focus-visible, .sm-btn:focus-visible, .sm-link:focus-visible { outline: 2px solid var(--vp-c-brand-1, #3977c8); outline-offset: 2px; }
-.sm-status { display: flex; align-items: center; gap: .75rem; margin: 0 0 1rem; color: var(--vp-c-text-2, #657080); font-size: .9rem; }
-.sm-link { padding: 0; border: 0; background: none; color: var(--vp-c-brand-1, #3977c8); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
-
-/* Cards */
-.sm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 1rem; }
-.sm-card { display: flex; min-width: 0; flex-direction: column; padding: clamp(1.2rem, 3vw, 1.6rem); border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 16px; background: var(--vp-c-bg, #fff); box-shadow: 0 8px 28px rgb(15 23 42 / .045); transition: border-color .15s, box-shadow .15s, transform .15s; }
-@media (hover: hover) { .sm-card:hover { border-color: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 45%, var(--vp-c-divider, #d8dee8)); box-shadow: 0 14px 36px rgb(15 23 42 / .09); } }
-.sm-card.is-selected { border-color: var(--vp-c-brand-1, #3977c8); box-shadow: 0 0 0 1px var(--vp-c-brand-1, #3977c8), 0 14px 36px rgb(15 23 42 / .09); }
-.sm-card__top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .9rem; }
-.sm-badge { padding: .12rem .55rem; border-radius: 999px; background: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 14%, transparent); color: var(--vp-c-brand-1, #3977c8); font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-.sm-card h3 { margin: 0 0 .5rem; font-size: 1.28rem; font-weight: 600; line-height: 1.3; }
-.sm-card h4 { margin: .25rem 0 .35rem; font-size: .88rem; font-weight: 700; }
-.sm-outcome { margin: 0 0 .9rem; color: var(--vp-c-text-2, #657080); line-height: 1.6; }
-.sm-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1rem; padding: 0; list-style: none; }
-.sm-meta li { padding: .15rem .6rem; border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 999px; color: var(--vp-c-text-2, #657080); font-size: .75rem; font-weight: 600; }
-.sm-price { margin: 0 0 1rem; padding: .85rem 1rem; border-radius: 10px; background: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 8%, transparent); font-size: .92rem; line-height: 1.5; }
-.sm-price strong { display: block; margin-bottom: .2rem; }
-.sm-list { margin: 0 0 .75rem; padding-left: 1.2rem; color: var(--vp-c-text-2, #657080); font-size: .92rem; line-height: 1.6; }
-.sm-list--drivers { margin-top: .5rem; }
-.sm-toggle { display: inline-flex; align-items: center; gap: .35rem; align-self: flex-start; min-height: 2rem; margin-bottom: .25rem; padding: 0; border: 0; background: none; color: var(--vp-c-text-1, #172033); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; }
-.sm-toggle svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
-.sm-toggle svg.is-open { transform: rotate(180deg); }
-
-/* Buttons */
-.sm-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; padding-top: .75rem; }
-.sm-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: .65rem 1rem; border: 1px solid var(--vp-c-brand-1, #3977c8); border-radius: 9px; font: inherit; font-size: .92rem; font-weight: 650; line-height: 1.2; text-decoration: none; cursor: pointer; transition: background-color .15s, color .15s; }
-.sm-btn--primary { flex: 1 1 auto; background: var(--vp-c-brand-1, #3977c8); color: #fff !important; }
-.sm-btn--ghost { background: transparent; color: var(--vp-c-brand-1, #3977c8); }
-.sm-btn--ghost[aria-pressed='true'] { background: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 12%, transparent); }
-@media (hover: hover) { .sm-btn--primary:hover { filter: brightness(1.08); } .sm-btn--ghost:hover { background: color-mix(in srgb, var(--vp-c-brand-1, #3977c8) 10%, transparent); } }
-
-.sm-empty { padding: 2.5rem 1.5rem; border: 1px dashed var(--vp-c-divider, #d8dee8); border-radius: 16px; text-align: center; color: var(--vp-c-text-2, #657080); }
-.sm-empty h3 { margin: 0 0 .5rem; color: var(--vp-c-text-1, #172033); }
-
-/* Process, FAQ, footer */
-.sm-process { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
-.sm-process li { padding: 1rem; border-top: 2px solid var(--vp-c-brand-1, #3977c8); background: var(--vp-c-bg-soft, #f6f8fb); line-height: 1.5; }
-.sm-process strong { display: block; margin-bottom: .3rem; }
-.sm-faq details { padding: .9rem 0; border-bottom: 1px solid var(--vp-c-divider, #d8dee8); }
-.sm-faq summary { font-weight: 600; cursor: pointer; }
-.sm-faq p { margin: .6rem 0 0; color: var(--vp-c-text-2, #657080); line-height: 1.65; }
-.sm-footer { margin-top: 3.5rem; padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: 16px; background: var(--vp-c-bg-soft, #f6f8fb); text-align: center; }
-.sm-footer h2 { margin: 0 0 .6rem; font-weight: 550; border: 0; padding: 0; }
-.sm-footer p { max-width: 680px; margin: 0 auto 1rem; color: var(--vp-c-text-2, #657080); line-height: 1.65; }
-.sm-footer .sm-btn { flex: none; }
-
-/* Brief bar */
-.sm-basket { position: fixed; right: 0; bottom: max(1rem, env(safe-area-inset-bottom, 0px)); left: 0; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; width: min(calc(100% - 24px), 860px); margin: 0 auto; padding: .75rem .9rem; border: 1px solid var(--vp-c-divider, #d8dee8); border-radius: 16px; background: color-mix(in srgb, var(--vp-c-bg, #fff) 88%, transparent); box-shadow: 0 16px 40px rgb(15 23 42 / .22); -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4); }
-.sm-basket__text { display: flex; min-width: 0; flex: 1 1 220px; flex-direction: column; font-size: .88rem; }
-.sm-basket__text span { overflow: hidden; color: var(--vp-c-text-2, #657080); text-overflow: ellipsis; white-space: nowrap; }
-.sm-basket .sm-btn { flex: 0 0 auto; min-height: 2.5rem; }
-.sm-bar-enter-active, .sm-bar-leave-active { transition: opacity .2s ease, transform .2s ease; }
-.sm-bar-enter-from, .sm-bar-leave-to { opacity: 0; transform: translateY(12px); }
-
-@media (max-width: 640px) {
-  .sm { width: min(calc(100% - 28px), 1120px); }
-  .sm-toolbar { flex-direction: column; }
-  .sm-select { flex-basis: auto; }
-  .sm-actions .sm-btn { flex: 1 1 100%; }
-  .sm-basket .sm-btn { flex: 1 1 auto; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sm-card, .sm-chip, .sm-btn, .sm-toggle svg, .sm-bar-enter-active, .sm-bar-leave-active { transition: none; }
-}
+.nm-hero { padding: clamp(2.5rem, 7vw, 6rem) 0 1rem; text-align: center; }
+.nm-hero h1 { max-width: 880px; margin: 1rem auto 1.25rem; font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.04; }
+.nm-hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: 1.75rem; }
+.nm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; max-width: 760px; margin: 2.25rem auto 1.5rem; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--border); list-style: none; }
+.nm-stats li { padding: 1rem; background: var(--surface); color: var(--muted); font-size: .85rem; }
+.nm-stats strong { display: block; color: var(--foreground); font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; }
+.nm-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.nm-steps li { padding: 1.1rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.nm-steps strong { display: block; color: var(--foreground); margin-bottom: .25rem; }
+.nm-steps span { display: inline-grid; width: 1.6rem; height: 1.6rem; margin-bottom: .6rem; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: .8rem; font-weight: 700; }
+/* Components */
+.ui-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: .6rem 1.1rem; border: 1px solid var(--accent); border-radius: var(--radius-md); background: transparent; color: var(--foreground); font: inherit; font-size: .92rem; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out); }
+.ui-btn--primary { background: var(--accent); color: var(--accent-ink) !important; }
+.ui-btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.ui-btn--outline { border-color: var(--border); }
+.ui-btn--outline:hover, .ui-btn--outline[aria-pressed='true'] { border-color: var(--accent); background: var(--hover); }
+.ui-btn--ghost { min-height: 2.5rem; border-color: transparent; }
+.ui-btn--ghost:hover { background: var(--hover); }
+.ui-btn:focus-visible, .ui-chip:focus-visible, .ui-pill:focus-visible, .ui-tab:focus-visible, .ui-link:focus-visible, .ui-input:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.ui-input { width: 100%; min-height: 2.75rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); color: inherit; font: inherit; font-size: .95rem; }
+textarea.ui-input { resize: vertical; }
+.ui-chip { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .45rem; min-height: 2.4rem; padding: .3rem .9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: inherit; font: inherit; font-size: .86rem; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.ui-chip.is-active { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.ui-chip__n { padding: 0 .4rem; border-radius: 999px; background: color-mix(in srgb, currentColor 16%, transparent); font-size: .7rem; }
+.ui-pill { min-height: 2rem; padding: .2rem .75rem; border: 1px solid transparent; border-radius: var(--radius-md); background: var(--surface-soft); color: inherit; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
+.ui-pill.is-active { border-color: var(--accent); background: var(--accent-soft); }
+.ui-badge { display: inline-block; padding: .12rem .55rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .72rem; font-weight: 600; }
+.ui-badge--solid { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.ui-link { padding: 0; border: 0; background: none; color: var(--brand); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.ui-alert { max-width: 780px; margin: 1.5rem auto 0; padding: 1rem 1.2rem; border: 1px solid var(--border); border-left: 3px solid var(--brand); border-radius: var(--radius-md); background: var(--surface-soft); color: var(--muted); font-size: .92rem; line-height: 1.6; text-align: left; }
+.ui-alert strong { color: var(--foreground); }
+.ui-card { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-sm); transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out); }
+.ui-card--pad { padding: 1.4rem; }
+@media (hover: hover) { .ui-card:hover { border-color: var(--subtle); box-shadow: var(--shadow); } }
+.ui-card.is-selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.ui-card__media { position: relative; aspect-ratio: 16 / 9; background: linear-gradient(135deg, var(--surface-soft), var(--accent-soft)); }
+.ui-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.ui-card__media .ui-badge { position: absolute; top: .75rem; left: .75rem; }
+.ui-card__body { display: flex; flex: 1; flex-direction: column; padding: 1.25rem; }
+.ui-card h3 { margin: .35rem 0 .5rem; font-size: 1.2rem; font-weight: 600; line-height: 1.3; }
+.ui-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.ui-table th, .ui-table td { padding: .6rem .8rem; border-bottom: 1px solid var(--border); text-align: left; }
+.ui-table th { color: var(--muted); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; }
+.ui-empty { padding: 2.5rem 1.5rem; border: 1px dashed var(--border); border-radius: var(--radius-lg); color: var(--muted); text-align: center; }
+.ui-empty h3 { margin: 0 0 .5rem; color: var(--foreground); }
+.ui-tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--border); }
+.ui-tab { padding: .7rem 1rem; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; }
+.ui-tab.is-active { border-color: var(--accent); color: var(--foreground); }
+.ui-dialog { width: min(720px, calc(100% - 24px)); max-height: 90vh; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); color: var(--foreground); box-shadow: 0 24px 64px rgb(0 0 0 / .3); }
+.ui-dialog::backdrop { background: rgb(0 0 0 / .5); }
+.ui-dialog__inner { display: flex; max-height: 90vh; flex-direction: column; }
+.ui-dialog__head { display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem 1rem; }
+.ui-dialog__head h2 { margin: .3rem 0; border: 0; padding: 0; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; }
+.ui-panel { flex: 1; padding: 1.25rem 1.5rem; overflow-y: auto; line-height: 1.65; }
+.ui-panel h4 { margin: 1rem 0 .4rem; font-size: .9rem; }
+.ui-dialog__img { width: 100%; max-height: 220px; margin-bottom: 1rem; border-radius: var(--radius-md); object-fit: cover; }
+.ui-dialog__foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; padding: 1rem 1.5rem; border-top: 1px solid var(--border); }
+/* Catalogue */
+.nm-toolbar { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+.nm-search { position: relative; flex: 1 1 280px; }
+.nm-search svg { position: absolute; top: 50%; left: .9rem; width: 1.1rem; height: 1.1rem; transform: translateY(-50%); fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
+.nm-search .ui-input { padding-left: 2.7rem; }
+.nm-field { flex: 0 1 220px; }
+.nm-chips { display: flex; gap: .5rem; margin-bottom: 1rem; padding-bottom: .25rem; overflow-x: auto; scrollbar-width: none; }
+.nm-filters { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin-bottom: 1rem; }
+.nm-group { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+.nm-group .nm-label { margin: 0 .35rem 0 0; }
+.nm-range input { accent-color: var(--accent); }
+.nm-status { display: flex; align-items: center; gap: .75rem; margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+.nm-grid, .nm-partners { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--space-2); }
+.nm-by { display: flex; align-items: center; gap: .55rem; margin: 0 0 .4rem; color: var(--muted); font-size: .88rem; }
+.nm-avatar { display: inline-grid; width: 1.9rem; height: 1.9rem; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--foreground); font-size: .68rem; font-weight: 700; }
+.nm-rating { margin: 0 0 .6rem; color: var(--muted); font-size: .86rem; }
+.nm-stars { color: #d9930d; letter-spacing: .05em; }
+.nm-outcome { margin: 0 0 .9rem; color: var(--muted); line-height: 1.6; }
+.nm-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.nm-price { display: flex; align-items: baseline; gap: .4rem; margin: 0 0 1rem; color: var(--muted); font-size: .85rem; }
+.nm-price strong { color: var(--foreground); font-size: 1.45rem; font-weight: 600; letter-spacing: -.02em; }
+.nm-price--lg strong { font-size: 2rem; }
+.nm-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; }
+.nm-actions .ui-btn { flex: 1 1 auto; }
+.nm-list { margin: 0 0 .5rem; padding-left: 1.2rem; color: var(--muted); }
+.nm-recruit { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); align-items: start; }
+.nm-result { display: flex; flex-direction: column; margin: 1.25rem 0; padding: 1rem; border-radius: var(--radius-md); background: var(--accent-soft); }
+.nm-result strong { font-size: 2rem; font-weight: 600; letter-spacing: -.02em; }
+.nm-result small { color: var(--muted); }
+.nm-review { padding: .9rem 0; border-bottom: 1px solid var(--border); }
+.nm-review p { margin: 0 0 .3rem; }
+.nm-reviewform { margin-top: 1.25rem; padding-top: .5rem; }
+.nm-reviewform .ui-btn { margin-top: .9rem; }
+.nm-faq details { padding: .9rem 0; border-bottom: 1px solid var(--border); }
+.nm-faq summary { font-weight: 600; cursor: pointer; }
+.nm-faq p { margin: .6rem 0 0; color: var(--muted); line-height: 1.65; }
+.nm-footer { margin-top: 4rem; padding: clamp(1.5rem, 4vw, 2.75rem); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-soft); text-align: center; }
+.nm-footer h2 { margin: 0 0 .6rem; border: 0; padding: 0; font-weight: 500; }
+.nm-footer p { max-width: 640px; margin: 0 auto 1.25rem; color: var(--muted); line-height: 1.65; }
+.nm-basket { position: fixed; right: 0; bottom: max(1rem, env(safe-area-inset-bottom, 0px)); left: 0; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; width: min(calc(100% - 24px), 900px); margin: 0 auto; padding: .75rem .9rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 90%, transparent); box-shadow: 0 16px 40px rgb(0 0 0 / .22); backdrop-filter: blur(18px); }
+.nm-basket__text { display: flex; min-width: 0; flex: 1 1 240px; flex-direction: column; font-size: .88rem; }
+.nm-basket__text span { overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+.nm-bar-enter-active, .nm-bar-leave-active { transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease; }
+.nm-bar-enter-from, .nm-bar-leave-to { opacity: 0; transform: translateY(12px); }
+@media (max-width: 640px) { .nm { width: min(calc(100% - 28px), 1160px); } .nm-toolbar { flex-direction: column; } .nm-field { flex-basis: auto; } .nm-basket .ui-btn { flex: 1 1 auto; } }
+@media (prefers-reduced-motion: reduce) { .ui-card, .ui-btn, .nm-bar-enter-active, .nm-bar-leave-active { transition: none; } }
 </style>
