@@ -3,18 +3,13 @@
   "theme": "switch",
   "items": [
     {
-      "collection": "capabilities",
-      "icon": "@spmpst::icon::lightbulb"
-    },
-    {
-      "guide": "services",
+      "guide": "company",
       "items": {
         "source": "subguides no-guide-index",
-        "icon": true,
-        "includeArticles": true
+        "icon": true
       },
       "menuTitle": {
-        "en": "Services"
+        "en": "Company"
       }
     },
     {
@@ -28,14 +23,30 @@
       }
     },
     {
-      "guide": "company",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
+      "text": {
+        "en": "Services"
       },
-      "menuTitle": {
-        "en": "Company"
-      }
+      "icon": "briefcase-business",
+      "items": [
+        {
+          "collection": "capabilities",
+          "icon": "lightbulb"
+        },
+        {
+          "text": {
+            "en": "Marketplace"
+          },
+          "link": "/services/marketplace",
+          "icon": "store"
+        },
+        {
+          "text": {
+            "en": "Understanding Pricing"
+          },
+          "link": "/services/pricing",
+          "icon": "scale"
+        }
+      ]
     },
     {
       "text": {
@@ -48,16 +59,21 @@
         "hideIcon": false,
         "collections": {
           "order": [
-            "capabilities",
             "legal"
           ],
           "showIconFromParents": [
-            "capabilities",
             "legal"
           ],
           "showParentsName": false
         }
       }
+    },
+    {
+      "text": {
+        "en": "Contact"
+      },
+      "link": "/company/contact/",
+      "icon": "message-circle"
     }
   ],
   "actions": [
