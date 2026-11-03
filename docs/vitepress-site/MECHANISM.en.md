@@ -303,6 +303,20 @@ Each collection can set `indexLayout` to `list` or `spotlight` in `spmpst.collec
 
 ## 12. Components, hooks, styles, and browser theme
 
+The current topbar supports manually mixed guide, collection, and custom-link entries in one `items` array. Generated guide or collection menus can also be nested alongside those entries. Add `include` or `exclude` arrays to a generated selector or its parent menu to filter by absolute site route. A route such as `/services/software` selects that route; `/services/software/**` selects its descendants. Exclusions take precedence, and parent groups remain when they contain a selected child. This keeps the menu readable for people editing JSON while allowing site generators to produce the same structure. Example:
+
+```json
+{
+  "text": { "en": "Explore" },
+  "items": [
+    { "collection": "capabilities" },
+    { "guide": "services", "items": { "source": "subguides no-guide-index", "exclude": ["/services/internal/**"] } },
+    { "text": { "en": "Contact" }, "link": "/company/contact" }
+  ],
+  "exclude": ["/services/internal/**"]
+}
+```
+
 The current preparation code recursively discovers `.vue` files below the configured `project.components` directory, derives a PascalCase component name from each filename, rejects name collisions, and emits imports/registrations in the generated `components.ts`. The VitePress theme registers these components globally, so they can be used by generated Markdown. Semantic component placements in `spmpst.hooks.json` and guide `spmpst.guide.json` placements are checked against these component names and mapped to VitePress slots by the adapter. Site-owned components are grouped by responsibility under `home/`, `collections/`, `navigation/`, `ui/`, and `_layout/`.
 
 This is the current adapter mechanism: automatic registration is for Vue SFCs. It does **not** itself install arbitrary React/Svelte toolchains or provide a universal mixed-framework component runtime. A host Vite config can add plugins, but each framework's compiler/registration remains the site's build setup.

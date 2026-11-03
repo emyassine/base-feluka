@@ -23,7 +23,7 @@ The right mix of Numerimondes and specialist partner expertise depends on each m
 
 ## Capabilities, services and ventures
 
-Capabilities explain what we know how to explore and how we approach a problem. The [Services Marketplace](/services/marketplace) presents specific offers and their commercial terms; its current catalogue is a demonstration. [Company initiatives](/company/initiatives/initiatives) show projects such as Feluqa and The Best Recruit, with their status stated on each page.
+Capabilities explain what we know how to explore and how we approach a problem. The [Services Marketplace](/services/marketplace) presents specific offers and their commercial terms; its current catalogue is a demonstration. Company projects such as [Feluqa](/company/projects/feluqa) and [The Best Recruit](/company/projects/the-best-recruit) show their status on each page.
 
 An article may link to a related service or project where one exists. This keeps the knowledge library useful without turning every topic into a separate commercial offer.
 

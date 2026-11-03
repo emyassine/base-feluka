@@ -20,6 +20,6 @@ Prototypes and concepts are experiments. They do not establish product readiness
 
 ## Projects and evolving ideas
 
-Numerimondes projects can connect research to practical development. [Feluqa](/company/initiatives/feluqa) is an application platform in development. Other initiatives may be shared as their scope and status become clear. A project page describes an initiative; it does not make that initiative a purchasable service.
+Numerimondes projects can connect research to practical development. [Feluqa](/company/projects/feluqa) is an application platform in development. Other initiatives may be shared as their scope and status become clear. A project page describes an initiative; it does not make that initiative a purchasable service.
 
 For commissioned work, see the [services overview](/services) and confirm the scope and availability for your needs.

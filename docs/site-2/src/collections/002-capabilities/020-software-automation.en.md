@@ -22,4 +22,4 @@ Depending on the requirements, work may involve a custom application, an interna
 
 Typical planning questions include who owns the data, what happens when an integration fails, how staff correct errors, and how the system will be supported after launch. Deliverables and technical choices are agreed for each project.
 
-See the [software and systems service area](/services/systems-and-operations/software) for the current service overview. [Feluqa](/company/initiatives/feluqa) is a Numerimondes platform project in development; its goals should not be read as a list of released capabilities.
+See the [software and systems service area](/services/systems-and-operations/software) for the current service overview. [Feluqa](/company/projects/feluqa) is a Numerimondes platform project in development; its goals should not be read as a list of released capabilities.

@@ -392,6 +392,23 @@ function navigation(language = defaultLanguage): any[] {
   }
   const localize = (value: string | Record<string, string> | undefined) =>
     typeof value === 'string' ? value : value?.[language] ?? value?.[defaultLanguage]
+  const filterMenuRoutes = (items: any[], include: string[] = [], exclude: string[] = []): any[] => {
+    const matches = (link: unknown, selector: string) => {
+      if (typeof link !== 'string' || !link.startsWith('/')) return false
+      const path = link.split(/[?#]/, 1)[0].replace(/\/+$/, '') || '/'
+      const subtree = selector.endsWith('/**')
+      const target = selector.replace(/\/\*\*$/, '').replace(/\/+$/, '') || '/'
+      return path === target || (subtree && path.startsWith(`${target}/`))
+    }
+    return items.flatMap((item) => {
+      const children = Array.isArray(item.items) ? filterMenuRoutes(item.items, include, exclude) : undefined
+      const matchesInclude = !include.length || include.some((selector) => matches(item.link, selector))
+      const matchesExclude = exclude.some((selector) => matches(item.link, selector))
+      if (matchesExclude) return []
+      if (!matchesInclude && !(children?.length)) return []
+      return [{ ...item, ...(children ? { items: children } : {}) }]
+    })
+  }
   const applyMenuTemplate = (item: any, template: [string, string[]] | undefined) => template
     ? menuTemplateComponent
       ? { component: menuTemplateComponent, props: { item, menuTemplate: template } }
@@ -415,14 +432,14 @@ function navigation(language = defaultLanguage): any[] {
         const resolved = {
           text: guide.text,
           activeMatch: guide.activeMatch,
-          items: [
+          items: filterMenuRoutes([
             ...(item.items.source === 'subguides' ? [overview] : []),
             ...guideSubguides(item.guide, item.items.depth, item.items.icon !== false, item.items.includeArticles === true, item.items.source === 'subguides no-guide-index'),
-          ],
+          ], item.items.include ?? item.include ?? [], item.items.exclude ?? item.exclude ?? []),
         }
         return applyMenuTemplate(resolved, item.menuTemplate)
       }
-      if (Array.isArray(item.items)) return applyMenuTemplate({ ...guide, items: item.items.map(resolveItem) }, item.menuTemplate)
+      if (Array.isArray(item.items)) return applyMenuTemplate({ ...guide, items: filterMenuRoutes(item.items.map(resolveItem), item.include ?? [], item.exclude ?? []) }, item.menuTemplate)
       return guide
     }
     if (item.items && !Array.isArray(item.items) && item.items.source === 'collections') {
@@ -435,7 +452,7 @@ function navigation(language = defaultLanguage): any[] {
       return applyMenuTemplate({
         text: itemText(localize(item.text) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, collectionMenuClass),
         activeMatch: item.activeMatch ?? (activeRoot ? `^${localePrefix}/${activeRoot}(?:/|$)` : undefined),
-        items: collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true, collectionOptions.order ?? []),
+        items: filterMenuRoutes(collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true, collectionOptions.order ?? []), item.items.include ?? item.include ?? [], item.items.exclude ?? item.exclude ?? []),
       }, item.menuTemplate)
     }
     if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)
@@ -456,7 +473,7 @@ function navigation(language = defaultLanguage): any[] {
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
       ...(target ? { target } : {}),
       ...(rel ? { rel } : {}),
-      ...(item.items ? { items: item.items.map(resolveItem) } : {}),
+      ...(item.items ? { items: filterMenuRoutes(item.items.map(resolveItem), item.include ?? [], item.exclude ?? []) } : {}),
     }
     return applyMenuTemplate(resolved, item.menuTemplate)
   }

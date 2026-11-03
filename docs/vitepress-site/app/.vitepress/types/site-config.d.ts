@@ -62,7 +62,7 @@ export interface MenuTemplateOptions {
 export type MenuTemplate = [id: string, fields?: string[], options?: MenuTemplateOptions]
 
 export type TopbarItem =
-  | { guide: string; icon?: string; menuTitle?: LocalizedText; menuTemplate?: MenuTemplate }
+  | { guide: string; icon?: string; menuTitle?: LocalizedText; menuTemplate?: MenuTemplate; include?: string[]; exclude?: string[] }
   | { collection: string; icon?: string }
   | {
       text?: LocalizedText
@@ -73,6 +73,8 @@ export type TopbarItem =
       rel?: string
       items?: TopbarItem[]
       menuTemplate?: MenuTemplate
+      include?: string[]
+      exclude?: string[]
     }
 
 export interface SubguideConfig {

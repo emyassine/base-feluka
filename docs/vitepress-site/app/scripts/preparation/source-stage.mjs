@@ -210,7 +210,7 @@ function validateSubguideSelector(value, location) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${location} must configure subguide discovery`)
   }
-  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'hideIcon', 'includeArticles', 'collections'].includes(key))
+  if (Object.keys(value).some((key) => !['source', 'depth', 'icon', 'hideIcon', 'includeArticles', 'collections', 'include', 'exclude'].includes(key))
     || !['subguides', 'subguides no-guide-index', 'collections'].includes(value.source)) {
     throw new Error(`${location}.source must be "subguides", "subguides no-guide-index", or "collections"`)
   }
@@ -252,6 +252,11 @@ function validateSubguideSelector(value, location) {
   if (value.includeArticles !== undefined && typeof value.includeArticles !== 'boolean') {
     throw new Error(`${location}.includeArticles must be a boolean`)
   }
+  for (const key of ['include', 'exclude']) {
+    if (value[key] !== undefined && (!Array.isArray(value[key]) || value[key].some((route) => typeof route !== 'string' || !/^\/[A-Za-z0-9._~/-]+(?:\/\*\*)?$/.test(route) || route.includes('//')) || new Set(value[key]).size !== value[key].length)) {
+      throw new Error(`${location}.${key} must be a unique array of absolute site routes; use /** to match descendants`)
+    }
+  }
 }
 function validateTopbarItems(items, location = 'topbar.items') {
   if (!Array.isArray(items)) throw new Error(`${location} must be an array`)
@@ -266,15 +271,17 @@ function validateTopbarItems(items, location = 'topbar.items') {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
-      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items', 'menuTitle', 'menuTemplate'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items', 'menuTitle', 'menuTemplate', 'include', 'exclude'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
       if (item.items !== undefined) {
         if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
         else validateSubguideSelector(item.items, `${itemLocation}.items`)
       }
+      for (const key of ['include', 'exclude']) if (item[key] !== undefined && (!Array.isArray(item[key]) || item[key].some((route) => typeof route !== 'string' || !/^\/[A-Za-z0-9._~/-]+(?:\/\*\*)?$/.test(route) || route.includes('//')) || new Set(item[key]).size !== item[key].length)) throw new Error(`${itemLocation}.${key} must be unique absolute site routes; use /** to match descendants`)
       continue
     }
     if ('collection' in item) {
-      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon', 'menuTemplate'].includes(key)) || !topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection must reference a configured collection id`)
+      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} collection entries support only collection, icon, hideIcon, and menuTemplate; use the collection title as its label`)
+      if (!topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection references unknown collection id "${item.collection}"`)
       continue
     }
     if (item.text !== undefined && typeof item.text !== 'string' && (!item.text || typeof item.text !== 'object' || Array.isArray(item.text))) {
@@ -287,6 +294,7 @@ function validateTopbarItems(items, location = 'topbar.items') {
     } else if (!validLocalizedLink(item.link)) {
       throw new Error(`${itemLocation} must reference a guide or collection, define a link, or contain dropdown items`)
     }
+    for (const key of ['include', 'exclude']) if (item[key] !== undefined && (!Array.isArray(item[key]) || item[key].some((route) => typeof route !== 'string' || !/^\/[A-Za-z0-9._~/-]+(?:\/\*\*)?$/.test(route) || route.includes('//')) || new Set(item[key]).size !== item[key].length)) throw new Error(`${itemLocation}.${key} must be unique absolute site routes; use /** to match descendants`)
   }
 }
 if (topbar.items !== undefined) validateTopbarItems(topbar.items)

@@ -3,6 +3,10 @@
   "theme": "switch",
   "items": [
     {
+      "collection": "capabilities",
+      "icon": "@spmpst::icon::lightbulb"
+    },
+    {
       "guide": "services",
       "items": {
         "source": "subguides no-guide-index",
