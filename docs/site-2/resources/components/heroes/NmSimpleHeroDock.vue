@@ -419,7 +419,6 @@ const rootStyle = computed(() => ({
                   :is="item.href ? 'a' : 'button'"
                   class="nm-dock__item"
                   :class="itemClasses(item)"
-                  :style="tileStyle(item)"
                   :href="item.href"
                   :type="item.href ? undefined : 'button'"
                   :target="item.href && item.external ? '_blank' : undefined"
@@ -434,7 +433,11 @@ const rootStyle = computed(() => ({
                 >
                   <span
                     class="nm-dock__tile"
-                    :class="{ 'is-bouncing': bouncing === index }"
+                    :class="{
+                      'is-bouncing': bouncing === index,
+                      'is-image-background': iconMode(item) === 'image',
+                    }"
+                    :style="tileStyle(item)"
                     @animationend="bouncing = null"
                   >
                     <!-- One tile: artwork is its background; icons sit centered on it. -->
@@ -632,9 +635,11 @@ const rootStyle = computed(() => ({
 
 .nm-dock__tile {
   position: relative;
+  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 100%;
+  padding: 0;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -647,6 +652,11 @@ const rootStyle = computed(() => ({
   background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 58%, white), var(--vp-c-brand-1));
   box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
   transition: filter 80ms ease;
+}
+.nm-dock__tile.is-image-background {
+  border: 0;
+  box-shadow: none;
+  background-size: cover;
 }
 .nm-dock__item.tone--server .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
 .nm-dock__item.tone--sparkles .nm-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }
