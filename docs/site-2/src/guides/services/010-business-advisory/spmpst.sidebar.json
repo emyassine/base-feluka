@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Business Advisory"
+    "en": "Business Advisory",
+    "fr": "Conseil aux entreprises"
   },
   "icon": "@spmpst::icon::briefcase-business",
   "menu": {

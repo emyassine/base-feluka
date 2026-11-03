@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "About Us" },
+  "labels": {
+    "en": "About Us",
+    "fr": "À propos"
+  },
   "icon": "@spmpst::icon::building-2"
 }

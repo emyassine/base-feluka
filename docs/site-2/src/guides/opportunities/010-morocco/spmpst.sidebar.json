@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Morocco"
+    "en": "Morocco",
+    "fr": "Maroc"
   },
   "icon": "@spmpst::flag::ma",
   "iconMode": "full-color"

@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Systems & Operations"
+    "en": "Systems & Operations",
+    "fr": "Systèmes et opérations"
   },
   "icon": "@spmpst::icon::server-cog",
   "menu": {

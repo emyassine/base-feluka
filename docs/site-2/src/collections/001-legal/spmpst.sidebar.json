@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "Legal notices" },
+  "labels": {
+    "en": "Legal notices",
+    "fr": "Mentions légales"
+  },
   "icon": "@spmpst::icon::scale"
 }

@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "Initiatives" },
+  "labels": {
+    "en": "Initiatives",
+    "fr": "Initiatives"
+  },
   "icon": "@spmpst::icon::rocket"
 }

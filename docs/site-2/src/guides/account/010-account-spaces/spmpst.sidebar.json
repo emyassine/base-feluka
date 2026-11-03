@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "Account Spaces" },
+  "labels": {
+    "en": "Account Spaces",
+    "fr": "Espaces de compte"
+  },
   "icon": "@spmpst::icon::circle-user-round"
 }

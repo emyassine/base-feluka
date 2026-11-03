@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "International" },
+  "labels": {
+    "en": "International",
+    "fr": "International"
+  },
   "icon": "@spmpst::icon::globe-2"
 }

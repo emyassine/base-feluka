@@ -1,6 +1,7 @@
 {
   "labels": {
-    "en": "Introduction"
+    "en": "Introduction",
+    "fr": "Introduction"
   },
   "icon": "@spmpst::icon::user"
 }

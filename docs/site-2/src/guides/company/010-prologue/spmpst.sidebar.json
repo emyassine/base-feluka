@@ -1,4 +1,7 @@
 {
-  "labels": { "en": "Prologue" },
+  "labels": {
+    "en": "Prologue",
+    "fr": "Avant-propos"
+  },
   "icon": "@spmpst::icon::book-open"
 }
