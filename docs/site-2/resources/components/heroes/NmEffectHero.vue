@@ -109,7 +109,6 @@ const effectProps = computed<Record<string, unknown>>(() => {
   return {
     ...merged,
     ...(modeColor === undefined ? {} : { color: modeColor }),
-    ...(isDark.value ? {} : { soft: true }),
     ...(!isDark.value && lightNoise !== undefined ? { noiseIntensity: lightNoise } : {}),
     ...(!isDark.value && lightSpeed !== undefined ? { speed: lightSpeed } : {}),
   }
@@ -300,8 +299,7 @@ const descriptionStyles = computed(() => ({
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
-  opacity: 0.58;
-  filter: brightness(1.02) saturate(1.22) contrast(1.02);
+  opacity: 1;
 }
 
 .nm-effect-hero--light .nm-effect-hero__eyebrow,

@@ -15,7 +15,6 @@ interface SilkProps {
   paused?: boolean;
   className?: string;
   style?: CSSProperties;
-  soft?: boolean;
 }
 
 const props = withDefaults(defineProps<SilkProps>(), {
@@ -27,7 +26,6 @@ const props = withDefaults(defineProps<SilkProps>(), {
   paused: false,
   className: '',
   style: () => ({}),
-  soft: false,
 });
 
 const containerRef = useTemplateRef<HTMLDivElement>('containerRef');
@@ -69,7 +67,6 @@ uniform float uSpeed;
 uniform float uScale;
 uniform float uRotation;
 uniform float uNoiseIntensity;
-uniform float uSoft;
 
 const float e = 2.71828182845904523536;
 
@@ -91,26 +88,15 @@ void main() {
   vec2 tex = uv * uScale;
   float tOffset = uSpeed * uTime;
 
-  vec4 col;
-  if (uSoft > 0.5) {
-    tex.y += 0.025 * sin(6.0 * tex.x - tOffset);
-    float wave = sin(4.0 * (tex.x + tex.y +
-                            cos(2.0 * tex.x + 3.5 * tex.y) +
-                            0.015 * tOffset) +
-                     0.35 * sin(12.0 * (tex.x + tex.y - 0.06 * tOffset)));
-    float pattern = 0.68 + 0.22 * wave;
-    float dither = (noise(gl_FragCoord.xy) - 0.5) * 0.008;
-    col = vec4(uColor * pattern + dither, 1.0);
-    col.rgb -= uNoiseIntensity * 0.006;
-  } else {
-    tex.y += 0.03 * sin(8.0 * tex.x - tOffset);
-    float pattern = 0.6 +
-                    0.4 * sin(5.0 * (tex.x + tex.y +
-                                     cos(3.0 * tex.x + 5.0 * tex.y) +
-                                     0.02 * tOffset) +
-                             sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
-    col = vec4(uColor, 1.0) * vec4(pattern) - noise(gl_FragCoord.xy) / 15.0 * uNoiseIntensity;
-  }
+  tex.y += 0.03 * sin(8.0 * tex.x - tOffset);
+
+  float pattern = 0.6 +
+                  0.4 * sin(5.0 * (tex.x + tex.y +
+                                   cos(3.0 * tex.x + 5.0 * tex.y) +
+                                   0.02 * tOffset) +
+                           sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
+
+  vec4 col = vec4(uColor, 1.0) * vec4(pattern) - noise(gl_FragCoord.xy) / 15.0 * uNoiseIntensity;
   col.a = 1.0;
   gl_FragColor = col;
 }
@@ -195,7 +181,6 @@ const initSilk = () => {
       uSpeed: { value: props.speed },
       uScale: { value: props.scale },
       uNoiseIntensity: { value: props.noiseIntensity },
-      uSoft: { value: props.soft ? 1 : 0 },
       uColor: { value: colorRGB },
       uRotation: { value: props.rotation },
       uTime: { value: 0 }
@@ -224,7 +209,6 @@ const initSilk = () => {
       program.uniforms.uSpeed.value = props.speed;
       program.uniforms.uScale.value = props.scale;
       program.uniforms.uNoiseIntensity.value = props.noiseIntensity;
-      program.uniforms.uSoft.value = props.soft ? 1 : 0;
       program.uniforms.uColor.value = hexToNormalizedRGB(props.color);
       program.uniforms.uRotation.value = props.rotation;
       renderer!.render({ scene: mesh, camera });
