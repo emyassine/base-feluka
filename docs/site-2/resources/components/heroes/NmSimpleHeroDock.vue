@@ -36,6 +36,8 @@ import { tabsKey } from '../tabs-context'
 const props = withDefaults(defineProps<{
   /** Single dock, no tabs. */
   items?: DockItem[]
+  /** Render the items without the dock panel chrome. */
+  bare?: boolean
   /** One tab per group. No tab bar when there is only one group. */
   groups?: DockGroup[]
   /** Initial tab: group id, group label or index. */
@@ -56,6 +58,7 @@ const props = withDefaults(defineProps<{
   panelRadius?: string | number
 }>(), {
   items: () => [],
+  bare: false,
   groups: () => [],
   label: 'Explore Numerimondes',
   className: '',
@@ -373,7 +376,7 @@ const rootStyle = computed(() => ({
 </script>
 
 <template>
-  <div class="nm-dock nm-simple-hero-dock" :class="props.className" :style="rootStyle">
+  <div class="nm-dock nm-simple-hero-dock" :class="[props.className, { 'nm-dock--bare': props.bare }]" :style="rootStyle">
     <Tabs
       v-if="showTabs"
       :id="tabsId"
@@ -553,6 +556,21 @@ const rootStyle = computed(() => ({
 }
 .nm-dock__panel.is-magnifying {
   --nm-pad-x: var(--nm-pad-x-hover, 24px);
+}
+
+/* Keep the dock items and interactions while omitting the surrounding panel. */
+.nm-dock--bare .nm-dock__scroller {
+  padding: 0;
+}
+.nm-dock--bare .nm-dock__panel {
+  min-height: 0;
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 /* ---------------------------------------------------------------- */

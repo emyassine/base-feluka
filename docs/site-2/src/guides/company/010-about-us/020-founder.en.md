@@ -42,6 +42,7 @@ The person you speak to first is the person accountable for the work. Tell him t
   image-alt="Yassine El Moumen"
 >
   <NmSimpleHeroDock
+    bare
     label="Find Yassine El Moumen on social media"
     :items="[
       { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin', external: true },
