@@ -30,7 +30,7 @@ js-events:
 
 ## Software shaped by the work it supports.
 
-Numerimondes designs and develops <span class="silky-ri">applications</span>, workflows and information systems for organizations with specific operational requirements.
+Numerimondes designs and develops <span class="silky-i">applications</span>, workflows and information systems for organizations with specific operational requirements.
 
 ### Scope examples
 

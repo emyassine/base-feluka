@@ -22,7 +22,7 @@ Select your profile to access the right sign-in area.
     {
       meta: 'Client project space',
       title: 'Client space',
-      description: 'Access your projects, <span class=silky-ri>invoices</span>, deliverables and support.',
+      description: 'Access your projects, <span class=silky-i>invoices</span>, deliverables and support.',
       icon: 'user-round',
       image: '/images/accounts/world-1-1280.webp',
       actions: [
@@ -33,7 +33,7 @@ Select your profile to access the right sign-in area.
     {
       meta: 'Team access',
       title: 'Administration',
-      description: 'The workspace for Numerimondes team members and <span class=silky-ri>collaborators</span>.',
+      description: 'The workspace for Numerimondes team members and <span class=silky-i>collaborators</span>.',
       icon: 'shield-check',
       image: '/images/accounts/world-2-1280.webp',
       actions: [

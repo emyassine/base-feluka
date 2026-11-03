@@ -11,7 +11,7 @@ js-events:
 
 # Advisory partners in Morocco
 
-Your knowledge of clients' <span class="silky-ri">operating realities</span> can reveal needs that deserve technical or organizational support: manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit the business.
+Your knowledge of clients' <span class="silky-i">operating realities</span> can reveal needs that deserve technical or organizational support: manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit the business.
 
 Numerimondes can assess the issue, present options, and coordinate a scoped mission. Your firm retains its client advisory relationship and professional remit. This partnership path is for advisers operating in Morocco, where local context and professional rules can be handled directly.
 

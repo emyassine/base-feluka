@@ -27,7 +27,7 @@ js-events:
 
 ## Ideas, strategy and the ability to act.
 
-Numerimondes SARL AU is an independent consulting and solutions company established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop <span class="silky-ri">practical projects</span> across business operations, technology and related fields.
+Numerimondes SARL AU is an independent consulting and solutions company established in Casablanca, Morocco. We investigate opportunities, support business decisions and develop <span class="silky-i">practical projects</span> across business operations, technology and related fields.
 
 Our activities draw on a wide corporate purpose encompassing management and business development consulting, information systems, digital transformation, digital marketing, security, training, contact-centre operations, recruitment and IT-related equipment and solutions. Our active services and developing initiatives are presented separately throughout this website.
 

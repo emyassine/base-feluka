@@ -31,7 +31,7 @@ js-events:
 
 ## Portable content structures for site-building workflows.
 
-SPMPST stands for **Standard Portable Markdown Pre-SSG Tree**. It is a specification initiative created at Numerimondes to define a <span class="silky-ri">portable structure</span> for Markdown content, configuration and related resources before delivery to site-generation tools.
+SPMPST stands for **Standard Portable Markdown Pre-SSG Tree**. It is a specification initiative created at Numerimondes to define a <span class="silky-i">portable structure</span> for Markdown content, configuration and related resources before delivery to site-generation tools.
 
 ## Design goals
 

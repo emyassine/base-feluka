@@ -30,7 +30,7 @@ js-events:
 
 ## Better questions. Clearer decisions. Actionable plans.
 
-We help organizations investigate <span class="silky-ri">operating challenges</span>, explore new opportunities and structure initiatives with commercial and operational reality in mind.
+We help organizations investigate <span class="silky-i">operating challenges</span>, explore new opportunities and structure initiatives with commercial and operational reality in mind.
 
 ### Areas of work
 

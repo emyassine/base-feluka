@@ -30,7 +30,7 @@ js-events:
 
 ## Practical paths to stronger business performance.
 
-Our solutions start with <span class="silky-ri">business outcomes</span> and are tailored to the organization, existing tools, budget and operating context. The examples below describe **solution types we can assess and propose**, rather than a catalogue of already deployed products.
+Our solutions start with <span class="silky-i">business outcomes</span> and are tailored to the organization, existing tools, budget and operating context. The examples below describe **solution types we can assess and propose**, rather than a catalogue of already deployed products.
 
 ## Operational visibility
 

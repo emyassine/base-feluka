@@ -28,7 +28,7 @@ status: "ready-for-review"
 
 ## What would you like to build, improve or explore?
 
-Tell us about your business, your objectives and the <span class="silky-ri">challenge</span> you have in mind. You can contact Numerimondes about consulting, systems and infrastructure, innovation initiatives, commercial partnerships or specialist collaboration.
+Tell us about your business, your objectives and the <span class="silky-i">challenge</span> you have in mind. You can contact Numerimondes about consulting, systems and infrastructure, innovation initiatives, commercial partnerships or specialist collaboration.
 
 ## Discuss a project
 

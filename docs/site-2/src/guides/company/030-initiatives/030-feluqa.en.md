@@ -31,7 +31,7 @@ js-events:
 
 ## Engineering across platforms and environments.
 
-Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes. Its intended direction is to support efficient application development across <span class="silky-ri">different environments</span>, with an emphasis on control, performance and maintainable systems.
+Feluqa is a Rust-based application framework initiative being explored and developed at Numerimondes. Its intended direction is to support efficient application development across <span class="silky-i">different environments</span>, with an emphasis on control, performance and maintainable systems.
 
 ### Areas under exploration
 

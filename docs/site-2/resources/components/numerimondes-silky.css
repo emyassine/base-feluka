@@ -22,11 +22,10 @@
   src: url('/fonts/Romie-Bold.woff2') format('woff2');
 }
 
-/* Typography utilities inherit size, line height, color and spacing by default. */
+/* Typography variants keep surrounding weight unless their name specifies one. */
 .silky-i, .silky-i\+110, .silky-i\+120, .silky-i\+130, .silky-i\+140 {
   font-family: 'Romie', Georgia, serif;
   font-style: italic;
-  font-weight: 500;
 }
 
 .silky-bi, .silky-bi\+110, .silky-bi\+120, .silky-bi\+130, .silky-bi\+140 {
@@ -51,16 +50,20 @@
   font-weight: 700;
 }
 
-/* Combined variant and relative-size utilities; 120 means 120% of inherited size. */
+/* Silky accents default to 115% of surrounding text; suffixes override that size. */
+.silky-i, .silky-m, .silky-b, .silky-bi, .silky-ri { font-size: 115%; }
 .silky-i\+110, .silky-m\+110, .silky-b\+110 { font-size: 110%; }
+.silky-i\+115, .silky-m\+115, .silky-b\+115 { font-size: 115%; }
 .silky-i\+120, .silky-m\+120, .silky-b\+120 { font-size: 120%; }
 .silky-i\+130, .silky-m\+130, .silky-b\+130 { font-size: 130%; }
 .silky-i\+140, .silky-m\+140, .silky-b\+140 { font-size: 140%; }
 .silky-bi\+110 { font-size: 110%; }
+.silky-bi\+115 { font-size: 115%; }
 .silky-bi\+120 { font-size: 120%; }
 .silky-bi\+130 { font-size: 130%; }
 .silky-bi\+140 { font-size: 140%; }
 .silky-ri\+110 { font-size: 110%; }
+.silky-ri\+115 { font-size: 115%; }
 .silky-ri\+120 { font-size: 120%; }
 .silky-ri\+130 { font-size: 130%; }
 .silky-ri\+140 { font-size: 140%; }

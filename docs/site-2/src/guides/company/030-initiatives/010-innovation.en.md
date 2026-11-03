@@ -29,7 +29,7 @@ js-events:
 
 ## Curiosity with a direction.
 
-Ideas can reveal new ways to work, new products to create and unmet needs worth exploring. At Numerimondes, research connects business insight and <span class="silky-ri">technological inquiry</span> with the conditions required to put an idea to work.
+Ideas can reveal new ways to work, new products to create and unmet needs worth exploring. At Numerimondes, research connects business insight and <span class="silky-i">technological inquiry</span> with the conditions required to put an idea to work.
 
 Our areas of interest span enterprise operations, applications, infrastructure, applied AI, interoperability, publishing workflows and new service models.
 

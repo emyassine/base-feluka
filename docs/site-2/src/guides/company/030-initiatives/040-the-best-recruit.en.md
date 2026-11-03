@@ -31,7 +31,7 @@ js-events:
 
 ## Better information. More meaningful introductions.
 
-The Best Recruit is a recruitment and talent initiative in preparation at Numerimondes. Its planned approach centers on <span class="silky-ri">candidate qualification</span> and clear, relevant information for employers making recruitment decisions.
+The Best Recruit is a recruitment and talent initiative in preparation at Numerimondes. Its planned approach centers on <span class="silky-i">candidate qualification</span> and clear, relevant information for employers making recruitment decisions.
 
 ### What we are working toward
 
