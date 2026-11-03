@@ -35,6 +35,6 @@ A focused offer gives clients a clear reason to choose us and gives the company 
 
 ## Current status
 
-This is the intended direction. The Best Recruit is being prepared for launch and its services are not yet open.
+This is the intended direction. The Best Recruit is being prepared for launch and its services will be available soon.
 
 </NmProse>

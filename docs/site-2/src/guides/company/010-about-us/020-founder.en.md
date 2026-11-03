@@ -23,14 +23,15 @@ Founder and Managing Director of Numerimondes. His work brings together business
 
 ## From the operations floor to <span class='silky-bbi+115'>system design</span>
 
-His experience spans contact-centre operations, project management, training, consulting and software engineering.Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.
+::: md-justify
+His experience spans contact-centre operations, project management, training, consulting and software engineering. Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.
 
-Research and continued learning are central to his work.He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.
+Research and continued learning are central to his work. He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.
+:::
 
 **Founder and Managing Director**
 
 <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
-
 
 
 ## Technical Skills

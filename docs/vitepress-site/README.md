@@ -3,6 +3,8 @@
 This directory contains the shared VitePress host and site registry. The
 actual site sources live in sibling site directories such as `../site-1/`.
 
+See https://github.com/markdown-it/markdown-it-container
+
 ```text
 spmpst.workspace.json     registry of root site declarations
 app/                      renderer, adapters, commands, and package manifest

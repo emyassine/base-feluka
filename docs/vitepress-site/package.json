@@ -19,6 +19,7 @@
     "@shikijs/themes": "2.5.0",
     "autoprefixer": "^10.6.2",
     "happy-dom": "^21.0.4",
+    "markdown-it-container": "^4.0.0",
     "mermaid": "^11.17.2",
     "postcss": "^8.5.32",
     "shiki": "^2.5.0",

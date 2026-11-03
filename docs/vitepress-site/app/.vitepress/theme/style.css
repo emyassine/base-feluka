@@ -690,3 +690,8 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
 .VPHero .text {
   font-family: var(--vp-font-family-heading, inherit);
 }
+
+.vp-doc .md-justify p {
+  text-align: justify;
+  text-justify: inter-word;
+}

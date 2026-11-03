@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
+import markdownItContainer from 'markdown-it-container'
 import jiti from 'jiti'
 import { createNavigation } from './navigation'
 import { createTransformHead } from './head'
@@ -138,7 +139,10 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
     ? { sitemap: { hostname: siteConfig.seo.siteUrl } }
     : {}),
   vite: { configFile: join(siteDirectory, 'config/vite.config.ts') },
-  markdown: siteConfig.markdown,
+  markdown: {
+    ...siteConfig.markdown,
+    config: (md) => { md.use(markdownItContainer, 'md-justify') },
+  },
   transformHtml: (html: string) => html.replace(
     /<html([^>]*)>/,
     `<html$1>\n<!------ @spmpst generated build at ${generatedBuildTimestamp} ------>`
