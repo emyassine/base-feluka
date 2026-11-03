@@ -96,6 +96,9 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
           <span v-html="paragraph.after"></span>
         </p>
       </div>
+      <div v-if="$slots.actions" class="nm-about-actions">
+        <slot name="actions" />
+      </div>
     </div>
   </section>
 </template>
