@@ -33,6 +33,12 @@ Research and continued learning are central to his work. He explores business mo
 
 <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
 
+<NmProfileBadge
+  name="Yassine El Moumen"
+  role="Founder and Managing Director"
+  :skills="['Business operations', 'Consulting', 'Software engineering', 'Systems design']"
+/>
+
 
 ## Technical Skills
 
