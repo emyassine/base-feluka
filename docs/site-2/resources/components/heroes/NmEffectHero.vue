@@ -127,7 +127,7 @@ const descriptionStyles = computed(() => ({
 
 <template>
 <div class="block h-6 md:hidden" aria-hidden="true"></div>
-  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, backgroundPreset ? `nm-effect-hero--background-${backgroundPreset}` : '', { 'nm-effect-hero--contained': !props.fullBleed }]" :style="[props.heroStyle, lightBackgroundStyle]">
+  <section class="nm-effect-hero" :class="[isDark ? 'nm-effect-hero--dark' : 'nm-effect-hero--light', `nm-effect-hero--${selectedEffect}`, backgroundPreset ? `nm-effect-hero--background-${backgroundPreset}` : '', { 'nm-effect-hero--contained': !props.fullBleed, 'nm-effect-hero--has-dock': Boolean($slots.dock) }]" :style="[props.heroStyle, lightBackgroundStyle]">
     <div class="nm-effect-hero__background" aria-hidden="true">
       <component :is="effectComponent" v-bind="effectProps" />
       <div v-if="$slots.background" class="nm-effect-hero__background-slot">
@@ -184,6 +184,10 @@ const descriptionStyles = computed(() => ({
 .nm-effect-hero--contained {
   width: 100%;
   margin-inline: 0;
+}
+
+.nm-effect-hero--has-dock {
+  padding-bottom: clamp(5rem, 9svh, 7rem);
 }
 
 .nm-effect-hero__background {
