@@ -156,8 +156,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <Timeline
   label="Business benefits"
   :items="[
-    { title: `Better <span class='silky-i'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and investment choices.` },
-    { title: `More efficient <span class='silky-i'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
+    { title: `Better <span class='silky-bbi+115'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and investment choices.` },
+    { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/operations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
     { title: `Greater visibility and <span class='silky-i'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/software', time: `Accessible information, traceable processes and systems you can manage.` },
     { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
     { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
