@@ -9,8 +9,9 @@ status: "ready-for-review"
 
 # Words of advice
 
-![Young people climbing a mountain trail together](IMAGE_URL_1)
-<!-- Image idea: Unsplash "group hiking summit" or "climbing mountain team" -->
+![A group of hikers climbing a mountain trail together](https://images.unsplash.com/photo-1636420298650-3bb9bdad131d?auto=format&fit=crop&w=1600&q=85)
+
+*Photo by [Thomas Ho](https://unsplash.com/photos/a-group-of-people-hiking-up-a-mountain-hA1Ry5x2MQM) on Unsplash.*
 
 No one is born knowledgeable or wise. Yet we all come into a world that is more and more complex and demanding. For those who seek good fortune, the rules of economics are pretty simple and unchanging.
 
@@ -20,8 +21,9 @@ But in order to do that, you need to be knowledgeable.
 
 ## Master your subject
 
-![A student studying with books and a laptop](IMAGE_URL_2)
-<!-- Image idea: Unsplash "student studying library" -->
+![A student studying with books in a library](https://images.unsplash.com/photo-1741699428220-65f37f3fbbcb?auto=format&fit=crop&w=1600&q=85)
+
+*Photo by [Zoshua Colah](https://unsplash.com/photos/student-studies-at-a-library-with-books-klbApl9mxr0) on Unsplash.*
 
 Mastering your subject is crucial for at least two reasons:
 
@@ -34,8 +36,9 @@ Once you have proven there is a market, you will need other people sooner or lat
 
 Something qualitatively different happens when humans work together. A single person cannot build a spaceship. I could not build one by myself, but a group of people can. No one can learn every area of expertise: one lifetime is simply not long enough. That is why a collection of humans, each mastering a part of the whole, is fundamentally necessary to build something like a rocket.
 
-![Engineers working together on a rocket](IMAGE_URL_3)
-<!-- Image idea: Unsplash "engineers teamwork rocket" or "team working together" -->
+![Students collaborating around a laptop on a project](https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=1600&q=85)
+
+*Photo by [Vitaly Gariev](https://unsplash.com/photos/diverse-group-of-students-gathered-around-a-laptop-8gAbl776pc0) on Unsplash.*
 
 ## Do hard things
 
@@ -55,8 +58,9 @@ We all have the same 24 hours per day. What changes is who we spend them with an
 
 You cannot imagine the level of expectations inside such a group: what we ask of each other in terms of excellence goes far beyond the average. Why? So that each of us can grow, so that we can receive from the group, and so that we can contribute something unprecedented to it. It's called **living at the summit**.
 
-![A sunrise view from a mountain summit](IMAGE_URL_4)
-<!-- Image idea: Unsplash "mountain summit sunrise" -->
+![A hiker on a mountain summit at sunrise](https://images.unsplash.com/photo-1772041045313-0500d3706819?auto=format&fit=crop&w=1600&q=85)
+
+*Photo by [Marek Piwnicki](https://unsplash.com/photos/hiker-on-mountain-peak-at-sunrise-with-sun-rays-N4d8smR0Yj8) on Unsplash.*
 
 Go where the demands are high. Go where the expectations are strong, so that they challenge you, push you and insist that you do not remain the same, neither next year nor in five years. You will grow and change.
 
