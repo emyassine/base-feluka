@@ -111,7 +111,8 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
   max-width: min(650px, calc(100vw - 2 * var(--gutter, 24px)));
   padding: 10px 0;
   border-radius: 0 4px 0 0;
-  background:
+  background-color: var(--vp-c-bg);
+  background-image:
     linear-gradient(95deg, #fff0 0 calc(100% - 22px), var(--vp-c-bg) calc(100% - 21px)),
     linear-gradient(185deg, #fff0 0 calc(100% - 29px), var(--vp-c-bg) calc(100% - 28px) 100%),
     linear-gradient(177deg, #fff0 0 calc(100% - 32px), var(--vp-c-bg) calc(100% - 31px) 100%),
@@ -191,26 +192,25 @@ const initials = computed(() => props.name.trim().split(/\s+/).slice(0, 2).map((
 .nm-profile-badge__nameplate {
   width: fit-content;
   max-width: 100%;
-  padding: 10px 18px 12px;
-  background:
-    linear-gradient(181deg, var(--vp-c-brand-1) 0 8px, #fff0 9px 100%),
-    linear-gradient(40deg, var(--vp-c-text-1) 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
-    linear-gradient(-53deg, #fff0 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
-    linear-gradient(-55deg, var(--vp-c-text-1) 0 10px, var(--vp-c-brand-1) 11px 18px, #fff0 19px),
-    linear-gradient(1deg, var(--vp-c-brand-1) 0 8px, #fff0 9px 100%),
-    var(--vp-c-bg);
+  padding: 3px;
+  background: var(--vp-c-brand-1);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
 .nm-profile-badge__name {
+  display: block;
+  max-width: 100%;
   margin: 0;
+  padding: 10px 18px 16px;
   border: 0;
+  background: var(--vp-c-bg);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
   color: var(--vp-c-brand-1);
   font-family: var(--display, var(--sans, Arial, Helvetica, sans-serif));
   font-size: clamp(1.45rem, 4vw, 1.9rem);
   font-weight: 700;
   line-height: 1.2;
 }
-
 .nm-profile-badge__role {
   width: 100%;
   margin: 0;

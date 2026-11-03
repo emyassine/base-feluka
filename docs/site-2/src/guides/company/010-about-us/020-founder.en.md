@@ -29,8 +29,8 @@ His experience spans contact-centre operations, project management, training, co
 Research and continued learning are central to his work. He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.
 :::
 
-**Founder and Managing Director**
-
+#### Founder and Managing Director
+<br>
 <FeluqaButton tag="a" href="https://www.linkedin.com/in/elmoumenyassine/" label="Connect on LinkedIn" icon="@spmpst::icon::linkedin" />
 
 <NmProfileBadge
