@@ -34,7 +34,7 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
   <section class="nm-about">
     <!-- Introduction -->
     <div class="nm-about-introduction">
-      <h1 v-if="title" v-html="title"></h1>
+      <h2 v-if="title" v-html="title"></h2>
       <p
         v-if="introduction"
         class="nm-about-dropcap"
@@ -64,7 +64,7 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
 
     <!-- Content -->
     <div class="nm-about-content">
-      <h2 v-if="sectionTitle" v-html="sectionTitle"></h2>
+      <h3 v-if="sectionTitle" v-html="sectionTitle"></h3>
 
       <div class="nm-about-paragraphs">
         <p v-for="(paragraph, index) in paragraphs" :key="index">

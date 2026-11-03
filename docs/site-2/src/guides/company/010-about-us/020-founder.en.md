@@ -23,13 +23,13 @@ js-events:
   :paragraphs="[
     { before: 'His experience spans contact-centre operations, project management, training, consulting and software engineering.', after: 'Working with operational teams and business projects shapes a practical approach to problem-solving and to the needs of decision-makers.' },
     { before: 'Research and continued learning are central to his work.', after: 'He explores business models, markets, systems architecture and emerging technologies, which informs the company’s consulting and project development.' },
-    { before: '<strong>Founder and Managing Director</strong>', after: '<a href=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot;>Connect on LinkedIn</a>' }
+    { before: '<strong>Founder and Managing Director</strong>', after: '<FeluqaButton tag=&quot;https://www.linkedin.com/in/elmoumenyassine/&quot; href="/company/contact/contact?topic=project" label=&quotConnect on LinkedIn&quot' }
   ]"
 />
 
 
 
-### Technical Skills
+## Technical Skills
 
 | Domain | Competencies and Technologies |
 | :--- | :--- |
@@ -39,7 +39,7 @@ js-events:
 | **Markup and Styling** | HTML, XML, CSS, Markdown, LaTeX, SVG |
 | **Tools and Industrialization** | Git, VitePress, Rsync, Automation CLI, CI/CD |
 
-### Operational Experience and Expertise
+## Operational Experience and Expertise
 
 | Domain | Details |
 | :--- | :--- |
@@ -50,7 +50,7 @@ js-events:
 | **Management Control** | Business Intelligence: Real-time fraud detection in external training centers (BPO), training mission dispatch optimization for a fleet of +150 trainers |
 | **Engineering** | Software engineering training; design of Webkernel, a sovereign application platform; server administration |
 
-### Background and Miscellaneous
+## Background and Miscellaneous
 
 | Category | Details |
 | :--- | :--- |
@@ -58,7 +58,7 @@ js-events:
 | **Distinction** | First Prize in Oratory, HEM Casablanca, 2018 |
 | **Working Languages** | French, English, Arabic, Darija, Spanish (written) |
 
-### Personal Interests
+## Personal Interests
 
 Outside work, Yassine writes short stories and essays, reads poetry and books, and enjoys cycling alone. He also values meaningful conversations, discovering how things work, and solving problems.
 
