@@ -29,4 +29,8 @@ There is no fee for this initial orientation. It does not guarantee a job, inter
 
 We may share suitable internships, project briefs, workshops or introductions when an opportunity is available and the fit is clear. Participation depends on the partner's criteria and a written description of the role, expectations and any compensation.
 
+## Words of advice
+
+Read [Words of advice](/opportunities/students/words-of-advide) on choosing an environment that challenges you to grow.
+
 **Ask for free orientation** → `/company/prologue/contact?topic=student-orientation`
