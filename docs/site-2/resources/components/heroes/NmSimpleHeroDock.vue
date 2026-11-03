@@ -340,10 +340,6 @@ const isActive = (group: ResolvedGroup, item: DockItem, index: number) =>
 function tileStyle(item: DockItem) {
   const style: Record<string, string> = {}
   if (item.color) style['--tile'] = item.color
-  if (iconMode(item) === 'image' && typeof item.icon === 'string') {
-    const escaped = item.icon.replace(/[\\"\n\r]/g, character => `\\${character}`)
-    style.backgroundImage = `url("${escaped}")`
-  }
   return style
 }
 
@@ -441,6 +437,14 @@ const rootStyle = computed(() => ({
                   >
                     <!-- One tile: artwork is its background; icons sit centered on it. -->
                     <slot :name="`icon-${itemKey(item, index)}`" :item="item">
+                      <span
+                        v-if="iconMode(item) === 'image' && typeof item.icon === 'string'"
+                        class="nm-dock__image-wrap"
+                        aria-hidden="true"
+                      >
+                        <img class="nm-dock__image-blur" :src="item.icon" alt="" draggable="false" decoding="async" />
+                        <img class="nm-dock__image" :src="item.icon" alt="" draggable="false" decoding="async" />
+                      </span>
                       <component
                         :is="item.icon"
                         v-if="iconMode(item) === 'component'"
@@ -634,9 +638,39 @@ const rootStyle = computed(() => ({
   transition: filter 80ms ease;
 }
 .nm-dock__tile.is-image-background {
-  border: 0;
+  padding: 0;
+  background: transparent;
   box-shadow: none;
-  background-size: cover;
+}
+.nm-dock__image-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: var(--nm-radius, calc(var(--radius-lg) * 1.2));
+  background: var(--vp-c-bg-soft);
+  box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
+}
+.nm-dock__image-blur,
+.nm-dock__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.nm-dock__image-blur {
+  object-fit: cover;
+  filter: blur(8px) saturate(1.25);
+  transform: scale(1.2);
+}
+.nm-dock__image {
+  z-index: 1;
+  object-fit: contain;
+  border-radius: inherit;
 }
 .nm-dock__item.tone--server .nm-dock__tile { background-image: linear-gradient(145deg, var(--vp-c-brand-1), var(--vp-c-brand-2)); }
 .nm-dock__item.tone--sparkles .nm-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--vp-c-brand-1) 38%, white), color-mix(in srgb, var(--vp-c-brand-1) 76%, white)); }

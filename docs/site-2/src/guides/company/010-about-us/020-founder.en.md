@@ -38,7 +38,7 @@ The person you speak to first is the person accountable for the work. Tell him t
 <NmProfileBadge
   :name="{ label: 'Find Numerimondes’ founder on your preferred platforms. Get in touch for business advice, project discussions, or collaboration opportunities.', type: 'normal' }"
   width-on-parent="80%"
-  image="/images/company/founder/yassine-01.jpeg"
+  image="/images/company/founder/yassine-02.jpeg"
   image-alt="Yassine El Moumen"
 >
   <NmSimpleHeroDock

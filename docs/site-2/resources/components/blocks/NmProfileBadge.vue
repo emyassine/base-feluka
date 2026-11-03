@@ -180,7 +180,7 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
     calc(var(--nm-skew) + var(--nm-gap))
     var(--nm-gap)
     calc(var(--nm-skew) + var(--nm-stripe) + var(--nm-gap));
-  background: color-mix(in srgb, var(--vp-c-text-3) 9%, transparent);
+  background: var(--vp-c-bg);
   /* Sheared parallelogram: the "not a regular geometry" signature. */
   clip-path: polygon(0 var(--nm-skew), 100% 0, 100% calc(100% - var(--nm-skew)), 0 100%);
   text-align: center;
