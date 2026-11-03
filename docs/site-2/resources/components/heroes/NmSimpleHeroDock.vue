@@ -527,6 +527,13 @@ const rootStyle = computed(() => ({
   -webkit-backdrop-filter: blur(24px) saturate(1.35);
   backdrop-filter: blur(24px) saturate(1.35);
 }
+:global(.nm-effect-hero--light) .nm-dock__tabs {
+  border-color: rgb(148 163 184 / 0.4);
+  background: rgb(255 255 255 / 0.82);
+  box-shadow: 0 6px 20px rgb(15 23 42 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.9);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
 .nm-dock__tabs::-webkit-scrollbar { display: none; }
 
 .nm-dock__tab {
@@ -592,6 +599,13 @@ const rootStyle = computed(() => ({
     inset 0 -1px 0 rgb(255 255 255 / 0.1);
   -webkit-backdrop-filter: blur(30px) saturate(1.35);
   backdrop-filter: blur(30px) saturate(1.35);
+}
+:global(.nm-effect-hero--light) .nm-dock__panel {
+  border-color: rgb(255 255 255 / 0.82);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.94), rgb(241 245 249 / 0.9));
+  box-shadow: 0 12px 32px rgb(15 23 42 / 0.24), inset 0 1px 0 #fff, inset 0 -1px 0 rgb(148 163 184 / 0.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  backdrop-filter: blur(18px) saturate(1.1);
 }
 .nm-dock__panel.is-magnifying {
   --nm-pad-x: var(--nm-pad-x-hover, 24px);

@@ -200,6 +200,15 @@ const descriptionStyles = computed(() => ({
   inset: 0;
 }
 
+/* Keep animated effects behind a quiet surface so text stays readable. */
+.nm-effect-hero--light .nm-effect-hero__background::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, rgb(248 250 255 / 0.34), rgb(248 250 255 / 0.48));
+  pointer-events: none;
+}
+
 .nm-effect-hero__content {
   position: relative;
   z-index: 1;
@@ -298,9 +307,14 @@ const descriptionStyles = computed(() => ({
 }
 
 .nm-effect-hero--light.nm-effect-hero--silk .nm-effect-hero__background {
-  opacity: 0.58;
+  opacity: 0.34;
   mix-blend-mode: multiply;
-  filter: saturate(1.7) contrast(1.05);
+  filter: saturate(1.25) contrast(0.96);
+}
+
+.nm-effect-hero--light .nm-effect-hero__eyebrow,
+.nm-effect-hero--light p {
+  color: #334155;
 }
 
 .nm-effect-hero--light:not(.nm-effect-hero--silk) .nm-effect-hero__background {
