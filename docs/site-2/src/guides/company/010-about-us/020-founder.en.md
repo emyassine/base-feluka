@@ -36,7 +36,11 @@ Research and continued learning are central to his work. He explores business mo
 <NmProfileBadge
   name="Yassine El Moumen"
   role="Founder and Managing Director"
-  :skills="['Business operations', 'Consulting', 'Software engineering', 'Systems design']"
+  image="/images/company/founder/yassine-01.jpeg"
+  image-alt="Yassine El Moumen"
+  :links="[
+    { label: 'Connect on LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin' }
+  ]"
   :logos="[
     { src: '/images/products/feluqa.svg', alt: 'Feluqa' },
     { src: '/images/products/TheBestRecruit.png', alt: 'The Best Recruit' }
