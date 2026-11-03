@@ -35,11 +35,14 @@ Research and continued learning are central to his work. He explores business mo
 
 <NmProfileBadge
   :name="{ label: 'Yassine El Moumen', type: 'normal' }"
-  role="Founder and Managing Director"
+  role="Founder and Managing Director. Connect with me on your favorite platform."
   image="/images/company/founder/yassine-01.jpeg"
   image-alt="Yassine El Moumen"
   :links="[
-    { label: 'Connect on LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin' }
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/elmoumenyassine/', icon: '@spmpst::icon::linkedin', iconOnly: true },
+    { label: 'Instagram', href: 'https://www.instagram.com/numerimondes/', icon: '@spmpst::icon::instagram', iconOnly: true },
+    { label: 'WhatsApp', href: 'https://wa.me/212620990692', icon: '@spmpst::icon::whatsapp', iconOnly: true },
+    { label: 'X', href: 'https://x.com/elmoumenyassine', icon: '@spmpst::icon::x', iconOnly: true }
   ]"
   :logos="[
     { src: '/images/products/feluqa.png', alt: 'Feluqa' },

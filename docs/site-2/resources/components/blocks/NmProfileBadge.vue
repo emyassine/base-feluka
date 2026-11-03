@@ -11,6 +11,7 @@ type ProfileLink = {
   icon?: string
   tag?: string
   external?: boolean
+  iconOnly?: boolean
 }
 
 type ProfileLogo = {
@@ -98,6 +99,9 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
           :href="link.href"
           :label="link.label"
           :icon="link.icon"
+          :aria-label="link.iconOnly ? link.label : undefined"
+          :class="{ 'nm-profile-badge__action--icon-only': link.iconOnly }"
+          v-bind="link.iconOnly ? { 'x-tooltip.top': link.label } : {}"
           :target="link.external === false ? undefined : '_blank'"
           :rel="link.external === false ? undefined : 'noopener noreferrer'"
         />
@@ -305,6 +309,16 @@ const hasActions = computed(() => props.links.length > 0 || Boolean(slots.defaul
 
 .nm-profile-badge__name-normal {
   margin: 0;
+}
+
+.nm-profile-badge__actions :deep(.nm-profile-badge__action--icon-only) {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  padding-inline: 0;
+}
+
+.nm-profile-badge__actions :deep(.nm-profile-badge__action--icon-only .button-content) {
+  display: none;
 }
 
 .nm-profile-badge__role {
