@@ -27,7 +27,7 @@ js-events:
 
 ## Company
 
-Numerimondes brings together <span class="silky-i">business understanding, software, infrastructure and operations</span>. This section introduces our approach, innovation work and the initiatives we develop.
+Numerimondes brings together business understanding, software, infrastructure and <span class="silky-ri">operations</span>. This section introduces our approach, innovation work and the initiatives we develop.
 
 ### About Numerimondes
 

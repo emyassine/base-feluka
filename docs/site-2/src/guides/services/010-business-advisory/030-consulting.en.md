@@ -14,7 +14,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="BUSINESS CONSULTING · NUMERIMONDES"
-  title="Better <span class='silky-bi'>questions</span>. Clearer <span class='silky-bi'>decisions</span>. Actionable plans."
+  title="Better <span class='silky-bi'>questions</span>. Clearer decisions. Actionable plans."
   description="We investigate operating challenges and opportunities, then help shape a practical route forward."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -30,7 +30,7 @@ js-events:
 
 ## Better questions. Clearer decisions. Actionable plans.
 
-We help organizations <span class="silky-i">investigate operating challenges</span>, explore new opportunities and structure initiatives with commercial and operational reality in mind.
+We help organizations investigate <span class="silky-ri">operating challenges</span>, explore new opportunities and structure initiatives with commercial and operational reality in mind.
 
 ### Areas of work
 

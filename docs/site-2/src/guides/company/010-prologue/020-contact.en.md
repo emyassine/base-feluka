@@ -12,7 +12,7 @@ status: "ready-for-review"
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="LET’S TALK · NUMERIMONDES"
-  title="What would you like to <span class='silky-bi'>build, improve or explore</span>?"
+  title="What would you like to build, improve or <span class='silky-bi'>explore</span>?"
   description="Share a business objective, an operational challenge or an idea. We will help identify a useful next conversation."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -28,7 +28,7 @@ status: "ready-for-review"
 
 ## What would you like to build, improve or explore?
 
-Tell us about your business, your objectives and the <span class="silky-i">opportunity or challenge</span> you have in mind. You can contact Numerimondes about consulting, systems and infrastructure, innovation initiatives, commercial partnerships or specialist collaboration.
+Tell us about your business, your objectives and the <span class="silky-ri">challenge</span> you have in mind. You can contact Numerimondes about consulting, systems and infrastructure, innovation initiatives, commercial partnerships or specialist collaboration.
 
 ## Discuss a project
 

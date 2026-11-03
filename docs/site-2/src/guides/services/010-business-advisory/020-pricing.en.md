@@ -30,7 +30,7 @@ js-events:
 
 ## The right commercial model for the mission.
 
-We price work according to its <span class="silky-i">purpose, scope and complexity</span>, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
+We price work according to its purpose, <span class="silky-ri">scope</span>, complexity, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
 
 ## Initial qualification
 

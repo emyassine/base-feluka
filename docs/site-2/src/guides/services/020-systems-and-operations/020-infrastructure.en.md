@@ -30,7 +30,7 @@ js-events:
 
 ## Technical foundations that match operational needs.
 
-We help organizations <span class="silky-i">assess, plan and operate infrastructure</span> for applications, information and connected activities.
+We help organizations assess, plan and operate <span class="silky-ri">infrastructure</span> for applications, information and connected activities.
 
 ### Scope examples
 

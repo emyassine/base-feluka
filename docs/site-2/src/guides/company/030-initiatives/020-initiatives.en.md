@@ -26,7 +26,7 @@ js-events:
 
 ## Work in progress, shared clearly.
 
-These internal initiatives are at different stages of development. Their pages describe the current direction without presenting <span class="silky-i">planned capabilities as launched products</span>.
+These internal initiatives are at different stages of development. Their pages describe the current direction without presenting planned capabilities as launched products.
 
 <MegaCards
   :items="[

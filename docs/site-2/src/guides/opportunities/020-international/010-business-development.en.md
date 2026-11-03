@@ -11,7 +11,7 @@ js-events:
 
 # Business development and delivery partnerships
 
-Work with Numerimondes to identify projects, introduce qualified prospects, or support <span class="silky-i">commercial development</span> on agreed service lines. We collaborate with independent consultants, agents, and organizations that have relevant expertise or access to new markets.
+Work with Numerimondes to identify projects, introduce qualified prospects, or support <span class="silky-ri">commercial development</span> on agreed service lines. We collaborate with independent consultants, agents, and organizations that have relevant expertise or access to new markets.
 
 Companies with complementary services can explore joint proposals, subcontracting, or coordinated delivery. Each party's role, client responsibilities, and commercial terms are defined for the specific opportunity.
 

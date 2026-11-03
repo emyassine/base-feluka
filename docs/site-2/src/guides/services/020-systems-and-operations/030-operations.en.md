@@ -30,7 +30,7 @@ js-events:
 
 ## Make everyday work easier to coordinate and improve.
 
-Operational performance depends on <span class="silky-i">processes, information and people</span>, and the systems they use. Numerimondes brings practical operational experience to assignments addressing these connections.
+Operational performance depends on <span class="silky-ri">processes</span>, information, people and the systems they use. Numerimondes brings practical operational experience to assignments addressing these connections.
 
 ### Possible assignments
 

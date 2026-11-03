@@ -13,7 +13,7 @@ js-events:
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '56vh' }"
   eyebrow="DRAFT SPECIFICATION · NUMERIMONDES"
-  title="<span class='silky-bi'>Portable content structures</span> for site-building workflows."
+  title="<span class='silky-bi'>Portable</span> content structures for site-building workflows."
   description="SPMPST explores a structured, portable way to organize Markdown content and related resources before site generation."
   :title-style-light="{ color: '#ffffff' }"
   :title-style-dark="{ color: '#ffffff' }"
@@ -31,7 +31,7 @@ js-events:
 
 ## Portable content structures for site-building workflows.
 
-SPMPST stands for **Standard Portable Markdown Pre-SSG Tree**. It is a specification initiative created at Numerimondes to define a <span class="silky-i">structured, portable way</span> to organize Markdown content, configuration and related resources before delivery to site-generation tools.
+SPMPST stands for **Standard Portable Markdown Pre-SSG Tree**. It is a specification initiative created at Numerimondes to define a <span class="silky-ri">portable structure</span> for Markdown content, configuration and related resources before delivery to site-generation tools.
 
 ## Design goals
 

@@ -29,7 +29,7 @@ js-events:
 
 ## Expertise organized around your objectives.
 
-Numerimondes supports organizations from early investigation and strategic decisions through implementation and operational support. We bring together <span class="silky-i">business understanding</span>, creative research and specialist expertise to shape each assignment.
+Numerimondes supports organizations from early investigation and strategic decisions through implementation and operational support. We bring together <span class="silky-ri">business understanding</span>, creative research and specialist expertise to shape each assignment.
 
 **Discuss your needs** → `/company/prologue/contact?topic=project`
 

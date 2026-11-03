@@ -20,9 +20,9 @@ Select your profile to access the right sign-in area.
   class="no--account-spaces-cards"
   :cards="[
     {
-      meta: 'Client <span class=silky-i>project space</span>',
+      meta: 'Client project space',
       title: 'Client space',
-      description: 'Access your <span class=silky-i>projects, invoices and deliverables</span>, plus support.',
+      description: 'Access your projects, <span class=silky-ri>invoices</span>, deliverables and support.',
       icon: 'user-round',
       image: '/images/accounts/world-1-1280.webp',
       actions: [
@@ -33,7 +33,7 @@ Select your profile to access the right sign-in area.
     {
       meta: 'Team access',
       title: 'Administration',
-      description: 'The workspace for <span class=silky-i>team members and collaborators</span>.',
+      description: 'The workspace for Numerimondes team members and <span class=silky-ri>collaborators</span>.',
       icon: 'shield-check',
       image: '/images/accounts/world-2-1280.webp',
       actions: [
