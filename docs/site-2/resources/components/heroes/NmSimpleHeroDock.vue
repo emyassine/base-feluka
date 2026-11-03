@@ -242,11 +242,12 @@ function compute(x: number | null) {
   const extras = nextScales.map(scale => (scale - 1) * slotSize)
   const total = extras.reduce((sum, value) => sum + value, 0)
   let running = 0
-  offsets.value = extras.map((extra) => {
+  const nextOffsets = extras.map((extra) => {
     const shift = running + extra / 2 - total / 2
     running += extra
     return Math.round(shift * 10) / 10
   })
+  offsets.value = nextOffsets
   scales.value = nextScales.map(scale => Math.round(scale * 1000) / 1000)
 }
 
@@ -370,8 +371,8 @@ const toCss = (value: string | number) => (typeof value === 'number' ? `${value}
 const rootStyle = computed(() => ({
   '--nm-base': `${props.baseItemSize}px`,
   '--nm-mobile': `${props.mobileItemSize}px`,
-  '--nm-rise': `${Math.max(0, props.magnification - props.baseItemSize)}px`,
   '--nm-pad-x': `${Math.max(12, (props.magnification - props.baseItemSize) * 0.6)}px`,
+  '--nm-pad-x-hover': `${Math.max(24, (props.magnification - props.baseItemSize) * 0.6 + 12)}px`,
   '--nm-panel-min': `${props.panelHeight}px`,
   '--nm-radius': toCss(props.radius),
   '--nm-panel-radius': toCss(props.panelRadius),
@@ -407,6 +408,7 @@ const rootStyle = computed(() => ({
           <div
             ref="dockEl"
             class="nm-dock__panel"
+            :class="{ 'is-magnifying': scales.length > 0 }"
             role="toolbar"
             :aria-label="activeGroup.label"
             @pointerenter="onPointerEnter"
@@ -566,8 +568,7 @@ const rootStyle = computed(() => ({
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  /* Reserve the space magnified icons grow into, so the page never shifts. */
-  padding: var(--nm-rise, 0px) 0.25rem 0.5rem;
+  padding: 0 0.25rem 0.5rem;
 }
 
 .nm-dock__panel {
@@ -591,6 +592,9 @@ const rootStyle = computed(() => ({
     inset 0 -1px 0 rgb(255 255 255 / 0.1);
   -webkit-backdrop-filter: blur(30px) saturate(1.35);
   backdrop-filter: blur(30px) saturate(1.35);
+}
+.nm-dock__panel.is-magnifying {
+  --nm-pad-x: var(--nm-pad-x-hover, 24px);
 }
 
 /* ---------------------------------------------------------------- */
