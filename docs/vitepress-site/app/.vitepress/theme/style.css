@@ -268,6 +268,7 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
 }
 
 .collection-article-subnav__inner > * { pointer-events: auto; }
+.collection-article-subnav--home .collection-article-subnav__inner { padding-inline: 12px; }
 .VPNavBar:has(.collection-article-subnav) { z-index: var(--vp-z-index-nav); }
 .VPNavBar:has(.collection-article-subnav) .content-body { position: static !important; }
 .VPNavBar:has(.collection-article-subnav) .divider {
@@ -335,6 +336,10 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
 
 @media (max-width: 767px) {
   .collection-article-subnav__inner { width: calc(100% - 32px); max-width: none; margin-left: 24px; margin-right: 8px; gap:8px; }
+}
+
+@media (max-width: 959px) {
+  .collection-article-subnav--home { display: none; }
 }
 
 @media (max-width: 640px) {

@@ -65,7 +65,7 @@ const isCurrentPage = (link: string) => currentPath.value === link.replace(/\/$/
 </script>
 
 <template>
-  <nav v-if="isHomeSubheader" class="collection-article-subnav" :aria-label="locale === 'fr' ? 'Navigation du guide' : 'Guide navigation'">
+  <nav v-if="isHomeSubheader" class="collection-article-subnav collection-article-subnav--home" :aria-label="locale === 'fr' ? 'Navigation du guide' : 'Guide navigation'">
     <div class="collection-article-subnav__inner">
       <div class="collection-article-subnav__sections">
         <a v-for="item in subheaderLinks" :key="item.link" :href="item.link" :aria-current="isCurrentPage(item.link) ? 'page' : undefined">{{ item.text }}</a>
