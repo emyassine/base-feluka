@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Cookie and browser storage preferences</title>
+  <desc id="desc">Illustration of a privacy settings panel with necessary and optional storage controls.</desc>
+  <rect width="1200" height="675" rx="32" fill="#eef3f1"/>
+  <circle cx="930" cy="142" r="164" fill="#dbe8e3"/>
+  <circle cx="220" cy="570" r="210" fill="#dbe8e3"/>
+  <rect x="275" y="112" width="650" height="450" rx="24" fill="#fff" stroke="#c5d6d0" stroke-width="4"/>
+  <path d="M299 112h602a24 24 0 0 1 24 24v58H275v-58a24 24 0 0 1 24-24Z" fill="#174f45"/>
+  <circle cx="316" cy="147" r="7" fill="#a8d3c3"/><circle cx="340" cy="147" r="7" fill="#a8d3c3"/><circle cx="364" cy="147" r="7" fill="#a8d3c3"/>
+  <rect x="318" y="223" width="258" height="25" rx="12" fill="#174f45"/>
+  <rect x="318" y="267" width="468" height="12" rx="6" fill="#d5e0dc"/>
+  <rect x="318" y="290" width="402" height="12" rx="6" fill="#d5e0dc"/>
+  <rect x="318" y="337" width="564" height="70" rx="14" fill="#f5f8f7" stroke="#d5e0dc" stroke-width="2"/>
+  <circle cx="352" cy="372" r="15" fill="#247c69"/><path d="m345 372 5 5 10-11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="383" y="356" width="182" height="12" rx="6" fill="#477066"/><rect x="383" y="379" width="251" height="9" rx="4" fill="#d5e0dc"/>
+  <rect x="318" y="423" width="564" height="70" rx="14" fill="#f5f8f7" stroke="#d5e0dc" stroke-width="2"/>
+  <rect x="817" y="444" width="43" height="25" rx="13" fill="#247c69"/><circle cx="846" cy="456.5" r="9" fill="#fff"/>
+  <rect x="350" y="536" width="196" height="12" rx="6" fill="#d5e0dc"/>
+  <rect x="661" y="516" width="221" height="38" rx="10" fill="#174f45"/>
+  <path d="M563 78c-37 26-55 70-49 114 8 55 53 91 105 87 45-3 77-39 74-83-1-20-10-37-25-49-18 2-33-2-43-12-11-11-13-29-6-49-18-12-38-15-56-8Z" fill="#e3ad68" stroke="#be8244" stroke-width="5"/>
+  <circle cx="551" cy="160" r="9" fill="#fff3d9"/><circle cx="592" cy="136" r="7" fill="#fff3d9"/><circle cx="624" cy="183" r="8" fill="#fff3d9"/>
+</svg>

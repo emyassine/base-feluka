@@ -6,6 +6,8 @@ author: "yassine-el-moumen"
 icon: "@spmpst::icon::shield-check"
 description: "How to review and control the browser storage used by this Numerimondes site."
 summary: "Open the privacy control, review necessary and optional storage, and save your choices for this site."
+image: "/images/articles/manage-cookies.svg"
+imageAlt: "Privacy settings panel showing necessary and optional browser storage controls"
 status: "Ready for review"
 category: "privacy"
 tags: [cookies, browser-storage, privacy, guide]
