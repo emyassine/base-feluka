@@ -1,6 +1,6 @@
 
 <script setup>
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 
 defineOptions({ name: 'Acomponent' })
 
@@ -12,6 +12,14 @@ const props = defineProps({
   introduction: {
     type: String,
     default: '',
+  },
+  introductionSpacing: {
+    type: [String, Number],
+    default: null,
+  },
+  introductionTitleSpacing: {
+    type: [String, Number],
+    default: null,
   },
   gallery: {
     type: Array,
@@ -28,12 +36,30 @@ const props = defineProps({
 })
 
 const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
+const introductionStyle = computed(() => {
+  const style = {}
+  if (props.introductionSpacing !== null) {
+    style['--nm-about-introduction-spacing'] = typeof props.introductionSpacing === 'number'
+      ? `${props.introductionSpacing}px`
+      : props.introductionSpacing
+  }
+  if (props.introductionTitleSpacing !== null) {
+    style['--nm-about-introduction-title-spacing'] = typeof props.introductionTitleSpacing === 'number'
+      ? `${props.introductionTitleSpacing}px`
+      : props.introductionTitleSpacing
+  }
+  return Object.keys(style).length ? style : undefined
+})
 </script>
 
 <template>
   <section class="nm-about">
     <!-- Introduction -->
-    <div class="nm-about-introduction">
+    <div
+      v-if="title || introduction"
+      class="nm-about-introduction"
+      :style="introductionStyle"
+    >
       <h2 v-if="title" v-html="title"></h2>
       <p
         v-if="introduction"
@@ -119,11 +145,11 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
 
 /* Introduction */
 .nm-about-introduction {
-  margin-bottom: 56px;
+  margin-bottom: var(--nm-about-introduction-spacing, 56px);
 }
 
-.nm-about-introduction h1 {
-  margin: 0 0 28px;
+.nm-about-introduction :is(h1, h2, h3) {
+  margin: 0 0 var(--nm-about-introduction-title-spacing, 28px);
 }
 
 .nm-about-introduction p {
