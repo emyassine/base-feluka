@@ -1,10 +1,9 @@
 ---
-layout: home-subheader
 sidebarTitle: "Publisher information"
 title: "Publisher and Website Information | Numerimondes"
 icon: "@spmpst::icon::building-2"
 description: "Publisher identity and contact information for the Numerimondes website."
-summary: "Identifies the publisher and records the legal and hosting details that must be confirmed."
+summary: "Identifies the publisher, managed hosting, and variable server and CDN locations."
 status: "Draft"
 category: "company"
 tags: [publisher, legal-notice, contact]
@@ -14,27 +13,21 @@ tags: [publisher, legal-notice, contact]
 
 ## Publisher
 
-This website is published by **Numerimondes SARL AU**, based in Casablanca, Morocco.
+**Numerimondes SARL AU** is a single-member limited liability company (SARL AU) with share capital of **MAD 100,000**. Its registered office is at **10 Rue de la Liberté, 3rd floor, apartment 5, Belvédère, Casablanca, Morocco**. It is registered under **RC 152844**, **ICE 003396233000077**, **tax identifier (IF) 60132844** and **CNSS 5174227**. It is represented by its Founder and Manager, **Yassine EL MOUMEN**, and is the publisher of this website.
 
-The following company details must be confirmed and completed before this notice is approved:
-
-- registered office address;
-- commercial register (RC) number and registration city;
-- tax identifier (IF) and ICE, where applicable;
-- name and capacity of the person responsible for publication;
-- a direct postal or email contact for legal and privacy requests.
-
-The [contact page](/company/prologue/contact) provides the currently published contact route. It is not a substitute for adding the verified legal contact details above.
+For commercial, contractual, legal or privacy questions, use the [contact page](/company/prologue/contact).
 
 ## Hosting
 
-The hosting provider is **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany ([contabo.com](https://contabo.com)).
+The website and its webserver are managed by **Numerimondes Cloud**, Numerimondes’ server-management service.
 
-The data processing agreement supplied for one **Cloud VPS 20 SSD** subscription names the hosting provider as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. The provider console identifies this VPS as being in the **EU** region. The agreement permits an EU or non-EU server location, or leaving the choice to the provider; the current console selection for this VPS is EU.
+The infrastructure agreement for the current webserver identifies **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany, as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. The current webserver is configured in the **EU** region. Numerimondes Cloud also works with **Cap Connect SARL-AU**, a hosting and server provider based in Tangier, Morocco. The provider and region used can vary by deployment.
+
+Server and content-delivery locations may change as the service configuration changes. Where a content delivery network (CDN) is used, its edge locations may differ from the webserver’s region and may change. The CDN provider and current locations for this website must be confirmed in the deployment record and reflected here when they change.
 
 ### Backup and recovery
 
-Automated infrastructure backups are enabled for this VPS. Numerimondes also makes separate manual remote backups and removes information that is no longer relevant, subject to the retention needs of the service. The services hosted on this VPS, the remote backup destination and region, and backup retention, rotation and deletion arrangements must be confirmed before this notice is approved. Provider business addresses do not establish the physical location of the VPS or remote backups.
+Automated backups are enabled for the current webserver. Numerimondes also makes separate manual remote backups and removes information that is no longer relevant, subject to the retention needs of the service. The remote backup destination and region, and backup retention, rotation and deletion arrangements must be confirmed before this notice is approved. Provider business addresses do not establish the physical location of the webserver or remote backups.
 
 ## Related notices
 

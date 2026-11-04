@@ -17,7 +17,7 @@ This capability is for organizations that depend on reliable systems, work acros
 
 ## <span class='silky-bbi+115'>Plan for the operating context</span>
 
-An infrastructure review can map current services, dependencies, access, backup arrangements and support responsibilities. Depending on scope, Numerimondes can configure and manage a hosted virtual server, client-owned server at a local site, or a mixed environment. For teams working beyond a central office, the assessment may also consider intermittent connectivity, mobile data collection, equipment and how information is synchronized.
+An infrastructure review can map current services, dependencies, access, backup arrangements and support responsibilities. Depending on scope, Numerimondes can configure and manage a hosted webserver, a client-owned machine at a local site, or a mixed environment. For teams working beyond a central office, the assessment may also consider intermittent connectivity, mobile data collection, equipment and how information is synchronized.
 
 Self-hosting can offer control, but it also brings responsibility for updates, security, backups, monitoring and recovery. A design should make those responsibilities explicit and testable.
 

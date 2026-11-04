@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Account and CRM privacy"
 title: "Account and CRM Privacy Notice | Numerimondes"
 icon: "@spmpst::icon::shield-check"
@@ -12,11 +11,11 @@ tags: [privacy, account, crm, personal-data]
 
 # Account and CRM privacy notice
 
-**Status: Draft.** This notice describes the account service at `numerimondes.com/account/`. The supplied data processing agreement covers one Cloud VPS 20 SSD subscription configured in the EU region. It identifies the infrastructure processor and data-centre subprocessor listed in the [publisher and website information](/legal/publisher-information). Automated infrastructure backups are enabled for this VPS, and Numerimondes also makes separate manual remote backups. Whether this subscription hosts the CRM, the destination and region of remote backups, backup retention and deletion, other CRM providers, data flows and applicable CNDP formalities must be confirmed before this notice is approved as complete.
+**Status: Draft.** This notice describes the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. The current internal webserver is configured in the EU region, but the CRM’s exact server assignment, any CDN use and delivery locations must be confirmed. Server and CDN locations may vary by deployment and change over time. Automated backups are enabled for the current webserver, and Numerimondes also makes separate manual remote backups. The remote backup destination and region, backup retention and deletion, other CRM providers, data flows and applicable CNDP formalities must be confirmed before this notice is approved as complete.
 
 ## Who is responsible
 
-Numerimondes SARL AU, based in Casablanca, Morocco, publishes the account entry point. The entity operating the underlying CRM and the responsible party for each processing purpose must be confirmed before this notice is approved. This draft assumes Numerimondes determines purposes for its own account administration and security. For information a client asks Numerimondes to handle on the client’s behalf, the parties’ respective roles and instructions must be set out in their agreement.
+Numerimondes SARL AU publishes the account entry point. Its full publisher details are in the [publisher and website information](/legal/publisher-information). The entity operating the underlying CRM and the responsible party for each processing purpose must be confirmed before this notice is approved. This draft assumes Numerimondes determines purposes for its own account administration and security. For information a client asks Numerimondes to handle on the client’s behalf, the parties’ respective roles and instructions must be set out in their agreement.
 
 The verified contact details for privacy requests must be added to the [publisher information notice](/legal/publisher-information). Until then, use the [contact page](/company/prologue/contact) and identify the request as a privacy request.
 
@@ -40,11 +39,11 @@ Numerimondes does not use account records for unrelated advertising or behaviora
 
 ## Access and recipients
 
-Access should be limited to authorized Numerimondes personnel and collaborators who need it for their assigned work, and to the people the relevant client authorizes for its workspace. Under the supplied agreement, the infrastructure processor handles data for the covered VPS service, and a data-centre subprocessor is identified. Whether that subscription hosts the CRM and which server region was selected must be confirmed. The agreement allows an outside-EU location or leaves the choice to the provider; the actual selection and any resulting international transfer safeguards must be confirmed before approval. Information may also be disclosed where required by law or under the applicable service agreement.
+Access should be limited to authorized Numerimondes personnel and collaborators who need it for their assigned work, and to the people the relevant client authorizes for its workspace. The supplied processing agreement identifies the infrastructure processor and data-centre subprocessor listed in the [publisher and website information](/legal/publisher-information). Whether the current webserver hosts the CRM must be confirmed. Server location can vary by deployment, and CDN locations may differ from the webserver and change over time. Any resulting international transfer and applicable safeguards must be confirmed before approval. Information may also be disclosed where required by law or under the applicable service agreement.
 
 ## Retention and account closure
 
-Information should be retained only for as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. Automated backups are enabled for one VPS; if the CRM is hosted there, CRM data may be included in those backups. Numerimondes also makes manual remote backups. The remote destination, region, schedule, retention period and deletion process for those copies have not been verified for this draft. Numerimondes must confirm the periods or criteria for profile, workspace, project, authentication, audit and backup information before approving this notice. Closing an account does not necessarily erase records that must be retained for a documented purpose.
+Information should be retained only for as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. Automated backups are enabled for the current webserver; if the CRM is hosted there, CRM data may be included in those backups. Numerimondes also makes manual remote backups. The remote destination, region, schedule, retention period and deletion process for those copies have not been verified for this draft. Numerimondes must confirm the periods or criteria for profile, workspace, project, authentication, audit and backup information before approving this notice. Closing an account does not necessarily erase records that must be retained for a documented purpose.
 
 ## Requests and rights
 

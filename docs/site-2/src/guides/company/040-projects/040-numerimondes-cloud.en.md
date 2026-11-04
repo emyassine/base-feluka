@@ -26,15 +26,19 @@ We help organizations deploy and manage the server environment their work needs.
 
 ## Cloud, local or mixed infrastructure
 
-Not every workload belongs in a public cloud. We can work with a hosted virtual server, a server located at the client’s premises, existing client-owned equipment, or a mixed design. The choice depends on connectivity, data location, operating constraints, recovery needs, equipment and who will own each task.
+Not every workload belongs in a public cloud. We can work with a managed webserver, a machine located at the client’s premises, existing client-owned equipment, or a mixed design. The choice depends on connectivity, data location, operating constraints, recovery needs, equipment and who will own each task.
 
 For a local deployment, nearby users and devices can connect to services on the client’s own network. Where a project needs to keep operating without Internet access, that requirement must be designed and verified for the specific application and network; it is not assumed by the word “local.”
 
 ## How we operate our own service
 
-Our current internal cloud environment includes a virtual server in an EU region. We use automated infrastructure backups and make additional remote backups that we manage ourselves. We limit stored information to what our services need and remove information that is no longer relevant, subject to agreed or legal retention requirements.
+Our own services run on a webserver currently configured in an EU region. We use automated backups and make additional remote backups that we manage ourselves. We limit stored information to what our services need and remove information that is no longer relevant, subject to agreed or legal retention requirements.
 
-The infrastructure provider’s processing terms cover the provider’s role and its named infrastructure subprocessor for the applicable service. That agreement does not define Numerimondes’ responsibilities for every client workload. For client environments, the written scope identifies the hosting or local location, who can access the system, which information is handled, the backup and recovery approach, retention, deletion and each party’s operating responsibilities. A data-processing agreement is used where the service and the parties’ roles require one.
+## Providers and locations
+
+Numerimondes Cloud manages the service and selects infrastructure for each deployment. Our current provider relationships include **Contabo GmbH** for the EU-region webserver and **Cap Connect SARL-AU** in Tangier for hosting in Morocco. A server’s location depends on the selected infrastructure. Where a content delivery network is used, its edge locations can differ from the webserver’s location and may change as the delivery configuration changes.
+
+The processing agreement for our current EU webserver records the infrastructure processor’s role and names its data-centre subprocessor. That agreement does not define Numerimondes’ responsibilities for every client workload. For client environments, the written scope identifies the hosting or local location, who can access the system, which information is handled, the backup and recovery approach, retention, deletion and each party’s operating responsibilities. A data-processing agreement is used where the service and the parties’ roles require one.
 
 ## Clear operating boundaries
 
