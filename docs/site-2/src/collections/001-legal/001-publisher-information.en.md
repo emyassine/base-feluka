@@ -60,11 +60,15 @@ The remote backup destination, storage region, retention, rotation and deletion 
 
 ## Related notices
 
-### Website data and account privacy
-
-- [Privacy and site data](/legal/site-privacy) describes the public website’s data handling.
-- [Account and CRM privacy notice](/legal/account-and-crm-privacy) describes account-area processing.
-
-### Browser storage
-
-The [website cookies and browser storage policy](/policies/website-storage) explains the site’s storage controls.
+<SimpleMiniCard
+  :columns="2"
+  :categories="[
+    { title: 'Privacy notices', items: [
+      { icon: '@spmpst::icon::shield-check', title: 'Privacy and site data', url: '/legal/site-privacy' },
+      { icon: '@spmpst::icon::users', title: 'Account and CRM privacy notice', url: '/legal/account-and-crm-privacy' }
+    ] },
+    { title: 'Browser storage', items: [
+      { icon: '@spmpst::icon::cookie', title: 'Website cookies and browser storage policy', url: '/policies/website-storage' }
+    ] }
+  ]"
+/>
