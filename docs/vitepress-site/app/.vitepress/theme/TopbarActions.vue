@@ -80,9 +80,19 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
   </div>
   <Teleport v-if="hasMoreMenu && actions.length" defer to=".VPNavBarExtra .VPMenu">
     <div v-for="(action, index) in actions" :key="`more-${href(action)}-${index}`" class="group topbar-action-menu">
-      <a class="topbar-action-menu__link" :href="href(action)" :aria-label="localized(action.label)" :target="isExternal(action) ? '_blank' : undefined" :rel="isExternal(action) ? 'noopener noreferrer' : undefined">
+      <FeluqaButton
+        tag="a"
+        :href="href(action)"
+        :aria-label="localized(action.label)"
+        :icon="action.icon"
+        :size="'xs'"
+        :color="action.color ?? 'primary'"
+        :outlined="action.outlined ?? false"
+        :target="isExternal(action) ? '_blank' : undefined"
+        :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
+      >
         {{ localized(action.label) }}
-      </a>
+      </FeluqaButton>
     </div>
   </Teleport>
 </template>
@@ -91,7 +101,5 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 .topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; gap: .5rem; }
 .topbar-currency select { min-height: 32px; border: 1px solid var(--vp-c-divider); border-radius: 6px; padding: 0 .45rem; color: var(--vp-c-text-1); background: var(--vp-c-bg); font: inherit; font-size: .85rem; }
 .topbar-action-menu { display: none; }
-.topbar-action-menu__link { display: block; border-radius: 6px; padding: 0 12px; line-height: 32px; color: var(--vp-c-text-1); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color .25s, color .25s; }
-.topbar-action-menu__link:hover { color: var(--vp-c-brand-1); background: var(--vp-c-default-soft); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 </style>
