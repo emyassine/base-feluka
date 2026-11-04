@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Infrastructure and Operations"
 title: "Infrastructure and Connected Operations | Numerimondes"
 icon: "@spmpst::icon::server"
@@ -15,11 +14,23 @@ tags: [infrastructure, self-hosting, monitoring, connected-devices]
 
 This capability is for organizations that depend on reliable systems, work across locations or need clearer control of their data and recovery responsibilities. Numerimondes Cloud provides server setup and management for our own services and client environments. The right design depends on workload, connectivity, recovery needs, technical ownership and the conditions in which people operate.
 
-## <span class='silky-bbi+115'>Plan for the operating context</span>
+## <span class='silky-bbi+115'>Self-hosted systems</span>
 
-An infrastructure review can map current services, dependencies, access, backup arrangements and support responsibilities. Depending on scope, Numerimondes can configure and manage a hosted webserver, a client-owned machine at a local site, or a mixed environment. For teams working beyond a central office, the assessment may also consider intermittent connectivity, mobile data collection, equipment and how information is synchronized.
+An infrastructure review can map current services, dependencies, access, backup arrangements and support responsibilities. Depending on scope, Numerimondes can configure and manage a hosted webserver, a client-owned machine at a local site, or a mixed environment.
 
 Self-hosting can offer control, but it also brings responsibility for updates, security, backups, monitoring and recovery. A design should make those responsibilities explicit and testable.
+
+## <span class='silky-bbi+115'>Monitoring</span>
+
+Monitoring helps operators see service health, capacity and relevant failures in time to respond. The signals, alert thresholds, escalation path and retention period should match the service and the team responsible for it.
+
+## <span class='silky-bbi+115'>Equipment</span>
+
+Equipment integration considers device capabilities, site conditions, connectivity, data ownership and maintenance. The design should account for failure modes and make clear who can inspect, update and support connected equipment.
+
+## <span class='silky-bbi+115'>Field applications</span>
+
+For teams working beyond a central office, field applications can support mobile data collection and operational tasks. An assessment considers intermittent connectivity, device constraints and how information is synchronized, including how conflicts and incomplete submissions are handled.
 
 ## <span class='silky-bbi+115'>From design to operation</span>
 

@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Overview"
 title: "Capabilities | Numerimondes"
 icon: "@spmpst::icon::lightbulb"

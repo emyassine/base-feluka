@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Software and Automation"
 title: "Software and Automation | Numerimondes"
 icon: "@spmpst::icon::code-xml"
@@ -15,13 +14,23 @@ tags: [software, automation, integration, artificial-intelligence]
 
 This capability is for SMEs and organizations whose spreadsheets, disconnected systems or manual processes no longer support the work. We explore applications, integrations and automation around real users and decisions, with attention to deployment, security, maintainability and ownership.
 
-## <span class='silky-bbi+115'>Start with the workflow</span>
+## <span class='silky-bbi+115'>Tailored applications</span>
 
-Before selecting a tool, map the current process and identify its users, inputs, exceptions and handoffs. This helps distinguish a problem that needs new software from one better addressed through clearer responsibilities, configuration or process changes.
+When existing products do not fit the work, a tailored application can bring specific tasks, information and user roles into one supported workflow. Its scope should follow a clear understanding of users, inputs, exceptions and ongoing ownership.
 
-## <span class='silky-bbi+115'>Choose an appropriate intervention</span>
+## <span class='silky-bbi+115'>Integrations</span>
 
-Depending on the requirements, work may involve a custom application, an internal portal, a dashboard, an API integration, document workflow automation or an evaluation of existing products. Artificial intelligence can be considered when the task, data boundaries and review process are understood; it is not a default solution.
+Integrations connect systems so information can move with less repeated entry and clearer accountability. Planning covers data ownership, access, failure handling, correction paths and support after launch.
+
+## <span class='silky-bbi+115'>Document workflows</span>
+
+Document workflows can organize how files are received, reviewed, approved, stored and retrieved. Automation should preserve the required checks, permissions and records, including a clear path for exceptions and corrections.
+
+## <span class='silky-bbi+115'>AI-assisted tasks</span>
+
+Artificial intelligence may assist with bounded tasks such as classification, extraction or drafting when the task, data boundaries and human review process are understood. It is evaluated against the consequences of errors and is not a default solution.
+
+Before selecting a tool, map the current process and identify its users, inputs, exceptions and handoffs. This helps distinguish a problem that needs new software from one better addressed through clearer responsibilities, configuration or process changes. Depending on requirements, work may also involve an internal portal, a dashboard or an evaluation of existing products.
 
 Typical planning questions include who owns the data, what happens when an integration fails, how staff correct errors, and how the system will be supported after launch. Deliverables and technical choices are agreed for each project.
 
