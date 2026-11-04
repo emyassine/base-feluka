@@ -1,8 +1,7 @@
 {
   "$schema": "../public/api/beta/schemas/spmpst-standard/hooks.schema.json",
   "components": {
-    "sidebarNavigationBefore": "BranchedSidebar",
-    "navigationAfter": "CollectionArticleSubnav"
+    "sidebarNavigationBefore": "BranchedSidebar"
   },
   "documentationNotices": {},
   "banner": {

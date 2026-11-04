@@ -9,6 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
+import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
 import TopbarActions from './TopbarActions.vue'
 import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
@@ -642,6 +643,7 @@ const MermaidLayout = {
     const collectionForPage = () => (generatedCollections as Array<{ id: string; layout: string; links: Record<string, string>; titles: Record<string, string> }>)
       .find((collection) => collection.id === frontmatter.value.collection)
     const articleLayout = () => collectionForPage()?.layout === 'article'
+    const homeSubheaderLayout = () => frontmatter.value.pageLayout === 'home-subheader'
     const articleCollectionLink = () => {
       const collection = collectionForPage()
       const locale = String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]
@@ -656,8 +658,8 @@ const MermaidLayout = {
       ...layoutSlots,
       'layout-top': siteBanner,
       'nav-bar-content-after': () => h(Fragment, null, [
-        articleLayout() && subnavComponent
-          ? h(subnavComponent, null, { actions: () => h(PageActions) })
+        (articleLayout() || homeSubheaderLayout())
+          ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: () => h(PageActions) })
           : renderedSubnav,
         h(TopbarActions),
       ]),

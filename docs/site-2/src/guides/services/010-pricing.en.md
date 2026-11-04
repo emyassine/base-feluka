@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
 menuImage: "/images/services/pricing.jpg"

@@ -5,7 +5,7 @@ icon: "@spmpst::icon::store"
 description: "Outcome-based consulting, software, infrastructure, people and recruitment services delivered by vetted partners."
 lang: en
 status: "demo"
-layout: home
+layout: home-subheader
 ---
 
 <script setup lang="ts">

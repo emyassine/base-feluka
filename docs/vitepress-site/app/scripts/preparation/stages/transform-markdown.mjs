@@ -56,6 +56,10 @@ await Promise.all(records.map(async (record) => {
     markdownBody = markdownBody.replaceAll(reference, `/${publicIconPath}`)
   }
   markdown = `${frontmatterText}${markdownBody}`
+  // VitePress recognizes `home` as its landing-page layout. Keep the richer
+  // author-facing layout name in `pageLayout`, and lower it to `home` for the
+  // renderer so the topbar subheader can be composed independently.
+  markdown = markdown.replace(/^(layout:\s*)(["']?)home-subheader\2\s*$/m, '$1home\npageLayout: home-subheader')
   const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
   if (owningCollection) {
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
