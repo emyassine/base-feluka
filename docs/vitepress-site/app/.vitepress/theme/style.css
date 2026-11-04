@@ -143,6 +143,17 @@
   background-size: contain;
 }
 
+/* Keep the overflow menu for widths where the shared desktop header is tight. */
+@media (min-width: 1100px) {
+  .VPNavBar .content-body .VPNavBarExtra { display: none; }
+  .VPNavBar .content-body .VPNavBarAppearance,
+  .VPNavBar .content-body .VPNavBarTranslations,
+  .VPNavBar .content-body .VPNavBarSocialLinks {
+    display: flex;
+    align-items: center;
+  }
+}
+
 /* Shared VitePress navigation behavior and appearance. */
 html:has(#VPNavScreen),
 body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
