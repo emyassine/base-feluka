@@ -103,11 +103,7 @@ const siteViteConfig = {
           return
         }
         const isDefaultIcon = pathname === '/favicon.ico' && typeof primaryFavicon === 'string'
-        const isConfiguredTextFile = /^\/(?:[A-Za-z0-9._-]+\.txt)$/.test(pathname)
-        if (!isDefaultIcon && !isConfiguredTextFile && !pathname.startsWith('/mermaid/') && !pathname.startsWith('/__docs-assets/') && !pathname.startsWith('/media/')) {
-          next()
-          return
-        }
+        if (pathname === '/') { next(); return }
         const target = resolve(publicDirectory, `.${isDefaultIcon ? primaryFavicon : pathname}`)
         const relativeTarget = relative(publicDirectory, target)
         if (!relativeTarget || relativeTarget.startsWith(`..${sep}`) || relativeTarget === '..' || !existsSync(target)) {
