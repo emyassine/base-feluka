@@ -17,14 +17,15 @@ This skill is written for coding agents. Follow the steps in order, do not skip 
 
 **Tagline spirit.** "Possibility becomes valuable through execution." Images should make an idea tangible and credible, not decorative.
 
-**Maning of our Logo (read this carefully; never redraw it from memory. We usually dont use the logo in the images but the meaning may be important).**
+**Meaning of our logo (read this carefully; never redraw it from memory). We usually do not use the logo inside images, but its meaning matters and should quietly inform the art direction.**
 - A **noble stone**: a regular hexagon with a horizontal flat base and a horizontal flat top (points left and right).
 - The hexagon is **divided by a curved arc (a half-circle-like cut)**: the left part is near-black, the right part is a light slate blue-grey.
 - To its right sits a **bold near-black chevron / arrow** (">") with angled cut ends, pointing right and away from the stone.
 - Meaning: a noble stone (value, rarity, craft) set in motion toward execution.
+- How the meaning translates into visuals: precision and refinement (the clean arc cutting the stone), durable value (stone, glass, metal, well-made objects), and forward momentum from idea to delivery (the arrow). Visuals should feel composed, deliberate, confident and well made. They should never feel anxious, chaotic, cheap or sentimental.
 - Palette of the logo: near-black, slate blue-grey, soft off-white background.
 - Use the official logo file from the project. Never regenerate, trace, recolor, distort or approximate the logo with AI. Never ask an image model to draw it.
-- If a visual needs a logo, place the real asset in a separate layer with clear space equal to at least the height of one hexagon edge on all sides.
+- In the rare case a visual needs the logo (for example some OG images), place the real asset in a separate layer with clear space equal to at least the height of one hexagon edge on all sides.
 
 **Brand material: silk.** Silk (flowing, folded, translucent, softly lit fabric) is the brand's signature material. It is **available, not mandatory**. Numerimondes is not a factory that stamps one look onto everything. Use silk as an occasional signature (for example brand pages, hero backgrounds, some OG images, the odd card), and aim for most visuals to come from **art and poetic imagery tied to the page's subject**. If several consecutive visuals in a set use silk, the next one should not.
 
@@ -53,6 +54,31 @@ AI is a production tool, not the default source. Prefer meaningful images over g
 
 ---
 
+## 2A. Corporate register and stance (mandatory)
+
+Numerimondes is a professional consultancy. Every visual must look like it belongs to a serious, premium B2B brand: calm, competent, composed, modern. The target is the editorial standard of leading technology and consulting publishers: either real, well-composed photography of people and places in credible professional contexts, or refined abstract and material imagery (soft color fields, glass, stone, metal, silk). Do not copy any other site's assets; borrow only the level of polish.
+
+**Decide the stance before producing anything.** Write two short answers in your notes:
+
+1. **Who does the image speak for?** Choose one:
+   - **Numerimondes** in a position of strength: expertise, rigor, stewardship, control of the process, standards upheld. Default for policies, legal notices, commercial terms, security, data handling, and "how we work" pages.
+   - **The client or partner empowered**: a capable professional or team in control, with clear results and momentum. Default for capabilities, projects, case-style pages and articles about outcomes.
+   - **Neutral explainer**: an object or concept that clarifies a mechanism. Default for practical guides and how-to articles.
+2. **What should the reader feel in one second?** Target words: confidence, clarity, trust, order, competence, calm authority. Never: worry, debt, shame, surveillance, charity, nostalgia, chaos.
+
+Hard rules:
+- **Never show the reader (or the client) as vulnerable, struggling or lacking control.** No stressed people, no bills, debt, paperwork piles, courts, police, sirens, handcuffs, hackers, or anyone anxiously reading a document.
+- Policies and legal notices speak with the **institution's authority and care**: structure, order, craft, protected value, clear boundaries. Not with the data subject as a victim or as a historical figure.
+- Avoid period costume, domestic interiors, religious or aristocratic scenes, and "old master" genre paintings as a default. Classical art is allowed only when the page is explicitly about heritage, craft, ethics or institutional continuity, and the stance is clearly strength and stewardship.
+- If people appear, they are modern, competent and in a credible professional setting, with no identifiable real individuals unless consent and rights are documented. Do not fake testimonials, clients or events.
+- Prefer images that would look right on the website of a bank, an engineering firm or a respected research publisher. If it would look more at home in a museum gift shop or a stock-photo "sad woman with bills" search, reject it.
+
+**First-glance test (mandatory before accepting any image).** Describe the finished image in one plain sentence, as a stranger with no context would, then answer: "What would a stranger guess this page is about, and what would they feel?" If the guess is wrong, ambiguous, or the feeling is not in the target list, reject the image and start over. Example of a failure: a 17th-century woman reading a letter in a modest room, placed on a privacy notice, reads as "a person worried about a bill", not "our data handling is rigorous".
+
+**Literal keyword matching is not subject fit.** "Privacy" does not mean "a person reading a letter". "Account" does not mean "a ledger". Translate the page's *claim* into a metaphor of control and care (a precisely sealed vessel, a controlled threshold, ordered layers, a key used by an authorized hand) rather than illustrating a keyword.
+
+---
+
 ## 3. Subject-fit rule (mandatory before any research or generation)
 
 Before choosing or creating a visual:
@@ -63,6 +89,7 @@ Before choosing or creating a visual:
 
 Hard rules:
 - Never choose an artwork because it is famous or memorable.
+- Never alter or extend a recognizable masterwork with AI (no outpainting, no re-lighting, no added figures or objects). If a source does not fit the card's crop, choose another crop or another source. Altering a famous painting reads as careless and undermines trust.
 - Never copy a metaphor from an example, another site or another card onto an unrelated page. A well-known sculpture picked only because it looked striking on some other page is a wrong match.
 - Never reuse one picture for unrelated topics.
 - Match the metaphor to the subject. Examples of sound mappings:
@@ -85,7 +112,7 @@ Before using any real source:
 
 - Confirm the license or permission. Prefer public-domain or open-access collections from museums and libraries, openly licensed archives, the project owner's own photography, or commissioned work. For anything else, check the exact license terms.
 - Preserve required attribution. Never strip credit that the license requires.
-- Record provenance for every asset in a sidecar note or in the project's existing metadata system: source URL, creator, date, license, any modification (crop, composite, AI-assisted edit), tool used, and the date it was added.
+- Record provenance for every asset in a sidecar note or in the project's existing metadata system: source URL, creator, date, license, any modification (crop, composite, AI-assisted edit), tool used, and the date it was added. Provenance must also state the **stance** (who the image speaks for), the **fit sentence**, and the **first-glance result** from section 2A. A provenance entry that only lists the source is incomplete.
 - Never copy, hotlink or re-use another company's images, videos, layout assets or brand elements as Numerimondes content. Other sites can inspire an approach, never supply assets.
 - Do not claim a production method that you cannot verify. Describe images as "composite", "AI-assisted", "photograph" or "rendered" only if you know it.
 - Respect cultural and religious heritage (including Moroccan, Amazigh, Arab and Mediterranean craft and art). Credit it, do not caricature it, do not use sacred objects as decoration.
@@ -194,6 +221,10 @@ Accessibility:
 ## 10. Review checklist (every asset, before calling it done)
 
 - [ ] Full page (frontmatter and body) was read; fit sentence written and still true.
+- [ ] Stance chosen (Numerimondes / client empowered / neutral) and target feeling stated; no vulnerability, bills, debt, anxiety or period-drama cues.
+- [ ] First-glance test passed: a stranger's one-sentence description matches the page topic and the target feeling.
+- [ ] Looks corporate and premium, at the level of a respected technology or consulting publisher.
+- [ ] No AI alteration or outpainting of a recognizable masterwork.
 - [ ] Source, license and attribution confirmed and recorded.
 - [ ] No baked-in text, logo, watermark or garbled glyphs; the real logo was never redrawn.
 - [ ] No anatomical, physical or material artifacts at 100 percent zoom.
@@ -220,6 +251,8 @@ Stop and ask rather than guess when:
 - A change would overwrite or replace an existing approved visual.
 - The component does not support a needed capability (video, srcset) and adding it would change a shared API.
 - A page is a draft, and it is unclear whether its visual should signal draft or ready status.
+- The stance (Numerimondes, client or neutral) is not obvious from the page.
+- The first-glance test fails twice in a row for the same page.
 
 When asking, batch **all** open questions into a single message with a recommended default for each, so the owner can answer once.
 

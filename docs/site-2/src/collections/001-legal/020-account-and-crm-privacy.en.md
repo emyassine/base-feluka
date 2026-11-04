@@ -6,13 +6,13 @@ description: "How Numerimondes handles personal information in its account and C
 summary: "Explains account information, client workspace data, access, retention and privacy requests."
 category: "privacy"
 tags: [privacy, account, crm, personal-data]
-image: "/images/legal/account-privacy.jpg"
-imageAlt: "A small amber object enclosed in a clear glass dome among layered forms, representing protected account information."
+image: "/images/legal/account-and-crm-privacy-vermeer-letter.webp"
+imageAlt: "A woman in blue reads a letter in a softly lit interior, based on Johannes Vermeer's public-domain painting."
 ---
 
 # Account and CRM privacy notice
 
-<img src="/images/legal/account-privacy.jpg">
+<img src="/images/legal/account-and-crm-privacy-vermeer-letter.webp" alt="A woman in blue reads a letter in a softly lit interior, based on Johannes Vermeer's public-domain painting.">
 
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to personal information handled through account and CRM services.
 
