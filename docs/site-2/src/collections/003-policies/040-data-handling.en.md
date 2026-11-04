@@ -42,6 +42,14 @@ The engagement terms should identify approved tools or hosting, client and provi
 
 We do not ask clients to send passwords, secret keys or other credentials through public contact forms or ordinary email. Use an agreed secure method for access information.
 
+## Requests by clients and individuals
+
+### Client organization data
+
+An authorized client representative may request a copy, export or return of business data handled for the engagement, or request correction or deletion. Numerimondes verifies the representative’s authority and handles the request under the service agreement, documented client instructions and applicable legal, accounting, security and retention requirements. The agreement determines the request scope, format, timing and any limitations.
+
+A company’s contractual request to export or return its business records is separate from the statutory rights of individuals whose personal data may appear in those records. Requests by individuals are assessed under applicable data protection law and the [account and CRM privacy notice](/legal/account-and-crm-privacy).
+
 ## Limits
 
 Do not send information that is not needed for the work. Do not share information you are not authorized to provide. We do not claim a universal retention period, hosting location or certification across all projects; these depend on the systems and terms agreed for the engagement.

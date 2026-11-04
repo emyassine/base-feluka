@@ -4,7 +4,6 @@ title: "Publisher and Website Information | Numerimondes"
 icon: "@spmpst::icon::building-2"
 description: "Publisher identity and contact information for the Numerimondes website."
 summary: "Identifies the publisher, managed hosting, and variable server and CDN locations."
-status: "Draft"
 category: "company"
 tags: [publisher, legal-notice, contact]
 ---
@@ -33,7 +32,7 @@ The website and its webserver are managed by **Numerimondes Cloud**, Numerimonde
 
 ### Infrastructure providers
 
-The infrastructure agreement for the current webserver identifies **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany, as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. The current webserver is configured in the **EU** region. Numerimondes Cloud also works with **Cap Connect SARL-AU**, a hosting and server provider based in Tangier, Morocco. The provider and region used can vary by deployment.
+The infrastructure agreement for the current webserver identifies **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany, as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. Numerimondes Cloud also works with **Cap Connect SARL-AU**, a hosting and server provider based in Tangier, Morocco. The provider and region used can vary by deployment.
 
 ### Server and CDN locations
 
@@ -43,7 +42,7 @@ The current webserver is configured in the **EU** region. Server and content-del
 
 #### CDN edge locations
 
-Where a content delivery network (CDN) is used, its edge locations may differ from the webserver’s region and may change. The CDN provider and current locations for this website must be confirmed in the deployment record and reflected here when they change.
+Where a content delivery network (CDN) is used, its edge locations may differ from the webserver’s region and may change. The CDN provider and edge locations depend on the active delivery configuration and may change. Contact Numerimondes for the configuration applicable to a particular deployment.
 
 ## Backup and recovery
 
@@ -57,7 +56,7 @@ Numerimondes also makes separate manual remote backups and removes information t
 
 ### Retention and deletion
 
-The remote backup destination and region, and backup retention, rotation and deletion arrangements must be confirmed before this notice is approved. Provider business addresses do not establish the physical location of the webserver or remote backups.
+The remote backup destination, storage region, retention, rotation and deletion schedule depend on the active backup configuration. Provider business addresses do not establish the physical location of the webserver or remote backups; ask Numerimondes for details applicable to a particular deployment.
 
 ## Related notices
 

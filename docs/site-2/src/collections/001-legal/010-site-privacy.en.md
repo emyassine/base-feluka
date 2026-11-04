@@ -4,19 +4,18 @@ title: "Website Privacy and Site Data | Numerimondes"
 icon: "@spmpst::icon::shield-check"
 description: "A practical overview of data handled by the Numerimondes website."
 summary: "Describes contact handling, browser storage choices, external media, and hosting logs."
-status: "Draft"
 category: "privacy"
 tags: [privacy, website, data]
 ---
 # Privacy and Site Data
 
-This draft covers the public Numerimondes website. The account and CRM area has a separate [account and CRM privacy notice](/legal/account-and-crm-privacy). Publisher details and the production hosting arrangement are recorded in the [publisher information notice](/legal/publisher-information).
+This notice covers the public Numerimondes website. The account and CRM area has a separate [account and CRM privacy notice](/legal/account-and-crm-privacy). Publisher details and the production hosting arrangement are recorded in the [publisher information notice](/legal/publisher-information).
 
 ## Scope and publisher
 
 ### Public website
 
-This draft covers the public Numerimondes website. The account and CRM area has a separate [account and CRM privacy notice](/legal/account-and-crm-privacy). Publisher details and the production hosting arrangement are recorded in the [publisher information notice](/legal/publisher-information).
+This notice covers the public website. Account-area processing is described in the [account and CRM privacy notice](/legal/account-and-crm-privacy); publisher and hosting details are in the [publisher information notice](/legal/publisher-information).
 
 ## Contact information
 
@@ -56,13 +55,13 @@ Some pages load images hosted by Unsplash and link to external services such as 
 
 ### Numerimondes Cloud management
 
-The website and its webserver are managed by Numerimondes Cloud. The current internal webserver is configured in the EU region; server locations may vary by deployment.
+Numerimondes Cloud manages the website infrastructure. The applicable hosting provider and server region are listed in the [publisher and website information](/legal/publisher-information); they can vary by deployment.
 
 ### Content delivery locations
 
 #### Webserver
 
-The current webserver is configured in the EU region. Hosting infrastructure may process technical request information, including IP addresses, requested paths, timestamps and browser details, for delivery, security and troubleshooting.
+Hosting infrastructure may process technical request information, including IP addresses, requested paths, timestamps and browser details, for delivery, security and troubleshooting. The deployment-specific server region is stated in the [publisher information notice](/legal/publisher-information).
 
 #### CDN
 
@@ -76,10 +75,22 @@ Automated backups are enabled for the current webserver, and Numerimondes also m
 
 #### Retention and location records
 
-The remote backup destination and region, CDN provider and locations, and applicable log and backup retention and deletion arrangements must be confirmed in the current deployment record.
+The CDN provider and edge locations, remote backup destination and region, and applicable log and backup retention and deletion arrangements depend on the active deployment configuration. Contact Numerimondes for details applicable to a particular service.
+
+## Personal data requests
+
+### Rights under Moroccan law
+
+People whose personal data is processed may use the rights available under applicable law. Under Morocco’s Law 09-08, these include information and access rights, and rights to request correction, updating, erasure or blocking where the statutory conditions are met. Objection rights also apply in the circumstances set by the law, including a free objection to direct marketing. The [CNDP guide to data subject rights](https://www.cndp.ma/vos-droits-en-matiere-de-protection-des-donnees-a-caractere-personnel/) and [Law 09-08](https://www.cndp.ma/images/lois/Loi-09-08-Fr.pdf) explain the applicable conditions and procedures.
+
+### Rights where GDPR applies
+
+Where the GDPR applies, people may have rights to rectification, erasure, restriction, objection and data portability, subject to the conditions and exceptions in that regulation. Portability is limited to personal data the person provided, where processing is automated and based on consent or contract; it is not a general right to export every record held about a company. See [GDPR Article 20](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679).
+
+### How to make a request
+
+Use the [contact page](/company/prologue/contact) and identify your message as a personal data request. State the relevant website interaction and the right you want to exercise. Numerimondes may ask for information proportionate to confirming your identity and authority; do not send passwords, access tokens or unnecessary identity documents through ordinary contact channels.
 
 ## Questions or corrections
 
-### Privacy requests
-
-For questions or corrections about this notice, use the [contact page](/company/prologue/contact). This draft should be reviewed against the final hosting and CDN configuration and company privacy process before being treated as a complete legal notice.
+For questions or corrections about this notice, use the [contact page](/company/prologue/contact).

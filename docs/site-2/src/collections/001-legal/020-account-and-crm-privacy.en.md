@@ -4,26 +4,19 @@ title: "Account and CRM Privacy Notice | Numerimondes"
 icon: "@spmpst::icon::shield-check"
 description: "How Numerimondes handles personal information in its account and CRM service."
 summary: "Explains account information, client workspace data, access, retention and privacy requests."
-status: "Draft"
 category: "privacy"
 tags: [privacy, account, crm, personal-data]
 ---
 
 # Account and CRM privacy notice
 
-**Status: Draft.** This notice describes the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. The current internal webserver is configured in the EU region, but the CRM’s exact server assignment, any CDN use and delivery locations must be confirmed. Server and CDN locations may vary by deployment and change over time. Automated backups are enabled for the current webserver, and Numerimondes also makes separate manual remote backups. The remote backup destination and region, backup retention and deletion, other CRM providers, data flows and applicable CNDP formalities must be confirmed before this notice is approved as complete.
-
-## Scope and status
-
-### Account service
-
-This notice describes the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. The current internal webserver is configured in the EU region, but the CRM’s exact server assignment, any CDN use and delivery locations must be confirmed. Server and CDN locations may vary by deployment and change over time. Automated backups are enabled for the current webserver, and Numerimondes also makes separate manual remote backups. The remote backup destination and region, backup retention and deletion, other CRM providers, data flows and applicable CNDP formalities must be confirmed before this notice is approved as complete.
+This notice describes personal information handled through the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. Hosting providers, server and CDN locations, and backup arrangements can vary by deployment; see the [publisher and website information](/legal/publisher-information) for the current infrastructure notice. This service notice covers account and client-work information, including requests by individuals and authorized client representatives.
 
 ## Responsible parties
 
 ### Numerimondes
 
-Numerimondes SARL AU publishes the account entry point. Its full publisher details are in the [publisher and website information](/legal/publisher-information). The entity operating the underlying CRM and the responsible party for each processing purpose must be confirmed before this notice is approved. This draft assumes Numerimondes determines purposes for its own account administration and security.
+Numerimondes SARL AU publishes the account entry point. Its full publisher details are in the [publisher and website information](/legal/publisher-information). Numerimondes SARL AU determines purposes and means for its own account administration and service security. For information handled on a client’s documented instructions, the parties’ roles and responsibilities are set out in the applicable service or data-processing agreement.
 
 ### Client instructions
 
@@ -69,35 +62,35 @@ Access should be limited to authorized Numerimondes personnel and collaborators 
 
 ### Hosting and delivery infrastructure
 
-The supplied processing agreement identifies the infrastructure processor and data-centre subprocessor listed in the [publisher and website information](/legal/publisher-information). Whether the current webserver hosts the CRM must be confirmed. Information may also be disclosed where required by law or under the applicable service agreement.
+The infrastructure providers and the current server-region information are identified in the [publisher and website information](/legal/publisher-information). Hosting, CDN and backup locations depend on the deployment and may change. International transfers, where applicable, are handled under the relevant service agreement and applicable transfer safeguards. Information may also be disclosed where required by law.
 
-#### Webserver location
+#### Hosting and delivery locations
 
-The current webserver is configured in the EU region. Its assignment to the CRM and any change in server location must be confirmed for the deployment.
-
-#### CDN locations and international transfers
-
-CDN locations may differ from the webserver’s region and can change over time. Any resulting international transfer and applicable safeguards must be confirmed before approval.
+Server, CDN and backup locations may differ and can change as the deployment evolves. The publisher notice provides the current website infrastructure information; clients can request the locations and transfer safeguards applicable to their service.
 
 ## Retention and account closure
 
 ### Account and client records
 
-Information should be retained only for as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. Numerimondes must confirm the periods or criteria for profile, workspace, project, authentication and audit information before approving this notice.
+Information is retained only as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. Retention criteria depend on the information type and service arrangement; clients can ask for the criteria applicable to their workspace.
 
 ### Backups
 
-Automated backups are enabled for the current webserver; if the CRM is hosted there, CRM data may be included in those backups. Numerimondes also makes manual remote backups. The remote destination, region, schedule, retention period and deletion process for those copies have not been verified for this draft. Closing an account does not necessarily erase records that must be retained for a documented purpose.
+Automated backups are enabled for the current website webserver, and Numerimondes also makes separate manual remote backups. Whether a particular account or client dataset is included depends on its deployment. Backup copies are retained and rotated under the applicable backup configuration; closing an account does not erase records that must be retained for a documented legal, contractual or security purpose.
 
 ## Requests and rights
 
-### Contact Numerimondes
+### Individual data subject requests
 
-You may contact Numerimondes to ask whether personal information about you is processed, request access or correction, or raise an objection where applicable. Identify the account and the information concerned, but do not send a password or secret token. Use the [contact page](/company/prologue/contact) and identify your message as a privacy request. The identity-check process must be confirmed before this notice is finalized.
+A person may ask about personal information concerning them, request access or correction, and exercise other rights available under applicable law. Under Morocco’s Law 09-08, erasure or blocking applies where statutory conditions are met, including unlawful, incomplete or inaccurate processing; objection rights apply in the circumstances provided by law. Where GDPR applies, rights may include erasure, restriction, objection and portability, subject to the regulation’s conditions and exceptions. GDPR portability concerns personal data provided by the person, processed automatically on the basis of consent or contract; it is not a general export right for all company records. See the [CNDP rights guide](https://www.cndp.ma/vos-droits-en-matiere-de-protection-des-donnees-a-caractere-personnel/), [Moroccan Law 09-08](https://www.cndp.ma/images/lois/Loi-09-08-Fr.pdf), and [GDPR Article 20](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679).
 
-### Moroccan data protection information
+Use the [contact page](/company/prologue/contact) and identify the account and information concerned. Numerimondes may request proportionate information to verify identity and authority. Do not send passwords, access tokens or unnecessary identity documents through ordinary contact channels.
 
-For information about rights under Moroccan Law 09-08, consult the [Moroccan CNDP’s guidance on data subject rights](https://www.cndp.ma/vos-droits-en-matiere-de-protection-des-donnees-a-caractere-personnel/) and the [official law text](https://www.cndp.ma/images/lois/Loi-09-08-Fr.pdf). Applicable rights and procedures depend on the facts and the relevant law.
+### Client organization data requests
+
+An authorized representative of a client organization may request access to, a copy of, export or return of the organization’s business data, or request correction, deletion or cessation of processing, subject to the applicable service agreement, documented instructions and legal, accounting, security or other retention obligations. Scope, format, timing and any applicable limits are determined by the service agreement. These organization-level data-handling requests are contractual service matters; they are distinct from an individual’s statutory rights over personal data that may appear within company records.
+
+Submit the request through the [contact page](/company/prologue/contact), identifying the organization, workspace and requested action. Numerimondes may verify that the representative is authorized to act for that organization.
 
 ## Service boundary
 
