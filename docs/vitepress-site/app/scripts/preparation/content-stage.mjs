@@ -410,6 +410,7 @@ await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringi
   defaultLanguage,
   showLanguageFlags: config.topbar?.language?.showFlags ?? false,
   topbarActions: config.topbar?.actions ?? [],
+  currency: config.topbar?.currency ?? null,
   themeSlots: { site: siteThemeSlots, guides: generatedGuideThemeSlotsByRoute },
   siteFooter: config.siteFooter ?? null,
   inlineLogo: config.inlineLogo === true,

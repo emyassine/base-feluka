@@ -125,7 +125,7 @@ site-root/
 |---|---|
 | `spmpst.definitions.json` | `site`, `subguides`, `iconFallback` |
 | `spmpst.lang.json` | `languages`, `fallbackLanguage`, `selector`, localized language labels |
-| `spmpst.topbar.json` | `items`, `theme` |
+| `spmpst.topbar.json` | `items`, `theme`, `actions`, `currency` |
 | `spmpst.collections.json` | `collections`, `emptyCollection` |
 | `spmpst.footer.json` | `content`, including footer CTA, navigation, and legal links |
 | `spmpst.hooks.json` | component placements and documentation notice hooks |
@@ -296,6 +296,8 @@ The important distinction is that SPMPST handles site structure, source validati
 The current source convention supports language variants as co-located filenames, for example `page.en.md` and `page.fr.md`. The final language suffix is removed from the staged basename. A file without a language suffix belongs to the configured fallback language. Numeric prefixes such as `010-` or `020.` affect navigation order and are removed from output paths. Dot-prefixed files, `README.md`, `spmpst.sidebar.json`, `spmpst.guide.json`, and collection category metadata are not published as pages.
 
 Locale list, fallback locale, default-prefix policy, labels, flag visibility, search/footer/notice copy, and fallback notice templates are configured separately. When a non-default translation is absent, the fallback stage copies the default page into that locale's route, sets `requestedLanguage`, `contentLanguage`, and `languageFallbackNotice`, rewrites the `lang` value, adjusts known local route links to the locale where appropriate, and copies relative imported assets beside the generated page.
+
+The optional `topbar.currency` object configures a shared currency selector with a base code and labeled currency options. The selector stores the selected code in `localStorage` as `spmpst-currency` and emits `spmpst-currency-change`. The globally registered `<currency>` component accepts `base`, optional `non-base-tooltip`, and one amount attribute per ISO currency code, for example `<currency base="mad" non-base-tooltip="Indicative conversion; rates can change." mad="25 000" eur="2 500" usd="2 500" />`. It displays the selected amount and currency code; non-base amounts receive a `~` prefix and the supplied tooltip. If an amount for the selected currency is absent, it displays the base amount and base code.
 
 Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. A collection may set a separate public `route`, so themed collections can live under `src/collections/resources/` and publish under `/resources/...`. The topbar's `source: "collections"` selector discovers those collections by `pathPrefix` and nests their generated article links under each collection automatically. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Filesystem path ownership stays in the site-root `spmpst.json`; route ownership stays in the site concern configs, not in the shared host registry.
 

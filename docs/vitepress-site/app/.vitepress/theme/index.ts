@@ -12,6 +12,7 @@ import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import CollectionSearch from './CollectionSearch.vue'
 import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
 import TopbarActions from './TopbarActions.vue'
+import Currency from './Currency.vue'
 import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
 import './style.css'
@@ -693,5 +694,6 @@ export default {
     context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
     context.app.component('CollectionSearch', CollectionSearch)
     registerProjectComponents(context.app)
+    context.app.component('currency', Currency)
   },
 }

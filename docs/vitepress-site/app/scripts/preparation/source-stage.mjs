@@ -146,6 +146,22 @@ if (!topbar || typeof topbar !== 'object' || Array.isArray(topbar)) throw new Er
 if (topbar.theme !== undefined && !['switch', 'system', 'light', 'dark'].includes(topbar.theme)) {
   throw new Error('topbar.theme must be switch, system, light, or dark')
 }
+if (topbar.currency !== undefined) {
+  const currency = topbar.currency
+  if (!currency || typeof currency !== 'object' || Array.isArray(currency) || typeof currency.base !== 'string' || !/^[a-z]{3}$/i.test(currency.base) || !Array.isArray(currency.options) || !currency.options.length) {
+    throw new Error('topbar.currency must contain a three-letter base code and a non-empty options array')
+  }
+  const codes = new Set()
+  for (const [index, option] of currency.options.entries()) {
+    if (!option || typeof option !== 'object' || !/^[a-z]{3}$/i.test(option.code ?? '') || typeof option.label !== 'string' || !option.label.trim()) {
+      throw new Error(`topbar.currency.options[${index}] needs a three-letter code and label`)
+    }
+    const code = option.code.toUpperCase()
+    if (codes.has(code)) throw new Error(`topbar.currency has duplicate code ${code}`)
+    codes.add(code)
+  }
+  if (!codes.has(currency.base.toUpperCase())) throw new Error('topbar.currency.options must include its base currency')
+}
 if (topbar.language != null && (typeof topbar.language !== 'object' || Array.isArray(topbar.language))) {
   throw new Error('topbar.language must be an object')
 }

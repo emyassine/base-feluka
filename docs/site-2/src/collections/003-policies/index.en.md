@@ -7,47 +7,31 @@ summary: "Policies explain what Numerimondes offers, what it does not offer, and
 status: "Ready for review"
 ---
 
-# Policies
+<h1 style="display:none;">Policies</h1>
+
+:::: info About our policies
 
 Policies are formal rules and guiding principles that define our boundaries.
 
-**They clarify :**
+Their primary goal is to serve our clients and partners first. They clarify:
+
 - what we offer,
 - what falls outside our scope,
 - the conditions under which we work
 - and the conditions under which we make decisions.
 
+
+::: details Direct benefits of the policies
+
 We make our policies explicit and accessible to:
 
-
-<Timeline
-  label="Why our policies matter"
-  :start-margin="false"
-  :items="[
-    {
-      title: `Set clear <span class='silky-bbi+115'>expectations</span>`,
-      status: [{ icon: '01', markerColor: '#3977c8' }],
-      time: `Help clients, partners, and team members understand their responsibilities, the standards we uphold, and what they can expect when working with us.`
-    },
-    {
-      title: `Promote consistency and <span class='silky-bbi+115'>fairness</span>`,
-      status: [{ icon: '02', markerColor: '#3977c8' }],
-      time: `Establish common principles, encourage fair treatment, reduce ambiguity, and support alignment with applicable laws and professional standards.`
-    },
-    {
-      title: `Manage <span class='silky-bbi+115'>risk</span>`,
-      status: [{ icon: '03', markerColor: '#3977c8' }],
-      time: `Provide a structured approach to identifying, assessing, and addressing operational, legal, financial, and reputational risks.`
-    },
-    {
-      title: `Support informed <span class='silky-bbi+115'>decisions</span>`,
-      status: [{ icon: '04', markerColor: '#3977c8' }],
-      time: `Give everyone involved a clear framework for responsible, consistent decisions while allowing appropriate autonomy and professional judgment.`
-    }
-  ]"
-/>
-
-Draft policies are marked clearly and should not be treated as established commitments.
+- **Set clear expectations:** Help clients, partners, and team members understand their responsibilities, the standards we uphold, and what they can expect when working with us.
+- **Promote consistency and fairness:** Establish common principles, encourage fair treatment, reduce ambiguity, and support alignment with applicable laws and professional standards.
+- **Manage risk:** Provide a structured approach to identifying, assessing, and addressing operational, legal, financial, and reputational risks.
+- **Support informed decisions:** Give everyone involved a clear framework for responsible, consistent decisions while allowing appropriate autonomy and professional judgment.
+:::
+<small>Draft policies are marked clearly and should not be treated as established commitments yet.</small>
+::::
 
 <CollectionSearch collection-id="policies" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
   <CollectionSearchBar

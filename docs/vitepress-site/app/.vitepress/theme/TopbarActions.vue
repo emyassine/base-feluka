@@ -17,13 +17,24 @@ type TopbarAction = {
 
 const { lang } = useData()
 const actions = (siteContent as typeof siteContent & { topbarActions?: TopbarAction[] }).topbarActions ?? []
+const currencyConfig = (siteContent as typeof siteContent & { currency?: { base: string; options: Array<{ code: string; label: string }> } | null }).currency
+const currency = ref(currencyConfig?.base.toUpperCase() ?? '')
 const isCompact = ref(false)
 let compactViewport: MediaQueryList | undefined
 const updateCompact = () => { isCompact.value = compactViewport?.matches ?? false }
+function setCurrency(value: string) {
+  currency.value = value.toUpperCase()
+  try { localStorage.setItem('spmpst-currency', currency.value) } catch { /* storage unavailable */ }
+  window.dispatchEvent(new CustomEvent('spmpst-currency-change', { detail: currency.value }))
+}
 onMounted(() => {
   compactViewport = window.matchMedia('(max-width: 1279px)')
   compactViewport.addEventListener('change', updateCompact)
   updateCompact()
+  try {
+    const saved = localStorage.getItem('spmpst-currency')
+    if (saved && currencyConfig?.options.some((option) => option.code.toUpperCase() === saved.toUpperCase())) currency.value = saved.toUpperCase()
+  } catch { /* storage unavailable */ }
 })
 onUnmounted(() => {
   compactViewport?.removeEventListener('change', updateCompact)
@@ -41,6 +52,12 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 
 <template>
   <div class="topbar-actions">
+    <label v-if="currencyConfig" class="topbar-currency">
+      <span class="visually-hidden">Currency</span>
+      <select :value="currency" aria-label="Currency" @change="setCurrency(($event.target as HTMLSelectElement).value)">
+        <option v-for="option in currencyConfig.options" :key="option.code" :value="option.code.toUpperCase()">{{ option.code.toUpperCase() }}</option>
+      </select>
+    </label>
     <template v-for="(action, index) in actions" :key="`${href(action)}-${index}`">
       <FeluqaButton
         tag="a"
@@ -61,5 +78,7 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 </template>
 
 <style scoped>
-.topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; }
+.topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; gap: .5rem; }
+.topbar-currency select { min-height: 32px; border: 1px solid var(--vp-c-divider); border-radius: 6px; padding: 0 .45rem; color: var(--vp-c-text-1); background: var(--vp-c-bg); font: inherit; font-size: .85rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 </style>

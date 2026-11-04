@@ -6,11 +6,10 @@ description: "Outcome-based consulting, software, infrastructure, people and rec
 lang: en
 status: "demo"
 layout: home-subheader
-subheaderActionComponents: [NmMarketplaceCurrencyMenu]
 ---
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
@@ -18,14 +17,6 @@ const query = ref('')
 const category = ref('all')
 const engagement = ref('all')
 const delivery = ref('all')
-const currency = ref<'MAD' | 'EUR' | 'USD'>('MAD')
-const currencyRates = ref<Record<string, number>>({ MAD: 1 })
-const currencyRateDates = ref<Record<string, string>>({})
-const supportedCurrencies = ['MAD', 'EUR', 'USD'] as const
-function syncCurrency(event: Event) {
-  const selected = (event as CustomEvent<string>).detail
-  if (supportedCurrencies.includes(selected as typeof supportedCurrencies[number])) currency.value = selected as typeof supportedCurrencies[number]
-}
 const sort = ref('featured')
 const basket = ref<string[]>([])
 const activeId = ref<string | null>(null)
@@ -38,30 +29,7 @@ onMounted(() => {
   try {
     localReviews.value = JSON.parse(localStorage.getItem('nm-reviews') || '[]')
     basket.value = JSON.parse(localStorage.getItem('nm-brief') || '[]').filter((id: string) => db.services.some((s: any) => s.id === id))
-    const savedCurrency = localStorage.getItem('nm-marketplace-currency')
-    if (supportedCurrencies.includes(savedCurrency as typeof supportedCurrencies[number])) currency.value = savedCurrency as typeof supportedCurrencies[number]
   } catch { /* storage unavailable */ }
-  window.addEventListener('nm-marketplace-currency-change', syncCurrency)
-  void loadCurrencyRates()
-})
-onUnmounted(() => window.removeEventListener('nm-marketplace-currency-change', syncCurrency))
-async function loadCurrencyRates() {
-  try {
-    const pairs = await Promise.all(['EUR', 'USD'].map(async (quote) => {
-      const response = await fetch(`https://api.frankfurter.dev/v2/rate/mad/${quote.toLowerCase()}`)
-      if (!response.ok) throw new Error(`Currency rate request failed: ${quote}`)
-      return await response.json() as { quote: string; rate: number; date: string }
-    }))
-    currencyRates.value = { MAD: 1, ...Object.fromEntries(pairs.map((pair) => [pair.quote.toUpperCase(), pair.rate])) }
-    currencyRateDates.value = Object.fromEntries(pairs.map((pair) => [pair.quote.toUpperCase(), pair.date]))
-  } catch {
-    currencyRates.value = { MAD: 1 }
-    currencyRateDates.value = {}
-  }
-}
-const websiteStartingPrice = computed(() => {
-  const rate = currencyRates.value[currency.value]
-  return typeof rate === 'number' && Number.isFinite(rate) ? new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.value, maximumFractionDigits: currency.value === 'MAD' ? 0 : 2 }).format(25000 * rate) : ''
 })
 function persist(key: string, value: unknown) { try { localStorage.setItem(key, JSON.stringify(value)) } catch { /* ignore */ } }
 const allReviews = computed(() => [...localReviews.value, ...db.reviews])
@@ -162,7 +130,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
           <p class="nm-outcome">{{ s.outcome }}</p>
           <p class="nm-note"><strong>For:</strong> {{ s.target }}</p>
           <ul class="nm-meta" aria-label="Service details"><li class="ui-badge">{{ s.type }}</li><li class="ui-badge">{{ s.delivery }}</li><li class="ui-badge">{{ s.duration }}</li></ul>
-          <p v-if="s.id === 'digital'" class="nm-price"><span>Website creation</span><strong>{{ websiteStartingPrice ? `From ${websiteStartingPrice} HT` : currency === 'MAD' ? 'From 25,000 Dhs HT' : 'Conversion unavailable' }}</strong><span>SEO included · indicative conversion</span></p>
+          <p v-if="s.id === 'digital'" class="nm-price"><span>Website creation</span><strong>From <currency base="mad" non-base-tooltip="Indicative conversion; the amount depends on the exchange rate and payment date." mad="25 000" eur="2 500" usd="2 500" /> HT</strong><span>SEO included · indicative conversion</span></p>
           <p v-else class="nm-price"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
           <div class="nm-actions"><button type="button" class="ui-btn ui-btn--primary" @click="openService(s.id)">View details</button><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(s.id)" @click="toggleBasket(s.id)">{{ inBasket(s.id) ? 'In your brief ✓' : 'Add to brief' }}</button></div>
         </div>
@@ -223,7 +191,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
         <h4>Delivery</h4><p>{{ active.type }} · {{ active.delivery }} · {{ active.duration }}. Delivered by {{ partners[active.partner].name }} ({{ partners[active.partner].city }}) under Numerimondes accountability.</p>
       </div>
       <div v-else-if="tab === 'pricing'" role="tabpanel" class="ui-panel">
-        <p v-if="active.id === 'digital'" class="nm-price nm-price--lg"><span>Website creation</span><strong>{{ websiteStartingPrice ? `From ${websiteStartingPrice} HT` : currency === 'MAD' ? 'From 25,000 Dhs HT' : 'Conversion unavailable' }}</strong><span>SEO included · indicative conversion</span></p>
+        <p v-if="active.id === 'digital'" class="nm-price nm-price--lg"><span>Website creation</span><strong>From <currency base="mad" non-base-tooltip="Indicative conversion; the amount depends on the exchange rate and payment date." mad="25 000" eur="2 500" usd="2 500" /> HT</strong><span>SEO included · indicative conversion</span></p>
         <p v-else class="nm-price nm-price--lg"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
         <p><strong>Basis:</strong> {{ active.price.model }}</p>
         <h4>What shapes the quote</h4><ul class="nm-list"><li v-for="d in active.drivers" :key="d">{{ d }}</li></ul>
