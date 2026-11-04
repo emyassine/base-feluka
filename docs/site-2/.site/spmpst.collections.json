@@ -27,6 +27,20 @@
         "en": "Privacy, publisher identity and legal information for Numerimondes."
       },
       "categoryFile": "spmpst.category.json"
+    },
+    {
+      "id": "policies",
+      "dir": "003-policies",
+      "route": "company/policies",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": {
+        "en": "Policies"
+      },
+      "description": {
+        "en": "Pricing and other published policies for Numerimondes."
+      },
+      "categoryFile": "spmpst.category.json"
     }
   ],
   "$schema": "../public/api/beta/schemas/spmpst-standard/collections.schema.json",

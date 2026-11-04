@@ -26,22 +26,6 @@
         },
         {
           "label": {
-            "en": "Pricing"
-          },
-          "showLabel": false,
-          "entries": [
-            {
-              "type": "link",
-              "label": {
-                "en": "Understanding Pricing"
-              },
-              "href": "/services/pricing",
-              "icon": "scale"
-            }
-          ]
-        },
-        {
-          "label": {
             "en": "Capabilities"
           },
           "showLabel": true,
@@ -159,6 +143,22 @@
               "/company/contact"
             ]
           }
+        },
+        {
+          "label": {
+            "en": "Policies"
+          },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "link",
+              "label": {
+                "en": "Policies"
+              },
+              "href": "/company/policies",
+              "icon": "scale"
+            }
+          ]
         }
       ],
       "sources": [

@@ -112,6 +112,6 @@ Local business registration, invoicing, tax treatment and cross-border payment r
 
 Tell us your organization or independent practice, location, expertise, the clients you serve and the kind of work you want to do. We can then identify a suitable route and agree the commercial terms for a specific opportunity.
 
-**[Discuss a partnership](/company/prologue/contact?topic=partner)** · **[See client pricing](/services/pricing)** · **[Browse the service catalogue](/services/marketplace)**
+**[Discuss a partnership](/company/prologue/contact?topic=partner)** · **[See client pricing](/company/policies/pricing)** · **[Browse the service catalogue](/services/marketplace)**
 
 </div>

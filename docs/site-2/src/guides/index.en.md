@@ -484,7 +484,7 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/services/business-advisory/pricing" label="Our pricing approach"/>
+<FeluqaButton tag="a" href="/company/policies/pricing" label="Our pricing approach"/>
 
 <!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.

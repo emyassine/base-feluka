@@ -2,6 +2,7 @@
 layout: home-subheader
 title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
+category: "commercial"
 menuImage: "/images/services/pricing.jpg"
 icon: "@spmpst::icon::scale"
 description: "Services and pricing for employers, SMEs, professional practices and operating teams."

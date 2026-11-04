@@ -1,0 +1,7 @@
+{
+  "title": { "en": "Policies" },
+  "description": { "en": "Published commercial and organizational policies for Numerimondes." },
+  "categories": [
+    { "id": "commercial", "label": { "en": "Commercial terms" } }
+  ]
+}
