@@ -8,6 +8,7 @@ interface Collection {
   layout: string
   links: Record<string, string>
   titles: Record<string, string>
+  articles: Record<string, Array<{ title: string; url: string }>>
 }
 interface SidebarEntry { text?: string; link?: string; items?: SidebarEntry[] }
 
@@ -22,6 +23,13 @@ const href = computed(() => collection.value?.links[locale.value] ?? collection.
 const headings = computed(() => (page.value.headers ?? []).filter((heading) => heading.level === 2))
 const readingLabel = computed(() => locale.value === 'fr' ? 'min de lecture' : 'min read')
 const wordLabel = computed(() => locale.value === 'fr' ? 'mots' : 'words')
+
+const collectionLinks = computed(() => {
+  const articles = collection.value?.articles[locale.value] ?? collection.value?.articles.en ?? []
+  return articles.flatMap((article) => article.title && article.url
+    ? [{ text: article.title, link: article.url }]
+    : [])
+})
 
 const guideLinks = computed(() => {
   const sidebar = theme.value.sidebar as Record<string, SidebarEntry[] | SidebarEntry> | SidebarEntry[] | undefined
@@ -51,13 +59,16 @@ const guideLinks = computed(() => {
     return true
   })
 })
+const subheaderLinks = computed(() => collection.value ? collectionLinks.value : guideLinks.value)
+const currentPath = computed(() => route.path.replace(/\/$/, '') || '/')
+const isCurrentPage = (link: string) => currentPath.value === link.replace(/\/$/, '')
 </script>
 
 <template>
   <nav v-if="isHomeSubheader" class="collection-article-subnav" :aria-label="locale === 'fr' ? 'Navigation du guide' : 'Guide navigation'">
     <div class="collection-article-subnav__inner">
       <div class="collection-article-subnav__sections">
-        <a v-for="item in guideLinks" :key="item.link" :href="item.link" :aria-current="route.path.replace(/\/$/, '') === item.link.replace(/\/$/, '') ? 'page' : undefined">{{ item.text }}</a>
+        <a v-for="item in subheaderLinks" :key="item.link" :href="item.link" :aria-current="isCurrentPage(item.link) ? 'page' : undefined">{{ item.text }}</a>
       </div>
       <div class="collection-article-actions"><slot name="actions" /></div>
     </div>
