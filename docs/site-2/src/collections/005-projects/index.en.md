@@ -7,7 +7,7 @@ description: "Services, platforms and standards developed or operated by Numerim
 ---
 
 <Acomponent
-title="<h1 style='display:none;'><span class='silky-bbi' style=''>Services, platforms and standards</span></h1><br><br><h2>Projects connect <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>services,<br>infrastructure and ideas.</span></h2>"
+title="<h1 style='display:none;'><span class='silky-bbi' style=''>Services, platforms and standards</span></h1><br><br><h2 style=''>Projects connect <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>services,<br>infrastructure and ideas.</span></h2>"
   introduction="Some projects support organizations directly. Others develop the platforms and standards Numerimondes uses to build and operate digital systems."
   section-title="<h2>Work in practice.<br><span class='silky-bbi+115' style='color:var(--vp-c-brand-1);'>Systems in development.</span></h2>"
   :paragraphs="[
