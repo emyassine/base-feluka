@@ -181,6 +181,14 @@
 }
 
 /* Shared VitePress navigation behavior and appearance. */
+/* VitePress fades these surfaces when its home/top classes change on scroll.
+   That fade exposes page content through the sticky header for a moment. */
+@media (min-width: 960px) {
+  .VPNavBar,
+  .VPNavBar .content-body,
+  .VPNavBar .divider-line,
+  .VPNavBar .title { transition-property: none !important; }
+}
 html:has(#VPNavScreen),
 body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
 .VPNavScreen { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }

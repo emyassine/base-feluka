@@ -30,12 +30,6 @@
           "en": "About"
         },
         "href": "/company/about-us/numerimondes"
-      },
-      {
-        "name": {
-          "en": "Privacy and legal"
-        },
-        "href": "/legal/**"
       }
     ],
     "subNavigation": [
@@ -56,6 +50,12 @@
           "en": "Account access"
         },
         "href": "/account/"
+      },
+      {
+        "name": {
+          "en": "Privacy and legal"
+        },
+        "href": "/legal/**"
       }
     ],
     "logoImg": "/media/logo-footer-lightmode-filled.png",

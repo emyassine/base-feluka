@@ -20,7 +20,7 @@ interface FooterContent {
 
 const content = useSpmpstConfig<FooterContent>('footer.content')
 const { lang } = useData()
-const navigationItems = computed(() => content.value.navigation.flatMap((item) => {
+const expandWildcardLinks = (items: FooterContent['navigation']) => items.flatMap((item) => {
   if (!item.href.endsWith('/**')) return [item]
 
   const collectionRoute = item.href.slice(0, -3).replace(/^\/+|\/+$/g, '')
@@ -33,7 +33,9 @@ const navigationItems = computed(() => content.value.navigation.flatMap((item) =
   const language = lang.value.toLowerCase().split('-')[0]
   const articles = collection.articles?.[language] ?? collection.articles?.en ?? []
   return articles.map((article) => ({ name: article.title, href: article.url }))
-}))
+})
+const navigationItems = computed(() => expandWildcardLinks(content.value.navigation))
+const subNavigationItems = computed(() => expandWildcardLinks(content.value.subNavigation))
 const copyrightText = computed(() => {
   if (typeof content.copyright === 'string') return content.copyright
   if (!content.copyright) return ''
@@ -52,7 +54,7 @@ defineProps<{ homeLayout?: boolean }>()
           :action-label="content.actionLabel"
           :action-href="content.actionHref"
           :navigation="navigationItems"
-          :sub-navigation="content.subNavigation"
+          :sub-navigation="subNavigationItems"
           :logo-img="content.logoImg"
           :logo-img-dark="content.logoImgDark"
           :logo-alt="content.logoAlt"

@@ -42,6 +42,18 @@
           ]
         },
         {
+          "label": { "en": "Projects" },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "collection",
+              "id": "projects",
+              "label": { "en": "Projects" },
+              "badge": "count"
+            }
+          ]
+        },
+        {
           "label": {
             "en": "Capabilities"
           },
@@ -56,23 +68,6 @@
             {
               "type": "collection",
               "id": "capabilities",
-              "children": true
-            }
-          ]
-        },
-        {
-          "label": { "en": "Our Projects" },
-          "showLabel": true,
-          "entries": [
-            {
-              "type": "collection",
-              "id": "projects",
-              "label": { "en": "All projects" },
-              "badge": "count"
-            },
-            {
-              "type": "collection",
-              "id": "projects",
               "children": true
             }
           ]
@@ -208,12 +203,26 @@
       },
       "groups": [
         {
-          "label": { "en": "Legal notices" },
+          "label": { "en": "Legal" },
           "showLabel": false,
           "entries": [
             {
               "type": "collection",
-              "id": "legal"
+              "id": "legal",
+              "label": { "en": "Legal" },
+              "badge": "count"
+            }
+          ]
+        },
+        {
+          "label": { "en": "Articles" },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "collection",
+              "id": "articles",
+              "label": { "en": "Articles" },
+              "badge": "count"
             }
           ]
         }
