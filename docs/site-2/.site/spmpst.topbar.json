@@ -218,7 +218,15 @@
                   "showParentsName": false
                 }
               }
-            },
+            }
+          ]
+        },
+        {
+          "label": {
+            "en": "Articles"
+          },
+          "showLabel": false,
+          "entries": [
             {
               "type": "link",
               "label": {
