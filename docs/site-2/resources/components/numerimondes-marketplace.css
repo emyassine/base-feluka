@@ -74,6 +74,9 @@ textarea.ui-input { resize: vertical; }
 .nm-field { flex: 0 1 220px; }
 .nm-chips { display: flex; gap: .5rem; margin-bottom: 1rem; padding-bottom: .25rem; overflow-x: auto; scrollbar-width: none; }
 .nm-filters { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin-bottom: 1rem; }
+.nm-currency-control { display: flex; flex-wrap: wrap; align-items: end; gap: .25rem 1rem; margin: 0 0 1rem; }
+.nm-currency-control .nm-field { display: flex; flex-basis: 240px; flex-direction: column; gap: .3rem; }
+.nm-currency-control .nm-note { flex: 1 1 320px; margin: 0 0 .35rem; }
 .nm-group { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
 .nm-group .nm-label { margin: 0 .35rem 0 0; }
 .nm-range input { accent-color: var(--accent); }
