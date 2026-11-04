@@ -184,6 +184,18 @@
               "icon": "scale"
             }
           ]
+        },
+        {
+          "label": { "en": "Brand resources", "fr": "Ressources de marque" },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "link",
+              "label": { "en": "Brand Kit", "fr": "Identité de marque" },
+              "href": "/company/brand-kit",
+              "icon": "images"
+            }
+          ]
         }
       ],
       "sources": [
