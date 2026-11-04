@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { access, mkdir } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 
 const displays = new Set(['standalone', 'minimal-ui', 'fullscreen', 'browser'])
 const orientations = new Set(['any', 'natural', 'portrait', 'landscape'])
@@ -33,7 +33,7 @@ export async function preparePwa({ pwa, siteId, publicSource, generatedPublic, g
   }
   const excludePaths = pwa.excludePaths ?? ['/account/', '/api/']
   if (!Array.isArray(excludePaths) || excludePaths.some((path) => !isRootPath(path))) fail('excludePaths must contain absolute URL paths')
-  const manifestPath = `${scope}manifest.webmanifest`
+  const manifestPath = `${scope}manifest.json`
   const workerPath = `${scope}service-worker.js`
   const offlinePath = `${scope}offline.html`
   const manifest = {
@@ -62,6 +62,7 @@ const CACHE_PREFIX = ${JSON.stringify(cachePrefix)};
 const SCOPE = ${JSON.stringify(scope)};
 const OFFLINE = ${JSON.stringify(offlinePath)};
 const EXCLUDED = ${JSON.stringify(excludePaths)};
+let offlineAllowed = false;
 const isExcluded = (path) => EXCLUDED.some((prefix) => path.startsWith(prefix));
 const cacheable = (response) => {
   if (!response || !response.ok || response.type !== 'basic') return false;
@@ -71,8 +72,14 @@ const cacheable = (response) => {
   return !length || length < 3 * 1024 * 1024;
 };
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.add(OFFLINE)));
   self.skipWaiting();
+});
+self.addEventListener('message', (event) => {
+  if (event.data?.type !== 'SPMPST_PWA_OFFLINE_CONSENT' || typeof event.data.allowed !== 'boolean') return;
+  offlineAllowed = event.data.allowed;
+  event.waitUntil(offlineAllowed
+    ? caches.open(CACHE).then((cache) => cache.add(OFFLINE))
+    : caches.delete(CACHE));
 });
 self.addEventListener('activate', (event) => {
   event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE).map((key) => caches.delete(key)))).then(() => self.clients.claim()));
@@ -80,34 +87,33 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
+  if (!offlineAllowed) return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin || !url.pathname.startsWith(SCOPE) || isExcluded(url.pathname)) return;
   if (request.mode === 'navigate') {
-    event.respondWith(fetch(request).then((response) => {
+    event.respondWith(fetch(request).then(async (response) => {
       if (cacheable(response) && (response.headers.get('Content-Type') || '').includes('text/html')) {
-        const copy = response.clone();
-        event.waitUntil(caches.open(CACHE).then((cache) => cache.put(request, copy)));
+        await caches.open(CACHE).then((cache) => cache.put(request, response.clone()));
       }
       return response;
-    }).catch(async () => (await caches.match(request)) || (await caches.match(OFFLINE))));
+    }).catch(async () => {
+      const cache = await caches.open(CACHE);
+      return (await cache.match(request)) || (await cache.match(OFFLINE));
+    }));
     return;
   }
   if (url.search || /\\/(?:@vite|@id|node_modules)\\//.test(url.pathname) || !/\\.(?:css|js|mjs|woff2?|png|jpe?g|webp|svg|ico)$/i.test(url.pathname)) return;
-  event.respondWith(caches.open(CACHE).then(async (cache) => {
-    const cached = await cache.match(request);
-    const update = fetch(request).then((response) => {
-      if (cacheable(response)) cache.put(request, response.clone());
-      return response;
-    });
-    return cached || update;
-  }));
+  event.respondWith(fetch(request).then(async (response) => {
+    if (cacheable(response)) await caches.open(CACHE).then((cache) => cache.put(request, response.clone()));
+    return response;
+  }).catch(async () => (await (await caches.open(CACHE)).match(request)) || Response.error()));
 });
 `
   const offline = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="${escapeHtml(pwa.themeColor ?? '#ffffff')}"><title>${escapeHtml(pwa.shortName)} — Offline</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:38rem;margin:15vh auto;padding:0 1.25rem;color:#18212b}h1{line-height:1.2}a{color:#1769e0}@media(prefers-color-scheme:dark){body{background:#101820;color:#f3f6f8}a{color:#8db8ff}}</style><h1>You’re offline</h1><p>This page is not available yet. Reconnect to the internet and try again.</p><p><a href="${escapeHtml(startUrl)}">Return to ${escapeHtml(pwa.shortName)}</a></p></html>`
   for (const [url, body] of [[manifestPath, `${JSON.stringify(manifest, null, 2)}\n`], [workerPath, worker], [offlinePath, offline]]) {
     const target = resolve(generatedPublic, `.${url}`)
     if (!target.startsWith(`${resolve(generatedPublic)}/`)) fail(`generated path escapes public output: ${url}`)
-    await mkdir(join(target, '..'), { recursive: true })
+    await mkdir(dirname(target), { recursive: true })
     generatedFiles.add(target)
     await writeIfChanged(target, body)
   }

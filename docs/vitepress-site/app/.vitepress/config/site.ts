@@ -167,13 +167,49 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   })
   const generatedBuildTimestampPath = join(outputDirectory, '.spmpst', 'build-timestamp')
   const generatedBuildTimestamp = existsSync(generatedBuildTimestampPath) ? readFileSync(generatedBuildTimestampPath, 'utf8').trim() : new Date().toISOString()
+  const pwaCachePrefix = `spmpst-pwa-${process.env.SPMPST_SITE_ID ?? 'site'}-`
+  const pwaScope = siteConfig.pwa?.scope ?? '/'
+  const pwaWorkerPath = `${pwaScope}service-worker.js`
+  const pwaRegisterScript = `(() => {
+  const cachePrefix = ${JSON.stringify(pwaCachePrefix)};
+  const scope = ${JSON.stringify(pwaScope)};
+  const workerPath = ${JSON.stringify(pwaWorkerPath)};
+  const allowed = () => {
+    try {
+      const entry = document.cookie.split(';').map((part) => part.trim()).find((part) => part.startsWith('spmpst-consent='));
+      if (!entry) return false;
+      const saved = JSON.parse(decodeURIComponent(entry.slice('spmpst-consent='.length)));
+      return saved && saved.version === 1 && saved.offline === true;
+    } catch (_) { return false; }
+  };
+  const sync = async () => {
+    if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
+    if (allowed()) {
+      const registration = await navigator.serviceWorker.register(workerPath, { scope }).catch(() => null);
+      for (const worker of [registration?.active, registration?.waiting, registration?.installing]) worker?.postMessage({ type: 'SPMPST_PWA_OFFLINE_CONSENT', allowed: true });
+      return;
+    }
+    const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
+    for (const registration of registrations) {
+      const script = registration.active?.scriptURL || registration.waiting?.scriptURL || registration.installing?.scriptURL || '';
+      if (registration.scope === new URL(scope, location.href).href && new URL(script || location.href).pathname === workerPath) {
+        for (const worker of [registration.active, registration.waiting, registration.installing]) worker?.postMessage({ type: 'SPMPST_PWA_OFFLINE_CONSENT', allowed: false });
+        await registration.unregister().catch(() => {});
+      }
+    }
+    const names = await caches.keys().catch(() => []);
+    await Promise.all(names.filter((name) => name.startsWith(cachePrefix)).map((name) => caches.delete(name)));
+  };
+  void sync();
+  window.addEventListener('spmpst-storage-consent-change', () => { void sync(); });
+})();`
   const pwaHead = siteConfig.pwa?.enabled ? [
-    ['link', { rel: 'manifest', href: `${siteConfig.pwa.scope ?? '/'}manifest.webmanifest` }],
+    ['link', { rel: 'manifest', href: `${siteConfig.pwa.scope ?? '/'}manifest.json` }],
     ['link', { rel: 'apple-touch-icon', href: siteConfig.pwa.icons?.[0]?.src }],
     ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: siteConfig.pwa.shortName ?? siteConfig.pwa.name }],
-    ['script', { id: 'spmpst-pwa-register' }, `if ('serviceWorker' in navigator && window.isSecureContext) { window.addEventListener('load', () => { navigator.serviceWorker.register(${JSON.stringify(`${siteConfig.pwa.scope ?? '/'}service-worker.js`)}, { scope: ${JSON.stringify(siteConfig.pwa.scope ?? '/')} }).catch(() => {}); }); }`],
+    ['script', { id: 'spmpst-pwa-register' }, pwaRegisterScript],
   ] : []
   return defineConfig({
   title: siteConfig.site.name,

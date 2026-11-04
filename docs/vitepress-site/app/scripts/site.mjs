@@ -181,7 +181,11 @@ ErrorDocument 404 /404.html
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  <FilesMatch "^service-worker\\.js$">
+    Header always set Cache-Control "no-cache"
+  </FilesMatch>
 </IfModule>
+
 `
   await writeFile(join(outputDirectory, '.htaccess'), content)
 }

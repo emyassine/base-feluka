@@ -49,7 +49,7 @@ Theme and currency selections, along with marketplace shortlists and reviews, ar
 
 ### Optional storage and changes
 
-Optional storage includes downloaded orientation catalogues and other optional browser storage. When you reject or revoke it, the site removes related entries it can identify in this browser. Necessary theme, currency and marketplace data remain available.
+Optional storage includes downloaded orientation catalogues, the PWA cache of visited public pages and files, and other optional browser storage. The service worker is installed only when you allow offline storage. It skips account and API routes and does not cache responses marked private or no-store. When you reject or revoke offline storage, the site unregisters its worker and removes its PWA cache, along with other related entries it can identify. Necessary theme, currency and marketplace data remain available.
 
 #### Review your choices
 

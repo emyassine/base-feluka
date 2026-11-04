@@ -84,11 +84,10 @@ export async function clearOptionalStorage(category: OptionalStorageCategory): P
     const keys = Array.from({ length: window.localStorage.length }, (_, index) => window.localStorage.key(index)).filter((key): key is string => key !== null)
     for (const key of keys) if (storageCategoryForKey(key) === category) window.localStorage.removeItem(key)
   } catch { /* browser storage may be unavailable */ }
-  if (category === 'offline') {
-    for (const name of OFFLINE_DATABASES) await removeBrowserStorageEntry({ kind: 'indexedDB', internalName: name, label: 'Offline catalogue', category, required: false, descriptionKey: 'offline-catalogue' })
-  } else {
-    const entries = await getBrowserStorageInventory()
-    for (const entry of entries) if (entry.category === 'other') await removeBrowserStorageEntry(entry)
+  const entries = await getBrowserStorageInventory()
+  for (const item of entries) if (item.category === category) await removeBrowserStorageEntry(item)
+  if (category === 'offline') for (const name of OFFLINE_DATABASES) {
+    await removeBrowserStorageEntry({ kind: 'indexedDB', internalName: name, label: 'Offline catalogue', category, required: false, descriptionKey: 'offline-catalogue' })
   }
 }
 
@@ -126,10 +125,19 @@ export async function getBrowserStorageInventory(): Promise<BrowserStorageEntry[
       entries.push(entry('indexedDB', database.name, category, category === 'offline' ? 'Offline catalogue' : 'Site database', category === 'offline' ? 'offline-catalogue' : 'other'))
     }
   } catch { /* database enumeration is not supported in every browser */ }
-  try { if ('caches' in window) for (const name of await window.caches.keys()) entries.push(entry('cache', name, 'other', 'Cached site files', 'other')) } catch { /* Cache Storage may be unavailable */ }
+  try {
+    if ('caches' in window) for (const name of await window.caches.keys()) {
+      const category = name.startsWith('spmpst-pwa-') ? 'offline' : 'other'
+      entries.push(entry('cache', name, category, category === 'offline' ? 'Offline site content' : 'Cached site files', category === 'offline' ? 'pwa-offline' : 'other'))
+    }
+  } catch { /* Cache Storage may be unavailable */ }
   try {
     const registrations = await navigator.serviceWorker?.getRegistrations()
-    for (const registration of registrations ?? []) entries.push(entry('serviceWorker', registration.scope, 'other', 'Background site worker', 'other'))
+    for (const registration of registrations ?? []) {
+      const script = registration.active?.scriptURL || registration.waiting?.scriptURL || registration.installing?.scriptURL || ''
+      const isPwaWorker = script && new URL(script).pathname.endsWith('/service-worker.js')
+      entries.push(entry('serviceWorker', registration.scope, isPwaWorker ? 'offline' : 'other', isPwaWorker ? 'Offline site support' : 'Background site worker', isPwaWorker ? 'pwa-offline' : 'other'))
+    }
   } catch { /* Service Workers may be unavailable */ }
   return entries.sort((left, right) => left.kind.localeCompare(right.kind) || left.label.localeCompare(right.label))
 }

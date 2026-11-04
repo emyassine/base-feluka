@@ -31,9 +31,9 @@ The page language follows its URL. The site does not save a language preference 
 
 ## Optional storage and choices
 
-Visitors can allow or reject downloaded offline catalogues and other optional browser storage. The manager offers **Reject optional**, **Save choices** and **Allow optional storage** actions. A choice is saved in a first-party consent cookie for up to 180 days so the site can apply the optional-storage settings on later visits.
+Visitors can allow or reject offline website storage, downloaded catalogues and other optional browser storage. When offline storage is allowed, the PWA service worker caches visited public pages and static files for offline use. It does not cache account or API routes or responses marked private or no-store. The worker is registered only after the visitor allows offline storage. The manager offers **Reject optional**, **Save choices** and **Allow optional storage** actions. A choice is saved in a first-party consent cookie for up to 180 days so the site can apply the optional-storage settings on later visits.
 
-Rejecting or revoking an optional category removes related entries the site can identify. Visitors can also remove detected optional entries individually from the manager. Removal may reset a feature or require a catalogue download again.
+Rejecting or revoking offline storage unregisters the PWA service worker and deletes its site cache, as well as removing related catalogue data the site can identify. Rejecting or revoking another optional category removes its related entries. Visitors can also remove detected optional entries individually from the manager. Removal may reset a feature or require a catalogue download again.
 
 ## Detection limits
 
