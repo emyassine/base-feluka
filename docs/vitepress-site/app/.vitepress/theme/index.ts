@@ -11,6 +11,7 @@ import { projectComponents, registerProjectComponents } from '@generated/compone
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import CollectionSearch from './CollectionSearch.vue'
 import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
+import ArticlesPageLayout from './ArticlesPageLayout.vue'
 import ManageCookies from './ManageCookies.vue'
 import TopbarActions from './TopbarActions.vue'
 import TopbarCurrency from './TopbarCurrency.vue'
@@ -662,6 +663,7 @@ const MermaidLayout = {
       return collection?.links[locale] ?? collection?.links.en ?? '/'
     }
     return () => {
+      if (pageFrontmatter.value.pageLayout === 'articles') return h(ArticlesPageLayout)
       const layoutSlots = configuredLayoutSlots()
       const configuredSubnav = layoutSlots['nav-bar-content-after']
       const renderedSubnav = configuredSubnav?.()

@@ -21,6 +21,7 @@
       "appearance": ".site/spmpst.appearance.json",
       "collections": ".site/spmpst.collections.json",
       "definitions": ".site/spmpst.definitions.json",
+      "extra": ".site/spmpst.extra.json",
       "footer": ".site/spmpst.footer.json",
       "hooks": ".site/spmpst.hooks.json",
       "lang": ".site/spmpst.lang.json",

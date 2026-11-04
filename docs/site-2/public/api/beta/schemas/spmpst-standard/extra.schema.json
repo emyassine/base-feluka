@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "inlineLogo": { "type": "boolean" },
+    "lastUpdated": { "type": "object" },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role", "bio", "avatar", "aboutHref"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+          "name": { "$ref": "#/$defs/localizedText" },
+          "role": { "$ref": "#/$defs/localizedText" },
+          "bio": { "$ref": "#/$defs/localizedText" },
+          "avatar": { "type": "string", "minLength": 1 },
+          "aboutHref": { "type": "string", "minLength": 1 },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "href"],
+              "properties": {
+                "label": { "$ref": "#/$defs/localizedText" },
+                "href": { "type": "string", "minLength": 1 },
+                "external": { "type": "boolean" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localizedText": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      ]
+    }
+  }
+}
