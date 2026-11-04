@@ -12,13 +12,11 @@ layout: home-subheader
 import { computed, nextTick, onMounted, ref } from 'vue'
 import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
-const fmt = (n: number) => new Intl.NumberFormat('en-US').format(Math.round(n)) + ' MAD'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
 const query = ref('')
 const category = ref('all')
 const engagement = ref('all')
 const delivery = ref('all')
-const maxPrice = ref(60000)
 const sort = ref('featured')
 const basket = ref<string[]>([])
 const activeId = ref<string | null>(null)
@@ -27,8 +25,6 @@ const dlg = ref<HTMLDialogElement | null>(null)
 const localReviews = ref<any[]>([])
 const form = ref({ name: '', rating: 5, text: '' })
 const formSent = ref(false)
-const salary = ref(7000)
-const bonus = ref(0)
 onMounted(() => {
   try {
     localReviews.value = JSON.parse(localStorage.getItem('nm-reviews') || '[]')
@@ -42,7 +38,7 @@ const serviceRating = (id: string) => ratingOf(allReviews.value.filter((r: any) 
 const partnerRating = (pid: string) => ratingOf(allReviews.value.filter((r: any) => r.verified && db.services.find((s: any) => s.id === r.service)?.partner === pid))
 const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n))
 const engagements = ['all', 'Project', 'Workshop', 'Recurring']
-const deliveries = ['all', 'Human-led', 'Hybrid', 'Automation-assisted']
+const deliveries = ['all', 'Human-led', 'Hybrid', 'Automation-assisted', 'Remote']
 const categories = computed(() => [{ name: 'all', count: db.services.length }, ...db.categories.map((name: string) => ({ name, count: db.services.filter((s: any) => s.cat === name).length }))])
 const results = computed(() => {
   const q = query.value.trim().toLowerCase()
@@ -50,28 +46,21 @@ const results = computed(() => {
     if (category.value !== 'all' && s.cat !== category.value) return false
     if (engagement.value !== 'all' && s.type !== engagement.value) return false
     if (delivery.value !== 'all' && s.delivery !== delivery.value) return false
-    if (s.price.from > maxPrice.value) return false
-    return !q || [s.title, s.outcome, s.cat, partners[s.partner].name, ...s.deliverables].join(' ').toLowerCase().includes(q)
+    return !q || [s.title, s.outcome, s.cat, s.target, partners[s.partner].name, ...s.deliverables].join(' ').toLowerCase().includes(q)
   })
   const by: Record<string, (a: any, b: any) => number> = {
     featured: (a, b) => Number(!!b.featured) - Number(!!a.featured),
     rating: (a, b) => serviceRating(b.id).avg - serviceRating(a.id).avg,
-    low: (a, b) => a.price.from - b.price.from,
-    high: (a, b) => b.price.from - a.price.from,
   }
   return [...list].sort(by[sort.value])
 })
-const hasFilters = computed(() => !!query.value || category.value !== 'all' || engagement.value !== 'all' || delivery.value !== 'all' || maxPrice.value < 60000)
-function resetFilters() { query.value = ''; category.value = 'all'; engagement.value = 'all'; delivery.value = 'all'; maxPrice.value = 60000; sort.value = 'featured' }
+const hasFilters = computed(() => !!query.value || category.value !== 'all' || engagement.value !== 'all' || delivery.value !== 'all')
+function resetFilters() { query.value = ''; category.value = 'all'; engagement.value = 'all'; delivery.value = 'all'; sort.value = 'featured' }
 const active = computed(() => db.services.find((s: any) => s.id === activeId.value) as any)
 const inBasket = (id: string) => basket.value.includes(id)
 function toggleBasket(id: string) { basket.value = inBasket(id) ? basket.value.filter(x => x !== id) : [...basket.value, id]; persist('nm-brief', basket.value) }
 const basketItems = computed(() => db.services.filter((s: any) => basket.value.includes(s.id)))
-const oneOff = computed(() => basketItems.value.filter((s: any) => s.price.unit !== 'month').reduce((t: number, s: any) => t + s.price.from, 0))
-const monthly = computed(() => basketItems.value.filter((s: any) => s.price.unit === 'month').reduce((t: number, s: any) => t + s.price.from, 0))
 const quoteHref = computed(() => `/company/prologue/contact?topic=quote&services=${basket.value.join(',')}`)
-
-const fee = computed(() => Math.max(db.recruit.floor, Number(salary.value || 0) * db.recruit.rate) + Number(bonus.value || 0))
 
 async function openService(id: string, t: Tab = 'scope') {
   activeId.value = id; tab.value = t; formSent.value = false
@@ -94,25 +83,25 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
   <header class="nm-hero">
     <p class="nm-eyebrow">Marketplace · Numerimondes</p>
     <h1>Buy the <span class="silky-bbi+115">outcome</span>.</h1>
-    <p class="nm-lead">One accountable company, a network of vetted specialist partners. Every service has a defined scope, a visible starting price, verified client reviews and a written proposal before work begins.</p>
+    <p class="nm-lead">Explore services for employers, SMEs, professional practices and operating teams. We mobilize the right mix of consulting, engineering and specialist partners for each agreed scope.</p>
     <div class="nm-hero__cta">
       <a class="ui-btn ui-btn--primary" href="#catalogue">Browse services</a>
-      <a class="ui-btn ui-btn--outline" href="#recruit">Calculate a recruitment fee</a>
+      <a class="ui-btn ui-btn--outline" href="#recruit">Explore remote recruitment</a>
     </div>
     <ul class="nm-stats" aria-label="Marketplace at a glance">
       <li><strong>{{ db.services.length }}</strong>services</li>
-      <li><strong>{{ db.partners.length }}</strong>vetted partners</li>
-      <li><strong>{{ db.reviews.length }}</strong>client reviews</li>
-      <li><strong>{{ (db.reviews.reduce((t: number, r: any) => t + r.rating, 0) / db.reviews.length).toFixed(1) }}/5</strong>average rating</li>
+      <li><strong>{{ db.partners.length }}</strong>sample partner profiles</li>
+      <li><strong>{{ db.reviews.length }}</strong>sample reviews</li>
+      <li><strong>By scope</strong>proposal and team</li>
     </ul>
-    <aside class="ui-alert" role="note"><strong>Demo catalogue.</strong> Partners, prices and reviews are illustrative sample data. {{ db.meta.vatNote }} Final amounts are confirmed in writing.</aside>
+    <aside class="ui-alert" role="note"><strong>Demo catalogue.</strong> Partner profiles and reviews are illustrative sample data. This catalogue does not set or override commercial policy; the <a href="/services/pricing">published pricing guide</a> is the source of current client pricing. Final scope and terms are confirmed in writing.</aside>
   </header>
   <section aria-labelledby="nm-how" class="nm-section">
     <h2 id="nm-how" class="nm-title">How the marketplace <span class="silky-bbi+115">works</span></h2>
     <ol class="nm-steps">
-      <li><span>1</span><strong>Choose</strong>Compare scope, deliverables, partner and starting price.</li>
-      <li><span>2</span><strong>Build your brief</strong>Add one or several services and get an indicative total.</li>
-      <li><span>3</span><strong>Receive one proposal</strong>Price, schedule and terms in writing. {{ db.meta.terms }}</li>
+      <li><span>1</span><strong>Choose</strong>Compare scope, deliverables, target client and delivery model.</li>
+      <li><span>2</span><strong>Build your brief</strong>Add one or several services to describe the work you need.</li>
+      <li><span>3</span><strong>Receive one proposal</strong>Scope, price, schedule and terms are confirmed in writing. The published pricing guide defines current commercial policy.</li>
       <li><span>4</span><strong>Delivery and review</strong>Partners deliver, Numerimondes stays accountable, you rate the result.</li>
     </ol>
   </section>
@@ -120,7 +109,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
     <h2 id="nm-cat" class="nm-title">Service <span class="silky-bbi+115">catalogue</span></h2>
     <div class="nm-toolbar" role="search">
       <label class="nm-search"><span class="nm-sr">Search services</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input v-model="query" class="ui-input" type="search" placeholder="Search services, partners or deliverables" autocomplete="off" /></label>
-      <label class="nm-field"><span class="nm-sr">Sort by</span><select v-model="sort" class="ui-input"><option value="featured">Featured first</option><option value="rating">Best rated</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label>
+      <label class="nm-field"><span class="nm-sr">Sort by</span><select v-model="sort" class="ui-input"><option value="featured">Featured first</option><option value="rating">Best rated</option></select></label>
     </div>
     <div class="nm-chips" role="group" aria-label="Categories">
       <button v-for="c in categories" :key="c.name" type="button" class="ui-chip" :class="{ 'is-active': category === c.name }" :aria-pressed="category === c.name" @click="category = c.name">{{ c.name === 'all' ? 'All services' : c.name }}<span class="ui-chip__n">{{ c.count }}</span></button>
@@ -128,7 +117,6 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
     <div class="nm-filters">
       <div class="nm-group" role="group" aria-label="Engagement type"><span class="nm-label">Engagement</span><button v-for="e in engagements" :key="e" type="button" class="ui-pill" :class="{ 'is-active': engagement === e }" :aria-pressed="engagement === e" @click="engagement = e">{{ e === 'all' ? 'Any' : e }}</button></div>
       <div class="nm-group" role="group" aria-label="Delivery model"><span class="nm-label">Delivery</span><button v-for="d in deliveries" :key="d" type="button" class="ui-pill" :class="{ 'is-active': delivery === d }" :aria-pressed="delivery === d" @click="delivery = d">{{ d === 'all' ? 'Any' : d }}</button></div>
-      <label class="nm-group nm-range"><span class="nm-label">Starting price up to</span><input v-model.number="maxPrice" type="range" min="2000" max="60000" step="1000" /><output>{{ fmt(maxPrice) }}</output></label>
     </div>
     <p class="nm-status" aria-live="polite">{{ results.length }} {{ results.length === 1 ? 'service' : 'services' }}<button v-if="hasFilters" type="button" class="ui-link" @click="resetFilters">Clear filters</button></p>
     <div v-if="results.length" class="nm-grid">
@@ -140,8 +128,10 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
           <p class="nm-by"><span class="nm-avatar" aria-hidden="true">{{ partners[s.partner].name.slice(0, 2).toUpperCase() }}</span>{{ partners[s.partner].name }} · {{ partners[s.partner].city }}</p>
           <p class="nm-rating"><span class="nm-stars" :aria-label="`Rated ${serviceRating(s.id).avg.toFixed(1)} out of 5`">{{ stars(serviceRating(s.id).avg) }}</span> <strong>{{ serviceRating(s.id).avg ? serviceRating(s.id).avg.toFixed(1) : 'New' }}</strong> <button type="button" class="ui-link" @click="openService(s.id, 'reviews')">{{ serviceRating(s.id).count }} reviews</button></p>
           <p class="nm-outcome">{{ s.outcome }}</p>
+          <p class="nm-note"><strong>For:</strong> {{ s.target }}</p>
           <ul class="nm-meta" aria-label="Service details"><li class="ui-badge">{{ s.type }}</li><li class="ui-badge">{{ s.delivery }}</li><li class="ui-badge">{{ s.duration }}</li></ul>
-          <p class="nm-price"><span>From</span><strong>{{ fmt(s.price.from) }}</strong><span>/ {{ s.price.unit }} HT</span></p>
+          <p v-if="s.id === 'digital'" class="nm-price"><span>Website creation</span><strong>From 25,000 Dhs HT</strong><span>SEO included</span></p>
+          <p v-else class="nm-price"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
           <div class="nm-actions"><button type="button" class="ui-btn ui-btn--primary" @click="openService(s.id)">View details</button><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(s.id)" @click="toggleBasket(s.id)">{{ inBasket(s.id) ? 'In your brief ✓' : 'Add to brief' }}</button></div>
         </div>
       </article>
@@ -150,20 +140,12 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
   </section>
   <section id="recruit" aria-labelledby="nm-rec" class="nm-section nm-recruit">
     <div>
-      <p class="nm-eyebrow">Powered by The Best Recruit</p>
-      <h2 id="nm-rec" class="nm-title">Recruitment fees, known <span class="silky-bbi+115">before</span> you pay</h2>
-      <p class="nm-lead nm-lead--left">Candidates join for free and are qualified by a human. You browse profiles and pay per profile: 46% of the candidate's minimum monthly salary, with a floor of {{ fmt(db.recruit.floor) }}, plus any bonus supplement.</p>
-      <table class="ui-table"><caption class="nm-sr">Fee examples</caption><thead><tr><th scope="col">Candidate salary</th><th scope="col">Fee (HT)</th></tr></thead><tbody><tr v-for="n in db.recruit.examples" :key="n"><td>{{ fmt(n) }}</td><td>{{ fmt(Math.max(db.recruit.floor, n * db.recruit.rate)) }}</td></tr></tbody></table>
+      <p class="nm-eyebrow">Remote recruitment · The Best Recruit</p>
+      <h2 id="nm-rec" class="nm-title">Recruitment for employers, <span class="silky-bbi+115">delivered remotely</span></h2>
+      <p class="nm-lead nm-lead--left">The Best Recruit is a remote recruitment service for employers and hiring teams. Role definition, candidate qualification, information shared and next steps are agreed for each mandate, wherever the employer is based.</p>
+      <p><strong>Planned fee rate: 46% of the candidate’s minimum monthly salary.</strong> Market research to validate the rate is planned soon. The final rate and service terms will be confirmed after the research.</p>
     </div>
-    <form class="ui-card ui-card--pad" @submit.prevent aria-labelledby="nm-calc">
-      <h3 id="nm-calc">Fee calculator</h3>
-      <label class="nm-label" for="sal">Candidate minimum monthly salary (S, MAD)</label>
-      <input id="sal" v-model.number="salary" class="ui-input" type="number" min="0" step="250" inputmode="numeric" />
-      <label class="nm-label" for="bon">Bonus supplement (P, MAD)</label>
-      <input id="bon" v-model.number="bonus" class="ui-input" type="number" min="0" step="100" inputmode="numeric" />
-      <p class="nm-result" aria-live="polite"><span>Estimated fee</span><strong>{{ fmt(fee) }}</strong><small>H = max({{ db.recruit.floor }}; S × 46%) + P · excl. VAT</small></p>
-      <button type="button" class="ui-btn ui-btn--primary" @click="toggleBasket('recruit')">{{ inBasket('recruit') ? 'In your brief ✓' : 'Add recruitment to brief' }}</button>
-    </form>
+    <div class="ui-card ui-card--pad"><h3>Research and final terms</h3><p>The 46% rate is planned, not yet validated. Market research is planned soon; pricing and the recruitment process will be confirmed with employers before the service is quoted.</p><a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=recruitment">Discuss a remote hiring need</a></div>
   </section>
   <section aria-labelledby="nm-partners" class="nm-section">
     <h2 id="nm-partners" class="nm-title">Vetted <span class="silky-bbi+115">partners</span></h2>
@@ -189,7 +171,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
   </footer>
   <Transition name="nm-bar">
     <div v-if="basket.length" class="nm-basket" role="region" aria-label="Your brief">
-      <div class="nm-basket__text"><strong>{{ basket.length }} {{ basket.length === 1 ? 'service' : 'services' }} in your brief · from {{ oneOff ? fmt(oneOff) : '' }}{{ oneOff && monthly ? ' + ' : '' }}{{ monthly ? fmt(monthly) + '/month' : '' }}</strong><span>{{ basketItems.map((s: any) => s.title).join(' · ') }}</span></div>
+      <div class="nm-basket__text"><strong>{{ basket.length }} {{ basket.length === 1 ? 'service' : 'services' }} in your brief · pricing confirmed in proposal</strong><span>{{ basketItems.map((s: any) => s.title).join(' · ') }}</span></div>
       <button type="button" class="ui-btn ui-btn--outline" @click="basket = []; persist('nm-brief', [])">Clear</button>
       <a class="ui-btn ui-btn--primary" :href="quoteHref">Request one proposal</a>
     </div>
@@ -204,14 +186,16 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       <div v-if="tab === 'scope'" role="tabpanel" class="ui-panel">
         <img class="ui-dialog__img" :src="active.img + '?auto=format&fit=crop&w=1000&q=70'" alt="" loading="lazy" />
         <p>{{ active.outcome }}</p>
+        <p class="nm-note"><strong>For:</strong> {{ active.target }}</p>
         <h4>What you get</h4><ul class="nm-list"><li v-for="d in active.deliverables" :key="d">{{ d }}</li></ul>
         <h4>Delivery</h4><p>{{ active.type }} · {{ active.delivery }} · {{ active.duration }}. Delivered by {{ partners[active.partner].name }} ({{ partners[active.partner].city }}) under Numerimondes accountability.</p>
       </div>
       <div v-else-if="tab === 'pricing'" role="tabpanel" class="ui-panel">
-        <p class="nm-price nm-price--lg"><span>From</span><strong>{{ fmt(active.price.from) }}</strong><span>/ {{ active.price.unit }} HT</span></p>
+        <p v-if="active.id === 'digital'" class="nm-price nm-price--lg"><span>Website creation</span><strong>From 25,000 Dhs HT</strong><span>SEO included</span></p>
+        <p v-else class="nm-price nm-price--lg"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
         <p><strong>Basis:</strong> {{ active.price.model }}</p>
         <h4>What shapes the quote</h4><ul class="nm-list"><li v-for="d in active.drivers" :key="d">{{ d }}</li></ul>
-        <p class="nm-note">{{ db.meta.vatNote }} {{ db.meta.terms }}</p>
+        <p class="nm-note">Final scope and commercial terms are confirmed in a written proposal, following the published pricing guide.</p>
       </div>
       <div v-else role="tabpanel" class="ui-panel">
         <article v-for="r in [...pendingFor(active.id), ...allReviews.filter((x: any) => x.service === active.id && x.verified)]" :key="r.id" class="nm-review">

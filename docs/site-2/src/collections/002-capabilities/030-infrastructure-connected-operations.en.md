@@ -13,7 +13,7 @@ tags: [infrastructure, self-hosting, monitoring, connected-devices]
 
 # <span class='silky-bbi+115'>Infrastructure and Connected Operations</span>
 
-Infrastructure choices shape how reliably an organization can deliver its work and how much control it has over systems and data. The right design depends on workload, connectivity, recovery needs, technical ownership and the conditions in which people operate.
+This capability is for organizations that depend on reliable systems, work across locations or need clearer control of their data and recovery responsibilities. The right design depends on workload, connectivity, recovery needs, technical ownership and the conditions in which people operate.
 
 ## <span class='silky-bbi+115'>Plan for the operating context</span>
 

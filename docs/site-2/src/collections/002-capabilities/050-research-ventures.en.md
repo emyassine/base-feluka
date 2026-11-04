@@ -13,7 +13,7 @@ tags: [research, innovation, prototyping, ventures]
 
 # <span class='silky-bbi+115'>Research and Ventures</span>
 
-Research and venture development help examine possibilities before an organization commits to a full implementation. The work can begin with a question about a market, an emerging technology, a business model or an unmet operational need.
+For founders, business owners and product leaders, research and venture development examine possibilities before the organization commits to a full implementation. The work can begin with a question about a market, an emerging technology, a business model or an unmet operational need.
 
 ## <span class='silky-bbi+115'>Explore with a decision in mind</span>
 

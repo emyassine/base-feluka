@@ -13,7 +13,7 @@ tags: [operations, diagnostics, strategy, performance]
 
 # <span class='silky-bbi+115'>Business Performance</span>
 
-Organizations often know that work is slower or less predictable than it should be, but lack a shared view of where time, information or value is lost. Business performance work makes those conditions visible so leaders can decide what to change.
+For business owners, executives and operations leaders, business performance work makes visible where time, information or value is lost, so they can decide what to change.
 
 ## <span class='silky-bbi+115'>Operational diagnostics</span>
 

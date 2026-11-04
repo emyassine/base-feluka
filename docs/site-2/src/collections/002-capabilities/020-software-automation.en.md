@@ -13,7 +13,7 @@ tags: [software, automation, integration, artificial-intelligence]
 
 # <span class='silky-bbi+115'>Software and Automation</span>
 
-Software is most useful when it fits the people, information and decisions involved in a real task. Numerimondes explores application development, integrations and automation as ways to address a defined need, with attention to deployment, security, maintainability and ownership.
+This capability is for SMEs and organizations whose spreadsheets, disconnected systems or manual processes no longer support the work. We explore applications, integrations and automation around real users and decisions, with attention to deployment, security, maintainability and ownership.
 
 ## <span class='silky-bbi+115'>Start with the workflow</span>
 

@@ -21,7 +21,7 @@ js-events:
 ## What you can contact us about
 
 - A consulting, systems or software project
-- A hiring need (The Best Recruit)
+- A remote hiring need for an employer (The Best Recruit)
 - A partnership or specialist collaboration
 - A technical discussion on Feluqa or SPMPST
 

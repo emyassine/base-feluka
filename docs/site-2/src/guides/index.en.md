@@ -29,7 +29,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
         indicatorIndex: 0,
         items: [
           { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa', icon: '/images/products/feluqa.png' },
-          { id: 'best-recruit', label: 'The Best Recruit', mobileLabel: 'Recruit', href: '/company/initiatives/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
+          { id: 'best-recruit', label: 'The Best Recruit · Remote Recruitment', mobileLabel: 'Remote recruitment', href: '/company/projects/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
         ],
       },
       {
@@ -437,9 +437,9 @@ Join project teams when your expertise fits an assignment — across software en
 ::::
 
 
-## Initiatives in <span class='silky-bbi+115'>development</span>
+## Our recruitment service and product initiatives
 
-Our internal initiatives are part of the way we research, experiment and build future capabilities.
+The Best Recruit is our remote recruitment service for employers. Feluqa and SPMPST are product initiatives in development.
 
 <MegaCards
   :items="[
@@ -452,8 +452,8 @@ Our internal initiatives are part of the way we research, experiment and build f
     },
     {
       title: 'The Best Recruit',
-      description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/company/initiatives/the-best-recruit',
+      description: 'A remote recruitment service for employers, wherever their hiring team is based. Candidate qualification and each mandate’s scope are agreed with the employer.',
+      href: '/company/projects/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
@@ -511,7 +511,7 @@ Share a challenge, an idea, a business objective or a project you want to explor
 2. State benefits as aims or project-dependent outcomes; do not fabricate case studies, metrics or success claims.
 3. Project-by-project operating model: a single accountable counterpart, adaptable mission teams.
 4. Founder visibility is intentional; avoid implying a large permanent employee base.
-5. Feluqa: in development. The Best Recruit: current recruitment offer. SPMPST: specification in development.
+5. Feluqa: in development. The Best Recruit: current remote recruitment service for employers. SPMPST: specification in development.
 6. Describe The Best Recruit's scope, candidate access, timing and placement commitments only as confirmed for the specific offer or mandate.
 7. Showcases must distinguish real delivered work from concepts and RandD.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.

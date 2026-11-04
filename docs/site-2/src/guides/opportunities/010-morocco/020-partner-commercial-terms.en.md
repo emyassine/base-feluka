@@ -85,7 +85,7 @@ The service catalogue and capabilities library describe client needs and offer f
 
 | Offer family | Examples of client work | How a partner may contribute |
 | :--- | :--- | :--- |
-| **The Best Recruit** | Recruitment, candidate qualification and relevant information for employer decisions. | Introductions, recruitment expertise or delivery under a separately agreed mandate. Candidate access, consent, fees and service commitments must be confirmed for the specific offer. |
+| **The Best Recruit** | Remote recruitment for employers, with candidate qualification and relevant information for hiring decisions. | Remote introductions, recruitment expertise or delivery under a separately agreed mandate. Candidate access, consent, fees and service commitments must be confirmed for the specific offer. |
 | **Business advisory** | Operational diagnostics, discovery, process improvement and decision support. | Client introductions, specialist analysis, facilitation or delivery of an agreed work package. |
 | **Software development and automation** | Custom business software, internal tools, reporting, integrations and workflow automation. | Qualified sales, software engineering, technical design, integration or testing. |
 | **Infrastructure and security** | Deployment reviews, self-hosting, monitoring, managed IT and scoped security work. | Local support, infrastructure expertise, monitoring or a defined assessment. Security claims remain limited to the agreed scope and evidence. |
