@@ -131,15 +131,16 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
 
 @media (max-width: 760px) {
   .articles-layout { display: block; width: 100%; padding: 0 0 28px; }
-  .articles-layout__sidebar { position: static; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 14px; padding: 18px 20px; }
-  .articles-layout__identity { grid-row: span 2; gap: 0; }
+  .articles-layout__sidebar { position: static; display: grid; grid-template-columns: 56px minmax(0, 1fr); grid-template-rows: auto auto auto auto auto; gap: 0 14px; padding: 18px 20px; }
+  .articles-layout__identity { display: contents; }
   .articles-layout__avatar { width: 56px; height: 56px; border-radius: 13px; }
-  .articles-layout__author-name { align-self: start; font-size: 17px; }
-  .articles-layout__role { margin: 2px 0 0; font-size: 13px; }
-  .articles-layout__bio, .articles-layout__links { display: block; grid-column: 1 / -1; max-width: none; }
-  .articles-layout__bio { margin: 14px 0 0; font-size: 15px; line-height: 1.6; }
-  .articles-layout__links { display: flex; margin-top: 14px; }
-  .articles-layout__nav { display: flex; grid-column: 1 / -1; flex-wrap: wrap; gap: 18px; margin-top: 14px; }
+  .articles-layout__avatar { grid-column: 1; grid-row: 1 / span 2; }
+  .articles-layout__author-name { grid-column: 2; grid-row: 1; align-self: end; overflow: hidden; font-size: 16px; white-space: nowrap; text-overflow: ellipsis; }
+  .articles-layout__role { grid-column: 2; grid-row: 2; margin: 2px 0 0; font-size: 13px; }
+  .articles-layout__bio, .articles-layout__nav, .articles-layout__links { grid-column: 1 / -1; max-width: none; }
+  .articles-layout__bio { grid-row: 3; margin: 14px 0 0; font-size: 15px; line-height: 1.6; }
+  .articles-layout__nav { display: flex; grid-row: 4; flex-wrap: wrap; gap: 18px; margin-top: 14px; }
+  .articles-layout__links { grid-row: 5; display: flex; margin-top: 14px; }
   .articles-layout__nav a { font-size: 14px; }
   .articles-layout__main { padding-inline: 14px; }
   .articles-layout__frame { border-radius: 12px; }
