@@ -210,7 +210,7 @@
             {
               "type": "collection",
               "id": "legal",
-              "label": { "en": "Legal" },
+              "label": { "en": "Legal notices" },
               "badge": "count"
             }
           ]
