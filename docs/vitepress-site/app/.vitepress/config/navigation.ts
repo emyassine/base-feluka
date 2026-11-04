@@ -212,6 +212,20 @@ function navigation(language = defaultLanguage): any[] {
       const value = readFileSync(source, 'utf8').match(new RegExp(`^${key}:\\s*["']?(.+?)["']?\\s*$`, 'm'))?.[1]
       return value?.trim() || undefined
     }
+    const menuTags = (file: string): string[] => {
+      if (!existsSync(file)) return []
+      const source = readFileSync(file, 'utf8')
+      const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---/m)?.[1]
+      if (!frontmatter) return []
+      const lines = frontmatter.split(/\r?\n/)
+      const index = lines.findIndex((line) => /^menuTags:\s*/.test(line))
+      if (index < 0) return []
+      const inline = lines[index].replace(/^menuTags:\s*/, '').trim()
+      const values = inline.startsWith('[') && inline.endsWith(']')
+        ? inline.slice(1, -1).split(',')
+        : inline ? [inline] : lines.slice(index + 1).filter((line) => /^\s+-\s+/.test(line)).map((line) => line.replace(/^\s+-\s+/, ''))
+      return values.map((value) => value.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean)
+    }
     const articleItems = (directory: string, routeParts: string[], image?: string): any[] => {
       if (!includeArticles) return []
       const entries = readdirSync(directory, { withFileTypes: true })
@@ -232,11 +246,14 @@ function navigation(language = defaultLanguage): any[] {
         .sort((left, right) => left.name.localeCompare(right.name))
         .map((entry) => {
           const file = join(directory, entry.name)
-          const pageMenuImage = readFileSync(file, 'utf8').match(/^menuImage:\s*["']?(.+?)["']?\s*$/m)?.[1]?.trim()
+          const source = readFileSync(file, 'utf8')
+          const pageMenuImage = source.match(/^menuImage:\s*["']?(.+?)["']?\s*$/m)?.[1]?.trim()
           const slug = entry.name.replace(/\.[a-z]{2,3}(?:-[A-Z]{2})?\.md$/i, '').replace(/\.md$/i, '').replace(/^\d+[.-]/, '')
           const link = `${localePrefix}/${[...routeParts, slug].filter(Boolean).join('/')}`
           const icon = sidebarPageIcons[link] ?? sidebarPageIcons[`${link}/`]
           return {
+            id: `/${[...routeParts, slug].filter(Boolean).join('/')}`,
+            menuTags: menuTags(file),
             text: itemText(titleOf(file), undefined, link, typeof icon === 'string' ? `/${icon.replace(/^\/+/, '')}` : undefined),
             link,
             ...(pageMenuImage || image ? { image: pageMenuImage || image } : {}),
@@ -265,8 +282,11 @@ function navigation(language = defaultLanguage): any[] {
           ? `/${metadata.icon.replace(/^\/+/, '')}`
           : undefined
         const description = frontmatter(childDirectory, 'description')
+        const indexFile = [`index.${language}.md`, `index.${defaultLanguage}.md`, 'index.md'].map((file) => join(childDirectory, file)).find((file) => existsSync(file))
         const itemClass = metadata.iconMode === 'full-color' ? 'docs-topbar-item--full-color' : undefined
         return [{
+          id: `/${childRouteParts.join('/')}`,
+          menuTags: indexFile ? menuTags(indexFile) : [],
           text: itemText(label, undefined, undefined, icon, itemClass),
           link,
           activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
@@ -410,6 +430,28 @@ function navigation(language = defaultLanguage): any[] {
       return [{ ...item, ...(children ? { items: children } : {}) }]
     })
   }
+  const filterGroupBy = (items: any[], groupBy: any): any[] => {
+    if (!groupBy) return items
+    const ids: string[] = groupBy.ids ?? []
+    const tags: string[] = groupBy.filter?.menuTags ?? []
+    const visit = (item: any): any[] => {
+      const children = Array.isArray(item.items) ? item.items.flatMap(visit) : []
+      const id = typeof item.id === 'string' ? item.id.replace(/\/+$/, '') : ''
+      const idMatch = ids.some((selected) => {
+        const normalized = selected.replace(/\/+$/, '')
+        return id === normalized || id.startsWith(`${normalized}/`)
+      })
+      const tagMatch = tags.some((tag) => Array.isArray(item.menuTags) && item.menuTags.includes(tag))
+      if (idMatch || tagMatch) return [{ ...item, ...(children.length ? { items: children } : {}) }]
+      if (children.length) return [{ ...item, items: children }]
+      return []
+    }
+    const stripMetadata = (item: any): any => {
+      const { id: _id, menuTags: _menuTags, ...clean } = item
+      return Array.isArray(clean.items) ? { ...clean, items: clean.items.map(stripMetadata) } : clean
+    }
+    return items.flatMap(visit).map(stripMetadata)
+  }
   const applyMenuTemplate = (item: any, template: [string, string[]] | undefined) => template
     ? menuTemplateComponent
       ? { component: menuTemplateComponent, props: { item, menuTemplate: template } }
@@ -442,8 +484,10 @@ function navigation(language = defaultLanguage): any[] {
   const resolveItem = (item: any): any => {
     if (item.type === 'menu') {
       const groups = item.groups.flatMap((group: any) => {
-        const entries = filterMenuRoutes(group.entries.flatMap(resolveGroupEntry), group.include ?? [], group.exclude ?? [])
-        if (group.showLabel === false) return entries
+        const candidates = (group.entries ?? item.sources ?? []).flatMap(resolveGroupEntry)
+        const selected = filterGroupBy(candidates, group.groupBy)
+        const entries = filterMenuRoutes(selected, group.include ?? [], group.exclude ?? [])
+        if (group.showLabel === false) return entries.length ? [{ items: entries }] : []
         return entries.length ? [{ text: localize(group.label) ?? '', items: entries }] : []
       })
       return applyMenuTemplate({

@@ -70,13 +70,14 @@ export type TopbarGroupEntry =
 export interface TopbarGroup {
   label: LocalizedText
   showLabel?: boolean
-  entries: TopbarGroupEntry[]
+  entries?: TopbarGroupEntry[]
+  groupBy?: { ids: string[] } | { filter: { menuTags: string[] } }
   include?: string[]
   exclude?: string[]
 }
 
 export type TopbarItem =
-  | { type: 'menu'; label: LocalizedText; groups: TopbarGroup[]; icon?: string; hideIcon?: boolean; menuTemplate?: MenuTemplate }
+  | { type: 'menu'; label: LocalizedText; groups: TopbarGroup[]; sources?: TopbarGroupEntry[]; icon?: string; hideIcon?: boolean; menuTemplate?: MenuTemplate }
   | { type: 'guide'; path: string; label?: LocalizedText; icon?: string; children?: Record<string, unknown> }
   | { type: 'collection'; id: string; icon?: string; children?: boolean }
   | { type: 'link'; label: LocalizedText; href: string; icon?: string; target?: string; rel?: string }

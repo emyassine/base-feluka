@@ -384,6 +384,13 @@
             "items": {
               "$ref": "#/$defs/menuGroup"
             }
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/menuEntry"
+            }
           }
         },
         "allOf": [
@@ -849,8 +856,7 @@
     "menuGroup": {
       "type": "object",
       "required": [
-        "label",
-        "entries"
+        "label"
       ],
       "properties": {
         "label": {
@@ -871,6 +877,53 @@
         },
         "exclude": {
           "$ref": "#/$defs/routeSelectors"
+        },
+        "groupBy": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "ids"
+              ],
+              "properties": {
+                "ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^/[A-Za-z0-9._~/-]+$"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "required": [
+                "filter"
+              ],
+              "properties": {
+                "filter": {
+                  "type": "object",
+                  "required": [
+                    "menuTags"
+                  ],
+                  "properties": {
+                    "menuTags": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
         }
       },
       "additionalProperties": false

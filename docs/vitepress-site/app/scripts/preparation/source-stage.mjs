@@ -297,9 +297,13 @@ function validateTopbarItems(items, location = 'topbar.items') {
       }
     }
     if (item.type === 'menu') {
-      if (Object.keys(item).some((key) => !['type', 'label', 'groups', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} contains unsupported menu properties`)
+      if (Object.keys(item).some((key) => !['type', 'label', 'groups', 'sources', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} contains unsupported menu properties`)
       if (!localizedText(item.label)) throw new Error(`${itemLocation}.label must be non-empty localized text`)
       if (!Array.isArray(item.groups) || item.groups.length === 0) throw new Error(`${itemLocation}.groups must be a non-empty array`)
+      if (item.sources !== undefined) {
+        if (!Array.isArray(item.sources) || item.sources.length === 0) throw new Error(`${itemLocation}.sources must be a non-empty array`)
+        item.sources.forEach((entry, entryIndex) => validateGroupEntry(entry, `${itemLocation}.sources[${entryIndex}]`))
+      }
       if (item.icon !== undefined) {
         const resolvedSvg = typeof item.icon === 'string' && isAbsolute(item.icon) && extname(item.icon).toLowerCase() === '.svg' && existsSync(item.icon)
         if (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon) && !resolvedSvg)) throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
@@ -307,10 +311,16 @@ function validateTopbarItems(items, location = 'topbar.items') {
       if (item.menuTemplate !== undefined) validateMenuTemplate(item.menuTemplate, `${itemLocation}.menuTemplate`)
       item.groups.forEach((group, groupIndex) => {
         const groupLocation = `${itemLocation}.groups[${groupIndex}]`
-        if (!group || typeof group !== 'object' || Array.isArray(group) || Object.keys(group).some((key) => !['label', 'showLabel', 'entries', 'include', 'exclude'].includes(key)) || !localizedText(group.label) || !Array.isArray(group.entries)) throw new Error(`${groupLocation} requires a label and an entries array`)
+        if (!group || typeof group !== 'object' || Array.isArray(group) || Object.keys(group).some((key) => !['label', 'showLabel', 'entries', 'groupBy', 'include', 'exclude'].includes(key)) || !localizedText(group.label) || (group.entries !== undefined && !Array.isArray(group.entries)) || (group.entries === undefined && !item.sources)) throw new Error(`${groupLocation} requires a label and entries, or menu-level sources`)
         if (group.showLabel !== undefined && typeof group.showLabel !== 'boolean') throw new Error(`${groupLocation}.showLabel must be a boolean`)
         validateRouteFilters(group, groupLocation)
-        group.entries.forEach((entry, entryIndex) => validateGroupEntry(entry, `${groupLocation}.entries[${entryIndex}]`))
+        group.entries?.forEach((entry, entryIndex) => validateGroupEntry(entry, `${groupLocation}.entries[${entryIndex}]`))
+        if (group.groupBy !== undefined) {
+          const byIds = group.groupBy && typeof group.groupBy === 'object' && !Array.isArray(group.groupBy) && Object.keys(group.groupBy).length === 1 && Array.isArray(group.groupBy.ids) && group.groupBy.ids.length > 0 && group.groupBy.ids.every((id) => typeof id === 'string' && /^\/[A-Za-z0-9._~/-]+$/.test(id) && !id.includes('//'))
+          const byTags = group.groupBy && typeof group.groupBy === 'object' && !Array.isArray(group.groupBy) && Object.keys(group.groupBy).length === 1 && group.groupBy.filter && Object.keys(group.groupBy.filter).length === 1 && Array.isArray(group.groupBy.filter.menuTags) && group.groupBy.filter.menuTags.length > 0 && group.groupBy.filter.menuTags.every((tag) => typeof tag === 'string' && tag.trim())
+          if (!byIds && !byTags) throw new Error(`${groupLocation}.groupBy must define non-empty ids or filter.menuTags`)
+          if (!item.sources && !group.entries) throw new Error(`${groupLocation}.groupBy requires menu-level sources or group entries`)
+        }
       })
       continue
     }

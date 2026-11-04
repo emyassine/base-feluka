@@ -4,70 +4,200 @@
   "items": [
     {
       "type": "menu",
-      "label": { "en": "Services" },
+      "label": {
+        "en": "Services"
+      },
       "groups": [
         {
-          "label": { "en": "Marketplace" },
+          "label": {
+            "en": "Marketplace"
+          },
           "showLabel": false,
           "entries": [
-            { "type": "link", "label": { "en": "Explore services" }, "href": "/services/marketplace", "icon": "store" }
+            {
+              "type": "link",
+              "label": {
+                "en": "Explore services"
+              },
+              "href": "/services/marketplace",
+              "icon": "store"
+            }
           ]
         },
         {
-          "label": { "en": "Pricing" },
+          "label": {
+            "en": "Pricing"
+          },
           "showLabel": false,
           "entries": [
-            { "type": "link", "label": { "en": "Understanding Pricing" }, "href": "/services/pricing", "icon": "scale" }
+            {
+              "type": "link",
+              "label": {
+                "en": "Understanding Pricing"
+              },
+              "href": "/services/pricing",
+              "icon": "scale"
+            }
           ]
         },
         {
-          "label": { "en": "Capabilities" },
+          "label": {
+            "en": "Capabilities"
+          },
           "showLabel": true,
           "entries": [
-            { "type": "collection", "id": "capabilities", "children": true }
+            {
+              "type": "collection",
+              "id": "capabilities",
+              "children": true
+            }
           ]
         },
         {
-          "label": { "en": "Contact" },
+          "label": {
+            "en": "Contact"
+          },
           "showLabel": true,
           "entries": [
-            { "type": "link", "label": { "en": "Contact Numerimondes" }, "href": "/company/contact/", "icon": "message-circle" }
+            {
+              "type": "link",
+              "label": {
+                "en": "Contact Numerimondes"
+              },
+              "href": "/company/contact/",
+              "icon": "message-circle"
+            }
           ]
         }
       ]
     },
     {
       "type": "menu",
-      "label": { "en": "Opportunities" },
+      "label": {
+        "en": "Opportunities"
+      },
       "groups": [
         {
-          "label": { "en": "Opportunities" },
-          "showLabel": false,
-          "entries": [
-            { "type": "guide", "path": "opportunities", "children": { "source": "subguides no-guide-index", "icon": true } }
-          ]
+          "label": {
+            "en": "Introduction"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/opportunities/introduction"
+            ]
+          }
+        },
+        {
+          "label": {
+            "en": "Morocco & International"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/opportunities/morocco",
+              "/opportunities/international"
+            ]
+          }
+        },
+        {
+          "label": {
+            "en": "Students"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/opportunities/students"
+            ]
+          }
+        },
+        {
+          "label": {
+            "en": "Companies & Investment"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/opportunities/businesses",
+              "/opportunities/investment"
+            ]
+          }
+        }
+      ],
+      "sources": [
+        {
+          "type": "guide",
+          "path": "opportunities",
+          "children": {
+            "source": "subguides no-guide-index",
+            "icon": true
+          }
         }
       ]
     },
     {
       "type": "menu",
-      "label": { "en": "Company" },
+      "label": {
+        "en": "Company"
+      },
       "groups": [
         {
-          "label": { "en": "Company" },
-          "showLabel": false,
-          "entries": [
-            { "type": "guide", "path": "company", "children": { "source": "subguides no-guide-index", "icon": true } }
-          ]
+          "label": {
+            "en": "About"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/company/about-us",
+              "/company/how-we-work",
+              "/company/who-we-help"
+            ]
+          }
+        },
+        {
+          "label": {
+            "en": "Our Projects"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/company/projects"
+            ]
+          }
+        },
+        {
+          "label": {
+            "en": "Contact"
+          },
+          "showLabel": true,
+          "groupBy": {
+            "ids": [
+              "/company/contact"
+            ]
+          }
+        }
+      ],
+      "sources": [
+        {
+          "type": "guide",
+          "path": "company",
+          "children": {
+            "source": "subguides no-guide-index",
+            "icon": true
+          }
         }
       ]
     },
     {
       "type": "menu",
-      "label": { "en": "Resources" },
+      "label": {
+        "en": "Resources"
+      },
       "groups": [
         {
-          "label": { "en": "Resources" },
+          "label": {
+            "en": "Resources"
+          },
           "showLabel": false,
           "entries": [
             {
@@ -78,8 +208,12 @@
                 "icon": true,
                 "collections": {
                   "pathPrefix": "001-legal",
-                  "order": ["legal"],
-                  "showIconFromParents": ["legal"],
+                  "order": [
+                    "legal"
+                  ],
+                  "showIconFromParents": [
+                    "legal"
+                  ],
                   "showParentsName": false
                 }
               }
@@ -91,11 +225,17 @@
   ],
   "actions": [
     {
-      "label": { "en": "Account access" },
+      "label": {
+        "en": "Account access"
+      },
       "link": "/account/",
       "color": "primary",
       "size": "sm",
-      "mobile": { "color": "gray", "icon": "users", "tooltip": "Accounts" },
+      "mobile": {
+        "color": "gray",
+        "icon": "users",
+        "tooltip": "Accounts"
+      },
       "icon": "users-round"
     }
   ]
