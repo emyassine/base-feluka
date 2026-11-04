@@ -1,0 +1,14 @@
+{
+  "images": [
+    {
+      "path": "/images/legal/account-and-crm-privacy-access-reader.webp",
+      "title": "Access reader beside a dark door",
+      "creator": "Jakub Żerdzicki",
+      "source": "https://unsplash.com/photos/a-card-reader-and-a-dark-door-are-visible-pLD-QID7x3k",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "changes": "Cropped to 16:10, resized and converted to WebP for the site.",
+      "usedOn": ["/legal/account-and-crm-privacy"]
+    }
+  ]
+}

@@ -1,83 +1,46 @@
 ---
-name: numerimondes-visual-direction
-description: Art direction and image-production rules for every Numerimondes visual: collection cards (articles, policies, legal notices, capabilities, projects), page heroes and backgrounds, Open Graph and social images, optional hover-video loops, and image text overlays. Use whenever an image, poster, video, OG image, background or visual card must be chosen, created, edited, integrated or reviewed for a Numerimondes site or editorial product, in any repository or framework.
+name: visual-direction
+description: Reusable art direction and production workflow for website and editorial images, optional hover videos, image assets and attribution.
 ---
 
-# Numerimondes visual direction
+# Visual direction
 
-A reusable art-direction and production skill for all Numerimondes websites and editorial products. It is project-agnostic: always inspect the active repository to discover its content model, asset conventions and component architecture. Never assume a directory, URL pattern, frontmatter field name or framework.
+A reusable, brand-agnostic art direction and production skill for websites and editorial products. Apply it in any repository or framework. Always inspect the active project's content model, visual identity, asset conventions, licenses and component architecture. For Numerimondes projects, also read [`README_ART_NUMERIMONDES.md`](README_ART_NUMERIMONDES.md).
 
-This skill is written for coding agents. Follow the steps in order, do not skip the checks, and report what you actually did. When a rule says "stop and ask", stop and ask; do not guess.
+This skill is written for coding agents. Follow the workflow, but adapt choices to the page, audience, visual identity and actual components. Never assume one brand's paths, palette, fonts, or image style apply elsewhere.
 
 ---
 
 ## 1. Brand essentials
 
-**Who Numerimondes is.** An independent consulting and solutions company (Numerimondes SARL AU, headquartered in Casablanca, Morocco). It explores opportunities, develops ideas, designs practical solutions and assembles the expertise needed to deliver projects. Tone: independent, curious, practical, premium, calm. Never loud, never "tech-bro", never stock-corporate.
+Before visual work, locate the active brand guide, official logo, image palette, typography, and any owner-provided photography, drawings or art direction. Treat those source files and written brand rules as authoritative. Never redraw, distort or ask a model to invent a logo. Use approved fonts only when the project defines them; otherwise do not invent a typography system for raster artwork.
 
-**Tagline spirit.** "Possibility becomes valuable through execution." Images should make an idea tangible and credible, not decorative.
+Read owner-provided visual references as authored work. Preserve their intent and ask before making a material transformation. Use signature materials or motifs only where the active brand guide calls for them; do not apply one visual motif to every page.
 
-**Meaning of our logo (read this carefully; never redraw it from memory). We usually do not use the logo inside images, but its meaning matters and should quietly inform the art direction.**
-- A **noble stone**: a regular hexagon with a horizontal flat base and a horizontal flat top (points left and right).
-- The hexagon is **divided by a curved arc (a half-circle-like cut)**: the left part is near-black, the right part is a light slate blue-grey.
-- To its right sits a **bold near-black chevron / arrow** (">") with angled cut ends, pointing right and away from the stone.
-- Meaning: a noble stone (value, rarity, craft) set in motion toward execution.
-- How the meaning translates into visuals: precision and refinement (the clean arc cutting the stone), durable value (stone, glass, metal, well-made objects), and forward momentum from idea to delivery (the arrow). Visuals should feel composed, deliberate, confident and well made. They should never feel anxious, chaotic, cheap or sentimental.
-- Palette of the logo: near-black, slate blue-grey, soft off-white background.
-- Use the official logo file from the project. Never regenerate, trace, recolor, distort or approximate the logo with AI. Never ask an image model to draw it.
-- In the rare case a visual needs the logo (for example some OG images), place the real asset in a separate layer with clear space equal to at least the height of one hexagon edge on all sides.
-
-**Brand material: silk.** Silk (flowing, folded, translucent, softly lit fabric) is the brand's signature material. It is **available, not mandatory**. Numerimondes is not a factory that stamps one look onto everything. Use silk as an occasional signature (for example brand pages, hero backgrounds, some OG images, the odd card), and aim for most visuals to come from **art and poetic imagery tied to the page's subject**. If several consecutive visuals in a set use silk, the next one should not.
-
-**Typography (local fonts).** Premium serif family "Romie":
-- `Romie-Bold.woff2`
-- `Romie-Medium.woff2`
-- `Romie-MediumItalic.woff2`
-
-Find where they live in the active project (search for `Romie`). Use them for any typography in generated assets (OG images, posters, text overlays). Use Bold for titles, Medium for secondary text, Medium Italic for accents, quotes or category labels. Do not substitute another font silently; if the files cannot be found, stop and ask.
-
----
 
 ## 2. Core principle: one idea, one image, one reader
 
-Every visual answers a single question: **"What is this page about, in one glance, for the person who will read it?"**
+Every visual answers: **What is this page about, in one glance, for the person who will read it?**
 
-Preferred sources, in this order of consideration (choose by fit, not by habit):
+Preferred sources, chosen by subject fit and rights:
 
-1. A **real, permitted visual source**: an artwork, sculpture, object, place, document or photograph with known provenance and usable rights.
-2. A **real source plus a restrained intervention**: compositing, retouching, a surreal or poetic detail, a lighting change, or a small animation that makes the metaphor visible.
-3. A **tactile still life or sculptural 3D scene**: a few forms and materials (glass, stone, ceramic, metal, paper, thread, silk) arranged as a metaphor. This is the existing visual language of many Numerimondes cards, for example translucent glass forms in amber, cobalt, forest green, terracotta and coral, with one narrow accent such as a thread, a seam or a threshold.
-4. A **wholly generated scene** only when the idea is explicitly conceptual and no real source fits.
-5. A **short ambient video loop** only when motion adds meaning (see section 8).
+1. A real, permitted visual source: the owner's own photograph or drawing, an artwork, object, place or photograph with known provenance and usable rights.
+2. A real source with a restrained, rights-compliant intervention, if the treatment clarifies the idea.
+3. An original illustration, still life or rendered scene when it explains an explicitly conceptual subject.
+4. A wholly generated scene only when no suitable real source fits and generation can meet the required quality bar.
+5. A short ambient video loop only when motion adds meaning (section 8).
 
-AI is a production tool, not the default source. Prefer meaningful images over generic stock photography, decorative gradients or literal icons. Do not present a composite or generated image as documentary evidence, and never fabricate real events, client evidence, customer results, testimonials or identifiable real people.
+AI is a production tool, not the default source. Do not present a composite or generated image as documentary evidence, or fabricate events, client evidence, results, testimonials or identifiable people.
 
----
+## 2A. Audience, stance and tone
 
-## 2A. Corporate register and stance (mandatory)
+Decide who the image speaks for: the organization, a client or partner, or a neutral explainer. Follow the active brand guide and the page's actual claims. State what the reader should understand and feel in one second. The feeling and visual register should suit the subject, audience and brand; do not impose corporate polish on unrelated brands or subjects.
 
-Numerimondes is a professional consultancy. Every visual must look like it belongs to a serious, premium B2B brand: calm, competent, composed, modern. The target is the editorial standard of leading technology and consulting publishers: either real, well-composed photography of people and places in credible professional contexts, or refined abstract and material imagery (soft color fields, glass, stone, metal, silk). Do not copy any other site's assets; borrow only the level of polish.
+For sensitive subjects, keep the image respectful and accurate. Do not portray people as vulnerable or distressed unless the subject specifically requires it and the depiction is handled responsibly. Avoid sensational imagery, stereotypes, misleading security cues, or visuals that imply facts the page does not establish.
 
-**Decide the stance before producing anything.** Write two short answers in your notes:
+**First-glance test (mandatory).** Describe the finished image in one plain sentence as a stranger with no context would. What would they guess the page is about, and how would they feel? If the guess is wrong or ambiguous, or the impression conflicts with the page or brand, reject it.
 
-1. **Who does the image speak for?** Choose one:
-   - **Numerimondes** in a position of strength: expertise, rigor, stewardship, control of the process, standards upheld. Default for policies, legal notices, commercial terms, security, data handling, and "how we work" pages.
-   - **The client or partner empowered**: a capable professional or team in control, with clear results and momentum. Default for capabilities, projects, case-style pages and articles about outcomes.
-   - **Neutral explainer**: an object or concept that clarifies a mechanism. Default for practical guides and how-to articles.
-2. **What should the reader feel in one second?** Target words: confidence, clarity, trust, order, competence, calm authority. Never: worry, debt, shame, surveillance, charity, nostalgia, chaos.
-
-Hard rules:
-- **Never show the reader (or the client) as vulnerable, struggling or lacking control.** No stressed people, no bills, debt, paperwork piles, courts, police, sirens, handcuffs, hackers, or anyone anxiously reading a document.
-- Policies and legal notices speak with the **institution's authority and care**: structure, order, craft, protected value, clear boundaries. Not with the data subject as a victim or as a historical figure.
-- Avoid period costume, domestic interiors, religious or aristocratic scenes, and "old master" genre paintings as a default. Classical art is allowed only when the page is explicitly about heritage, craft, ethics or institutional continuity, and the stance is clearly strength and stewardship.
-- If people appear, they are modern, competent and in a credible professional setting, with no identifiable real individuals unless consent and rights are documented. Do not fake testimonials, clients or events.
-- Prefer images that would look right on the website of a bank, an engineering firm or a respected research publisher. If it would look more at home in a museum gift shop or a stock-photo "sad woman with bills" search, reject it.
-
-**First-glance test (mandatory before accepting any image).** Describe the finished image in one plain sentence, as a stranger with no context would, then answer: "What would a stranger guess this page is about, and what would they feel?" If the guess is wrong, ambiguous, or the feeling is not in the target list, reject the image and start over. Example of a failure: a 17th-century woman reading a letter in a modest room, placed on a privacy notice, reads as "a person worried about a bill", not "our data handling is rigorous".
-
-**Literal keyword matching is not subject fit.** "Privacy" does not mean "a person reading a letter". "Account" does not mean "a ledger". Translate the page's *claim* into a metaphor of control and care (a precisely sealed vessel, a controlled threshold, ordered layers, a key used by an authorized hand) rather than illustrating a keyword.
-
----
+Literal keyword matching is not subject fit. Translate what the page actually says into an image that clarifies its meaning; do not illustrate a keyword with an unrelated object or person.
 
 ## 3. Subject-fit rule (mandatory before any research or generation)
 
@@ -113,10 +76,19 @@ Before using any real source:
 - Confirm the license or permission. Prefer public-domain or open-access collections from museums and libraries, openly licensed archives, the project owner's own photography, or commissioned work. For anything else, check the exact license terms.
 - Preserve required attribution. Never strip credit that the license requires.
 - Record provenance for every asset in a sidecar note or in the project's existing metadata system: source URL, creator, date, license, any modification (crop, composite, AI-assisted edit), tool used, and the date it was added. Provenance must also state the **stance** (who the image speaks for), the **fit sentence**, and the **first-glance result** from section 2A. A provenance entry that only lists the source is incomplete.
-- Never copy, hotlink or re-use another company's images, videos, layout assets or brand elements as Numerimondes content. Other sites can inspire an approach, never supply assets.
+- Never copy, hotlink or re-use another publisher's images, videos, layout assets or brand elements as the active site's content. Other sites can inspire general approaches, never supply unlicensed assets.
 - Do not claim a production method that you cannot verify. Describe images as "composite", "AI-assisted", "photograph" or "rendered" only if you know it.
 - Respect cultural and religious heritage (including Moroccan, Amazigh, Arab and Mediterranean craft and art). Credit it, do not caricature it, do not use sacred objects as decoration.
 - If rights are unclear, **stop and ask**. Do not use the image.
+
+### Realism, originality and attribution (mandatory)
+
+- When a page benefits from documentary photography, search for a real photograph before generating an image. Inspect the actual image at full size; search-result descriptions are not enough. Verify that its subject, context, crop and rights fit this page.
+- If generation is the right choice, aim for a photograph that could plausibly have been made by a skilled photographer: believable optics, exposure, lighting, perspective, materials, imperfections and context. Avoid the polished, weightless, symmetrical look of generic AI renders. Do not claim that generated work is indistinguishable from photography; inspect it critically and reject visible synthetic artifacts.
+- Never imitate a living artist's or photographer's distinctive style, recreate a copyrighted composition, or use another publisher's image as a production input without permission. References may guide general qualities such as light or composition, never reproduce protected expression. Do not remove watermarks or credits.
+- Record every third-party artwork or photograph in the active site's attribution registry and show required credits together in the site's Brand Kit → Resources → Attributions section. Keep a source link, creator, title, license, changes and local asset path. The site's brand-specific guide defines the registry path and rendering mechanism.
+- Attribution requirements still apply when a license does not legally require a credit; record provenance consistently. For CC BY-SA or similar share-alike sources, check what the adaptation requires before publishing.
+- Do not use a real artwork merely because it is famous. Confirm rights for the exact reproduction and edition; never use AI to extend or alter recognizable art.
 
 ---
 
@@ -128,11 +100,11 @@ Do:
 - One metaphor per image. The subject must read clearly at thumbnail size (about 160 px).
 - Use a small number of materials and forms.
 - Keep a coherent but not identical palette across a collection. A set may share lighting and calm tonality; individual images may vary in medium and color.
-- Use the logo's neutrals (near-black, slate blue-grey, soft off-white) as a stabilizing base when it helps, with one accent color per image (amber, cobalt, coral, vermilion, terracotta, forest green, ochre are all already part of the site language).
+- Use the active brand palette when it helps; let a real source's natural colors remain when documentary fidelity matters.
 - Leave breathing room where text overlays will sit.
 
 Do not:
-- Bake text, logos, watermarks, numbers, UI mock-ups or signatures into AI-generated images. AI text is unreliable. Add any text later as a separate real layer using Romie.
+- Bake text, logos, watermarks, numbers, UI mock-ups or signatures into AI-generated images. AI text is unreliable. Add any text later as a separate real layer using an approved project font.
 - Produce six-fingered hands, melted faces, impossible objects, garbled lettering or plastic-looking surfaces. Inspect at 100 percent zoom before accepting an image.
 - Fill the frame with clutter, neon glow, generic "AI gradient" swirls, floating dashboards, robots, brains, circuit boards, glowing globes or handshake clichés.
 - Use silk by reflex.
@@ -146,16 +118,16 @@ Always read the active project's components to confirm actual crops before produ
 
 | Use | Aspect ratio | Master size | Notes |
 |---|---|---|---|
-| Collection card cover (articles, policies, legal notices, capabilities, projects) | 1:1 | 2048 x 2048 | Subject centered, space for gradient and overlaid text. Web renditions around 920 to 1200 px, plus smaller sizes for responsive sets. |
+| Collection card cover (articles, policies, legal notices, capabilities, projects) | Component-defined | 2048 px or higher | Follow the actual card crop and leave overlay space only when the component places text on the image. Optimize responsive renditions for display size. |
 | Page hero / banner | 16:9 or 21:9 | 3200 px wide | Keep focal subject within the central safe area so it survives responsive crops. |
 | Page or section background | Wide, tileable or soft | As needed | Low contrast, no focal clutter, must stay readable under text in both themes. |
-| Open Graph / social share | 1.91:1 (1200 x 630 px delivered; produce master at 2400 x 1260) | | Keep important content inside the central 80 percent. Title text in Romie Bold, set as a real layer. Add the real logo as a separate layer. Must be legible at 600 x 315 px. |
+| Open Graph / social share | 1.91:1 (1200 x 630 px delivered; produce master at 2400 x 1260) | | Keep important content inside the central 80 percent. Render title text as a real layer using an approved font. Add the real logo as a separate layer when appropriate. Must be legible at 600 x 315 px. |
 | Square social | 1:1 | 1080 x 1080 or higher | Same rules as OG. |
 | Poster | Project-defined | | Confirm before producing. |
 
 For OG images specifically:
-- Compose them from a real layout (HTML/SVG/Canvas template or the project's OG generator) so text is crisp and uses Romie. Do not ask an image model to render the title.
-- Background art may be the page's card visual (cropped or extended), a calm silk or material field, or a poetic image tied to the page.
+- Compose them from a real layout (HTML/SVG/Canvas template or the project's OG generator) so text is crisp and uses the approved font. Do not ask an image model to render the title.
+- Background art may be the page's card visual, a material field allowed by the brand guide, or an image tied to the page.
 - Check contrast between text and background (WCAG AA or better for large text) and test with the longest title in the collection.
 - Provide a version that works on dark and light social surfaces; avoid pure white edges that vanish on light feeds.
 
@@ -165,12 +137,12 @@ Keep the source or master at the highest practical quality. Create optimized web
 
 ## 7. Production workflow
 
-1. **Discover the project.** Find the content model (frontmatter fields for image, alt, video, poster), the asset directories, the card and hero components, the build or image pipeline, the OG generator if any, and where the Romie fonts and the logo live. Note existing visuals in the same collection so the new one belongs to the set without duplicating it.
+1. **Discover the project.** Find the content model (frontmatter fields for image, alt, video, poster), the asset directories, the card and hero components, the build or image pipeline, the OG generator if any, approved fonts and logo. Note existing visuals in the same collection so the new one belongs to the set without duplicating it.
 2. **Read the full page.** Frontmatter and body (section 3).
 3. **Write the fit sentence** (section 3). If it is weak, stop.
 4. **Choose the source and treatment** (section 2). Confirm rights (section 4).
 5. **Decide whether the card gets motion** (section 8). Default: no.
-6. **Produce one asset at a time.** Review each result before starting the next. Never batch-generate a large set and pick afterwards. When using AI, give it a permitted real reference whenever one exists, state the subject, materials, light, camera and mood, and exclude text, logos and watermarks.
+6. **Produce one asset at a time.** Review each result before starting the next. Never batch-generate a large set and pick afterwards. When using AI, give it a permitted real reference whenever one exists, state the subject, materials, light, camera and mood, and exclude text, logos and watermarks. Prefer the repository owner's own drawings and photographs when provided and relevant; treat them as authored material and do not distort their meaning.
 7. **Review at real size** (section 10). Reject and redo rather than patch a weak image.
 8. **Move the selected files** from any generator output folder into the project's established asset location with descriptive, stable filenames. Never leave a site-referenced asset only in a tool's private output folder. Do not overwrite an existing asset unless explicitly asked.
 9. **Integrate** using the project's own conventions: frontmatter fields, component props, accurate alt text. Confirm every referenced path exists.
@@ -178,6 +150,8 @@ Keep the source or master at the highest practical quality. Create optimized web
 11. **Report** the final file paths, source and license, the fit sentence, what was verified and anything left undone.
 
 Descriptive filename pattern (adapt to project convention): `{collection}-{page-slug}-{short-concept}-{variant}.{ext}`, lowercase, hyphenated, no spaces, no version suffixes like "final2".
+
+For tool-specific prompts, local paths, palette, languages and brand-specific art direction, read the companion guide for the active brand. Never assume this skill's own example paths or one brand's look apply elsewhere.
 
 ---
 
@@ -211,7 +185,7 @@ Performance:
 - Typical targets: card renditions as light as possible while sharp at their display size; OG images under roughly 300 KB when possible, and well within platform limits.
 
 Accessibility:
-- Write alt text that describes the **meaningful visual content** in one clear sentence, without repeating the card title and without keyword stuffing. Existing site style is a good model: "Amber glass and forest-green forms arranged as a balanced exchange, suggesting value and pricing."
+- Write alt text that describes the **meaningful visual content** in one clear sentence, without repeating the card title and without keyword stuffing. Describe the visible subject and its meaning accurately; do not infer details the image does not show.
 - If an image is purely decorative and the component supports it, use an empty `alt=""`.
 - Check text legibility on every overlay (gradient scrims, contrast ratio) in both light and dark themes.
 - Never convey meaning through color alone.
@@ -221,7 +195,7 @@ Accessibility:
 ## 10. Review checklist (every asset, before calling it done)
 
 - [ ] Full page (frontmatter and body) was read; fit sentence written and still true.
-- [ ] Stance chosen (Numerimondes / client empowered / neutral) and target feeling stated; no vulnerability, bills, debt, anxiety or period-drama cues.
+- [ ] Stance chosen for the active brand / client empowered / neutral and target feeling stated; no vulnerability, bills, debt, anxiety or period-drama cues.
 - [ ] First-glance test passed: a stranger's one-sentence description matches the page topic and the target feeling.
 - [ ] Looks corporate and premium, at the level of a respected technology or consulting publisher.
 - [ ] No AI alteration or outpainting of a recognizable masterwork.
@@ -229,14 +203,14 @@ Accessibility:
 - [ ] No baked-in text, logo, watermark or garbled glyphs; the real logo was never redrawn.
 - [ ] No anatomical, physical or material artifacts at 100 percent zoom.
 - [ ] Readable at thumbnail size; subject centered with room for overlays.
-- [ ] Not a duplicate or near-duplicate of another card, and not silk by reflex.
+- [ ] Not a duplicate or near-duplicate of another card, and not by reflexively reusing the same motif.
 - [ ] Correct aspect ratio and crop for the actual component; safe areas respected.
 - [ ] Renditions generated; file sizes reasonable; format supported by the project.
 - [ ] File lives in the project's asset location; the path in content/frontmatter resolves; no files left only in a generator's output folder.
 - [ ] Alt text is accurate and does not repeat the title.
 - [ ] Contrast and legibility pass in light and dark themes.
 - [ ] Video (if any): 5 to 6 seconds, muted, looping, not preloaded, poster present, hover and focus work, reduced-motion and touch show the still, failure falls back gracefully.
-- [ ] OG image (if any): text rendered as a real layer in Romie, legible at 600 x 315, central safe area respected, tested with the longest title.
+- [ ] OG image (if any): text rendered as a real layer in the project-approved typeface, legible at 600 x 315, central safe area respected, tested with the longest title.
 - [ ] Final report lists paths, provenance and anything that needs the owner's decision.
 
 ---
@@ -246,12 +220,12 @@ Accessibility:
 Stop and ask rather than guess when:
 - The page's subject is ambiguous or the fit sentence is weak.
 - Rights or provenance of a source are unclear.
-- The Romie fonts, the official logo file or the asset directory cannot be located.
+- The project-approved font or official logo file cannot be located.
 - The request would require showing real people, real client names, real results or real incidents.
 - A change would overwrite or replace an existing approved visual.
 - The component does not support a needed capability (video, srcset) and adding it would change a shared API.
 - A page is a draft, and it is unclear whether its visual should signal draft or ready status.
-- The stance (Numerimondes, client or neutral) is not obvious from the page.
+- The stance (brand, client or neutral) is not obvious from the page.
 - The first-glance test fails twice in a row for the same page.
 
 When asking, batch **all** open questions into a single message with a recommended default for each, so the owner can answer once.
