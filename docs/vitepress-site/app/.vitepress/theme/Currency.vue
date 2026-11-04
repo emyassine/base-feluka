@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useAttrs } from 'vue'
+import { readManagedStorage } from './browser-storage'
 
 defineOptions({ inheritAttrs: false })
 const props = defineProps<{ base: string; nonBaseTooltip?: string }>()
@@ -13,14 +14,18 @@ const selectedValue = computed(() => values[displayedCurrency.value] ?? '')
 const isApproximate = computed(() => displayedCurrency.value !== props.base.toUpperCase())
 function syncCurrency(event?: Event) {
   const selected = event instanceof CustomEvent ? event.detail : undefined
-  const saved = selected ?? (() => { try { return localStorage.getItem('spmpst-currency') } catch { return null } })()
+  const saved = selected ?? readManagedStorage('spmpst-currency')
   if (typeof saved === 'string' && /^[a-z]{3}$/i.test(saved)) currency.value = saved.toUpperCase()
 }
 onMounted(() => {
   syncCurrency()
   window.addEventListener('spmpst-currency-change', syncCurrency)
+  window.addEventListener('spmpst-storage-consent-change', syncCurrency)
 })
-onUnmounted(() => window.removeEventListener('spmpst-currency-change', syncCurrency))
+onUnmounted(() => {
+  window.removeEventListener('spmpst-currency-change', syncCurrency)
+  window.removeEventListener('spmpst-storage-consent-change', syncCurrency)
+})
 </script>
 
 <template>

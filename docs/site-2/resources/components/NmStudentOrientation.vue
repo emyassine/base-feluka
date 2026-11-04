@@ -14,6 +14,7 @@
 -->
 <script lang="ts">
 /* ═══════════════════════════ ENGINE ═══════════════════════════ */
+import { allowsOptionalStorage } from '@spmpst/browser-storage'
 
 export type Language = 'en' | 'fr'
 export type PathwayId = 'technology' | 'business' | 'health' | 'education' | 'creative' | 'community'
@@ -310,6 +311,7 @@ export class Catalog {
 /* ── IndexedDB: large catalogs are stored once in the browser, never the student's answers ── */
 let dbPromise: Promise<IDBDatabase | null> | null = null
 function db(): Promise<IDBDatabase | null> {
+  if (!allowsOptionalStorage('offline')) return Promise.resolve(null)
   return (dbPromise ??= new Promise((res) => {
     try {
       const r = indexedDB.open('nm-orientation-catalogs', 1)
@@ -328,6 +330,18 @@ function req<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest
 export const idbPut = (s: StoredSource) => req('readwrite', (st) => st.put(s))
 export const idbAll = async (): Promise<StoredSource[]> => (await req<StoredSource[]>('readonly', (st) => st.getAll())) ?? []
 export const idbClear = () => req('readwrite', (st) => st.clear())
+function closeOrientationDatabase() {
+  const openedDatabase = dbPromise
+  dbPromise = null
+  void openedDatabase?.then((database) => database?.close())
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('spmpst-storage-consent-change', closeOrientationDatabase)
+  window.addEventListener('spmpst-storage-removing', (event) => {
+    const detail = event instanceof CustomEvent ? event.detail : undefined
+    if (detail?.kind === 'indexedDB' && detail.name === 'nm-orientation-catalogs') closeOrientationDatabase()
+  })
+}
 
 /* ── profile: every answer becomes weighted, attributable evidence ── */
 const EXP_W: Record<ExpKind, number> = { job: 1.2, internship: 1.2, volunteer: 1.1, project: 1.1, club: 1, competition: 1, training: 0.9, hobby: 0.9 }

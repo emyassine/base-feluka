@@ -9,7 +9,8 @@ layout: home-subheader
 ---
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { readManagedStorage, writeManagedStorage } from '@spmpst/browser-storage'
 import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
@@ -26,12 +27,18 @@ const localReviews = ref<any[]>([])
 const form = ref({ name: '', rating: 5, text: '' })
 const formSent = ref(false)
 onMounted(() => {
-  try {
-    localReviews.value = JSON.parse(localStorage.getItem('nm-reviews') || '[]')
-    basket.value = JSON.parse(localStorage.getItem('nm-brief') || '[]').filter((id: string) => db.services.some((s: any) => s.id === id))
-  } catch { /* storage unavailable */ }
+  readMarketplaceStorage()
+  window.addEventListener('spmpst-storage-consent-change', syncMarketplaceStorage)
 })
-function persist(key: string, value: unknown) { try { localStorage.setItem(key, JSON.stringify(value)) } catch { /* ignore */ } }
+onUnmounted(() => window.removeEventListener('spmpst-storage-consent-change', syncMarketplaceStorage))
+function readMarketplaceStorage() {
+  try {
+    localReviews.value = JSON.parse(readManagedStorage('nm-reviews') || '[]')
+    basket.value = JSON.parse(readManagedStorage('nm-brief') || '[]').filter((id: string) => db.services.some((s: any) => s.id === id))
+  } catch { localReviews.value = []; basket.value = [] }
+}
+function syncMarketplaceStorage() { readMarketplaceStorage() }
+function persist(key: string, value: unknown) { writeManagedStorage(key, JSON.stringify(value)) }
 const allReviews = computed(() => [...localReviews.value, ...db.reviews])
 const ratingOf = (reviews: any[]) => ({ count: reviews.length, avg: reviews.length ? reviews.reduce((t, r) => t + r.rating, 0) / reviews.length : 0 })
 const serviceRating = (id: string) => ratingOf(allReviews.value.filter((r: any) => r.service === id && r.verified))

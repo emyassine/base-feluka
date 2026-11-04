@@ -11,7 +11,9 @@ import { projectComponents, registerProjectComponents } from '@generated/compone
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import CollectionSearch from './CollectionSearch.vue'
 import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
+import ManageCookies from './ManageCookies.vue'
 import TopbarActions from './TopbarActions.vue'
+import TopbarCurrency from './TopbarCurrency.vue'
 import Currency from './Currency.vue'
 import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
@@ -669,6 +671,8 @@ const MermaidLayout = {
       }, {
       ...layoutSlots,
       'layout-top': siteBanner,
+      'layout-bottom': () => h(Fragment, null, [layoutSlots['layout-bottom']?.(), h(ManageCookies)]),
+      'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(TopbarCurrency)]),
       'nav-bar-content-after': () => h(Fragment, null, [
         (articleLayout() || homeSubheaderLayout())
           ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: renderSubheaderActions })

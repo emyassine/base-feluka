@@ -1,20 +1,34 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { readManagedStorage, writeManagedStorage } from '@spmpst/browser-storage'
 
 const supportedCurrencies = ['MAD', 'EUR', 'USD'] as const
 type Currency = (typeof supportedCurrencies)[number]
 const currency = ref<Currency>('MAD')
 
 onMounted(() => {
-  try {
-    const saved = localStorage.getItem('nm-marketplace-currency')
-    if (supportedCurrencies.includes(saved as Currency)) currency.value = saved as Currency
-  } catch { /* storage unavailable */ }
+  const saved = readManagedStorage('spmpst-currency')
+  if (supportedCurrencies.includes(saved as Currency)) currency.value = saved as Currency
+  window.addEventListener('spmpst-currency-change', syncFromSharedCurrency)
+  window.addEventListener('spmpst-storage-consent-change', onConsentChange)
 })
 
 watch(currency, (value) => {
-  try { localStorage.setItem('nm-marketplace-currency', value) } catch { /* storage unavailable */ }
-  window.dispatchEvent(new CustomEvent('nm-marketplace-currency-change', { detail: value }))
+  writeManagedStorage('spmpst-currency', value)
+  window.dispatchEvent(new CustomEvent('spmpst-currency-change', { detail: value }))
+})
+
+function syncFromSharedCurrency(event: Event) {
+  const value = event instanceof CustomEvent ? event.detail : undefined
+  if (supportedCurrencies.includes(value as Currency)) currency.value = value as Currency
+}
+function onConsentChange() {
+  const saved = readManagedStorage('spmpst-currency')
+  if (supportedCurrencies.includes(saved as Currency)) currency.value = saved as Currency
+}
+onUnmounted(() => {
+  window.removeEventListener('spmpst-currency-change', syncFromSharedCurrency)
+  window.removeEventListener('spmpst-storage-consent-change', onConsentChange)
 })
 </script>
 

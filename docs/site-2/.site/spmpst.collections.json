@@ -41,11 +41,21 @@
 			  "en": "<p> Policies are formal rules and guiding principles that define our boundaries, clarify what we offer and what falls outside our scope, and establish the conditions under which we work and make decisions. </p> <p> We have chosen to make our policies explicit and accessible for several reasons:</p><ul><li><strong>Set Clear Expectations:</strong> Help our clients, partners, and workforce understand their respective responsibilities, the standards we uphold, and what they can expect when working with us. </li><li><strong>Promote Consistency and Fairness:</strong> Establish common principles that guide our actions, encourage fair treatment, reduce ambiguity, and support compliance with applicable laws and professional standards.</li><li><strong>Manage Risk: </strong>Provide a structured approach to identifying, assessing, and addressing operational, legal, financial, and reputational risks.</li><li><strong>Support Informed Decision-Making:</strong> Give everyone involved a clear framework for making responsible, consistent, and well-informed decisions while allowing appropriate autonomy and professional judgment.</li></ul>"
       },
       "categoryFile": "spmpst.category.json"
+    },
+    {
+      "id": "articles",
+      "dir": "004-articles",
+      "route": "articles",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": { "en": "Articles" },
+      "description": { "en": "Practical guides and explanations for using Numerimondes sites and services." },
+      "categoryFile": "spmpst.category.json"
     }
   ],
   "$schema": "../public/api/beta/schemas/spmpst-standard/collections.schema.json",
   "emptyCollection": {
-    "en": "No legal notices published yet.",
-    "fr": "No legal notices published yet."
+    "en": "No entries published yet.",
+    "fr": "Aucun contenu publié pour le moment."
   }
 }

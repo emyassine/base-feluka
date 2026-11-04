@@ -1,9 +1,8 @@
-export type OptionalStorageCategory = 'preferences' | 'marketplace' | 'offline' | 'other'
+export type OptionalStorageCategory = 'offline' | 'other'
+export type StorageCategory = 'necessary' | OptionalStorageCategory
 
 export interface StorageConsent {
   version: 1
-  preferences: boolean
-  marketplace: boolean
   offline: boolean
   other: boolean
   updatedAt: string
@@ -11,30 +10,26 @@ export interface StorageConsent {
 
 export interface BrowserStorageEntry {
   kind: 'cookie' | 'localStorage' | 'sessionStorage' | 'indexedDB' | 'cache' | 'serviceWorker'
-  name: string
-  category: 'necessary' | OptionalStorageCategory
+  /** Friendly label for the UI; internal browser keys are deliberately not exposed. */
+  label: string
+  category: StorageCategory
   required: boolean
+  descriptionKey: string
+  internalName: string
 }
 
 export const CONSENT_COOKIE = 'spmpst-consent'
 const CONSENT_MAX_AGE = 60 * 60 * 24 * 180
-const STORAGE_KEYS: Record<string, OptionalStorageCategory> = {
-  'vitepress-theme-appearance': 'preferences',
-  'spmpst-currency': 'preferences',
-  'nm-marketplace-currency': 'preferences',
-  'nm-brief': 'marketplace',
-  'nm-reviews': 'marketplace',
-  'nm-orientation-catalogs': 'offline',
+const NECESSARY_KEYS: Record<string, string> = {
+  'vitepress-theme-appearance': 'theme',
+  'spmpst-currency': 'currency',
+  'nm-marketplace-currency': 'currency',
+  'nm-brief': 'marketplace-basket',
+  'nm-reviews': 'marketplace-reviews',
 }
+const OFFLINE_DATABASES = new Set(['nm-orientation-catalogs'])
 
-const deniedConsent = (): StorageConsent => ({
-  version: 1,
-  preferences: false,
-  marketplace: false,
-  offline: false,
-  other: false,
-  updatedAt: '',
-})
+const deniedConsent = (): StorageConsent => ({ version: 1, offline: false, other: false, updatedAt: '' })
 
 function readCookie(name: string): string | null {
   if (typeof document === 'undefined') return null
@@ -49,24 +44,15 @@ export function getStorageConsent(): StorageConsent | null {
   try {
     const parsed = JSON.parse(decodeURIComponent(value)) as Partial<StorageConsent>
     if (parsed.version !== 1) return null
-    return {
-      version: 1,
-      preferences: parsed.preferences === true,
-      marketplace: parsed.marketplace === true,
-      offline: parsed.offline === true,
-      other: parsed.other === true,
-      updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : '',
-    }
-  } catch {
-    return null
-  }
+    return { ...deniedConsent(), offline: parsed.offline === true, other: parsed.other === true, updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : '' }
+  } catch { return null }
 }
 
 export function allowsOptionalStorage(category: OptionalStorageCategory): boolean {
   return getStorageConsent()?.[category] === true
 }
 
-export function saveStorageConsent(value: Omit<StorageConsent, 'version' | 'updatedAt'>): StorageConsent {
+export function saveStorageConsent(value: Pick<StorageConsent, 'offline' | 'other'>): StorageConsent {
   const consent: StorageConsent = { version: 1, ...value, updatedAt: new Date().toISOString() }
   const secure = window.location.protocol === 'https:' ? '; Secure' : ''
   document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(JSON.stringify(consent))}; Max-Age=${CONSENT_MAX_AGE}; Path=/; SameSite=Lax${secure}`
@@ -74,41 +60,40 @@ export function saveStorageConsent(value: Omit<StorageConsent, 'version' | 'upda
   return consent
 }
 
+export function readManagedStorage(key: string): string | null {
+  try { return window.localStorage.getItem(key) } catch { return null }
+}
+export function writeManagedStorage(key: string, value: string): boolean {
+  try { window.localStorage.setItem(key, value); return true } catch { return false }
+}
 export function readOptionalStorage(key: string, category: OptionalStorageCategory): string | null {
   if (!allowsOptionalStorage(category)) return null
   try { return window.localStorage.getItem(key) } catch { return null }
 }
-
 export function writeOptionalStorage(key: string, value: string, category: OptionalStorageCategory): boolean {
   if (!allowsOptionalStorage(category)) return false
-  try {
-    window.localStorage.setItem(key, value)
-    return true
-  } catch {
-    return false
-  }
+  try { window.localStorage.setItem(key, value); return true } catch { return false }
 }
-
-export function storageCategoryForKey(key: string): OptionalStorageCategory {
-  return STORAGE_KEYS[key] ?? 'other'
+export function storageCategoryForKey(key: string): StorageCategory {
+  if (Object.hasOwn(NECESSARY_KEYS, key)) return 'necessary'
+  return key === 'nm-orientation-catalogs' ? 'offline' : 'other'
 }
 
 export async function clearOptionalStorage(category: OptionalStorageCategory): Promise<void> {
   try {
-    const keys = Object.keys(window.localStorage)
-    for (const key of keys) {
-      if (storageCategoryForKey(key) === category) window.localStorage.removeItem(key)
-    }
+    const keys = Array.from({ length: window.localStorage.length }, (_, index) => window.localStorage.key(index)).filter((key): key is string => key !== null)
+    for (const key of keys) if (storageCategoryForKey(key) === category) window.localStorage.removeItem(key)
   } catch { /* browser storage may be unavailable */ }
-
-  if (category === 'offline' && typeof indexedDB !== 'undefined') {
-    await new Promise<void>((resolve) => {
-      try {
-        const request = indexedDB.deleteDatabase('nm-orientation-catalogs')
-        request.onsuccess = request.onerror = request.onblocked = () => resolve()
-      } catch { resolve() }
-    })
+  if (category === 'offline') {
+    for (const name of OFFLINE_DATABASES) await removeBrowserStorageEntry({ kind: 'indexedDB', internalName: name, label: 'Offline catalogue', category, required: false, descriptionKey: 'offline-catalogue' })
+  } else {
+    const entries = await getBrowserStorageInventory()
+    for (const entry of entries) if (entry.category === 'other') await removeBrowserStorageEntry(entry)
   }
+}
+
+function entry(kind: BrowserStorageEntry['kind'], internalName: string, category: StorageCategory, label: string, descriptionKey: string): BrowserStorageEntry {
+  return { kind, internalName, category, label, descriptionKey, required: category === 'necessary' }
 }
 
 export async function getBrowserStorageInventory(): Promise<BrowserStorageEntry[]> {
@@ -116,60 +101,54 @@ export async function getBrowserStorageInventory(): Promise<BrowserStorageEntry[
   try {
     for (const cookie of document.cookie.split(';')) {
       const name = cookie.trim().split('=', 1)[0]
-      if (name) entries.push({ kind: 'cookie', name, category: name === CONSENT_COOKIE ? 'necessary' : 'other', required: name === CONSENT_COOKIE })
+      if (name) entries.push(entry('cookie', name, name === CONSENT_COOKIE ? 'necessary' : 'other', name === CONSENT_COOKIE ? 'Consent choice' : 'Site cookie', name === CONSENT_COOKIE ? 'consent' : 'site-cookie'))
     }
   } catch { /* cookie access may be unavailable */ }
   try {
     for (let index = 0; index < window.localStorage.length; index += 1) {
       const name = window.localStorage.key(index)
-      if (name) entries.push({ kind: 'localStorage', name, category: storageCategoryForKey(name), required: false })
+      if (!name) continue
+      const key = NECESSARY_KEYS[name]
+      const category = storageCategoryForKey(name)
+      entries.push(entry('localStorage', name, category, key ? ({ theme: 'Theme choice', currency: 'Currency choice', 'marketplace-basket': 'Marketplace basket', 'marketplace-reviews': 'Marketplace reviews' } as Record<string, string>)[key] : category === 'offline' ? 'Offline catalogue' : 'Site setting', key ?? category))
     }
   } catch { /* local storage may be unavailable */ }
   try {
     for (let index = 0; index < window.sessionStorage.length; index += 1) {
       const name = window.sessionStorage.key(index)
-      if (name) entries.push({ kind: 'sessionStorage', name, category: 'other', required: false })
+      if (name) entries.push(entry('sessionStorage', name, 'other', 'Temporary site data', 'other'))
     }
   } catch { /* session storage may be unavailable */ }
   try {
     const databases = await indexedDB.databases()
-    for (const database of databases) {
-      if (database.name) entries.push({ kind: 'indexedDB', name: database.name, category: database.name === 'nm-orientation-catalogs' ? 'offline' : 'other', required: false })
+    for (const database of databases) if (database.name) {
+      const category = OFFLINE_DATABASES.has(database.name) ? 'offline' : 'other'
+      entries.push(entry('indexedDB', database.name, category, category === 'offline' ? 'Offline catalogue' : 'Site database', category === 'offline' ? 'offline-catalogue' : 'other'))
     }
   } catch { /* database enumeration is not supported in every browser */ }
-  try {
-    if ('caches' in window) for (const name of await window.caches.keys()) entries.push({ kind: 'cache', name, category: 'other', required: false })
-  } catch { /* Cache Storage may be unavailable */ }
+  try { if ('caches' in window) for (const name of await window.caches.keys()) entries.push(entry('cache', name, 'other', 'Cached site files', 'other')) } catch { /* Cache Storage may be unavailable */ }
   try {
     const registrations = await navigator.serviceWorker?.getRegistrations()
-    for (const registration of registrations ?? []) entries.push({ kind: 'serviceWorker', name: registration.scope, category: 'other', required: false })
+    for (const registration of registrations ?? []) entries.push(entry('serviceWorker', registration.scope, 'other', 'Background site worker', 'other'))
   } catch { /* Service Workers may be unavailable */ }
-  return entries.sort((left, right) => left.kind.localeCompare(right.kind) || left.name.localeCompare(right.name))
+  return entries.sort((left, right) => left.kind.localeCompare(right.kind) || left.label.localeCompare(right.label))
 }
 
-export async function removeBrowserStorageEntry(entry: BrowserStorageEntry): Promise<void> {
-  if (entry.required) return
-  if (entry.kind === 'cookie') {
+export async function removeBrowserStorageEntry(item: BrowserStorageEntry): Promise<void> {
+  if (item.required) return
+  const detail = { kind: item.kind, name: item.internalName }
+  window.dispatchEvent(new CustomEvent('spmpst-storage-removing', { detail }))
+  if (item.kind === 'cookie') {
     const secure = window.location.protocol === 'https:' ? '; Secure' : ''
-    document.cookie = `${encodeURIComponent(entry.name)}=; Max-Age=0; Path=/; SameSite=Lax${secure}`
-  } else if (entry.kind === 'localStorage') {
-    try { window.localStorage.removeItem(entry.name) } catch { /* unavailable */ }
-  } else if (entry.kind === 'sessionStorage') {
-    try { window.sessionStorage.removeItem(entry.name) } catch { /* unavailable */ }
-  } else if (entry.kind === 'indexedDB') {
-    await new Promise<void>((resolve) => {
-      try {
-        const request = indexedDB.deleteDatabase(entry.name)
-        request.onsuccess = request.onerror = request.onblocked = () => resolve()
-      } catch { resolve() }
-    })
-  } else if (entry.kind === 'cache') {
-    try { await window.caches.delete(entry.name) } catch { /* unavailable */ }
-  } else if (entry.kind === 'serviceWorker') {
-    try {
-      const registrations = await navigator.serviceWorker?.getRegistrations()
-      const registration = registrations?.find((candidate) => candidate.scope === entry.name)
-      await registration?.unregister()
-    } catch { /* unavailable */ }
+    document.cookie = `${encodeURIComponent(item.internalName)}=; Max-Age=0; Path=/; SameSite=Lax${secure}`
+  } else if (item.kind === 'localStorage') { try { window.localStorage.removeItem(item.internalName) } catch { /* unavailable */ } }
+  else if (item.kind === 'sessionStorage') { try { window.sessionStorage.removeItem(item.internalName) } catch { /* unavailable */ } }
+  else if (item.kind === 'indexedDB') await new Promise<void>((resolve) => {
+    try { const request = indexedDB.deleteDatabase(item.internalName); request.onsuccess = request.onerror = request.onblocked = () => resolve() } catch { resolve() }
+  })
+  else if (item.kind === 'cache') { try { await window.caches.delete(item.internalName) } catch { /* unavailable */ } }
+  else if (item.kind === 'serviceWorker') {
+    try { const regs = await navigator.serviceWorker?.getRegistrations(); await regs?.find((reg) => reg.scope === item.internalName)?.unregister() } catch { /* unavailable */ }
   }
+  window.dispatchEvent(new CustomEvent('spmpst-storage-removed', { detail }))
 }

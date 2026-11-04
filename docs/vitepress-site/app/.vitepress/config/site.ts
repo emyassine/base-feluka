@@ -34,7 +34,54 @@ const siteThemeInitScript = String.raw`(() => {
   let preference = 'system';
   let scrollReadyFrame;
 
+  const consentAllows = (category) => {
+    if (category === 'necessary') return true;
+    try {
+      const entry = document.cookie.split(';').map((part) => part.trim()).find((part) => part.startsWith('spmpst-consent='));
+      if (!entry) return false;
+      const saved = JSON.parse(decodeURIComponent(entry.slice('spmpst-consent='.length)));
+      return saved && saved.version === 1 && saved[category] === true;
+    } catch (_) { return false; }
+  };
+  const categoryForStorageKey = (key) => ({
+    'vitepress-theme-appearance': 'necessary',
+    'spmpst-currency': 'necessary',
+    'nm-marketplace-currency': 'necessary',
+    'nm-brief': 'necessary',
+    'nm-reviews': 'necessary',
+  })[key] || 'other';
+  const isSiteStorage = (storage) => {
+    try { return storage === window.localStorage || storage === window.sessionStorage; }
+    catch (_) { return false; }
+  };
+  const originalGetItem = Storage.prototype.getItem;
+  const originalSetItem = Storage.prototype.setItem;
+  Storage.prototype.getItem = function (key) {
+    if (isSiteStorage(this) && !consentAllows(categoryForStorageKey(String(key)))) return null;
+    return originalGetItem.call(this, key);
+  };
+  Storage.prototype.setItem = function (key, value) {
+    if (isSiteStorage(this) && !consentAllows(categoryForStorageKey(String(key)))) return;
+    return originalSetItem.call(this, key, value);
+  };
+  const cookieDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie');
+  if (cookieDescriptor && cookieDescriptor.configurable && cookieDescriptor.get && cookieDescriptor.set) {
+    Object.defineProperty(Document.prototype, 'cookie', {
+      configurable: true,
+      enumerable: cookieDescriptor.enumerable,
+      get() { return cookieDescriptor.get.call(this); },
+      set(value) {
+        const assignment = String(value);
+        const name = assignment.split('=', 1)[0].trim();
+        const deleting = /(?:^|;)\s*max-age\s*=\s*0(?:;|$)/i.test(assignment);
+        if (name !== 'spmpst-consent' && !deleting && !consentAllows('other')) return;
+        return cookieDescriptor.set.call(this, assignment);
+      },
+    });
+  }
+
   const readPreference = () => {
+    if (!consentAllows('necessary')) return;
     try {
       const saved = localStorage.getItem(appearanceKey);
       preference = choices.includes(saved) ? saved : 'system';
@@ -82,6 +129,7 @@ const siteThemeInitScript = String.raw`(() => {
 
   new MutationObserver(syncFromVitePress).observe(root, { attributes: true, attributeFilter: ['class'] });
   media.addEventListener('change', () => { if (preference === 'system') apply(); });
+  window.addEventListener('spmpst-storage-consent-change', syncFromVitePress);
   document.addEventListener('DOMContentLoaded', syncFromVitePress, { once: true });
   syncFromVitePress();
 })();`
