@@ -6,8 +6,8 @@ description: "A practical overview of data handled by the Numerimondes website."
 summary: "Describes contact handling, browser storage choices, external media, and hosting logs."
 category: "privacy"
 tags: [privacy, website, data]
-image: "/images/policies/browser-storage.jpg"
-imageAlt: "A cobalt frame with a coral threshold, suggesting control over website data and browser storage."
+image: "/images/legal/site-privacy.jpg"
+imageAlt: "Layered blue and teal glass protects a small amber object, representing website data privacy."
 ---
 # Privacy and Site Data
 
