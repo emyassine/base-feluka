@@ -1,7 +1,7 @@
 ---
 layout: home-subheader
-sidebarTitle: "Software & Automation"
-title: "Software & Automation | Numerimondes"
+sidebarTitle: "Software and Automation"
+title: "Software and Automation | Numerimondes"
 icon: "@spmpst::icon::code-xml"
 description: "Approaches to custom applications, integrations, information systems and workflow automation."
 summary: "Design software around users, existing systems, constraints and long-term ownership."
@@ -9,7 +9,7 @@ status: "Ready for review"
 category: "software-automation"
 tags: [software, automation, integration, artificial-intelligence]
 ---
-# Software & Automation
+# Software and Automation
 
 Software is most useful when it fits the people, information and decisions involved in a real task. Numerimondes explores application development, integrations and automation as ways to address a defined need, with attention to deployment, security, maintainability and ownership.
 

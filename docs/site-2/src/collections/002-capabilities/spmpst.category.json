@@ -3,9 +3,9 @@
   "description": { "en": "Methods, expertise and areas of exploration across Numerimondes." },
   "categories": [
     { "id": "business-performance", "label": { "en": "Business Performance" } },
-    { "id": "software-automation", "label": { "en": "Software & Automation" } },
-    { "id": "infrastructure-operations", "label": { "en": "Infrastructure & Connected Operations" } },
-    { "id": "people-organizations", "label": { "en": "People & Organizations" } },
-    { "id": "research-ventures", "label": { "en": "Research & Ventures" } }
+    { "id": "software-automation", "label": { "en": "Software and Automation" } },
+    { "id": "infrastructure-operations", "label": { "en": "Infrastructure and Connected Operations" } },
+    { "id": "people-organizations", "label": { "en": "People and Organizations" } },
+    { "id": "research-ventures", "label": { "en": "Research and Ventures" } }
   ]
 }

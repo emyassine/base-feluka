@@ -1,7 +1,7 @@
 ---
 layout: home-subheader
-sidebarTitle: "People & Organizations"
-title: "People & Organizations | Numerimondes"
+sidebarTitle: "People and Organizations"
+title: "People and Organizations | Numerimondes"
 icon: "@spmpst::icon::users-round"
 description: "Ways to examine coordination, workforce development, training and organizational processes."
 summary: "Improve how people, responsibilities and information come together around shared work."
@@ -9,7 +9,7 @@ status: "Ready for review"
 category: "people-organizations"
 tags: [organization, training, coordination, workforce]
 ---
-# People & Organizations
+# People and Organizations
 
 Organizational performance depends on how responsibilities, information and decisions come together. This capability looks at the conditions that help teams coordinate their work and adapt processes as needs change.
 

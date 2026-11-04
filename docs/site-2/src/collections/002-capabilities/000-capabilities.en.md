@@ -17,10 +17,10 @@ The right mix of Numerimondes and specialist partner expertise depends on each m
 ## Explore by area
 
 - [Business Performance](/capabilities/business-performance) — understand operations, commercial workflows and improvement opportunities.
-- [Software & Automation](/capabilities/software-automation) — shape applications, integrations and workflow automation around real work.
-- [Infrastructure & Connected Operations](/capabilities/infrastructure-connected-operations) — plan dependable systems for teams, equipment and field environments.
-- [People & Organizations](/capabilities/people-organizations) — examine coordination, learning and workforce needs.
-- [Research & Ventures](/capabilities/research-ventures) — explore new concepts, technologies and projects.
+- [Software and Automation](/capabilities/software-automation) — shape applications, integrations and workflow automation around real work.
+- [Infrastructure and Connected Operations](/capabilities/infrastructure-connected-operations) — plan dependable systems for teams, equipment and field environments.
+- [People and Organizations](/capabilities/people-organizations) — examine coordination, learning and workforce needs.
+- [Research and Ventures](/capabilities/research-ventures) — explore new concepts, technologies and projects.
 
 ## Capabilities, services and ventures
 

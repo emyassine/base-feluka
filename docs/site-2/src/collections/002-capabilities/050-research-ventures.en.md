@@ -1,7 +1,7 @@
 ---
 layout: home-subheader
-sidebarTitle: "Research & Ventures"
-title: "Research & Ventures | Numerimondes"
+sidebarTitle: "Research and Ventures"
+title: "Research and Ventures | Numerimondes"
 icon: "@spmpst::icon::flask-conical"
 description: "Explore research questions, emerging technologies, prototypes and new business concepts."
 summary: "Move from a useful question to evidence, a prototype or a clear decision about what comes next."
@@ -9,7 +9,7 @@ status: "Ready for review"
 category: "research-ventures"
 tags: [research, innovation, prototyping, ventures]
 ---
-# Research & Ventures
+# Research and Ventures
 
 Research and venture development help examine possibilities before an organization commits to a full implementation. The work can begin with a question about a market, an emerging technology, a business model or an unmet operational need.
 

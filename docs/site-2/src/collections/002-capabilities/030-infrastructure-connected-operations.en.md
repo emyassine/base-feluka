@@ -1,7 +1,7 @@
 ---
 layout: home-subheader
-sidebarTitle: "Infrastructure & Operations"
-title: "Infrastructure & Connected Operations | Numerimondes"
+sidebarTitle: "Infrastructure and Operations"
+title: "Infrastructure and Connected Operations | Numerimondes"
 icon: "@spmpst::icon::server"
 description: "Planning for self-hosted systems, monitoring, equipment integration and connected field work."
 summary: "Connect infrastructure decisions to service continuity, operating conditions and support capacity."
@@ -9,7 +9,7 @@ status: "Ready for review"
 category: "infrastructure-operations"
 tags: [infrastructure, self-hosting, monitoring, connected-devices]
 ---
-# Infrastructure & Connected Operations
+# Infrastructure and Connected Operations
 
 Infrastructure choices shape how reliably an organization can deliver its work and how much control it has over systems and data. The right design depends on workload, connectivity, recovery needs, technical ownership and the conditions in which people operate.
 
