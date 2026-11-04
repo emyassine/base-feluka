@@ -1,8 +1,10 @@
 {
   "title": { "en": "Legal notices" },
-  "description": { "en": "Privacy, publisher identity and legal information for Numerimondes." },
+  "description": { "en": "Website terms, privacy notices, publisher identity and legal information for Numerimondes." },
   "categories": [
     { "id": "privacy", "label": { "en": "Privacy and data" } },
-    { "id": "company", "label": { "en": "Publisher information" } }
+    { "id": "company", "label": { "en": "Publisher information" } },
+    { "id": "website-use", "label": { "en": "Website terms" } },
+    { "id": "website-development", "label": { "en": "Website development terms" } }
   ]
 }

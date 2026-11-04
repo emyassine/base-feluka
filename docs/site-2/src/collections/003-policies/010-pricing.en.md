@@ -98,7 +98,7 @@ Custom business software, internal applications, dashboards, integrations, repor
 
 Business websites designed around discoverability, useful content and customer action. SEO is included. Professional practices, tradespeople and SMEs can use showcase websites; retailers and manufacturers can present products; training, fitness and local services can take bookings; other businesses can connect inquiries to a management or sales system.
 
-**Website creation starts at 25,000 Dhs HT, including static websites; SEO is included.** Pages, languages, integrations, content and search requirements are agreed in the proposal. See the [Website policy](/policies/website-policy) for the minimum and scope boundaries.
+**Website development starts at 25,000 Dhs HT, including static websites; SEO is included.** Pages, languages, integrations, content and search requirements are agreed in the proposal. See the [Website Development Policy](/policies/website-development-policy) for the minimum and scope boundaries.
 
 ### <span class='silky-bbi'>Infrastructure and security</span> {#infrastructure}
 

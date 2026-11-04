@@ -1,18 +1,18 @@
 ---
 layout: home-subheader
-sidebarTitle: "Website policy"
-title: "Website Policy | Numerimondes"
+sidebarTitle: "Website development policy"
+title: "Website Development Policy | Numerimondes"
 image: "/images/home/showcase-capabilities/digital-after.jpg"
 imageAlt: "Digital website design concept"
 icon: "@spmpst::icon::globe"
-description: "Minimum price and scope boundaries for website projects by Numerimondes."
+description: "Commercial minimum price and scope boundaries for website development projects by Numerimondes."
 summary: "Website projects start at 25,000 Dhs HT, including static websites."
 status: "Ready for review"
 category: "commercial"
-tags: [websites, pricing, commercial-policy]
+tags: [websites, development, pricing, commercial-policy]
 ---
 
-# Website policy
+# Website development policy
 
 Website projects start at **25,000 Dhs HT**. This minimum applies to every new website project, including a static website. A smaller page count or simpler technical setup does not lower the minimum project price.
 
@@ -37,5 +37,7 @@ These items are included only when the proposal lists them. The proposal also id
 ## What we do not offer
 
 We do not take on a new website project below the **25,000 Dhs HT** minimum, including static-site projects. We do not treat hosting, domain fees, ongoing maintenance, support or additional SEO work as included unless the written proposal says so. We do not promise a search position or business result.
+
+This policy describes the commercial baseline for **website development services**. It does not govern ordinary access to or use of this public website. Those rules are in the [Website Terms of Use](/legal/website-terms-of-use). The [Website Development Terms and Conditions](/legal/website-development-terms-and-conditions) and the signed proposal or agreement govern a specific development project.
 
 For the broader commercial approach, see [Pricing and Engagements](/policies/pricing). To discuss a project, [contact Numerimondes](/company/contact?topic=quote).

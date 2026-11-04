@@ -10,6 +10,8 @@ tags: [publisher, legal-notice, contact]
 
 # Publisher and website information
 
+This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to publisher identity, website infrastructure and related operational information.
+
 ## Publisher identity
 
 ### Legal entity
@@ -70,6 +72,11 @@ The remote backup destination, storage region, retention, rotation and deletion 
     ] },
     { title: 'Browser storage', items: [
       { icon: '@spmpst::icon::cookie', title: 'Website cookies and browser storage policy', url: '/policies/website-storage' }
+    ] },
+    { title: 'Website terms', items: [
+      { icon: '@spmpst::icon::globe', title: 'Website Terms of Use', url: '/legal/website-terms-of-use' },
+      { icon: '@spmpst::icon::file-text', title: 'Website Development Terms and Conditions', url: '/legal/website-development-terms-and-conditions' },
+      { icon: '@spmpst::icon::file-text', title: 'Website Development Policy', url: '/policies/website-development-policy' }
     ] }
   ]"
 />

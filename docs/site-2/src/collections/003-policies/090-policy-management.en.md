@@ -14,9 +14,11 @@ tags: [policy-governance, review, publication]
 
 ## Purpose and scope
 
-This policy sets the working rules for creating and maintaining policies published by Numerimondes. It applies to policies that describe commitments, boundaries, eligibility, responsibilities or operating rules for clients, partners, visitors and the Numerimondes team.
+This policy sets the working rules for creating and maintaining policies and legal notices published by Numerimondes. It applies to documents that describe commitments, boundaries, eligibility, responsibilities, rights or operating rules for clients, partners, visitors and the Numerimondes team.
 
-A policy is a public statement of the rules or commitments that apply to a defined subject. Guides explain how to use a feature; they do not create a new commitment unless a policy or agreement says so.
+For document ownership, review, approval, publication, versioning and withdrawal, this policy prevails over conflicting administrative wording elsewhere. It does not replace subject-specific terms, a signed agreement or applicable law, and it does not change the rights or obligations stated in a legal notice or agreement.
+
+A policy is a public statement of rules or commitments for a defined subject. A legal notice or set of terms states the information or obligations that apply to its own subject. Guides explain how to use a feature; they do not create a new commitment unless a policy or agreement says so.
 
 ## Ownership and drafting
 

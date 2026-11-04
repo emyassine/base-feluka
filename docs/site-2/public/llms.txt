@@ -13,7 +13,7 @@
 
 - [Policies](/policies/) — collection index.
 - [Pricing and Engagements](/policies/pricing) — pricing approach and published starting price.
-- [Website policy](/policies/website-policy) — website project minimum and scope boundaries.
+- [Website Development Policy](/policies/website-development-policy) — website project minimum and scope boundaries.
 - [Client engagement policy](/policies/client-engagement) — proposed engagement boundaries; draft.
 - [Client data handling policy](/policies/data-handling) — proposed data handling boundaries; draft.
 - [Security and incident reporting policy](/policies/security-reporting) — proposed reporting guidance; draft.
@@ -23,8 +23,10 @@
 
 ## Legal and contact
 
+- [Website Terms of Use](/legal/website-terms-of-use) — rules for accessing and using the public website.
+- [Website Development Terms and Conditions](/legal/website-development-terms-and-conditions) — terms for a separately agreed website development project.
 - [Website privacy notice](/legal/site-privacy) — describes the website's current privacy notice.
-- [Contact](/company/prologue/contact) — contact options.
+- [Contact](/company/contact) — contact options.
 - [Robots instructions](/robots.txt) — published crawler preferences. This file does not authorize crawling or grant rights to reuse content.
 - [Sitemap](/sitemap.xml) — generated page index.
 

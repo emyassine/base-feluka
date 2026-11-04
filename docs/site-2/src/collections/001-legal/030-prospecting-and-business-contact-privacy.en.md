@@ -10,6 +10,8 @@ tags: [privacy, prospecting, business-contacts, recruitment]
 
 # Prospecting and business contact privacy
 
+This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to professional-contact research, prospecting, partner research and related recruitment activities.
+
 ## Scope and responsible company
 
 ### What this notice covers

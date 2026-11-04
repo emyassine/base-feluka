@@ -34,7 +34,7 @@
             {
               "type": "link",
               "label": {
-                "en": "Explore services"
+                "en": "Marketplace"
               },
               "href": "/services/marketplace",
               "icon": "store"

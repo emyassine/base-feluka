@@ -9,6 +9,8 @@ tags: [privacy, website, data]
 ---
 # Privacy and Site Data
 
+This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to privacy and data handling on the public website.
+
 ## Scope and publisher
 
 ### Public website
