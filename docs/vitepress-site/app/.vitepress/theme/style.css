@@ -130,6 +130,8 @@
 .VPNavBarTranslations .title { display: none; }
 .VPNavBarExtra .trans-title { display: none; }
 .VPNavBar .VPNavBarMenuGroup .button .text { font-size: 13px; }
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup > .button,
+.VPNavBar .VPNavBarMenu .VPNavBarMenuLink { padding-inline: 8px; }
 .VPNavScreenTranslations .title { font-size: 0; }
 .VPNavScreenTranslations .title .icon { font-size: 16px; }
 .VPNavScreenTranslations .title .icon.chevron { margin-left: auto; }
