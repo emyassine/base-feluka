@@ -48,7 +48,7 @@
       "nodeBorderWidth": "1.5px",
       "darkMessageTextColor": "#f1f3fc"
     },
-    "$schema": "../public/media/schemas/appearance.schema.json"
+    "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json"
   },
   "description": "SPMPST appearance concern configuration. The default value is the conforming-tool site scaffold."
 }

@@ -29,7 +29,7 @@
       "categoryFile": "spmpst.category.json"
     }
   ],
-  "$schema": "../public/media/schemas/collections.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/collections.schema.json",
   "emptyCollection": {
     "en": "No legal notices published yet.",
     "fr": "No legal notices published yet."

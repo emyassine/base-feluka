@@ -47,5 +47,5 @@
     }
   ],
   "iconFallback": "circle-help",
-  "$schema": "../public/media/schemas/definitions.schema.json"
+  "$schema": "../public/api/beta/schemas/spmpst-standard/definitions.schema.json"
 }

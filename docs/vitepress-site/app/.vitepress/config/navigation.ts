@@ -415,7 +415,51 @@ function navigation(language = defaultLanguage): any[] {
       ? { component: menuTemplateComponent, props: { item, menuTemplate: template } }
       : item
     : item
+  const resolveGroupEntry = (entry: any): any[] => {
+    if (entry.type === 'link') {
+      return [resolveItem({ text: entry.label, link: entry.href, icon: entry.icon, target: entry.target, rel: entry.rel })]
+    }
+    if (entry.type === 'guide') {
+      const resolved = resolveItem({ guide: entry.path, icon: entry.icon, items: entry.children })
+      return Array.isArray(resolved.items) ? resolved.items : [resolved]
+    }
+    if (entry.type === 'collection') {
+      if (!entry.children) return [collectionLink(entry.id, entry.icon)]
+      const collection = generatedCollections.find((candidate: any) => candidate.id === entry.id)
+      if (!collection) throw new Error(`topbar group references unknown collection: ${entry.id}`)
+      return collectionSubmenus(collection.path, 'all', entry.icon !== false, [], [entry.id], false, false, [entry.id])
+        .flatMap((group: any) => Array.isArray(group.items) ? group.items : [group])
+    }
+    if (entry.type === 'collections') {
+      const selector = entry.children
+      const options = selector.collections
+      if (!options) throw new Error('topbar collections group entry requires children.collections options')
+      return collectionSubmenus(options.pathPrefix, selector.depth, selector.icon !== false, options.hideChildren ?? [], options.showIconFromParents ?? [], options.showParentsName !== false, selector.hideIcon === true, options.order ?? [])
+        .flatMap((group: any) => Array.isArray(group.items) ? group.items : [group])
+    }
+    throw new Error(`unknown topbar group entry type: ${String(entry.type)}`)
+  }
   const resolveItem = (item: any): any => {
+    if (item.type === 'menu') {
+      const groups = item.groups.flatMap((group: any) => {
+        const entries = filterMenuRoutes(group.entries.flatMap(resolveGroupEntry), group.include ?? [], group.exclude ?? [])
+        if (group.showLabel === false) return entries
+        return entries.length ? [{ text: localize(group.label) ?? '', items: entries }] : []
+      })
+      return applyMenuTemplate({
+        text: itemText(localize(item.label) ?? '', item.hideIcon ? undefined : item.icon),
+        items: groups,
+      }, item.menuTemplate)
+    }
+    if (item.type === 'guide') return resolveItem({ guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children })
+    if (item.type === 'collection') {
+      if (!item.children) return collectionLink(item.id, item.icon)
+      const collection = generatedCollections.find((candidate: any) => candidate.id === item.id)
+      if (!collection) throw new Error(`topbar references unknown collection: ${item.id}`)
+      return collectionSubmenus(collection.path, 'all', true, [], [item.id], false, false, [item.id])
+        .flatMap((group: any) => Array.isArray(group.items) ? group.items : [group])
+    }
+    if (item.type === 'link') return resolveItem({ text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel })
     if (item.guide) {
       const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon, item.menuTitle)
       if (item.items && !Array.isArray(item.items) && ['subguides', 'subguides no-guide-index'].includes(item.items.source)) {
@@ -477,7 +521,10 @@ function navigation(language = defaultLanguage): any[] {
   }
   const configuredItems = site.topbar?.items
     ?? [...site.subguides.map((guide: { path: string }) => ({ guide: guide.path })), ...generatedCollections.map((collection: { id: string }) => ({ collection: collection.id }))]
-  return configuredItems.map(resolveItem)
+  return configuredItems.flatMap((item: any) => {
+    const resolved = resolveItem(item)
+    return Array.isArray(resolved) ? resolved : [resolved]
+  })
 }
 function localizedSidebars(language = defaultLanguage): Record<string, any> {
   const prefix = language.toLowerCase() === defaultLanguage.toLowerCase()

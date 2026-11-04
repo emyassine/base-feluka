@@ -11,5 +11,5 @@
       "ariaLabel": "Numerimondes on LinkedIn"
     }
   ],
-  "$schema": "../public/media/schemas/links.schema.json"
+  "$schema": "../public/api/beta/schemas/spmpst-standard/links.schema.json"
 }

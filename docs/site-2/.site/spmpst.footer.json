@@ -1,5 +1,5 @@
 {
-  "$schema": "../public/media/schemas/footer.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/footer.schema.json",
   "component": "FeluqaDocsFooter",
   "content": {
     "title": {

@@ -1,72 +1,78 @@
 {
-	"$schema": "../public/api/schemas/topbar.schema.json",
-	"theme": "switch",
+  "$schema": "../public/api/schemas/topbar.schema.json",
+  "theme": "switch",
   "items": [
+    { "type": "guide", "path": "feluqa.rs" },
     {
-      "guide": "feluqa.rs"
-    },
-    {
-      "guide": "products",
-      "items": { "source": "subguides no-guide-index", "icon": true },
-      "menuTitle": { "en": "Products", "fr": "Produits" },
-      "menuTemplate": ["mega.background-icon", ["title", "image", "icon", "description", "children"], {
-        "mobileToo": false,
-        "cardHeight": 200,
-        "composition": {
-          "columns": [
-            [0, 1],
-            [2, 3],
-            ["more"]
-          ]
-        },
-        "more": {
-          "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-          "text": { "en": "Discover all our {number} products", "fr": "Découvrir nos {number} produits" },
-          "link": "/products/",
-          "position": "after"
+      "type": "menu",
+      "label": { "en": "Products", "fr": "Produits" },
+      "menuTemplate": [
+        "mega.background-icon",
+        ["title", "image", "icon", "description", "children"],
+        {
+          "mobileToo": false,
+          "cardHeight": 200,
+          "composition": { "columns": [[0, 1], [2, 3], ["more"]] },
+          "more": {
+            "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+            "text": { "en": "Discover all our {number} products", "fr": "Découvrir nos {number} produits" },
+            "link": "/products/",
+            "position": "after"
+          }
         }
-      }]
-    },
-    {
-      "text": {
-        "en": "Basics",
-        "fr": "Bases"
-      },
-      "items": [
+      ],
+      "groups": [
         {
-          "guide": "internals",
-          "icon": "@spmpst::icon::code-xml"
-        },
-        {
-          "guide": "sdui",
-          "icon": "@spmpst::icon::square-terminal"
-        },
-        {
-          "guide": "x-agents",
-          "icon": "@spmpst::icon::microchip"
+          "label": { "en": "Products", "fr": "Produits" },
+          "showLabel": false,
+          "entries": [
+            { "type": "guide", "path": "products", "children": { "source": "subguides no-guide-index", "icon": true } }
+          ]
         }
       ]
     },
     {
-      "guide": "learn"
-    },
-      {
-        "text": {
-          "en": "Resources",
-          "fr": "Ressources"
-        },
-      "items": {
-        "source": "collections",
-        "depth": "all",
-        "icon": true,
-        "hideIcon": false,
-        "collections": {
-          "order": ["about", ["articles", "research"], ["governance", "legal"]],
-          "hideChildren": ["articles", "research"],
-          "showIconFromParents": ["articles", "research"],
-          "showParentsName": false
+      "type": "menu",
+      "label": { "en": "Basics", "fr": "Bases" },
+      "groups": [
+        {
+          "label": { "en": "Basics", "fr": "Bases" },
+          "showLabel": false,
+          "entries": [
+            { "type": "guide", "path": "internals", "icon": "@spmpst::icon::code-xml" },
+            { "type": "guide", "path": "sdui", "icon": "@spmpst::icon::square-terminal" },
+            { "type": "guide", "path": "x-agents", "icon": "@spmpst::icon::microchip" }
+          ]
         }
-      }
-      }
+      ]
+    },
+    { "type": "guide", "path": "learn" },
+    {
+      "type": "menu",
+      "label": { "en": "Resources", "fr": "Ressources" },
+      "groups": [
+        {
+          "label": { "en": "Resources", "fr": "Ressources" },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "collections",
+              "children": {
+                "source": "collections",
+                "depth": "all",
+                "icon": true,
+                "hideIcon": false,
+                "collections": {
+                  "order": ["about", ["articles", "research"], ["governance", "legal"]],
+                  "hideChildren": ["articles", "research"],
+                  "showIconFromParents": ["articles", "research"],
+                  "showParentsName": false
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

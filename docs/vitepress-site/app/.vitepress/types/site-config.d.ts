@@ -61,7 +61,25 @@ export interface MenuTemplateOptions {
 
 export type MenuTemplate = [id: string, fields?: string[], options?: MenuTemplateOptions]
 
+export type TopbarGroupEntry =
+  | { type: 'link'; label: LocalizedText; href: string; icon?: string; target?: string; rel?: string; include?: string[]; exclude?: string[] }
+  | { type: 'guide'; path: string; label?: LocalizedText; icon?: string; children?: Record<string, unknown>; include?: string[]; exclude?: string[] }
+  | { type: 'collection'; id: string; icon?: string; children?: boolean; include?: string[]; exclude?: string[] }
+  | { type: 'collections'; children: Record<string, unknown>; include?: string[]; exclude?: string[] }
+
+export interface TopbarGroup {
+  label: LocalizedText
+  showLabel?: boolean
+  entries: TopbarGroupEntry[]
+  include?: string[]
+  exclude?: string[]
+}
+
 export type TopbarItem =
+  | { type: 'menu'; label: LocalizedText; groups: TopbarGroup[]; icon?: string; hideIcon?: boolean; menuTemplate?: MenuTemplate }
+  | { type: 'guide'; path: string; label?: LocalizedText; icon?: string; children?: Record<string, unknown> }
+  | { type: 'collection'; id: string; icon?: string; children?: boolean }
+  | { type: 'link'; label: LocalizedText; href: string; icon?: string; target?: string; rel?: string }
   | { guide: string; icon?: string; menuTitle?: LocalizedText; menuTemplate?: MenuTemplate; include?: string[]; exclude?: string[] }
   | { collection: string; icon?: string }
   | {

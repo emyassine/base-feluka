@@ -60,7 +60,7 @@
     }
   },
   "default": {
-    "$schema": "../public/media/schemas/outline.schema.json",
+    "$schema": "../public/api/beta/schemas/spmpst-standard/outline.schema.json",
     "level": "deep",
     "label": {
       "en": "On this page"

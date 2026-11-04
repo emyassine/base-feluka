@@ -36,7 +36,7 @@
     "nodeBorderWidth": "1.5px",
     "darkMessageTextColor": "#f1f3fc"
   },
-  "$schema": "../public/media/schemas/appearance.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json",
   "styles": [
     "components/numerimondes.css",
     "components/numerimondes-silky.css",

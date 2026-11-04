@@ -29,7 +29,7 @@
   "additionalProperties": false,
   "default": {
     "socialLinks": [],
-    "$schema": "../public/media/schemas/links.schema.json"
+    "$schema": "../public/api/beta/schemas/spmpst-standard/links.schema.json"
   },
   "description": "SPMPST links concern configuration. The default value is the conforming-tool site scaffold."
 }

@@ -245,7 +245,7 @@
     }
   },
   "default": {
-    "$schema": "../public/media/schemas/search.schema.json",
+    "$schema": "../public/api/beta/schemas/spmpst-standard/search.schema.json",
     "provider": "local",
     "miniSearch": {
       "fuzzy": 0.2,

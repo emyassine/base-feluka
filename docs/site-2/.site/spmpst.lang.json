@@ -9,7 +9,7 @@
     "prefixDefaultLanguage": false,
     "showFlags": false
   },
-  "$schema": "../public/media/schemas/lang.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/lang.schema.json",
   "language": {
     "label": {
       "en": "English"

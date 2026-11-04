@@ -1,0 +1,879 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "guide": {
+            "type": "string"
+          },
+          "collection": {
+            "type": "string"
+          },
+          "text": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "link": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            ]
+          },
+          "icon": {
+            "type": "string"
+          },
+          "hideIcon": {
+            "type": "boolean",
+            "default": false
+          },
+          "menuTitle": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "include": {
+            "$ref": "#/$defs/routeSelectors"
+          },
+          "exclude": {
+            "$ref": "#/$defs/routeSelectors"
+          },
+          "menuTemplate": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "maxItems": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "cardHeight": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "composition": {
+                    "type": "object",
+                    "required": [
+                      "columns"
+                    ],
+                    "properties": {
+                      "columns": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "array",
+                              "minItems": 1,
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "integer",
+                                    "minimum": 0
+                                  },
+                                  {
+                                    "const": "more"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "type": "object",
+                              "required": [
+                                "items"
+                              ],
+                              "properties": {
+                                "width": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "gap": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "items": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": 0
+                                      },
+                                      {
+                                        "const": "more"
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            ]
+          },
+          "target": {
+            "type": "string"
+          },
+          "rel": {
+            "type": "string"
+          },
+          "activeMatch": {
+            "type": "string"
+          },
+          "items": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "source"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "subguides",
+                      "subguides no-guide-index",
+                      "collections"
+                    ]
+                  },
+                  "collections": {
+                    "type": "object",
+                    "properties": {
+                      "order": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            {
+                              "type": "array",
+                              "minItems": 1,
+                              "uniqueItems": true,
+                              "items": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "pathPrefix": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$"
+                      },
+                      "hideChildren": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "showIconFromParents": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "default": []
+                      },
+                      "showParentsName": {
+                        "type": "boolean",
+                        "default": true
+                      },
+                      "separateBetweenCollections": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "hideIcon": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "depth": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "const": "all"
+                      },
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "uniqueItems": true,
+                        "minItems": 1
+                      }
+                    ],
+                    "default": "all"
+                  },
+                  "icon": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "includeArticles": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "include": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^/[A-Za-z0-9._~/-]+(?:/\\*\\*)?$"
+                    }
+                  },
+                  "exclude": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^/[A-Za-z0-9._~/-]+(?:/\\*\\*)?$"
+                    }
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "source": {
+                          "const": "collections"
+                        }
+                      },
+                      "required": [
+                        "source"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "collections"
+                      ]
+                    },
+                    "else": {
+                      "not": {
+                        "required": [
+                          "collections"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "type": {
+            "enum": [
+              "menu",
+              "guide",
+              "collection",
+              "link"
+            ]
+          },
+          "label": {
+            "$ref": "#/$defs/localizedText"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "href": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            ]
+          },
+          "children": {
+            "oneOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "$ref": "#/$defs/childSelector"
+              }
+            ]
+          },
+          "groups": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/menuGroup"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "menu"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "label",
+                "groups"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "guide"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "path"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "collection"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "id"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "link"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "label",
+                "href"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label",
+          "link"
+        ],
+        "properties": {
+          "label": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            ]
+          },
+          "link": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            ]
+          },
+          "color": {
+            "enum": [
+              "primary",
+              "gray",
+              "info",
+              "success",
+              "warning",
+              "danger",
+              "dark",
+              "secondary"
+            ]
+          },
+          "size": {
+            "enum": [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl"
+            ]
+          },
+          "outlined": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "icon": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mobile": {
+            "type": "object",
+            "properties": {
+              "color": {
+                "enum": [
+                  "primary",
+                  "gray",
+                  "info",
+                  "success",
+                  "warning",
+                  "danger",
+                  "dark",
+                  "secondary"
+                ]
+              },
+              "icon": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tooltip": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "theme": {
+      "enum": [
+        "switch",
+        "system",
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "default": {
+    "items": [],
+    "theme": "switch",
+    "$schema": "{schemaRef}"
+  },
+  "description": "SPMPST topbar concern configuration. The default value is the conforming-tool site scaffold.",
+  "$defs": {
+    "localizedText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "routeSelectors": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^/[A-Za-z0-9._~/-]+(?:/\\*\\*)?$"
+      }
+    },
+    "childSelector": {
+      "type": "object",
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "subguides",
+            "subguides no-guide-index",
+            "collections"
+          ]
+        },
+        "depth": {
+          "oneOf": [
+            {
+              "const": "all"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          ]
+        },
+        "icon": {
+          "type": "boolean"
+        },
+        "hideIcon": {
+          "type": "boolean"
+        },
+        "includeArticles": {
+          "type": "boolean"
+        },
+        "include": {
+          "$ref": "#/$defs/routeSelectors"
+        },
+        "exclude": {
+          "$ref": "#/$defs/routeSelectors"
+        },
+        "collections": {
+          "type": "object",
+          "properties": {
+            "order": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  }
+                ]
+              }
+            },
+            "pathPrefix": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*$"
+            },
+            "hideChildren": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "showIconFromParents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "showParentsName": {
+              "type": "boolean"
+            },
+            "separateBetweenCollections": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "collections"
+              }
+            },
+            "required": [
+              "source"
+            ]
+          },
+          "then": {
+            "required": [
+              "collections"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "collections"
+              ]
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "menuEntry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "label",
+            "href"
+          ],
+          "properties": {
+            "type": {
+              "const": "link"
+            },
+            "label": {
+              "$ref": "#/$defs/localizedText"
+            },
+            "href": {
+              "$ref": "#/properties/items/items/properties/href"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string"
+            },
+            "rel": {
+              "type": "string"
+            },
+            "include": {
+              "$ref": "#/$defs/routeSelectors"
+            },
+            "exclude": {
+              "$ref": "#/$defs/routeSelectors"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "path"
+          ],
+          "properties": {
+            "type": {
+              "const": "guide"
+            },
+            "path": {
+              "type": "string"
+            },
+            "label": {
+              "$ref": "#/$defs/localizedText"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "children": {
+              "$ref": "#/$defs/childSelector"
+            },
+            "include": {
+              "$ref": "#/$defs/routeSelectors"
+            },
+            "exclude": {
+              "$ref": "#/$defs/routeSelectors"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "id"
+          ],
+          "properties": {
+            "type": {
+              "const": "collection"
+            },
+            "id": {
+              "type": "string"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "children": {
+              "type": "boolean"
+            },
+            "include": {
+              "$ref": "#/$defs/routeSelectors"
+            },
+            "exclude": {
+              "$ref": "#/$defs/routeSelectors"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "children"
+          ],
+          "properties": {
+            "type": {
+              "const": "collections"
+            },
+            "children": {
+              "$ref": "#/$defs/childSelector"
+            },
+            "include": {
+              "$ref": "#/$defs/routeSelectors"
+            },
+            "exclude": {
+              "$ref": "#/$defs/routeSelectors"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "menuGroup": {
+      "type": "object",
+      "required": [
+        "label",
+        "entries"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "showLabel": {
+          "type": "boolean",
+          "default": true
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/menuEntry"
+          }
+        },
+        "include": {
+          "$ref": "#/$defs/routeSelectors"
+        },
+        "exclude": {
+          "$ref": "#/$defs/routeSelectors"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

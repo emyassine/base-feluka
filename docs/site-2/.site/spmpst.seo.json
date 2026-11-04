@@ -2,7 +2,7 @@
   "siteUrl": "https://numerimondes.com",
   "path": "privacy",
   "icon": "@spmpst::icon::circle-help",
-  "$schema": "../public/media/schemas/seo.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/seo.schema.json",
   "pageTitle": {
     "en": "Numerimondes"
   },

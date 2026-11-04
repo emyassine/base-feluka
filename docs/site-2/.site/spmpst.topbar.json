@@ -1,119 +1,101 @@
 {
-  "$schema": "../public/media/schemas/topbar.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/topbar.schema.json",
   "theme": "switch",
   "items": [
     {
-      "text": {
-        "en": "Services"
-      },
-      "items": [
+      "type": "menu",
+      "label": { "en": "Services" },
+      "groups": [
         {
-          "text": {
-            "en": "Marketplace"
-          },
-          "items": [
-            {
-              "text": {
-                "en": "Explore services"
-              },
-              "link": "/services/marketplace",
-              "icon": "store"
-            }
+          "label": { "en": "Marketplace" },
+          "showLabel": false,
+          "entries": [
+            { "type": "link", "label": { "en": "Explore services" }, "href": "/services/marketplace", "icon": "store" }
           ]
         },
         {
-          "text": {
-            "en": "Pricing"
-          },
-          "link": "/services/pricing",
-          "icon": "scale"
+          "label": { "en": "Pricing" },
+          "showLabel": false,
+          "entries": [
+            { "type": "link", "label": { "en": "Understanding Pricing" }, "href": "/services/pricing", "icon": "scale" }
+          ]
         },
         {
-          "text": {
-            "en": "Capabilities"
-          },
-          "items": {
-            "source": "collections",
-            "depth": "all",
-            "icon": true,
-            "collections": {
-              "pathPrefix": "002-capabilities",
-              "order": ["capabilities"],
-              "showIconFromParents": ["capabilities"],
-              "showParentsName": false
-            }
-          }
+          "label": { "en": "Capabilities" },
+          "showLabel": true,
+          "entries": [
+            { "type": "collection", "id": "capabilities", "children": true }
+          ]
         },
         {
-          "text": {
-            "en": "Contact"
-          },
-          "items": [
-            {
-              "text": {
-                "en": "Contact Numerimondes"
-              },
-              "link": "/company/contact/",
-              "icon": "message-circle"
-            }
+          "label": { "en": "Contact" },
+          "showLabel": true,
+          "entries": [
+            { "type": "link", "label": { "en": "Contact Numerimondes" }, "href": "/company/contact/", "icon": "message-circle" }
           ]
         }
       ]
     },
     {
-      "guide": "opportunities",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
-      },
-      "menuTitle": {
-        "en": "Opportunities"
-      }
-    },
-    {
-      "guide": "company",
-      "items": {
-        "source": "subguides no-guide-index",
-        "icon": true
-      },
-      "menuTitle": {
-        "en": "Company"
-      }
-    },
-    {
-      "text": {
-        "en": "Resources"
-      },
-      "items": {
-        "source": "collections",
-        "depth": "all",
-        "icon": true,
-        "hideIcon": false,
-        "collections": {
-          "order": [
-            "legal"
-          ],
-          "showIconFromParents": [
-            "legal"
-          ],
-          "showParentsName": false
+      "type": "menu",
+      "label": { "en": "Opportunities" },
+      "groups": [
+        {
+          "label": { "en": "Opportunities" },
+          "showLabel": false,
+          "entries": [
+            { "type": "guide", "path": "opportunities", "children": { "source": "subguides no-guide-index", "icon": true } }
+          ]
         }
-      }
+      ]
+    },
+    {
+      "type": "menu",
+      "label": { "en": "Company" },
+      "groups": [
+        {
+          "label": { "en": "Company" },
+          "showLabel": false,
+          "entries": [
+            { "type": "guide", "path": "company", "children": { "source": "subguides no-guide-index", "icon": true } }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "label": { "en": "Resources" },
+      "groups": [
+        {
+          "label": { "en": "Resources" },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "collections",
+              "children": {
+                "source": "collections",
+                "depth": "all",
+                "icon": true,
+                "collections": {
+                  "pathPrefix": "001-legal",
+                  "order": ["legal"],
+                  "showIconFromParents": ["legal"],
+                  "showParentsName": false
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "label": {
-        "en": "Account access"
-      },
+      "label": { "en": "Account access" },
       "link": "/account/",
       "color": "primary",
       "size": "sm",
-      "mobile": {
-        "color": "gray",
-        "icon": "users",
-        "tooltip": "Accounts"
-      },
+      "mobile": { "color": "gray", "icon": "users", "tooltip": "Accounts" },
       "icon": "users-round"
     }
   ]

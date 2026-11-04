@@ -91,7 +91,7 @@
       }
     ],
     "iconFallback": "circle-help",
-    "$schema": "../public/media/schemas/definitions.schema.json"
+    "$schema": "../public/api/beta/schemas/spmpst-standard/definitions.schema.json"
   },
   "description": "SPMPST definitions concern configuration. The default value is the conforming-tool site scaffold."
 }

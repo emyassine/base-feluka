@@ -1,5 +1,5 @@
 {
-  "$schema": "../public/media/schemas/layout.schema.json",
+  "$schema": "../public/api/beta/schemas/spmpst-standard/layout.schema.json",
   "layouts": {
     "article": { "features": { "toc": true, "pager": true } }
   },

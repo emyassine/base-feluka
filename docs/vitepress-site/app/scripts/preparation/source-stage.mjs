@@ -263,6 +263,66 @@ function validateTopbarItems(items, location = 'topbar.items') {
   for (const [index, item] of items.entries()) {
     const itemLocation = `${location}[${index}]`
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
+    const localizedText = (value) => typeof value === 'string' && value.trim()
+      || value && typeof value === 'object' && !Array.isArray(value) && Object.values(value).some((text) => typeof text === 'string' && text.trim())
+    const validateRouteFilters = (owner, ownerLocation) => {
+      for (const key of ['include', 'exclude']) {
+        if (owner[key] !== undefined && (!Array.isArray(owner[key]) || owner[key].some((route) => typeof route !== 'string' || !/^\/[A-Za-z0-9._~/-]+(?:\/\*\*)?$/.test(route) || route.includes('//')) || new Set(owner[key]).size !== owner[key].length)) {
+          throw new Error(`${ownerLocation}.${key} must be a unique array of absolute site routes; use /** to match descendants`)
+        }
+      }
+    }
+    const validateGroupEntry = (entry, entryLocation) => {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry) || typeof entry.type !== 'string') throw new Error(`${entryLocation} requires an explicit type`)
+      if (entry.icon !== undefined) {
+        const resolvedSvg = typeof entry.icon === 'string' && isAbsolute(entry.icon) && extname(entry.icon).toLowerCase() === '.svg' && existsSync(entry.icon)
+        if (typeof entry.icon !== 'string' || (entry.icon !== 'INHERIT' && !topbarIconPattern.test(entry.icon) && !resolvedSvg)) throw new Error(`${entryLocation}.icon must be an icon name or INHERIT`)
+      }
+      validateRouteFilters(entry, entryLocation)
+      if (entry.type === 'link') {
+        if (Object.keys(entry).some((key) => !['type', 'label', 'href', 'icon', 'target', 'rel', 'include', 'exclude'].includes(key)) || !localizedText(entry.label) || !validLocalizedLink(entry.href)) throw new Error(`${entryLocation} link entries require label and href`)
+      } else if (entry.type === 'guide') {
+        if (Object.keys(entry).some((key) => !['type', 'path', 'label', 'icon', 'children', 'include', 'exclude'].includes(key)) || !topbarGuidePaths.has(entry.path)) throw new Error(`${entryLocation}.path must reference a configured guide`)
+        if (entry.label !== undefined && !localizedText(entry.label)) throw new Error(`${entryLocation}.label must be localized text`)
+        if (entry.children !== undefined) validateSubguideSelector(entry.children, `${entryLocation}.children`)
+      } else if (entry.type === 'collection') {
+        if (Object.keys(entry).some((key) => !['type', 'id', 'icon', 'children', 'include', 'exclude'].includes(key)) || !topbarCollectionIds.has(entry.id)) throw new Error(`${entryLocation}.id must reference a configured collection`)
+        if (entry.children !== undefined && typeof entry.children !== 'boolean') throw new Error(`${entryLocation}.children must be a boolean`)
+      } else if (entry.type === 'collections') {
+        if (Object.keys(entry).some((key) => !['type', 'children', 'include', 'exclude'].includes(key))) throw new Error(`${entryLocation} contains unsupported properties`)
+        validateSubguideSelector(entry.children, `${entryLocation}.children`)
+        if (entry.children.source !== 'collections') throw new Error(`${entryLocation}.children.source must be collections`)
+      } else {
+        throw new Error(`${entryLocation}.type must be link, guide, collection, or collections`)
+      }
+    }
+    if (item.type === 'menu') {
+      if (Object.keys(item).some((key) => !['type', 'label', 'groups', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} contains unsupported menu properties`)
+      if (!localizedText(item.label)) throw new Error(`${itemLocation}.label must be non-empty localized text`)
+      if (!Array.isArray(item.groups) || item.groups.length === 0) throw new Error(`${itemLocation}.groups must be a non-empty array`)
+      if (item.icon !== undefined) {
+        const resolvedSvg = typeof item.icon === 'string' && isAbsolute(item.icon) && extname(item.icon).toLowerCase() === '.svg' && existsSync(item.icon)
+        if (typeof item.icon !== 'string' || (item.icon !== 'INHERIT' && !topbarIconPattern.test(item.icon) && !resolvedSvg)) throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
+      }
+      if (item.menuTemplate !== undefined) validateMenuTemplate(item.menuTemplate, `${itemLocation}.menuTemplate`)
+      item.groups.forEach((group, groupIndex) => {
+        const groupLocation = `${itemLocation}.groups[${groupIndex}]`
+        if (!group || typeof group !== 'object' || Array.isArray(group) || Object.keys(group).some((key) => !['label', 'showLabel', 'entries', 'include', 'exclude'].includes(key)) || !localizedText(group.label) || !Array.isArray(group.entries)) throw new Error(`${groupLocation} requires a label and an entries array`)
+        if (group.showLabel !== undefined && typeof group.showLabel !== 'boolean') throw new Error(`${groupLocation}.showLabel must be a boolean`)
+        validateRouteFilters(group, groupLocation)
+        group.entries.forEach((entry, entryIndex) => validateGroupEntry(entry, `${groupLocation}.entries[${entryIndex}]`))
+      })
+      continue
+    }
+    if (['guide', 'link', 'collection'].includes(item.type)) {
+      const normalized = item.type === 'guide'
+        ? { guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children, include: item.include, exclude: item.exclude }
+        : item.type === 'collection'
+          ? { collection: item.id, icon: item.icon }
+          : { text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel }
+      validateTopbarItems([normalized], itemLocation)
+      continue
+    }
     if (item.hideIcon !== undefined && typeof item.hideIcon !== 'boolean') throw new Error(`${itemLocation}.hideIcon must be a boolean`)
     if (item.menuTemplate !== undefined) validateMenuTemplate(item.menuTemplate, `${itemLocation}.menuTemplate`)
     if (item.menuTitle !== undefined && typeof item.menuTitle !== 'string' && (!item.menuTitle || typeof item.menuTitle !== 'object' || Array.isArray(item.menuTitle))) throw new Error(`${itemLocation}.menuTitle must be text or an object of translated text`)
