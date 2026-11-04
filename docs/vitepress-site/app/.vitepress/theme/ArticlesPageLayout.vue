@@ -116,10 +116,7 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
 .articles-layout__crumbs a:hover { color: var(--vp-c-brand-1); }
 .articles-layout__header .collection-article-actions .VPDocAsideMeta { display: block !important; margin: 0; }
 .articles-layout__content { max-width: 700px; margin: 0 auto; padding: 34px 44px 60px; }
-.articles-layout__prose { color: var(--vp-c-text-1); font-family: var(--vp-font-family-base); font-size: 19px; line-height: 1.82; }
-.articles-layout__prose h1 { margin: 0 0 20px; color: var(--vp-c-text-1); font-family: var(--vp-font-family-heading, var(--vp-font-family-base)); font-size: 40px; font-weight: 700; line-height: 1.18; letter-spacing: -0.04em; }
-.articles-layout__prose h2, .articles-layout__prose h3, .articles-layout__prose h4 { color: var(--vp-c-text-1); font-family: var(--vp-font-family-heading, var(--vp-font-family-base)); letter-spacing: -0.02em; }
-.articles-layout__prose p { margin: 0 0 24px; }
+.articles-layout__prose { color: var(--vp-c-text-1); font-family: var(--vp-font-family-base); }
 .articles-layout__prose a { color: var(--vp-c-brand-1); }
 .articles-layout__prose :is(ul, ol) { padding-inline-start: 1.35em; }
 
@@ -148,7 +145,5 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
   .articles-layout__crumbs { gap: 8px; font-size: 12px; }
   .articles-layout__header .collection-article-actions { margin-inline-start: auto; }
   .articles-layout__content { padding: 28px 22px 48px; }
-  .articles-layout__prose { font-size: 17px; line-height: 1.75; }
-  .articles-layout__prose h1 { font-size: 32px; }
 }
 </style>
