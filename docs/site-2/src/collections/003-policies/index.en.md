@@ -36,18 +36,17 @@ These policies make our working boundaries visible: what we offer, what we do no
   </div>
 
   <div v-if="items.length" class="nm-policy-grid">
-    <article v-for="policy in items" :key="policy.url" class="nm-policy-card">
-      <a class="nm-policy-card__image" :href="policy.url" :aria-label="policy.title">
-        <img :src="policy.image" :alt="policy.imageAlt || policy.title" loading="lazy" />
-      </a>
-      <div class="nm-policy-card__meta">
-        <span v-if="policy.category">{{ getCategoryLabel(policy.category) }}</span>
-        <span v-if="policy.status" class="nm-policy-card__status">{{ policy.status }}</span>
-      </div>
-      <h2><a :href="policy.url">{{ policy.title }}</a></h2>
-      <p>{{ policy.summary || policy.description }}</p>
-      <a class="nm-policy-card__link" :href="policy.url">Read policy <span aria-hidden="true">→</span></a>
-    </article>
+    <ProductCard
+      v-for="policy in items"
+      :key="policy.url"
+      :href="policy.url"
+      :image="policy.image"
+      :image-alt="policy.imageAlt"
+      :title="policy.title"
+      :category="getCategoryLabel(policy.category)"
+      :status="policy.status"
+      :description="policy.summary || policy.description"
+    />
   </div>
   <p v-else class="nm-policy-empty">No policies match this search.</p>
 </CollectionSearch>
