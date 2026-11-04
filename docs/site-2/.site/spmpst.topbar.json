@@ -4,9 +4,18 @@
   "currency": {
     "base": "MAD",
     "options": [
-      { "code": "MAD", "label": "Moroccan dirham" },
-      { "code": "EUR", "label": "Euro" },
-      { "code": "USD", "label": "US dollar" }
+      {
+        "code": "MAD",
+        "label": "Moroccan dirham"
+      },
+      {
+        "code": "EUR",
+        "label": "Euro"
+      },
+      {
+        "code": "USD",
+        "label": "US dollar"
+      }
     ]
   },
   "items": [
@@ -209,6 +218,14 @@
                   "showParentsName": false
                 }
               }
+            },
+            {
+              "type": "link",
+              "label": {
+                "en": "Articles"
+              },
+              "href": "/articles",
+              "icon": "book-open"
             }
           ]
         }
