@@ -303,6 +303,8 @@ Each collection can set `indexLayout` to `list` or `spotlight` in `spmpst.collec
 
 A physical `index.<language>.md` in a collection directory takes precedence over the generated index for that language. This lets a site author its own introduction, layout, and cards in Markdown. If a default-language physical index exists, the normal language-fallback stage supplies missing localized pages. The globally registered `<CollectionSearch collection-id="...">` component provides filtered collection items through Vue scoped-slot props (`items`, `categories`, `getCategoryLabel`, `query`, `setQuery`, `selectedCategory`, `setCategory`, `sort`, and `setSort`). The page owns the controls and item markup, so cards can be fully custom without passing a runtime template string. Without a physical index, generated list and spotlight pages continue to work.
 
+Use `layout: home-subheader-content` when a home-style page needs its subheader and a constrained document-width content area. `layout: home-subheader` keeps the full-width home composition.
+
 ## 12. Components, hooks, styles, and browser theme
 
 The current topbar supports manually mixed guide, collection, and custom-link entries in one `items` array. Generated guide or collection menus can also be nested alongside those entries. Add `include` or `exclude` arrays to a generated selector or its parent menu to filter by absolute site route. A route such as `/services/software` selects that route; `/services/software/**` selects its descendants. Exclusions take precedence, and parent groups remain when they contain a selected child. This keeps the menu readable for people editing JSON while allowing site generators to produce the same structure. Example:

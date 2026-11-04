@@ -1,5 +1,5 @@
 ---
-layout: home-subheader
+layout: home-subheader-content
 sidebarTitle: "Policies"
 title: "Policies | Numerimondes"
 icon: "@spmpst::icon::scale"

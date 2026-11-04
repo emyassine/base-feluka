@@ -644,7 +644,7 @@ const MermaidLayout = {
     const collectionForPage = () => (generatedCollections as Array<{ id: string; layout: string; links: Record<string, string>; titles: Record<string, string> }>)
       .find((collection) => collection.id === frontmatter.value.collection)
     const articleLayout = () => collectionForPage()?.layout === 'article'
-    const homeSubheaderLayout = () => frontmatter.value.pageLayout === 'home-subheader'
+    const homeSubheaderLayout = () => ['home-subheader', 'home-subheader-content'].includes(String(frontmatter.value.pageLayout))
     const renderSubheaderActions = () => {
       const names = frontmatter.value.subheaderActionComponents
       const components = projectComponents as Record<string, Component>
@@ -663,7 +663,9 @@ const MermaidLayout = {
       const configuredSubnav = layoutSlots['nav-bar-content-after']
       const renderedSubnav = configuredSubnav?.()
       const subnavComponent = renderedSubnav?.type as Component | undefined
-      return h(DefaultTheme.Layout, null, {
+      return h(DefaultTheme.Layout, {
+        class: { 'home-subheader-content': frontmatter.value.pageLayout === 'home-subheader-content' },
+      }, {
       ...layoutSlots,
       'layout-top': siteBanner,
       'nav-bar-content-after': () => h(Fragment, null, [
