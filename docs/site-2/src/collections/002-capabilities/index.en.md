@@ -28,7 +28,7 @@ The right mix of Numerimondes and specialist partner expertise depends on each m
 
 ## <span class='silky-bbi+115'>Capabilities</span>, services and ventures
 
-Capabilities explain what we know how to explore and how we approach a problem. The [Services Marketplace](/services/marketplace) is a demonstration catalogue; published pricing pages define current commercial terms. Company projects such as [Numerimondes Cloud](/company/projects/numerimondes-cloud), [Feluqa](/company/projects/feluqa) and [The Best Recruit, our remote recruitment service](/company/projects/the-best-recruit) show their status on each page.
+Capabilities explain what we know how to explore and how we approach a problem. The [Services Marketplace](/services/marketplace) is a demonstration catalogue; published pricing pages define current commercial terms. Company projects such as [Numerimondes Cloud](/projects/numerimondes-cloud), [Feluqa](/projects/feluqa) and [The Best Recruit, our remote recruitment service](/projects/the-best-recruit) show their status on each page.
 
 An article may link to a related service or project where one exists. This keeps the knowledge library useful without turning every topic into a separate commercial offer.
 

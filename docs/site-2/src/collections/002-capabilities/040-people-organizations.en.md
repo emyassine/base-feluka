@@ -23,7 +23,7 @@ Possible interventions include clearer operating guidance, training resources, r
 
 ## <span class='silky-bbi+115'>Workforce and recruitment needs</span>
 
-For business owners, HR leaders and managers, workforce planning can clarify skills, capacity and role requirements. Recruitment requires clear role criteria, candidate consent and agreed service commitments. [The Best Recruit](/company/projects/the-best-recruit) is Numerimondes’ remote recruitment service for employers; scope, availability, fees and commitments are confirmed for each mandate.
+For business owners, HR leaders and managers, workforce planning can clarify skills, capacity and role requirements. Recruitment requires clear role criteria, candidate consent and agreed service commitments. [The Best Recruit](/projects/the-best-recruit) is Numerimondes’ remote recruitment service for employers; scope, availability, fees and commitments are confirmed for each mandate.
 
 Related topics include [operations support](/services/marketplace) and the [Numerimondes delivery model](/company/how-we-work/delivery-model).
 

@@ -140,21 +140,21 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/projects/feluqa',
+      href: '/projects/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/company/projects/the-best-recruit',
+      href: '/projects/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/projects/spmpst',
+      href: '/projects/spmpst',
       image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }

@@ -28,8 +28,8 @@ description: "Numerimondes helps organizations design, build, and operate depend
         label: 'Our Products',
         indicatorIndex: 0,
         items: [
-          { id: 'feluqa', label: 'Feluqa', href: '/company/projects/feluqa', icon: '/images/products/feluqa.png' },
-          { id: 'best-recruit', label: 'The Best Recruit · Remote Recruitment', mobileLabel: 'Remote recruitment', href: '/company/projects/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
+          { id: 'feluqa', label: 'Feluqa', href: '/projects/feluqa', icon: '/images/products/feluqa.png' },
+          { id: 'best-recruit', label: 'The Best Recruit · Remote Recruitment', mobileLabel: 'Remote recruitment', href: '/projects/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
         ],
       },
       {
@@ -446,21 +446,21 @@ The Best Recruit is our remote recruitment service for employers. Feluqa and SPM
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/projects/feluqa',
+      href: '/projects/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'A remote recruitment service for employers, wherever their hiring team is based. Candidate qualification and each mandate’s scope are agreed with the employer.',
-      href: '/company/projects/the-best-recruit',
+      href: '/projects/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/projects/spmpst',
+      href: '/projects/spmpst',
       image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }

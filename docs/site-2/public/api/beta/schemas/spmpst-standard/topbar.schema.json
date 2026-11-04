@@ -53,6 +53,9 @@
             "minLength": 1,
             "description": "Optional text shown as a badge after the menu item label. Use \"count\" on a collection item to show its article count."
           },
+          "badgeColor": {
+            "$ref": "#/$defs/badgeColor"
+          },
           "hideIcon": {
             "type": "boolean",
             "default": false
@@ -785,6 +788,9 @@
               "type": "string",
               "minLength": 1
             },
+            "badgeColor": {
+              "$ref": "#/$defs/badgeColor"
+            },
             "target": {
               "type": "string"
             },
@@ -823,6 +829,9 @@
               "type": "string",
               "minLength": 1
             },
+            "badgeColor": {
+              "$ref": "#/$defs/badgeColor"
+            },
             "children": {
               "$ref": "#/$defs/childSelector"
             },
@@ -858,6 +867,9 @@
               "type": "string",
               "minLength": 1,
               "description": "Use \"count\" to show the number of published articles in this collection."
+            },
+            "badgeColor": {
+              "$ref": "#/$defs/badgeColor"
             },
             "children": {
               "type": "boolean"
@@ -969,6 +981,18 @@
         }
       },
       "additionalProperties": false
+    },
+    "badgeColor": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "gray",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "description": "Color variant for a menu badge. Defaults to gray."
     }
   }
 }

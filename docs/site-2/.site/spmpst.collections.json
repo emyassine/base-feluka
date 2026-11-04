@@ -55,6 +55,7 @@
     {
       "id": "projects",
       "dir": "005-projects",
+      "route": "projects",
       "layout": "doc",
       "indexLayout": "list",
       "title": { "en": "Our Projects", "fr": "Nos projets" },
