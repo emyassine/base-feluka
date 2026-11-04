@@ -10,6 +10,7 @@ import { copyIfChanged, writeIfChanged } from '../spmpst/fs-utils.mjs'
 import { parseResourceReference, resourceReference } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
 import { sortNavigationEntries } from '../shared/navigation-order.mjs'
+import { preparePwa } from './pwa.mjs'
 
 
 /** SOURCE DISCOVERY PHASE
@@ -859,6 +860,14 @@ async function publishDirectory(source, destination, field, relativePath = '') {
   }
 }
 await publishDirectory(layout.paths.public, join(outputDirectory, 'public'), 'public')
+await preparePwa({
+  pwa: config.pwa,
+  siteId: layout.siteId ?? 'site',
+  publicSource: layout.paths.public,
+  generatedPublic: join(outputDirectory, 'public'),
+  generatedFiles,
+  writeIfChanged,
+})
 
 // Menu configuration is consumed later by the generated VitePress config.
 // Publish namespaced tool icons now and replace their source paths with site URLs.

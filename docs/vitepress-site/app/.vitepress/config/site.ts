@@ -167,15 +167,24 @@ export function composeVitePressConfig(dependencies: SiteConfigCompositionDepend
   })
   const generatedBuildTimestampPath = join(outputDirectory, '.spmpst', 'build-timestamp')
   const generatedBuildTimestamp = existsSync(generatedBuildTimestampPath) ? readFileSync(generatedBuildTimestampPath, 'utf8').trim() : new Date().toISOString()
+  const pwaHead = siteConfig.pwa?.enabled ? [
+    ['link', { rel: 'manifest', href: `${siteConfig.pwa.scope ?? '/'}manifest.webmanifest` }],
+    ['link', { rel: 'apple-touch-icon', href: siteConfig.pwa.icons?.[0]?.src }],
+    ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-title', content: siteConfig.pwa.shortName ?? siteConfig.pwa.name }],
+    ['script', { id: 'spmpst-pwa-register' }, `if ('serviceWorker' in navigator && window.isSecureContext) { window.addEventListener('load', () => { navigator.serviceWorker.register(${JSON.stringify(`${siteConfig.pwa.scope ?? '/'}service-worker.js`)}, { scope: ${JSON.stringify(siteConfig.pwa.scope ?? '/')} }).catch(() => {}); }); }`],
+  ] : []
   return defineConfig({
   title: siteConfig.site.name,
   lang: defaultLanguage,
   locales: vitepressLocales,
   appearance: ({ switch: true, system: 'force-auto', light: false, dark: 'force-dark' } as const)[siteConfig.topbar?.theme ?? 'switch'],
   head: [
-    ['meta', { name: 'theme-color', content: '#fcfdfd' }],
+    ['meta', { name: 'theme-color', content: siteConfig.pwa?.themeColor ?? '#fcfdfd' }],
     ['script', { id: 'site-theme-init' }, siteThemeInitScript],
     ['link', { rel: 'icon', type: assetMime(primaryConfig.favicon), href: assetDataUri(primaryGuideConfig.path, primaryConfig.favicon) }],
+    ...pwaHead,
   ],
   srcDir: context.generatedDirectory,
   cacheDir: cacheDirectory,

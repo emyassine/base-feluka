@@ -28,6 +28,7 @@
       "links": ".site/spmpst.links.json",
       "markdown": ".site/spmpst.markdown.json",
       "outline": ".site/spmpst.outline.json",
+      "pwa": ".site/spmpst.pwa.json",
       "search": ".site/spmpst.search.json",
       "seo": ".site/spmpst.seo.json",
       "topbar": ".site/spmpst.topbar.json"

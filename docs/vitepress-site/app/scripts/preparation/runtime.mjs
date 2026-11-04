@@ -82,6 +82,7 @@ export function toVitepressRuntime(sourceModel, layout, sourceConcerns = {}) {
     seo: { siteUrl: model.siteUrl, path: model.path, locales: seo },
     uiStrings: Object.fromEntries(model.languages.map((language) => [language, { emptyCollection: localizeTree(model.emptyCollection ?? {}, language) }])),
     styles: (model.styles ?? []).map((path) => resolve(layout.paths.resources, path)),
+    pwa: model.pwa?.enabled === true ? model.pwa : { enabled: false },
     theme: { slots: layoutComponentSlots },
     markdown: model.markdown,
     outputDir: layout.paths.output,

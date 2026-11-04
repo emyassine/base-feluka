@@ -40,6 +40,20 @@ export interface SiteConfig {
   ogImages?: string | string[]
   documentationNotices?: Record<string, unknown>
   seo?: SeoConfig
+  pwa?: {
+    enabled: boolean
+    name?: string
+    shortName?: string
+    description?: string
+    startUrl?: string
+    scope?: string
+    display?: 'standalone' | 'minimal-ui' | 'fullscreen' | 'browser'
+    orientation?: 'any' | 'natural' | 'portrait' | 'landscape'
+    themeColor?: string
+    backgroundColor?: string
+    icons?: Array<{ src: string; sizes: string; type?: string; purpose?: string }>
+    excludePaths?: string[]
+  }
 }
 
 export interface TopbarConfig {

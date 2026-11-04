@@ -14,4 +14,5 @@ export const CONCERNS = Object.freeze({
   outline: ['level', 'label'],
   markdown: ['lineNumbers', 'image'],
   rss: ['creator', 'fallbackImage'],
+  pwa: ['pwa'],
 })

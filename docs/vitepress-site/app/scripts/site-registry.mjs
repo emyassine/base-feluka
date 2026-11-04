@@ -11,7 +11,7 @@ export const registryPath = resolve(process.env.VITEPRESS_SITE_MANIFEST ?? works
 const REQUIRED_PATHS = ['root', 'config', 'guides', 'collections', 'resources', 'sharedResources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'icons', 'flags', 'mermaidConfig', 'toolchain', 'output']
 const OPTIONAL_PATHS = ['sharedComponents']
 const REQUIRED_CONFIGS = ['appearance', 'collections', 'definitions', 'footer', 'hooks', 'lang', 'layout', 'links', 'markdown', 'outline', 'search', 'seo', 'topbar']
-const OPTIONAL_CONFIGS = ['extra', 'rss']
+const OPTIONAL_CONFIGS = ['extra', 'rss', 'pwa']
 
 async function readJson(path, responsibleFile, field) {
   try { return JSON.parse(await readFile(path, 'utf8')) }
