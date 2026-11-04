@@ -9,6 +9,7 @@ lang: en
 status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
+internal-note: ['see https://www.bain.com/contentassets/e897e76847fa4c0bb23a70c389946819/bain_brief_dynamic_pricing.pdf and https://media.bain.com/elements-of-value/#']
 ---
 <NmEffectHero
   :full-bleed="false"
