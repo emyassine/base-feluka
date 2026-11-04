@@ -6,10 +6,11 @@ description: "Outcome-based consulting, software, infrastructure, people and rec
 lang: en
 status: "demo"
 layout: home-subheader
+subheaderActionComponents: [NmMarketplaceCurrencyMenu]
 ---
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))
@@ -20,6 +21,11 @@ const delivery = ref('all')
 const currency = ref<'MAD' | 'EUR' | 'USD'>('MAD')
 const currencyRates = ref<Record<string, number>>({ MAD: 1 })
 const currencyRateDates = ref<Record<string, string>>({})
+const supportedCurrencies = ['MAD', 'EUR', 'USD'] as const
+function syncCurrency(event: Event) {
+  const selected = (event as CustomEvent<string>).detail
+  if (supportedCurrencies.includes(selected as typeof supportedCurrencies[number])) currency.value = selected as typeof supportedCurrencies[number]
+}
 const sort = ref('featured')
 const basket = ref<string[]>([])
 const activeId = ref<string | null>(null)
@@ -32,9 +38,13 @@ onMounted(() => {
   try {
     localReviews.value = JSON.parse(localStorage.getItem('nm-reviews') || '[]')
     basket.value = JSON.parse(localStorage.getItem('nm-brief') || '[]').filter((id: string) => db.services.some((s: any) => s.id === id))
+    const savedCurrency = localStorage.getItem('nm-marketplace-currency')
+    if (supportedCurrencies.includes(savedCurrency as typeof supportedCurrencies[number])) currency.value = savedCurrency as typeof supportedCurrencies[number]
   } catch { /* storage unavailable */ }
+  window.addEventListener('nm-marketplace-currency-change', syncCurrency)
   void loadCurrencyRates()
 })
+onUnmounted(() => window.removeEventListener('nm-marketplace-currency-change', syncCurrency))
 async function loadCurrencyRates() {
   try {
     const pairs = await Promise.all(['EUR', 'USD'].map(async (quote) => {
@@ -110,11 +120,6 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       <a class="ui-btn ui-btn--primary" href="#catalogue">Browse services</a>
       <a class="ui-btn ui-btn--outline" href="#recruit">Explore remote recruitment</a>
     </div>
-    <section class="nm-currency-control nm-currency-control--top" aria-label="Marketplace currency and website starting price">
-      <label class="nm-currency-control__select" for="nm-currency"><span>Display currency</span><select id="nm-currency" v-model="currency" class="ui-input"><option value="MAD">MAD · Moroccan dirham</option><option value="EUR">EUR · Euro</option><option value="USD">USD · US dollar</option></select></label>
-      <p class="nm-currency-quote" aria-live="polite"><span>Website starting price · SEO included</span><strong>{{ websiteStartingPrice ? `From ${websiteStartingPrice} HT` : currency === 'MAD' ? 'From 25,000 Dhs HT' : `Conversion unavailable (${currency})` }}</strong></p>
-      <p class="nm-note">Indicative conversion of the 25,000 Dhs HT base offer. The final proposal uses the agreed currency<span v-if="currencyRateDates[currency]">; {{ currency }} reference rate dated {{ currencyRateDates[currency] }}</span>. Rates from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>.</p>
-    </section>
     <ul class="nm-stats" aria-label="Marketplace at a glance">
       <li><strong>{{ db.services.length }}</strong>services</li>
       <li><strong>{{ db.partners.length }}</strong>sample partner profiles</li>

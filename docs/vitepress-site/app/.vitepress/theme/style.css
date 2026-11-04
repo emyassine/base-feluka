@@ -282,7 +282,7 @@ body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav
   background: var(--vp-c-divider) !important;
 }
 .VPNavBar .VPFlyout,
-.collection-article-actions { position: relative; z-index: 2; }
+.collection-article-actions { position: relative; z-index: 2; display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
 
 .VPNavBar:has(.collection-article-subnav) .wrapper,
 .VPNavBar:has(.collection-article-subnav) .container { height: var(--vp-nav-height); }

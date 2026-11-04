@@ -644,6 +644,14 @@ const MermaidLayout = {
       .find((collection) => collection.id === frontmatter.value.collection)
     const articleLayout = () => collectionForPage()?.layout === 'article'
     const homeSubheaderLayout = () => frontmatter.value.pageLayout === 'home-subheader'
+    const renderSubheaderActions = () => {
+      const names = frontmatter.value.subheaderActionComponents
+      const components = projectComponents as Record<string, Component>
+      const additions = Array.isArray(names)
+        ? names.flatMap((name) => typeof name === 'string' && components[name] ? [h(components[name], { key: name })] : [])
+        : []
+      return h(Fragment, null, [h(PageActions), ...additions])
+    }
     const articleCollectionLink = () => {
       const collection = collectionForPage()
       const locale = String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]
@@ -659,7 +667,7 @@ const MermaidLayout = {
       'layout-top': siteBanner,
       'nav-bar-content-after': () => h(Fragment, null, [
         (articleLayout() || homeSubheaderLayout())
-          ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: () => h(PageActions) })
+          ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: renderSubheaderActions })
           : renderedSubnav,
         h(TopbarActions),
       ]),
