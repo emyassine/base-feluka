@@ -97,7 +97,7 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
   color: var(--vp-c-text-1);
 }
 
-.articles-layout__sidebar { position: sticky; top: 48px; padding-top: 0; }
+.articles-layout__sidebar { position: sticky; top: calc(var(--vp-nav-height) + 24px); padding-top: 0; }
 .articles-layout__identity { display: inline-flex; flex-direction: column; gap: 18px; color: inherit; text-decoration: none; }
 .articles-layout__avatar { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; }
 .articles-layout__author-name { font-size: 22px; font-weight: 700; letter-spacing: -0.025em; }
