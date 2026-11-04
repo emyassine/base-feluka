@@ -159,6 +159,11 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1099px) {
+  .VPNavBar .topbar-actions .topbar-action-button { display: none; }
+  .VPNavBarExtra .topbar-action-menu { display: block; }
+}
+
 /* Shared VitePress navigation behavior and appearance. */
 html:has(#VPNavScreen),
 body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }

@@ -20,6 +20,7 @@ const actions = (siteContent as typeof siteContent & { topbarActions?: TopbarAct
 const currencyConfig = (siteContent as typeof siteContent & { currency?: { base: string; options: Array<{ code: string; label: string }> } | null }).currency
 const currency = ref(currencyConfig?.base.toUpperCase() ?? '')
 const isCompact = ref(false)
+const hasMoreMenu = ref(false)
 let compactViewport: MediaQueryList | undefined
 const updateCompact = () => { isCompact.value = compactViewport?.matches ?? false }
 function setCurrency(value: string) {
@@ -28,6 +29,7 @@ function setCurrency(value: string) {
   window.dispatchEvent(new CustomEvent('spmpst-currency-change', { detail: currency.value }))
 }
 onMounted(() => {
+  hasMoreMenu.value = Boolean(document.querySelector('.VPNavBarExtra .VPMenu'))
   compactViewport = window.matchMedia('(max-width: 1279px)')
   compactViewport.addEventListener('change', updateCompact)
   updateCompact()
@@ -64,6 +66,7 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
         :href="href(action)"
         :tooltip="isCompact ? action.mobile?.tooltip ?? localized(action.label) : undefined"
         :icon="isCompact ? action.mobile?.icon ?? action.icon : action.icon"
+        class="topbar-action-button"
         :color="isCompact ? action.mobile?.color ?? action.color ?? 'primary' : action.color ?? 'primary'"
         :size="isCompact ? 'xs' : action.size ?? 'sm'"
         :outlined="action.outlined ?? false"
@@ -75,10 +78,20 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
       </FeluqaButton>
     </template>
   </div>
+  <Teleport v-if="hasMoreMenu && actions.length" defer to=".VPNavBarExtra .VPMenu">
+    <div v-for="(action, index) in actions" :key="`more-${href(action)}-${index}`" class="group topbar-action-menu">
+      <a class="topbar-action-menu__link" :href="href(action)" :aria-label="localized(action.label)" :target="isExternal(action) ? '_blank' : undefined" :rel="isExternal(action) ? 'noopener noreferrer' : undefined">
+        {{ localized(action.label) }}
+      </a>
+    </div>
+  </Teleport>
 </template>
 
 <style scoped>
 .topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; gap: .5rem; }
 .topbar-currency select { min-height: 32px; border: 1px solid var(--vp-c-divider); border-radius: 6px; padding: 0 .45rem; color: var(--vp-c-text-1); background: var(--vp-c-bg); font: inherit; font-size: .85rem; }
+.topbar-action-menu { display: none; }
+.topbar-action-menu__link { display: block; border-radius: 6px; padding: 0 12px; line-height: 32px; color: var(--vp-c-text-1); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color .25s, color .25s; }
+.topbar-action-menu__link:hover { color: var(--vp-c-brand-1); background: var(--vp-c-default-soft); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 </style>

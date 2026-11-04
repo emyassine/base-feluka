@@ -214,5 +214,21 @@
         }
       ]
     }
+  ],
+  "actions": [
+    {
+      "label": {
+        "en": "Account access"
+      },
+      "link": "/account/",
+      "color": "primary",
+      "size": "sm",
+      "mobile": {
+        "color": "primary",
+        "icon": "users-round",
+        "tooltip": "Account access"
+      },
+      "icon": "users-round"
+    }
   ]
 }
