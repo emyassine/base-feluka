@@ -1,4 +1,4 @@
-import { createReadStream, existsSync, readFileSync } from 'node:fs'
+import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -40,9 +40,12 @@ const publicDirectory = resolve(paths.generatedGuides, 'public')
 const generatedGuideColors = JSON.parse(readFileSync(join(paths.generatedMetadata, 'guide-colors.json'), 'utf8'))
 const primaryFavicon = Object.values(generatedGuideColors)[0]?.favicon
 const mimeTypes: Record<string, string> = {
-  '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
+  '.avif': 'image/avif', '.bmp': 'image/bmp', '.gif': 'image/gif', '.ico': 'image/x-icon', '.jpeg': 'image/jpeg',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp',
-  '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2',
+  '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.pdf': 'application/pdf', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8',
+  '.mp3': 'audio/mpeg', '.mp4': 'video/mp4', '.wav': 'audio/wav', '.webm': 'video/webm',
+  '.otf': 'font/otf', '.ttf': 'font/ttf', '.woff': 'font/woff', '.woff2': 'font/woff2',
 }
 
 const siteViteConfig = {
@@ -103,10 +106,9 @@ const siteViteConfig = {
           return
         }
         const isDefaultIcon = pathname === '/favicon.ico' && typeof primaryFavicon === 'string'
-        if (pathname === '/') { next(); return }
         const target = resolve(publicDirectory, `.${isDefaultIcon ? primaryFavicon : pathname}`)
         const relativeTarget = relative(publicDirectory, target)
-        if (!relativeTarget || relativeTarget.startsWith(`..${sep}`) || relativeTarget === '..' || !existsSync(target)) {
+        if (relativeTarget.startsWith(`..${sep}`) || relativeTarget === '..' || !existsSync(target) || !statSync(target).isFile()) {
           next()
           return
         }
