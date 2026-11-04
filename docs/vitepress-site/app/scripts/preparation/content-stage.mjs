@@ -256,7 +256,6 @@ for (const collection of collectionMetadata.values()) {
         const { wordCount, readingTime } = readingMetrics(markdown)
         return { title: articleTitle, description, date, category, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
       })))
-      .sort((left, right) => right.date.localeCompare(left.date) || left.title.localeCompare(right.title))
     collectionRecord.articles[language] = articles
     const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)
     const targetDirectory = join(outputDirectory, ...localeSegments, ...collection.route.split('/'))

@@ -9,6 +9,7 @@ import { isDefaultLanguage, localePrefix } from '../spmpst/routing.mjs'
 import { copyIfChanged, writeIfChanged } from '../spmpst/fs-utils.mjs'
 import { parseResourceReference, resourceReference } from '../spmpst/resources.mjs'
 import { resolveVitepressResource } from './resolve-resource.mjs'
+import { sortNavigationEntries } from '../shared/navigation-order.mjs'
 
 
 /** SOURCE DISCOVERY PHASE
@@ -698,9 +699,9 @@ function publicMarkdownLink(outputPath) {
 
 async function scan(sourceRoot, outputRoot, sourcePath = sourceRoot, outputPath = outputRoot) {
   await mkdir(outputPath, { recursive: true })
-  const entries = (await readdir(sourcePath, { withFileTypes: true }))
+  const entries = sortNavigationEntries((await readdir(sourcePath, { withFileTypes: true }))
     .filter((entry) => !entry.name.startsWith('.') && entry.name !== 'README.md' && !['spmpst.guide.json', 'spmpst.sidebar.json'].includes(entry.name)
-      && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile))
+      && !collections.some((collection) => collection.sourceDirectory === sourcePath && entry.name === collection.categoryFile)))
   const navigationEntries = entries.filter((entry) => entry.isDirectory() || /\.md$/i.test(entry.name))
   const indexOnly = navigationEntries.length === 1 && !navigationEntries[0].isDirectory() && /^(?:\d+[-.])?index(?:\.[a-z]{2,3})?\.md$/i.test(navigationEntries[0].name)
   let sidebarConfig
