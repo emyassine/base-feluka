@@ -32,7 +32,7 @@ Practical guides to using this site and understanding how its features work.
     @update:sort="setSort"
   />
   <div v-if="items.length" class="nm-policy-grid">
-    <ProductCard v-for="article in items" :key="article.url" :href="article.url" :image="article.image" :image-alt="article.imageAlt" :title="article.title" :category="getCategoryLabel(article.category)" :status="article.status" :description="article.summary || article.description" />
+    <ProductCard v-for="article in items" :key="article.url" :href="article.url" :image="article.image" :image-alt="article.imageAlt" :video="article.video" :title="article.title" :category="getCategoryLabel(article.category)" :status="article.status" :description="article.summary || article.description" />
   </div>
   <p v-else>No articles match this search.</p>
 </CollectionSearch>

@@ -10,6 +10,7 @@ export interface CollectionArticle {
   icon: string;
   image: string;
   imageAlt: string;
+  video?: string;
   tags: string[];
   wordCount: number;
   readingTime: number;

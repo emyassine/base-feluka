@@ -39,6 +39,7 @@ Find the notices and terms that explain who publishes this site, how information
       :href="notice.url"
       :image="notice.image"
       :image-alt="notice.imageAlt"
+      :video="notice.video"
       :title="notice.title"
       :category="getCategoryLabel(notice.category)"
       :status="notice.status"

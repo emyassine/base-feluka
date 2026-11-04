@@ -1,8 +1,11 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+import { nextTick, onBeforeUnmount, ref, withDefaults } from 'vue'
+
+const props = withDefaults(defineProps<{
   href: string
   image: string
   imageAlt?: string
+  video?: string
   title: string
   category?: string
   status?: string
@@ -15,12 +18,83 @@ withDefaults(defineProps<{
   description: '',
   actionLabel: 'Read policy',
 })
+
+const videoElement = ref<HTMLVideoElement | null>(null)
+const videoActive = ref(false)
+const videoSourceReady = ref(false)
+
+function motionAllowed(): boolean {
+  return typeof window !== 'undefined'
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+async function playVideo(): Promise<void> {
+  if (!props.video || !motionAllowed()) return
+
+  await nextTick()
+  const video = videoElement.value
+  if (!video) return
+
+  if (!videoSourceReady.value) {
+    video.src = props.video
+    videoSourceReady.value = true
+    video.load()
+  }
+
+  try {
+    await video.play()
+    videoActive.value = true
+  } catch {
+    videoActive.value = false
+  }
+}
+
+function onPointerEnter(event: PointerEvent): void {
+  if (event.pointerType === 'touch') return
+  void playVideo()
+}
+
+function onFocusOut(event: FocusEvent): void {
+  if (event.currentTarget instanceof HTMLElement && event.currentTarget.contains(event.relatedTarget as Node | null)) return
+  stopVideo()
+}
+
+function stopVideo(): void {
+  videoActive.value = false
+  if (videoElement.value) {
+    videoElement.value.pause()
+    videoElement.value.currentTime = 0
+  }
+}
+
+onBeforeUnmount(stopVideo)
 </script>
 
 <template>
   <article class="product-card">
-    <a class="product-card__image" :href="href" :aria-label="title">
-      <img :src="image" :alt="imageAlt || title" loading="lazy" />
+    <a
+      class="product-card__image"
+      :class="{ 'product-card__image--video-active': videoActive }"
+      :href="href"
+      :aria-label="title"
+      @pointerenter="onPointerEnter"
+      @pointerleave="stopVideo"
+      @focusin="playVideo"
+      @focusout="onFocusOut"
+    >
+      <img :src="image" :alt="imageAlt || title" loading="lazy" decoding="async" />
+      <video
+        v-if="video"
+        ref="videoElement"
+        class="product-card__video"
+        :class="{ 'product-card__video--active': videoActive }"
+        :poster="videoSourceReady ? image : undefined"
+        muted
+        playsinline
+        loop
+        preload="none"
+        aria-hidden="true"
+      />
       <span v-if="status" class="product-card__badge" :class="{ 'product-card__badge--draft': status.toLowerCase() === 'draft' }">{{ status }}</span>
     </a>
 
@@ -64,6 +138,7 @@ withDefaults(defineProps<{
   overflow: hidden;
   background: var(--vp-c-bg-soft);
 }
+.product-card__image--video-active img { opacity: 0; }
 .product-card__image img {
   display: block;
   width: 100%;
@@ -72,6 +147,17 @@ withDefaults(defineProps<{
   transition: transform .25s ease;
 }
 .product-card:hover .product-card__image img { transform: scale(1.035); }
+.product-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.product-card__video--active { opacity: 1; }
 .product-card__badge {
   position: absolute;
   top: 12px;

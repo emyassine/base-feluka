@@ -8,6 +8,14 @@ Build the card around a **real visual source** when it suits the story: an artwo
 
 Treat AI as a supporting production tool, not the default source of the whole visual. Start from real art or a real photographed subject, then use compositing, retouching, animation or restrained AI-assisted transformation to make the metaphor. The Thinker-and-strawberry example suggests this kind of recognizable real-art anchor with an unexpected conceptual intervention. The supplied HTML cannot establish how that image was made, so use it as a visual direction, not proof of provenance or permission. Confirm usage rights for source art and photography; do not use Sequoia's image or video files in Numerimondes content.
 
+## Subject-fit rule: read the page before choosing art
+
+Before researching, selecting or creating a visual, read the **full page**, including its frontmatter and body. Use the title, `summary`, `description`, `tags`, category, audience and the page's actual claims to understand what the image must communicate. Do not choose an artwork just because it is memorable, famous or resembles a visual from a reference site. The image must make sense for this specific page and its readers.
+
+Write down the connection between the subject and the proposed image in one clear sentence before producing it. If that connection is weak, choose a better source or pause to define the concept. A visual can be beautiful and still be wrong for the page.
+
+**Do not repeat this mismatch:** Rodin's *The Thinker* was selected for an Account and CRM Privacy notice only because it appeared in the Sequoia example. That was not a sound subject match. Never transfer an image metaphor from a reference example to an unrelated page. For a page about account and CRM privacy, look first for a real artwork or source image about correspondence, personal records, confidential information or protected access; use another subject only when the page itself establishes a clear connection.
+
 ## Reference analysis
 
 The supplied Sequoia card markup shows a square image acting as the cover and video poster. For some cards, a short video is layered in the same image area and reveals motion on hover. A dark gradient supports overlaid category, title and author text. The supplied examples use more than one visual treatment:
@@ -50,13 +58,14 @@ Treat video as an enhancement: use a compact, efficiently encoded file, avoid do
 
 ## Image generation and integration workflow
 
-1. Read the article or page and identify a real artwork or source photograph that can carry its idea. Confirm rights and provenance before using it.
-2. Define the visual intervention and decide whether the card needs motion. Keep the still as the default card image and plan a five-to-six-second hover loop only when movement adds meaning.
-3. Generate or edit assets **one at a time whenever practical**. Use the real, permitted source as a reference when using AI. Do not produce a large batch before reviewing any result; show the selected result as the work progresses.
-4. Record the generated file path in working notes or command output so it can be integrated. Never leave a site-referenced asset only in the generator's private output folder.
-5. Move selected stills and videos into the active project's established asset location, using descriptive, stable filenames. Keep source and output paths identifiable; do not assume a directory or URL pattern and do not overwrite an existing asset without an explicit request.
-6. Integrate the still into the relevant page or card using that project's content conventions and accurate alt text. For optional hover video, connect the video and poster through the shared card component's supported inputs. Confirm every referenced file exists.
-7. Preview the still card, hover transition and mobile/static fallback at the actual crop before continuing to the next visual. Report the image and project path so the user can follow the work as it progresses.
+1. Read the complete article or page, including frontmatter fields such as title, `summary`, `description`, `tags`, category and any image/video metadata, as well as the body. Note the topic, audience, claims and tone.
+2. Write one sentence explaining why the proposed real artwork or source photograph fits this page. Confirm rights and provenance. If the fit is not clear, do not generate yet; research a better source or clarify the concept.
+3. Define any visual intervention and decide whether the card needs motion. Keep the still as the default card image and plan a five-to-six-second hover loop only when movement adds meaning.
+4. Generate or edit assets **one at a time whenever practical**. Use the real, permitted source as a reference when using AI. Do not produce a large batch before reviewing any result; show the selected result as the work progresses.
+5. Record the generated file path in working notes or command output so it can be integrated. Never leave a site-referenced asset only in the generator's private output folder.
+6. Move selected stills and videos into the active project's established asset location, using descriptive, stable filenames. Keep source and output paths identifiable; do not assume a directory or URL pattern and do not overwrite an existing asset without an explicit request.
+7. Integrate the still into the relevant page or card using that project's content conventions and accurate alt text. For optional hover video, connect the video and poster through the shared card component's supported inputs. Confirm every referenced file exists.
+8. Preview the still card, hover transition and mobile/static fallback at the actual crop before continuing to the next visual. Report the image and project path so the user can follow the work as it progresses.
 
 If generation is not needed, use an original photograph or a properly licensed source. Do not fetch Sequoia media into the project for use as Numerimondes content.
 

@@ -266,8 +266,9 @@ for (const collection of collectionMetadata.values()) {
         const icon = frontmatterScalar(markdown, 'icon')
         const image = frontmatterScalar(markdown, 'image') || frontmatterScalar(markdown, 'ogImage')
         const imageAlt = frontmatterScalar(markdown, 'imageAlt')
+        const video = frontmatterScalar(markdown, 'video')
         const tags = frontmatterList(markdown, 'tags')
-        return { title: articleTitle, description, summary, date, category, status, icon, image, imageAlt, tags, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
+        return { title: articleTitle, description, summary, date, category, status, icon, image, imageAlt, video, tags, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
       })))
     collectionRecord.articles[language] = articles
     const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)

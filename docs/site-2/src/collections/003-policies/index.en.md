@@ -63,6 +63,7 @@ We make our policies explicit and accessible to:
       :href="policy.url"
       :image="policy.image"
       :image-alt="policy.imageAlt"
+      :video="policy.video"
       :title="policy.title"
       :category="getCategoryLabel(policy.category)"
       :status="policy.status"
