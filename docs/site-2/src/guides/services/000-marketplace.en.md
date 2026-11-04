@@ -110,6 +110,11 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       <a class="ui-btn ui-btn--primary" href="#catalogue">Browse services</a>
       <a class="ui-btn ui-btn--outline" href="#recruit">Explore remote recruitment</a>
     </div>
+    <section class="nm-currency-control nm-currency-control--top" aria-label="Marketplace currency and website starting price">
+      <label class="nm-currency-control__select" for="nm-currency"><span>Display currency</span><select id="nm-currency" v-model="currency" class="ui-input"><option value="MAD">MAD · Moroccan dirham</option><option value="EUR">EUR · Euro</option><option value="USD">USD · US dollar</option></select></label>
+      <p class="nm-currency-quote" aria-live="polite"><span>Website starting price · SEO included</span><strong>{{ websiteStartingPrice ? `From ${websiteStartingPrice} HT` : currency === 'MAD' ? 'From 25,000 Dhs HT' : `Conversion unavailable (${currency})` }}</strong></p>
+      <p class="nm-note">Indicative conversion of the 25,000 Dhs HT base offer. The final proposal uses the agreed currency<span v-if="currencyRateDates[currency]">; {{ currency }} reference rate dated {{ currencyRateDates[currency] }}</span>. Rates from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>.</p>
+    </section>
     <ul class="nm-stats" aria-label="Marketplace at a glance">
       <li><strong>{{ db.services.length }}</strong>services</li>
       <li><strong>{{ db.partners.length }}</strong>sample partner profiles</li>
@@ -139,10 +144,6 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
     <div class="nm-filters">
       <div class="nm-group" role="group" aria-label="Engagement type"><span class="nm-label">Engagement</span><button v-for="e in engagements" :key="e" type="button" class="ui-pill" :class="{ 'is-active': engagement === e }" :aria-pressed="engagement === e" @click="engagement = e">{{ e === 'all' ? 'Any' : e }}</button></div>
       <div class="nm-group" role="group" aria-label="Delivery model"><span class="nm-label">Delivery</span><button v-for="d in deliveries" :key="d" type="button" class="ui-pill" :class="{ 'is-active': delivery === d }" :aria-pressed="delivery === d" @click="delivery = d">{{ d === 'all' ? 'Any' : d }}</button></div>
-    </div>
-    <div class="nm-currency-control">
-      <label class="nm-field"><span>Display currency</span><select v-model="currency" class="ui-input" aria-label="Display currency"><option value="MAD">MAD · Moroccan dirham</option><option value="EUR">EUR · Euro</option><option value="USD">USD · US dollar</option></select></label>
-      <p class="nm-note">Currency conversion is indicative and applies to the website starting price only. The base offer remains 25,000 Dhs HT, SEO included<span v-if="currencyRateDates[currency]">; {{ currency }} reference rate dated {{ currencyRateDates[currency] }}</span>. Rates from <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. The final proposal is issued in the agreed currency.</p>
     </div>
     <p class="nm-status" aria-live="polite">{{ results.length }} {{ results.length === 1 ? 'service' : 'services' }}<button v-if="hasFilters" type="button" class="ui-link" @click="resetFilters">Clear filters</button></p>
     <div v-if="results.length" class="nm-grid">

@@ -17,15 +17,17 @@ type TopbarAction = {
 
 const { lang } = useData()
 const actions = (siteContent as typeof siteContent & { topbarActions?: TopbarAction[] }).topbarActions ?? []
-const isMobile = ref(false)
-let mobileViewport: MediaQueryList | undefined
-const updateViewport = () => { isMobile.value = mobileViewport?.matches ?? false }
+const isCompact = ref(false)
+let compactViewport: MediaQueryList | undefined
+const updateCompact = () => { isCompact.value = compactViewport?.matches ?? false }
 onMounted(() => {
-  mobileViewport = window.matchMedia('(max-width: 767px)')
-  updateViewport()
-  mobileViewport.addEventListener('change', updateViewport)
+  compactViewport = window.matchMedia('(max-width: 1279px)')
+  compactViewport.addEventListener('change', updateCompact)
+  updateCompact()
 })
-onUnmounted(() => mobileViewport?.removeEventListener('change', updateViewport))
+onUnmounted(() => {
+  compactViewport?.removeEventListener('change', updateCompact)
+})
 const language = computed(() => lang.value.toLowerCase().split('-')[0])
 const localized = (value: TextValue) => typeof value === 'string'
   ? value
@@ -38,39 +40,26 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 </script>
 
 <template>
-  <template v-for="(action, index) in actions" :key="`${href(action)}-${index}`">
-    <FeluqaButton
-      v-if="!isMobile || !action.mobile"
-      tag="a"
-      :href="href(action)"
-      :label="localized(action.label)"
-      :icon="action.icon"
-      :color="action.color ?? 'primary'"
-      :size="action.size ?? 'sm'"
-      :outlined="action.outlined ?? false"
-      :target="isExternal(action) ? '_blank' : undefined"
-      :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
-      :style="{ marginInlineStart: '0.75rem' }"
-    />
-    <div v-else class="VPNavBarSearch search">
-      <div>
-        <a
-          class="DocSearch DocSearch-Button"
-          :href="href(action)"
-          :title="action.mobile.tooltip"
-          :aria-label="action.mobile.tooltip ?? localized(action.label)"
-          :target="isExternal(action) ? '_blank' : undefined"
-          :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
-        >
-          <span class="DocSearch-Button-Container">
-            <span
-              class="vp-icon DocSearch-Search-Icon"
-              :style="{ '--icon': `url('${action.mobile.icon ?? ''}')` }"
-              aria-hidden="true"
-            />
-          </span>
-        </a>
-      </div>
-    </div>
-  </template>
+  <div class="topbar-actions">
+    <template v-for="(action, index) in actions" :key="`${href(action)}-${index}`">
+      <FeluqaButton
+        tag="a"
+        :href="href(action)"
+        :tooltip="isCompact ? action.mobile?.tooltip ?? localized(action.label) : undefined"
+        :icon="isCompact ? action.mobile?.icon ?? action.icon : action.icon"
+        :color="isCompact ? action.mobile?.color ?? action.color ?? 'primary' : action.color ?? 'primary'"
+        :size="isCompact ? 'xs' : action.size ?? 'sm'"
+        :outlined="action.outlined ?? false"
+        :target="isExternal(action) ? '_blank' : undefined"
+        :rel="isExternal(action) ? 'noopener noreferrer' : undefined"
+        :aria-label="localized(action.label)"
+      >
+        <template #default><span v-if="!isCompact">{{ localized(action.label) }}</span></template>
+      </FeluqaButton>
+    </template>
+  </div>
 </template>
+
+<style scoped>
+.topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; }
+</style>
