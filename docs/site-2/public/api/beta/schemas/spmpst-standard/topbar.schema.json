@@ -48,6 +48,11 @@
           "icon": {
             "type": "string"
           },
+          "badge": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional text shown as a badge after the menu item label. Use \"count\" on a collection item to show its article count."
+          },
           "hideIcon": {
             "type": "boolean",
             "default": false
@@ -776,6 +781,10 @@
             "icon": {
               "type": "string"
             },
+            "badge": {
+              "type": "string",
+              "minLength": 1
+            },
             "target": {
               "type": "string"
             },
@@ -810,6 +819,10 @@
             "icon": {
               "type": "string"
             },
+            "badge": {
+              "type": "string",
+              "minLength": 1
+            },
             "children": {
               "$ref": "#/$defs/childSelector"
             },
@@ -835,8 +848,16 @@
             "id": {
               "type": "string"
             },
+            "label": {
+              "$ref": "#/$defs/localizedText"
+            },
             "icon": {
               "type": "string"
+            },
+            "badge": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Use \"count\" to show the number of published articles in this collection."
             },
             "children": {
               "type": "boolean"

@@ -51,6 +51,16 @@
       "title": { "en": "Articles" },
       "description": { "en": "Practical guides and explanations for using Numerimondes sites and services." },
       "categoryFile": "spmpst.category.json"
+    },
+    {
+      "id": "projects",
+      "dir": "005-projects",
+      "route": "company/projects",
+      "layout": "doc",
+      "indexLayout": "list",
+      "title": { "en": "Our Projects", "fr": "Nos projets" },
+      "description": { "en": "Products, services and standards developed or operated by Numerimondes." },
+      "categoryFile": "spmpst.category.json"
     }
   ],
   "$schema": "../public/api/beta/schemas/spmpst-standard/collections.schema.json",

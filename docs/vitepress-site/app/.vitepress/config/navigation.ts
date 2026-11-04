@@ -163,17 +163,17 @@ function iconSource(icon: string, link?: string): string | undefined {
   if (!source) throw new Error(`topbar icon not found in project.iconLibrary: ${icon}`)
   return `data:image/svg+xml;base64,${readFileSync(source).toString('base64')}`
 }
-function itemText(label: string, icon?: string, link?: string, resolvedSource?: string, wrapperClass?: string): string {
+function itemText(label: string, icon?: string, link?: string, resolvedSource?: string, wrapperClass?: string, badge?: string): string {
   const source = resolvedSource ?? (icon ? iconSource(icon, link) : undefined)
-  return source || wrapperClass
-    ? `<span class="docs-topbar-item${wrapperClass ? ` ${escapeHtml(wrapperClass)}` : ''}">${source ? `<span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span>` : ''}<span>${escapeHtml(label)}</span></span>`
+  return source || wrapperClass || badge
+    ? `<span class="docs-topbar-item${wrapperClass ? ` ${escapeHtml(wrapperClass)}` : ''}">${source ? `<span class="docs-topbar-icon" style="--docs-topbar-icon-url: url('${escapeHtml(source)}')" aria-hidden="true"></span>` : ''}<span>${escapeHtml(label)}</span>${badge ? `<span class="docs-topbar-badge">${escapeHtml(badge)}</span>` : ''}</span>`
     : escapeHtml(label)
 }
 function navigation(language = defaultLanguage): any[] {
   const localePrefix = language.toLowerCase() === defaultLanguage.toLowerCase()
     ? (site.topbar?.language?.prefixDefaultLanguage ? `/${language}` : '')
     : `/${language}`
-  const guideLink = (path: string, icon?: string, title?: string | Record<string, string>) => {
+  const guideLink = (path: string, icon?: string, title?: string | Record<string, string>, badge?: string) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
     if (!guide) throw new Error(`topbar references unknown subguide: ${path}`)
     const base = routeBase(path)
@@ -190,7 +190,7 @@ function navigation(language = defaultLanguage): any[] {
       ? `^${localePrefix}/${base}(?:/|$)`
       : `^${localePrefix}/(?!$)(?!(?:${otherRoots.join('|')})(?:/|$))`
     const label = typeof title === 'string' ? title : title?.[language] ?? title?.[defaultLanguage] ?? guide.labels?.[language] ?? guide.label
-    return { text: itemText(label, icon, link), link, activeMatch }
+    return { text: itemText(label, icon, link, undefined, undefined, badge), link, activeMatch }
   }
   const guideSubguides = (path: string, depth: number | number[] | 'all' | undefined, showIcons: boolean, includeArticles = false, noGuideIndex = false) => {
     const guide = site.subguides.find((entry: { path: string }) => entry.path === path)
@@ -306,12 +306,16 @@ function navigation(language = defaultLanguage): any[] {
       return true
     })
   }
-  const collectionLink = (id: string, icon?: string) => {
+  const collectionLink = (id: string, icon?: string, badge?: string, title?: string | Record<string, string>) => {
     const collection = generatedCollections.find((entry: { id: string }) => entry.id === id)
     if (!collection) throw new Error(`topbar references unknown collection: ${id}`)
     const link = collection.links[language] ?? collection.links[defaultLanguage]
+    const badgeText = badge === 'count'
+      ? String((collection.articles?.[language] ?? collection.articles?.[defaultLanguage] ?? []).length)
+      : badge
+    const label = typeof title === 'string' ? title : title?.[language] ?? title?.[defaultLanguage]
     return {
-      text: itemText(collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, icon, link),
+      text: itemText(label ?? collection.titles[language] ?? collection.titles[defaultLanguage] ?? collection.id, icon, link, undefined, undefined, badgeText),
       link,
       activeMatch: `^${link.replace(/\/+$/, '')}(?:/|$)`,
     }
@@ -459,14 +463,14 @@ function navigation(language = defaultLanguage): any[] {
     : item
   const resolveGroupEntry = (entry: any): any[] => {
     if (entry.type === 'link') {
-      return [resolveItem({ text: entry.label, link: entry.href, icon: entry.icon, target: entry.target, rel: entry.rel })]
+      return [resolveItem({ text: entry.label, link: entry.href, icon: entry.icon, target: entry.target, rel: entry.rel, badge: entry.badge })]
     }
     if (entry.type === 'guide') {
-      const resolved = resolveItem({ guide: entry.path, icon: entry.icon, items: entry.children })
+      const resolved = resolveItem({ guide: entry.path, icon: entry.icon, items: entry.children, badge: entry.badge })
       return Array.isArray(resolved.items) ? resolved.items : [resolved]
     }
     if (entry.type === 'collection') {
-      if (!entry.children) return [collectionLink(entry.id, entry.icon)]
+      if (!entry.children) return [collectionLink(entry.id, entry.icon, entry.badge, entry.label)]
       const collection = generatedCollections.find((candidate: any) => candidate.id === entry.id)
       if (!collection) throw new Error(`topbar group references unknown collection: ${entry.id}`)
       return collectionSubmenus(collection.path, 'all', entry.icon !== false, [], [entry.id], false, false, [entry.id])
@@ -491,21 +495,21 @@ function navigation(language = defaultLanguage): any[] {
         return entries.length ? [{ text: localize(group.label) ?? '', items: entries }] : []
       })
       return applyMenuTemplate({
-        text: itemText(localize(item.label) ?? '', item.hideIcon ? undefined : item.icon),
+        text: itemText(localize(item.label) ?? '', item.hideIcon ? undefined : item.icon, undefined, undefined, undefined, typeof item.badge === 'string' ? item.badge : undefined),
         items: groups,
       }, item.menuTemplate)
     }
-    if (item.type === 'guide') return resolveItem({ guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children })
+    if (item.type === 'guide') return resolveItem({ guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children, badge: item.badge })
     if (item.type === 'collection') {
-      if (!item.children) return collectionLink(item.id, item.icon)
+      if (!item.children) return collectionLink(item.id, item.icon, item.badge, item.label)
       const collection = generatedCollections.find((candidate: any) => candidate.id === item.id)
       if (!collection) throw new Error(`topbar references unknown collection: ${item.id}`)
       return collectionSubmenus(collection.path, 'all', true, [], [item.id], false, false, [item.id])
         .flatMap((group: any) => Array.isArray(group.items) ? group.items : [group])
     }
-    if (item.type === 'link') return resolveItem({ text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel })
+    if (item.type === 'link') return resolveItem({ text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel, badge: item.badge })
     if (item.guide) {
-      const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon, item.menuTitle)
+      const guide = guideLink(item.guide, item.hideIcon ? undefined : item.icon, item.menuTitle, typeof item.badge === 'string' ? item.badge : undefined)
       if (item.items && !Array.isArray(item.items) && ['subguides', 'subguides no-guide-index'].includes(item.items.source)) {
         const guideConfig = guideConfigs[item.guide]
         const rootIcon = sidebarPageIcons[guide.link]
@@ -541,7 +545,7 @@ function navigation(language = defaultLanguage): any[] {
         items: filterMenuRoutes(collectionSubmenus(collectionOptions.pathPrefix, item.items.depth, item.items.icon !== false, collectionOptions.hideChildren ?? [], collectionOptions.showIconFromParents ?? [], collectionOptions.showParentsName !== false, item.items.hideIcon === true, collectionOptions.order ?? []), item.items.include ?? item.include ?? [], item.items.exclude ?? item.exclude ?? []),
       }, item.menuTemplate)
     }
-    if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon)
+    if (item.collection) return collectionLink(item.collection, item.hideIcon ? undefined : item.icon, item.badge, item.text)
     const text = localize(item.text)
     const link = localize(item.link)
     const external = typeof link === 'string' && /^(?:https?:)?\/\//i.test(link)
@@ -554,7 +558,7 @@ function navigation(language = defaultLanguage): any[] {
       !['text', 'link', 'items', 'icon', 'activeMatch', 'target', 'rel', 'menuTemplate'].includes(key)))
     const resolved = {
       ...templateData,
-      ...(text ? { text: itemText(text, item.hideIcon ? undefined : item.icon, link) } : {}),
+      ...(text ? { text: itemText(text, item.hideIcon ? undefined : item.icon, link, undefined, undefined, typeof item.badge === 'string' ? item.badge : undefined) } : {}),
       ...(link ? { link } : {}),
       ...(item.activeMatch ? { activeMatch: item.activeMatch } : {}),
       ...(target ? { target } : {}),

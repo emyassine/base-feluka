@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import { useSpmpstConfig } from '@spmpst/config'
+import generatedCollections from '@generated/collections.json'
 
 interface FooterContent {
   title: string
@@ -19,6 +20,20 @@ interface FooterContent {
 
 const content = useSpmpstConfig<FooterContent>('footer.content')
 const { lang } = useData()
+const navigationItems = computed(() => content.value.navigation.flatMap((item) => {
+  if (!item.href.endsWith('/**')) return [item]
+
+  const collectionRoute = item.href.slice(0, -3).replace(/^\/+|\/+$/g, '')
+  const collection = (generatedCollections as Array<{
+    route: string
+    articles?: Record<string, Array<{ title: string; url: string }>>
+  }>).find((candidate) => candidate.route === collectionRoute)
+  if (!collection) return []
+
+  const language = lang.value.toLowerCase().split('-')[0]
+  const articles = collection.articles?.[language] ?? collection.articles?.en ?? []
+  return articles.map((article) => ({ name: article.title, href: article.url }))
+}))
 const copyrightText = computed(() => {
   if (typeof content.copyright === 'string') return content.copyright
   if (!content.copyright) return ''
@@ -36,7 +51,7 @@ defineProps<{ homeLayout?: boolean }>()
           :description="content.description"
           :action-label="content.actionLabel"
           :action-href="content.actionHref"
-          :navigation="content.navigation"
+          :navigation="navigationItems"
           :sub-navigation="content.subNavigation"
           :logo-img="content.logoImg"
           :logo-img-dark="content.logoImgDark"

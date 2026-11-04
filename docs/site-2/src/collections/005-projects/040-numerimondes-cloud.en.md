@@ -5,6 +5,7 @@ icon: "@spmpst::icon::server"
 description: "Managed server infrastructure operated by Numerimondes for its own services and client environments."
 lang: en
 status: "ready-for-review"
+category: services
 js-events:
   - uncollapse-sidebar
 ---

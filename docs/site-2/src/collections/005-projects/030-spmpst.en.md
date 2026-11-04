@@ -5,6 +5,7 @@ icon: "@spmpst::icon::folder-tree"
 description: "SPMPST is a standard in development for building fast websites from portable Markdown content trees."
 lang: en
 status: "ready-for-review"
+category: platforms
 js-events:
   - uncollapse-sidebar
 ---

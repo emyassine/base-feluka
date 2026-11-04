@@ -1,0 +1,8 @@
+{
+  "title": { "en": "Our Projects", "fr": "Nos projets" },
+  "description": { "en": "Products, services and standards developed or operated by Numerimondes." },
+  "categories": [
+    { "id": "services", "label": { "en": "Services", "fr": "Services" } },
+    { "id": "platforms", "label": { "en": "Platforms and standards", "fr": "Plateformes et standards" } }
+  ]
+}

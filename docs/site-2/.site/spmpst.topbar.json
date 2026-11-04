@@ -50,6 +50,29 @@
             {
               "type": "collection",
               "id": "capabilities",
+              "label": { "en": "All capabilities" },
+              "badge": "count"
+            },
+            {
+              "type": "collection",
+              "id": "capabilities",
+              "children": true
+            }
+          ]
+        },
+        {
+          "label": { "en": "Our Projects" },
+          "showLabel": true,
+          "entries": [
+            {
+              "type": "collection",
+              "id": "projects",
+              "label": { "en": "All projects" },
+              "badge": "count"
+            },
+            {
+              "type": "collection",
+              "id": "projects",
               "children": true
             }
           ]
@@ -141,17 +164,6 @@
         },
         {
           "label": {
-            "en": "Our Projects"
-          },
-          "showLabel": false,
-          "groupBy": {
-            "ids": [
-              "/company/projects"
-            ]
-          }
-        },
-        {
-          "label": {
             "en": "Contact"
           },
           "showLabel": false,
@@ -196,44 +208,12 @@
       },
       "groups": [
         {
-          "label": {
-            "en": "Resources"
-          },
+          "label": { "en": "Legal notices" },
           "showLabel": false,
           "entries": [
             {
-              "type": "collections",
-              "children": {
-                "source": "collections",
-                "depth": "all",
-                "icon": true,
-                "collections": {
-                  "pathPrefix": "001-legal",
-                  "order": [
-                    "legal"
-                  ],
-                  "showIconFromParents": [
-                    "legal"
-                  ],
-                  "showParentsName": false
-                }
-              }
-            }
-          ]
-        },
-        {
-          "label": {
-            "en": "Articles"
-          },
-          "showLabel": false,
-          "entries": [
-            {
-              "type": "link",
-              "label": {
-                "en": "Articles"
-              },
-              "href": "/articles",
-              "icon": "book-open"
+              "type": "collection",
+              "id": "legal"
             }
           ]
         }

@@ -35,7 +35,7 @@
         "name": {
           "en": "Privacy and legal"
         },
-        "href": "/legal/"
+        "href": "/legal/**"
       }
     ],
     "subNavigation": [

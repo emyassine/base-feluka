@@ -5,6 +5,7 @@ icon: "@spmpst::icon::rust"
 description: "Feluqa is the Numerimondes application platform project: a Rust-based framework for efficient, cross-platform software. In development."
 lang: en
 status: "ready-for-review"
+category: platforms
 js-events:
   - uncollapse-sidebar
 ---

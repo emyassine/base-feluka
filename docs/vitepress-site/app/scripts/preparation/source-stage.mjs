@@ -283,6 +283,11 @@ function validateTopbarItems(items, location = 'topbar.items') {
     if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
     const localizedText = (value) => typeof value === 'string' && value.trim()
       || value && typeof value === 'object' && !Array.isArray(value) && Object.values(value).some((text) => typeof text === 'string' && text.trim())
+    const validateBadge = (owner, ownerLocation) => {
+      if (owner.badge !== undefined && (typeof owner.badge !== 'string' || !owner.badge.trim())) {
+        throw new Error(`${ownerLocation}.badge must be non-empty text; use "count" on collection entries to show their article count`)
+      }
+    }
     const validateRouteFilters = (owner, ownerLocation) => {
       for (const key of ['include', 'exclude']) {
         if (owner[key] !== undefined && (!Array.isArray(owner[key]) || owner[key].some((route) => typeof route !== 'string' || !/^\/[A-Za-z0-9._~/-]+(?:\/\*\*)?$/.test(route) || route.includes('//')) || new Set(owner[key]).size !== owner[key].length)) {
@@ -296,15 +301,17 @@ function validateTopbarItems(items, location = 'topbar.items') {
         const resolvedSvg = typeof entry.icon === 'string' && isAbsolute(entry.icon) && extname(entry.icon).toLowerCase() === '.svg' && existsSync(entry.icon)
         if (typeof entry.icon !== 'string' || (entry.icon !== 'INHERIT' && !topbarIconPattern.test(entry.icon) && !resolvedSvg)) throw new Error(`${entryLocation}.icon must be an icon name or INHERIT`)
       }
+      validateBadge(entry, entryLocation)
       validateRouteFilters(entry, entryLocation)
       if (entry.type === 'link') {
-        if (Object.keys(entry).some((key) => !['type', 'label', 'href', 'icon', 'target', 'rel', 'include', 'exclude'].includes(key)) || !localizedText(entry.label) || !validLocalizedLink(entry.href)) throw new Error(`${entryLocation} link entries require label and href`)
+        if (Object.keys(entry).some((key) => !['type', 'label', 'href', 'icon', 'badge', 'target', 'rel', 'include', 'exclude'].includes(key)) || !localizedText(entry.label) || !validLocalizedLink(entry.href)) throw new Error(`${entryLocation} link entries require label and href`)
       } else if (entry.type === 'guide') {
-        if (Object.keys(entry).some((key) => !['type', 'path', 'label', 'icon', 'children', 'include', 'exclude'].includes(key)) || !topbarGuidePaths.has(entry.path)) throw new Error(`${entryLocation}.path must reference a configured guide`)
+        if (Object.keys(entry).some((key) => !['type', 'path', 'label', 'icon', 'badge', 'children', 'include', 'exclude'].includes(key)) || !topbarGuidePaths.has(entry.path)) throw new Error(`${entryLocation}.path must reference a configured guide`)
         if (entry.label !== undefined && !localizedText(entry.label)) throw new Error(`${entryLocation}.label must be localized text`)
         if (entry.children !== undefined) validateSubguideSelector(entry.children, `${entryLocation}.children`)
       } else if (entry.type === 'collection') {
-        if (Object.keys(entry).some((key) => !['type', 'id', 'icon', 'children', 'include', 'exclude'].includes(key)) || !topbarCollectionIds.has(entry.id)) throw new Error(`${entryLocation}.id must reference a configured collection`)
+        if (Object.keys(entry).some((key) => !['type', 'id', 'label', 'icon', 'badge', 'children', 'include', 'exclude'].includes(key)) || !topbarCollectionIds.has(entry.id)) throw new Error(`${entryLocation}.id must reference a configured collection`)
+        if (entry.label !== undefined && !localizedText(entry.label)) throw new Error(`${entryLocation}.label must be localized text`)
         if (entry.children !== undefined && typeof entry.children !== 'boolean') throw new Error(`${entryLocation}.children must be a boolean`)
       } else if (entry.type === 'collections') {
         if (Object.keys(entry).some((key) => !['type', 'children', 'include', 'exclude'].includes(key))) throw new Error(`${entryLocation} contains unsupported properties`)
@@ -315,7 +322,8 @@ function validateTopbarItems(items, location = 'topbar.items') {
       }
     }
     if (item.type === 'menu') {
-      if (Object.keys(item).some((key) => !['type', 'label', 'groups', 'sources', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} contains unsupported menu properties`)
+      if (Object.keys(item).some((key) => !['type', 'label', 'groups', 'sources', 'icon', 'badge', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} contains unsupported menu properties`)
+      validateBadge(item, itemLocation)
       if (!localizedText(item.label)) throw new Error(`${itemLocation}.label must be non-empty localized text`)
       if (!Array.isArray(item.groups) || item.groups.length === 0) throw new Error(`${itemLocation}.groups must be a non-empty array`)
       if (item.sources !== undefined) {
@@ -344,10 +352,10 @@ function validateTopbarItems(items, location = 'topbar.items') {
     }
     if (['guide', 'link', 'collection'].includes(item.type)) {
       const normalized = item.type === 'guide'
-        ? { guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children, include: item.include, exclude: item.exclude }
+        ? { guide: item.path, icon: item.icon, menuTitle: item.label, items: item.children, include: item.include, exclude: item.exclude, badge: item.badge }
         : item.type === 'collection'
-          ? { collection: item.id, icon: item.icon }
-          : { text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel }
+          ? { collection: item.id, icon: item.icon, text: item.label, badge: item.badge }
+          : { text: item.label, link: item.href, icon: item.icon, target: item.target, rel: item.rel, badge: item.badge }
       validateTopbarItems([normalized], itemLocation)
       continue
     }
@@ -359,7 +367,7 @@ function validateTopbarItems(items, location = 'topbar.items') {
       throw new Error(`${itemLocation}.icon must be an icon name or INHERIT`)
     }
     if ('guide' in item) {
-      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items', 'menuTitle', 'menuTemplate', 'include', 'exclude'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
+      if (Object.keys(item).some((key) => !['guide', 'icon', 'hideIcon', 'items', 'menuTitle', 'menuTemplate', 'include', 'exclude', 'badge'].includes(key)) || !topbarGuidePaths.has(item.guide)) throw new Error(`${itemLocation}.guide must reference a configured subguide path`)
       if (item.items !== undefined) {
         if (Array.isArray(item.items)) validateTopbarItems(item.items, `${itemLocation}.items`)
         else validateSubguideSelector(item.items, `${itemLocation}.items`)
@@ -368,7 +376,8 @@ function validateTopbarItems(items, location = 'topbar.items') {
       continue
     }
     if ('collection' in item) {
-      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon', 'menuTemplate'].includes(key))) throw new Error(`${itemLocation} collection entries support only collection, icon, hideIcon, and menuTemplate; use the collection title as its label`)
+      if (Object.keys(item).some((key) => !['collection', 'icon', 'hideIcon', 'menuTemplate', 'badge', 'text'].includes(key))) throw new Error(`${itemLocation} collection entries support only collection, icon, hideIcon, menuTemplate, badge, and text`)
+      validateBadge(item, itemLocation)
       if (!topbarCollectionIds.has(item.collection)) throw new Error(`${itemLocation}.collection references unknown collection id "${item.collection}"`)
       continue
     }
