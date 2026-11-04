@@ -25,39 +25,41 @@ js-events:
 
 
 
+<div style="width: min(100% - 40px, 680px); margin-inline: auto;">
+
 # Pricing and engagements
 
-## The right commercial model for the mission.
+## <span class='silky-bbi+115'>The right commercial model for the mission.</span>
 
 We price work according to its purpose, <span class="silky-i">scope</span>, complexity, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
 
-## Initial qualification
+## <span class='silky-bbi+115'>Initial qualification</span>
 
 An introductory discussion helps us understand the objective and whether Numerimondes could contribute. In-depth analysis, operational audits, research and solution design may form a paid discovery assignment when they require substantive work.
 
-## Common engagement models
+## <span class='silky-bbi+115'>Common engagement models</span>
 
-### Fixed-scope project
+### <span class='silky-bbi'>Fixed-scope project</span>
 
 A defined set of deliverables for an agreed price, assumptions and acceptance criteria. Suitable when the requirements are sufficiently clear.
 
-### Discovery or feasibility study
+### <span class='silky-bbi'>Discovery or feasibility study</span>
 
 A separately scoped assessment, which may produce process maps, solution options, risk findings, specifications and investment estimates. Any credit against later implementation is offered only when explicitly stated in the proposal.
 
-### Milestone-based delivery
+### <span class='silky-bbi'>Milestone-based delivery</span>
 
 A project organized into approved phases, with scope, payment and acceptance points for each stage. Suitable for larger or evolving initiatives.
 
-### Time-based specialist engagement
+### <span class='silky-bbi'>Time-based specialist engagement</span>
 
 Defined consulting, research or engineering capacity over an agreed period, with reporting and limits clearly documented.
 
-### Recurring operations and support
+### <span class='silky-bbi'>Recurring operations and support</span>
 
 An ongoing arrangement for agreed infrastructure, monitoring, maintenance, improvement or advisory responsibilities. Coverage, response commitments and exclusions are stated in the agreement.
 
-## What shapes the quotation
+## <span class='silky-bbi+115'>What shapes the quotation</span>
 
 - The result sought and measurable acceptance criteria.
 - The existing environment, data quality and integration needs.
@@ -66,13 +68,13 @@ An ongoing arrangement for agreed infrastructure, monitoring, maintenance, impro
 - Delivery location, access needs, support and documentation.
 - Dependencies, uncertainty and the requested timeline.
 
-## What every proposal should clarify
+## <span class='silky-bbi+115'>What every proposal should clarify</span>
 
 Scope, deliverables, ownership and licensing, confidentiality, schedule, pricing, payment terms, customer responsibilities, change management, acceptance and after-delivery support.
 
 We may recommend an existing product, a limited process change or staged implementation where these better serve the business.
 
-## Ask for an estimate
+## <span class='silky-bbi+115'>Ask for an estimate</span>
 
 Share the background, desired outcome, current obstacles and target date. A short brief is enough to start a discussion; accurate commitments follow an agreed scope.
 
@@ -80,4 +82,4 @@ Share the background, desired outcome, current obstacles and target date. A shor
 
 <!-- Internal: No public price list or blanket guarantees without approved commercial policy. -->
 
-
+</div>
