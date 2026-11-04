@@ -24,6 +24,12 @@ Account, authentication, permission-change and security records must be handled 
 
 Before a CRM workflow is enabled, its data fields, purpose, responsible party, service providers, access model, retention criteria, deletion or return process and any cross-border handling must be documented. Where Numerimondes processes information on a client’s instructions, the parties must record their respective roles and instructions in the applicable agreement. Do not assume that the same role applies to every workflow.
 
+## Data minimization and backups
+
+Collect and retain only information relevant to a stated account, service or engagement purpose. Do not ask for or keep unrelated information for possible future use. If irrelevant or obsolete information is identified, remove it unless a documented legal, contractual or security requirement requires it to be retained.
+
+Numerimondes uses automated infrastructure backups where enabled and also makes separate remote backups that it manages. Backup copies must follow the same data-minimization and access rules as the source data. Their scope, destination and provider, storage region, access controls, retention period, rotation and deletion process must be documented. A backup copy may persist until its defined expiry or rotation; deletion from the live system alone does not mean every backup copy has already been erased.
+
 ## Use and access
 
 We ask for information relevant to the agreed work and use it to deliver, support or account for that work. Before sensitive, personal or regulated information is shared, the parties must agree what is needed, who may access it, where it will be handled, and any required safeguards or instructions.

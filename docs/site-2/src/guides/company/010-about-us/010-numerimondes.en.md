@@ -26,7 +26,7 @@ Numerimondes SARL AU is an independent consulting and solutions company based in
 - **Systems, infrastructure and operations**: design and run the technology a business depends on.
 - **Custom software**: build applications and integrations, including Rust engineering for demanding use cases.
 
-In parallel, we run our own projects: a recruitment firm, an application platform and a standard for building fast websites.
+We also operate our own projects and services, including [Numerimondes Cloud](/company/projects/numerimondes-cloud) for server management, a recruitment firm, an application platform and a standard for building fast websites.
 
 ## Who we work with
 

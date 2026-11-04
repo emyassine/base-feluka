@@ -12,7 +12,7 @@ tags: [privacy, account, crm, personal-data]
 
 # Account and CRM privacy notice
 
-**Status: Draft.** This notice describes the account service at `numerimondes.com/account/`. The supplied data processing agreement covers one Cloud VPS 20 SSD subscription and names Contabo GmbH as processor and Contabo France SAS for data-centre operations. The agreement allows the server location to be selected in or outside the EU, or left to the provider. The selected region, whether this subscription hosts the CRM, other CRM providers, data flows, retention schedule and applicable CNDP formalities must be confirmed before this notice is approved as complete.
+**Status: Draft.** This notice describes the account service at `numerimondes.com/account/`. The supplied data processing agreement covers one Cloud VPS 20 SSD subscription configured in the EU region. It identifies the infrastructure processor and data-centre subprocessor listed in the [publisher and website information](/legal/publisher-information). Automated infrastructure backups are enabled for this VPS, and Numerimondes also makes separate manual remote backups. Whether this subscription hosts the CRM, the destination and region of remote backups, backup retention and deletion, other CRM providers, data flows and applicable CNDP formalities must be confirmed before this notice is approved as complete.
 
 ## Who is responsible
 
@@ -40,11 +40,11 @@ Numerimondes does not use account records for unrelated advertising or behaviora
 
 ## Access and recipients
 
-Access should be limited to authorized Numerimondes personnel and collaborators who need it for their assigned work, and to the people the relevant client authorizes for its workspace. Under the supplied agreement, Contabo GmbH processes customer data for the covered VPS service, and Contabo France SAS is identified for data-centre operations. Whether that subscription hosts the CRM and which server region was selected must be confirmed. The agreement allows an outside-EU location or leaves the choice to the provider; the actual selection and any resulting international transfer safeguards must be confirmed before approval. Information may also be disclosed where required by law or under the applicable service agreement.
+Access should be limited to authorized Numerimondes personnel and collaborators who need it for their assigned work, and to the people the relevant client authorizes for its workspace. Under the supplied agreement, the infrastructure processor handles data for the covered VPS service, and a data-centre subprocessor is identified. Whether that subscription hosts the CRM and which server region was selected must be confirmed. The agreement allows an outside-EU location or leaves the choice to the provider; the actual selection and any resulting international transfer safeguards must be confirmed before approval. Information may also be disclosed where required by law or under the applicable service agreement.
 
 ## Retention and account closure
 
-Information should be retained only for as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. No verified retention schedule or account deletion procedure is available for this draft. Numerimondes must confirm the periods or criteria for profile, workspace, project, authentication and audit information before approving this notice. Closing an account does not necessarily erase records that must be retained for a documented purpose.
+Information should be retained only for as long as needed for its stated purpose and applicable contractual, security, accounting or legal obligations. Automated backups are enabled for one VPS; if the CRM is hosted there, CRM data may be included in those backups. Numerimondes also makes manual remote backups. The remote destination, region, schedule, retention period and deletion process for those copies have not been verified for this draft. Numerimondes must confirm the periods or criteria for profile, workspace, project, authentication, audit and backup information before approving this notice. Closing an account does not necessarily erase records that must be retained for a documented purpose.
 
 ## Requests and rights
 

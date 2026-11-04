@@ -28,9 +28,13 @@ The [contact page](/company/prologue/contact) provides the currently published c
 
 ## Hosting
 
-The hosting provider is **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany ([contabo.com](https://contabo.com)). Numerimondes uses Contabo Cloud VPS infrastructure.
+The hosting provider is **Contabo GmbH**, Welfenstrasse 22, D-81541 Munich, Germany ([contabo.com](https://contabo.com)).
 
-The data processing agreement supplied for one **Cloud VPS 20 SSD** subscription names **Contabo GmbH** as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. The agreement allows the server location to be selected in or outside the EU, or left to the provider. The selected location for this subscription, the VPS serving each public site and account/CRM service, and the applicable backup and retention arrangements still need to be confirmed before this notice is approved. Neither provider’s business address establishes where this VPS stores data.
+The data processing agreement supplied for one **Cloud VPS 20 SSD** subscription names the hosting provider as processor and **Contabo France SAS**, 2 rue Taunus, 67630 Lauterbourg, France, for data-centre operations. The provider console identifies this VPS as being in the **EU** region. The agreement permits an EU or non-EU server location, or leaving the choice to the provider; the current console selection for this VPS is EU.
+
+### Backup and recovery
+
+Automated infrastructure backups are enabled for this VPS. Numerimondes also makes separate manual remote backups and removes information that is no longer relevant, subject to the retention needs of the service. The services hosted on this VPS, the remote backup destination and region, and backup retention, rotation and deletion arrangements must be confirmed before this notice is approved. Provider business addresses do not establish the physical location of the VPS or remote backups.
 
 ## Related notices
 

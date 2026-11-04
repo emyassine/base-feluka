@@ -32,7 +32,7 @@ Some pages load images hosted by Unsplash and link to external services such as 
 
 ## Hosting and security logs
 
-The website uses Contabo Cloud VPS infrastructure. For one Cloud VPS 20 SSD subscription, the data processing agreement names Contabo GmbH as processor and Contabo France SAS for data-centre operations. Hosting infrastructure may process technical request information, including IP addresses, requested paths, timestamps and browser details, for delivery, security and troubleshooting. The server location selected for this subscription, the VPS serving this site, and the applicable log and backup retention must be confirmed from the deployed configuration before this draft is approved. See the [publisher and website information](/legal/publisher-information) for provider details.
+The site uses managed virtual server infrastructure. The supplied data processing agreement covers an instance configured in the EU region; whether this website runs on that specific instance must be confirmed. Automated infrastructure backups are enabled for that instance, and Numerimondes also makes separate manual remote backups. Hosting infrastructure may process technical request information, including IP addresses, requested paths, timestamps and browser details, for delivery, security and troubleshooting. The remote backup destination and region, and the applicable log and backup retention and deletion arrangements, must be confirmed before this draft is approved. See the [publisher and website information](/legal/publisher-information) for the infrastructure provider and named subprocessor.
 
 ## Questions or corrections
 
