@@ -6,6 +6,8 @@ description: "Rules for accessing and using the public Numerimondes website and 
 summary: "Covers lawful use, intellectual property, external links, submissions, disclaimers and notices."
 category: "website-use"
 tags: [website, terms-of-use, intellectual-property]
+image: "/images/policies/automated-access.jpg"
+imageAlt: "Layered transparent planes crossed by sunlight, suggesting clear boundaries for website use."
 ---
 
 # Website Terms of Use

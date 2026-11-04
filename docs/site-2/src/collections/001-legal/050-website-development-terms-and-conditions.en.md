@@ -6,6 +6,8 @@ description: "Terms for website design, development, delivery and related servic
 summary: "Project scope, client responsibilities, fees, intellectual property, launch, support and liability."
 category: "website-development"
 tags: [website-development, client-terms, contracts]
+image: "/images/policies/engagement-terms.jpg"
+imageAlt: "A vermilion thread crossing ordered stone slabs, suggesting clearly defined project terms."
 ---
 
 # Website Development Terms and Conditions

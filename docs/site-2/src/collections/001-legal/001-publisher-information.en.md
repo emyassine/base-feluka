@@ -6,6 +6,8 @@ description: "Publisher identity and contact information for the Numerimondes we
 summary: "Identifies the publisher, managed hosting, and variable server and CDN locations."
 category: "company"
 tags: [publisher, legal-notice, contact]
+image: "/images/policies/policy-governance.jpg"
+imageAlt: "An amber prism casting precise shadows, suggesting publisher transparency and governance."
 ---
 
 # Publisher and website information

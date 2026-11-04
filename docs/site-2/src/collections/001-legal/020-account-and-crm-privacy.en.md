@@ -6,6 +6,8 @@ description: "How Numerimondes handles personal information in its account and C
 summary: "Explains account information, client workspace data, access, retention and privacy requests."
 category: "privacy"
 tags: [privacy, account, crm, personal-data]
+image: "/images/policies/account-boundaries.jpg"
+imageAlt: "Interlocking green sculptural forms, suggesting connected but bounded account access."
 ---
 
 # Account and CRM privacy notice

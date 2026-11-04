@@ -6,6 +6,8 @@ description: "How Numerimondes researches professional contacts and handles pros
 summary: "Explains public-source research, partner roles, outreach, recruitment and privacy requests."
 category: "privacy"
 tags: [privacy, prospecting, business-contacts, recruitment]
+image: "/images/policies/research-outreach.jpg"
+imageAlt: "A quiet, structured composition suggesting careful research and responsible professional outreach."
 ---
 
 # Prospecting and business contact privacy
