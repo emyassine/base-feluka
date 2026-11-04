@@ -28,7 +28,13 @@ withDefaults(defineProps<{
       <p v-if="category" class="product-card__category">{{ category }}</p>
       <h2><a :href="href">{{ title }}</a></h2>
       <p v-if="description" class="product-card__description">{{ description }}</p>
-      <a class="product-card__action" :href="href">{{ actionLabel }} <span aria-hidden="true">→</span></a>
+      <a class="product-card__action" :href="href">
+        {{ actionLabel }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
     </div>
   </article>
 </template>
@@ -111,4 +117,5 @@ withDefaults(defineProps<{
   font-weight: 650;
   text-decoration: none;
 }
+.product-card__action svg { width: 16px; height: 16px; }
 </style>
