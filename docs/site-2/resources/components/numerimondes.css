@@ -151,3 +151,23 @@
 
 .account-spaces-cards .cards-modern__body { display: flex; min-height: 16rem; flex-direction: column; }
 .account-spaces-cards .cards-modern__actions { align-content: flex-start; margin-top: auto; }
+
+.nm-policy-search { display:flex; flex-wrap:wrap; align-items:end; gap:12px; margin:28px 0 22px; }
+.nm-policy-search label { display:grid; gap:6px; min-width:160px; color:var(--vp-c-text-2); font-size:13px; }
+.nm-policy-search__query { flex:1 1 260px; }
+.nm-policy-search input,.nm-policy-search select { width:100%; min-height:42px; border:1px solid var(--vp-c-divider); border-radius:8px; background:var(--vp-c-bg-soft); color:var(--vp-c-text-1); padding:0 12px; font:inherit; }
+.nm-policy-search input:focus,.nm-policy-search select:focus { outline:2px solid var(--vp-c-brand-1); outline-offset:1px; }
+.nm-policy-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr)); gap:16px; }
+.nm-policy-card { display:flex; min-height:330px; flex-direction:column; align-items:flex-start; overflow:hidden; border:1px solid var(--vp-c-divider); border-radius:12px; background:var(--vp-c-bg-soft); }
+.nm-policy-card__image { display:block; width:100%; aspect-ratio:16/9; overflow:hidden; background:var(--vp-c-bg-alt); }
+.nm-policy-card__image img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .25s ease; }
+.nm-policy-card:hover .nm-policy-card__image img { transform:scale(1.035); }
+.nm-policy-card__meta,.nm-policy-card h2,.nm-policy-card p,.nm-policy-card__link { margin-inline:22px; }
+.nm-policy-card__meta { display:flex; flex-wrap:wrap; gap:8px; color:var(--vp-c-text-2); font-size:12px; text-transform:capitalize; }
+.nm-policy-card__meta { margin-top:18px; }
+.nm-policy-card__status { padding:2px 8px; border:1px solid var(--vp-c-divider); border-radius:999px; text-transform:none; }
+.nm-policy-card h2 { margin-top:12px; margin-bottom:8px; font-size:19px; }
+.nm-policy-card h2 a { color:var(--vp-c-text-1); text-decoration:none; }
+.nm-policy-card p { margin-top:0; margin-bottom:18px; color:var(--vp-c-text-2); line-height:1.6; }
+.nm-policy-card__link { margin-top:auto; margin-bottom:22px; color:var(--vp-c-brand-1); font-weight:600; text-decoration:none; }
+.nm-policy-empty { color:var(--vp-c-text-2); }

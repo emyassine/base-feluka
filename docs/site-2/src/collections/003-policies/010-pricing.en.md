@@ -4,6 +4,8 @@ title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
 category: "commercial"
 menuImage: "/images/services/pricing.jpg"
+image: "/images/services/pricing.jpg"
+imageAlt: "Pricing and project planning on a desk"
 icon: "@spmpst::icon::scale"
 description: "Services and pricing for employers, SMEs, professional practices and operating teams."
 lang: en

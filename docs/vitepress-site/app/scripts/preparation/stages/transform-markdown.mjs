@@ -62,11 +62,17 @@ await Promise.all(records.map(async (record) => {
   markdown = markdown.replace(/^(layout:\s*)(["']?)home-subheader\2\s*$/m, '$1home\npageLayout: home-subheader')
   const owningCollection = collections.find((collection) => record.from.startsWith(`${collection.sourceDirectory}${sep}`))
   if (owningCollection) {
+    const collectionSourcePath = relative(owningCollection.sourceDirectory, record.from).split(sep).join('/')
+    const isCollectionIndex = /^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(collectionSourcePath)
     const metadata = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
     if (metadata) {
       const frontmatter = metadata[1].split('\n').filter((line) => !/^(?:sidebar|aside):\s*/.test(line))
-        if (!/^collection:\s*/m.test(metadata[1])) frontmatter.push(`collection: ${JSON.stringify(owningCollection.id)}`)
-      if (owningCollection.layout === 'article') {
+      if (isCollectionIndex) {
+        if (!/^collectionIndex:\s*/m.test(metadata[1])) frontmatter.push(`collectionIndex: ${JSON.stringify(owningCollection.id)}`)
+      } else if (!/^collection:\s*/m.test(metadata[1])) {
+        frontmatter.push(`collection: ${JSON.stringify(owningCollection.id)}`)
+      }
+      if (owningCollection.layout === 'article' && !isCollectionIndex) {
         const { wordCount, readingTime } = readingMetrics(markdown)
         if (!/^wordCount:\s*/m.test(metadata[1])) frontmatter.push(`wordCount: ${wordCount}`)
         if (!/^readingTime:\s*/m.test(metadata[1])) frontmatter.push(`readingTime: ${readingTime}`)

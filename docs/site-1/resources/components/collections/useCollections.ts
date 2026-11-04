@@ -3,8 +3,14 @@ import collections from '@generated/collections.json';
 export interface CollectionArticle {
   title: string;
   description: string;
+  summary: string;
   date: string;
   category: string;
+  status: string;
+  icon: string;
+  image: string;
+  imageAlt: string;
+  tags: string[];
   wordCount: number;
   readingTime: number;
   url: string;

@@ -2,6 +2,8 @@
 layout: home-subheader
 sidebarTitle: "Data handling"
 title: "Client Data Handling Policy | Numerimondes"
+image: "/images/services/software.jpg"
+imageAlt: "Software and information systems"
 icon: "@spmpst::icon::database"
 description: "Boundaries for information shared during a Numerimondes client engagement."
 summary: "Client information is handled for the agreed work and under documented responsibilities."

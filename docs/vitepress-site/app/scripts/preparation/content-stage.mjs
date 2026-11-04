@@ -201,6 +201,13 @@ function frontmatterScalar(markdown, key) {
   return value
 }
 
+function frontmatterList(markdown, key) {
+  const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/m)?.[1]
+  const value = frontmatter?.match(new RegExp(`^${key}:\\s*\\[([^\\]]*)\\]\\s*$`, 'm'))?.[1]
+  if (!value) return []
+  return value.split(',').map((item) => item.trim().replace(/^(?:"(.*)"|'(.*)'|(.*))$/, '$1$2$3')).filter(Boolean)
+}
+
 function humanize(value) {
   return value.split('/').at(-1).replace(/\.[a-z]{2,3}\.md$/i, '').replace(/\.[^.]+$/, '').replace(/^\d+[.-]/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
@@ -254,15 +261,31 @@ for (const collection of collectionMetadata.values()) {
         const recordLanguage = sourceLanguage(record.from)
         const target = recordLanguage === language.toLowerCase() ? record.to : stagedPath(record.from, language)
         const { wordCount, readingTime } = readingMetrics(markdown)
-        return { title: articleTitle, description, date, category, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
+        const summary = frontmatterScalar(markdown, 'summary')
+        const status = frontmatterScalar(markdown, 'status')
+        const icon = frontmatterScalar(markdown, 'icon')
+        const image = frontmatterScalar(markdown, 'image') || frontmatterScalar(markdown, 'ogImage')
+        const imageAlt = frontmatterScalar(markdown, 'imageAlt')
+        const tags = frontmatterList(markdown, 'tags')
+        return { title: articleTitle, description, summary, date, category, status, icon, image, imageAlt, tags, wordCount, readingTime, sourcePath: relativeSource, url: publicMarkdownLink(target) }
       })))
     collectionRecord.articles[language] = articles
     const localeSegments = localePrefix(language, defaultLanguage, prefixDefaultLanguage)
     const targetDirectory = join(outputDirectory, ...localeSegments, ...collection.route.split('/'))
     const target = join(targetDirectory, 'index.md')
-    if (records.some((record) => resolve(record.to) === resolve(target))) {
-      throw new Error(`Collection route /${collection.route}/ conflicts with a published Markdown page`)
-    }
+    const hasPhysicalIndexForLanguage = records.some((record) => {
+      if (!record.from.startsWith(`${collection.sourceDirectory}${sep}`)) return false
+      const sourcePath = relative(collection.sourceDirectory, record.from).split(sep).join('/')
+      if (!/^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(sourcePath)) return false
+      return sourceLanguage(record.from).toLowerCase() === language.toLowerCase()
+    })
+    const hasDefaultPhysicalIndex = records.some((record) => {
+      if (!record.from.startsWith(`${collection.sourceDirectory}${sep}`)) return false
+      const sourcePath = relative(collection.sourceDirectory, record.from).split(sep).join('/')
+      return /^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(sourcePath)
+        && sourceLanguage(record.from).toLowerCase() === defaultLanguage.toLowerCase()
+    })
+    if (hasPhysicalIndexForLanguage || (!isDefaultLanguage(language, defaultLanguage) && hasDefaultPhysicalIndex)) continue
     const localizedTitle = localizedValue(collection.title ?? collection.metadata.title, language, humanize(collection.id))
     const localizedDescription = localizedValue(collection.description ?? collection.metadata.description, language)
     const categories = new Map(collection.categoryEntries.map((category) => [category.id, localizedValue(category.label ?? category.title, language, category.id)]))

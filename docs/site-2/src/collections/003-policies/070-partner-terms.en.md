@@ -2,6 +2,8 @@
 layout: home-subheader
 sidebarTitle: "Partner terms"
 title: "Partner and Contractor Policy | Numerimondes"
+image: "/images/home/showcase-capabilities/opportunities-after.jpg"
+imageAlt: "People working together on an opportunity"
 icon: "@spmpst::icon::handshake"
 description: "Boundaries for referral, specialist delivery and partner commercial arrangements."
 summary: "Partner roles, fees and responsibilities are specific to a written agreement."

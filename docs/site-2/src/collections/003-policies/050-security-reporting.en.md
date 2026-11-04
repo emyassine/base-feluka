@@ -2,6 +2,8 @@
 layout: home-subheader
 sidebarTitle: "Security reporting"
 title: "Security and Incident Reporting Policy | Numerimondes"
+image: "/images/services/infrastructure.jpg"
+imageAlt: "Infrastructure and network operations"
 icon: "@spmpst::icon::shield-alert"
 description: "How to raise a security concern about a Numerimondes engagement or service."
 summary: "Report suspected security issues through the contact channel and include only the details needed to investigate."

@@ -9,6 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
+import CollectionSearch from './CollectionSearch.vue'
 import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
 import TopbarActions from './TopbarActions.vue'
 import { installXTooltip } from './x-tooltip'
@@ -688,6 +689,7 @@ export default {
     DefaultTheme.enhanceApp?.(context)
     installXTooltip()
     context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
+    context.app.component('CollectionSearch', CollectionSearch)
     registerProjectComponents(context.app)
   },
 }

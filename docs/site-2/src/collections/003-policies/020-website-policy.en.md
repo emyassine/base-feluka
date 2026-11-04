@@ -2,6 +2,8 @@
 layout: home-subheader
 sidebarTitle: "Website policy"
 title: "Website Policy | Numerimondes"
+image: "/images/home/showcase-capabilities/digital-after.jpg"
+imageAlt: "Digital website design concept"
 icon: "@spmpst::icon::globe"
 description: "Minimum price and scope boundaries for website projects by Numerimondes."
 summary: "Website projects start at 25,000 Dhs HT, including static websites."
