@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 sidebarTitle: "Software & Automation"
 title: "Software & Automation | Numerimondes"
 icon: "@spmpst::icon::code-xml"

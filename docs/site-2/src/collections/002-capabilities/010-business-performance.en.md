@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 sidebarTitle: "Business Performance"
 title: "Business Performance | Numerimondes"
 icon: "@spmpst::icon::chart-no-axes-combined"

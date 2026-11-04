@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 sidebarTitle: "Infrastructure & Operations"
 title: "Infrastructure & Connected Operations | Numerimondes"
 icon: "@spmpst::icon::server"

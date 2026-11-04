@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 sidebarTitle: "Research & Ventures"
 title: "Research & Ventures | Numerimondes"
 icon: "@spmpst::icon::flask-conical"

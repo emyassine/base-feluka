@@ -1,4 +1,5 @@
 ---
+layout: home-subheader
 sidebarTitle: "People & Organizations"
 title: "People & Organizations | Numerimondes"
 icon: "@spmpst::icon::users-round"
