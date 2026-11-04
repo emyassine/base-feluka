@@ -23,11 +23,12 @@ const href = computed(() => collection.value?.links[locale.value] ?? collection.
 const headings = computed(() => (page.value.headers ?? []).filter((heading) => heading.level === 2))
 const readingLabel = computed(() => locale.value === 'fr' ? 'min de lecture' : 'min read')
 const wordLabel = computed(() => locale.value === 'fr' ? 'mots' : 'words')
+const withAnd = (value: string) => value.replace(/\s*&\s*/g, ' and ')
 
 const collectionLinks = computed(() => {
   const articles = collection.value?.articles[locale.value] ?? collection.value?.articles.en ?? []
   return articles.flatMap((article) => article.title && article.url
-    ? [{ text: article.title, link: article.url }]
+    ? [{ text: withAnd(article.title), link: article.url }]
     : [])
 })
 
@@ -45,7 +46,7 @@ const guideLinks = computed(() => {
   const flatten = (items: SidebarEntry[]): Array<{ text: string; link: string }> => items.flatMap((item) => {
     if (item.items?.length) return flatten(item.items)
     if (!item.link || !item.text || /^(?:https?:)?\/\//i.test(item.link)) return []
-    return [{ text: item.text.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').trim(), link: item.link }]
+    return [{ text: withAnd(item.text.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').trim()), link: item.link }]
   })
   const segments = route.path.split('/').filter(Boolean)
   const localized = segments[0] && ['en', 'fr', 'ar', 'es'].includes(segments[0])
