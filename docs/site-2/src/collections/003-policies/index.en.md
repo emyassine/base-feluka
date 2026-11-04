@@ -10,7 +10,16 @@ status: "Ready for review"
 
 # Policies
 
-These policies make our working boundaries visible: what we offer, what we do not offer, and what needs to be agreed before work begins. Draft policies are marked clearly and should not be treated as established commitments.
+Policies are formal rules and guiding principles that define our boundaries. They clarify what we offer, what falls outside our scope, and the conditions under which we work and make decisions.
+
+We make our policies explicit and accessible to:
+
+- **Set clear expectations:** Help clients, partners, and team members understand their responsibilities, the standards we uphold, and what they can expect when working with us.
+- **Promote consistency and fairness:** Establish common principles, encourage fair treatment, reduce ambiguity, and support alignment with applicable laws and professional standards.
+- **Manage risk:** Provide a structured approach to identifying, assessing, and addressing operational, legal, financial, and reputational risks.
+- **Support informed decisions:** Give everyone involved a clear framework for responsible, consistent decisions while allowing appropriate autonomy and professional judgment.
+
+Draft policies are marked clearly and should not be treated as established commitments.
 
 <CollectionSearch collection-id="policies" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
   <CollectionSearchBar
