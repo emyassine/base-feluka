@@ -86,7 +86,7 @@ Training concepts, talent-related initiatives, recruitment solutions in preparat
 
 These initiatives reflect our experimentation and engineering direction; they are not presented as completed commercial products.
 
-**CTA:** Explore our work and ideas → `/services/business-advisory/solutions`
+**CTA:** Explore our work and ideas → `/services/marketplace`
 
 ---
 
@@ -132,7 +132,7 @@ This is our corporate scope, **not a claim that every activity is already offere
 
 Our model is project-driven: a clear point of contact, an agreed scope and an appropriate combination of expertise and resources for each engagement.
 
-**CTA:** Learn about Numerimondes → `/company/about-us/about-us`
+**CTA:** Learn about Numerimondes → `/company/about-us/numerimondes`
 
 ---
 

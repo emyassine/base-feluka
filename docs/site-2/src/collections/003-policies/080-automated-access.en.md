@@ -18,6 +18,6 @@ This draft sets the proposed conditions for automated access to Numerimondes web
 
 Unless Numerimondes gives express written permission, you may not use an automated process to scrape, crawl, harvest or extract website content or data, or use that content to train, fine-tune or evaluate an artificial intelligence or machine-learning model. Normal browser use and access by search engines that follow the published crawler preferences are not a grant of permission for bulk extraction or model training.
 
-Content on these websites is protected by applicable intellectual-property rights. A copyright notice does not transfer ownership or grant a licence. Requests for permission should identify the material, intended use, scale and duration; contact Numerimondes through the [contact page](/company/prologue/contact).
+Content on these websites is protected by applicable intellectual-property rights. A copyright notice does not transfer ownership or grant a licence. Requests for permission should identify the material, intended use, scale and duration; contact Numerimondes through the [contact page](/company/contact).
 
 This policy is a draft and must be reviewed and incorporated into the website terms before it is presented as an operative contract term.

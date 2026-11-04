@@ -21,7 +21,7 @@ International collaboration is assessed per assignment. It depends on client nee
 
 ## Explore an opportunity
 
-- [Business development and delivery partnerships](/opportunities/international/worldwide-partnershipsbusiness-development)
-- [Specialist collaboration](/opportunities/international/worldwide-partnershipsspecialist-collaboration)
+- [Business development and delivery partnerships](/opportunities/international/business-development)
+- [Specialist collaboration](/opportunities/international/specialist-collaboration)
 
-**Discuss a worldwide opportunity** → `/company/prologue/contact?topic=partnership`
+**Discuss a worldwide opportunity** → `/company/contact?topic=partnership`

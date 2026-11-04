@@ -31,8 +31,8 @@ Local context matters: we qualify each opportunity with the people involved, res
 
 Accounting and advisory firms can identify issues such as manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit a business. Specialist firms and freelancers can contribute consulting, software development, infrastructure, recruitment, training and other scoped capabilities. Each party keeps its independent activity and agrees its role before a client engagement begins.
 
-[How Morocco advisory partnerships work](/opportunities/morocco/local-partnershipsadvisory-partners)
+[How Morocco advisory partnerships work](/opportunities/morocco/advisory-partners)
 
-[Partner roles, product lines and commercial terms](/opportunities/morocco/local-partnershipspartner-commercial-terms)
+[Partner roles, product lines and commercial terms](/opportunities/morocco/partner-commercial-terms)
 
-**Discuss a Morocco-only opportunity** → `/company/prologue/contact?topic=partnership`
+**Discuss a Morocco-only opportunity** → `/company/contact?topic=partnership`

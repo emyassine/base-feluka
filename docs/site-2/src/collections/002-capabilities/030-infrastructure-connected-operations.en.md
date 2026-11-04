@@ -25,6 +25,6 @@ Self-hosting can offer control, but it also brings responsibility for updates, s
 
 Depending on the assignment, work may include server provisioning and management, an architecture or migration plan, deployment, updates, access setup, monitoring, backup and recovery procedures, operating documentation or a scoped technical review. A local server can keep selected services on the client’s premises and network; working without Internet access must be designed and verified for the specific deployment. Security assurance requires an appropriate specialist scope and evidence; a general infrastructure discussion is not a certification or security audit.
 
-Explore the [infrastructure service area](/services/systems-and-operations/infrastructure) for related service information. Specific scope, availability and deliverables are confirmed before an engagement begins.
+Explore the [infrastructure service area](/services/marketplace) for related service information. Specific scope, availability and deliverables are confirmed before an engagement begins.
 
 </div>

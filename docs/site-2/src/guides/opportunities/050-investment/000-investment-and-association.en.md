@@ -26,4 +26,4 @@ Tell us about your experience, sector interests, geography, contribution, invest
 
 Any association is subject to independent due diligence, agreed responsibilities and written terms. A conversation or introduction is not an investment offer, a promise of return, or a commitment to match or transact. Financial and legal advice should come from appropriately qualified professionals.
 
-**Discuss investment or association** → `/company/prologue/contact?topic=investment-association`
+**Discuss investment or association** → `/company/contact?topic=investment-association`

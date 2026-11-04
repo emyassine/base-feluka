@@ -13,7 +13,7 @@
     },
     "action": {
       "label": "Click here",
-      "href": "/company/prologue/contact",
+      "href": "/company/contact",
       "variant": "button"
     },
     "style": {

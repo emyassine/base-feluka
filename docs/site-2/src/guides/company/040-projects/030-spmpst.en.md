@@ -37,6 +37,6 @@ The specification is a draft. A reference preparation workflow and a VitePress a
 
 We welcome technical discussions on content portability, static site generation and documentation tooling, as well as website projects built on this approach.
 
-<FeluqaButton tag="a" href="/company/contact/contact?topic=project" label="Discuss a website project" />
+<FeluqaButton tag="a" href="/company/contact?topic=project" label="Discuss a website project" />
 
 </NmProse>

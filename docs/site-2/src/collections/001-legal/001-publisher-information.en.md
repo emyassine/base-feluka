@@ -22,7 +22,7 @@ The registered office is at **10 Rue de la Liberté, 3rd floor, apartment 5, Bel
 
 ### Responsible representative and contact
 
-Numerimondes is represented by its Founder and Manager, **Yassine EL MOUMEN**. For commercial, contractual, legal or privacy questions, use the [contact page](/company/prologue/contact).
+Numerimondes is represented by its Founder and Manager, **Yassine EL MOUMEN**. For commercial, contractual, legal or privacy questions, use the [contact page](/company/contact).
 
 ## Website management and hosting
 

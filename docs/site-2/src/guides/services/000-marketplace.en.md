@@ -67,7 +67,7 @@ const active = computed(() => db.services.find((s: any) => s.id === activeId.val
 const inBasket = (id: string) => basket.value.includes(id)
 function toggleBasket(id: string) { basket.value = inBasket(id) ? basket.value.filter(x => x !== id) : [...basket.value, id]; persist('nm-brief', basket.value) }
 const basketItems = computed(() => db.services.filter((s: any) => basket.value.includes(s.id)))
-const quoteHref = computed(() => `/company/prologue/contact?topic=quote&services=${basket.value.join(',')}`)
+const quoteHref = computed(() => `/company/contact?topic=quote&services=${basket.value.join(',')}`)
 
 async function openService(id: string, t: Tab = 'scope') {
   activeId.value = id; tab.value = t; formSent.value = false
@@ -143,7 +143,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
         </div>
       </article>
     </div>
-    <div v-else class="ui-empty"><h3>No service matches these filters</h3><p>Broaden the search or describe your need and we will route you to the right partner.</p><p><button type="button" class="ui-btn ui-btn--outline" @click="resetFilters">Clear filters</button> <a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=quote">Describe your need</a></p></div>
+    <div v-else class="ui-empty"><h3>No service matches these filters</h3><p>Broaden the search or describe your need and we will route you to the right partner.</p><p><button type="button" class="ui-btn ui-btn--outline" @click="resetFilters">Clear filters</button> <a class="ui-btn ui-btn--primary" href="/company/contact?topic=quote">Describe your need</a></p></div>
   </section>
   <section id="recruit" aria-labelledby="nm-rec" class="nm-section nm-recruit">
     <div>
@@ -152,7 +152,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       <p class="nm-lead nm-lead--left">The Best Recruit is a remote recruitment service for employers and hiring teams. Role definition, candidate qualification, information shared and next steps are agreed for each mandate, wherever the employer is based.</p>
       <p><strong>Planned fee rate: 46% of the candidate’s minimum monthly salary.</strong> Market research to validate the rate is planned soon. The final rate and service terms will be confirmed after the research.</p>
     </div>
-    <div class="ui-card ui-card--pad"><h3>Research and final terms</h3><p>The 46% rate is planned, not yet validated. Market research is planned soon; pricing and the recruitment process will be confirmed with employers before the service is quoted.</p><a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=recruitment">Discuss a remote hiring need</a></div>
+    <div class="ui-card ui-card--pad"><h3>Research and final terms</h3><p>The 46% rate is planned, not yet validated. Market research is planned soon; pricing and the recruitment process will be confirmed with employers before the service is quoted.</p><a class="ui-btn ui-btn--primary" href="/company/contact?topic=recruitment">Discuss a remote hiring need</a></div>
   </section>
   <section aria-labelledby="nm-partners" class="nm-section">
     <h2 id="nm-partners" class="nm-title">Vetted <span class="silky-bbi+115">partners</span></h2>
@@ -165,7 +165,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
         <ul class="nm-meta"><li v-for="b in p.badges" :key="b" class="ui-badge">{{ b }}</li></ul>
       </article>
     </div>
-    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/opportunities/morocco/local-partnershipspartner-commercial-terms">Explore partner opportunities in Morocco</a> or <a href="/company/prologue/contact?topic=partner">discuss a partnership</a>.</aside>
+    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/opportunities/morocco/partner-commercial-terms">Explore partner opportunities in Morocco</a> or <a href="/company/contact?topic=partner">discuss a partnership</a>.</aside>
   </section>
   <section aria-labelledby="nm-faq" class="nm-section">
     <h2 id="nm-faq" class="nm-title">Before you <span class="silky-bbi+115">request</span> a proposal</h2>
@@ -174,7 +174,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
   <footer class="nm-footer">
     <h2>Need something tailored?</h2>
     <p>Describe the outcome you need. We will tell you which service fits, or scope a custom engagement with the right partners.</p>
-    <a class="ui-btn ui-btn--primary" href="/company/prologue/contact?topic=quote">Request a proposal</a>
+    <a class="ui-btn ui-btn--primary" href="/company/contact?topic=quote">Request a proposal</a>
   </footer>
   <Transition name="nm-bar">
     <div v-if="basket.length" class="nm-basket" role="region" aria-label="Your brief">
@@ -218,7 +218,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
           <p v-if="formSent" class="nm-note" role="status">Thank you. Your review is pending confirmation of your engagement.</p>
         </form>
       </div>
-      <footer class="ui-dialog__foot"><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(active.id)" @click="toggleBasket(active.id)">{{ inBasket(active.id) ? 'In your brief ✓' : 'Add to brief' }}</button><a class="ui-btn ui-btn--primary" :href="`/company/prologue/contact?topic=${active.id}`">Request a quote</a></footer>
+      <footer class="ui-dialog__foot"><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(active.id)" @click="toggleBasket(active.id)">{{ inBasket(active.id) ? 'In your brief ✓' : 'Add to brief' }}</button><a class="ui-btn ui-btn--primary" :href="`/company/contact?topic=${active.id}`">Request a quote</a></footer>
     </div>
   </dialog>
 </main>

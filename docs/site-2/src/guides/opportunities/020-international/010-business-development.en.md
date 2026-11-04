@@ -21,4 +21,4 @@ Terms cover lead attribution, eligibility, scope, payment conditions, and confli
 
 An introduction does not promise immediate work. We qualify each opportunity and agree a practical next step before making commitments.
 
-**Explore a commercial partnership** → `/company/prologue/contact?topic=partnership`
+**Explore a commercial partnership** → `/company/contact?topic=partnership`

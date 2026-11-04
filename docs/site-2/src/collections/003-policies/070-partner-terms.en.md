@@ -2,7 +2,7 @@
 layout: home-subheader
 sidebarTitle: "Partner terms"
 title: "Partner and Contractor Policy | Numerimondes"
-image: "/images/home/showcase-capabilities/opportunities-after.jpg"
+image: "/images/home/benefits/opportunities.svg"
 imageAlt: "People working together on an opportunity"
 icon: "@spmpst::icon::handshake"
 description: "Boundaries for referral, specialist delivery and partner commercial arrangements."
@@ -26,4 +26,4 @@ A partner delivering work remains responsible for its own business and professio
 
 We do not offer a universal commission percentage, guaranteed flow of work, automatic referral fee, exclusivity or standard payment schedule. Terms for one partner, country, product line or opportunity do not automatically apply to another. The applicable written agreement and deal-specific schedule define the arrangement.
 
-For examples of possible collaboration routes, see [Partner fees and commercial terms](/opportunities/morocco/local-partnershipspartner-commercial-terms).
+For examples of possible collaboration routes, see [Partner fees and commercial terms](/opportunities/morocco/partner-commercial-terms).

@@ -28,7 +28,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
         label: 'Our Products',
         indicatorIndex: 0,
         items: [
-          { id: 'feluqa', label: 'Feluqa', href: '/company/initiatives/feluqa', icon: '/images/products/feluqa.png' },
+          { id: 'feluqa', label: 'Feluqa', href: '/company/projects/feluqa', icon: '/images/products/feluqa.png' },
           { id: 'best-recruit', label: 'The Best Recruit · Remote Recruitment', mobileLabel: 'Remote recruitment', href: '/company/projects/the-best-recruit', icon: '/images/products/TheBestRecruit.png' },
         ],
       },
@@ -40,7 +40,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
           { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
           { label: 'Systems and Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/systems-overview', icon: '@spmpst::icon::server' },
           { label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', icon: '@spmpst::icon::sparkles' },
-          { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/about-us', icon: '@spmpst::icon::building' },
+          { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/numerimondes', icon: '@spmpst::icon::building' },
         ],
       },
     ]"
@@ -155,11 +155,11 @@ description: "Numerimondes helps organizations design, build, and operate depend
 <Timeline
   label="Business benefits"
   :items="[
-    { title: `Better <span class='silky-bbi+115'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/business-advisory/consulting', time: `Clearer priorities, options and investment choices.` },
-    { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/systems-and-operations/systems-overviewoperations', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
-    { title: `Greater visibility and <span class='silky-bbi+115'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/systems-and-operations/systems-overviewsoftware', time: `Accessible information, traceable processes and systems you can manage.` },
-    { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/company/initiatives/innovation', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
-    { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/prologue/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
+    { title: `Better <span class='silky-bbi+115'>decisions</span>`, status: [{ icon: '01', markerColor: '#3977c8' }], href: '/services/marketplace', time: `Clearer priorities, options and investment choices.` },
+    { title: `More efficient <span class='silky-bbi+115'>operations</span>`, status: [{ icon: '02', markerColor: '#3977c8' }], href: '/services/marketplace', time: `Less duplicated work, fewer avoidable errors and better coordination.` },
+    { title: `Greater visibility and <span class='silky-bbi+115'>control</span>`, status: [{ icon: '03', markerColor: '#3977c8' }], href: '/services/marketplace', time: `Accessible information, traceable processes and systems you can manage.` },
+    { title: 'New opportunities', status: [{ icon: '04', markerColor: '#3977c8' }], href: '/opportunities/', time: 'Business concepts, partnerships, products and services evaluated for real-world potential.' },
+    { title: 'A clearer route to delivery', status: [{ icon: '05', markerColor: '#3977c8' }], href: '/company/contact', time: 'Defined scope, accountable coordination and expertise matched to the assignment.' }
   ]"
  />
 
@@ -181,7 +181,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Uncertain strategic direction, fragmented market research, and unaligned commercial priorities.",
 	    afterText: "Structured business roadmap, <span class=silky-i>clear decisions</span> and commercial expansion.",
 	    linkText: "Explore consulting",
-	    linkUrl: "/services/business-advisory/consulting"
+	    linkUrl: "/services/marketplace"
 	  },
 	  {
 	    name: "Digital Systems and Software",
@@ -192,7 +192,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Siloed legacy tools, manual data entry, and slow execution speeds bottlenecking daily operations.",
 	    afterText: "High-performance custom software and Rust-powered automation delivering sub-millisecond execution and total data control.",
 	    linkText: "Explore software and systems",
-	    linkUrl: "/services/systems-and-operations/systems-overviewsoftware"
+	    linkUrl: "/services/marketplace"
 	  },
 	  {
 	    name: "Infrastructure, Equipment and Security",
@@ -203,7 +203,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Vulnerable, opaque server setup with recurring vendor lock-in fees and unmonitored security gaps.",
 	    afterText: "Sovereign, self-hosted infrastructure built for operational continuity, full privacy, and hardened security controls.",
 	    linkText: "Explore infrastructure",
-	    linkUrl: "/services/systems-and-operations/systems-overviewinfrastructure"
+	    linkUrl: "/services/marketplace"
 	  },
 	  {
 	    name: "Operations, People and Capabilities",
@@ -214,7 +214,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Duplicated work, communication friction, and uncoordinated operational workflows across teams.",
 	    afterText: "Streamlined operational workflows, clear reporting lines, and upskilled teams executing with full accountability.",
 	    linkText: "Explore operations",
-	    linkUrl: "/services/systems-and-operations/systems-overviewoperations"
+	    linkUrl: "/services/marketplace"
 	  },
 	  {
 	    name: "Innovation and New Ventures",
@@ -225,7 +225,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 	    beforeText: "Untapped commercial concepts and high-potential ideas stalled without a practical path to execution.",
 	    afterText: "Validated product-market strategy, robust system architecture, and new venture models deployed for growth.",
 	    linkText: "Explore innovation",
-	    linkUrl: "/company/initiatives/innovation"
+	    linkUrl: "/opportunities/"
 	  }
 		]'
    :labels="{
@@ -392,7 +392,7 @@ flowchart TD
 ```
 :::
 ::::
-<FeluqaButton tag="a" href="/company/about-us/delivery-model"
+<FeluqaButton tag="a" href="/company/how-we-work/delivery-model"
 	label="How we work"/>
 
 
@@ -431,7 +431,7 @@ Join project teams when your expertise fits an assignment — across software en
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
 <FeluqaButton tag="a" color="dark" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" color="dark" href="/company/about-us/about-us" label="More about us"/>
+<FeluqaButton tag="a" color="dark" href="/company/about-us/numerimondes" label="More about us"/>
 </div>
 
 ::::
@@ -446,7 +446,7 @@ The Best Recruit is our remote recruitment service for employers. Feluqa and SPM
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/initiatives/feluqa',
+      href: '/company/projects/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
@@ -460,7 +460,7 @@ The Best Recruit is our remote recruitment service for employers. Feluqa and SPM
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/initiatives/spmpst',
+      href: '/company/projects/spmpst',
       image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
@@ -472,7 +472,7 @@ The Best Recruit is our remote recruitment service for employers. Feluqa and SPM
   :more="{
     title: 'Discover all our 3 initiatives',
     description: 'Explore our current and upcoming projects',
-    href: '/company/initiatives/initiatives',
+    href: '/opportunities/',
     image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
   }"
   :card-height="220"
@@ -499,7 +499,7 @@ Share a challenge, an idea, a business objective or a project you want to explor
 <div style="display: flex; gap: 15px;">
 	<FeluqaButton tag="a"
 		color="gray"
-		href="/company/prologue/contact" label="Start a conversation"/>
+		href="/company/contact" label="Start a conversation"/>
 	<FeluqaButton tag="a"
 		color="gray"
 		href="/opportunities" label="Become a partner"/>

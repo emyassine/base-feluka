@@ -95,7 +95,7 @@ Numerimondes works across these layers, whether the engagement covers one integr
 
 **Tools and standards under development** — Explore our technical initiatives, including Feluqa (a Rust application platform in development) and SPMPST (an emerging specification for portable, structured site content). These are R&D initiatives, not finished commercial products.
 
-**Action:** Explore solutions → `/services/business-advisory/solutions`
+**Action:** Explore solutions → `/services/marketplace`
 
 ---
 
@@ -144,7 +144,7 @@ Numerimondes is an independent technology company based in Casablanca, Morocco. 
 
 Our engineering interests include Rust, PHP, Linux, databases, automation and cross-platform software. Technology choices follow the project's needs — not the other way around.
 
-**Action:** About Numerimondes → `/company/about-us/about-us`
+**Action:** About Numerimondes → `/company/about-us/numerimondes`
 
 ---
 

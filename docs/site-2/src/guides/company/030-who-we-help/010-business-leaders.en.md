@@ -13,7 +13,7 @@ js-events:
   eyebrow="FOR BUSINESS LEADERS · NUMERIMONDES"
   title="A <span class='silky-bbi'>direct answer</span><br>For a concrete problem."
   description="If a process, a system or a decision is costing you time or money."
-  :buttons="[{ label: 'Discuss your situation', href: '/company/contact/contact?topic=project', color: 'gray' }]"
+  :buttons="[{ label: 'Discuss your situation', href: '/company/contact?topic=project', color: 'gray' }]"
   height="40vh"
 />
 
@@ -38,6 +38,6 @@ js-events:
 
 A clear view of whether we can help and what a first step would look like. An assessment or quotation is confirmed separately, in writing.
 
-<FeluqaButton tag="a" href="/company/contact/contact?topic=project" label="Discuss your situation" />
+<FeluqaButton tag="a" href="/company/contact?topic=project" label="Discuss your situation" />
 
 </NmProse>

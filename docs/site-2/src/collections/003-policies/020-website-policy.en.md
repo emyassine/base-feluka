@@ -38,4 +38,4 @@ These items are included only when the proposal lists them. The proposal also id
 
 We do not take on a new website project below the **25,000 Dhs HT** minimum, including static-site projects. We do not treat hosting, domain fees, ongoing maintenance, support or additional SEO work as included unless the written proposal says so. We do not promise a search position or business result.
 
-For the broader commercial approach, see [Pricing and Engagements](/policies/pricing). To discuss a project, [contact Numerimondes](/company/prologue/contact?topic=quote).
+For the broader commercial approach, see [Pricing and Engagements](/policies/pricing). To discuss a project, [contact Numerimondes](/company/contact?topic=quote).

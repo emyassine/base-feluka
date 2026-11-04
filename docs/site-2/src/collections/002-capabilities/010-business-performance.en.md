@@ -29,6 +29,6 @@ This capability can inform an [operational assessment or process improvement mis
 
 ## <span class='silky-bbi+115'>Related areas</span>
 
-Commercial workflows and strategic planning often connect with [operations and business advisory](/services/business-advisory/consulting). Software and reporting tools may support an improvement, but should follow a clear understanding of the work itself.
+Commercial workflows and strategic planning often connect with [operations and business advisory](/services/marketplace). Software and reporting tools may support an improvement, but should follow a clear understanding of the work itself.
 
 </div>

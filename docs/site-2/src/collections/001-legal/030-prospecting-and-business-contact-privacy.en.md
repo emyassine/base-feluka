@@ -106,7 +106,7 @@ People may ask whether Numerimondes holds personal data about them, request acce
 
 ### How to contact us
 
-Use the [contact page](/company/prologue/contact) and identify the request as relating to prospecting, partner research or recruitment. Include the business contact details concerned and, where known, the organization and source. Numerimondes may ask for proportionate information to verify identity. Do not send passwords or unnecessary identity documents through ordinary contact channels.
+Use the [contact page](/company/contact) and identify the request as relating to prospecting, partner research or recruitment. Include the business contact details concerned and, where known, the organization and source. Numerimondes may ask for proportionate information to verify identity. Do not send passwords or unnecessary identity documents through ordinary contact channels.
 
 ### Legal information
 

@@ -135,7 +135,7 @@ Portability is limited to personal data the person provided, where processing is
 
 ### How to make a request
 
-Use the [contact page](/company/prologue/contact) and identify your message as a personal data request. State the relevant website interaction and the right you want to exercise.
+Use the [contact page](/company/contact) and identify your message as a personal data request. State the relevant website interaction and the right you want to exercise.
 
 #### Identity checks and safe contact
 
@@ -143,4 +143,4 @@ Numerimondes may ask for information proportionate to confirming your identity a
 
 ## Questions or corrections
 
-For questions or corrections about this notice, use the [contact page](/company/prologue/contact).
+For questions or corrections about this notice, use the [contact page](/company/contact).

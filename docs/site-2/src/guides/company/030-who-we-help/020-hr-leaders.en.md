@@ -13,7 +13,7 @@ js-events:
   eyebrow="FOR HR AND HIRING LEADERS · NUMERIMONDES"
   title="Hiring decisions<br>with <span class='silky-bbi'>better information</span>."
   description="Remote recruitment for employers, wherever your hiring team is based.<br>Tell us which roles matter most."
-  :buttons="[{ label: 'Register a hiring need', href: '/company/contact/contact?topic=recruitment', color: 'gray' }]"
+  :buttons="[{ label: 'Register a hiring need', href: '/company/contact?topic=recruitment', color: 'gray' }]"
   height="40vh"
 />
 
@@ -36,6 +36,6 @@ Process, tooling and workforce-operations questions can be handled as consulting
 
 Availability, response timing and placement commitments are confirmed for each remote mandate.
 
-<FeluqaButton tag="a" href="/company/contact/contact?topic=recruitment" label="Discuss a remote hiring need" />
+<FeluqaButton tag="a" href="/company/contact?topic=recruitment" label="Discuss a remote hiring need" />
 
 </NmProse>

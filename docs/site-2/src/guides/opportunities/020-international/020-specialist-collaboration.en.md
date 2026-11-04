@@ -30,4 +30,4 @@ Each collaboration is defined by deliverables, availability, confidentiality, qu
 
 Tell us where you operate, the sectors or clients you know, what you contribute, and the kind of collaboration you have in mind. We will assess fit and agree a practical next discussion.
 
-**Contact us about specialist work** → `/company/prologue/contact?topic=partnership`
+**Contact us about specialist work** → `/company/contact?topic=partnership`

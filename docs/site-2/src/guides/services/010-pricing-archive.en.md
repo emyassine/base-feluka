@@ -19,7 +19,7 @@ js-events:
   description="A useful proposal explains what you receive, which decisions you need to make and what the engagement will cost."
   :title-style="{ color: '#e2e8f0' }"
   :description-style="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Request a proposal', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
+  :buttons="[{ label: 'Request a proposal', href: '/company/contact?topic=quote' }, { label: 'Explore our services', href: '/services/', color: 'gray' }]"
 />
 
 
@@ -78,7 +78,7 @@ We may recommend an existing product, a limited process change or staged impleme
 
 Share the background, desired outcome, current obstacles and target date. A short brief is enough to start a discussion; accurate commitments follow an agreed scope.
 
-**Request a proposal** → `/company/prologue/contact?topic=quote`
+**Request a proposal** → `/company/contact?topic=quote`
 
 <!-- Internal: No public price list or blanket guarantees without approved commercial policy. -->
 

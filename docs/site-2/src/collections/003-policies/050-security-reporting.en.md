@@ -14,7 +14,7 @@ tags: [security, incidents, reporting]
 
 # Security and incident reporting policy
 
-If you believe a Numerimondes website, project or service has a security issue, [contact Numerimondes](/company/prologue/contact) and mark the message **Security concern**. Include the affected service, what you observed, when it happened and a safe way to follow up. Do not include passwords, secret keys, private client records or exploit payloads in an ordinary contact message.
+If you believe a Numerimondes website, project or service has a security issue, [contact Numerimondes](/company/contact) and mark the message **Security concern**. Include the affected service, what you observed, when it happened and a safe way to follow up. Do not include passwords, secret keys, private client records or exploit payloads in an ordinary contact message.
 
 We will review reports relevant to our services and coordinate next steps with the affected parties. For client systems, the project agreement identifies who operates the system and who handles incidents. Promptness, notification duties, technical access and recovery depend on the service and the applicable agreement.
 

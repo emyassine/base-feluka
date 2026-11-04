@@ -35,6 +35,6 @@ The Best Recruit is available for employer inquiries and scoped remote recruitme
 
 A fee rate of **46% of the candidate’s minimum monthly salary is planned**. Market research to validate the rate is planned soon. The final rate and service terms will be confirmed after the research.
 
-<FeluqaButton tag="a" href="/company/contact/contact?topic=recruitment" label="Discuss a remote hiring need" />
+<FeluqaButton tag="a" href="/company/contact?topic=recruitment" label="Discuss a remote hiring need" />
 
 </NmProse>

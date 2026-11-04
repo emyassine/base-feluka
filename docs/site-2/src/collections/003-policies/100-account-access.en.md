@@ -24,7 +24,7 @@ Client organizations are responsible for requesting access only for people autho
 
 ## Account holder responsibilities
 
-Account holders must protect their sign-in credentials and devices, use only the account features they are authorized to use, and promptly report suspected account compromise or an access error through the [contact page](/company/prologue/contact), marking the message **Security concern**. Do not include passwords, access tokens or unnecessary personal or confidential records in a report.
+Account holders must protect their sign-in credentials and devices, use only the account features they are authorized to use, and promptly report suspected account compromise or an access error through the [contact page](/company/contact), marking the message **Security concern**. Do not include passwords, access tokens or unnecessary personal or confidential records in a report.
 
 Use the account area for its stated project, billing, deliverable, support or team purposes. Do not upload information you are not authorized to provide, attempt to bypass access controls, disrupt the service, or use an account to violate another person’s rights or applicable law.
 
@@ -36,4 +36,4 @@ Closing or suspending an account does not automatically erase records that must 
 
 ## Service terms and questions
 
-Project scope, fees, invoicing, support, deliverables and account-specific responsibilities are defined by the applicable written proposal or agreement. This policy does not promise a particular availability level, response time, retention period or feature. For a security issue, follow the [security reporting policy](/policies/security-reporting). For other account questions, use the [contact page](/company/prologue/contact).
+Project scope, fees, invoicing, support, deliverables and account-specific responsibilities are defined by the applicable written proposal or agreement. This policy does not promise a particular availability level, response time, retention period or feature. For a security issue, follow the [security reporting policy](/policies/security-reporting). For other account questions, use the [contact page](/company/contact).

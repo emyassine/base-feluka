@@ -23,7 +23,7 @@ internal-note: ['see https://www.bain.com/contentassets/e897e76847fa4c0bb23a70c3
   description="Clear offers, defined scope and commercial terms agreed for each client and mission."
   :title-style="{ color: '#e2e8f0' }"
   :description-style="{ color: '#e2e8f0' }"
-  :buttons="[{ label: 'Discuss a project', href: '/company/prologue/contact?topic=quote' }, { label: 'Explore the service catalogue', href: '/services/marketplace', color: 'gray' }]"
+  :buttons="[{ label: 'Discuss a project', href: '/company/contact?topic=quote' }, { label: 'Explore the service catalogue', href: '/services/marketplace', color: 'gray' }]"
 />
 
 <div style="width: min(100% - 40px, 820px); margin-inline: auto;">
@@ -180,6 +180,6 @@ Pricing should reflect the client need, relevant market conditions and the value
 
 Tell us what your organization does, who it serves, what you need to improve, and the people, locations or systems involved. We will assess fit and mobilize the team needed for the agreed scope.
 
-**[Discuss a project](/company/prologue/contact?topic=quote)** · **[Explore the service catalogue](/services/marketplace)** · **[Partner opportunities in Morocco](/opportunities/morocco/local-partnershipspartner-commercial-terms)**
+**[Discuss a project](/company/contact?topic=quote)** · **[Explore the service catalogue](/services/marketplace)** · **[Partner opportunities in Morocco](/opportunities/morocco/partner-commercial-terms)**
 
 </div>

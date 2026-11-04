@@ -84,13 +84,13 @@ Automated backups are enabled for the current website webserver, and Numerimonde
 
 A person may ask about personal information concerning them, request access or correction, and exercise other rights available under applicable law. Under Morocco’s Law 09-08, erasure or blocking applies where statutory conditions are met, including unlawful, incomplete or inaccurate processing; objection rights apply in the circumstances provided by law. Where GDPR applies, rights may include erasure, restriction, objection and portability, subject to the regulation’s conditions and exceptions. GDPR portability concerns personal data provided by the person, processed automatically on the basis of consent or contract; it is not a general export right for all company records. See the [CNDP rights guide](https://www.cndp.ma/vos-droits-en-matiere-de-protection-des-donnees-a-caractere-personnel/), [Moroccan Law 09-08](https://www.cndp.ma/images/lois/Loi-09-08-Fr.pdf), and [GDPR Article 20](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679).
 
-Use the [contact page](/company/prologue/contact) and identify the account and information concerned. Numerimondes may request proportionate information to verify identity and authority. Do not send passwords, access tokens or unnecessary identity documents through ordinary contact channels.
+Use the [contact page](/company/contact) and identify the account and information concerned. Numerimondes may request proportionate information to verify identity and authority. Do not send passwords, access tokens or unnecessary identity documents through ordinary contact channels.
 
 ### Client organization data requests
 
 An authorized representative of a client organization may request access to, a copy of, export or return of the organization’s business data, or request correction, deletion or cessation of processing, subject to the applicable service agreement, documented instructions and legal, accounting, security or other retention obligations. Scope, format, timing and any applicable limits are determined by the service agreement. These organization-level data-handling requests are contractual service matters; they are distinct from an individual’s statutory rights over personal data that may appear within company records.
 
-Submit the request through the [contact page](/company/prologue/contact), identifying the organization, workspace and requested action. Numerimondes may verify that the representative is authorized to act for that organization.
+Submit the request through the [contact page](/company/contact), identifying the organization, workspace and requested action. Numerimondes may verify that the representative is authorized to act for that organization.
 
 ## Service boundary
 

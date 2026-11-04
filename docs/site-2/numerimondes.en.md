@@ -69,7 +69,7 @@ Organizational workflows, reporting, service operations, training and people-rel
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
-<FeluqaButton tag="a" href="/company/initiatives/innovation" label="Explore innovation"/>
+<FeluqaButton tag="a" href="/opportunities/" label="Explore innovation"/>
 
 ---
 
@@ -113,7 +113,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-<FeluqaButton tag="a" href="/company/about-us/delivery-model" label="How we work"/>
+<FeluqaButton tag="a" href="/company/how-we-work/delivery-model" label="How we work"/>
 
 ---
 
@@ -127,7 +127,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/company/about-us/about-us" label="More about us"/>
+<FeluqaButton tag="a" href="/company/about-us/numerimondes" label="More about us"/>
 
 ---
 
@@ -140,21 +140,21 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'Feluqa',
       description: 'Coming soon. A Rust-based, cross-platform application framework for efficient systems across deployment environments.',
-      href: '/company/initiatives/feluqa',
+      href: '/company/projects/feluqa',
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/feluqa.svg'
     },
     {
       title: 'The Best Recruit',
       description: 'Coming soon. A recruitment initiative to help employers discover and evaluate relevant profiles.',
-      href: '/company/initiatives/the-best-recruit',
+      href: '/company/projects/the-best-recruit',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/the-best-recruit.svg'
     },
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/company/initiatives/spmpst',
+      href: '/company/projects/spmpst',
       image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
@@ -167,7 +167,7 @@ Our internal initiatives are part of the way we research, experiment and build f
   :more="{
     title: 'Discover all our 3 initiatives',
     description: 'Explore our current and upcoming projects',
-    href: '/company/initiatives/',
+    href: '/opportunities/',
     image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'
   }"
   :card-height="220"

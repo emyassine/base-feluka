@@ -39,6 +39,6 @@ In development. Documentation, examples, supported platforms, licensing and rele
 
 Custom software and Rust engineering missions are available independently of Feluqa. Whether to use the framework is decided per project, on technical requirements and maturity.
 
-<FeluqaButton tag="a" href="/company/contact/contact?topic=project" label="Discuss Rust engineering" />
+<FeluqaButton tag="a" href="/company/contact?topic=project" label="Discuss Rust engineering" />
 
 </NmProse>

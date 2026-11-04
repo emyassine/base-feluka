@@ -37,4 +37,4 @@ Assess the density and needs of local businesses, existing firms and underserved
 
 We scope the research depth, sources, timeline and price with you before starting. Findings support your decision; they are not a guarantee of commercial success. Market research does not replace professional legal, accounting, medical, licensing or regulatory advice, approvals or inspections. The relevant qualified professionals and authorities remain responsible for those matters.
 
-**Request a practice launch study** → `/company/prologue/contact?topic=practice-market-study`
+**Request a practice launch study** → `/company/contact?topic=practice-market-study`
