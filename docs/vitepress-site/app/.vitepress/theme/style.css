@@ -54,8 +54,10 @@
   display: inline-flex;
   min-width: 1.25rem;
   height: 1.25rem;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
+  margin-inline-start: auto;
   padding-inline: 0.32rem;
   border: 1px solid var(--vp-c-divider);
   border-radius: 999px;
@@ -64,6 +66,12 @@
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+.VPMenu .docs-topbar-item:has(.docs-topbar-badge),
+.VPNavScreen .docs-topbar-item:has(.docs-topbar-badge) {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .VPFlyout .menu {
