@@ -12,6 +12,8 @@ imageAlt: "A fine amber thread follows a route across layered paper relief and s
 
 # Prospecting and business contact privacy
 
+<img src="/images/legal/prospecting-purpose-path.webp" alt="A fine amber thread follows a route across layered paper relief and stops at an open gap.">
+
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to professional-contact research, prospecting, partner research and related recruitment activities.
 
 ## Scope and responsible company

@@ -11,6 +11,8 @@ imageAlt: "A curved sheet of clear glass crosses a dark basin where warm reflect
 ---
 # Privacy and Site Data
 
+<img src="/images/legal/site-privacy-local-boundary.webp" alt="A curved sheet of clear glass crosses a dark basin where warm reflections fade into ripples.">
+
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to privacy and data handling on the public website.
 
 ## Scope and publisher

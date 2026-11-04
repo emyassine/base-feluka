@@ -19,6 +19,6 @@ icon: "@spmpst::icon::images"
 
 ### Images
 
-The image resources currently registered for external credit appear below. Project-created visuals do not require third-party credit; their production records remain in the site's asset provenance notes.
+Selected legal and policy images appear below. Open any image to view it at full size; its creation credit is shown directly beneath the thumbnail.
 
 <NmImageAttributions />

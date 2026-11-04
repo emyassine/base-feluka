@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Partner terms"
 title: "Partner and Contractor Policy | Numerimondes"
 icon: "@spmpst::icon::handshake"
@@ -8,11 +7,13 @@ summary: "Partner roles, fees and responsibilities are specific to a written agr
 status: "Draft"
 category: "partner-terms"
 tags: [partners, contractors, referrals, commissions]
-image: "/images/policies/partnership.jpg"
-imageAlt: "Terracotta and forest-green forms balanced on a narrow bridge, suggesting shared responsibility."
+image: "/images/policies/partner-distinct-roles.webp"
+imageAlt: "A slate fiber and copper wire share a short transparent guide, then continue separately."
 ---
 
 # Partner and contractor policy
+
+<img src="/images/policies/partner-distinct-roles.webp" alt="A slate fiber and copper wire share a short transparent guide, then continue separately.">
 
 Numerimondes works with independent firms and specialists when their role fits a defined opportunity. A conversation, introduction or inclusion in a network does not itself create a partnership, employment relationship, exclusivity, authority to represent Numerimondes or a right to payment.
 

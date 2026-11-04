@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Account access"
 title: "Account Access and Workspace Use Policy | Numerimondes"
 icon: "@spmpst::icon::circle-user-round"
@@ -8,11 +7,13 @@ summary: "Account access is limited to authorized users, assigned purposes and t
 status: "Draft"
 category: "data-security"
 tags: [accounts, access, crm, security]
-image: "/images/policies/account-boundaries.jpg"
-imageAlt: "Interlocking green sculptural forms, suggesting connected but bounded access."
+image: "/images/policies/account-access-workspace.webp"
+imageAlt: "One of several separated stone forms sits in a narrow pool of warm light."
 ---
 
 # Account access and workspace use policy
+
+<img src="/images/policies/account-access-workspace.webp" alt="One of several separated stone forms sits in a narrow pool of warm light.">
 
 ## Purpose and scope
 

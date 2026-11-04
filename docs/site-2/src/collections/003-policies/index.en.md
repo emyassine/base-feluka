@@ -4,8 +4,8 @@ title: "Policies | Numerimondes"
 icon: "@spmpst::icon::scale"
 description: "The boundaries and commitments that shape Numerimondes services, client work, and partnerships."
 summary: "Policies explain what Numerimondes offers, what it does not offer, and the terms that need to be agreed."
-image: "/images/policies/policy-governance.jpg"
-imageAlt: "An amber prism casting crisp geometric shadows, representing clear policy boundaries."
+image: "/images/policies/policy-boundaries.webp"
+imageAlt: "Slate, pale ceramic, glass, metal and amber resin planes meet along one etched line."
 status: "Ready for review"
 ---
 
@@ -34,6 +34,8 @@ We make our policies explicit and accessible to:
 :::
 <small>Draft policies are marked clearly and should not be treated as established commitments yet.</small>
 ::::
+
+<img src="/images/policies/policy-boundaries.webp" alt="Slate, pale ceramic, glass, metal and amber resin planes meet along one etched line.">
 
 <CollectionSearch collection-id="policies" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
   <CollectionSearchBar

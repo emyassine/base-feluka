@@ -12,6 +12,8 @@ imageAlt: "A machined brass joint aligns with slate and translucent drafting lay
 
 # Website Development Terms and Conditions
 
+<img src="/images/legal/development-terms-aligned-work.webp" alt="A machined brass joint aligns with slate and translucent drafting layers, marked by a fine red thread.">
+
 These Website Development Terms and Conditions are maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. These terms apply to website design, development, migration and related work supplied by **Numerimondes SARL AU** (“Numerimondes”) to the customer identified in a written proposal (“Client”). The proposal, these terms and any signed statement of work together form the agreement for the project.
 
 They concern paid website development engagements. Ordinary access to the public Numerimondes website is governed by the separate [Website Terms of Use](/legal/website-terms-of-use). The commercial minimum and scope boundaries are described in the [Website Development Policy](/policies/website-development-policy).

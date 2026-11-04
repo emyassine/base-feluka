@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Availability and support"
 title: "Service Availability and Support Policy | Numerimondes"
 icon: "@spmpst::icon::headset"
@@ -8,11 +7,13 @@ summary: "Availability and support are agreed for each service; no general uptim
 status: "Draft"
 category: "service-operations"
 tags: [availability, support, maintenance]
-image: "/images/policies/service-reliability.jpg"
-imageAlt: "A translucent green glass form around an amber sphere, suggesting dependable service."
+image: "/images/policies/service-support-balance.webp"
+imageAlt: "An amber glass sphere rests between three machined slate supports."
 ---
 
 # Service availability and support policy
+
+<img src="/images/policies/service-support-balance.webp" alt="An amber glass sphere rests between three machined slate supports.">
 
 Availability and support depend on the service, hosting arrangement, operating responsibilities and agreed support plan. A proposal or service agreement should state the supported system, support channel, service hours, response expectations, maintenance approach, backup responsibilities and recovery assumptions where they apply.
 

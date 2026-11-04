@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
 category: "commercial"
@@ -10,9 +9,9 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 internal-note: ['see https://www.bain.com/contentassets/e897e76847fa4c0bb23a70c389946819/bain_brief_dynamic_pricing.pdf and https://media.bain.com/elements-of-value/#']
-image: "/images/policies/pricing-value.jpg"
-imageAlt: "Amber glass and forest-green forms arranged as a balanced exchange, suggesting value and pricing."
-menuImage: "/images/policies/pricing-value.jpg"
+image: "/images/policies/pricing-scoped-value.webp"
+imageAlt: "An amber prism and stacked ceramic pieces balance on a dark slate beam."
+menuImage: "/images/policies/pricing-scoped-value.webp"
 ---
 <NmEffectHero
   :full-bleed="false"
@@ -29,6 +28,8 @@ menuImage: "/images/policies/pricing-value.jpg"
 <div style="width: min(100% - 40px, 820px); margin-inline: auto;">
 
 # Services and pricing
+
+<img src="/images/policies/pricing-scoped-value.webp" alt="An amber prism and stacked ceramic pieces balance on a dark slate beam.">
 
 Numerimondes works with employers, SMEs, owner-managed businesses, professional practices and operating teams. We mobilize a team to fit each assignment, bringing together the relevant consulting, engineering and specialist skills as the scope requires.
 

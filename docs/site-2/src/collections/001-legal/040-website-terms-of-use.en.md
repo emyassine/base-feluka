@@ -12,6 +12,8 @@ imageAlt: "A fine graphite line crosses a folded sheet of ivory paper and ends a
 
 # Website Terms of Use
 
+<img src="/images/legal/website-terms-defined-scope.webp" alt="A fine graphite line crosses a folded sheet of ivory paper and ends at its sharp edge.">
+
 These Terms of Use are maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. These terms govern access to and use of the public website operated by **Numerimondes SARL AU** (the “Site”), subject to applicable law. If you do not agree, do not use the Site.
 
 The Site provides general company, service and educational information. These terms do not govern a client project, paid service, account or CRM workspace. A written proposal, service agreement, the [Website Development Terms and Conditions](/legal/website-development-terms-and-conditions), or the [account access policy](/policies/account-access) applies to those separate relationships.

@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Automated access"
 title: "Automated Access and Content Use Policy | Numerimondes"
 icon: "@spmpst::icon::bot"
@@ -8,11 +7,13 @@ summary: "Automated scraping, harvesting and AI training require written permiss
 status: "Draft"
 category: "website-use"
 tags: [scraping, ai-training, copyright, website-policy]
-image: "/images/policies/automated-access.jpg"
-imageAlt: "Layered transparent planes crossed by sunlight, suggesting controlled automated access."
+image: "/images/policies/automated-access-stop.webp"
+imageAlt: "A small brass carriage reaches the end stop of two short rails above slate."
 ---
 
 # Automated access and content use policy
+
+<img src="/images/policies/automated-access-stop.webp" alt="A small brass carriage reaches the end stop of two short rails above slate.">
 
 This draft sets the proposed conditions for automated access to Numerimondes websites and content. It supplements the site’s technical crawler signals; it does not make those signals an access-control mechanism.
 

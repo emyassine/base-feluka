@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Policy management"
 title: "Policy Management Policy | Numerimondes"
 icon: "@spmpst::icon::scale"
@@ -8,11 +7,13 @@ summary: "Defines ownership, review, approval, publication, change history and r
 status: "Ready for review"
 category: "website-use"
 tags: [policy-governance, review, publication]
-image: "/images/policies/policy-governance.jpg"
-imageAlt: "An amber prism casting precise shadows, suggesting policy review and governance."
+image: "/images/policies/policy-management-review.webp"
+imageAlt: "A handmade paper ribbon progresses from soft folds to crisp pleats beside a brass rule."
 ---
 
 # Policy management policy
+
+<img src="/images/policies/policy-management-review.webp" alt="A handmade paper ribbon progresses from soft folds to crisp pleats beside a brass rule.">
 
 ## Purpose and scope
 

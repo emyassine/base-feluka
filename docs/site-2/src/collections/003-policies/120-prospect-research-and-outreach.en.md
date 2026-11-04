@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Prospect research"
 title: "Prospect Research and Outreach Policy | Numerimondes"
 icon: "@spmpst::icon::briefcase-business"
@@ -8,11 +7,13 @@ summary: "Requires a defined purpose, permitted sources, honest identification, 
 status: "Draft"
 category: "data-security"
 tags: [prospecting, research, outreach, privacy, partners]
-image: "/images/policies/research-outreach.jpg"
-imageAlt: "Folded ochre, green and blue forms arranged as a deliberate path, suggesting research and outreach."
+image: "/images/policies/prospect-research-purpose.webp"
+imageAlt: "A single copper strand follows a short route through a dark woven field and stops."
 ---
 
 # Prospect research and outreach policy
+
+<img src="/images/policies/prospect-research-purpose.webp" alt="A single copper strand follows a short route through a dark woven field and stops.">
 
 ## Purpose and scope
 

@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Client engagements"
 title: "Client Engagement Policy | Numerimondes"
 icon: "@spmpst::icon::file-check-2"
@@ -8,11 +7,13 @@ summary: "Client work starts with an agreed written scope, responsibilities and 
 status: "Draft"
 category: "client-work"
 tags: [clients, proposals, scope, commercial-policy]
-image: "/images/policies/engagement-terms.jpg"
-imageAlt: "A vermilion thread crossing ordered stone slabs, suggesting clear project terms."
+image: "/images/policies/client-engagement-bridge.webp"
+imageAlt: "A vermilion ceramic strip bridges a narrow gap between two slate slabs."
 ---
 
 # Client engagement policy
+
+<img src="/images/policies/client-engagement-bridge.webp" alt="A vermilion ceramic strip bridges a narrow gap between two slate slabs.">
 
 We take on client work when the need, expected work and responsibilities can be described clearly enough to propose. A conversation, capability page or catalogue listing is not a commitment to deliver a service.
 

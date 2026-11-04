@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Security reporting"
 title: "Security and Incident Reporting Policy | Numerimondes"
 icon: "@spmpst::icon::shield-alert"
@@ -8,11 +7,13 @@ summary: "Report suspected security issues through the contact channel and inclu
 status: "Draft"
 category: "data-security"
 tags: [security, incidents, reporting]
-image: "/images/policies/incident-response.jpg"
-imageAlt: "A dark sculptural form with a narrow illuminated seam, suggesting incident response."
+image: "/images/policies/security-report-seam.webp"
+imageAlt: "A fine fracture crosses a dark slate surface, with a small amber light at the seam."
 ---
 
 # Security and incident reporting policy
+
+<img src="/images/policies/security-report-seam.webp" alt="A fine fracture crosses a dark slate surface, with a small amber light at the seam.">
 
 If you believe a Numerimondes website, project or service has a security issue, [contact Numerimondes](/company/contact) and mark the message **Security concern**. Include the affected service, what you observed, when it happened and a safe way to follow up. Do not include passwords, secret keys, private client records or exploit payloads in an ordinary contact message.
 

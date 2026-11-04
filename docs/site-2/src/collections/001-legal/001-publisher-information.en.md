@@ -12,6 +12,8 @@ imageAlt: "A clear glass prism reflects a softly blurred facade beside two align
 
 # Publisher and website information
 
+<img src="/images/legal/publisher-information-transparent-prism.webp" alt="A clear glass prism reflects a softly blurred facade beside two aligned material samples.">
+
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to publisher identity, website infrastructure and related operational information.
 
 ## Publisher identity

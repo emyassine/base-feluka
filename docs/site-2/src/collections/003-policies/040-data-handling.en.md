@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Data handling"
 title: "Client and CRM Data Handling Policy | Numerimondes"
 icon: "@spmpst::icon::database"
@@ -8,11 +7,13 @@ summary: "Information is limited to stated purposes, authorized users and docume
 status: "Draft"
 category: "data-security"
 tags: [privacy, data, clients, security]
-image: "/images/policies/data-stewardship.jpg"
-imageAlt: "A translucent vessel holding small colored fragments, suggesting careful information stewardship."
+image: "/images/policies/data-handling-compartments.webp"
+imageAlt: "Small colored glass fragments sit in separate compartments of a ceramic vessel."
 ---
 
 # Client and CRM data handling policy
+
+<img src="/images/policies/data-handling-compartments.webp" alt="Small colored glass fragments sit in separate compartments of a ceramic vessel.">
 
 This policy describes the boundaries Numerimondes applies when information is submitted through an account or shared for an engagement. It does not replace the [website privacy notice](/legal/site-privacy), the [account and CRM privacy notice](/legal/account-and-crm-privacy), or a data-processing agreement where one is required.
 

@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Website development policy"
 title: "Website Development Policy | Numerimondes"
 icon: "@spmpst::icon::globe"
@@ -8,11 +7,13 @@ summary: "Website projects start at 25,000 Dhs HT, including static websites."
 status: "Ready for review"
 category: "commercial"
 tags: [websites, development, pricing, commercial-policy]
-image: "/images/policies/digital-craft.jpg"
-imageAlt: "A cobalt architectural form with a coral opening, suggesting a digital product taking shape."
+image: "/images/policies/website-development-scope.webp"
+imageAlt: "A cobalt metal structure with a coral acrylic opening and a warmly lit inner layer."
 ---
 
 # Website development policy
+
+<img src="/images/policies/website-development-scope.webp" alt="A cobalt metal structure with a coral acrylic opening and a warmly lit inner layer.">
 
 Website projects start at **25,000 Dhs HT**. This minimum applies to every new website project, including a static website. A smaller page count or simpler technical setup does not lower the minimum project price.
 

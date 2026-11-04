@@ -1,5 +1,4 @@
 ---
-layout: home-subheader
 sidebarTitle: "Website storage"
 title: "Website Cookies and Browser Storage Policy | Numerimondes"
 icon: "@spmpst::icon::cookie"
@@ -8,11 +7,13 @@ summary: "Theme, currency and marketplace storage are necessary; optional storag
 status: "Draft"
 category: "website-use"
 tags: [cookies, browser-storage, privacy, website]
-image: "/images/policies/browser-storage.jpg"
-imageAlt: "A cobalt frame with a coral threshold, suggesting a controlled browser environment."
+image: "/images/policies/website-storage-choice.webp"
+imageAlt: "Translucent glass discs sit in a divided ceramic tray, with one amber disc outside an empty slot."
 ---
 
 # Website cookies and browser storage policy
+
+<img src="/images/policies/website-storage-choice.webp" alt="Translucent glass discs sit in a divided ceramic tray, with one amber disc outside an empty slot.">
 
 ## Scope
 
