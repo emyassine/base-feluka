@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useData } from 'vitepress'
 import { useSpmpstConfig } from '@spmpst/config'
 
 interface FooterContent {
@@ -12,9 +14,16 @@ interface FooterContent {
   logoImgDark?: string
   logoAlt: string
   logoStyles?: { dark?: string; light?: string }
+  copyright?: string | Record<string, string>
 }
 
 const content = useSpmpstConfig<FooterContent>('footer.content')
+const { lang } = useData()
+const copyrightText = computed(() => {
+  if (typeof content.copyright === 'string') return content.copyright
+  if (!content.copyright) return ''
+  return content.copyright[lang.value] ?? content.copyright.en ?? Object.values(content.copyright)[0] ?? ''
+})
 defineProps<{ homeLayout?: boolean }>()
 </script>
 
@@ -37,6 +46,7 @@ defineProps<{ homeLayout?: boolean }>()
       </div>
       <div v-if="!homeLayout" class="footer-deluqa-docs__aside" aria-hidden="true" />
     </div>
+    <small v-if="copyrightText" class="footer-deluqa-docs__copyright">{{ copyrightText }}</small>
   </div>
 </template>
 
@@ -48,6 +58,14 @@ defineProps<{ homeLayout?: boolean }>()
   max-width: 1220px;
   margin-inline: auto;
   text-align: center;
+}
+
+.footer-deluqa-docs__copyright {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0 1rem 1rem;
+  color: var(--vp-c-text-2);
+  font-size: 0.75rem;
 }
 
 @media (max-width: 959px) {

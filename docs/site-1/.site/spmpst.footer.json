@@ -17,18 +17,87 @@
     "actionHref": "/prologue/contribution-guide",
     "navigation": [],
     "subNavigation": [
-	    { "name": { "en": "Product", "fr": "Produit" }, "href": "/#feature-modern-teams" },
-	    { "name": { "en": "About Us", "fr": "À propos" }, "href": "https://numerimondes.com", "external": true },
-	    { "name": { "en": "Pricing", "fr": "Tarifs" }, "href": "https://numerimondes.com", "external": true },
-	    { "name": { "en": "FAQ", "fr": "FAQ" }, "href": "/faq" },
-	    { "name": { "en": "Sitemap", "fr": "Plan du site" }, "href": "/sitemap.xml" },
-	    { "name": { "en": "RSS", "fr": "RSS" }, "href": "/rss.xml" },
-	    { "name": { "en": "Contact", "fr": "Contact" }, "href": "https://numerimondes.com", "external": true },
-	    { "name": { "en": "X.com", "fr": "X.com" }, "href": "https://x.com/ausrobdev", "external": true },
-	    { "name": { "en": "LinkedIn", "fr": "LinkedIn" }, "href": "#", "external": true }
+      {
+        "name": {
+          "en": "Product",
+          "fr": "Produit"
+        },
+        "href": "/#feature-modern-teams"
+      },
+      {
+        "name": {
+          "en": "About Us",
+          "fr": "À propos"
+        },
+        "href": "https://numerimondes.com",
+        "external": true
+      },
+      {
+        "name": {
+          "en": "Pricing",
+          "fr": "Tarifs"
+        },
+        "href": "https://numerimondes.com",
+        "external": true
+      },
+      {
+        "name": {
+          "en": "FAQ",
+          "fr": "FAQ"
+        },
+        "href": "/faq"
+      },
+      {
+        "name": {
+          "en": "Sitemap",
+          "fr": "Plan du site"
+        },
+        "href": "/sitemap.xml"
+      },
+      {
+        "name": {
+          "en": "RSS",
+          "fr": "RSS"
+        },
+        "href": "/rss.xml"
+      },
+      {
+        "name": {
+          "en": "Contact",
+          "fr": "Contact"
+        },
+        "href": "https://numerimondes.com",
+        "external": true
+      },
+      {
+        "name": {
+          "en": "X.com",
+          "fr": "X.com"
+        },
+        "href": "https://x.com/ausrobdev",
+        "external": true
+      },
+      {
+        "name": {
+          "en": "LinkedIn",
+          "fr": "LinkedIn"
+        },
+        "href": "#",
+        "external": true
+      }
     ],
     "logoImg": "",
-    "logoAlt": { "en": "Feluqa", "fr": "Feluqa" },
-    "logoStyles": { "dark": "opacity: 0.5", "light": "" }
+    "logoAlt": {
+      "en": "Feluqa",
+      "fr": "Feluqa"
+    },
+    "logoStyles": {
+      "dark": "opacity: 0.5",
+      "light": ""
+    },
+    "copyright": {
+      "en": "© 2026 Numerimondes SARL AU. All rights reserved.",
+      "fr": "© 2026 Numerimondes SARL AU. Tous droits réservés."
+    }
   }
 }

@@ -1,26 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["content"],
+  "required": [
+    "content"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
-    "component": { "type": ["string", "null"] },
+    "$schema": {
+      "type": "string"
+    },
+    "component": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "content": {
       "type": "object",
       "properties": {
-        "title": { "$ref": "#/$defs/localizedText" },
-        "description": { "$ref": "#/$defs/localizedText" },
-        "actionLabel": { "$ref": "#/$defs/localizedText" },
-        "actionHref": { "type": "string", "minLength": 1 },
+        "title": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "description": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "actionLabel": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "actionHref": {
+          "type": "string",
+          "minLength": 1
+        },
         "navigation": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "href"],
+            "required": [
+              "name",
+              "href"
+            ],
             "properties": {
-              "name": { "$ref": "#/$defs/localizedText" },
-              "href": { "type": "string", "minLength": 1 },
-              "external": { "type": "boolean" }
+              "name": {
+                "$ref": "#/$defs/localizedText"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1
+              },
+              "external": {
+                "type": "boolean"
+              }
             },
             "additionalProperties": false
           }
@@ -29,18 +57,37 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["name", "href"],
+            "required": [
+              "name",
+              "href"
+            ],
             "properties": {
-              "name": { "$ref": "#/$defs/localizedText" },
-              "href": { "type": "string", "minLength": 1 },
-              "external": { "type": "boolean" }
+              "name": {
+                "$ref": "#/$defs/localizedText"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1
+              },
+              "external": {
+                "type": "boolean"
+              }
             },
             "additionalProperties": false
           }
         },
-        "logoImg": { "type": "string" },
-        "logoImgDark": { "type": "string" },
-        "logoAlt": { "$ref": "#/$defs/localizedText" }
+        "logoImg": {
+          "type": "string"
+        },
+        "logoImgDark": {
+          "type": "string"
+        },
+        "logoAlt": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "copyright": {
+          "$ref": "#/$defs/localizedText"
+        }
       },
       "additionalProperties": false
     }
@@ -49,8 +96,16 @@
   "$defs": {
     "localizedText": {
       "oneOf": [
-        { "type": "string" },
-        { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string" } }
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
       ]
     }
   },

@@ -50,6 +50,9 @@ export function transformDocumentationHead(options: SeoOptions) {
   const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags.map(String) : []
   const head: unknown[][] = [
     ['meta', { name: 'description', content: description }],
+    // Voluntary publisher signals. These are not an access-control mechanism and crawler support varies.
+    ['meta', { name: 'robots', content: 'noai, noimageai' }],
+    ['meta', { name: 'copyright', content: '© 2026 Numerimondes SARL AU' }],
     ['meta', { property: 'og:type', content: 'article' }],
     ['meta', { property: 'og:site_name', content: options.siteName }],
     ['meta', { property: 'og:title', content: title }],

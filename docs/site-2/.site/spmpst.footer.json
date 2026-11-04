@@ -62,6 +62,10 @@
     "logoImgDark": "/media/logo-footer-darkmode-transteinted.svg",
     "logoAlt": {
       "en": "Numerimondes"
+    },
+    "copyright": {
+      "en": "© 2026 Numerimondes SARL AU. All rights reserved.",
+      "fr": "© 2026 Numerimondes SARL AU. Tous droits réservés."
     }
   }
 }
