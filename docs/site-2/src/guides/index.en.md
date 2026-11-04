@@ -511,11 +511,11 @@ Share a challenge, an idea, a business objective or a project you want to explor
 2. State benefits as aims or project-dependent outcomes; do not fabricate case studies, metrics or success claims.
 3. Project-by-project operating model: a single accountable counterpart, adaptable mission teams.
 4. Founder visibility is intentional; avoid implying a large permanent employee base.
-5. Feluqa and The Best Recruit: Coming soon. SPMPST: specification in development.
-6. The Best Recruit must not advertise live placements or an active candidate service before launch.
+5. Feluqa: in development. The Best Recruit: current recruitment offer. SPMPST: specification in development.
+6. Describe The Best Recruit's scope, candidate access, timing and placement commitments only as confirmed for the specific offer or mandate.
 7. Showcases must distinguish real delivered work from concepts and RandD.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.
-9. Pricing page explains methodology and commercial models, not an unverified price list.
+9. Pricing page may show the service catalogue's sample figures only as clearly labelled demo examples; never present them as approved public rates without confirmation.
 10. Main navigation suggestion: Services / Solutions and Showcase / Innovation / Partners / About / Contact.
 11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
 -->

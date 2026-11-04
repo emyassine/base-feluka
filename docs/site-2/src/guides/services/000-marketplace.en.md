@@ -176,7 +176,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
         <ul class="nm-meta"><li v-for="b in p.badges" :key="b" class="ui-badge">{{ b }}</li></ul>
       </article>
     </div>
-    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/company/prologue/contact?topic=partner">Apply to become a partner</a></aside>
+    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/opportunities/morocco/local-partnershipspartner-commercial-terms">Explore partner opportunities in Morocco</a> or <a href="/company/prologue/contact?topic=partner">discuss a partnership</a>.</aside>
   </section>
   <section aria-labelledby="nm-faq" class="nm-section">
     <h2 id="nm-faq" class="nm-title">Before you <span class="silky-bbi+115">request</span> a proposal</h2>

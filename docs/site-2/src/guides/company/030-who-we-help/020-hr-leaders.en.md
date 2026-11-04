@@ -21,7 +21,7 @@ js-events:
 
 ## Recruitment: The Best Recruit
 
-The Best Recruit is our recruitment firm, currently in preparation. It is designed around qualified candidates and relevant information, so that you meet fewer but better-matched people. Placement services are not open yet; registering a need now helps us shape the offer around real requirements.
+The Best Recruit is our recruitment offer, built around candidate qualification and relevant information for employers. We agree the role, search scope, candidate information, fees, timing and responsibilities for each mandate before work begins. A recruitment engagement does not guarantee a hire or placement.
 
 ## Operations and systems around hiring
 
@@ -34,7 +34,7 @@ Process, tooling and workforce-operations questions can be handled as consulting
 - Your timeline
 - Any confidentiality requirement
 
-We make no promise of placement or response time at this stage.
+Availability, response timing and placement commitments are confirmed for each mandate.
 
 <FeluqaButton tag="a" href="/company/contact/contact?topic=recruitment" label="Register a hiring need" />
 

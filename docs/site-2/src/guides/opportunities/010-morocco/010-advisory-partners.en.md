@@ -25,4 +25,6 @@ Numerimondes can assess the issue, present options, and coordinate a scoped miss
 
 No client information is requested without appropriate authorization. Participation does not require an obligation to refer.
 
+[Review partner roles and commercial terms](/opportunities/morocco/local-partnershipspartner-commercial-terms)
+
 **Discuss an advisory partnership** → `/company/prologue/contact?topic=partnership`

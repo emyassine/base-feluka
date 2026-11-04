@@ -23,7 +23,7 @@ Possible interventions include clearer operating guidance, training resources, r
 
 ## <span class='silky-bbi+115'>Workforce and recruitment needs</span>
 
-Workforce planning can clarify skills, capacity and role requirements. Recruitment-related initiatives require separate processes and commitments. [The Best Recruit](/company/projects/the-best-recruit) is in preparation; employer onboarding, candidate participation, pricing and service commitments have not yet been announced.
+Workforce planning can clarify skills, capacity and role requirements. Recruitment requires clear role criteria, candidate consent and agreed service commitments. [The Best Recruit](/company/projects/the-best-recruit) is Numerimondes’ recruitment offer; scope, availability, fees and commitments are confirmed for each mandate.
 
 Related topics include [operations support](/services/systems-and-operations/operations) and the [Numerimondes delivery model](/company/how-we-work/delivery-model).
 

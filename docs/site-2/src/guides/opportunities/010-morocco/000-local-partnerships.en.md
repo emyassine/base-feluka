@@ -21,16 +21,18 @@ Numerimondes SARL AU is an independent Moroccan company headquartered in Casabla
 
 ## Morocco-only opportunity
 
-This opportunity path is for advisers and organizations operating in Morocco and supporting local businesses.
+This opportunity path is for accounting and advisory firms, specialist organizations and independent professionals operating in Morocco and supporting local businesses.
 
 Introduce clients who could benefit from operational, organizational, or technical support. You retain your trusted advisory relationship; introductions happen only with the client's consent, and each assignment is scoped individually.
 
 Local context matters: we qualify each opportunity with the people involved, respect professional boundaries, and agree responsibilities before any work begins.
 
-## Advisory partners
+## Advisory partners and specialists
 
-Accounting and advisory firms can identify issues such as manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit a business. Your firm keeps its client relationship and professional remit.
+Accounting and advisory firms can identify issues such as manual reconciliations, disconnected systems, missing visibility, or tools that no longer fit a business. Specialist firms and freelancers can contribute consulting, software development, infrastructure, recruitment, training and other scoped capabilities. Each party keeps its independent activity and agrees its role before a client engagement begins.
 
 [How Morocco advisory partnerships work](/opportunities/morocco/local-partnershipsadvisory-partners)
+
+[Partner roles, product lines and commercial terms](/opportunities/morocco/local-partnershipspartner-commercial-terms)
 
 **Discuss a Morocco-only opportunity** → `/company/prologue/contact?topic=partnership`

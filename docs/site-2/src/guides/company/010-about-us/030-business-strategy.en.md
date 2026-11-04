@@ -20,7 +20,7 @@ js-events:
   label="Strategic sequence"
   :start-margin="false"
   :items="[
-    { title: 'Launch the flagship', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Bring The Best Recruit, our recruitment firm, to market with a clear offer for employers and candidates.' },
+    { title: 'Deliver the flagship', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'Build The Best Recruit, our recruitment offer, around clear scope and relevant information for employers.' },
     { title: 'Keep delivering for clients', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'Consulting, systems and software missions keep us close to real operational problems and sustain the company.' },
     { title: 'Grow the partner network', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'Work with specialists and organizations whose capabilities strengthen delivery.' },
     { title: 'Expand on evidence', status: [{ icon: '04', markerColor: '#3977c8' }], time: 'Add new offerings only when demand and capacity are demonstrated.' }
@@ -35,6 +35,6 @@ A focused offer gives clients a clear reason to choose us and gives the company 
 
 ## Current status
 
-This is the intended direction. The Best Recruit is being prepared for launch and its services will be available soon.
+The Best Recruit is our recruitment offer. Each mandate defines the services, fees, availability and commitments for that hiring need.
 
 </NmProse>
