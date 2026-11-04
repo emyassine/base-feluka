@@ -65,7 +65,8 @@ The remote backup destination, storage region, retention, rotation and deletion 
   :categories="[
     { title: 'Privacy notices', items: [
       { icon: '@spmpst::icon::shield-check', title: 'Privacy and site data', url: '/legal/site-privacy' },
-      { icon: '@spmpst::icon::users', title: 'Account and CRM privacy notice', url: '/legal/account-and-crm-privacy' }
+      { icon: '@spmpst::icon::users', title: 'Account and CRM privacy notice', url: '/legal/account-and-crm-privacy' },
+      { icon: '@spmpst::icon::briefcase-business', title: 'Prospecting and business contact privacy', url: '/legal/prospecting-and-business-contact-privacy' }
     ] },
     { title: 'Browser storage', items: [
       { icon: '@spmpst::icon::cookie', title: 'Website cookies and browser storage policy', url: '/policies/website-storage' }

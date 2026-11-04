@@ -10,7 +10,7 @@ tags: [privacy, account, crm, personal-data]
 
 # Account and CRM privacy notice
 
-This notice describes personal information handled through the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. Hosting providers, server and CDN locations, and backup arrangements can vary by deployment; see the [publisher and website information](/legal/publisher-information) for the current infrastructure notice. This service notice covers account and client-work information, including requests by individuals and authorized client representatives.
+This notice describes personal information handled through the account service at `numerimondes.com/account/`, managed through Numerimondes Cloud. Prospecting and recruitment records are addressed separately in the [prospecting and business contact privacy notice](/legal/prospecting-and-business-contact-privacy). Hosting providers, server and CDN locations, and backup arrangements can vary by deployment; see the [publisher and website information](/legal/publisher-information) for the current infrastructure notice. This service notice covers account and client-work information, including requests by individuals and authorized client representatives.
 
 ## Responsible parties
 
