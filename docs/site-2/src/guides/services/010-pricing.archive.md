@@ -1,10 +1,10 @@
 ---
 layout: home-subheader
 title: "Pricing and Engagements | Numerimondes"
-sidebarTitle: "Pricing"
+sidebarTitle: "Pricing Archive"
 menuImage: "/images/services/pricing.jpg"
 icon: "@spmpst::icon::scale"
-description: "How Numerimondes structures consulting, development and operational projects."
+description: "How Numerimondes stvructures consulting, development and operational projects."
 lang: en
 status: "ready-for-review"
 js-events:

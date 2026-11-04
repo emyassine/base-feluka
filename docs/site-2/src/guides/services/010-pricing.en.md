@@ -27,54 +27,52 @@ js-events:
 
 <div style="width: min(100% - 40px, 680px); margin-inline: auto;">
 
-# Pricing and engagements
+# Our fees: how we are paid
 
-## <span class='silky-bbi+115'>The right commercial model for the mission.</span>
+Numerimondes is paid for agreed consulting, research, development and operational services. The commercial model depends on the purpose, scope, complexity, delivery risk and expertise required for the assignment.
 
-We price work according to its purpose, <span class="silky-i">scope</span>, complexity, delivery risk and required expertise. A useful proposal explains **what you receive**, **what decisions you need to make** and **what the engagement will cost**.
+The proposal sets out the work, the price or pricing basis, payment terms and the decisions and responsibilities involved. Fees and commitments are confirmed for each engagement.
 
 ## <span class='silky-bbi+115'>Initial qualification</span>
 
 An introductory discussion helps us understand the objective and whether Numerimondes could contribute. In-depth analysis, operational audits, research and solution design may form a paid discovery assignment when they require substantive work.
 
-## <span class='silky-bbi+115'>Common engagement models</span>
+## <span class='silky-bbi+115'>Engagement models</span>
 
-### <span class='silky-bbi'>Fixed-scope project</span>
+The following models describe common ways to structure an assignment. The proposal identifies the model, scope and applicable terms.
 
-A defined set of deliverables for an agreed price, assumptions and acceptance criteria. Suitable when the requirements are sufficiently clear.
-
-### <span class='silky-bbi'>Discovery or feasibility study</span>
-
-A separately scoped assessment, which may produce process maps, solution options, risk findings, specifications and investment estimates. Any credit against later implementation is offered only when explicitly stated in the proposal.
-
-### <span class='silky-bbi'>Milestone-based delivery</span>
-
-A project organized into approved phases, with scope, payment and acceptance points for each stage. Suitable for larger or evolving initiatives.
-
-### <span class='silky-bbi'>Time-based specialist engagement</span>
-
-Defined consulting, research or engineering capacity over an agreed period, with reporting and limits clearly documented.
-
-### <span class='silky-bbi'>Recurring operations and support</span>
-
-An ongoing arrangement for agreed infrastructure, monitoring, maintenance, improvement or advisory responsibilities. Coverage, response commitments and exclusions are stated in the agreement.
+| Engagement model | How the fee is structured | Suitable when |
+| :--- | :--- | :--- |
+| **Fixed-scope project** | An agreed price for defined deliverables, assumptions and acceptance criteria. | Requirements are sufficiently clear to define the work and its acceptance. |
+| **Discovery or feasibility study** | A separately scoped fee for an assessment. Any credit against later implementation is offered only when explicitly stated in the proposal. | The organization needs process maps, solution options, risk findings, specifications or investment estimates before committing to implementation. |
+| **Milestone-based delivery** | The project is organized into approved phases, with scope, payment and acceptance points for each stage. | The initiative is larger or needs to progress through separately approved phases. |
+| **Time-based specialist engagement** | Consulting, research or engineering capacity is agreed for a defined period, with reporting and limits documented. | The work needs specialist input over an agreed period and the scope is managed through clear limits. |
+| **Recurring operations and support** | An ongoing fee covers the agreed infrastructure, monitoring, maintenance, improvement or advisory responsibilities. Coverage, response commitments and exclusions are stated in the agreement. | Support or operational responsibilities continue beyond a single project. |
 
 ## <span class='silky-bbi+115'>What shapes the quotation</span>
 
-- The result sought and measurable acceptance criteria.
-- The existing environment, data quality and integration needs.
-- Required skills, equipment, licensing and third-party services.
-- Security, availability, privacy and compliance considerations.
-- Delivery location, access needs, support and documentation.
-- Dependencies, uncertainty and the requested timeline.
+| Quotation factor | What we consider |
+| :--- | :--- |
+| **Result and acceptance** | The result sought and measurable acceptance criteria. |
+| **Current environment** | Existing systems, data quality and integration needs. |
+| **Expertise and resources** | Required skills, equipment, licensing and third-party services. |
+| **Operating requirements** | Security, availability, privacy and compliance considerations. |
+| **Delivery and support** | Location, access needs, support and documentation. |
+| **Dependencies and timing** | Dependencies, uncertainty and the requested timeline. |
 
-## <span class='silky-bbi+115'>What every proposal should clarify</span>
+## <span class='silky-bbi+115'>What the proposal explains</span>
 
-Scope, deliverables, ownership and licensing, confidentiality, schedule, pricing, payment terms, customer responsibilities, change management, acceptance and after-delivery support.
+| Proposal area | Information to be agreed |
+| :--- | :--- |
+| **Work** | Scope and deliverables. |
+| **Commercial terms** | Pricing and payment terms. |
+| **Ownership and confidentiality** | Ownership and licensing, and confidentiality. |
+| **Delivery** | Schedule, customer responsibilities, change management and acceptance. |
+| **After delivery** | Support after delivery. |
 
 We may recommend an existing product, a limited process change or staged implementation where these better serve the business.
 
-## <span class='silky-bbi+115'>Ask for an estimate</span>
+## <span class='silky-bbi+115'>Request an estimate</span>
 
 Share the background, desired outcome, current obstacles and target date. A short brief is enough to start a discussion; accurate commitments follow an agreed scope.
 
