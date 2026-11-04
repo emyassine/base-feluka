@@ -2,14 +2,14 @@
 layout: home-subheader
 sidebarTitle: "Website development policy"
 title: "Website Development Policy | Numerimondes"
-image: "/images/home/showcase-capabilities/digital-after.jpg"
-imageAlt: "Digital website design concept"
 icon: "@spmpst::icon::globe"
 description: "Commercial minimum price and scope boundaries for website development projects by Numerimondes."
 summary: "Website projects start at 25,000 Dhs HT, including static websites."
 status: "Ready for review"
 category: "commercial"
 tags: [websites, development, pricing, commercial-policy]
+image: "/images/policies/digital-craft.jpg"
+imageAlt: "A cobalt architectural form with a coral opening, suggesting a digital product taking shape."
 ---
 
 # Website development policy

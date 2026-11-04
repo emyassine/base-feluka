@@ -8,6 +8,8 @@ summary: "Defines ownership, review, approval, publication, change history and r
 status: "Ready for review"
 category: "website-use"
 tags: [policy-governance, review, publication]
+image: "/images/policies/policy-governance.jpg"
+imageAlt: "An amber prism casting precise shadows, suggesting policy review and governance."
 ---
 
 # Policy management policy

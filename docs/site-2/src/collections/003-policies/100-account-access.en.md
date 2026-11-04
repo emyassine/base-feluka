@@ -8,6 +8,8 @@ summary: "Account access is limited to authorized users, assigned purposes and t
 status: "Draft"
 category: "data-security"
 tags: [accounts, access, crm, security]
+image: "/images/policies/account-boundaries.jpg"
+imageAlt: "Interlocking green sculptural forms, suggesting connected but bounded access."
 ---
 
 # Account access and workspace use policy

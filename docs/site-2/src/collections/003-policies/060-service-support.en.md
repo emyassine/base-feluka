@@ -2,14 +2,14 @@
 layout: home-subheader
 sidebarTitle: "Availability and support"
 title: "Service Availability and Support Policy | Numerimondes"
-image: "/images/services/operations.jpg"
-imageAlt: "Operations and service support"
 icon: "@spmpst::icon::headset"
 description: "How availability, maintenance and support commitments are defined for Numerimondes services."
 summary: "Availability and support are agreed for each service; no general uptime or response promise applies."
 status: "Draft"
 category: "service-operations"
 tags: [availability, support, maintenance]
+image: "/images/policies/service-reliability.jpg"
+imageAlt: "A translucent green glass form around an amber sphere, suggesting dependable service."
 ---
 
 # Service availability and support policy

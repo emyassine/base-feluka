@@ -4,6 +4,8 @@ title: "Policies | Numerimondes"
 icon: "@spmpst::icon::scale"
 description: "The boundaries and commitments that shape Numerimondes services, client work, and partnerships."
 summary: "Policies explain what Numerimondes offers, what it does not offer, and the terms that need to be agreed."
+image: "/images/policies/policy-governance.jpg"
+imageAlt: "An amber prism casting crisp geometric shadows, representing clear policy boundaries."
 status: "Ready for review"
 ---
 

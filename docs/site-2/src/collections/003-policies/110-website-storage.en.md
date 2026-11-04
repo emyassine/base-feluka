@@ -8,6 +8,8 @@ summary: "Theme, currency and marketplace storage are necessary; optional storag
 status: "Draft"
 category: "website-use"
 tags: [cookies, browser-storage, privacy, website]
+image: "/images/policies/browser-storage.jpg"
+imageAlt: "A cobalt frame with a coral threshold, suggesting a controlled browser environment."
 ---
 
 # Website cookies and browser storage policy

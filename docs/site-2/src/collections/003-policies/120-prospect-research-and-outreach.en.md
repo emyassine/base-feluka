@@ -8,6 +8,8 @@ summary: "Requires a defined purpose, permitted sources, honest identification, 
 status: "Draft"
 category: "data-security"
 tags: [prospecting, research, outreach, privacy, partners]
+image: "/images/policies/research-outreach.jpg"
+imageAlt: "Folded ochre, green and blue forms arranged as a deliberate path, suggesting research and outreach."
 ---
 
 # Prospect research and outreach policy

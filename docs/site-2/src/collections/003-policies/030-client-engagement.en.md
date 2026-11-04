@@ -2,14 +2,14 @@
 layout: home-subheader
 sidebarTitle: "Client engagements"
 title: "Client Engagement Policy | Numerimondes"
-image: "/images/services/business-advisory.jpg"
-imageAlt: "Business planning and client engagement"
 icon: "@spmpst::icon::file-check-2"
 description: "How Numerimondes scopes, prices, changes and closes client work."
 summary: "Client work starts with an agreed written scope, responsibilities and commercial terms."
 status: "Draft"
 category: "client-work"
 tags: [clients, proposals, scope, commercial-policy]
+image: "/images/policies/engagement-terms.jpg"
+imageAlt: "A vermilion thread crossing ordered stone slabs, suggesting clear project terms."
 ---
 
 # Client engagement policy

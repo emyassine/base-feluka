@@ -2,14 +2,14 @@
 layout: home-subheader
 sidebarTitle: "Automated access"
 title: "Automated Access and Content Use Policy | Numerimondes"
-image: "/images/home/initiatives/feluqa.svg"
-imageAlt: "Feluqa digital platform project"
 icon: "@spmpst::icon::bot"
 description: "Proposed rules for automated access to and use of Numerimondes website content."
 summary: "Automated scraping, harvesting and AI training require written permission."
 status: "Draft"
 category: "website-use"
 tags: [scraping, ai-training, copyright, website-policy]
+image: "/images/policies/automated-access.jpg"
+imageAlt: "Layered transparent planes crossed by sunlight, suggesting controlled automated access."
 ---
 
 # Automated access and content use policy

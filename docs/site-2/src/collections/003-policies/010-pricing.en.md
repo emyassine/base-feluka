@@ -3,9 +3,6 @@ layout: home-subheader
 title: "Pricing and Engagements | Numerimondes"
 sidebarTitle: "Pricing"
 category: "commercial"
-menuImage: "/images/services/pricing.jpg"
-image: "/images/services/pricing.jpg"
-imageAlt: "Pricing and project planning on a desk"
 icon: "@spmpst::icon::scale"
 description: "Services and pricing for employers, SMEs, professional practices and operating teams."
 lang: en
@@ -13,6 +10,9 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 internal-note: ['see https://www.bain.com/contentassets/e897e76847fa4c0bb23a70c389946819/bain_brief_dynamic_pricing.pdf and https://media.bain.com/elements-of-value/#']
+image: "/images/policies/pricing-value.jpg"
+imageAlt: "Amber glass and forest-green forms arranged as a balanced exchange, suggesting value and pricing."
+menuImage: "/images/policies/pricing-value.jpg"
 ---
 <NmEffectHero
   :full-bleed="false"

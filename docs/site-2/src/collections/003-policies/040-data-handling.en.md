@@ -2,14 +2,14 @@
 layout: home-subheader
 sidebarTitle: "Data handling"
 title: "Client and CRM Data Handling Policy | Numerimondes"
-image: "/images/services/software.jpg"
-imageAlt: "Software and information systems"
 icon: "@spmpst::icon::database"
 description: "Rules for handling client engagement, account and CRM information at Numerimondes."
 summary: "Information is limited to stated purposes, authorized users and documented retention and service arrangements."
 status: "Draft"
 category: "data-security"
 tags: [privacy, data, clients, security]
+image: "/images/policies/data-stewardship.jpg"
+imageAlt: "A translucent vessel holding small colored fragments, suggesting careful information stewardship."
 ---
 
 # Client and CRM data handling policy
