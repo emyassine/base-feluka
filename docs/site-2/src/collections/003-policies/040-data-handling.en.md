@@ -1,20 +1,28 @@
 ---
 layout: home-subheader
 sidebarTitle: "Data handling"
-title: "Client Data Handling Policy | Numerimondes"
+title: "Client and CRM Data Handling Policy | Numerimondes"
 image: "/images/services/software.jpg"
 imageAlt: "Software and information systems"
 icon: "@spmpst::icon::database"
-description: "Boundaries for information shared during a Numerimondes client engagement."
-summary: "Client information is handled for the agreed work and under documented responsibilities."
+description: "Rules for handling client engagement, account and CRM information at Numerimondes."
+summary: "Information is limited to stated purposes, authorized users and documented retention and service arrangements."
 status: "Draft"
 category: "data-security"
 tags: [privacy, data, clients, security]
 ---
 
-# Client data handling policy
+# Client and CRM data handling policy
 
-This policy describes the boundaries we use when a client shares information for an engagement. It does not replace the [website privacy notice](/legal/site-privacy) or a data-processing agreement where one is required.
+This policy describes the boundaries Numerimondes applies when information is submitted through an account or shared for an engagement. It does not replace the [website privacy notice](/legal/site-privacy), the [account and CRM privacy notice](/legal/account-and-crm-privacy), or a data-processing agreement where one is required.
+
+## Account and CRM records
+
+Account registration, sign-in, access administration, client workspace use and team collaboration can involve personal information and records about a client organization. Numerimondes must define the purpose and authorized users for each account workflow, limit access to the people who need it, and keep client workspaces separated according to the applicable account and engagement arrangements.
+
+Account, authentication, permission-change and security records must be handled only for account operation, service delivery, security, accountability or another stated purpose. Access to security and audit records must be restricted to people who need them for those purposes. They must not be repurposed for unrelated marketing or behavioral tracking.
+
+Before a CRM workflow is enabled, its data fields, purpose, responsible party, service providers, access model, retention criteria, deletion or return process and any cross-border handling must be documented. Where Numerimondes processes information on a client’s instructions, the parties must record their respective roles and instructions in the applicable agreement. Do not assume that the same role applies to every workflow.
 
 ## Use and access
 

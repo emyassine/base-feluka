@@ -42,3 +42,5 @@ Select your profile to access the right sign-in area.
     }
   ]"
 />
+
+Account use is governed by the [Account Access and Workspace Use Policy](/policies/account-access). Read the [Account and CRM Privacy Notice](/legal/account-and-crm-privacy) to understand how account information is handled.
