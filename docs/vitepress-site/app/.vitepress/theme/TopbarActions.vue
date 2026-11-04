@@ -98,8 +98,12 @@ const isExternal = (action: TopbarAction) => action.external ?? /^(?:https?:)?\/
 </template>
 
 <style scoped>
-.topbar-actions { display: flex; flex: 0 0 auto; align-items: center; margin-inline-start: .5rem; gap: .5rem; }
+.topbar-actions { display: flex; flex: 0 0 auto; align-items: center; gap: .5rem; }
+.topbar-actions:has(> .topbar-currency, > .topbar-action-button)::before { width: 1px; height: 24px; flex: 0 0 1px; margin-inline: 16px 0; background: var(--vp-c-divider); content: ''; }
+.topbar-actions > .topbar-action-button { margin-inline-start: .5rem; }
 .topbar-currency select { min-height: 32px; border: 1px solid var(--vp-c-divider); border-radius: 6px; padding: 0 .45rem; color: var(--vp-c-text-1); background: var(--vp-c-bg); font: inherit; font-size: .85rem; }
 .topbar-action-menu { display: none; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 767px) { .topbar-actions::before { display: none; } }
+@media (min-width: 768px) and (max-width: 1099px) { .topbar-actions:not(:has(> .topbar-currency))::before { display: none; } }
 </style>
