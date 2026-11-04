@@ -6,8 +6,8 @@ description: "Terms for website design, development, delivery and related servic
 summary: "Project scope, client responsibilities, fees, intellectual property, launch, support and liability."
 category: "website-development"
 tags: [website-development, client-terms, contracts]
-image: "/images/legal/development-terms.jpg"
-imageAlt: "Modular blocks joined by a red thread, representing the connected terms of a development project."
+image: "/images/legal/development-terms-aligned-work.webp"
+imageAlt: "A machined brass joint aligns with slate and translucent drafting layers, marked by a fine red thread."
 ---
 
 # Website Development Terms and Conditions

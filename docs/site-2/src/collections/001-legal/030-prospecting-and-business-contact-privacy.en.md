@@ -6,8 +6,8 @@ description: "How Numerimondes researches professional contacts and handles pros
 summary: "Explains public-source research, partner roles, outreach, recruitment and privacy requests."
 category: "privacy"
 tags: [privacy, prospecting, business-contacts, recruitment]
-image: "/images/legal/prospecting-privacy.jpg"
-imageAlt: "A magnifying glass rests on orderly papers beside simple geometric forms, representing careful professional research."
+image: "/images/legal/prospecting-purpose-path.webp"
+imageAlt: "A fine amber thread follows a route across layered paper relief and stops at an open gap."
 ---
 
 # Prospecting and business contact privacy

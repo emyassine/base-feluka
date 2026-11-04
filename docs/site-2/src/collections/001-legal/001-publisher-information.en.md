@@ -6,8 +6,8 @@ description: "Publisher identity and contact information for the Numerimondes we
 summary: "Identifies the publisher, managed hosting, and variable server and CDN locations."
 category: "company"
 tags: [publisher, legal-notice, contact]
-image: "/images/legal/publisher-information.jpg"
-imageAlt: "Translucent glass forms in green, cobalt and amber arranged around a clear central structure, representing publisher transparency."
+image: "/images/legal/publisher-information-transparent-prism.webp"
+imageAlt: "A clear glass prism reflects a softly blurred facade beside two aligned material samples."
 ---
 
 # Publisher and website information

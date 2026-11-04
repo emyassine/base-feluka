@@ -6,8 +6,8 @@ description: "A practical overview of data handled by the Numerimondes website."
 summary: "Describes contact handling, browser storage choices, external media, and hosting logs."
 category: "privacy"
 tags: [privacy, website, data]
-image: "/images/legal/site-privacy.jpg"
-imageAlt: "Layered blue and teal glass protects a small amber object, representing website data privacy."
+image: "/images/legal/site-privacy-local-boundary.webp"
+imageAlt: "A curved sheet of clear glass crosses a dark basin where warm reflections fade into ripples."
 ---
 # Privacy and Site Data
 

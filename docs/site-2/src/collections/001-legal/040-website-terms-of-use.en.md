@@ -6,8 +6,8 @@ description: "Rules for accessing and using the public Numerimondes website and 
 summary: "Covers lawful use, intellectual property, external links, submissions, disclaimers and notices."
 category: "website-use"
 tags: [website, terms-of-use, intellectual-property]
-image: "/images/legal/website-terms.jpg"
-imageAlt: "An open arch framed by blue and amber geometric forms, representing clear terms for website use."
+image: "/images/legal/website-terms-defined-scope.webp"
+imageAlt: "A fine graphite line crosses a folded sheet of ivory paper and ends at its sharp edge."
 ---
 
 # Website Terms of Use
