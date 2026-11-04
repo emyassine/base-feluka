@@ -211,7 +211,7 @@ body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
   .collection-spotlight-page { padding: 3rem 1rem; }
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPDoc .container {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent :is(.VPDoc, .VPHome) .container {
   max-width: 100%;
   justify-content: center;
 }
@@ -223,6 +223,11 @@ body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
 
 :is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPDoc .content-container {
   max-width: 700px;
+  margin-inline: auto;
+}
+
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPHome .vp-doc {
+  max-width: 900px;
   margin-inline: auto;
 }
 
