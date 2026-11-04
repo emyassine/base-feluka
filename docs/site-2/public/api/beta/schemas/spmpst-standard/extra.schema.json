@@ -9,14 +9,14 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "role", "bio", "avatar", "aboutHref"],
+        "required": ["id", "name", "role", "bio", "avatar", "about-page"],
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
           "name": { "$ref": "#/$defs/localizedText" },
           "role": { "$ref": "#/$defs/localizedText" },
           "bio": { "$ref": "#/$defs/localizedText" },
           "avatar": { "type": "string", "minLength": 1 },
-          "aboutHref": { "type": "string", "minLength": 1 },
+          "about-page": { "type": "string", "minLength": 1 },
           "links": {
             "type": "array",
             "items": {

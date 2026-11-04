@@ -16,7 +16,7 @@ interface Author {
   role: string
   bio: string
   avatar: string
-  aboutHref: string
+  'about-page': string
   links?: AuthorLink[]
 }
 
@@ -36,13 +36,13 @@ const collection = computed(() => (generatedCollections as Collection[]).find((i
 const articleCount = computed(() => collection.value?.articles[locale.value]?.length ?? collection.value?.articles.en?.length ?? 0)
 const collectionTitle = computed(() => collection.value?.titles[locale.value] ?? collection.value?.titles.en ?? (isFrench.value ? 'Articles' : 'Articles'))
 const collectionHref = computed(() => collection.value?.links[locale.value] ?? collection.value?.links.en ?? '/articles/')
-const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/numerimondes')
+const aboutPage = computed(() => author.value?.['about-page'] ?? '/company/about-us/numerimondes')
 </script>
 
 <template>
   <div class="articles-layout">
     <aside v-if="author" class="articles-layout__sidebar">
-      <a class="articles-layout__identity" :href="aboutHref">
+      <a class="articles-layout__identity" :href="aboutPage">
         <img class="articles-layout__avatar" :src="author.avatar" :alt="author.name" />
         <span class="articles-layout__author-name">{{ author.name }}</span>
       </a>
@@ -50,7 +50,7 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
       <p class="articles-layout__bio">{{ author.bio }}</p>
 
       <nav class="articles-layout__nav" :aria-label="isFrench ? 'Navigation de l’auteur' : 'Author navigation'">
-        <a :href="aboutHref">{{ isFrench ? 'À propos' : 'About' }}</a>
+        <a :href="aboutPage">{{ isFrench ? 'À propos' : 'About' }}</a>
         <a :href="collectionHref">{{ collectionTitle }}</a>
         <a href="/company/contact">{{ isFrench ? 'Contact' : 'Contact' }}</a>
       </nav>
@@ -72,7 +72,7 @@ const aboutHref = computed(() => author.value?.aboutHref ?? '/company/about-us/n
             <span aria-hidden="true">•</span>
             <span>{{ articleCount }} {{ isFrench ? 'articles' : 'articles' }}</span>
             <span aria-hidden="true">•</span>
-            <a :href="aboutHref">{{ isFrench ? 'À propos de l’auteur' : 'About the author' }}</a>
+            <a :href="aboutPage">{{ isFrench ? 'À propos de l’auteur' : 'About the author' }}</a>
           </nav>
           <div class="collection-article-actions"><PageActions /></div>
         </header>
