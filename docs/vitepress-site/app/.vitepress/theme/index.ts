@@ -663,13 +663,15 @@ const MermaidLayout = {
       return collection?.links[locale] ?? collection?.links.en ?? '/'
     }
     return () => {
-      if (pageFrontmatter.value.pageLayout === 'articles') return h(ArticlesPageLayout)
       const layoutSlots = configuredLayoutSlots()
       const configuredSubnav = layoutSlots['nav-bar-content-after']
       const renderedSubnav = configuredSubnav?.()
       const subnavComponent = renderedSubnav?.type as Component | undefined
       return h(DefaultTheme.Layout, {
-        class: { 'home-subheader-content': frontmatter.value.pageLayout === 'home-subheader-content' },
+        class: {
+          'home-subheader-content': frontmatter.value.pageLayout === 'home-subheader-content',
+          'articles-page': pageFrontmatter.value.pageLayout === 'articles',
+        },
       }, {
       ...layoutSlots,
       'layout-top': siteBanner,
@@ -681,7 +683,9 @@ const MermaidLayout = {
           : renderedSubnav,
         h(TopbarActions),
       ]),
-      'doc-before': () => h(DocumentationNotice, { notices: siteContent.documentationNotices }),
+      'doc-before': () => h(Fragment, null, [
+        h(DocumentationNotice, { notices: siteContent.documentationNotices }),
+      ]),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
         h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
       ]) : null,
@@ -699,6 +703,8 @@ export default {
     installXTooltip()
     context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
     context.app.component('CollectionSearch', CollectionSearch)
+    context.app.component('ArticlesPageLayout', ArticlesPageLayout)
+    context.app.component('PageActions', PageActions)
     registerProjectComponents(context.app)
     context.app.component('currency', Currency)
   },
