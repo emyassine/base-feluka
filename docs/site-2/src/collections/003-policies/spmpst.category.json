@@ -1,7 +1,11 @@
 {
   "title": { "en": "Policies" },
-  "description": { "en": "Published commercial and organizational policies for Numerimondes." },
+  "description": { "en": "Published boundaries and commitments for Numerimondes services, engagements and partnerships." },
   "categories": [
-    { "id": "commercial", "label": { "en": "Commercial terms" } }
+    { "id": "commercial", "label": { "en": "Commercial terms" } },
+    { "id": "client-work", "label": { "en": "Client work" } },
+    { "id": "data-security", "label": { "en": "Data and security" } },
+    { "id": "service-operations", "label": { "en": "Service operations" } },
+    { "id": "partner-terms", "label": { "en": "Partners" } }
   ]
 }
