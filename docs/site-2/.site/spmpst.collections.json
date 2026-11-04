@@ -31,7 +31,7 @@
     {
       "id": "policies",
       "dir": "003-policies",
-      "route": "company/policies",
+      "route": "policies",
       "layout": "doc",
       "indexLayout": "list",
       "title": {

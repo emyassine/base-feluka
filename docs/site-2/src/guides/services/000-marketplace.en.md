@@ -126,7 +126,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       <li><strong>{{ db.reviews.length }}</strong>sample reviews</li>
       <li><strong>By scope</strong>proposal and team</li>
     </ul>
-    <aside class="ui-alert" role="note"><strong>Demo catalogue.</strong> Partner profiles and reviews are illustrative sample data. This catalogue does not set or override commercial policy; the <a href="/company/policies/pricing">published pricing guide</a> is the source of current client pricing. Final scope and terms are confirmed in writing.</aside>
+    <aside class="ui-alert" role="note"><strong>Demo catalogue.</strong> Partner profiles and reviews are illustrative sample data. This catalogue does not set or override commercial policy; the <a href="/policies/pricing">published pricing guide</a> is the source of current client pricing. Final scope and terms are confirmed in writing.</aside>
   </header>
   <section aria-labelledby="nm-how" class="nm-section">
     <h2 id="nm-how" class="nm-title">How the marketplace <span class="silky-bbi+115">works</span></h2>
