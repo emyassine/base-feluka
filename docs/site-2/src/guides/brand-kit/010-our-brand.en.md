@@ -27,13 +27,10 @@ icon: "@spmpst::icon::sparkles"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"
 	  />
-</div>
-
+	</div>
   <BrandKitOverview
     label="Overview"
-    title="BrandKit®"
-    tagline="A full scale brand design system"
-    description="A complete system for keeping every element of a brand recognizable, consistent, and easy to manage."
+    tagline="Welcome to our complete system for keeping every element of our brand recognizable, consistent, and easy to manage."
   />
 
   <BrandKitIndex
