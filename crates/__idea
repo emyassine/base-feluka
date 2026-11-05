@@ -1,0 +1,6 @@
+About the storage of some config files
+
+I f we creatz an application for rsyn deployments or things like that with GUI or even cli tool
+
+If would be greate to have data crypted but also the config file without a hardcoded to avoid stelaing (especially if the config file contains some sensistive data like ssh password or current machine data) the tool can have built in cryptography and a random storage that almost unique to the tool on each machine)
+soemthing like that
