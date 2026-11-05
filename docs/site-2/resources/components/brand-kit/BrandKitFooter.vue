@@ -1,14 +1,18 @@
 <template>
   <footer class="brand-kit-footer">
-    <span>{{ brand }}</span>
-    <span>{{ note }}</span>
+    <span :style="brandStyle" :class="brandClass" v-html="brand"></span>
+    <span :style="noteStyle" :class="noteClass" v-html="note"></span>
   </footer>
 </template>
 
 <script setup lang="ts">
 defineProps<{
   brand: string
+  brandStyle?: string
+  brandClass?: string
   note: string
+  noteStyle?: string
+  noteClass?: string
 }>()
 </script>
 

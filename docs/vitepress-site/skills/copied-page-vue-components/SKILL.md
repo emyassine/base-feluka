@@ -26,7 +26,8 @@ Use this skill when a user asks to copy a website page into this docs site or to
 
    If no wrapper is needed, call the block components directly. Put auto-discovered Vue files under the site's declared `resources/components` tree.
 5. Keep styles inside the wrapper when practical, scoped to its root, and free of source-platform names. Use the host's light/dark variables for surfaces and text. Keep the page inside its docs parent, remove unintended outer padding, avoid viewport breakout widths, and use container-aware `clamp()` sizing for large text. Keep internal navigation links local so VitePress does not render external-link indicators.
-6. Keep shared behavior distinct from site-specific variation through component APIs and injected props. Do not label existing components as generic or site-specific before the planned migration decides the boundary; design for that migration without claiming its outcome.
-7. Build the owning site and confirm the requested route is emitted. Resolve required frontmatter fields, component registration, and local-link failures instead of treating source preparation alone as a successful page.
+6. For text props that need rich author-authored markup or per-instance styling, expose matching `style-<prop>` and `class-<prop>` props (for example, `title`, `title-style`, and `title-class`). Render explicitly trusted Markdown-authored HTML with `v-html`; never pass untrusted content to it. Apply the style and class to the text element itself. Keep component APIs consistent across the page blocks.
+7. Keep shared behavior distinct from site-specific variation through component APIs and injected props. Do not label existing components as generic or site-specific before the planned migration decides the boundary; design for that migration without claiming its outcome.
+8. Build the owning site and confirm the requested route is emitted. Resolve required frontmatter fields, component registration, and local-link failures instead of treating source preparation alone as a successful page.
 
 For this workspace, build Numerimondes with `npm run docs:build -- --site numerimondes` from `docs/vitepress-site/`.

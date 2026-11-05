@@ -1,7 +1,7 @@
 <template>
   <section id="brand-kit-index" class="brand-kit-index" aria-labelledby="brand-kit-index-title">
     <header class="brand-kit-index__header">
-      <h2 id="brand-kit-index-title">{{ props.title }}</h2>
+      <h2 id="brand-kit-index-title" :style="props.titleStyle" :class="props.titleClass" v-html="props.title"></h2>
       <span>({{ itemCount }})</span>
     </header>
 
@@ -9,13 +9,13 @@
       <section v-for="group in props.groups" :key="group.title" class="brand-kit-index__group">
         <header class="brand-kit-index__group-header">
           <span>{{ group.number }}</span>
-          <a :href="group.href">{{ group.title }}</a>
+          <a :href="group.href" :style="group.titleStyle" :class="group.titleClass" v-html="group.title"></a>
         </header>
         <ol>
           <li v-for="item in group.items" :key="item.number">
             <a :href="group.href">
               <span>{{ item.number }}</span>
-              <span>{{ item.title }}</span>
+              <span :style="item.titleStyle" :class="item.titleClass" v-html="item.title"></span>
             </a>
           </li>
         </ol>
@@ -28,17 +28,23 @@
 interface IndexItem {
   number: string
   title: string
+  titleStyle?: string
+  titleClass?: string
 }
 
 interface IndexGroup {
   number: string
   title: string
+  titleStyle?: string
+  titleClass?: string
   href: string
   items: IndexItem[]
 }
 
 const props = withDefaults(defineProps<{
   title: string
+  titleStyle?: string
+  titleClass?: string
   groups: IndexGroup[]
   columns?: 1 | 2 | 3 | 4
 }>(), {

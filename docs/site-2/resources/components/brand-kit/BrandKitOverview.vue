@@ -1,12 +1,12 @@
 <template>
   <section class="brand-kit-overview" aria-labelledby="brand-kit-overview-title">
     <div>
-      <p class="brand-kit-overview__label">{{ label }}</p>
-      <h2 id="brand-kit-overview-title">{{ title }}</h2>
+      <p class="brand-kit-overview__label" :style="labelStyle" :class="labelClass" v-html="label"></p>
+      <h2 id="brand-kit-overview-title" :style="titleStyle" :class="titleClass" v-html="title"></h2>
     </div>
     <div class="brand-kit-overview__copy">
-      <p class="brand-kit-overview__tagline">{{ tagline }}</p>
-      <p class="brand-kit-overview__description">{{ description }}</p>
+      <p class="brand-kit-overview__tagline" :style="taglineStyle" :class="taglineClass" v-html="tagline"></p>
+      <p class="brand-kit-overview__description" :style="descriptionStyle" :class="descriptionClass" v-html="description"></p>
     </div>
   </section>
 </template>
@@ -14,9 +14,17 @@
 <script setup lang="ts">
 defineProps<{
   label: string
+  labelStyle?: string
+  labelClass?: string
   title: string
+  titleStyle?: string
+  titleClass?: string
   tagline: string
+  taglineStyle?: string
+  taglineClass?: string
   description: string
+  descriptionStyle?: string
+  descriptionClass?: string
 }>()
 </script>
 

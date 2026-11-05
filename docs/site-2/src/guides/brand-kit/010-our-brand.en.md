@@ -2,7 +2,6 @@
 title: "Our Brand"
 sidebarTitle: "Our Brand"
 icon: "@spmpst::icon::sparkles"
-layout: home
 ---
 
 <BrandKitWrapper>
@@ -22,7 +21,8 @@ layout: home
 	<div style="margin-top:2rem;">
 	  <BrandKitHero
 	    eyebrow="By El Moumen Yassine"
-	    title="<span style='font-family:DM Sans;'>Numerimondes</span>"
+	    title="<span>Numerimondes</span>"
+	    title-style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: calc(clamp(2rem, 5.5cqw, 5rem)*2);"
 	    tagline="Our brand identity system"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"

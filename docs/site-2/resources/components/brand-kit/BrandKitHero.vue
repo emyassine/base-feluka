@@ -1,11 +1,11 @@
 <template>
   <section class="brand-kit-hero" aria-labelledby="brand-kit-title">
-    <p class="brand-kit-hero__eyebrow">{{ eyebrow }}</p>
+    <p class="brand-kit-hero__eyebrow" :style="eyebrowStyle" :class="eyebrowClass" v-html="eyebrow"></p>
     <div class="brand-kit-hero__content">
-      <h1 id="brand-kit-title">{{ title }}</h1>
+      <h1 id="brand-kit-title" :style="titleStyle" :class="titleClass" v-html="title"></h1>
       <div class="brand-kit-hero__bottom">
-        <p>{{ tagline }}</p>
-        <a :href="ctaHref">{{ ctaLabel }}</a>
+        <p :style="taglineStyle" :class="taglineClass" v-html="tagline"></p>
+        <a :href="ctaHref" :style="ctaLabelStyle" :class="ctaLabelClass" v-html="ctaLabel"></a>
       </div>
     </div>
   </section>
@@ -14,9 +14,17 @@
 <script setup lang="ts">
 defineProps<{
   eyebrow: string
+  eyebrowStyle?: string
+  eyebrowClass?: string
   title: string
+  titleStyle?: string
+  titleClass?: string
   tagline: string
+  taglineStyle?: string
+  taglineClass?: string
   ctaLabel: string
+  ctaLabelStyle?: string
+  ctaLabelClass?: string
   ctaHref: string
 }>()
 </script>

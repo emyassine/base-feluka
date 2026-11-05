@@ -1,3 +1,8 @@
+________ BUILT-IN:
+
+Cross-site scripting (XSS) enables attackers to inject malicious code into web pages. Such code can then, for example, steal user and login data, or perform ...
+
+________
 - add later or sooner a crate feluqa::jsdeps which contains things like shiki or else;
 - read : https://blog.logrocket.com/rust-internationalization-localization-and-translation/
 - https://kenin.ch/blog/server-driven-ui
