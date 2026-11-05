@@ -159,7 +159,7 @@ withDefaults(defineProps<{
   }
 }
 
-@container (max-width: 620px) {
+@container (max-width: 480px) {
   .brand-kit-logo-section--grid .brand-kit-logo-section__images {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
