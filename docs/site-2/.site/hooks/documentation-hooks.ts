@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue'
+import './gradient-text'
 
 export const menuTemplates = {
   'mega.cards': { layout: 'cards' },

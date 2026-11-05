@@ -40,6 +40,7 @@
   "styles": [
     "components/blocks/styles/numerimondes.css",
     "components/blocks/styles/numerimondes-silky.css",
+    "components/blocks/styles/gradient-text.css",
     "components/blocks/specialized/marketplace/numerimondes-marketplace.css"
   ]
 }

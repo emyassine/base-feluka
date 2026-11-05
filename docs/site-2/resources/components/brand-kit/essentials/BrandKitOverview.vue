@@ -182,5 +182,6 @@ const overviewSections = computed<RenderedSection[]>(() => {
   .brand-kit-overview__section {
     animation: none;
   }
+
 }
 </style>

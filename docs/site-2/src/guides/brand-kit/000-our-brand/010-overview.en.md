@@ -34,7 +34,7 @@ layout: home
       columns: [
         {
           label: 'Our Vision',
-          title: '<span class=\'silky-bbi\'>Our ultimate goal is to position Africa as a global center of wealth creation, leveraging technology, capital, workforce, and media to empower organizations across the continent.</span>',
+          title: '<span class=\'silky-bbi\' style=\'line-height:1.15;\'>Our ultimate objective is to position <span class=\'primary-text\'>Africa</span> as a global center of <span class=\'primary-text\'>wealth creation</span>, leveraging <span class=\'gradient-teal-text\'>technology</span>, <span class=\'gradient-green-text\'>capital</span>, <span class=\'gradient-amber-text\'>workforce</span>, and <span class=\'gradient-violet-text\'>media</span> to empower anyone across the continent.</span>',
         },
       ],
     },
@@ -43,7 +43,7 @@ layout: home
       columns: [
         {
           label: 'Our Brand',
-          title: '<span class=\'silky-bbi\'>Good Advice<br>is</span> 💎 <span class=\'silky-bbi\'>Priceless</span>',
+          title: '<span class=\'silky-bbi\'>Good Advice<br>is</span> 💎 <span class=\'silky-bbi primary-text\'>Priceless</span>',
         },
         {
           tagline: '<div style=\'max-width:630px;\'>We are a management consulting and strategic advisory firm built to move businesses and people forward. <span class=\'silky-bbi\'>We guide our partners</span> to gain as much control as possible, optimize performance, and create measurable, enduring wealth across operations, technology, and new ventures.</div>',
