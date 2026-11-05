@@ -29,8 +29,10 @@ layout: home
 	</div>
   <BrandKitOverview
     label="Overview"
+    title="Ideas that move businesses forward."
     :show-border="true"
-    tagline="Welcome to our complete system for keeping every element of our brand recognizable, consistent, and easy to manage."
+    tagline="Insight. Innovation. Strategy. Execution."
+    description="Numerimondes brings business insight, technology and specialist expertise together to explore opportunities, shape practical solutions and move projects into action."
   />
   <BrandKitIndex
     title="Index"
