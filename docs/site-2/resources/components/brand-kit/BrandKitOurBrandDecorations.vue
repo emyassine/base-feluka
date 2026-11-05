@@ -1,11 +1,20 @@
 <template>
-  <div id="template-overlay" v-html="templateOverlay"></div>
-  <div id="__framer-badge-container" v-html="badge"></div>
-  <div id="svg-templates" style="position: absolute; overflow: hidden; bottom: 0; left: 0; width: 0; height: 0; z-index: 0; contain: strict" aria-hidden="true" v-html="svgTemplates"></div>
+  <component
+    :is="root.tag"
+    v-for="root in roots"
+    :key="root.key"
+    v-bind="root.attributes"
+    v-html="root.html"
+  />
 </template>
 
 <script setup lang="ts">
-import templateOverlay from './BrandKitOurBrandDecorations-templateOverlay.html?raw'
-import badge from './BrandKitOurBrandDecorations-badge.html?raw'
-import svgTemplates from './BrandKitOurBrandDecorations-svgTemplates.html?raw'
+interface FragmentRoot {
+  key: string
+  tag: string
+  attributes: Record<string, string>
+  html: string
+}
+
+defineProps<{ roots: FragmentRoot[] }>()
 </script>

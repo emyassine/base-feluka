@@ -1,7 +1,10 @@
 <template>
-  <div class="framer-yxidvy-container" v-html="fragment"></div>
+  <div v-bind="attributes" v-html="fragment"></div>
 </template>
 
 <script setup lang="ts">
-import fragment from './BrandKitOurBrandFooter.html?raw'
+defineProps<{
+  fragment: string
+  attributes: Record<string, string>
+}>()
 </script>

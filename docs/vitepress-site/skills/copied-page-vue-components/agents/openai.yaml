@@ -1,0 +1,3 @@
+interface:
+  display_name: "Copied Page Vue Components"
+  short_description: "Copy pages into prop-driven Vue blocks"
