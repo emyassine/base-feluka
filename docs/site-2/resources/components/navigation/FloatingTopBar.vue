@@ -242,7 +242,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
 }
 
 :global(:root:not(.dark)) .floating-topbar__identity {
-  border-inline-end-color: var(--vp-c-divider);
+  border-inline-end-color: color-mix(in srgb, var(--vp-c-text-1) 38%, var(--vp-c-bg));
 }
 
 :global(:root:not(.dark)) .floating-topbar__links a:hover,
