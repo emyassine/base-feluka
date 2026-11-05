@@ -29,7 +29,7 @@ layout: home
 	</div>
   <BrandKitOverview
     label="Overview"
-    :show-border="false"
+    :show-border="true"
     tagline="Welcome to our complete system for keeping every element of our brand recognizable, consistent, and easy to manage."
   />
   <BrandKitIndex

@@ -117,7 +117,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   height: 32px;
   overflow: hidden;
   padding: 0 0.75rem 0 0.4rem;
-  border-right: 1px solid rgb(255 255 255 / 24%);
+  border-inline-end: 1px solid rgb(255 255 255 / 24%);
   color: inherit;
   font-size: 0.72rem;
   font-weight: 600;
@@ -233,8 +233,16 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   background: rgb(255 255 255 / 16%);
 }
 
+.floating-topbar__identity:hover,
+.floating-topbar__identity:focus-visible {
+  border-start-start-radius: calc(var(--radius-lg) * 1.2);
+  border-end-start-radius: calc(var(--radius-lg) * 1.2);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
 :global(:root:not(.dark)) .floating-topbar__identity {
-  border-right-color: rgb(15 23 42 / 12%);
+  border-inline-end-color: rgb(15 23 42 / 12%);
 }
 
 :global(:root:not(.dark)) .floating-topbar__links a:hover,
