@@ -22,7 +22,7 @@ icon: "@spmpst::icon::sparkles"
 	  <BrandKitHero
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
-	    title-style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: calc(clamp(2rem, 5.5cqw, 5rem)*2);"
+	    title-style="font-family: 'DM Sans', sans-serif; font-weight: 500;"
 	    tagline="Our brand identity system"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"

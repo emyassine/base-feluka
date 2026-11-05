@@ -76,13 +76,16 @@ defineProps<{
   align-items: end;
   justify-content: space-between;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 .brand-kit-hero__bottom p {
-  max-width: 18ch;
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
-  font-size: clamp(1.15rem, 2.7cqw, 2.2rem);
+  font-size: clamp(1rem, 2.7cqw, 2.2rem);
   line-height: 1.05;
+  white-space: nowrap;
 }
 
 .brand-kit-hero__bottom a {
@@ -102,6 +105,12 @@ defineProps<{
   .brand-kit-hero__bottom {
     align-items: start;
     flex-direction: column;
+    gap: 1rem;
+  }
+
+  .brand-kit-hero__bottom p {
+    max-width: 100%;
+    font-size: clamp(1rem, 5cqw, 1.6rem);
   }
 }
 </style>
