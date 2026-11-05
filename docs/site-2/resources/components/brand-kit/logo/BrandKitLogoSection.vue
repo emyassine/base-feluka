@@ -20,7 +20,12 @@
         v-for="(image, index) in images"
         :key="`${image.src}-${index}`"
         class="brand-kit-logo-section__image"
-        :style="image.style"
+        :class="{ 'brand-kit-logo-section__image--free': image.dimensions === 'free' }"
+        :style="[
+          image.style,
+          imagePadding ? { padding: imagePadding } : undefined,
+          image.dimensions ? { aspectRatio: aspectRatio(image.dimensions) } : undefined,
+        ]"
       >
         <img :src="image.src" :alt="image.alt" loading="lazy" />
       </figure>
@@ -29,6 +34,15 @@
 </template>
 
 <script setup lang="ts">
+type ImageDimensions = 'square' | 'free' | 'rectangle' | `${number}:${number}` | `${number} / ${number}`
+
+function aspectRatio(dimensions?: ImageDimensions) {
+  if (dimensions === 'square') return '1 / 1'
+  if (dimensions === 'rectangle') return '16 / 9'
+  if (dimensions === 'free') return 'auto'
+  return dimensions?.replace(':', ' / ')
+}
+
 withDefaults(defineProps<{
   id: string
   eyebrow?: string
@@ -42,8 +56,10 @@ withDefaults(defineProps<{
     src: string
     alt: string
     style?: string | Record<string, string | number>
+    dimensions?: ImageDimensions
   }>
   layout?: 'stacked' | 'side' | 'grid'
+  imagePadding?: string
   imageAnimation?: 'scroll' | 'none'
   showBorder?: boolean
 }>(), {
@@ -106,6 +122,7 @@ withDefaults(defineProps<{
 }
 
 .brand-kit-logo-section__image {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   min-width: 0;
@@ -118,12 +135,16 @@ withDefaults(defineProps<{
   box-shadow: none;
 }
 
+.brand-kit-logo-section__image--free {
+  height: auto;
+}
+
 @supports (animation-timeline: view()) {
   .brand-kit-logo-section--image-scroll .brand-kit-logo-section__image {
     animation: brand-kit-image-reveal linear both;
     animation-duration: auto;
     animation-timeline: view(block);
-    animation-range: cover 0% cover 100%;
+    animation-range: cover 0% cover 50%;
   }
 }
 
@@ -134,6 +155,10 @@ withDefaults(defineProps<{
   margin: 0;
   padding: 0;
   object-fit: contain;
+}
+
+.brand-kit-logo-section__image--free img {
+  height: auto;
 }
 
 @keyframes brand-kit-image-reveal {

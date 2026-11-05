@@ -87,12 +87,13 @@ icon: "@spmpst::icon::image"
     title="Colors"
     description="Use the primary white logo whenever possible to preserve contrast and clarity. The color variations below show approved ways to place the mark."
     :images="[
-      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on blue to lilac gradient', style: 'background: linear-gradient(#0019ff 27%, #c6abd6 100%)' },
-      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on orange gradient', style: 'background: linear-gradient(#e88d4d 46.0005%, #f46d0f 100%)' },
-      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on magenta to cyan gradient', style: 'background: linear-gradient(#e210e6 30.2858%, #35d5de 100%)' },
-      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on cyan to green gradient', style: 'background: linear-gradient(#17c8e3 46.0005%, #0af25f 100%)' }
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on blue to lilac gradient', dimensions: 'square', style: 'background: linear-gradient(#0019ff 27%, #c6abd6 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on orange gradient', dimensions: 'square', style: 'background: linear-gradient(#e88d4d 46.0005%, #f46d0f 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on magenta to cyan gradient', dimensions: 'square', style: 'background: linear-gradient(#e210e6 30.2858%, #35d5de 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on cyan to green gradient', dimensions: 'square', style: 'background: linear-gradient(#17c8e3 46.0005%, #0af25f 100%)' }
     ]"
     layout="grid"
+    image-padding="10px"
     :show-border="false"
   />
 
