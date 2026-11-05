@@ -22,7 +22,7 @@ layout: home
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style=""
-	    tagline="<span class=\'silky-bbi\'.>Our brand identity system</span>"
+	    tagline="<span class='silky-bbi'>Our brand identity system</span>"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"
 	  />
