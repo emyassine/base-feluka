@@ -13,7 +13,7 @@
         </header>
         <ol>
           <li v-for="item in group.items" :key="item.number">
-            <a :href="group.href">
+            <a :href="item.href || group.href">
               <span>{{ item.number }}</span>
               <span :style="item.titleStyle" :class="item.titleClass" v-html="item.title"></span>
             </a>
@@ -28,6 +28,7 @@
 interface IndexItem {
   number: string
   title: string
+  href?: string
   titleStyle?: string
   titleClass?: string
 }
