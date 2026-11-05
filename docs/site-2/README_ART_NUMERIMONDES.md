@@ -84,7 +84,7 @@ Do not put text in images for this brand direction, including English, French, A
 
 ## Central image resources and attribution
 
-The Brand Kit guide is in `src/guides/company/040-brand-kit/index.en.md`. It presents the official logo and image resources. All third-party image credits are rendered in its **Resources → Attributions** section from `.site/spmpst.images-attributions.json`; add or update the registry entry as part of integrating any externally sourced artwork or photograph. Do not scatter attribution notes across content pages. Preserve the linked license and name any crop or other modification.
+The Brand Kit guide is in `src/guides/brand-kit/`. Its Attributions page renders image credits from `.site/spmpst.images-attributions.json`; add or update the registry entry when integrating externally sourced artwork or photography. Preserve the linked license and name any crop or other modification.
 
 The registry is a provenance record, not a substitute for checking license terms. Project-created photographs and generated assets should also have source and method information recorded, while only third-party assets need a rights attribution. Keep attribution data accurate when an image is replaced or removed.
 

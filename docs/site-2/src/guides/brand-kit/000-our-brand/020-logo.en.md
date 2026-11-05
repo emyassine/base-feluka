@@ -10,11 +10,11 @@ icon: "@spmpst::icon::image"
     brand="Numerimondes' Brand Kit"
     :show-border="false"
     :groups="[
-      { title: 'Logo', href: '/brand-kit/logo' },
-      { title: 'Colors', href: '/brand-kit/colors' },
-      { title: 'Type', href: '/brand-kit/type' },
-      { title: 'Photos', href: '/brand-kit/photos' },
-      { title: 'Icons', href: '/brand-kit/icons' }
+      { title: 'Logo', href: '/brand-kit/our-brand/logo' },
+      { title: 'Colors', href: '/brand-kit/our-brand/colors' },
+      { title: 'Type', href: '/brand-kit/our-brand/type' },
+      { title: 'Photos', href: '/brand-kit/our-brand/photos' },
+      { title: 'Icons', href: '/brand-kit/our-brand/icons' }
     ]"
   />
 	</div>

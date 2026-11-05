@@ -241,7 +241,7 @@
             {
               "type": "link",
               "label": { "en": "Brand Kit", "fr": "Identité de marque" },
-              "href": "/company/brand-kit",
+              "href": "/brand-kit/our-brand",
               "icon": "images"
             }
           ]
