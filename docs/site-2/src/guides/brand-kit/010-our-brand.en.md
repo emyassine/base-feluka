@@ -30,9 +30,9 @@ icon: "@spmpst::icon::sparkles"
 	</div>
   <BrandKitOverview
     label="Overview"
+    :show-border="false"
     tagline="Welcome to our complete system for keeping every element of our brand recognizable, consistent, and easy to manage."
   />
-
   <BrandKitIndex
     title="Index"
     :columns="2"
@@ -67,6 +67,5 @@ icon: "@spmpst::icon::sparkles"
       ] }
     ]"
   />
-
-  <BrandKitFooter brand="BrandKit®" note="Brand identity system" />
+  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" />
 </BrandKitWrapper>

@@ -1,18 +1,22 @@
 <template>
-  <section class="brand-kit-overview" aria-labelledby="brand-kit-overview-title">
+  <section
+    class="brand-kit-overview"
+    :class="{ 'brand-kit-overview--bordered': props.showBorder }"
+    aria-labelledby="brand-kit-overview-title"
+  >
     <div>
-      <p class="brand-kit-overview__label" :style="labelStyle" :class="labelClass" v-html="label"></p>
-      <h2 id="brand-kit-overview-title" :style="titleStyle" :class="titleClass" v-html="title"></h2>
+      <p class="brand-kit-overview__label" :style="props.labelStyle" :class="props.labelClass" v-html="props.label"></p>
+      <h2 id="brand-kit-overview-title" :style="props.titleStyle" :class="props.titleClass" v-html="props.title"></h2>
     </div>
     <div class="brand-kit-overview__copy">
-      <p class="brand-kit-overview__tagline" :style="taglineStyle" :class="taglineClass" v-html="tagline"></p>
-      <p class="brand-kit-overview__description" :style="descriptionStyle" :class="descriptionClass" v-html="description"></p>
+      <p class="brand-kit-overview__tagline" :style="props.taglineStyle" :class="props.taglineClass" v-html="props.tagline"></p>
+      <p class="brand-kit-overview__description" :style="props.descriptionStyle" :class="props.descriptionClass" v-html="props.description"></p>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = withDefaults(defineProps<{
   label: string
   labelStyle?: string
   labelClass?: string
@@ -25,7 +29,10 @@ defineProps<{
   description: string
   descriptionStyle?: string
   descriptionClass?: string
-}>()
+  showBorder?: boolean
+}>(), {
+  showBorder: true,
+})
 </script>
 
 <style scoped>
@@ -35,6 +42,9 @@ defineProps<{
   gap: clamp(2rem, 7cqw, 7rem);
   margin: 0;
   padding: clamp(3.5rem, 9cqw, 8rem) 0;
+}
+
+.brand-kit-overview--bordered {
   border-bottom: 1px solid var(--brand-kit-line);
 }
 
