@@ -26,6 +26,16 @@
       }
     },
     {
+      "path": "brand-kit",
+      "label": "Brand Kit",
+      "labels": {
+        "en": "Brand Kit"
+      },
+      "uri": {
+        "base": "/brand-kit/"
+      }
+    },
+    {
       "path": "company",
       "label": "Company",
       "labels": {

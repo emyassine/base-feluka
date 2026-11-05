@@ -1,0 +1,4 @@
+---
+title: "Type"
+sidebarTitle: "Type"
+---

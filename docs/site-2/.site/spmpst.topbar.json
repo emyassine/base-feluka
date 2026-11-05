@@ -140,6 +140,13 @@
       ]
     },
     {
+      "type": "link",
+      "label": {
+        "en": "Brand Kit"
+      },
+      "href": "/brand-kit/our-brand"
+    },
+    {
       "type": "menu",
       "label": {
         "en": "Company"
