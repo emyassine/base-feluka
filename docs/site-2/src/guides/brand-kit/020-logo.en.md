@@ -87,10 +87,10 @@ icon: "@spmpst::icon::image"
     title="Colors"
     description="Use the primary white logo whenever possible to preserve contrast and clarity. The color variations below show approved ways to place the mark."
     :images="[
-      { src: '/images/brand-kit/logo/logo-color-1.png', alt: 'Logo color variation one' },
-      { src: '/images/brand-kit/logo/logo-color-2.png', alt: 'Logo color variation two' },
-      { src: '/images/brand-kit/logo/logo-color-3.png', alt: 'Logo color variation three' },
-      { src: '/images/brand-kit/logo/logo-color-4.png', alt: 'Logo color variation four' }
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on blue to lilac gradient', style: 'background: linear-gradient(#0019ff 27%, #c6abd6 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on orange gradient', style: 'background: linear-gradient(#e88d4d 46.0005%, #f46d0f 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on magenta to cyan gradient', style: 'background: linear-gradient(#e210e6 30.2858%, #35d5de 100%)' },
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Logo on cyan to green gradient', style: 'background: linear-gradient(#17c8e3 46.0005%, #0af25f 100%)' }
     ]"
     layout="grid"
     :show-border="false"

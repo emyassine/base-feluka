@@ -16,7 +16,12 @@
     </header>
 
     <div class="brand-kit-logo-section__images">
-      <figure v-for="image in images" :key="image.src" class="brand-kit-logo-section__image">
+      <figure
+        v-for="(image, index) in images"
+        :key="`${image.src}-${index}`"
+        class="brand-kit-logo-section__image"
+        :style="image.style"
+      >
         <img :src="image.src" :alt="image.alt" loading="lazy" />
       </figure>
     </div>
@@ -33,7 +38,11 @@ withDefaults(defineProps<{
   description: string
   descriptionStyle?: string
   descriptionClass?: string
-  images: Array<{ src: string; alt: string }>
+  images: Array<{
+    src: string
+    alt: string
+    style?: string | Record<string, string | number>
+  }>
   layout?: 'stacked' | 'side' | 'grid'
   imageAnimation?: 'scroll' | 'none'
   showBorder?: boolean
@@ -103,8 +112,8 @@ withDefaults(defineProps<{
   aspect-ratio: 1.55;
   margin: 0;
   padding: 0;
-  border: 0;
-  border-radius: 0;
+  border: 1px solid var(--brand-kit-line);
+  border-radius: 0.75rem;
   background: transparent;
   box-shadow: none;
 }
@@ -161,7 +170,7 @@ withDefaults(defineProps<{
   }
 }
 
-@container (max-width: 480px) {
+@media (max-width: 720px) {
   .brand-kit-logo-section--grid .brand-kit-logo-section__images {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
