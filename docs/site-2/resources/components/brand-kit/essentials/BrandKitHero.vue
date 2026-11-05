@@ -1,5 +1,8 @@
 <template>
   <section class="brand-kit-hero" aria-labelledby="brand-kit-title">
+    <div v-if="backgroundImage" class="brand-kit-hero__image" aria-hidden="true">
+      <img :src="backgroundImage" :alt="backgroundImageAlt || ''" />
+    </div>
     <p class="brand-kit-hero__eyebrow" :style="eyebrowStyle" :class="eyebrowClass" v-html="eyebrow"></p>
     <div class="brand-kit-hero__content">
       <h1 id="brand-kit-title" :style="titleStyle" :class="titleClass" v-html="title"></h1>
@@ -26,6 +29,8 @@ defineProps<{
   ctaLabelStyle?: string
   ctaLabelClass?: string
   ctaHref: string
+  backgroundImage?: string
+  backgroundImageAlt?: string
 }>()
 </script>
 
@@ -48,6 +53,8 @@ defineProps<{
 }
 
 .brand-kit-hero__eyebrow {
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: var(--brand-kit-muted);
   font-family: var(--vp-font-family-mono);
@@ -57,8 +64,32 @@ defineProps<{
 }
 
 .brand-kit-hero__content {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: clamp(1.5rem, 4cqw, 3rem);
+}
+
+.brand-kit-hero__image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.brand-kit-hero__image::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-kit-surface) 82%, transparent), color-mix(in srgb, var(--brand-kit-surface) 24%, transparent));
+  content: '';
+}
+
+.brand-kit-hero__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand-kit-hero h1 {
