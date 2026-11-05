@@ -67,5 +67,5 @@ icon: "@spmpst::icon::sparkles"
       ] }
     ]"
   />
-  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" />
+  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
 </BrandKitWrapper>
