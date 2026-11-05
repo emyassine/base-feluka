@@ -2,11 +2,13 @@
 title: "Our Brand"
 sidebarTitle: "Our Brand"
 icon: "@spmpst::icon::sparkles"
+layout: home
 ---
 
 <BrandKitWrapper>
   <BrandKitTopBar
-    brand="BrandKit®"
+    brand="Numerimondes' Brand Kit"
+    :show-border="false"
     :groups="[
       { title: 'Logo', href: '/brand-kit/logo' },
       { title: 'Colors', href: '/brand-kit/colors' },
@@ -17,10 +19,10 @@ icon: "@spmpst::icon::sparkles"
   />
 
   <BrandKitHero
-    eyebrow="BRANDKIT PRO"
-    title="BrandKit"
-    tagline="A full scale brand identity system"
-    cta-label="Explore BrandKit®"
+    eyebrow="By El Moumen Yassine"
+    title="Numerimondes"
+    tagline="Our brand identity system"
+    cta-label="Explore"
     cta-href="#brand-kit-index"
   />
 

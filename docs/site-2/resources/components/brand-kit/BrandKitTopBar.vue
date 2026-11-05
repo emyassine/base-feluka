@@ -1,17 +1,24 @@
 <template>
-  <nav class="brand-kit-topbar" aria-label="Brand Kit navigation">
-    <a class="brand-kit-topbar__brand" href="/brand-kit/our-brand">{{ brand }}</a>
+  <nav
+    class="brand-kit-topbar"
+    :class="{ 'brand-kit-topbar--bordered': props.showBorder }"
+    aria-label="Brand Kit navigation"
+  >
+    <a class="brand-kit-topbar__brand" href="/brand-kit/our-brand">{{ props.brand }}</a>
     <div class="brand-kit-topbar__links">
-      <a v-for="group in groups" :key="group.href" :href="group.href">{{ group.title }}</a>
+      <a v-for="group in props.groups" :key="group.href" :href="group.href">{{ group.title }}</a>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = withDefaults(defineProps<{
   brand: string
   groups: Array<{ title: string; href: string }>
-}>()
+  showBorder?: boolean
+}>(), {
+  showBorder: true,
+})
 </script>
 
 <style scoped>
@@ -24,8 +31,11 @@ defineProps<{
   min-width: 0;
   margin: 0;
   padding: 0.9rem 0;
-  border-bottom: 1px solid var(--vp-c-divider);
   color: var(--vp-c-text-1);
+}
+
+.brand-kit-topbar--bordered {
+  border-bottom: 1px solid var(--vp-c-divider);
 }
 
 .brand-kit-topbar__brand {
