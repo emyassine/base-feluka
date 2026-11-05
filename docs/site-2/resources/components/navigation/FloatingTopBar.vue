@@ -161,7 +161,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   height: 32px;
   padding: 0 0.65rem;
   border-radius: var(--radius-md);
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-1);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.015em;
