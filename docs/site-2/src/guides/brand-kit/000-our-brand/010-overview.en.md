@@ -22,7 +22,7 @@ layout: home
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style="font-family: DM Sans, sans-serif; font-weight: 500;"
-	    tagline="Our brand identity system"
+	    tagline="<span class=\'silky-bbi\'.>Our brand identity system</span>"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"
 	  />
@@ -31,9 +31,9 @@ layout: home
   :sections="[
 	  {
 	    label: 'Our Brand',
-	    title: 'Numerimondes',
-	    tagline: 'Good Advice<br>is 💎 Priceless.',
-	    description: 'We are a management consulting and strategic advisory firm built to move businesses and people forward.<br><br>Across operations, technology, and new ventures, we guide organizations to gain absolute control, optimize performance, and create measurable, enduring wealth.',
+	    title: '<span class=\'silky-bbi\'.>Good Advice<br>is</span> 💎 <span class=\'silky-bbi\'.>Priceless</span>',
+	    tagline: 'We are a management consulting and strategic advisory firm built to move businesses and people forward.',
+	    description: 'Across operations, technology, and new ventures, we guide organizations to gain absolute control, optimize performance, and create measurable, enduring wealth.',
 	    showBorder: true
 	  },
 	  {

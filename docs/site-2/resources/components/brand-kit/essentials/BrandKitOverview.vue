@@ -9,10 +9,10 @@
     >
       <div>
         <p class="brand-kit-overview__label" :style="section.labelStyle" :class="section.labelClass" v-html="section.label"></p>
-        <h2 :id="`brand-kit-overview-title-${index}`" :style="section.taglineStyle" :class="section.taglineClass" v-html="section.title"></h2>
+        <h2 :id="`brand-kit-overview-title-${index}`" :style="section.titleStyle" :class="section.titleClass" v-html="section.title"></h2>
       </div>
       <div class="brand-kit-overview__copy">
-        <p class="brand-kit-overview__tagline" :style="section.titleStyle" :class="section.titleClass" v-html="section.tagline"></p>
+        <p class="brand-kit-overview__tagline" :style="section.taglineStyle" :class="section.taglineClass" v-html="section.tagline"></p>
         <p class="brand-kit-overview__description" :style="section.descriptionStyle" :class="section.descriptionClass" v-html="section.description"></p>
       </div>
     </article>
@@ -115,9 +115,10 @@ const overviewSections = computed<OverviewSection[]>(() => {
 .brand-kit-overview h2 {
   margin-top: 0;
   padding-top: 0.7rem;
-  color: var(--brand-kit-text);
-  font-size: clamp(1.35rem, 2.3cqw, 2rem);
-  line-height: 1.15;
+  font-size: clamp(2rem, 5.5cqw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
   overflow-wrap: anywhere;
 }
 
@@ -137,11 +138,8 @@ const overviewSections = computed<OverviewSection[]>(() => {
 
 .brand-kit-overview__copy .brand-kit-overview__tagline {
   color: var(--brand-kit-text);
-  font-size: clamp(2rem, 5.5cqw, 5rem);
-  font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
-  overflow-wrap: anywhere;
+  font-size: clamp(1.35rem, 2.3cqw, 2rem);
+  line-height: 1.15;
 }
 
 @container (max-width: 680px) {
