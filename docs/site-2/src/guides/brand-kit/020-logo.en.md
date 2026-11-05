@@ -5,6 +5,7 @@ icon: "@spmpst::icon::image"
 ---
 
 <BrandKitWrapper>
+<div style="display:none;">
   <BrandKitTopBar
     brand="Numerimondes' Brand Kit"
     :show-border="false"
@@ -16,7 +17,7 @@ icon: "@spmpst::icon::image"
       { title: 'Icons', href: '/brand-kit/icons' }
     ]"
   />
-
+	</div>
   <div style="margin-top: 2rem">
     <BrandKitHero
       eyebrow="Brandkit // Logo"

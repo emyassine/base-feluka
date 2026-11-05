@@ -4,6 +4,7 @@
     class="brand-kit-logo-section"
     :class="[
       `brand-kit-logo-section--${layout}`,
+      `brand-kit-logo-section--image-${imageAnimation}`,
       { 'brand-kit-logo-section--bordered': showBorder },
     ]"
     :aria-labelledby="`${id}-title`"
@@ -34,9 +35,11 @@ withDefaults(defineProps<{
   descriptionClass?: string
   images: Array<{ src: string; alt: string }>
   layout?: 'stacked' | 'side' | 'grid'
+  imageAnimation?: 'scroll' | 'none'
   showBorder?: boolean
 }>(), {
   layout: 'stacked',
+  imageAnimation: 'scroll',
   showBorder: true,
 })
 </script>
@@ -106,11 +109,30 @@ withDefaults(defineProps<{
   box-shadow: 0 0 3rem color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
 }
 
+@supports (animation-timeline: view()) {
+  .brand-kit-logo-section--image-scroll .brand-kit-logo-section__image {
+    animation: brand-kit-image-reveal linear both;
+    animation-duration: auto;
+    animation-timeline: view(block);
+    animation-range: cover 0% cover 100%;
+  }
+}
+
 .brand-kit-logo-section__image img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+@keyframes brand-kit-image-reveal {
+  from {
+    transform: scale(0.75);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
 
 .brand-kit-logo-section--side {
@@ -140,6 +162,12 @@ withDefaults(defineProps<{
 @container (max-width: 620px) {
   .brand-kit-logo-section--grid .brand-kit-logo-section__images {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-kit-logo-section--image-scroll .brand-kit-logo-section__image {
+    animation: none;
   }
 }
 </style>

@@ -168,7 +168,8 @@ html.dark .docs-topbar-badge[data-color="danger"] { --docs-badge-bg: #450a0a; --
 .VPNavBarTranslations .title { display: none; }
 .VPNavBarExtra .trans-title { display: none; }
 /** START Topbar trigger text size START ***/
-.VPNavBar .VPNavBarMenuGroup .button .text { font-size: 13px; }
+.VPNavBar .VPNavBarMenuGroup .button .text,
+.VPNavBar .VPNavBarMenuLink.VPLink { font-size: 13px; }
 .VPNavBar .VPNavBarMenu .VPNavBarMenuGroup > .button,
 .VPNavBar .VPNavBarMenu .VPNavBarMenuLink { padding-inline: 8px; }
 /** END Topbar trigger text size END ***/
