@@ -45,7 +45,7 @@ layout: home
 	  },
     {
       label: 'About Leverage',
-      title: 'The Architecture of Wealth Creation',
+      title: 'Wealth Creation',
       tagline: 'Capital, workforce, media, and technology in your hands.',
       description: 'Technology, capital, workforce, and media are the most powerful levers of our time. Everyone should have access to them to solve problems, realize ideas, and build wealth.<br><br>True leverage transforms strategic intent into exponential growth, giving organizations the tools to scale beyond ordinary limits.',
       showBorder: true

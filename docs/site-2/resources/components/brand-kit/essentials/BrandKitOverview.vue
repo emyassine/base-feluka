@@ -95,8 +95,16 @@ const overviewSections = computed<OverviewSection[]>(() => {
   display: grid;
   grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
   gap: clamp(2rem, 7cqw, 7rem);
+  box-sizing: border-box;
+  min-height: 80vh;
+  min-height: 80svh;
+  align-content: center;
   margin: 0;
   padding: clamp(3.5rem, 9cqw, 8rem) 0;
+  animation: brand-kit-overview-scroll linear both;
+  animation-duration: auto;
+  animation-timeline: view(block);
+  animation-range: cover 0% cover 50%;
 }
 
 .brand-kit-overview__section--bordered {
@@ -146,6 +154,17 @@ const overviewSections = computed<OverviewSection[]>(() => {
   .brand-kit-overview__section {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+}
+
+@keyframes brand-kit-overview-scroll {
+  from { transform: scale(0.75); }
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-kit-overview__section {
+    animation: none;
   }
 }
 
