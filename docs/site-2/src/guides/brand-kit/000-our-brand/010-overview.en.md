@@ -1,6 +1,6 @@
 ---
-title: "Our Brand"
-sidebarTitle: "Our Brand"
+title: "Our Brand | Numerimondes"
+sidebarTitle: "Numerimondes"
 icon: "@spmpst::icon::sparkles"
 ---
 

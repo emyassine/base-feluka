@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+set -u
+
+if [[ $# -eq 0 ]]; then
+    printf 'Usage: %s "commit message"\n' "$0" >&2
+    exit 2
+fi
+
+commit_message="$*"
+if [[ -z "$commit_message" ]]; then
+    printf 'Commit message cannot be empty. Nothing was staged or committed.\n' >&2
+    exit 2
+fi
+
+if ! git rev-parse --show-toplevel >/dev/null 2>&1; then
+    printf 'ERROR: this is not inside a Git repository.\n' >&2
+    exit 2
+fi
+
+branch=$(git branch --show-current)
+if [[ -z "$branch" ]]; then
+    printf 'ERROR: HEAD is detached; switch to a branch before using gacp.sh.\n' >&2
+    exit 2
+fi
+
+printf 'Branch: %s\n' "$branch"
+printf 'Adding tracked, modified, and untracked files (git add -A)...\n'
+if ! git add -A; then
+    printf 'ERROR: git add failed. No commit or push was attempted.\n' >&2
+    exit 1
+fi
+
+if ! git diff --cached --quiet; then
+    printf 'Creating local commit: %s\n' "$commit_message"
+    if ! git commit -m "$commit_message"; then
+        printf 'ERROR: commit failed. Review the message above; no push was attempted.\n' >&2
+        exit 1
+    fi
+    printf 'Local commit saved: %s\n' "$(git rev-parse --short HEAD)"
+else
+    printf 'No new file changes to commit. Checking whether existing commits need pushing...\n'
+fi
+
+upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)
+if [[ -n "$upstream" ]]; then
+    ahead=$(git rev-list --count "${upstream}..HEAD" 2>/dev/null || printf '0')
+    if [[ "$ahead" == "0" ]]; then
+        printf 'Already up to date with %s. Nothing to push.\n' "$upstream"
+        exit 0
+    fi
+    printf '%s local commit(s) need pushing to %s.\n' "$ahead" "$upstream"
+else
+    printf 'No upstream is configured; trying to publish branch %s to origin.\n' "$branch"
+fi
+
+push_log=$(mktemp "${TMPDIR:-/tmp}/gacp-push.XXXXXX") || {
+    printf 'ERROR: could not create a temporary log for push diagnostics.\n' >&2
+    exit 1
+}
+trap 'rm -f "$push_log"' EXIT
+
+if [[ -n "$upstream" ]]; then
+    if git push >"$push_log" 2>&1; then
+        cat "$push_log"
+        printf 'Push succeeded. Local and remote branches are synchronized.\n'
+        exit 0
+    else
+        push_status=$?
+    fi
+else
+    if git push --set-upstream origin "$branch" >"$push_log" 2>&1; then
+        cat "$push_log"
+        printf 'Push succeeded; upstream is now set to origin/%s.\n' "$branch"
+        exit 0
+    else
+        push_status=$?
+    fi
+fi
+
+cat "$push_log" >&2
+printf '\nPUSH FAILED (exit code %s). ' "$push_status" >&2
+printf 'Your local commit is still saved; it was not lost.\n' >&2
+
+if grep -Eiq 'fatal error in commit_refs|commit_refs_rules|HTTP 5[0-9][0-9]|internal server error' "$push_log"; then
+    printf 'Diagnosis: GitHub returned a server-side error. Wait a little, then run: git push\n' >&2
+    printf 'The commit is already local; do not recreate it.\n' >&2
+elif grep -Eiq 'could not resolve host|failed to connect|connection timed out|network is unreachable|temporary failure in name resolution' "$push_log"; then
+    printf 'Diagnosis: network or DNS problem. Restore connectivity, then run: git push\n' >&2
+elif grep -Eiq 'protected branch|repository rule|GH013|ruleset|secret scanning|push declined' "$push_log"; then
+    printf 'Diagnosis: GitHub blocked the push because of a repository rule. Read the rejection details above and fix that specific rule violation, then run: git push\n' >&2
+elif grep -Eiq 'non-fast-forward|fetch first|rejected.*behind' "$push_log"; then
+    printf 'Diagnosis: the remote has commits you do not have. Run: git pull --rebase, resolve any conflicts, then run: git push\n' >&2
+elif grep -Eiq 'permission denied|authentication failed|could not read username|403|not found' "$push_log"; then
+    printf 'Diagnosis: GitHub authentication, access, or repository URL problem. Fix access, then run: git push\n' >&2
+else
+    printf 'Diagnosis: see the Git error above. Fix its cause, then run: git push\n' >&2
+fi
+
+exit 1
