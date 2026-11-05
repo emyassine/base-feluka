@@ -92,6 +92,8 @@ withDefaults(defineProps<{
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(0.75rem, 2cqw, 1.5rem);
   min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .brand-kit-logo-section__image {
@@ -100,13 +102,11 @@ withDefaults(defineProps<{
   min-width: 0;
   aspect-ratio: 1.55;
   margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--brand-kit-line);
-  border-radius: 0.65rem;
-  background:
-    radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--vp-c-brand-1) 22%, transparent), transparent 68%),
-    var(--brand-kit-surface-soft);
-  box-shadow: 0 0 3rem color-mix(in srgb, var(--vp-c-brand-1) 12%, transparent);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 @supports (animation-timeline: view()) {
@@ -122,6 +122,8 @@ withDefaults(defineProps<{
   display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   object-fit: contain;
 }
 
