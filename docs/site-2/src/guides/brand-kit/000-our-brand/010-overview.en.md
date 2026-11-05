@@ -7,7 +7,7 @@ layout: home
 
 <BrandKitWrapper>
   <BrandKitTopBar
-    brand="Numerimondes' Brand Kit"
+    brand="Our Brand"
     :show-border="false"
     :groups="[
       { title: 'Logo', href: '/brand-kit/our-brand/logo' },
