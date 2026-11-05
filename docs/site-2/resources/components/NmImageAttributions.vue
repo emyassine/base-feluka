@@ -14,7 +14,12 @@ const images = registry.images
           <img :src="image.path" :alt="image.alt" loading="lazy" decoding="async">
         </a>
         <h3><a :href="image.path">{{ image.title }}</a></h3>
-        <small>{{ image.credit }}</small>
+        <small v-if="image.sourceUrl">
+          <a :href="image.sourceUrl" target="_blank" rel="noopener noreferrer">Photo by {{ image.creator }} on Unsplash</a>
+          · <a :href="image.licenseUrl" target="_blank" rel="noopener noreferrer">Unsplash License</a>
+          · cropped for this page
+        </small>
+        <small v-else>{{ image.credit }}</small>
       </li>
     </ul>
   </section>

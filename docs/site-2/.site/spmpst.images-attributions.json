@@ -1,40 +1,64 @@
 {
   "images": [
     {
-      "path": "/images/legal/account-and-crm-privacy-layered-aperture.webp",
+      "path": "/images/legal/account-crm-library-archive.webp",
       "title": "Account and CRM privacy",
-      "alt": "Offset translucent glass and paper planes let a narrow beam pass through aligned apertures.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "Tiered shelves and glass balconies inside the Qatar National Library.",
+      "credit": "Photo by Murewa Saibu on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Murewa Saibu",
+      "sourceUrl": "https://unsplash.com/photos/a-large-library-with-many-books-4iqCrauC2Wg",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
-      "path": "/images/legal/publisher-information-transparent-prism.webp",
+      "path": "/images/legal/publisher-information-glass-facade.webp",
       "title": "Publisher and website information",
-      "alt": "A clear glass prism reflects a softly blurred facade beside two aligned material samples.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "Sunlight and reflected sky shape the geometric glass facade of a contemporary building.",
+      "credit": "Photo by Joey Zhou on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Joey Zhou",
+      "sourceUrl": "https://unsplash.com/photos/modern-glass-building-with-geometric-shadows-6u_-XIPatNU",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
-      "path": "/images/legal/site-privacy-local-boundary.webp",
+      "path": "/images/legal/site-privacy-water-reflections.webp",
       "title": "Website privacy and site data",
-      "alt": "A curved sheet of clear glass crosses a dark basin where warm reflections fade into ripples.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "Soft light breaks into narrow reflections across a dark, gently rippled water surface.",
+      "credit": "Photo by Greg Rosenke on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Greg Rosenke",
+      "sourceUrl": "https://unsplash.com/photos/rippling-dark-water-surface-with-subtle-light-reflections-BXE3rU9KAIQ",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
-      "path": "/images/legal/prospecting-purpose-path.webp",
+      "path": "/images/legal/prospecting-public-street.webp",
       "title": "Prospecting and business contact privacy",
-      "alt": "A fine amber thread follows a route across layered paper relief and stops at an open gap.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "Sunlight falls across empty glass shop windows and long angular shadows on the pavement.",
+      "credit": "Photo by Artem Lozina on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Artem Lozina",
+      "sourceUrl": "https://unsplash.com/photos/sunlight-casts-long-shadows-on-a-buildings-glass-storefronts-PCXciZKQS_c",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
-      "path": "/images/legal/website-terms-defined-scope.webp",
+      "path": "/images/legal/website-terms-window-shadow.webp",
       "title": "Website Terms of Use",
-      "alt": "A fine graphite line crosses a folded sheet of ivory paper and ends at its sharp edge.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "A single recessed window sits within sharp triangular shadows on a pale facade.",
+      "credit": "Photo by Ruben Mavarez on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Ruben Mavarez",
+      "sourceUrl": "https://unsplash.com/photos/a-window-is-cast-in-shadow-by-the-architecture-cGrwMWN8VrM",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
-      "path": "/images/legal/development-terms-aligned-work.webp",
+      "path": "/images/legal/development-terms-construction-frame.webp",
       "title": "Website Development Terms and Conditions",
-      "alt": "A machined brass joint aligns with slate and translucent drafting layers, marked by a fine red thread.",
-      "credit": "Created for Numerimondes · 04/11/2026."
+      "alt": "Scaffolding and timber framing cross an unfinished facade in low afternoon light.",
+      "credit": "Photo by Phil Hearing on Unsplash · Unsplash License · cropped for this page (04/11/2026).",
+      "creator": "Phil Hearing",
+      "sourceUrl": "https://unsplash.com/photos/building-under-construction-with-scaffolding-and-sunlight-0U3uwgwpwpE",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license"
     },
     {
       "path": "/images/policies/policy-boundaries.webp",

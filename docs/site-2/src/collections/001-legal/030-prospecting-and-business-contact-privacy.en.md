@@ -6,13 +6,13 @@ description: "How Numerimondes researches professional contacts and handles pros
 summary: "Explains public-source research, partner roles, outreach, recruitment and privacy requests."
 category: "privacy"
 tags: [privacy, prospecting, business-contacts, recruitment]
-image: "/images/legal/prospecting-purpose-path.webp"
-imageAlt: "A fine amber thread follows a route across layered paper relief and stops at an open gap."
+image: "/images/legal/prospecting-public-street.webp"
+imageAlt: "Sunlight falls across empty glass shop windows and long angular shadows on the pavement."
 ---
 
 # Prospecting and business contact privacy
 
-<img src="/images/legal/prospecting-purpose-path.webp" alt="A fine amber thread follows a route across layered paper relief and stops at an open gap.">
+<img src="/images/legal/prospecting-public-street.webp" alt="Sunlight falls across empty glass shop windows and long angular shadows on the pavement.">
 
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to professional-contact research, prospecting, partner research and related recruitment activities.
 

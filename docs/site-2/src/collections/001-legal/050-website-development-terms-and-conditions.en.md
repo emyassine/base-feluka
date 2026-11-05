@@ -6,13 +6,13 @@ description: "Terms for website design, development, delivery and related servic
 summary: "Project scope, client responsibilities, fees, intellectual property, launch, support and liability."
 category: "website-development"
 tags: [website-development, client-terms, contracts]
-image: "/images/legal/development-terms-aligned-work.webp"
-imageAlt: "A machined brass joint aligns with slate and translucent drafting layers, marked by a fine red thread."
+image: "/images/legal/development-terms-construction-frame.webp"
+imageAlt: "Scaffolding and timber framing cross an unfinished facade in low afternoon light."
 ---
 
 # Website Development Terms and Conditions
 
-<img src="/images/legal/development-terms-aligned-work.webp" alt="A machined brass joint aligns with slate and translucent drafting layers, marked by a fine red thread.">
+<img src="/images/legal/development-terms-construction-frame.webp" alt="Scaffolding and timber framing cross an unfinished facade in low afternoon light.">
 
 These Website Development Terms and Conditions are maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. These terms apply to website design, development, migration and related work supplied by **Numerimondes SARL AU** (“Numerimondes”) to the customer identified in a written proposal (“Client”). The proposal, these terms and any signed statement of work together form the agreement for the project.
 

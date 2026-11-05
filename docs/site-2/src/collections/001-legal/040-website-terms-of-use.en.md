@@ -6,13 +6,13 @@ description: "Rules for accessing and using the public Numerimondes website and 
 summary: "Covers lawful use, intellectual property, external links, submissions, disclaimers and notices."
 category: "website-use"
 tags: [website, terms-of-use, intellectual-property]
-image: "/images/legal/website-terms-defined-scope.webp"
-imageAlt: "A fine graphite line crosses a folded sheet of ivory paper and ends at its sharp edge."
+image: "/images/legal/website-terms-window-shadow.webp"
+imageAlt: "A single recessed window sits within sharp triangular shadows on a pale facade."
 ---
 
 # Website Terms of Use
 
-<img src="/images/legal/website-terms-defined-scope.webp" alt="A fine graphite line crosses a folded sheet of ivory paper and ends at its sharp edge.">
+<img src="/images/legal/website-terms-window-shadow.webp" alt="A single recessed window sits within sharp triangular shadows on a pale facade.">
 
 These Terms of Use are maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. These terms govern access to and use of the public website operated by **Numerimondes SARL AU** (the “Site”), subject to applicable law. If you do not agree, do not use the Site.
 

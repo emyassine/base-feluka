@@ -1,83 +1,80 @@
 # Image asset provenance
 
-## Account and CRM privacy cover
+## Legal collection photography
 
-- **Asset:** `public/images/legal/account-and-crm-privacy-layered-aperture.webp` (1586 × 992)
-- **Page and claim:** Account and CRM Privacy Notice; account and client information is handled for defined purposes, with authorized access, accountability and retention.
-- **Stance and target feeling:** Numerimondes as a responsible steward; calm precision and controlled access.
-- **Concepts considered:** A faceted glass refraction study; an ordered archival specimen drawer with one lit compartment; layered translucent planes with aligned apertures. The layered planes won because they connect bounded access and organized records without implying actual service infrastructure.
-- **Fit sentence:** Offset planes allowing one beam through aligned apertures evoke access limited to the right workspace and purpose, while their ordered layers suggest careful record stewardship.
-- **First-glance result:** A stranger sees a narrow warm beam passing through aligned openings in layered glass and paper and guesses precise, controlled passage. The material study is crafted and asymmetrical, with a deliberate diagonal beam and dark negative space.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Prompt intent: photoreal editorial macro still life of offset translucent glass and paper planes, aligned apertures and a single amber-white beam, with physically plausible refraction, restrained slate palette and no text or security clichés. No reference images used.
-- **Modifications:** Converted to WebP with ImageMagick at quality 88; no crop or compositing.
-- **Motion:** None.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+All six legal notice covers use existing photographs downloaded from Unsplash under the [Unsplash License](https://unsplash.com/license), which permits free commercial and non-commercial use. Sources and license status were checked on 2026-11-04. Each image is a local 2000 × 1250 WebP rendition, center-cropped to the collection's 16:10 image ratio and optimized with ImageMagick at quality 88. No generative image tools, composites, retouching or added elements were used. The attribution registry is `docs/site-2/.site/spmpst.images-attributions.json`; the Brand Kit gallery links each photo and its license.
 
-## Publisher and website information
+### Publisher and website information
 
-- **Asset:** `public/images/legal/publisher-information-transparent-prism.webp` (1586 × 992)
-- **Page and claim:** Publisher and Website Information; identifies the legal publisher and makes infrastructure arrangements and changing locations clear.
+- **Asset:** `public/images/legal/publisher-information-glass-facade.webp`
+- **Page claim:** Identifies Numerimondes as publisher and explains that hosting, server regions, CDN edges and backup arrangements can vary by deployment.
 - **Stance and target feeling:** Responsible steward; transparency and calm confidence.
-- **Concepts considered:** A transparent glass prism over a shadowed ground; a topographic relief with a single route; a folded paper plane defining a scope. The prism won because it communicates disclosure and clarity without representing actual infrastructure.
-- **Fit sentence:** A clear prism reveals a reflected facade beside distinct material samples, suggesting transparent publisher and infrastructure information without claiming to depict the actual website setup.
-- **First-glance result:** A stranger sees a glass prism reflecting a softly blurred facade beside two aligned samples; the angled light and dark negative space make it a crafted still life rather than a stock infrastructure image.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Intent: realistic editorial still life with a cut glass prism, subtle architectural reflection, paper and brushed metal samples, natural side light and a restrained slate/amber palette. No reference images.
-- **Modifications:** WebP conversion with ImageMagick, quality 88; no crop or composite. No motion.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+- **Concepts considered:** A contemporary glass facade in reflected light; a sunlit archive interior; a shadow crossing a public street. The facade won because it suggests a real built environment while keeping the image separate from claims about Numerimondes' actual infrastructure.
+- **Fit sentence:** The photograph shows a distinct glass building surface and reflected sky, giving the publisher and infrastructure notice a concrete sense of place without claiming to depict the company's own systems.
+- **First-glance and interest:** A stranger sees an angular blue glass facade in daylight; its reflections and diagonal structure give the image an editorial architectural quality.
+- **Source:** [Joey Zhou, “A modern glass building facade with geometric shadows cast on white panels”](https://unsplash.com/photos/modern-glass-building-with-geometric-shadows-6u_-XIPatNU), Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
 
-## Website privacy and site data
+### Website Privacy and Site Data
 
-- **Asset:** `public/images/legal/site-privacy-local-boundary.webp` (1586 × 992)
-- **Page and claim:** Website Privacy and Site Data; describes browser choices, local storage boundaries, external resources, technical logs and individual requests.
-- **Stance and target feeling:** Responsible steward; calm clarity about boundaries.
-- **Concepts considered:** A cut glass prism with material samples; a shallow basin crossed by a curved glass sheet; a paper relief with a single route. The basin won because the curved boundary and contained light suggest local choices and traces without implying surveillance.
-- **Fit sentence:** A curved glass boundary separates a small warm reflection from surrounding water, echoing the notice’s clear limits on site storage and external providers.
-- **First-glance result:** A stranger sees a curved glass edge over dark rippling water and warm light; the realistic caustics and quiet asymmetry invite a closer look.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Intent: macro optical still life of water, slate and a curved glass boundary with realistic caustics, no devices or interface. No reference images.
-- **Modifications:** WebP conversion with ImageMagick, quality 88; no crop or composite. No motion.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+- **Asset:** `public/images/legal/site-privacy-water-reflections.webp`
+- **Page claim:** Explains browser storage choices, external resources, hosting logs, backups, retention and personal-data requests for the public website.
+- **Stance and target feeling:** Responsible steward; calm clarity about data boundaries.
+- **Concepts considered:** Reflected light across rippling water; rain on a window; light passing through an architectural opening. Water won because it suggests transient traces and reflections without depicting a device, tracker or actual user data.
+- **Fit sentence:** The changing reflections on the water offer a quiet visual counterpart to the notice's explanation of browser choices, external requests and technical traces.
+- **First-glance and interest:** A stranger sees warm highlights moving across dark ripples; the close viewpoint and uneven surface make the abstract subject legible and tactile.
+- **Source:** [Greg Rosenke, “Rippling dark water surface with subtle light reflections”](https://unsplash.com/photos/rippling-dark-water-surface-with-subtle-light-reflections-BXE3rU9KAIQ), Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
 
-## Prospecting and business contact privacy
+### Account and CRM Privacy Notice
 
-- **Asset:** `public/images/legal/prospecting-purpose-path.webp` (1586 × 992)
-- **Page and claim:** Prospecting and Business Contact Privacy; professional contact research must have a defined purpose, respect source restrictions, and stop at clear boundaries.
-- **Stance and target feeling:** Responsible researcher; focused and respectful restraint.
-- **Concepts considered:** A transparent prism suggesting publisher disclosure; a route across layered paper relief; a folded sheet with a line ending at its edge. The relief won because its single thread expresses purpose-limited research and a clear stop without depicting people or personal records.
-- **Fit sentence:** A fine thread follows one route across layered terrain and stops at an opening, echoing limited public-source research and explicit research boundaries.
-- **First-glance result:** A stranger sees an amber thread traversing layered paper terrain and guesses deliberate navigation; tactile fibers and raking light make the abstraction memorable.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Intent: close editorial photograph of a paper topographic relief and a single amber thread ending at an open gap, with no real map, text or personal data. No reference images.
-- **Modifications:** WebP conversion with ImageMagick, quality 88; no crop or composite. No motion.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+- **Asset:** `public/images/legal/account-crm-library-archive.webp`
+- **Page claim:** Describes account profiles, authentication, workspace membership, client-work records, security audits, retention and privacy requests.
+- **Stance and target feeling:** Responsible steward; order, care and accountability.
+- **Concepts considered:** A public library's ordered shelves; archival boxes in a records room; layered glass partitions. The library won because its shelves and clear architectural layers suggest organized records while remaining visibly a public place rather than Numerimondes' actual systems.
+- **Fit sentence:** The photograph's organized library shelves offer a grounded metaphor for careful stewardship of account and client-work information without suggesting that personal records are stored there.
+- **First-glance and interest:** A stranger sees a bright, multi-level library with books behind glass; the strong horizontal tiers and open architecture give the photograph depth and calm order.
+- **Source:** [Murewa Saibu, “A large library with many books”](https://unsplash.com/photos/a-large-library-with-many-books-4iqCrauC2Wg), Qatar National Library, Doha, via Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
 
-## Website Terms of Use
+### Prospecting and Business Contact Privacy
 
-- **Asset:** `public/images/legal/website-terms-defined-scope.webp` (1586 × 992)
-- **Page and claim:** Website Terms of Use; defines permitted access and content use, external-link boundaries, and limits on representations and responsibility.
-- **Stance and target feeling:** Clear, measured authority; open use within stated limits.
-- **Concepts considered:** A cut glass prism; a folded paper plane with a graphite line ending at its edge; a machined adjustable joint. The folded plane won because its clear boundary expresses scope and limits without resorting to legal props.
-- **Fit sentence:** A graphite line that ends at a crisp paper edge makes the page’s defined limits on public-site use visible in one glance.
-- **First-glance result:** A stranger sees a fine line crossing a folded plane and stopping at its edge; the natural paper texture, angled light and shadow make the boundary feel deliberate.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Intent: close editorial still life of a folded handmade-paper plane, a graphite line and a precise boundary, without text or legal symbols. No reference images.
-- **Modifications:** WebP conversion with ImageMagick, quality 88; no crop or composite. No motion.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+- **Asset:** `public/images/legal/prospecting-public-street.webp`
+- **Page claim:** Describes purpose-limited research into public business information, permitted sources, contact choices, retention and individual rights.
+- **Stance and target feeling:** Responsible researcher; focused, respectful restraint.
+- **Concepts considered:** Empty storefronts divided by sunlight; an abstract public facade with directional light; a narrow route through a public square. The empty storefront photograph won because it places public-facing business activity in an ordinary setting without showing people, brands or private records.
+- **Fit sentence:** The empty glass storefront and shadowed pavement connect the notice to public-facing business activity while avoiding any claim about a particular person or prospect.
+- **First-glance and interest:** A stranger sees unoccupied glass shop windows crossed by long sunlight and shadow; the framing feels observed rather than staged.
+- **Source:** [Artem Lozina, “Sunlight casts long shadows on a building's glass storefronts”](https://unsplash.com/photos/sunlight-casts-long-shadows-on-a-buildings-glass-storefronts-PCXciZKQS_c), Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
 
-## Website Development Terms and Conditions
+### Website Terms of Use
 
-- **Asset:** `public/images/legal/development-terms-aligned-work.webp` (1586 × 992)
-- **Page and claim:** Website Development Terms and Conditions; project scope, changes, review, payment, ownership, handover and responsibilities are agreed before and during delivery.
-- **Stance and target feeling:** Careful technical craft and shared clarity.
-- **Concepts considered:** A glass prism reflecting a facade; a paper route with a stopping boundary; an adjustable slate-and-brass joint registered against translucent layers. The joint won because it suggests negotiated alignment and controlled changes becoming a finished deliverable.
-- **Fit sentence:** A precisely aligned adjustable joint and registration layers evoke agreed scope, review and change control in a technical project.
-- **First-glance result:** A stranger sees slate and brass parts aligned by a fine red thread beside translucent marked layers; physical detail and directional light suggest deliberate craft rather than a generic contract.
-- **Source and rights:** Original, AI-generated for this page; no third-party source or attribution required.
-- **Technique and tools:** OpenAI image generation tool, 2026-11-04. Intent: realistic macro still life of a machined slate-and-brass adjustable joint, a fine red alignment thread and abstract translucent layers, no text or screens. No reference images.
-- **Modifications:** WebP conversion with ImageMagick, quality 88; no crop or composite. No motion.
-- **Attribution registry:** No third-party material; the Brand Kit gallery includes a project-generated credit for this image.
+- **Asset:** `public/images/legal/website-terms-window-shadow.webp`
+- **Page claim:** Defines ordinary site access, permitted use, external links, content rights, availability, liability limits and dispute terms.
+- **Stance and target feeling:** Clear, measured authority; open access with defined limits.
+- **Concepts considered:** A single window framed by hard shadows; a street crossing light and dark zones; a reflected facade with a clear edge. The window won because its precise opening and surrounding geometry express defined scope without legal props.
+- **Fit sentence:** The recessed window sits inside a sharply bounded field of light and shadow, echoing the terms' defined conditions for using the public site.
+- **First-glance and interest:** A stranger sees one dark window framed by an angular shadow on a pale wall; the asymmetry and strong geometry invite a closer look.
+- **Source:** [Ruben Mavarez, “A window is cast in shadow by the architecture.”](https://unsplash.com/photos/a-window-is-cast-in-shadow-by-the-architecture-cGrwMWN8VrM), Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
+
+### Website Development Terms and Conditions
+
+- **Asset:** `public/images/legal/development-terms-construction-frame.webp`
+- **Page claim:** Defines written scope, client inputs, change control, fees, review, deliverable rights, launch, handover, support and liability for paid website projects.
+- **Stance and target feeling:** Careful craft and shared clarity; precise expectations through delivery.
+- **Concepts considered:** An active construction frame; an architectural scale model with plans; a scaffold detail in strong side light. The real construction frame won because its visible stages and dependencies echo the sequence of an agreed project without using a staged desk or contract scene.
+- **Fit sentence:** The unfinished frame and scaffold show work progressing through defined stages, fitting terms that set the responsibilities and boundaries of a development engagement.
+- **First-glance and interest:** A stranger sees an unfinished facade crossed by a dense scaffold grid, with sunlight breaking through; the real structure's layered detail keeps the image from reading as a generic software stock photo.
+- **Source:** [Phil Hearing, “Building under construction with scaffolding and sunlight”](https://unsplash.com/photos/building-under-construction-with-scaffolding-and-sunlight-0U3uwgwpwpE), Unsplash. Free under the [Unsplash License](https://unsplash.com/license); checked 2026-11-04.
+- **Technique and modifications:** Existing photograph, downloaded from Unsplash and center-cropped to 16:10; WebP conversion with ImageMagick, 2026-11-04. No reference image, composite, retouching or motion.
+- **Attribution:** Registry entry links the photographer and license.
 
 ## Policies collection
 

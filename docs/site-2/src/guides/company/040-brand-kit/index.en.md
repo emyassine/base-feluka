@@ -19,6 +19,6 @@ icon: "@spmpst::icon::images"
 
 ### Images
 
-Selected legal and policy images appear below. Open any image to view it at full size; its creation credit is shown directly beneath the thumbnail.
+Selected legal and policy images appear below. Open any image to view it at full size; its source and license credit are shown directly beneath the thumbnail.
 
 <NmImageAttributions />

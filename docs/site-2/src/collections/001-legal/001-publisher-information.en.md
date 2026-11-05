@@ -6,13 +6,13 @@ description: "Publisher identity and contact information for the Numerimondes we
 summary: "Identifies the publisher, managed hosting, and variable server and CDN locations."
 category: "company"
 tags: [publisher, legal-notice, contact]
-image: "/images/legal/publisher-information-transparent-prism.webp"
-imageAlt: "A clear glass prism reflects a softly blurred facade beside two aligned material samples."
+image: "/images/legal/publisher-information-glass-facade.webp"
+imageAlt: "Sunlight and reflected sky shape the geometric glass facade of a contemporary building."
 ---
 
 # Publisher and website information
 
-<img src="/images/legal/publisher-information-transparent-prism.webp" alt="A clear glass prism reflects a softly blurred facade beside two aligned material samples.">
+<img src="/images/legal/publisher-information-glass-facade.webp" alt="Sunlight and reflected sky shape the geometric glass facade of a contemporary building.">
 
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to publisher identity, website infrastructure and related operational information.
 

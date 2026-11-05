@@ -6,12 +6,12 @@ description: "A practical overview of data handled by the Numerimondes website."
 summary: "Describes contact handling, browser storage choices, external media, and hosting logs."
 category: "privacy"
 tags: [privacy, website, data]
-image: "/images/legal/site-privacy-local-boundary.webp"
-imageAlt: "A curved sheet of clear glass crosses a dark basin where warm reflections fade into ripples."
+image: "/images/legal/site-privacy-water-reflections.webp"
+imageAlt: "Soft light breaks into narrow reflections across a dark, gently rippled water surface."
 ---
 # Privacy and Site Data
 
-<img src="/images/legal/site-privacy-local-boundary.webp" alt="A curved sheet of clear glass crosses a dark basin where warm reflections fade into ripples.">
+<img src="/images/legal/site-privacy-water-reflections.webp" alt="Soft light breaks into narrow reflections across a dark, gently rippled water surface.">
 
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to privacy and data handling on the public website.
 

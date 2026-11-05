@@ -6,13 +6,13 @@ description: "How Numerimondes handles personal information in its account and C
 summary: "Explains account information, client workspace data, access, retention and privacy requests."
 category: "privacy"
 tags: [privacy, account, crm, personal-data]
-image: "/images/legal/account-and-crm-privacy-layered-aperture.webp"
-imageAlt: "Offset translucent glass and paper planes let a narrow beam pass through aligned apertures."
+image: "/images/legal/account-crm-library-archive.webp"
+imageAlt: "Tiered shelves and glass balconies inside the Qatar National Library."
 ---
 
 # Account and CRM privacy notice
 
-<img src="/images/legal/account-and-crm-privacy-layered-aperture.webp" alt="Offset translucent glass and paper planes let a narrow beam pass through aligned apertures.">
+<img src="/images/legal/account-crm-library-archive.webp" alt="Tiered shelves and glass balconies inside the Qatar National Library.">
 
 This legal notice is maintained under the [Policy Management Policy](/policies/policy-management), which prevails on governance of published legal documents. This page is limited to personal information handled through account and CRM services.
 
