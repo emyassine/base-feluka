@@ -13,3 +13,5 @@ products/feluqa-cli/dist/
 /.docs-output.backup-*/
 
 web-sync.config.json
+
+earth_and_sky-web-sync.config.json
