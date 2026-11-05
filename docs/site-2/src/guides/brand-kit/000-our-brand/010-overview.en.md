@@ -21,7 +21,7 @@ layout: home
 	  <BrandKitHero
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
-	    title-style="font-family: DM Sans, sans-serif; font-weight: 500;"
+	    title-style=""
 	    tagline="<span class=\'silky-bbi\'.>Our brand identity system</span>"
 	    cta-label="Explore"
 	    cta-href="#brand-kit-index"
