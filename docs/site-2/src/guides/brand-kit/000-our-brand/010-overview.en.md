@@ -34,7 +34,7 @@ layout: home
       columns: [
         {
           label: 'Our Vision',
-          title: '<span class=\'silky-bbi\' style=\'line-height:1.15;\'>Our ultimate objective is to position <span class=\'primary-text\'>Africa</span> as a global center of <span class=\'primary-text\'>wealth creation</span>, leveraging <span class=\'gradient-teal-text\'>technology</span>, <span class=\'gradient-green-text\'>capital</span>, <span class=\'gradient-amber-text\'>workforce</span>, and <span class=\'gradient-violet-text\'>media</span> to empower anyone across the continent.</span>',
+          title: '<span class=\'silky-bbi\' style=\'line-height:1.15;\'>Our ultimate objective is to position <span class=\'primary-text\'>Africa</span> as a global center of <span class=\'primary-text\'>wealth creation</span>, leveraging <span class=\'teal-text\'>technology</span>, <span class=\'green-text\'>capital</span>, <span class=\'amber-text\'>workforce</span>, and <span class=\'violet-text\'>media</span> to empower anyone across the continent.</span>',
         },
       ],
     },

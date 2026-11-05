@@ -1,0 +1,49 @@
+.teal-text,
+.green-text,
+.amber-text,
+.violet-text {
+  display: inline-block;
+  opacity: 0.3;
+  filter: blur(2px);
+  transform: translateY(6px);
+  -webkit-text-stroke: 0.018em currentColor;
+  paint-order: stroke fill;
+  transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+}
+
+.teal-text {
+  color: #14b8a6;
+}
+
+.green-text {
+  color: #10b981;
+}
+
+.amber-text {
+  color: #f59e0b;
+}
+
+.violet-text {
+  color: #a855f7;
+}
+
+.teal-text.is-visible,
+.green-text.is-visible,
+.amber-text.is-visible,
+.violet-text.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teal-text,
+  .green-text,
+  .amber-text,
+  .violet-text {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}

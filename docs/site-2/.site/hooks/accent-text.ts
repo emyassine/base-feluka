@@ -1,12 +1,12 @@
-const gradientTextSelector = '.gradient-teal-text, .gradient-green-text, .gradient-amber-text, .gradient-violet-text'
+const accentTextSelector = '.teal-text, .green-text, .amber-text, .violet-text'
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   let visibilityObserver: IntersectionObserver | undefined
 
-  const observeGradientText = (root: ParentNode) => {
+  const observeAccentText = (root: ParentNode) => {
     const targets: Element[] = []
-    if (root instanceof Element && root.matches(gradientTextSelector)) targets.push(root)
-    targets.push(...root.querySelectorAll(gradientTextSelector))
+    if (root instanceof Element && root.matches(accentTextSelector)) targets.push(root)
+    targets.push(...root.querySelectorAll(accentTextSelector))
 
     targets.forEach((target) => {
       if (target.classList.contains('is-visible')) return
@@ -28,13 +28,13 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     })
   }
 
-  const startGradientTextObserver = () => {
-    observeGradientText(document)
+  const startAccentTextObserver = () => {
+    observeAccentText(document)
 
     const pageObserver = new MutationObserver((records) => {
       records.forEach((record) => {
         record.addedNodes.forEach((node) => {
-          if (node instanceof Element) observeGradientText(node)
+          if (node instanceof Element) observeAccentText(node)
         })
       })
     })
@@ -43,8 +43,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startGradientTextObserver, { once: true })
+    document.addEventListener('DOMContentLoaded', startAccentTextObserver, { once: true })
   } else {
-    startGradientTextObserver()
+    startAccentTextObserver()
   }
 }
