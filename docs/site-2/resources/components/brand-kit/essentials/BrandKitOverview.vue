@@ -96,8 +96,8 @@ const overviewSections = computed<OverviewSection[]>(() => {
   grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
   gap: clamp(2rem, 7cqw, 7rem);
   box-sizing: border-box;
-  min-height: 80vh;
-  min-height: 80svh;
+  min-height: 100vh;
+  min-height: 100svh;
   align-content: center;
   margin: 0;
   padding: clamp(3.5rem, 9cqw, 8rem) 0;
