@@ -28,11 +28,11 @@ layout: home
 	  />
 	</div>
   <BrandKitOverview
-    label="Overview"
-    title="Ideas that move businesses forward."
+    label="Our Brand"
+    title="The Numerimondes identity"
     :show-border="true"
-    tagline="Insight. Innovation. Strategy. Execution."
-    description="Numerimondes brings business insight, technology and specialist expertise together to explore opportunities, shape practical solutions and move projects into action."
+    tagline="Clarity in structure. Character in expression."
+    description="A geometric mark, restrained palette, deliberate typography, precise icons and atmospheric photography form one visual language. This guide shows how to use these elements across Numerimondes communications."
   />
   <BrandKitIndex
     title="Index"
