@@ -31,7 +31,7 @@ export interface DockGroup {
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
-import { tabsKey } from '../tabs-context'
+import { tabsKey } from '../blocks/atomic/tabs/tabs-context'
 
 const props = withDefaults(defineProps<{
   /** Single dock, no tabs. */

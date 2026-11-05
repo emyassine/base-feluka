@@ -38,8 +38,8 @@
   },
   "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json",
   "styles": [
-    "components/numerimondes.css",
-    "components/numerimondes-silky.css",
-    "components/numerimondes-marketplace.css"
+    "components/blocks/styles/numerimondes.css",
+    "components/blocks/styles/numerimondes-silky.css",
+    "components/blocks/specialized/marketplace/numerimondes-marketplace.css"
   ]
 }

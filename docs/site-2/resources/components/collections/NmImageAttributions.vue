@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import registry from '../../.site/spmpst.images-attributions.json'
+import registry from '../../../.site/spmpst.images-attributions.json'
 
 const images = registry.images
 </script>
