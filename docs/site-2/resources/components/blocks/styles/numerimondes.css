@@ -82,6 +82,11 @@
   background-color: var(--vp-nav-bg-color);
 }
 
+/* Keep the native bottom divider on pages using VitePress' home layout. */
+.VPNavBar.home .divider-line {
+  background-color: var(--vp-c-divider);
+}
+
 /* Keep the navigation chrome from selecting or dragging its labels and logo. */
 .VPNav,
 .VPNav :where(*) {
