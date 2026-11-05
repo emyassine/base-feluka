@@ -6,17 +6,15 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <div style="display:none;">
-    <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
-      { title: 'Our Brand', href: '/brand-kit/our-brand' },
-      { title: 'Logo', href: '/brand-kit/our-brand/logo' },
-      { title: 'Colors', href: '/brand-kit/our-brand/colors' },
-      { title: 'Type', href: '/brand-kit/our-brand/type' },
-      { title: 'Photos', href: '/brand-kit/our-brand/photos' },
-      { title: 'Icons', href: '/brand-kit/our-brand/icons' },
-      { title: 'Attributions', href: '/brand-kit/our-brand/attributions' }
-    ]" />
-  </div>
+  <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
+    { title: 'Our Brand', href: '/brand-kit/our-brand' },
+    { title: 'Logo', href: '/brand-kit/our-brand/logo' },
+    { title: 'Colors', href: '/brand-kit/our-brand/colors' },
+    { title: 'Type', href: '/brand-kit/our-brand/type' },
+    { title: 'Photos', href: '/brand-kit/our-brand/photos' },
+    { title: 'Icons', href: '/brand-kit/our-brand/icons' },
+    { title: 'Attributions', href: '/brand-kit/our-brand/attributions' }
+  ]" />
 
   <div style="margin-top: 2rem">
     <BrandKitHero

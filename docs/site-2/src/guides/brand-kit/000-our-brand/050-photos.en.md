@@ -6,15 +6,13 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <div style="display:none;">
-    <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
-      { title: 'Logo', href: '/brand-kit/our-brand/logo' },
-      { title: 'Colors', href: '/brand-kit/our-brand/colors' },
-      { title: 'Type', href: '/brand-kit/our-brand/type' },
-      { title: 'Photos', href: '/brand-kit/our-brand/photos' },
-      { title: 'Icons', href: '/brand-kit/our-brand/icons' }
-    ]" />
-  </div>
+  <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
+    { title: 'Logo', href: '/brand-kit/our-brand/logo' },
+    { title: 'Colors', href: '/brand-kit/our-brand/colors' },
+    { title: 'Type', href: '/brand-kit/our-brand/type' },
+    { title: 'Photos', href: '/brand-kit/our-brand/photos' },
+    { title: 'Icons', href: '/brand-kit/our-brand/icons' }
+  ]" />
 
   <div style="margin-top: 2rem">
     <BrandKitHero eyebrow="Brandkit // Photo" title="Photos" tagline="Our photography is timeless but contemporary" cta-label="Explore Photo" cta-href="#brand-kit-index" background-image="/images/brand-kit/photos/main-photo.jpg" background-image-alt="BrandKit photographic direction"/>

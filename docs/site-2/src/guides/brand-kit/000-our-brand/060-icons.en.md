@@ -6,13 +6,11 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <div style="display:none;">
-    <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
-      { title: 'Logo', href: '/brand-kit/our-brand/logo' }, { title: 'Colors', href: '/brand-kit/our-brand/colors' },
-      { title: 'Type', href: '/brand-kit/our-brand/type' }, { title: 'Photos', href: '/brand-kit/our-brand/photos' },
-      { title: 'Icons', href: '/brand-kit/our-brand/icons' }
-    ]" />
-  </div>
+  <BrandKitTopBar brand="Numerimondes' Brand Kit" :show-border="false" :groups="[
+    { title: 'Logo', href: '/brand-kit/our-brand/logo' }, { title: 'Colors', href: '/brand-kit/our-brand/colors' },
+    { title: 'Type', href: '/brand-kit/our-brand/type' }, { title: 'Photos', href: '/brand-kit/our-brand/photos' },
+    { title: 'Icons', href: '/brand-kit/our-brand/icons' }
+  ]" />
   <div style="margin-top: 2rem">
     <BrandKitHero eyebrow="Brandkit // Icons" title="Icons" tagline="Our brand icons are the brand’s visual shorthand" cta-label="Explore Icons" cta-href="#brand-kit-index" />
   </div>

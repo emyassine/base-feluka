@@ -67,7 +67,7 @@ defineProps<{
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(1.5rem, 4cqw, 3rem);
+  gap: clamp(1rem, 2cqw, 1.75rem);
 }
 
 .brand-kit-hero__image {
@@ -123,10 +123,11 @@ defineProps<{
 
 .brand-kit-hero__bottom a {
   flex: none;
-  padding: 0.7rem 0;
+  padding: 0 0 0.25rem;
   border-bottom: 1px solid currentColor;
   color: inherit;
   font-size: 0.85rem;
+  line-height: 1.2;
   text-decoration: none;
 }
 
