@@ -27,13 +27,7 @@ layout: home
 	    cta-href="#brand-kit-index"
 	  />
 	</div>
-  <BrandKitOverview
-    label="Our Brand"
-    title="The Numerimondes identity"
-    :show-border="true"
-    tagline="Clarity in structure. Character in expression."
-    description="A geometric mark, restrained palette, deliberate typography, precise icons and atmospheric photography form one visual language. This guide shows how to use these elements across Numerimondes communications."
-  />
+  <BrandKitOverview :sections='[{"label": "Our Brand", "title": "The Numerimondes identity", "tagline": "Clarity in structure. Character in expression.", "description": "A geometric mark, restrained palette, deliberate typography, precise icons and atmospheric photography form one visual language. This guide shows how to use these elements across Numerimondes communications.", "showBorder": true}]' />
   <BrandKitIndex
     title="Index"
     :columns="2"

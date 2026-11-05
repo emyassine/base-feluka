@@ -18,7 +18,7 @@ layout: home
     <BrandKitHero eyebrow="Brandkit // Type" title="Type" tagline="Our typography is the structure for our brand voice" cta-label="Explore Type" cta-href="#brand-kit-index" />
   </div>
 
-  <BrandKitOverview label="BrandKit®" title="Typography" tagline="Typography is the brand’s voice in written form" description="Typography is the brand’s voice in written form—it shapes how confident, modern, and trustworthy we feel before anyone reads the message. Our type system is built for clarity and character: strong hierarchy, generous spacing, and a calm rhythm that works across product UI, marketing, and long-form content. This section defines our fonts, sizing, and usage rules so every headline and paragraph feels unmistakably on-brand." />
+  <BrandKitOverview :sections='[{"label": "BrandKit®", "title": "Typography", "tagline": "Typography is the brand’s voice in written form", "description": "Typography is the brand’s voice in written form—it shapes how confident, modern, and trustworthy we feel before anyone reads the message. Our type system is built for clarity and character: strong hierarchy, generous spacing, and a calm rhythm that works across product UI, marketing, and long-form content. This section defines our fonts, sizing, and usage rules so every headline and paragraph feels unmistakably on-brand."}]' />
   <BrandKitIndex title="Type Index" :columns="1" :groups="[
     { number: '1', title: 'Type', href: '#typeface', items: [
       { number: '1', title: 'Our Typeface', href: '#typeface' },
