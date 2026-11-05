@@ -37,21 +37,39 @@ const props = withDefaults(defineProps<{
   min-width: 0;
   margin: 1.25rem auto 2rem;
   padding: 0.45rem 0.6rem;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid rgb(255 255 255 / 34%);
   border-radius: 19px;
   color: var(--vp-c-text-1);
-  background: var(--vp-c-bg);
-  box-shadow: 0 8px 28px color-mix(in srgb, var(--vp-c-text-1) 14%, transparent), inset 0 1px 0 color-mix(in srgb, var(--vp-c-text-1) 5%, transparent);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 24%), rgb(255 255 255 / 4%) 48%, rgb(255 255 255 / 10%)),
+    color-mix(in srgb, var(--vp-c-bg) 38%, transparent);
+  box-shadow:
+    0 8px 28px rgb(0 0 0 / 30%),
+    inset 0 1px 0 rgb(255 255 255 / 42%),
+    inset 0 -1px 0 rgb(255 255 255 / 10%);
+  -webkit-backdrop-filter: blur(30px) saturate(1.35);
+  backdrop-filter: blur(30px) saturate(1.35);
 }
 
 .brand-kit-topbar--bordered {
-  border-color: var(--vp-c-divider);
+  border-color: rgb(255 255 255 / 42%);
+}
+
+:global(:root:not(.dark)) .brand-kit-topbar {
+  border-color: rgb(255 255 255 / 82%);
+  background: linear-gradient(145deg, rgb(255 255 255 / 94%), rgb(241 245 249 / 90%));
+  box-shadow:
+    0 12px 32px rgb(15 23 42 / 24%),
+    inset 0 1px 0 #fff,
+    inset 0 -1px 0 rgb(148 163 184 / 18%);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  backdrop-filter: blur(18px) saturate(1.1);
 }
 
 .brand-kit-topbar__brand {
   flex: none;
   padding: 0.6rem 0.85rem 0.6rem 0.5rem;
-  border-right: 1px solid var(--vp-c-divider);
+  border-right: 1px solid rgb(255 255 255 / 24%);
   color: inherit;
   font-size: 0.9rem;
   font-weight: 700;
@@ -89,7 +107,16 @@ const props = withDefaults(defineProps<{
 .brand-kit-topbar__links a:hover,
 .brand-kit-topbar__brand:hover {
   color: var(--vp-c-brand-1);
-  background: var(--vp-c-bg-soft);
+  background: rgb(255 255 255 / 16%);
+}
+
+:global(:root:not(.dark)) .brand-kit-topbar__brand {
+  border-right-color: rgb(15 23 42 / 12%);
+}
+
+:global(:root:not(.dark)) .brand-kit-topbar__links a:hover,
+:global(:root:not(.dark)) .brand-kit-topbar__brand:hover {
+  background: rgb(15 23 42 / 6%);
 }
 
 @media (max-width: 680px) {
