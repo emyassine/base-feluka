@@ -62,13 +62,16 @@ defineProps<{
 }
 
 .brand-kit-hero h1 {
+  min-width: 0;
   max-width: 100%;
   margin: 0;
-  font-size: clamp(3.25rem, 15cqw, 11rem);
+  font-size: clamp(1.5rem, 12cqw, 11rem);
   font-weight: 500;
   letter-spacing: -0.085em;
   line-height: 0.84;
-  overflow-wrap: anywhere;
+  word-break: normal;
+  overflow-wrap: normal;
+  text-wrap: balance;
 }
 
 .brand-kit-hero__bottom {
@@ -85,7 +88,6 @@ defineProps<{
   margin: 0;
   font-size: clamp(1rem, 2.7cqw, 2.2rem);
   line-height: 1.05;
-  white-space: nowrap;
 }
 
 .brand-kit-hero__bottom a {
