@@ -8,7 +8,7 @@
   >
     <a class="floating-topbar__identity" :href="props.homeHref" :style="props.titleStyle" :class="props.titleClass">
       <img v-if="props.logo" class="floating-topbar__logo" :src="props.logo" :alt="props.logoAlt || props.title" />
-      <span v-else v-html="props.title"></span>
+      <span v-html="props.title"></span>
     </a>
     <div class="floating-topbar__links">
       <a v-for="link in props.links" :key="link.href" :href="link.href" :style="link.style" :class="link.class" v-html="link.title"></a>
@@ -112,15 +112,16 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   display: inline-flex;
   flex: none;
   align-items: center;
+  gap: 0.45rem;
   min-width: 0;
   height: 32px;
   overflow: hidden;
   padding: 0 0.75rem 0 0.4rem;
   border-right: 1px solid rgb(255 255 255 / 24%);
   color: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
