@@ -54,9 +54,10 @@ icon: "@spmpst::icon::image"
     title="Logo Mark"
     description="The logo is constructed from a simple geometric grid, with consistent angles and curves that mirror our design system."
     :images="[
-      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Numerimondes logo mark' }
+      { src: '/images/brand-kit/logo/logo-mark.png', alt: 'Numerimondes logo mark', style: 'background: linear-gradient(180deg, rgb(0, 25, 255) 27%, rgb(171, 214, 202) 100%)' }
     ]"
     layout="stacked"
+    image-padding="10px"
   />
 
   <BrandKitLogoSection
@@ -65,9 +66,10 @@ icon: "@spmpst::icon::image"
     title="Construction"
     description="Clear spacing is built into the form, so the logo reads cleanly without relying on extra outlines or effects."
     :images="[
-      { src: '/images/brand-kit/logo/construction.png', alt: 'Logo construction grid and proportions' }
+      { src: '/images/brand-kit/logo/construction.png', alt: 'Logo construction grid and proportions', style: 'background: linear-gradient(180deg, rgb(0, 25, 255) 27%, rgb(171, 214, 202) 100%)' }
     ]"
     layout="side"
+    image-padding="10px"
   />
 
   <BrandKitLogoSection
@@ -76,9 +78,10 @@ icon: "@spmpst::icon::image"
     title="Spacing & Placement"
     description="Every element resolves to the same set of measurements, so the logo stays precise across print and digital. Always leave clear space around the mark equal to one icon height on every side."
     :images="[
-      { src: '/images/brand-kit/logo/spacing-placement.png', alt: 'Logo spacing and placement guidance' }
+      { src: '/images/brand-kit/logo/spacing-placement.png', alt: 'Logo spacing and placement guidance', style: 'background: linear-gradient(180deg, rgb(0, 25, 255) 27%, rgb(171, 214, 202) 100%)' }
     ]"
     layout="side"
+    image-padding="10px"
   />
 
   <BrandKitLogoSection
