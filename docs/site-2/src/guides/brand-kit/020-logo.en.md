@@ -27,14 +27,12 @@ icon: "@spmpst::icon::image"
       cta-href="#logo-index"
     />
   </div>
-
   <BrandKitOverview
     label="BrandKit®"
     title="The logo is our most recognizable shortcut, our most valuable asset."
     tagline="A mark that carries our personality, credibility, and intent at a glance."
     description="Use the logo consistently across every touchpoint, from a tiny app icon to a product label or billboard."
   />
-
   <BrandKitIndex
     title="Logo Index"
     :columns="1"
@@ -47,7 +45,6 @@ icon: "@spmpst::icon::image"
       ] }
     ]"
   />
-
   <BrandKitLogoSection
     id="logo-mark"
     eyebrow="Logo // Mark"
@@ -59,7 +56,6 @@ icon: "@spmpst::icon::image"
     layout="stacked"
     image-padding="10px"
   />
-
   <BrandKitLogoSection
     id="construction"
     eyebrow="Logo // Construction"
@@ -71,7 +67,6 @@ icon: "@spmpst::icon::image"
     layout="side"
     image-padding="10px"
   />
-
   <BrandKitLogoSection
     id="spacing-placement"
     eyebrow="Logo // Spacing"
@@ -83,7 +78,6 @@ icon: "@spmpst::icon::image"
     layout="side"
     image-padding="10px"
   />
-
   <BrandKitLogoSection
     id="logo-colors"
     eyebrow="Logo // Color"
@@ -99,6 +93,5 @@ icon: "@spmpst::icon::image"
     image-padding="10px"
     :show-border="false"
   />
-
   <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
 </BrandKitWrapper>
