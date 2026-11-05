@@ -6,10 +6,10 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <BrandKitTopBar
-    brand="Numerimondes' Brand Kit"
+  <FloatingTopBar home-href="/brand-kit/our-brand"
+    title="Numerimondes' Brand Kit"
     :show-border="false"
-    :groups="[
+    :links="[
       { title: 'Logo', href: '/brand-kit/our-brand/logo' },
       { title: 'Colors', href: '/brand-kit/our-brand/colors' },
       { title: 'Type', href: '/brand-kit/our-brand/type' },

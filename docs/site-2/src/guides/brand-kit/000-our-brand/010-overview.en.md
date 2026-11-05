@@ -6,10 +6,10 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <BrandKitTopBar
-    brand="Our Brand"
+  <FloatingTopBar home-href="/brand-kit/our-brand"
+    title="Our Brand"
     :show-border="false"
-    :groups="[
+    :links="[
       { title: 'Logo', href: '/brand-kit/our-brand/logo' },
       { title: 'Colors', href: '/brand-kit/our-brand/colors' },
       { title: 'Type', href: '/brand-kit/our-brand/type' },
