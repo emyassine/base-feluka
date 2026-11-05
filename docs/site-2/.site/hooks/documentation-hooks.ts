@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
 import './accent-text'
+import './inline-image-preview'
 
 export const menuTemplates = {
   'mega.cards': { layout: 'cards' },

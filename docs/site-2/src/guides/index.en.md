@@ -112,33 +112,15 @@ description: "Numerimondes helps organizations design, build, and operate depend
   section-title="<h1 style=''>Possibility<br><span class='silky-bbi+115' style='color:var(--vp-c-brand-1);'>becomes valuable</span><br>through execution.</h1><br><br>"
   :paragraphs="[
     {
-      before: `Every organization has opportunities waiting to be explored:`,
-      image: {
-        thumb: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80',
-        src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85',
-        alt: 'A team collaborating around a table',
-        caption: 'People working through opportunities together'
-      },
+      before: `Every organization has opportunities waiting to be explored: <span class='inline-image-preview' data-preview-caption='People working through opportunities together' data-preview-src='https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=640&h=420&q=85'><img src='https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=96&h=72&q=80' alt='A team collaborating around a table' loading='lazy'></span>`,
       after: `processes that could run better, information that could support <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>faster decisions</span>, new services worth developing, and ways to connect people, systems and markets.`
     },
     {
-      before: `We combine research, <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>commercial thinking</span> and engineering`,
-      image: {
-        thumb: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80',
-        src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85',
-        alt: 'A workspace set up for focused research and planning',
-        caption: 'Research and planning workspace'
-      },
+      before: `We combine research, <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>commercial thinking</span> and engineering <span class='inline-image-preview' data-preview-caption='Research and planning workspace' data-preview-src='https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&h=420&q=85'><img src='https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=96&h=72&q=80' alt='A workspace set up for focused research and planning' loading='lazy'></span>`,
       after: `to examine these possibilities, shape viable approaches and move selected projects into action.`
     },
     {
-      before: `Our contribution can begin with an idea, a question, an <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>operational challenge</span>`,
-      image: {
-        thumb: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80',
-        src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85',
-        alt: 'Colleagues discussing a project together',
-        caption: 'Project discussion and planning'
-      },
+      before: `Our contribution can begin with an idea, a question, an <span style='color:var(--vp-c-brand-1);text-decoration: underline !important;'class='silky-bbi'>operational challenge</span> <span class='inline-image-preview' data-preview-caption='Project discussion and planning' data-preview-src='https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&h=420&q=85'><img src='https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=96&h=72&q=80' alt='Colleagues discussing a project together' loading='lazy'></span>`,
       after: 'or a clear project brief.'
     }
   ]"

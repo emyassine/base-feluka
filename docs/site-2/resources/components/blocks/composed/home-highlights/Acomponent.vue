@@ -98,25 +98,16 @@ const introductionStyle = computed(() => {
 
           <span
             v-if="paragraph.image"
-            class="nm-about-illustration"
+            class="inline-image-preview"
             tabindex="0"
+            :data-preview-caption="paragraph.image.caption"
+            :data-preview-src="paragraph.image.src"
           >
             <img
               :src="paragraph.image.thumb || paragraph.image.src"
               :alt="paragraph.image.alt || ''"
               loading="lazy"
             />
-
-            <span class="nm-about-illustration-preview">
-              <img
-                :src="paragraph.image.src"
-                alt=""
-                loading="lazy"
-              />
-              <span v-if="paragraph.image.caption">
-                {{ paragraph.image.caption }}
-              </span>
-            </span>
           </span>
 
           <span v-html="paragraph.after"></span>
@@ -175,77 +166,6 @@ const introductionStyle = computed(() => {
 .nm-about-paragraphs p {
   margin: 0 0 20px;
   line-height: 1.55;
-}
-
-/* Inline illustrations */
-.nm-about-illustration {
-  position: relative;
-  display: inline-block;
-  width: 28px;
-  height: 22px;
-  margin-inline: 8px;
-  vertical-align: middle;
-  cursor: pointer;
-  outline-offset: 3px;
-}
-
-.nm-about-illustration > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 1px solid #d2ccc1;
-  border-radius: var(--radius-md);
-  transition: transform 160ms ease;
-}
-
-.nm-about-illustration:hover > img,
-.nm-about-illustration:focus-visible > img {
-  transform: scale(1.08);
-}
-
-.nm-about-illustration-preview {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 10px);
-  left: 50%;
-  width: 190px;
-  padding: 5px;
-  border-radius: var(--radius-md);
-  background: #fff;
-  box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translate(-50%, -5px) scale(0.97);
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease,
-    visibility 160ms ease;
-}
-
-.nm-about-illustration-preview img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1.5 / 1;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-}
-
-.nm-about-illustration-preview > span {
-  display: block;
-  padding: 7px 4px 3px;
-  color: #292929;
-  font-size: 11px;
-  line-height: 1.3;
-  text-align: center;
-}
-
-.nm-about-illustration:hover .nm-about-illustration-preview,
-.nm-about-illustration:focus-visible .nm-about-illustration-preview {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0) scale(1);
 }
 
 /* Responsive */
