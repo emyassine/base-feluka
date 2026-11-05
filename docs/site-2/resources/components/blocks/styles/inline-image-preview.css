@@ -1,8 +1,8 @@
 .inline-image-preview {
   position: relative;
   display: inline-block;
-  width: 1.8em;
-  height: 1.4em;
+  width: clamp(1.6rem, 1.6em, 3rem);
+  height: clamp(1.25rem, 1.25em, 2.25rem);
   margin-inline: 0.35em;
   vertical-align: middle;
   cursor: zoom-in;
