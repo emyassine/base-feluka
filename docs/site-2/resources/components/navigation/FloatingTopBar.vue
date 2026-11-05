@@ -80,7 +80,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   height: 42px;
   padding: 0.25rem 0.4rem;
   border: 1px solid rgb(255 255 255 / 34%);
-  border-radius: 19px;
+  border-radius: calc(var(--radius-lg) * 1.2);
   color: var(--vp-c-text-1);
   background:
     linear-gradient(145deg, rgb(255 255 255 / 24%), rgb(255 255 255 / 4%) 48%, rgb(255 255 255 / 10%)),
@@ -159,7 +159,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   align-items: center;
   height: 32px;
   padding: 0 0.65rem;
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   color: var(--vp-c-text-2);
   font-size: 0.72rem;
   font-weight: 600;
@@ -178,7 +178,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   height: 32px;
   padding: 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   color: var(--vp-c-text-1);
   background: transparent;
   cursor: pointer;
@@ -200,7 +200,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   max-width: calc(100vw - 2rem);
   padding: 0.35rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-lg);
   background: var(--vp-c-bg);
   box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
 }
@@ -214,7 +214,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   align-items: center;
   min-height: 40px;
   padding: 0 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   color: var(--vp-c-text-1);
   font-size: 0.875rem;
   line-height: 1.2;
