@@ -27,7 +27,38 @@ layout: home
 	    cta-href="#brand-kit-index"
 	  />
 	</div>
-  <BrandKitOverview :sections='[{"label": "Our Brand", "title": "The Numerimondes identity", "tagline": "Clarity in structure. Character in expression.", "description": "A geometric mark, restrained palette, deliberate typography, precise icons and atmospheric photography form one visual language. This guide shows how to use these elements across Numerimondes communications.", "showBorder": true}]' />
+	<BrandKitOverview
+  :sections='[
+    {
+      "label": "Our Brand",
+      "title": "Uncompromised Sovereignty & Engineering Precision",
+      "tagline": "Clarity in structure. Character in expression.",
+      "description": "We stand for uncompromised sovereignty, engineering precision, and complete ownership. In an era dominated by rented infrastructure and artificial barriers, our brand represents the refusal to settle for dependency. We exist to arm builders, creators, and organizations with high-yield systems that run without friction, third-party lock-in, or bloat. Where others sell temporary access, we build foundation-level autonomy.",
+      "showBorder": true
+    },
+    {
+      "label": "About Leverage",
+      "title": "The Core Architecture of Modern Power",
+      "tagline": "The ultimate force multiplier for human ambition.",
+      "description": "There are many levers that shape the modern world: technology, capital, workforce, media, network effects, and strategic expertise. Everyone should have access to them to solve problems, realize ideas, create wealth, and contribute to the progress of humanity. Beyond code and capital, true leverage lies in deterministic systems that automate execution, uncompromised domain mastery, and sovereign architecture that scales exponentially with zero marginal cost. When placed directly into the hands of ambitious minds, leverage turns intent into irreversible impact.",
+      "showBorder": true
+    },
+    {
+      "label": "Our Mission",
+      "title": "Democratizing Absolute Independence",
+      "tagline": "Levelling the playing field through sovereign technology.",
+      "description": "Our mission is to make leverage accessible to everyone. We bring absolute independence to every organization through society\'s greatest advances. We build software and execution frameworks that eliminate friction, reject external vendor lock-in, and bypass artificial barriers to growth—putting the ultimate tools of technological and operational sovereignty directly into the hands of builders, so every team remains the total master of their execution, guardian of their intellectual property, and sole owner of their destiny.",
+      "showBorder": true
+    },
+    {
+      "label": "Our Vision",
+      "title": "A Global Standard of Operational Autonomy",
+      "tagline": "A future governed by ambition, not infrastructure.",
+      "description": "We envision a world where no organization is held hostage by closed ecosystems or legacy intermediaries. We bring a future where every ambitious team commands its own tech stack, controls its data, and scales its economic output through true operational sovereignty. By democratizing the architecture of high-performance leverage, we aim to establish a new global standard of independence—where human potential is limited only by ambition, not by infrastructure.",
+      "showBorder": false
+    }
+  ]'
+	/>
   <BrandKitIndex
     title="Index"
     :columns="2"

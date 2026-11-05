@@ -113,7 +113,8 @@ const overviewSections = computed<OverviewSection[]>(() => {
 }
 
 .brand-kit-overview h2 {
-  margin: 1rem 0 0;
+  margin-top: 0;
+  padding-top: 0.7rem;
   color: var(--brand-kit-text);
   font-size: clamp(1.35rem, 2.3cqw, 2rem);
   line-height: 1.15;
