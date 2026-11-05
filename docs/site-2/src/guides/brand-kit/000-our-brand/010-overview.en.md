@@ -6,7 +6,7 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <FloatingTopBar home-href="/brand-kit/our-brand"
+  <FloatingTopBar logo="/media/favicon.png" logo-alt="Numerimondes" home-href="/brand-kit/our-brand"
     title="Our Brand"
     :show-border="false"
     :links="[
