@@ -18,7 +18,7 @@ layout: home
     <BrandKitHero eyebrow="Brandkit // Photo" title="Photos" tagline="Our photography is timeless but contemporary" cta-label="Explore Photo" cta-href="#brand-kit-index" background-image="/images/brand-kit/photos/main-photo.jpg" background-image-alt="BrandKit photographic direction"/>
   </div>
 
-  <BrandKitOverview :sections='[{"label": "BrandKit®", "title": "Photography", "tagline": "Photography is where the brand feels most human", "description": "Photography is where the brand feels most human—it’s how we show mood, texture, and real-world credibility. Our visual style is grounded and intentional: natural light, honest moments, and compositions that feel calm but confident. This section defines the look and principles behind our imagery so every photo—product, people, or place—still feels like it came from the same world."}]' />
+  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Photography' }, { tagline: 'Photography is where the brand feels most human', description: 'Photography is where the brand feels most human—it’s how we show mood, texture, and real-world credibility. Our visual style is grounded and intentional: natural light, honest moments, and compositions that feel calm but confident. This section defines the look and principles behind our imagery so every photo—product, people, or place—still feels like it came from the same world.' }] }]" />
   <BrandKitIndex title="Photo Index" :columns="1" :groups="[
     { number: '1', title: 'Photo', href: '#principles', items: [
       { number: '1', title: 'Principles', href: '#principles' }, { number: '2', title: 'Portraits', href: '#portraits' },

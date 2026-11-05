@@ -25,7 +25,7 @@ layout: home
     />
   </div>
 
-  <BrandKitOverview :sections='[{"label": "BrandKit®", "title": "Image Credits", "tagline": "Every image has a source and a story", "description": "Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable."}]' />
+  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Image Credits' }, { tagline: 'Every image has a source and a story', description: 'Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable.' }] }]" />
 
   <BrandKitIndex
     title="Attributions Index"

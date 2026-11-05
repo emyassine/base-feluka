@@ -28,7 +28,7 @@ layout: home
     />
   </div>
 
-  <BrandKitOverview :sections='[{"label": "BrandKit®", "title": "Color", "tagline": "Color is one of the fastest ways our brand is recognized", "description": "Color sets the mood before a single word is read. Our palette is designed to feel confident and modern: bold enough to stand out, restrained enough to stay timeless. This section defines our core colors, supporting tones, and usage rules so every screen, slide, and surface looks unmistakably like us."}]' />
+  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Color' }, { tagline: 'Color is one of the fastest ways our brand is recognized', description: 'Color sets the mood before a single word is read. Our palette is designed to feel confident and modern: bold enough to stand out, restrained enough to stay timeless. This section defines our core colors, supporting tones, and usage rules so every screen, slide, and surface looks unmistakably like us.' }] }]" />
 
   <BrandKitIndex
     title="Color Index"

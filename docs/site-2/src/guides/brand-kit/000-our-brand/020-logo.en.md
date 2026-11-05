@@ -27,7 +27,7 @@ layout: home
       cta-href="#logo-index"
     />
   </div>
-  <BrandKitOverview :sections='[{"label": "BrandKit®", "title": "The logo is our most recognizable shortcut, our most valuable asset.", "tagline": "A mark that carries our personality, credibility, and intent at a glance.", "description": "Use the logo consistently across every touchpoint, from a tiny app icon to a product label or billboard."}]' />
+  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'The logo is our most recognizable shortcut, our most valuable asset.' }, { tagline: 'A mark that carries our personality, credibility, and intent at a glance.', description: 'Use the logo consistently across every touchpoint, from a tiny app icon to a product label or billboard.' }] }]" />
   <BrandKitIndex
     title="Logo Index"
     :columns="1"

@@ -29,45 +29,80 @@ layout: home
 	</div>
 	<BrandKitOverview
   :sections="[
-	  {
-	    label: 'Our Brand',
-	    title: '<span class=\'silky-bbi\'>Good Advice<br>is</span> 💎 <span class=\'silky-bbi\'>Priceless</span>',
-	    tagline: '<div style=\'max-width:630px;\'>We are a management consulting and strategic advisory firm built to move businesses and people forward. <span class=\'silky-bbi\'>We guide our partners</span> to gain as much control as possible, optimize performance, and create measurable, enduring wealth across operations, technology, and new ventures.</div>',
-	    description: '— El Moumen Yassine',
-	    showBorder: true
-	  },
-	  {
-	    label: 'Our Brand',
-	    title: '<span class=\'silky-bbi\'>Numerimondes</span>',
-	    tagline: 'Engineering performance, strategy, and lasting value.',
-	    description: 'We are a management consulting and strategic advisory firm built to move businesses and people forward.<br><br>Across operations, technology, and new ventures, we guide organizations to gain absolute control, optimize performance, and create measurable, enduring wealth.',
-	    showBorder: true
-	  },
     {
-      label: 'About Leverage',
-      title: '<span class=\'silky-bbi\'>Wealth Creation</span>',
-      tagline: 'Capital, workforce, media, and technology in your hands.',
-      description: 'Technology, capital, workforce, and media are the most powerful levers of our time. Everyone should have access to them to solve problems, realize ideas, and build wealth.<br><br>True leverage transforms strategic intent into exponential growth, giving organizations the tools to scale beyond ordinary limits.',
-      showBorder: true
+      showBorder: true,
+      columns: [
+        {
+          label: 'Our Vision',
+          title: '<span class=\'silky-bbi\'>Our ultimate goal is to position Africa as a global center of wealth creation, leveraging technology, capital, workforce, and media to empower organizations across the continent.</span>',
+        },
+      ],
     },
     {
-      label: 'Our Mission',
-      title: '<span class=\'silky-bbi\'>Empowering People and Society</span>',
-      tagline: 'Going beyond what you think is possible.',
-      description: 'Our mission is to empower people and society to go beyond what they think possible.<br><br>We combine rigorous research, commercial thinking, and operational execution to turn complex challenges into clear paths of success, ensuring every organization takes absolute ownership of its growth.',
-      showBorder: true
+      showBorder: true,
+      columns: [
+        {
+          label: 'Our Brand',
+          title: '<span class=\'silky-bbi\'>Good Advice<br>is</span> 💎 <span class=\'silky-bbi\'>Priceless</span>',
+        },
+        {
+          tagline: '<div style=\'max-width:630px;\'>We are a management consulting and strategic advisory firm built to move businesses and people forward. <span class=\'silky-bbi\'>We guide our partners</span> to gain as much control as possible, optimize performance, and create measurable, enduring wealth across operations, technology, and new ventures.</div>',
+          description: '— El Moumen Yassine',
+        },
+      ],
     },
     {
-      label: 'Our Vision',
-      title: '<span class=\'silky-bbi\'>Making Africa a Hub of Global Wealth</span>'
+      showBorder: true,
+      columns: [
+        {
+          label: 'Our Brand',
+          title: '<span class=\'silky-bbi\'>Numerimondes</span>',
+        },
+        {
+          tagline: 'Engineering performance, strategy, and lasting value.',
+          description: 'We are a management consulting and strategic advisory firm built to move businesses and people forward.<br><br>Across operations, technology, and new ventures, we guide organizations to gain absolute control, optimize performance, and create measurable, enduring wealth.',
+        },
+      ],
     },
     {
-      label: 'Opportunities',
-      title: '<span class=\'silky-bbi\'>Pathways for Growth</span>',
-      tagline: 'Clear roles, written terms, direct execution.',
-      description: 'We bring students, companies, investors, and associates together around concrete opportunities with clear rules and professional rigor.<br><br>Whether you are seeking strategic guidance, an investment partnership, or an operational pathway, we structure execution from the ground up.',
-      showBorder: false
-    }
+      showBorder: true,
+      columns: [
+        {
+          label: 'About Leverage',
+          title: '<span class=\'silky-bbi\'>Wealth Creation</span>',
+        },
+        {
+          tagline: 'Capital, workforce, media, and technology in your hands.',
+          description: 'Technology, capital, workforce, and media are the most powerful levers of our time. Everyone should have access to them to solve problems, realize ideas, and build wealth.<br><br>True leverage transforms strategic intent into exponential growth, giving organizations the tools to scale beyond ordinary limits.',
+        },
+      ],
+    },
+    {
+      showBorder: true,
+      columns: [
+        {
+          label: 'Our Mission',
+          title: '<span class=\'silky-bbi\'>Empowering People and Society</span>',
+        },
+        {
+          tagline: 'Going beyond what you think is possible.',
+          description: 'Our mission is to empower people and society to go beyond what they think possible.<br><br>We combine rigorous research, commercial thinking, and operational execution to turn complex challenges into clear paths of success, ensuring every organization takes absolute ownership of its growth.',
+        },
+      ],
+    },
+    {
+      showBorder: false,
+      columns: [
+        {
+          label: 'Opportunities',
+          title: '<span class=\'silky-bbi\'>Pathways for Growth</span>',
+        },
+        {
+          tagline: 'Clear roles, written terms, direct execution.',
+          description: 'We bring students, companies, investors, and associates together around concrete opportunities with clear rules and professional rigor.<br><br>Whether you are seeking strategic guidance, an investment partnership, or an operational pathway, we structure execution from the ground up.',
+        },
+      ],
+    },
   ]"
 	/>
   <BrandKitIndex
