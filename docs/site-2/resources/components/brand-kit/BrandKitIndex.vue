@@ -1,12 +1,12 @@
 <template>
   <section id="brand-kit-index" class="brand-kit-index" aria-labelledby="brand-kit-index-title">
     <header class="brand-kit-index__header">
-      <h2 id="brand-kit-index-title">{{ title }}</h2>
+      <h2 id="brand-kit-index-title">{{ props.title }}</h2>
       <span>({{ itemCount }})</span>
     </header>
 
-    <div class="brand-kit-index__groups">
-      <section v-for="group in groups" :key="group.title" class="brand-kit-index__group">
+    <div :class="`brand-kit-index__groups brand-kit-index__groups--${props.columns}`">
+      <section v-for="group in props.groups" :key="group.title" class="brand-kit-index__group">
         <header class="brand-kit-index__group-header">
           <span>{{ group.number }}</span>
           <a :href="group.href">{{ group.title }}</a>
@@ -37,10 +37,13 @@ interface IndexGroup {
   items: IndexItem[]
 }
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   groups: IndexGroup[]
-}>()
+  columns?: 1 | 2 | 3 | 4
+}>(), {
+  columns: 2,
+})
 
 const itemCount = props.groups.reduce((total, group) => total + group.items.length, 0)
 </script>
@@ -75,8 +78,23 @@ const itemCount = props.groups.reduce((total, group) => total + group.items.leng
 
 .brand-kit-index__groups {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: clamp(1.5rem, 5cqw, 5rem);
+}
+
+.brand-kit-index__groups--1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.brand-kit-index__groups--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.brand-kit-index__groups--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.brand-kit-index__groups--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .brand-kit-index__group {
@@ -124,8 +142,17 @@ const itemCount = props.groups.reduce((total, group) => total + group.items.leng
 }
 
 @container (max-width: 680px) {
-  .brand-kit-index__groups {
+  .brand-kit-index__groups--2,
+  .brand-kit-index__groups--3,
+  .brand-kit-index__groups--4 {
     grid-template-columns: 1fr;
+  }
+}
+
+@container (min-width: 681px) and (max-width: 960px) {
+  .brand-kit-index__groups--3,
+  .brand-kit-index__groups--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 </style>

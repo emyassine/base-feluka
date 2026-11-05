@@ -6,25 +6,28 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <BrandKitTopBar
-    brand="Numerimondes' Brand Kit"
-    :show-border="false"
-    :groups="[
-      { title: 'Logo', href: '/brand-kit/logo' },
-      { title: 'Colors', href: '/brand-kit/colors' },
-      { title: 'Type', href: '/brand-kit/type' },
-      { title: 'Photos', href: '/brand-kit/photos' },
-      { title: 'Icons', href: '/brand-kit/icons' }
-    ]"
-  />
-
-  <BrandKitHero
-    eyebrow="By El Moumen Yassine"
-    title="Numerimondes"
-    tagline="Our brand identity system"
-    cta-label="Explore"
-    cta-href="#brand-kit-index"
-  />
+	<div style="display:none;">
+	  <BrandKitTopBar
+	    brand="Numerimondes' Brand Kit"
+	    :show-border="false"
+	    :groups="[
+	      { title: 'Logo', href: '/brand-kit/logo' },
+	      { title: 'Colors', href: '/brand-kit/colors' },
+	      { title: 'Type', href: '/brand-kit/type' },
+	      { title: 'Photos', href: '/brand-kit/photos' },
+	      { title: 'Icons', href: '/brand-kit/icons' }
+	    ]"
+	  />
+	</div>
+	<div style="margin-top:2rem;">
+	  <BrandKitHero
+	    eyebrow="By El Moumen Yassine"
+	    title="<span style='font-family:DM Sans;'>Numerimondes</span>"
+	    tagline="Our brand identity system"
+	    cta-label="Explore"
+	    cta-href="#brand-kit-index"
+	  />
+</div>
 
   <BrandKitOverview
     label="Overview"
@@ -35,6 +38,7 @@ layout: home
 
   <BrandKitIndex
     title="Index"
+    :columns="2"
     :groups="[
       { number: '1', title: 'Logo', href: '/brand-kit/logo', items: [
         { number: '1.1', title: 'Logo Mark' },
