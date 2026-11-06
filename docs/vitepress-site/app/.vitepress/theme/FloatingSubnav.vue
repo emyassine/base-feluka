@@ -62,7 +62,7 @@ function isCurrentPage(href: string): boolean {
 }
 </script>
 
-<style scoped>
+<style>
 .floating-subnav {
   position: sticky;
   z-index: 20;
@@ -140,11 +140,11 @@ function isCurrentPage(href: string): boolean {
   display: none !important;
 }
 
-:global(.dark) .floating-subnav__logo-light {
+html.dark .floating-subnav__logo-light {
   display: none !important;
 }
 
-:global(.dark) .floating-subnav__logo-dark {
+html.dark .floating-subnav__logo-dark {
   display: block !important;
 }
 
