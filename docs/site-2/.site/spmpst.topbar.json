@@ -42,13 +42,17 @@
           ]
         },
         {
-          "label": { "en": "Projects" },
+          "label": {
+            "en": "Projects"
+          },
           "showLabel": false,
           "entries": [
             {
               "type": "collection",
               "id": "projects",
-              "label": { "en": "Projects" },
+              "label": {
+                "en": "Projects"
+              },
               "icon": "rocket",
               "badge": "count"
             }
@@ -63,7 +67,9 @@
             {
               "type": "collection",
               "id": "capabilities",
-              "label": { "en": "All capabilities" },
+              "label": {
+                "en": "All capabilities"
+              },
               "badge": "count"
             },
             {
@@ -186,26 +192,34 @@
       },
       "groups": [
         {
-          "label": { "en": "Legal" },
+          "label": {
+            "en": "Legal"
+          },
           "showLabel": false,
           "entries": [
             {
               "type": "collection",
               "id": "legal",
-              "label": { "en": "Legal notices" },
+              "label": {
+                "en": "Legal notices"
+              },
               "badge": "count",
               "icon": "section"
             }
           ]
         },
         {
-          "label": { "en": "Articles" },
+          "label": {
+            "en": "Articles"
+          },
           "showLabel": false,
           "entries": [
             {
               "type": "collection",
               "id": "articles",
-              "label": { "en": "Articles" },
+              "label": {
+                "en": "Articles"
+              },
               "badge": "count",
               "icon": "newspaper"
             }
@@ -217,17 +231,35 @@
   "actions": [
     {
       "label": {
-        "en": "Account access"
+        "en": "Contact & Access",
+        "fr": "Contact & Accès"
       },
-      "link": "/account/",
       "color": "primary",
       "size": "sm",
+      "icon": "users-round",
       "mobile": {
         "color": "primary",
         "icon": "users-round",
-        "tooltip": "Account access"
+        "tooltip": "Contact & Access"
       },
-      "icon": "users-round"
+      "items": [
+        {
+          "label": {
+            "en": "Account access",
+            "fr": "Accès compte"
+          },
+          "link": "/account/",
+          "icon": "users-round"
+        },
+        {
+          "label": {
+            "en": "Contact",
+            "fr": "Contact"
+          },
+          "link": "/company/contact",
+          "icon": "mail"
+        }
+      ]
     }
   ]
 }

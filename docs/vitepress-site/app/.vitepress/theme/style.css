@@ -198,8 +198,11 @@ html.dark .docs-topbar-badge[data-color="danger"] { --docs-badge-bg: #450a0a; --
   }
 }
 
+@media (max-width: 1099px) {
+  .VPNavBar .topbar-actions { display: none !important; }
+}
+
 @media (min-width: 768px) and (max-width: 1099px) {
-  .VPNavBar .topbar-actions .topbar-action-button { display: none; }
   .VPNavBarExtra .topbar-action-menu { display: block; }
 }
 

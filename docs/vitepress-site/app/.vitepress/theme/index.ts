@@ -830,7 +830,11 @@ const MermaidLayout = {
           : (articleLayout() || homeSubheaderLayout())
           ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: renderSubheaderActions })
           : renderedSubnav,
-        h(TopbarActions),
+        h(TopbarActions, { mode: 'navbar' }),
+      ]),
+      'nav-screen-content-before': () => h(Fragment, null, [
+        layoutSlots['nav-screen-content-before']?.(),
+        h(TopbarActions, { mode: 'screen' }),
       ]),
       'home-hero-before': () => h(Fragment, null, [
         layoutSlots['home-hero-before']?.(),

@@ -374,7 +374,7 @@ flowchart TD
 ```
 :::
 ::::
-<FeluqaButton tag="a" href="/company/about-us/how-we-work"
+<FeluqaButton tag="a" href="/company/how-we-work"
 	label="How we work"/>
 
 

@@ -403,9 +403,23 @@ if (topbar.actions !== undefined) {
   for (const [index, action] of topbar.actions.entries()) {
     const location = `topbar.actions[${index}]`
     if (!action || typeof action !== 'object' || Array.isArray(action)) throw new Error(`${location} must be an object`)
-    if (Object.keys(action).some((key) => !['label', 'link', 'color', 'size', 'outlined', 'external', 'icon', 'mobile'].includes(key))) throw new Error(`${location} contains an unsupported property`)
+    if (Object.keys(action).some((key) => !['label', 'link', 'color', 'size', 'outlined', 'external', 'icon', 'mobile', 'items'].includes(key))) throw new Error(`${location} contains an unsupported property`)
     if (typeof action.label !== 'string' && (!action.label || typeof action.label !== 'object' || Array.isArray(action.label))) throw new Error(`${location}.label must be text or translated text`)
-    if (!validLocalizedLink(action.link)) throw new Error(`${location}.link must be a non-empty link or localized links`)
+    if (action.items !== undefined) {
+      if (!Array.isArray(action.items) || !action.items.length) throw new Error(`${location}.items must be a non-empty array`)
+      for (const [subIndex, item] of action.items.entries()) {
+        const itemLocation = `${location}.items[${subIndex}]`
+        if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${itemLocation} must be an object`)
+        if (Object.keys(item).some((key) => !['label', 'link', 'icon', 'external', 'target', 'rel'].includes(key))) throw new Error(`${itemLocation} contains an unsupported property`)
+        if (typeof item.label !== 'string' && (!item.label || typeof item.label !== 'object' || Array.isArray(item.label))) throw new Error(`${itemLocation}.label must be text or translated text`)
+        if (!validLocalizedLink(item.link)) throw new Error(`${itemLocation}.link must be a non-empty link or localized links`)
+        if (item.icon !== undefined && (typeof item.icon !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/.test(item.icon))) throw new Error(`${itemLocation}.icon must be an icon name`)
+        if (item.external !== undefined && typeof item.external !== 'boolean') throw new Error(`${itemLocation}.external must be a boolean`)
+      }
+    } else if (!validLocalizedLink(action.link)) {
+      throw new Error(`${location}.link must be a non-empty link or localized links, or items must be provided`)
+    }
+    if (action.link !== undefined && !validLocalizedLink(action.link)) throw new Error(`${location}.link must be a non-empty link or localized links`)
     if (action.color !== undefined && !['primary', 'gray', 'info', 'success', 'warning', 'danger', 'dark', 'secondary'].includes(action.color)) throw new Error(`${location}.color must be a supported FeluqaButton color`)
     if (action.size !== undefined && !['xs', 'sm', 'md', 'lg', 'xl'].includes(action.size)) throw new Error(`${location}.size must be a supported FeluqaButton size`)
     if (action.outlined !== undefined && typeof action.outlined !== 'boolean') throw new Error(`${location}.outlined must be a boolean`)
@@ -704,6 +718,14 @@ for (const [index, action] of (topbar.actions ?? []).entries()) {
   if (action.mobile?.icon) {
     const iconPath = resolveIcon(action.mobile.icon, `topbar.actions[${index}].mobile.icon`)
     action.mobile.icon = `/${await copyIcon(iconPath)}`
+  }
+  if (action.items) {
+    for (const [subIndex, item] of action.items.entries()) {
+      if (item.icon) {
+        const iconPath = resolveIcon(item.icon, `topbar.actions[${index}].items[${subIndex}].icon`)
+        item.icon = `/${await copyIcon(iconPath)}`
+      }
+    }
   }
 }
 
