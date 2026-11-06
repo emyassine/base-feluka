@@ -7,6 +7,7 @@ lang: en
 status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
+layout: home
 ---
 
 <NmCompanyHero
