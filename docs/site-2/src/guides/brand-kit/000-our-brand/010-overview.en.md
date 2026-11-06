@@ -23,7 +23,7 @@ layout: home
 	    title="<span>Numerimondes</span>"
 	    title-style=""
 	    tagline="<span class='silky-bbi'>Our brand identity system</span>"
-	    cta-label="Explore"
+	    cta-label="Explore Our Brand Identity System"
 	    cta-href="#brand-kit-index"
 	  />
 	</div>
@@ -32,12 +32,12 @@ layout: home
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
 	    { text: "empower", color: "teal" },
-	    { text: "anyone", color: "amber", image: { src: "/images/brand-kit/photos/main-photo.jpg", alt: "Portrait of a person against a warm background", caption: "Anyone: people with ideas and ambition" } },
+	    { text: "anyone", color: "amber", image: { src: "/images/brand-kit/photos/main-photo.jpg", alt: "Portrait of a person against a warm background", caption: "Opportunity should be open to people with ideas and ambition, so they can take part in creating value." } },
 	    { text: "anywhere", color: "violet" },
-	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
-	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Capital: financial performance and investment" } },
-	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Workforce: people building together" } },
-	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "Media: video editing and production" } }
+	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Practical tools help turn ideas into solutions people can use." } },
+	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Funding gives promising ideas the resources to grow into lasting value." } },
+	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Different skills and experience turn plans into work that can be delivered and sustained." } },
+	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "Clear storytelling helps ideas reach people, build trust, and open new opportunities." } }
 	  ]'
 	/>
 	<BrandKitOverview
