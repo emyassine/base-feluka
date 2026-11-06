@@ -3,6 +3,7 @@ type VueBackedElement = HTMLElement & {
 }
 
 type TooltipTrigger = HTMLElement & { __xTooltipDescription?: string }
+type TooltipContent = string | { image?: string; text?: string }
 
 const tooltipId = 'docs-x-tooltip'
 const placementNames = ['top', 'right', 'bottom', 'left'] as const
@@ -23,27 +24,63 @@ function tooltipAttribute(element: HTMLElement): { name: string; value: string; 
   return undefined
 }
 
-function resolveTooltipText(element: TooltipTrigger): string {
+function resolveExpressionValue(element: TooltipTrigger, expression: string): unknown {
+  const value = expression.trim()
+  const quoted = value.match(/^(?:'((?:\\.|[^'])*)'|"((?:\\.|[^"])*)")$/)
+  if (quoted) return (quoted[1] ?? quoted[2] ?? '').replace(/\\([\\'"nrt])/g, (_match, escaped: string) => {
+    if (escaped === 'n') return '\n'
+    if (escaped === 'r') return '\r'
+    if (escaped === 't') return '\t'
+    return escaped
+  })
+
+  if (!/^[\w$]+(?:\.[\w$]+)*$/.test(value)) return undefined
+
+  let resolved: unknown = (element as VueBackedElement).__vueParentComponent?.proxy
+  for (const key of value.split('.')) {
+    if (!resolved || (typeof resolved !== 'object' && typeof resolved !== 'function') || !(key in resolved)) {
+      return undefined
+    }
+    resolved = (resolved as Record<string, unknown>)[key]
+  }
+  return resolved
+}
+
+function resolveTooltipContent(element: TooltipTrigger): TooltipContent | undefined {
   const attribute = tooltipAttribute(element)
-  if (!attribute) return ''
+  if (!attribute) return undefined
 
   const expression = attribute.value.trim()
   const quoted = expression.match(/^(?:'([\s\S]*)'|"([\s\S]*)")$/)
   if (quoted) return quoted[1] ?? quoted[2] ?? ''
 
-  if (/^[\w$]+(?:\.[\w$]+)*$/.test(expression)) {
-    let value: unknown = (element as VueBackedElement).__vueParentComponent?.proxy
-    for (const key of expression.split('.')) {
-      if (!value || (typeof value !== 'object' && typeof value !== 'function') || !(key in value)) {
-        value = undefined
-        break
+  try {
+    const parsed: unknown = JSON.parse(expression)
+    if (typeof parsed === 'string') return parsed
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      const content = parsed as Record<string, unknown>
+      if ((content.image === undefined || typeof content.image === 'string') && (content.text === undefined || typeof content.text === 'string')) {
+        return { image: content.image as string | undefined, text: content.text as string | undefined }
       }
-      value = (value as Record<string, unknown>)[key]
     }
-    if (value !== undefined && value !== null) return String(value)
+  } catch {
+    // Continue with the simple Vue-style object expression parser below.
   }
 
-  return expression
+  const objectExpression = expression.match(/^\{([\s\S]*)\}$/)
+  if (objectExpression) {
+    const values: Record<string, unknown> = {}
+    const propertyExpression = /(?:^|,)\s*(image|text)\s*:\s*("(?:\\.|[^"])*"|'(?:\\.|[^'])*'|[\w$]+(?:\.[\w$]+)*)(?=\s*(?:,|$))/g
+    for (const property of objectExpression[1].matchAll(propertyExpression)) {
+      values[property[1]] = resolveExpressionValue(element, property[2])
+    }
+    if ((values.image === undefined || typeof values.image === 'string') && (values.text === undefined || typeof values.text === 'string')) {
+      return { image: values.image as string | undefined, text: values.text as string | undefined }
+    }
+  }
+
+  const value = resolveExpressionValue(element, expression)
+  return value === undefined || value === null ? expression : String(value)
 }
 
 function findTrigger(target: EventTarget | null): TooltipTrigger | undefined {
@@ -117,13 +154,36 @@ function updateTooltip(): void {
     hideTooltip()
     return
   }
-  const text = resolveTooltipText(trigger)
+  const content = resolveTooltipContent(trigger)
   const tooltip = tooltipElement()
-  if (!text) {
+  if (typeof content === 'string' ? !content : !content || (!content.image && !content.text)) {
     hideTooltip()
     return
   }
-  tooltip.textContent = text
+  const signature = typeof content === 'string' ? `text:${content}` : `media:${content.image ?? ''}\n${content.text ?? ''}`
+  if (tooltip.dataset.content !== signature) {
+    tooltip.replaceChildren()
+    tooltip.classList.toggle('docs-x-tooltip--media', typeof content !== 'string')
+    if (typeof content === 'string') {
+      tooltip.textContent = content
+    } else {
+      if (content.image) {
+        const image = document.createElement('img')
+        image.className = 'docs-x-tooltip__image'
+        image.src = content.image
+        image.alt = content.text ?? ''
+        image.loading = 'lazy'
+        tooltip.append(image)
+      }
+      if (content.text) {
+        const text = document.createElement('div')
+        text.className = 'docs-x-tooltip__text'
+        text.textContent = content.text
+        tooltip.append(text)
+      }
+    }
+    tooltip.dataset.content = signature
+  }
   tooltip.dataset.state = 'visible'
   const describedBy = new Set((trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean))
   describedBy.add(tooltipId)

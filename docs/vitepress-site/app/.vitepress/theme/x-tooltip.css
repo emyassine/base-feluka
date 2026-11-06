@@ -21,6 +21,28 @@
   transform: translateY(0);
 }
 
+.docs-x-tooltip--media {
+  display: grid;
+  gap: .45rem;
+  padding: .55rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.docs-x-tooltip__image {
+  display: block;
+  width: 100%;
+  max-height: 12rem;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.docs-x-tooltip__text {
+  padding: .25rem .1rem .1rem;
+  font: 400 .75rem/1.4 var(--vp-font-family-base);
+  text-align: left;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .docs-x-tooltip { transition: none; }
 }
