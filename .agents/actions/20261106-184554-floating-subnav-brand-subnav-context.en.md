@@ -31,3 +31,4 @@ Implementation plan: `.agents/plans/20261106-175601-floating-subnav-implementati
 
 ## Status
 Company floating subnav now matches the plan; brand subcontext floating subnav added for `/company/brand/`.
+Final steering (2026-11-06): on subcontext pages, the first element of the floating subnav now points to the parent context (identity + home href), e.g. `/company/brand/*` -> `Company` -> `/company/` (FR: `/fr/company/`), followed by the subcontext links (Logo, Colors, ...).

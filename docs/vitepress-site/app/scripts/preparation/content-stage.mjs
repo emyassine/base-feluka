@@ -557,6 +557,15 @@ const buildSubheaderLinks = (contextPath, language, firstPage, isTopLevel) => {
   return allGuidePages
 }
 
+const contextFirstPageRoute = (contextPath, language) => {
+  const prefix = contextPath.endsWith('/') ? contextPath : `${contextPath}/`
+  const first = localizedPages.find((page) => {
+    const sourceRelative = relative(sourceRoot, page.record?.from ?? page.from ?? '').split(sep).join('/')
+    return (page.guide?.path ?? '') === contextPath && page.language === language && sourceRelative.startsWith(prefix)
+  })
+  return first?.route?.replace(/\/+$/, '') || '/'
+}
+
 for (const guide of config.subguides) {
   const contextPaths = [guide.path]
   for (const entry of await readdir(resolve(sourceRoot, guide.path), { withFileTypes: true })) {
@@ -593,11 +602,26 @@ for (const guide of config.subguides) {
       const links = buildSubheaderLinks(contextPath, language, firstPage, contextPath === guide.path)
       const contextKey = generatedGuideKeys.get(contextPath) ?? generatedGuideKeys.get(guide.path)
       const logo = generatedGuideColors[contextKey] ?? generatedGuideColors.root ?? {}
+      const parentContextPath = contextPath.includes('/')
+        ? contextPath.split('/').slice(0, -1).join('/')
+        : null
+      const parentGuide = parentContextPath
+        ? config.subguides.find((candidate) => candidate.path === parentContextPath) ?? null
+        : null
+      const entryTitle = parentGuide
+        ? parentGuide?.labels?.[language] || parentGuide?.label || parentGuide?.labels?.[defaultLanguage] || parentGuide?.path
+        : contextGuide?.labels?.[language] || contextGuide?.label || contextGuide?.labels?.[defaultLanguage] || contextGuide?.path || contextPath
+      const entryHomeHref = parentGuide
+        ? localizedGuideHome(parentGuide, language)
+        : homeHref
+      const entryHomePageHref = parentGuide
+        ? contextFirstPageRoute(parentContextPath, language)
+        : firstPage.route
       for (const page of contextPages) {
         generatedFloatingSubnav[page.route.replace(/\/+$/, '') || '/'] = {
-          title: contextGuide?.labels?.[language] || contextGuide?.label || contextGuide?.labels?.[defaultLanguage] || contextGuide?.path || contextPath,
-          homeHref,
-          homePageHref: firstPage.route,
+          title: entryTitle,
+          homeHref: entryHomeHref,
+          homePageHref: entryHomePageHref,
           links,
           logoLight: logo.logoLight,
           logoDark: logo.logoDark,
