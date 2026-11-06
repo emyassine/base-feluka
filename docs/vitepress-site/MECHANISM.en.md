@@ -192,11 +192,13 @@ The package manifest and lockfile in this host define these versions. `serve.sh 
 ```text
 @spmpst::icon::<name>
 @spmpst::icon::<family>/<name>
+@spmpst::icon::<name>:inline
+@spmpst::icon::<family>/<name>:inline
 @spmpst::flag::<code>
 @spmpst::media::<name>
 ```
 
-Names are logical IDs, not family paths or generated filenames. The parser validates the identifier, rejects empty, `.` and `..` path segments, and normalizes Unicode to NFC. `resolveResourceReferences(value, resolver)` walks arrays and objects and sends each parsed reference to the VitePress adapter.
+Names are logical IDs, not family paths or generated filenames. The parser validates the identifier, rejects empty, `.` and `..` path segments, and normalizes Unicode to NFC. `resolveResourceReferences(value, resolver)` walks arrays and objects and sends each parsed reference to the VitePress adapter. The `:inline` suffix is a Markdown transformation mode, not a whole-string model resource reference.
 
 ### Tool catalogues and site media
 
@@ -208,9 +210,10 @@ Site-owned images and SVGs live under that site's `public/media/` directory and 
 ### Where resolution happens
 
 - Site model configuration is recursively resolved when `toVitepressRuntime()` converts the shared model. Topbar icon paths are converted to embedded SVG data URLs; social-link icon paths become inline SVGs.
+- In Markdown-authored HTML, append `:inline` to an icon reference to emit the catalogue SVG markup directly. This lets the icon inherit `currentColor` from its parent; ordinary icon references still resolve to a public asset URL.
 - Markdown page `icon` frontmatter and `spmpst.sidebar.json` icons are resolved through the tool catalogue or selected-site media root and copied into generated assets. Missing page icons still use the configured fallback with a warning; a missing fallback is fatal.
 - If language flags are enabled, source preparation creates `@spmpst::flag::<locale>` for each configured language and copies it to `generated-guides/public/flags/language/<locale>.svg`.
-- Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The parser does not rewrite arbitrary `@spmpst` text inside Markdown prose. Sites do not use `.site/spmpst.resources.json` and MUST NOT point at sibling tool directories.
+- Local Markdown image links and frontmatter `src:` values resolve separately, relative to their source page. The Markdown transformer only rewrites recognized icon references; unrelated `@spmpst` text stays untouched. Sites do not use `.site/spmpst.resources.json` and MUST NOT point at sibling tool directories.
 
 `copyAsset()` confines source files to allowed roots, names them by SHA-256 plus extension under `__docs-assets/`, and writes only when bytes change. This content hash is an internal output detail; authors use readable logical names.
 

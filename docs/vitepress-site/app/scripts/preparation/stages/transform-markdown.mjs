@@ -34,6 +34,22 @@ function colorizeFlowchart(source) {
   const assignments = nodeIds.map((node, index) => `class ${node} docsPalette${index % flowchartPalette.length};`)
   return `${source}\n${definitions.join('\n')}\n${assignments.join('\n')}`
 }
+
+async function inlineIconSvg(sourceFile) {
+  const source = (await readFile(sourceFile, 'utf8'))
+    .replace(/^\uFEFF?\s*<\?xml[\s\S]*?\?>\s*/i, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .trim()
+  if (!/^<svg\b/i.test(source) || !/<\/svg>\s*$/i.test(source)) {
+    throw new Error(`SPMPST inline icon is not a complete SVG: ${sourceFile}`)
+  }
+  return source.replace(/<svg\b([^>]*)>/i, (_match, attributes) => {
+    const safeAttributes = attributes
+      .replace(/\s+(?:width|height|style|aria-hidden|focusable)=(?:"[^"]*"|'[^']*')/gi, '')
+      .replace(/="([^"]*)"/g, "='$1'")
+    return `<svg${safeAttributes} width='1em' height='1em' style='display:inline-block;vertical-align:-0.125em' aria-hidden='true' focusable='false'>`
+  }).replace(/="([^"]*)"/g, "='$1'").replace(/>\s+</g, '><')
+}
 async function createDarkVariant(lightPath, darkPath) {
   const source = await readFile(lightPath, 'utf8')
   if (!source.includes('</svg>')) throw new Error(`Mermaid output is not a valid SVG: ${lightPath}`)
@@ -47,13 +63,15 @@ await Promise.all(records.map(async (record) => {
   const sourceFrontmatter = markdown.match(/^---\s*\r?\n[\s\S]*?\r?\n---/)
   const frontmatterText = sourceFrontmatter?.[0] ?? ''
   let markdownBody = frontmatterText ? markdown.slice(frontmatterText.length) : markdown
-  const iconReferences = [...new Set([...markdownBody.matchAll(/@spmpst::icon::[\p{L}\p{N}][\p{L}\p{N}._/-]*/gu)]
+  const iconReferences = [...new Set([...markdownBody.matchAll(/@spmpst::icon::[\p{L}\p{N}][\p{L}\p{N}._/-]*(?::inline)?/gu)]
     .map(([reference]) => reference)
-    .filter((reference) => parseResourceReference(reference)?.kind === 'icon'))]
+    .filter((reference) => parseResourceReference(reference.endsWith(':inline') ? reference.slice(0, -7) : reference)?.kind === 'icon'))]
   for (const reference of iconReferences) {
-    const iconPath = resolveIcon(reference, record.from)
-    const publicIconPath = await copyIcon(iconPath)
-    markdownBody = markdownBody.replaceAll(reference, `/${publicIconPath}`)
+    const inline = reference.endsWith(':inline')
+    const iconReference = inline ? reference.slice(0, -7) : reference
+    const iconPath = resolveIcon(iconReference, record.from)
+    const replacement = inline ? await inlineIconSvg(iconPath) : `/${await copyIcon(iconPath)}`
+    markdownBody = markdownBody.replaceAll(reference, replacement)
   }
   markdown = `${frontmatterText}${markdownBody}`
   // VitePress recognizes `home` as its landing-page layout. Keep the richer
