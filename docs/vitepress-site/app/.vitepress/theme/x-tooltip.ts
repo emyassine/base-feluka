@@ -231,28 +231,62 @@ function deferHide(): void {
   hideTimer = setTimeout(hideTooltip, 90)
 }
 
+function cancelHide(): void {
+  if (hideTimer) clearTimeout(hideTimer)
+  hideTimer = undefined
+}
+
+function isInsideTooltip(target: EventTarget | null): boolean {
+  const tooltip = document.getElementById(tooltipId)
+  return Boolean(tooltip && target instanceof Node && tooltip.contains(target))
+}
+
 export function installXTooltip(): void {
   if (installed || typeof document === 'undefined') return
   installed = true
 
   document.addEventListener('pointerover', (event) => {
+    if (isInsideTooltip(event.target)) {
+      cancelHide()
+      return
+    }
     const trigger = findTrigger(event.target)
     if (trigger && !trigger.contains(event.relatedTarget as Node | null)) showTooltip(trigger)
   })
   document.addEventListener('pointerout', (event) => {
+    if (isInsideTooltip(event.target)) {
+      if (isInsideTooltip(event.relatedTarget) || activeTrigger?.contains(event.relatedTarget as Node | null)) cancelHide()
+      else deferHide()
+      return
+    }
     const trigger = findTrigger(event.target)
-    if (trigger && trigger === activeTrigger && !trigger.contains(event.relatedTarget as Node | null)) deferHide()
+    if (trigger && trigger === activeTrigger && !trigger.contains(event.relatedTarget as Node | null)) {
+      if (isInsideTooltip(event.relatedTarget)) cancelHide()
+      else deferHide()
+    }
   })
   document.addEventListener('pointermove', () => {
     if (activeTrigger && tooltipElement().dataset.state === 'visible') positionTooltip(activeTrigger, tooltipElement())
   }, { passive: true })
   document.addEventListener('focusin', (event) => {
+    if (isInsideTooltip(event.target)) {
+      cancelHide()
+      return
+    }
     const trigger = findTrigger(event.target)
     if (trigger) showTooltip(trigger, 0)
   })
   document.addEventListener('focusout', (event) => {
+    if (isInsideTooltip(event.target)) {
+      if (isInsideTooltip(event.relatedTarget) || activeTrigger?.contains(event.relatedTarget as Node | null)) cancelHide()
+      else deferHide()
+      return
+    }
     const trigger = findTrigger(event.target)
-    if (trigger) deferHide()
+    if (trigger) {
+      if (isInsideTooltip(event.relatedTarget)) cancelHide()
+      else deferHide()
+    }
   })
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') hideTooltip()

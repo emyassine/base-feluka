@@ -32,12 +32,12 @@ layout: home
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
 	    { text: "empower", color: "teal" },
-	    { text: "anyone", color: "amber", image: { src: "/images/brand-kit/photos/main-photo.jpg", alt: "Portrait of a person against a warm background", caption: "Opportunity should be open to people with ideas and ambition, so they can take part in creating value." } },
+	    { text: "anyone", color: "amber", image: { src: "/images/brand-kit/photos/main-photo.jpg", alt: "Portrait of a person against a warm background", caption: "We will understand individual goals and skills, then connect people to a suitable training, recruitment, or project pathway with clear roles and agreed terms." } },
 	    { text: "anywhere", color: "violet" },
-	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Practical tools help turn ideas into solutions people can use." } },
-	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Funding gives promising ideas the resources to grow into lasting value." } },
-	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Different skills and experience turn plans into work that can be delivered and sustained." } },
-	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "Clear storytelling helps ideas reach people, build trust, and open new opportunities." } }
+	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "We will map how people work and compare process changes with existing or custom software. Then we will scope and test a suitable solution, with security, ownership, and support defined before delivery." } },
+	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "We will examine the investment goal, costs, operating data, and market evidence. Then we will compare options by impact and risk and set a budget, owner, and review measures." } },
+	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "We will map roles, skills, capacity, and handoffs. Then we will agree whether training, coordination changes, or recruitment are needed and how progress will be reviewed." } },
+	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "We will set the audience and business goal, build a website and search content around them, then track inquiries and results to guide improvements." } }
 	  ]'
 	/>
 	<BrandKitOverview

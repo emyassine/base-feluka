@@ -27,6 +27,9 @@
   padding: .55rem;
   text-align: left;
   font-weight: 400;
+  pointer-events: auto;
+  user-select: text;
+  cursor: text;
 }
 
 .docs-x-tooltip__image {
