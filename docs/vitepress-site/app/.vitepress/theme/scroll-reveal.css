@@ -13,6 +13,10 @@
   transition: opacity 100ms linear;
 }
 
+.scroll-reveal-decoration-source {
+  text-decoration-line: none !important;
+}
+
 @keyframes scroll-reveal-scale {
   from { transform: scale(0.75); }
   to { transform: scale(1); }

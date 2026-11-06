@@ -152,10 +152,33 @@ function revealTextInGroups(root: HTMLElement): void {
       return NodeFilter.FILTER_ACCEPT
     },
   })
-  const textNodes: Text[] = []
-  while (walker.nextNode()) textNodes.push(walker.currentNode as Text)
+  const textNodes: Array<{
+    node: Text
+    decoration?: Pick<CSSStyleDeclaration, 'textDecorationLine' | 'textDecorationColor' | 'textDecorationStyle' | 'textDecorationThickness'>
+  }> = []
+  while (walker.nextNode()) {
+    const node = walker.currentNode as Text
+    let ancestor = node.parentElement
+    let decoration: typeof textNodes[number]['decoration']
+    while (ancestor) {
+      const style = window.getComputedStyle(ancestor)
+      if (style.textDecorationLine !== 'none') {
+        decoration = {
+          textDecorationLine: style.textDecorationLine,
+          textDecorationColor: style.textDecorationColor,
+          textDecorationStyle: style.textDecorationStyle,
+          textDecorationThickness: style.textDecorationThickness,
+        }
+        ancestor.classList.add('scroll-reveal-decoration-source')
+        break
+      }
+      if (ancestor === root) break
+      ancestor = ancestor.parentElement
+    }
+    textNodes.push({ node, decoration })
+  }
 
-  for (const textNode of textNodes) {
+  for (const { node: textNode, decoration } of textNodes) {
     const parts = textNode.textContent?.match(/\S+|\s+/g)
     if (!parts?.some((part) => /\S/.test(part))) continue
 
@@ -167,6 +190,12 @@ function revealTextInGroups(root: HTMLElement): void {
       const word = document.createElement('span')
       word.className = 'scroll-reveal-word'
       word.textContent = group
+      if (decoration) {
+        word.style.textDecorationLine = decoration.textDecorationLine
+        word.style.textDecorationColor = decoration.textDecorationColor
+        word.style.textDecorationStyle = decoration.textDecorationStyle
+        word.style.textDecorationThickness = decoration.textDecorationThickness
+      }
       fragment.append(word)
       group = ''
       wordCount = 0
