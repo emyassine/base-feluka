@@ -1,10 +1,8 @@
 <template>
   <nav
-    ref="root"
     class="floating-topbar"
-    :class="{ 'floating-topbar--bordered': props.showBorder, 'is-menu-open': menuOpen }"
+    :class="{ 'floating-topbar--bordered': props.showBorder }"
     :aria-label="props.navigationLabel"
-    @keydown.esc="closeMenu"
   >
     <a class="floating-topbar__identity" :href="props.homeHref" :style="props.titleStyle" :class="props.titleClass">
       <img v-if="props.logo" class="floating-topbar__logo" :src="props.logo" :alt="props.logoAlt || props.title" />
@@ -13,18 +11,11 @@
     <div class="floating-topbar__links">
       <a v-for="link in props.links" :key="link.href" :href="link.href" :style="link.style" :class="link.class" v-html="link.title"></a>
     </div>
-    <button class="floating-topbar__toggle" type="button" :aria-expanded="menuOpen" :aria-label="props.menuLabel" :aria-controls="menuId" @click="toggleMenu">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
-    </button>
-    <div :id="menuId" class="floating-topbar__menu" :class="{ 'is-open': menuOpen }" role="menu" :aria-hidden="!menuOpen">
-      <a v-for="link in props.links" :key="link.href" :href="link.href" role="menuitem" :style="link.style" :class="link.class" @click="closeMenu" v-html="link.title"></a>
-    </div>
+    <DropdownMenu :links="props.links" :menu-label="props.menuLabel" trigger-mode="mobile" />
   </nav>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, useId } from 'vue'
-
 const props = withDefaults(defineProps<{
   title: string
   logo?: string
@@ -43,24 +34,6 @@ const props = withDefaults(defineProps<{
   menuLabel: 'Open navigation menu',
 })
 
-const root = ref<HTMLElement | null>(null)
-const menuOpen = ref(false)
-const menuId = `floating-topbar-menu-${useId()}`
-
-function closeMenu(): void {
-  menuOpen.value = false
-}
-
-function toggleMenu(): void {
-  menuOpen.value = !menuOpen.value
-}
-
-function onDocumentPointerDown(event: PointerEvent): void {
-  if (event.target instanceof Node && !root.value?.contains(event.target)) closeMenu()
-}
-
-onMounted(() => document.addEventListener('pointerdown', onDocumentPointerDown))
-onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPointerDown))
 </script>
 
 <style scoped>
@@ -170,63 +143,6 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   white-space: nowrap;
 }
 
-.floating-topbar__toggle {
-  display: none;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-md);
-  color: var(--vp-c-text-1);
-  background: transparent;
-  cursor: pointer;
-}
-
-.floating-topbar__toggle svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
-
-.floating-topbar__menu {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  z-index: 30;
-  display: none;
-  min-width: 200px;
-  max-width: calc(100vw - 2rem);
-  padding: 0.35rem;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: var(--radius-lg);
-  background: var(--vp-c-bg);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
-}
-
-.floating-topbar__menu.is-open {
-  display: grid;
-}
-
-.floating-topbar__menu a {
-  display: flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 0.75rem;
-  border-radius: var(--radius-md);
-  color: var(--vp-c-text-1);
-  font-size: 0.875rem;
-  line-height: 1.2;
-  text-decoration: none;
-}
-
-.floating-topbar__menu a:hover {
-  color: var(--vp-c-brand-1);
-  background: var(--vp-c-default-soft);
-}
-
 .floating-topbar__links a:hover,
 .floating-topbar__identity:hover {
   color: var(--vp-c-brand-1);
@@ -272,8 +188,5 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
     display: none;
   }
 
-  .floating-topbar__toggle {
-    display: flex;
-  }
 }
 </style>
