@@ -10,11 +10,14 @@ js-events:
 layout: home
 ---
 
-<NmCompanyHero
+<BrandKitWrapper>
+
+<BrandKitHero
   eyebrow="THE FOUNDER · NUMERIMONDES"
   title="Led by someone who has worked <span class='silky-bbi'>inside operations</span>."
-  description="Business operations, consulting and software engineering in one profile."
-  height="36vh"
+  tagline="Business operations, consulting and software engineering in one profile."
+  cta-label="Meet the founder"
+  cta-href="#yassine-el-moumen"
 />
 
 
@@ -93,3 +96,5 @@ Outside work, Yassine writes short stories and essays, reads poetry and books, a
 :::
 
 </div>
+
+</BrandKitWrapper>

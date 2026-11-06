@@ -10,13 +10,17 @@ js-events:
 layout: home
 ---
 
-<NmCompanyHero
+<BrandKitWrapper>
+
+<BrandKitHero
   eyebrow="FOR BUSINESS AND HR LEADERS · NUMERIMONDES"
   title="A <span class='silky-bbi'>direct answer</span><br>For a concrete need."
-  description="Whether you are improving how your business works or hiring for a key role, start with the situation in front of you."
-  :buttons="[{ label: 'Discuss a project', href: '/company/contact?topic=project', color: 'gray' }, { label: 'Register a hiring need', href: '/company/contact?topic=recruitment', color: 'gray' }]"
-  height="40vh"
+  tagline="Whether you are improving how your business works or hiring for a key role, start with the situation in front of you."
+  cta-label="Tell us what you need"
+  cta-href="/company/contact"
 />
+
+<p><a href="/company/contact?topic=project">Discuss a project</a> · <a href="/company/contact?topic=recruitment">Register a hiring need</a></p>
 
 <NmProse>
 
@@ -47,3 +51,5 @@ Tell us which roles and seniority levels you are hiring for, the location and ex
 Questions about hiring processes, tools and workforce operations can be handled as consulting or systems projects, independently of recruitment.
 
 </NmProse>
+
+</BrandKitWrapper>

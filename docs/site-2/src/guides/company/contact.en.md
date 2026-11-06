@@ -10,11 +10,14 @@ js-events:
 layout: home
 ---
 
-<NmCompanyHero
+<BrandKitWrapper>
+
+<BrandKitHero
   eyebrow="CONTACT · NUMERIMONDES"
   title="Tell us the problem<br>you need <span class='silky-bbi'>solved</span>?"
-  description="Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit."
-  height="44vh"
+  tagline="Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit."
+  cta-label="What to include"
+  cta-href="#what-to-include"
 />
 
 <div class="nm-home-copy">
@@ -46,3 +49,5 @@ Describe your expertise, client network, geography and the collaboration you pro
 Casablanca, Morocco
 
 </div>
+
+</BrandKitWrapper>

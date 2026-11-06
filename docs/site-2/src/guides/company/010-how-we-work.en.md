@@ -10,11 +10,14 @@ js-events:
 layout: home
 ---
 
-<NmCompanyHero
+<BrandKitWrapper>
+
+<BrandKitHero
   eyebrow="HOW WE WORK · NUMERIMONDES"
   title="A clear lead.<br>A <span class='silky-bbi'>defined scope</span>."
-  description="Every assignment is shaped around its objective and agreed in writing before work begins."
-  height="40vh"
+  tagline="Every assignment is shaped around its objective and agreed in writing before work begins."
+  cta-label="How an assignment runs"
+  cta-href="#how-an-assignment-runs"
 />
 
 <Timeline
@@ -52,3 +55,5 @@ Each assignment defines its scope and deliverables, each party’s responsibilit
 We welcome developers, consultants, operators and specialist firms with strong expertise who take responsibility for their work. Scope, responsibilities and commercial terms are agreed for each collaboration before it starts.
 
 </NmProse>
+
+</BrandKitWrapper>
