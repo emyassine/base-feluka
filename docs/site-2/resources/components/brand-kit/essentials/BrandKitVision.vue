@@ -108,11 +108,17 @@ const segments = computed<VisionSegment[]>(() => {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: center;
+  gap: clamp(2rem, 7cqw, 7rem);
   box-sizing: border-box;
   min-height: 100vh;
   min-height: 100svh;
   margin: 0;
   padding: clamp(3.5rem, 9cqw, 8rem) 0;
+  border-bottom: 1px solid var(--brand-kit-line);
+  animation: brand-kit-overview-scroll linear both;
+  animation-duration: auto;
+  animation-timeline: view(block);
+  animation-range: cover 0% cover 50%;
   border-bottom: 1px solid var(--brand-kit-line);
 }
 
@@ -135,7 +141,7 @@ const segments = computed<VisionSegment[]>(() => {
   font-size: clamp(2rem, 5.5cqw, 5rem);
   font-weight: 500;
   letter-spacing: -0.06em;
-  line-height: 1.05;
+  line-height: 0.95;
   overflow-wrap: anywhere;
 }
 
@@ -149,6 +155,17 @@ const segments = computed<VisionSegment[]>(() => {
   border-radius: 0.18em;
   object-fit: cover;
   cursor: help;
+}
+
+@keyframes brand-kit-overview-scroll {
+  from { transform: scale(0.75); }
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-kit-vision {
+    animation: none;
+  }
 }
 
 </style>
