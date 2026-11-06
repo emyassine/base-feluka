@@ -164,8 +164,11 @@ for (const guide of config.subguides) {
     throw new Error(`logo.extraStyle must contain plain CSS declarations without URLs or rule syntax in ${guideConfigPath}`)
   }
   const logoAsset = async (key) => {
-    const guideOverride = guideConfig.logo?.[key]
-    const value = guideOverride ?? siteLogo[key]
+    const standardKey = key === 'mini-light' ? 'light' : key === 'mini-dark' ? 'dark' : key
+    const guideKey = guideConfig.logo?.[key] ? key : guideConfig.logo?.[standardKey] ? standardKey : null
+    const siteKey = siteLogo[key] ? key : standardKey
+    const guideOverride = guideKey ? guideConfig.logo[guideKey] : undefined
+    const value = guideOverride ?? siteLogo[siteKey]
     const origin = guideOverride != null ? dirname(guideConfigPath) : configDirectory
     if (/^(?:https?:|data:)/i.test(value)) return value
     return `/${await copyAsset(resolve(origin, value))}`
@@ -174,6 +177,8 @@ for (const guide of config.subguides) {
     ...(guideConfig.colors ?? {}),
     logoLight: await logoAsset('light'),
     logoDark: await logoAsset('dark'),
+    logoMiniLight: await logoAsset('mini-light'),
+    logoMiniDark: await logoAsset('mini-dark'),
     logoAlt: logo.alt ?? config.site?.name ?? '',
     ...(logo.width ? { logoWidth: logo.width.trim() } : {}),
     ...(logo.height ? { logoHeight: logo.height.trim() } : {}),
@@ -496,6 +501,8 @@ for (const page of localizedPages) {
     links,
     logoLight: logo.logoLight,
     logoDark: logo.logoDark,
+    logoMiniLight: logo.logoMiniLight,
+    logoMiniDark: logo.logoMiniDark,
     logoAlt: logo.logoAlt,
     logoWidth: logo.logoWidth,
     logoHeight: logo.logoHeight,
@@ -527,6 +534,8 @@ for (const guide of config.subguides) {
       links,
       logoLight: logo.logoLight,
       logoDark: logo.logoDark,
+      logoMiniLight: logo.logoMiniLight,
+      logoMiniDark: logo.logoMiniDark,
       logoAlt: logo.logoAlt,
       logoWidth: logo.logoWidth,
       logoHeight: logo.logoHeight,

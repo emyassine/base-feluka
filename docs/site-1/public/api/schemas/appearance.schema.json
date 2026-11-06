@@ -9,7 +9,18 @@
       "type": "object"
     },
     "logo": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "light": { "type": "string" },
+        "mini-light": { "type": "string" },
+        "dark": { "type": "string" },
+        "mini-dark": { "type": "string" },
+        "alt": { "type": "string" },
+        "width": { "type": "string" },
+        "height": { "type": "string" },
+        "extraStyle": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "ogImages": {
       "oneOf": [

@@ -5,9 +5,9 @@
       :href="props.homeHref"
       :aria-current="isHomePage ? 'page' : undefined"
     >
-      <span v-if="props.logoLight || props.logoDark" class="floating-subnav__logo" :style="logoContainerStyle">
-        <img class="floating-subnav__logo-light" :src="props.logoLight || props.logoDark" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
-        <img class="floating-subnav__logo-dark" :src="props.logoDark || props.logoLight" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+      <span v-if="props.logoMiniLight || props.logoMiniDark || props.logoLight || props.logoDark" class="floating-subnav__logo" :style="logoContainerStyle">
+        <img class="floating-subnav__logo-light" :src="props.logoMiniLight || props.logoLight || props.logoMiniDark || props.logoDark" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+        <img class="floating-subnav__logo-dark" :src="props.logoMiniDark || props.logoDark || props.logoMiniLight || props.logoLight" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
       </span>
       <span>{{ props.title }}</span>
     </a>
@@ -31,6 +31,8 @@ const props = withDefaults(defineProps<{
   links: Array<{ title: string; href: string }>
   logoLight?: string
   logoDark?: string
+  logoMiniLight?: string
+  logoMiniDark?: string
   logoAlt?: string
   logoWidth?: string
   logoHeight?: string

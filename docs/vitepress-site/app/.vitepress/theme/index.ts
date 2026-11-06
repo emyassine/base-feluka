@@ -680,6 +680,8 @@ const MermaidLayout = {
         links: Array<{ title: string; href: string }>
         logoLight?: string
         logoDark?: string
+        logoMiniLight?: string
+        logoMiniDark?: string
         logoAlt?: string
         logoWidth?: string
         logoHeight?: string
