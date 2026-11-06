@@ -5,9 +5,9 @@ icon: "@spmpst::icon::palette"
 layout: home
 ---
 
-<BrandKitWrapper>
+
 <div style="margin-top: 2rem">
-    <BrandKitHero
+    <NmBrandHero
       eyebrow="Brandkit // Color"
       title="Color"
       tagline="Our brand colors showcase our voice"
@@ -16,9 +16,9 @@ layout: home
     />
   </div>
 
-  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Color' }, { tagline: 'Color is one of the fastest ways our brand is recognized', description: 'Color sets the mood before a single word is read. Our palette is designed to feel confident and modern: bold enough to stand out, restrained enough to stay timeless. This section defines our core colors, supporting tones, and usage rules so every screen, slide, and surface looks unmistakably like us.' }] }]" />
+  <NmBrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Color' }, { tagline: 'Color is one of the fastest ways our brand is recognized', description: 'Color sets the mood before a single word is read. Our palette is designed to feel confident and modern: bold enough to stand out, restrained enough to stay timeless. This section defines our core colors, supporting tones, and usage rules so every screen, slide, and surface looks unmistakably like us.' }] }]" />
 
-  <BrandKitIndex
+  <NmBrandIndex
     title="Color Index"
     :columns="1"
     :groups="[
@@ -32,7 +32,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="primary-palette"
     eyebrow="Color // Primary Palette"
     title="Primary Palette"
@@ -48,7 +48,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="secondary-palette"
     eyebrow="Color // Secondary Palette"
     title="Secondary Palette"
@@ -62,7 +62,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="gradient"
     eyebrow="Color // Spectrum"
     title="Gradients"
@@ -75,7 +75,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="shades"
     eyebrow="Color // Primary Shades"
     title="Primary Shades"
@@ -96,7 +96,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="greyscale"
     eyebrow="Color // Greyscale"
     title="Greyscale"
@@ -117,7 +117,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="spectrum"
     eyebrow="Color // Spectrum"
     title="Spectrum"
@@ -148,7 +148,7 @@ layout: home
     ]"
   />
 
-  <BrandKitColorSection
+  <NmBrandColorSection
     id="combinations"
     eyebrow="Color // Combinations"
     title="Combinations"
@@ -161,5 +161,4 @@ layout: home
     ]"
   />
 
-  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
-</BrandKitWrapper>
+  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

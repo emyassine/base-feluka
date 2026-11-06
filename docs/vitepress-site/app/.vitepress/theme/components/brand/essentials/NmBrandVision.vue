@@ -2,7 +2,7 @@
   <article class="overview-section overview-section--bordered scroll-reveal">
     <div class="overview-column">
       <p class="overview-label">{{ props.label }}</p>
-      <h2 :id="props.titleId">
+      <h2 v-html :id="props.titleId">
         <span class="silky-bbi" style="line-height: 1.15">
           <template v-for="(segment, index) in segments" :key="`${segment.text}-${index}`">
             <template v-if="segment.replacement">
@@ -10,7 +10,7 @@
               <template v-else>{{ segment.text }}</template>
               <img
                 v-if="segment.replacement.image"
-                class="brand-kit-vision__inline-image"
+                class="nm-brand-vision__inline-image"
                 :src="segment.replacement.image.src"
                 :alt="segment.replacement.image.alt || segment.replacement.image.caption"
                 :x-tooltip="JSON.stringify({ image: segment.replacement.image.src, text: segment.replacement.image.caption })"
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<{
   replacements?: VisionReplacement[]
 }>(), {
   label: 'Our Vision',
-  titleId: 'brand-kit-overview-title-0-0',
+  titleId: 'nm-brand-overview-title-0-0',
   replacements: () => [],
 })
 
@@ -105,7 +105,7 @@ const segments = computed<VisionSegment[]>(() => {
 </script>
 
 <style scoped>
-.brand-kit-vision__inline-image {
+.nm-brand-vision__inline-image {
   display: inline-block;
   width: 1.7em;
   height: 1.15em;

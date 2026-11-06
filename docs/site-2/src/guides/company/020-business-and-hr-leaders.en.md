@@ -10,9 +10,9 @@ js-events:
 layout: home
 ---
 
-<BrandKitWrapper>
 
-<BrandKitHero
+
+<NmBrandHero
   eyebrow="FOR BUSINESS AND HR LEADERS · NUMERIMONDES"
   title="Business"
   tagline="Consulting, systems work and recruitment for a concrete need."
@@ -20,7 +20,7 @@ layout: home
   cta-href="/company/contact"
 />
 
-<BrandKitOverview :sections="[{ columns: [{ label: 'For business and HR leaders', title: 'A direct answer for a concrete need.' }, { tagline: 'Whether you are improving how your business works or hiring for a key role, start with the situation in front of you.' }] }]" />
+<NmBrandOverview :sections="[{ columns: [{ label: 'For business and HR leaders', title: 'A direct answer for a concrete need.' }, { tagline: 'Whether you are improving how your business works or hiring for a key role, start with the situation in front of you.' }] }]" />
 
 <p><a href="/company/contact?topic=project">Discuss a project</a> · <a href="/company/contact?topic=recruitment">Register a hiring need</a></p>
 
@@ -53,5 +53,3 @@ Tell us which roles and seniority levels you are hiring for, the location and ex
 Questions about hiring processes, tools and workforce operations can be handled as consulting or systems projects, independently of recruitment.
 
 </NmProse>
-
-</BrandKitWrapper>

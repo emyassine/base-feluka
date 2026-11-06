@@ -5,9 +5,9 @@ icon: "@spmpst::icon::image"
 layout: home
 ---
 
-<BrandKitWrapper>
+
 <div style="margin-top: 2rem">
-    <BrandKitHero
+    <NmBrandHero
       eyebrow="Brandkit // Logo"
       title="Logo"
       tagline="Our brand logo is the cornerstone of our identity"
@@ -15,8 +15,8 @@ layout: home
       cta-href="#logo-index"
     />
   </div>
-  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'The logo is our most recognizable shortcut, our most valuable asset.' }, { tagline: 'A mark that carries our personality, credibility, and intent at a glance.', description: 'Use the logo consistently across every touchpoint, from a tiny app icon to a product label or billboard.' }] }]" />
-  <BrandKitIndex
+  <NmBrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'The logo is our most recognizable shortcut, our most valuable asset.' }, { tagline: 'A mark that carries our personality, credibility, and intent at a glance.', description: 'Use the logo consistently across every touchpoint, from a tiny app icon to a product label or billboard.' }] }]" />
+  <NmBrandIndex
     title="Logo Index"
     :columns="1"
     :groups="[
@@ -28,7 +28,7 @@ layout: home
       ] }
     ]"
   />
-  <BrandKitLogoSection
+  <NmBrandLogoSection
     id="logo-mark"
     eyebrow="Logo // Mark"
     title="Logo Mark"
@@ -39,7 +39,7 @@ layout: home
     layout="stacked"
     image-padding="10px"
   />
-  <BrandKitLogoSection
+  <NmBrandLogoSection
     id="construction"
     eyebrow="Logo // Construction"
     title="Construction"
@@ -50,7 +50,7 @@ layout: home
     layout="side"
     image-padding="10px"
   />
-  <BrandKitLogoSection
+  <NmBrandLogoSection
     id="spacing-placement"
     eyebrow="Logo // Spacing"
     title="Spacing & Placement"
@@ -61,7 +61,7 @@ layout: home
     layout="side"
     image-padding="10px"
   />
-  <BrandKitLogoSection
+  <NmBrandLogoSection
     id="logo-colors"
     eyebrow="Logo // Color"
     title="Colors"
@@ -76,5 +76,4 @@ layout: home
     image-padding="10px"
     :show-border="false"
   />
-  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
-</BrandKitWrapper>
+  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

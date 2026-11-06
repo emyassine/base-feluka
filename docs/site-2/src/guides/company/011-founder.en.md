@@ -10,9 +10,9 @@ js-events:
 layout: home
 ---
 
-<BrandKitWrapper>
 
-<BrandKitHero
+
+<NmBrandHero
   eyebrow="THE FOUNDER · NUMERIMONDES"
   title="Founder"
   tagline="Business operations, consulting and software engineering."
@@ -20,7 +20,7 @@ layout: home
   cta-href="#yassine-el-moumen"
 />
 
-<BrandKitOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
+<NmBrandOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
 
 
 # Yassine El Moumen
@@ -98,5 +98,3 @@ Outside work, Yassine writes short stories and essays, reads poetry and books, a
 :::
 
 </div>
-
-</BrandKitWrapper>

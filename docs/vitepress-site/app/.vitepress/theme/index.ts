@@ -9,6 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
+import { registerBrandComponents } from './components/brand'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
 import CollectionSearch from './CollectionSearch.vue'
 import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
@@ -24,6 +25,7 @@ import './tailwind.css'
 import './style.css'
 import './x-tooltip.css'
 import './overview.css'
+import './brand.css'
 import './scroll-reveal.css'
 import '@generated/configured-styles'
 
@@ -739,6 +741,7 @@ export default {
     context.app.component('FloatingSubnav', FloatingSubnav)
     context.app.component('PageActions', PageActions)
     registerProjectComponents(context.app)
+    registerBrandComponents(context.app)
     context.app.component('currency', Currency)
   },
 }

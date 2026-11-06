@@ -14,7 +14,7 @@
         :style="{ gridColumn: section.columns.length === 1 ? '1 / -1' : undefined }"
       >
         <p v-if="column.label" class="overview-label" :style="column.labelStyle" :class="column.labelClass" v-html="column.label"></p>
-        <h2 v-if="column.title" :id="`brand-kit-overview-title-${sectionIndex}-${columnIndex}`" :style="column.titleStyle" :class="column.titleClass" v-html="column.title"></h2>
+        <h2 v-if="column.title" :id="`nm-brand-overview-title-${sectionIndex}-${columnIndex}`" :style="column.titleStyle" :class="column.titleClass" v-html="column.title"></h2>
         <p v-if="column.tagline" class="overview-tagline" :style="column.taglineStyle" :class="column.taglineClass" v-html="column.tagline"></p>
         <p v-if="column.description" class="overview-description" :style="column.descriptionStyle" :class="column.descriptionClass" v-html="column.description"></p>
       </div>

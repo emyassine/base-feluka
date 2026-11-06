@@ -10,9 +10,9 @@ js-events:
 layout: home
 ---
 
-<BrandKitWrapper>
 
-<BrandKitHero
+
+<NmBrandHero
   eyebrow="CONTACT · NUMERIMONDES"
   title="Contact"
   tagline="Projects, hiring, partnerships and technical discussions."
@@ -20,7 +20,7 @@ layout: home
   cta-href="#what-to-include"
 />
 
-<BrandKitOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Tell us the problem you need solved.' }, { tagline: 'Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
+<NmBrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Tell us the problem you need solved.' }, { tagline: 'Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
 
 <div class="nm-home-copy">
 
@@ -51,5 +51,3 @@ Describe your expertise, client network, geography and the collaboration you pro
 Casablanca, Morocco
 
 </div>
-
-</BrandKitWrapper>

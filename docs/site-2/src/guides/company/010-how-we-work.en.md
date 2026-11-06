@@ -10,9 +10,9 @@ js-events:
 layout: home
 ---
 
-<BrandKitWrapper>
 
-<BrandKitHero
+
+<NmBrandHero
   eyebrow="HOW WE WORK · NUMERIMONDES"
   title="Work"
   tagline="How we qualify, agree and deliver assignments."
@@ -20,7 +20,7 @@ layout: home
   cta-href="#how-an-assignment-runs"
 />
 
-<BrandKitOverview :sections="[{ columns: [{ label: 'Our approach', title: 'A clear lead. A defined scope.' }, { tagline: 'Every assignment is shaped around its objective and agreed in writing before work begins.' }] }]" />
+<NmBrandOverview :sections="[{ columns: [{ label: 'Our approach', title: 'A clear lead. A defined scope.' }, { tagline: 'Every assignment is shaped around its objective and agreed in writing before work begins.' }] }]" />
 
 <div id="how-an-assignment-runs">
   <Timeline
@@ -59,5 +59,3 @@ Each assignment defines its scope and deliverables, each party’s responsibilit
 We welcome developers, consultants, operators and specialist firms with strong expertise who take responsibility for their work. Scope, responsibilities and commercial terms are agreed for each collaboration before it starts.
 
 </NmProse>
-
-</BrandKitWrapper>

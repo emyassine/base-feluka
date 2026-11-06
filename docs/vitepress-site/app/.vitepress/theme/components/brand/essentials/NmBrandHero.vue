@@ -1,12 +1,12 @@
 <template>
-  <section class="brand-kit-hero" aria-labelledby="brand-kit-title">
-    <div v-if="backgroundImage" class="brand-kit-hero__image" aria-hidden="true">
+  <section class="nm-brand-hero" aria-labelledby="nm-brand-title">
+    <div v-if="backgroundImage" class="nm-brand-hero__image" aria-hidden="true">
       <img :src="backgroundImage" :alt="backgroundImageAlt || ''" />
     </div>
-    <p class="brand-kit-hero__eyebrow" :style="eyebrowStyle" :class="eyebrowClass" v-html="eyebrow"></p>
-    <div class="brand-kit-hero__content">
-      <h1 id="brand-kit-title" :style="titleStyle" :class="titleClass" v-html="title"></h1>
-      <div class="brand-kit-hero__bottom">
+    <p class="nm-brand-hero__eyebrow" :style="eyebrowStyle" :class="eyebrowClass" v-html="eyebrow"></p>
+    <div class="nm-brand-hero__content">
+      <h1 id="nm-brand-title" :style="titleStyle" :class="titleClass" v-html="title"></h1>
+      <div class="nm-brand-hero__bottom">
         <p :style="taglineStyle" :class="taglineClass" v-html="tagline"></p>
         <a :href="ctaHref" :style="ctaLabelStyle" :class="ctaLabelClass" v-html="ctaLabel"></a>
       </div>
@@ -35,7 +35,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.brand-kit-hero {
+.nm-brand-hero {
   position: relative;
   display: flex;
   min-height: clamp(30rem, 66vh, 48rem);
@@ -45,32 +45,32 @@ defineProps<{
   margin: 0;
   padding: clamp(1.5rem, 4cqw, 3.5rem);
   overflow: hidden;
-  border: 1px solid var(--brand-kit-line);
+  border: 1px solid var(--nm-brand-line);
   border-radius: 0.75rem;
   background:
     radial-gradient(ellipse at 78% 90%, color-mix(in srgb, var(--vp-c-brand-1) 76%, transparent), transparent 34%),
-    linear-gradient(125deg, var(--brand-kit-surface-soft), var(--brand-kit-surface) 58%, var(--vp-c-brand-soft));
+    linear-gradient(125deg, var(--nm-brand-surface-soft), var(--nm-brand-surface) 58%, var(--vp-c-brand-soft));
 }
 
-.brand-kit-hero__eyebrow {
+.nm-brand-hero__eyebrow {
   position: relative;
   z-index: 1;
   margin: 0;
-  color: var(--brand-kit-muted);
+  color: var(--nm-brand-muted);
   font-family: var(--vp-font-family-mono);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.brand-kit-hero__content {
+.nm-brand-hero__content {
   position: relative;
   z-index: 1;
   display: grid;
   gap: clamp(1rem, 2cqw, 1.75rem);
 }
 
-.brand-kit-hero__image {
+.nm-brand-hero__image {
   position: absolute;
   z-index: 0;
   inset: 0;
@@ -78,21 +78,21 @@ defineProps<{
   border-radius: inherit;
 }
 
-.brand-kit-hero__image::after {
+.nm-brand-hero__image::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-kit-surface) 82%, transparent), color-mix(in srgb, var(--brand-kit-surface) 24%, transparent));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--nm-brand-surface) 82%, transparent), color-mix(in srgb, var(--nm-brand-surface) 24%, transparent));
   content: '';
 }
 
-.brand-kit-hero__image img {
+.nm-brand-hero__image img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.brand-kit-hero h1 {
+.nm-brand-hero h1 {
   min-width: 0;
   max-width: 100%;
   margin: 0;
@@ -105,7 +105,7 @@ defineProps<{
   text-wrap: balance;
 }
 
-.brand-kit-hero__bottom {
+.nm-brand-hero__bottom {
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -113,7 +113,7 @@ defineProps<{
   min-width: 0;
 }
 
-.brand-kit-hero__bottom p {
+.nm-brand-hero__bottom p {
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
@@ -121,7 +121,7 @@ defineProps<{
   line-height: 1.05;
 }
 
-.brand-kit-hero__bottom a {
+.nm-brand-hero__bottom a {
   flex: none;
   padding: 0 0 0.25rem;
   border-bottom: 1px solid currentColor;
@@ -132,17 +132,17 @@ defineProps<{
 }
 
 @container (max-width: 680px) {
-  .brand-kit-hero {
+  .nm-brand-hero {
     min-height: 29rem;
   }
 
-  .brand-kit-hero__bottom {
+  .nm-brand-hero__bottom {
     align-items: start;
     flex-direction: column;
     gap: 1rem;
   }
 
-  .brand-kit-hero__bottom p {
+  .nm-brand-hero__bottom p {
     max-width: 100%;
     font-size: clamp(1rem, 5cqw, 1.6rem);
   }

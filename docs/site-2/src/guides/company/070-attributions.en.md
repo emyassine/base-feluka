@@ -5,20 +5,20 @@ icon: "@spmpst::icon::images"
 layout: home
 ---
 
-<BrandKitWrapper>
+
 <div style="margin-top: 2rem">
-    <BrandKitHero
+    <NmBrandHero
       eyebrow="Brandkit // Attributions"
       title="Attributions"
       tagline="The image credits behind our brand"
       cta-label="Explore Attributions"
-      cta-href="#brand-kit-index"
+      cta-href="#nm-brand-index"
     />
   </div>
 
-  <BrandKitOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Image Credits' }, { tagline: 'Every image has a source and a story', description: 'Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable.' }] }]" />
+  <NmBrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Image Credits' }, { tagline: 'Every image has a source and a story', description: 'Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable.' }] }]" />
 
-  <BrandKitIndex
+  <NmBrandIndex
     title="Attributions Index"
     :columns="1"
     :groups="[
@@ -28,11 +28,10 @@ layout: home
     ]"
   />
 
-  <BrandKitAttributions
+  <NmBrandAttributions
     eyebrow="Attributions // Images"
     title="Image Credits"
     description="Images used in our legal and policy pages, with their source and license credits. Select an image to view its full-size file."
   />
 
-  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
-</BrandKitWrapper>
+  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

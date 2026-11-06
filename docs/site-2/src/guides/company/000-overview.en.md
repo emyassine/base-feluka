@@ -5,20 +5,20 @@ icon: "@spmpst::icon::sparkles"
 layout: home
 ---
 
-<BrandKitWrapper>
+
 <div style="margin-top:2rem;">
-	  <BrandKitHero
+	  <NmBrandHero
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style=""
 	    tagline="<span class='silky-bbi'>Learn more about our organization</span>"
 	    cta-label="Explore Our Brand Identity System"
-	    cta-href="#brand-kit-index"
+	    cta-href="#nm-brand-index"
 	  />
 	</div>
-	<BrandKitVision
+	<NmBrandVision
 		showBorder: true,
-	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation."
+	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation.<br><br>Tell Us What are <a href='' class='silky-bbi primary-text'>your biggest challenges</a> ?"
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
 	    { text: "empower", color: "teal" },
@@ -56,7 +56,7 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
 
 
 
-	<BrandKitOverview
+	<NmBrandOverview
 	  :sections='[
 	    {
 	      showBorder: true,
@@ -125,7 +125,7 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
 	    },
 	  ]'
 	/>
-  <BrandKitIndex
+  <NmBrandIndex
     title="Index"
     :columns="2"
     :groups="[
@@ -159,5 +159,4 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
       ] }
     ]"
   />
-  <BrandKitFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
-</BrandKitWrapper>
+  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
