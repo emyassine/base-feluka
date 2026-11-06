@@ -1,0 +1,27 @@
+{
+  "items": [
+    {
+      "type": "page",
+      "label": {"en": "How We Work"},
+      "path": "/company/how-we-work"
+    },
+    {
+      "type": "page",
+      "label": {"en": "Founder"},
+      "path": "/company/founder"
+    },
+    {
+      "type": "page",
+      "label": {"en": "Business and HR Leaders"},
+      "path": "/company/business-and-hr-leaders"
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "type": "page",
+      "label": {"en": "Our Brand"},
+      "path": "/company/brand/logo"
+    }
+  ]
+}

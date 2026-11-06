@@ -480,6 +480,43 @@ function localizedGuideHome(guide, language) {
 
 const generatedFloatingSubnav = {}
 const siteSubnavRules = config.site?.floatingSubnav ?? {}
+const guideSubheaderConfigs = new Map()
+for (const guide of config.subguides) {
+  const subheaderPath = resolve(sourceRoot, guide.path, 'spmpst.subheader.json')
+  if (existsSync(subheaderPath)) {
+    try {
+      const subheaderConfig = JSON.parse(await readFile(subheaderPath, 'utf8'))
+      guideSubheaderConfigs.set(guide.path, subheaderConfig)
+    } catch (error) {
+      console.warn(`Failed to load subheader config for guide ${guide.path}: ${error.message}`)
+    }
+  }
+}
+
+const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
+  const subheaderConfig = guideSubheaderConfigs.get(guidePath)
+  if (subheaderConfig?.items) {
+    const langPrefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
+    const langPathPrefix = langPrefix ? `/${langPrefix}` : ''
+    return subheaderConfig.items.map(item => {
+      if (item.type === 'separator') {
+        return { type: 'separator' }
+      }
+      const label = item.label?.[language] ?? item.label?.en ?? item.label ?? item.path
+      let href = item.path
+      if (href?.startsWith('/')) {
+        href = `${langPathPrefix}${href}`
+      } else {
+        href = `${langPathPrefix}/${guidePath}/${item.path}`
+      }
+      return { title: label, href, type: item.type, redirect: item.redirect }
+    }).filter(link => link.type !== 'separator')
+  }
+  return localizedPages
+    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language && candidate !== guideEntryPage)
+    .map(({ title, route }) => ({ title, href: route }))
+}
+
 for (const page of localizedPages) {
   const rules = mergedSubnavRules(siteSubnavRules, page.guide?.floatingSubnav ?? {})
   const included = rules.include.includes(page.canonical)
@@ -488,9 +525,7 @@ for (const page of localizedPages) {
   if (!enabled) continue
   const group = page.guide?.path ?? 'root'
   const guideEntryPage = localizedPages.find((candidate) => (candidate.guide?.path ?? 'root') === group && candidate.language === page.language)
-  const links = localizedPages
-    .filter((candidate) => (candidate.guide?.path ?? 'root') === group && candidate.language === page.language && candidate !== guideEntryPage)
-    .map(({ title, route }) => ({ title, href: route }))
+  const links = buildSubheaderLinks(group, page.language, guideEntryPage)
   const routeKey = page.route.replace(/\/+$/, '') || '/'
   const guideKey = page.guide ? generatedGuideKeys.get(page.guide.path) : 'root'
   const logo = generatedGuideColors[guideKey] ?? generatedGuideColors.root ?? {}
@@ -521,9 +556,7 @@ for (const guide of config.subguides) {
     const included = rules.include.includes(canonicalHome)
     const excluded = rules.exclude.includes(canonicalHome)
     if (excluded || (!included && !rules.layouts.includes(firstPage.layout))) continue
-    const links = localizedPages
-      .filter((candidate) => candidate.guide?.path === guide.path && candidate.language === language && candidate !== firstPage)
-      .map(({ title, route }) => ({ title, href: route }))
+    const links = buildSubheaderLinks(guide.path, language, firstPage)
     const routeKey = homeHref.replace(/\/+$/, '') || '/'
     const guideKey = generatedGuideKeys.get(guide.path)
     const logo = generatedGuideColors[guideKey] ?? generatedGuideColors.root ?? {}

@@ -1,7 +1,11 @@
 {
   "site": {
     "name": "Numerimondes",
-    "description": "Technology you can own, understand, and operate. Casablanca, Morocco."
+    "description": "Technology you can own, understand, and operate. Casablanca, Morocco.",
+    "floatingSubnav": {
+      "layouts": ["home"],
+      "exclude": ["/"]
+    }
   },
   "subguides": [
     {
