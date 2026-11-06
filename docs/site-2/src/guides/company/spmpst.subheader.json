@@ -5,6 +5,6 @@
   ],
   "include": [
     "separator",
-    { "label": { "en": "Our Brand" }, "path": "/company/brand/logo" }
+    { "label": { "en": "Our Brand", "fr": "Notre Marque" }, "path": "/company/brand/logo" }
   ]
 }

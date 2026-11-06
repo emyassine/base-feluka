@@ -83,11 +83,11 @@
     </div>
 
     <!-- Mobile menu (below 768px) -->
-    <DropdownMenu :links="props.links" :menu-label="props.menuLabel" trigger-mode="mobile" />
+    <DropdownMenu :links="dropdownMenuLinks" :menu-label="props.menuLabel" trigger-mode="mobile" />
 
     <!-- Invisible measuring layer used to compute overflow -->
     <div class="floating-subnav__ghost" aria-hidden="true">
-      <span v-for="link in props.links" :key="link.href" ref="ghostRefs" class="floating-subnav__link">
+      <span v-for="link in ghostLinks" :key="link.href" ref="ghostRefs" class="floating-subnav__link">
         {{ link.title }}
       </span>
     </div>
@@ -102,7 +102,7 @@ const props = withDefaults(defineProps<{
   title: string
   homeHref: string
   homePageHref?: string
-  links: Array<{ title: string; href: string }>
+  links: Array<{ title: string; href: string; type?: string; custom?: boolean }>
   logoLight?: string
   logoDark?: string
   logoMiniLight?: string
@@ -154,6 +154,8 @@ const visibleLinks = computed(() => props.links.slice(0, visibleCount.value))
 const overflowLinks = computed(() => props.links.slice(visibleCount.value))
 const showMore = computed(() => isCompact.value || overflowLinks.value.length > 0)
 const menuLinks = computed(() => (isCompact.value ? props.links : overflowLinks.value))
+const ghostLinks = computed(() => props.links.filter((link) => link.type !== 'separator'))
+const dropdownMenuLinks = computed(() => props.links.filter((link) => link.type !== 'separator'))
 
 function normalizePath(path: string): string {
   return path.replace(/\/+$/, '') || '/'
@@ -417,6 +419,23 @@ html.dark .floating-subnav__logo-dark {
   margin-inline: 0.25rem 0.35rem;
   background: var(--fs-divider);
   align-self: center;
+}
+
+.floating-subnav__menu-separator {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  background: transparent;
+}
+
+.floating-subnav__menu-separator::before {
+  content: '';
+  display: block;
+  flex: none;
+  width: 1px;
+  height: 16px;
+  margin-inline: 0.25rem 0.35rem;
+  background: var(--fs-divider);
 }
 
 .floating-subnav__links {
