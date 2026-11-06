@@ -12,7 +12,7 @@ layout: home
 	    title="<span>Numerimondes</span>"
 	    title-style=""
 	    tagline="<span class='silky-bbi'>Learn more about our organization</span>"
-	    cta-label="Explore Our Brand Identity System"
+	    cta-label="Or explore our brand identity system"
 	    cta-href="#nm-brand-index"
 	  />
 	</div>
