@@ -513,7 +513,7 @@ const buildSubheaderLinks = (contextPath, language, firstPage, isTopLevel) => {
       return sourceRelative.startsWith(prefix) && candidate.language === language
     })
     .map(({ title, route, sidebarTitle }) => {
-      const isGuideEntryPage = route === guideEntryRoute
+      const isGuideEntryPage = isTopLevel && route === guideEntryRoute
       const pageTitleFinal = isGuideEntryPage ? guideLabel : (sidebarTitle || title)
       return { title: pageTitleFinal, href: route }
     })
@@ -570,9 +570,7 @@ for (const guide of config.subguides) {
     const contextGuide = contextPath === guide.path
       ? guide
       : { ...guide, path: contextPath, labels: JSON.parse(await readFile(resolve(sourceRoot, contextPath, 'spmpst.sidebar.json'), 'utf8')).labels }
-    const contextSubheaderConfig = contextPath === guide.path
-      ? generatedSubnavContextConfigs.get(guide.path) ?? guideSubheaderConfigs.get(guide.path)
-      : await loadSubheaderContext(contextPath, contextGuide)
+    const contextSubheaderConfig = await loadSubheaderContext(contextPath, contextGuide)
     const contextGuideKey = generatedGuideKeys.get(contextPath) ?? generatedGuideKeys.get(guide.path)
     const contextRulesSource = contextGuide.floatingSubnav ?? guide.floatingSubnav ?? {}
     for (const language of config.languages) {
@@ -586,7 +584,7 @@ for (const guide of config.subguides) {
       const rules = mergedSubnavRules(siteSubnavRules, contextRulesSource)
       const contextHomeGuide = contextPath === guide.path
         ? contextGuide
-        : { ...contextGuide, uri: { ...contextGuide.uri, base: `/${firstPage.route.split('/').slice(0, -1).join('/')}/` } }
+        : { ...contextGuide, uri: { ...contextGuide.uri, base: `/${firstPage.route.replace(new RegExp(`^/${language}(/|$)`), '').split('/').filter(Boolean).slice(0, -1).join('/')}/` } }
       const homeHref = localizedGuideHome(contextHomeGuide, language)
       const canonicalHome = canonicalPagePath(homeHref)
       const included = rules.include.includes(canonicalHome)
@@ -620,6 +618,7 @@ for (const guide of config.subguides) {
       }
     }
   }
+}
 for (const page of localizedPages.filter((page) => !page.guide)) {
   const rules = mergedSubnavRules(siteSubnavRules, {})
   const included = rules.include.includes(page.canonical)
