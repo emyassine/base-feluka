@@ -27,6 +27,42 @@ layout: home
 	    cta-href="#brand-kit-index"
 	  />
 	</div>
+	<BrandKitVision>
+	  Our ultimate objective is to position <span class="primary-text">Africa</span> as a global center of
+	  <span class="primary-text">wealth creation</span>, leveraging
+	  <span class="inline-image-preview" data-preview-caption="Technology: electronic circuitry" tabindex="0" aria-label="Electronic circuit board components. Technology: electronic circuitry">
+	    <img src="/images/brand-kit/leverage/technology.jpg" alt="Electronic circuit board components" loading="lazy" />
+	    <span class="inline-image-preview__popover" aria-hidden="true">
+	      <img src="/images/brand-kit/leverage/technology.jpg" alt="" loading="lazy" />
+	      <span class="inline-image-preview__caption">Technology: electronic circuitry</span>
+	    </span>
+	  </span>
+	  <span class="teal-text is-visible">technology</span>,
+	  <span class="inline-image-preview" data-preview-caption="Capital: financial performance and investment" tabindex="0" aria-label="Laptop showing financial performance dashboards. Capital: financial performance and investment">
+	    <img src="/images/brand-kit/leverage/capital.jpg" alt="Laptop showing financial performance dashboards" loading="lazy" />
+	    <span class="inline-image-preview__popover" aria-hidden="true">
+	      <img src="/images/brand-kit/leverage/capital.jpg" alt="" loading="lazy" />
+	      <span class="inline-image-preview__caption">Capital: financial performance and investment</span>
+	    </span>
+	  </span>
+	  <span class="green-text is-visible">capital</span>,
+	  <span class="inline-image-preview" data-preview-caption="Workforce: people building together" tabindex="0" aria-label="Colleagues working together around laptops. Workforce: people building together">
+	    <img src="/images/brand-kit/leverage/workforce.jpg" alt="Colleagues working together around laptops" loading="lazy" />
+	    <span class="inline-image-preview__popover" aria-hidden="true">
+	      <img src="/images/brand-kit/leverage/workforce.jpg" alt="" loading="lazy" />
+	      <span class="inline-image-preview__caption">Workforce: people building together</span>
+	    </span>
+	  </span>
+	  <span class="amber-text is-visible">workforce</span>, and
+	  <span class="inline-image-preview" data-preview-caption="Media: video editing and production" tabindex="0" aria-label="Video editing timeline on a desktop monitor. Media: video editing and production">
+	    <img src="/images/brand-kit/leverage/media.jpg" alt="Video editing timeline on a desktop monitor" loading="lazy" />
+	    <span class="inline-image-preview__popover" aria-hidden="true">
+	      <img src="/images/brand-kit/leverage/media.jpg" alt="" loading="lazy" />
+	      <span class="inline-image-preview__caption">Media: video editing and production</span>
+	    </span>
+	  </span>
+	  <span class="violet-text is-visible">media</span> to empower anyone across the continent.
+	</BrandKitVision>
 
 	<BrandKitOverview
 	  :sections='[
