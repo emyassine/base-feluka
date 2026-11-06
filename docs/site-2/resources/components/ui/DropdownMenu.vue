@@ -6,7 +6,7 @@
       :close="closeMenu"
       :open="menuOpen"
       :menu-id="menuId"
-        :menu-label="props.menuLabel"
+      :menu-label="props.menuLabel"
     >
       <button
         class="dropdown-menu__toggle"
@@ -81,7 +81,9 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
 
 <style scoped>
 .dropdown-menu {
-  display: contents;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .dropdown-menu__toggle {
