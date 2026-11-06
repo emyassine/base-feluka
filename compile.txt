@@ -1,0 +1,7 @@
+Set to:
+- powerprofilesctl set performance
+
+Instead of
+- powerprofilesctl set power-saver
+or
+- powerprofilesctl set balanced
