@@ -6,16 +6,7 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <FloatingTopBar logo="/media/favicon.png" logo-alt="Numerimondes" home-href="/company" title="Overview" :show-border="false" :links="[
-        { title: 'Logo', href: '/company/logo' },
-    { title: 'Colors', href: '/company/colors' },
-    { title: 'Type', href: '/company/type' },
-    { title: 'Photos', href: '/company/photos' },
-    { title: 'Icons', href: '/company/icons' },
-    { title: 'Attributions', href: '/company/attributions' }
-  ]" />
-
-  <div style="margin-top: 2rem">
+<div style="margin-top: 2rem">
     <BrandKitHero
       eyebrow="Brandkit // Attributions"
       title="Attributions"

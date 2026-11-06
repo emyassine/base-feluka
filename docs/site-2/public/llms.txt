@@ -7,7 +7,7 @@
 - [Home](/) — company and service overview.
 - [Services Marketplace](/services/marketplace) — illustrative service catalogue; not a binding offer or price list.
 - [Capabilities](/capabilities/) — areas of expertise and exploration.
-- [Company](/company/about-us/numerimondes) — company background and delivery approach.
+- [Company](/company/overview) — company background and delivery approach.
 
 ## Policies
 

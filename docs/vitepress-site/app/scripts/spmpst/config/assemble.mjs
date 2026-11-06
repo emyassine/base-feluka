@@ -64,6 +64,31 @@ export function assembleConfig(layout, discovered, options = {}) {
     collector.add(configFile('lang'), '#/languages', 'languages must be a non-empty array of unique locale codes')
   }
   if (model.languages?.length && !model.languages.includes(fallback)) collector.add(configFile('lang'), '#/fallbackLanguage', 'fallbackLanguage must be listed in languages')
+  const validateFloatingSubnav = (value, file, pointer) => {
+    if (value === undefined) return
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      collector.add(file, pointer, 'floatingSubnav must be an object')
+      return
+    }
+    for (const key of Object.keys(value)) {
+      if (!['layouts', 'include', 'exclude'].includes(key)) collector.add(file, `${pointer}/${key}`, `Unknown floatingSubnav option: ${key}`)
+    }
+    for (const key of ['layouts', 'include', 'exclude']) {
+      if (value[key] === undefined) continue
+      const values = value[key]
+      if (!Array.isArray(values) || values.some((item) => typeof item !== 'string' || !item.trim()) || new Set(values).size !== values.length) {
+        collector.add(file, `${pointer}/${key}`, `${key} must be an array of unique, non-empty strings`)
+        continue
+      }
+      if (key !== 'layouts' && values.some((path) => !/^\/(?:[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)*)?\/?$/.test(path))) {
+        collector.add(file, `${pointer}/${key}`, `${key} must contain exact absolute page paths without query strings or fragments`)
+      }
+    }
+  }
+  validateFloatingSubnav(model.site?.floatingSubnav, configFile('definitions'), '#/site/floatingSubnav')
+  for (const [index, guide] of (model.subguides ?? []).entries()) {
+    validateFloatingSubnav(guide?.floatingSubnav, configFile('definitions'), `#/subguides/${index}/floatingSubnav`)
+  }
   const guidePaths = new Set((model.subguides ?? []).map((guide) => guide.path))
   const collectionIds = new Set((model.collections ?? []).map((collection) => collection.id))
   const visitItems = (items, pointer = '#/items') => {

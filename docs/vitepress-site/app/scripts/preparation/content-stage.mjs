@@ -404,6 +404,140 @@ for (const record of records) {
   generatedGuideThemeSlotsByRoute[key] = slots
 }
 
+function canonicalPagePath(path) {
+  const parts = path.split('/').filter(Boolean)
+  if (config.languages.some((language) => language.toLowerCase() === parts[0]?.toLowerCase())
+    && (parts[0].toLowerCase() !== defaultLanguage.toLowerCase() || prefixDefaultLanguage)) parts.shift()
+  return `/${parts.join('/')}`.replace(/\/$/, '') || '/'
+}
+
+function normalizedRulePaths(paths = []) {
+  return paths.map((path) => canonicalPagePath(path))
+}
+
+const sourcePages = records.flatMap((record) => {
+  const sourceRelative = relative(sourceRoot, record.from).split(sep).join('/')
+  const guide = config.subguides.find(({ path }) => sourceRelative === path || sourceRelative.startsWith(`${path}/`))
+  const sourceLocale = sourceLanguage(record.from).toLowerCase()
+  const route = publicMarkdownLink(record.to)
+  return [{ record, guide, sourceLocale, route, canonical: canonicalPagePath(route) }]
+})
+const pageGroups = new Map()
+for (const page of sourcePages) {
+  const group = page.guide?.path ?? 'root'
+  const key = `${group}\n${page.canonical}`
+  const variants = pageGroups.get(key) ?? new Map()
+  variants.set(page.sourceLocale, page)
+  pageGroups.set(key, variants)
+}
+
+const localizedPages = []
+for (const variants of pageGroups.values()) {
+  const fallback = variants.get(defaultLanguage.toLowerCase()) ?? variants.values().next().value
+  if (!fallback) continue
+  for (const language of config.languages) {
+    const selected = variants.get(language.toLowerCase()) ?? fallback
+    const target = selected.sourceLocale === language.toLowerCase()
+      ? selected.record.to
+      : stagedPath(selected.record.from, language)
+    const route = publicMarkdownLink(target)
+    const markdown = await readSourceText(selected.record.from)
+    localizedPages.push({
+      ...selected,
+      language,
+      route,
+      canonical: canonicalPagePath(route),
+      title: frontmatterScalar(markdown, 'sidebarTitle') || frontmatterScalar(markdown, 'title') || humanize(selected.record.from),
+      layout: frontmatterScalar(markdown, 'layout'),
+    })
+  }
+}
+
+function mergedSubnavRules(globalRules = {}, guideRules = {}) {
+  return {
+    layouts: [...new Set([...(globalRules.layouts ?? []), ...(guideRules.layouts ?? [])])],
+    include: [...new Set([...normalizedRulePaths(globalRules.include), ...normalizedRulePaths(guideRules.include)])],
+    exclude: [...new Set([...normalizedRulePaths(globalRules.exclude), ...normalizedRulePaths(guideRules.exclude)])],
+  }
+}
+
+function localizedGuideLabel(guide, language) {
+  return guide?.labels?.[language] ?? guide?.labels?.[defaultLanguage] ?? guide?.label ?? (guide ? humanize(guide.path) : config.site?.name ?? 'Home')
+}
+
+function localizedGuideHome(guide, language) {
+  const uri = guide?.uri ?? { base: '/' }
+  const localePrefix = prefixDefaultLanguage || language !== defaultLanguage ? `/${language}` : ''
+  const base = uri.base.endsWith('/') ? uri.base : `${uri.base}/`
+  const suffix = uri.index ?? (uri.entry ? `${uri.entry}/` : '')
+  return `${localePrefix}${base}${suffix}`.replace(/([^:]\/)\/+/g, '$1')
+}
+
+const generatedFloatingSubnav = {}
+const siteSubnavRules = config.site?.floatingSubnav ?? {}
+for (const page of localizedPages) {
+  const rules = mergedSubnavRules(siteSubnavRules, page.guide?.floatingSubnav ?? {})
+  const included = rules.include.includes(page.canonical)
+  const excluded = rules.exclude.includes(page.canonical)
+  const enabled = !excluded && (included || rules.layouts.includes(page.layout))
+  if (!enabled) continue
+  const group = page.guide?.path ?? 'root'
+  const guideEntryPage = localizedPages.find((candidate) => (candidate.guide?.path ?? 'root') === group && candidate.language === page.language)
+  const links = localizedPages
+    .filter((candidate) => (candidate.guide?.path ?? 'root') === group && candidate.language === page.language && candidate !== guideEntryPage)
+    .map(({ title, route }) => ({ title, href: route }))
+  const routeKey = page.route.replace(/\/+$/, '') || '/'
+  const guideKey = page.guide ? generatedGuideKeys.get(page.guide.path) : 'root'
+  const logo = generatedGuideColors[guideKey] ?? generatedGuideColors.root ?? {}
+  generatedFloatingSubnav[routeKey] = {
+    title: localizedGuideLabel(page.guide, page.language),
+    homeHref: localizedGuideHome(page.guide, page.language),
+    homePageHref: guideEntryPage?.route,
+    links,
+    logoLight: logo.logoLight,
+    logoDark: logo.logoDark,
+    logoAlt: logo.logoAlt,
+    logoWidth: logo.logoWidth,
+    logoHeight: logo.logoHeight,
+    logoExtraStyle: logo.logoExtraStyle,
+    navigationLabel: page.language.toLowerCase().startsWith('fr') ? 'Navigation de la section' : 'Section navigation',
+    menuLabel: page.language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation de la section' : 'Open section navigation',
+  }
+}
+for (const guide of config.subguides) {
+  for (const language of config.languages) {
+    const firstPage = localizedPages.find((page) => page.guide?.path === guide.path && page.language === language)
+    if (!firstPage) continue
+    const rules = mergedSubnavRules(siteSubnavRules, guide.floatingSubnav ?? {})
+    const homeHref = localizedGuideHome(guide, language)
+    const canonicalHome = canonicalPagePath(homeHref)
+    const included = rules.include.includes(canonicalHome)
+    const excluded = rules.exclude.includes(canonicalHome)
+    if (excluded || (!included && !rules.layouts.includes(firstPage.layout))) continue
+    const links = localizedPages
+      .filter((candidate) => candidate.guide?.path === guide.path && candidate.language === language && candidate !== firstPage)
+      .map(({ title, route }) => ({ title, href: route }))
+    const routeKey = homeHref.replace(/\/+$/, '') || '/'
+    const guideKey = generatedGuideKeys.get(guide.path)
+    const logo = generatedGuideColors[guideKey] ?? generatedGuideColors.root ?? {}
+    generatedFloatingSubnav[routeKey] = {
+      title: localizedGuideLabel(guide, language),
+      homeHref,
+      homePageHref: firstPage.route,
+      links,
+      logoLight: logo.logoLight,
+      logoDark: logo.logoDark,
+      logoAlt: logo.logoAlt,
+      logoWidth: logo.logoWidth,
+      logoHeight: logo.logoHeight,
+      logoExtraStyle: logo.logoExtraStyle,
+      navigationLabel: language.toLowerCase().startsWith('fr') ? 'Navigation de la section' : 'Section navigation',
+      menuLabel: language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation de la section' : 'Open section navigation',
+    }
+  }
+}
+await writeIfChanged(join(generatedDirectory, 'floating-subnav.json'), JSON.stringify(generatedFloatingSubnav, null, 2))
+
 await writeIfChanged(join(generatedDirectory, 'site-content.json'), JSON.stringify({
   spmpstConfig: config.spmpstConfig,
   guidePaths: [...Object.keys(generatedGuideColors)],

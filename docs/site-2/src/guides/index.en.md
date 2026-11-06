@@ -40,7 +40,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
           { label: 'Business Advisory', mobileLabel: 'Advisory', href: '/services/business-advisory/', icon: '@spmpst::icon::briefcase' },
           { label: 'Systems and Operations', mobileLabel: 'Systems', href: '/services/systems-and-operations/systems-overview', icon: '@spmpst::icon::server' },
           { label: 'Opportunities', mobileLabel: 'Ideas', href: '/opportunities/introduction/', icon: '@spmpst::icon::sparkles' },
-          { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/about-us/numerimondes', icon: '@spmpst::icon::building' },
+          { label: 'About Numerimondes', mobileLabel: 'About', href: '/company/overview', icon: '@spmpst::icon::building' },
         ],
       },
     ]"
@@ -413,7 +413,7 @@ Join project teams when your expertise fits an assignment — across software en
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
 <FeluqaButton tag="a" color="dark" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" color="dark" href="/company/about-us/numerimondes" label="More about us"/>
+<FeluqaButton tag="a" color="dark" href="/company/overview" label="More about us"/>
 </div>
 
 ::::

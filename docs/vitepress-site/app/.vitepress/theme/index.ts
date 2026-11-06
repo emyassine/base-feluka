@@ -6,6 +6,7 @@ import generatedFonts from '@generated/fonts.json'
 import siteContent from '@generated/site-content.json'
 import sidebarPageIcons from '@generated/sidebar-page-icons.json'
 import generatedCollections from '@generated/collections.json'
+import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
 import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
@@ -16,6 +17,8 @@ import ManageCookies from './ManageCookies.vue'
 import TopbarActions from './TopbarActions.vue'
 import TopbarCurrency from './TopbarCurrency.vue'
 import Currency from './Currency.vue'
+import DropdownMenu from './DropdownMenu.vue'
+import FloatingSubnav from './FloatingSubnav.vue'
 import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
 import './style.css'
@@ -669,6 +672,23 @@ const MermaidLayout = {
       const configuredSubnav = layoutSlots['nav-bar-content-after']
       const renderedSubnav = configuredSubnav?.()
       const subnavComponent = renderedSubnav?.type as Component | undefined
+      const pagePath = route.path.replace(/\/+$/, '') || '/'
+      const floatingSubnav = (generatedFloatingSubnav as Record<string, {
+        title: string
+        homeHref: string
+        homePageHref?: string
+        links: Array<{ title: string; href: string }>
+        logoLight?: string
+        logoDark?: string
+        logoAlt?: string
+        logoWidth?: string
+        logoHeight?: string
+        logoExtraStyle?: string
+        navigationLabel: string
+        menuLabel: string
+      }>)[pagePath]
+      const renderFloatingSubnav = () => floatingSubnav ? h(FloatingSubnav, floatingSubnav) : null
+      const isHomeLayout = pageFrontmatter.value.layout === 'home'
       return h(DefaultTheme.Layout, {
         class: {
           'home-subheader-content': frontmatter.value.pageLayout === 'home-subheader-content',
@@ -680,13 +700,20 @@ const MermaidLayout = {
       'layout-bottom': () => h(Fragment, null, [layoutSlots['layout-bottom']?.(), h(ManageCookies)]),
       'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(TopbarCurrency)]),
       'nav-bar-content-after': () => h(Fragment, null, [
-        (articleLayout() || homeSubheaderLayout())
+        floatingSubnav
+          ? null
+          : (articleLayout() || homeSubheaderLayout())
           ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: renderSubheaderActions })
           : renderedSubnav,
         h(TopbarActions),
       ]),
+      'home-hero-before': () => h(Fragment, null, [
+        layoutSlots['home-hero-before']?.(),
+        isHomeLayout ? renderFloatingSubnav() : null,
+      ]),
       'doc-before': () => h(Fragment, null, [
         h(DocumentationNotice, { notices: siteContent.documentationNotices }),
+        isHomeLayout ? null : renderFloatingSubnav(),
       ]),
       'doc-after': () => articleLayout() ? h('nav', { class: 'collection-article-footer', 'aria-label': 'Collection navigation' }, [
         h('a', { href: articleCollectionLink() }, collectionForPage()?.titles[String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]] ?? collectionForPage()?.titles.en),
@@ -706,6 +733,8 @@ export default {
     context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
     context.app.component('CollectionSearch', CollectionSearch)
     context.app.component('ArticlesPageLayout', ArticlesPageLayout)
+    context.app.component('DropdownMenu', DropdownMenu)
+    context.app.component('FloatingSubnav', FloatingSubnav)
     context.app.component('PageActions', PageActions)
     registerProjectComponents(context.app)
     context.app.component('currency', Currency)

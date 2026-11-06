@@ -236,7 +236,7 @@
             {
               "type": "link",
               "label": { "en": "Brand Kit", "fr": "Identité de marque" },
-              "href": "/brand-kit/our-brand",
+              "href": "/company",
               "icon": "images"
             }
           ]

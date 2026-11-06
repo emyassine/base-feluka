@@ -6,15 +6,7 @@ layout: home
 ---
 
 <BrandKitWrapper>
-  <FloatingTopBar logo="/media/favicon.png" logo-alt="Numerimondes" home-href="/company" title="Overview" :show-border="false" :links="[
-          { title: 'Logo', href: '/company/logo' },
-    { title: 'Colors', href: '/company/colors' },
-    { title: 'Type', href: '/company/type' },
-    { title: 'Photos', href: '/company/photos' },
-    { title: 'Icons', href: '/company/icons' }
-  ]" />
-
-  <div style="margin-top: 2rem">
+<div style="margin-top: 2rem">
     <BrandKitHero eyebrow="Brandkit // Photo" title="Photos" tagline="Our photography is timeless but contemporary" cta-label="Explore Photo" cta-href="#brand-kit-index" background-image="/images/brand-kit/photos/main-photo.jpg" background-image-alt="BrandKit photographic direction"/>
   </div>
 

@@ -31,6 +31,9 @@
       "labels": {
         "en": "Company"
       },
+      "floatingSubnav": {
+        "layouts": ["home"]
+      },
       "uri": {
         "base": "/company/"
       }

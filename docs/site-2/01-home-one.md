@@ -144,7 +144,7 @@ Numerimondes is an independent technology company based in Casablanca, Morocco. 
 
 Our engineering interests include Rust, PHP, Linux, databases, automation and cross-platform software. Technology choices follow the project's needs — not the other way around.
 
-**Action:** About Numerimondes → `/company/about-us/numerimondes`
+**Action:** About Numerimondes → `/company/overview`
 
 ---
 

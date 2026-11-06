@@ -21,6 +21,9 @@
         },
         "description": {
           "type": "string"
+        },
+        "floatingSubnav": {
+          "$ref": "#/$defs/floatingSubnav"
         }
       },
       "additionalProperties": false
@@ -66,10 +69,36 @@
               }
             },
             "additionalProperties": false
+          },
+          "floatingSubnav": {
+            "$ref": "#/$defs/floatingSubnav"
           }
         },
         "additionalProperties": false
       }
+    }
+  },
+  "$defs": {
+    "floatingSubnav": {
+      "type": "object",
+      "properties": {
+        "layouts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "include": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^/(?:[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*)?/?$" }
+        },
+        "exclude": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^/(?:[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*)?/?$" }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,

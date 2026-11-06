@@ -132,7 +132,7 @@ This is our corporate scope, **not a claim that every activity is already offere
 
 Our model is project-driven: a clear point of contact, an agreed scope and an appropriate combination of expertise and resources for each engagement.
 
-**CTA:** Learn about Numerimondes → `/company/about-us/numerimondes`
+**CTA:** Learn about Numerimondes → `/company/overview`
 
 ---
 

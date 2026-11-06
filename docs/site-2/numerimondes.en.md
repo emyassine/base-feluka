@@ -127,7 +127,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/company/about-us/numerimondes" label="More about us"/>
+<FeluqaButton tag="a" href="/company/overview" label="More about us"/>
 
 ---
 

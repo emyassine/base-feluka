@@ -1,43 +1,67 @@
 <template>
-  <nav
-    class="floating-topbar"
-    :class="{ 'floating-topbar--bordered': props.showBorder }"
-    :aria-label="props.navigationLabel"
-  >
-    <a class="floating-topbar__identity" :href="props.homeHref" :style="props.titleStyle" :class="props.titleClass">
-      <img v-if="props.logo" class="floating-topbar__logo" :src="props.logo" :alt="props.logoAlt || props.title" />
-      <span v-html="props.title"></span>
+  <nav class="floating-subnav" :aria-label="props.navigationLabel">
+    <a
+      class="floating-subnav__identity"
+      :href="props.homeHref"
+      :aria-current="isHomePage ? 'page' : undefined"
+    >
+      <span v-if="props.logoLight || props.logoDark" class="floating-subnav__logo" :style="logoContainerStyle">
+        <img class="floating-subnav__logo-light" :src="props.logoLight || props.logoDark" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+        <img class="floating-subnav__logo-dark" :src="props.logoDark || props.logoLight" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+      </span>
+      <span>{{ props.title }}</span>
     </a>
-    <div class="floating-topbar__links">
-      <a v-for="link in props.links" :key="link.href" :href="link.href" :style="link.style" :class="link.class" v-html="link.title"></a>
+    <div class="floating-subnav__links">
+      <a v-for="link in props.links" :key="link.href" :href="link.href" :aria-current="isCurrentPage(link.href) ? 'page' : undefined">
+        {{ link.title }}
+      </a>
     </div>
     <DropdownMenu :links="props.links" :menu-label="props.menuLabel" trigger-mode="mobile" />
   </nav>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vitepress'
+
 const props = withDefaults(defineProps<{
   title: string
-  logo?: string
+  homeHref: string
+  homePageHref?: string
+  links: Array<{ title: string; href: string }>
+  logoLight?: string
+  logoDark?: string
   logoAlt?: string
-  homeHref?: string
-  titleStyle?: string
-  titleClass?: string
-  links: Array<{ title: string; href: string; style?: string; class?: string }>
-  showBorder?: boolean
+  logoWidth?: string
+  logoHeight?: string
+  logoExtraStyle?: string
   navigationLabel?: string
   menuLabel?: string
 }>(), {
-  homeHref: '/',
-  showBorder: true,
-  navigationLabel: 'Primary navigation',
-  menuLabel: 'Open navigation menu',
+  navigationLabel: 'Section navigation',
+  menuLabel: 'Open section navigation',
 })
 
+const route = useRoute()
+const logoContainerStyle = {
+  height: props.logoHeight || '1.5rem',
+  maxWidth: props.logoWidth,
+}
+const isHomePage = computed(() => [props.homeHref, props.homePageHref]
+  .filter((path): path is string => Boolean(path))
+  .some((path) => normalizePath(route.path) === normalizePath(path)))
+
+function normalizePath(path: string): string {
+  return path.replace(/\/+$/, '') || '/'
+}
+
+function isCurrentPage(href: string): boolean {
+  return normalizePath(route.path) === normalizePath(href)
+}
 </script>
 
 <style scoped>
-.floating-topbar {
+.floating-subnav {
   position: sticky;
   z-index: 20;
   top: calc(var(--vp-nav-height, 64px) + 0.75rem);
@@ -66,11 +90,7 @@ const props = withDefaults(defineProps<{
   backdrop-filter: blur(30px) saturate(1.35);
 }
 
-.floating-topbar--bordered {
-  border-color: rgb(255 255 255 / 42%);
-}
-
-:global(:root:not(.dark)) .floating-topbar {
+:global(:root:not(.dark)) .floating-subnav {
   border-color: rgb(255 255 255 / 82%);
   background: linear-gradient(145deg, rgb(255 255 255 / 94%), rgb(241 245 249 / 90%));
   box-shadow:
@@ -81,11 +101,10 @@ const props = withDefaults(defineProps<{
   backdrop-filter: blur(18px) saturate(1.1);
 }
 
-.floating-topbar__identity {
+.floating-subnav__identity {
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: 0.45rem;
   min-width: 0;
   height: 32px;
   overflow: hidden;
@@ -100,20 +119,34 @@ const props = withDefaults(defineProps<{
   white-space: nowrap;
 }
 
-.floating-topbar__identity span {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.floating-subnav__logo {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  margin-inline-end: 0.35rem;
 }
 
-.floating-topbar__logo {
+.floating-subnav__logo img {
   display: block;
   width: auto;
   max-width: 136px;
-  height: 22px;
+  height: 100%;
   object-fit: contain;
 }
 
-.floating-topbar__links {
+.floating-subnav__logo-dark {
+  display: none !important;
+}
+
+:global(.dark) .floating-subnav__logo-light {
+  display: none !important;
+}
+
+:global(.dark) .floating-subnav__logo-dark {
+  display: block !important;
+}
+
+.floating-subnav__links {
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -123,11 +156,11 @@ const props = withDefaults(defineProps<{
   padding: 0;
 }
 
-.floating-topbar__links::-webkit-scrollbar {
+.floating-subnav__links::-webkit-scrollbar {
   display: none;
 }
 
-.floating-topbar__links a {
+.floating-subnav__links a {
   display: inline-flex;
   flex: none;
   align-items: center;
@@ -143,27 +176,21 @@ const props = withDefaults(defineProps<{
   white-space: nowrap;
 }
 
-.floating-topbar__links a:hover,
-.floating-topbar__identity:hover {
+.floating-subnav__links a:hover,
+.floating-subnav__links a[aria-current='page'],
+.floating-subnav__identity:hover {
   color: var(--vp-c-brand-1);
   background: rgb(255 255 255 / 16%);
 }
 
-.floating-topbar__identity:hover,
-.floating-topbar__identity:focus-visible {
-  border-start-start-radius: calc(var(--radius-lg) * 1.2);
-  border-end-start-radius: calc(var(--radius-lg) * 1.2);
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-}
-
-:global(:root:not(.dark)) .floating-topbar__links a:hover,
-:global(:root:not(.dark)) .floating-topbar__identity:hover {
+:global(:root:not(.dark)) .floating-subnav__links a:hover,
+:global(:root:not(.dark)) .floating-subnav__links a[aria-current='page'],
+:global(:root:not(.dark)) .floating-subnav__identity:hover {
   background: rgb(15 23 42 / 6%);
 }
 
 @media (max-width: 680px) {
-  .floating-topbar {
+  .floating-subnav {
     top: calc(var(--vp-nav-height, 64px) + 0.5rem);
     max-width: 100%;
     margin-block: 0.75rem 1.5rem;
@@ -171,22 +198,25 @@ const props = withDefaults(defineProps<{
     gap: 0.15rem;
   }
 
-  .floating-topbar__identity {
+  .floating-subnav__identity {
     max-width: calc(100vw - 4.5rem);
     padding: 0 0.55rem 0 0.35rem;
     font-size: 0.78rem;
   }
 
-  .floating-topbar__links a {
+  .floating-subnav__logo img {
+    max-width: 110px;
+  }
+
+  .floating-subnav__links a {
     padding: 0 0.45rem;
     font-size: 0.66rem;
   }
 }
 
 @media (max-width: 767px) {
-  .floating-topbar__links {
+  .floating-subnav__links {
     display: none;
   }
-
 }
 </style>
