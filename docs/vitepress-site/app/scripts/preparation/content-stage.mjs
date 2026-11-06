@@ -513,7 +513,7 @@ const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
     }).filter(link => link.type !== 'separator')
   }
   return localizedPages
-    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language && candidate !== guideEntryPage)
+    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language)
     .map(({ title, route }) => ({ title, href: route }))
 }
 
