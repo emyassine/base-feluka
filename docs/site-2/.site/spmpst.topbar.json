@@ -145,30 +145,7 @@
         "en": "Company"
       },
       "groups": [
-        {
-          "label": {
-            "en": "About"
-          },
-          "showLabel": false,
-          "groupBy": {
-            "ids": [
-              "/company/about-us",
-              "/company/how-we-work",
-              "/company/who-we-help"
-            ]
-          }
-        },
-        {
-          "label": {
-            "en": "Contact"
-          },
-          "showLabel": false,
-          "groupBy": {
-            "ids": [
-              "/company/contact"
-            ]
-          }
-        },
+
         {
           "label": {
             "en": "Policies"
@@ -184,16 +161,6 @@
               "icon": "scale"
             }
           ]
-        }
-      ],
-      "sources": [
-        {
-          "type": "guide",
-          "path": "company",
-          "children": {
-            "source": "subguides no-guide-index",
-            "icon": true
-          }
         }
       ]
     },
@@ -226,18 +193,6 @@
               "label": { "en": "Articles" },
               "badge": "count",
               "icon": "newspaper"
-            }
-          ]
-        },
-        {
-          "label": { "en": "Brand assets", "fr": "Ressources de marque" },
-          "showLabel": false,
-          "entries": [
-            {
-              "type": "link",
-              "label": { "en": "Brand Kit", "fr": "Identité de marque" },
-              "href": "/company",
-              "icon": "images"
             }
           ]
         }

@@ -378,7 +378,7 @@ html.dark .floating-subnav {
   display: block;
   width: auto;
   max-width: 136px;
-  height: 100%;
+  height: 75%;
   object-fit: contain;
 }
 
