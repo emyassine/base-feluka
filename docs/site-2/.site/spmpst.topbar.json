@@ -145,7 +145,22 @@
         "en": "Company"
       },
       "groups": [
-
+        {
+          "label": {
+            "en": "Company"
+          },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "link",
+              "label": {
+                "en": "Company"
+              },
+              "href": "/company/",
+              "icon": "building-2"
+            }
+          ]
+        },
         {
           "label": {
             "en": "Policies"
