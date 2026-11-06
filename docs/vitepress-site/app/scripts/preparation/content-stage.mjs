@@ -495,26 +495,47 @@ for (const guide of config.subguides) {
 
 const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
   const subheaderConfig = guideSubheaderConfigs.get(guidePath)
-  if (subheaderConfig?.items) {
-    const langPrefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
-    const langPathPrefix = langPrefix ? `/${langPrefix}` : ''
-    return subheaderConfig.items.map(item => {
-      if (item.type === 'separator') {
-        return { type: 'separator' }
+  const langPrefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
+  const langPathPrefix = langPrefix ? `/${langPrefix}` : ''
+  
+  // Get all pages for this guide
+  let allGuidePages = localizedPages
+    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language)
+    .map(({ title, route }) => ({ title, href: route }))
+  
+  // Apply exclude rules
+  if (subheaderConfig?.exclude) {
+    const excludedRoutes = new Set()
+    subheaderConfig.exclude.forEach(pattern => {
+      if (pattern.includes('*')) {
+        const prefix = pattern.replace(/\*$/, '')
+        allGuidePages.forEach(page => {
+          if (page.href.startsWith(prefix)) {
+            excludedRoutes.add(page.href)
+          }
+        })
+      } else {
+        excludedRoutes.add(langPathPrefix + pattern)
       }
-      const label = item.label?.[language] ?? item.label?.en ?? item.label ?? item.path
-      let href = item.path
+    })
+    allGuidePages = allGuidePages.filter(page => !excludedRoutes.has(page.href))
+  }
+  
+  // Apply include rules (adds custom links)
+  if (subheaderConfig?.include) {
+    subheaderConfig.include.forEach(Item => {
+      const label = Item.label?.[language] ?? Item.label?.en ?? Item.label ?? Item.path
+      let href = Item.path
       if (href?.startsWith('/')) {
         href = `${langPathPrefix}${href}`
       } else {
-        href = `${langPathPrefix}/${guidePath}/${item.path}`
+        href = `${langPathPrefix}/${guidePath}/${Item.path}`
       }
-      return { title: label, href, type: item.type, redirect: item.redirect }
+      allGuidePages.push({ title: label, href, type: 'custom', custom: true })
     })
   }
-  return localizedPages
-    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language)
-    .map(({ title, route }) => ({ title, href: route }))
+  
+  return allGuidePages
 }
 
 for (const page of localizedPages) {
