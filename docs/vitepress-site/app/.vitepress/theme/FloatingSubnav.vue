@@ -1,27 +1,95 @@
 <template>
-  <nav class="floating-subnav" :aria-label="props.navigationLabel">
+  <nav
+    ref="navRef"
+    class="floating-subnav"
+    :class="{ 'is-compact': isCompact }"
+    :aria-label="props.navigationLabel"
+  >
     <a
+      ref="identityRef"
       class="floating-subnav__identity"
       :href="props.homeHref"
       :aria-current="isHomePage ? 'page' : undefined"
     >
-      <span v-if="props.logoMiniLight || props.logoMiniDark || props.logoLight || props.logoDark" class="floating-subnav__logo" :style="logoContainerStyle">
-        <img class="floating-subnav__logo-light" :src="props.logoMiniLight || props.logoLight || props.logoMiniDark || props.logoDark" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
-        <img class="floating-subnav__logo-dark" :src="props.logoMiniDark || props.logoDark || props.logoMiniLight || props.logoLight" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+      <span v-if="hasLogo" class="floating-subnav__logo" :style="logoContainerStyle">
+        <img class="floating-subnav__logo-light" :src="logoLightSrc" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
+        <img class="floating-subnav__logo-dark" :src="logoDarkSrc" :alt="props.logoAlt || ''" :style="props.logoExtraStyle" />
       </span>
-      <span>{{ props.title }}</span>
+      <span class="floating-subnav__collapse floating-subnav__collapse--title">
+        <span class="floating-subnav__collapse-inner">
+          <span class="floating-subnav__title">{{ props.title }}</span>
+        </span>
+      </span>
     </a>
-    <div class="floating-subnav__links">
-      <a v-for="link in props.links" :key="link.href" :href="link.href" :aria-current="isCurrentPage(link.href) ? 'page' : undefined">
-        {{ link.title }}
-      </a>
+
+    <!-- Inline links (hidden in compact mode) -->
+    <div class="floating-subnav__collapse floating-subnav__collapse--links">
+      <div class="floating-subnav__collapse-inner floating-subnav__links-inner">
+        <span class="floating-subnav__divider" aria-hidden="true" />
+        <div class="floating-subnav__links">
+          <a
+            v-for="link in visibleLinks"
+            :key="link.href"
+            class="floating-subnav__link"
+            :href="link.href"
+            :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
+          >
+            {{ link.title }}
+          </a>
+        </div>
+      </div>
     </div>
+
+    <!-- "More" menu: overflow links, or every link when compact -->
+    <div ref="moreRef" class="floating-subnav__more">
+      <div class="floating-subnav__collapse floating-subnav__collapse--more" :data-open="showMore">
+        <div class="floating-subnav__collapse-inner">
+          <button
+            type="button"
+            class="floating-subnav__more-button"
+            :aria-expanded="menuOpen"
+            aria-controls="floating-subnav-menu"
+            :aria-label="props.menuLabel"
+            :tabindex="showMore ? 0 : -1"
+            @click="menuOpen = !menuOpen"
+          >
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+              <path d="M3.5 6.25 8 10.75l4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <Transition name="floating-subnav-menu">
+        <ul v-if="menuOpen && showMore" id="floating-subnav-menu" class="floating-subnav__menu">
+          <li v-for="link in menuLinks" :key="link.href">
+            <a
+              class="floating-subnav__menu-link"
+              :href="link.href"
+              :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
+              @click="menuOpen = false"
+            >
+              {{ link.title }}
+            </a>
+          </li>
+        </ul>
+      </Transition>
+    </div>
+
+    <!-- Mobile menu (below 768px) -->
     <DropdownMenu :links="props.links" :menu-label="props.menuLabel" trigger-mode="mobile" />
+
+    <!-- Invisible measuring layer used to compute overflow -->
+    <div class="floating-subnav__ghost" aria-hidden="true">
+      <span v-for="link in props.links" :key="link.href" ref="ghostRefs" class="floating-subnav__link">
+        {{ link.title }}
+      </span>
+    </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 
 const props = withDefaults(defineProps<{
@@ -44,14 +112,42 @@ const props = withDefaults(defineProps<{
   menuLabel: 'Open section navigation',
 })
 
+const MOBILE_BREAKPOINT = 767
+const COMPACT_ENTER_Y = 80
+const SCROLL_DELTA = 4
+// Layout constants (px) used for the overflow computation.
+const NAV_CHROME = 20
+const LINK_GAP = 4
+const DIVIDER_WIDTH = 12
+const MORE_WIDTH = 36
+
 const route = useRoute()
-const logoContainerStyle = {
+
+const navRef = ref<HTMLElement | null>(null)
+const identityRef = ref<HTMLElement | null>(null)
+const moreRef = ref<HTMLElement | null>(null)
+const ghostRefs = ref<HTMLElement[]>([])
+
+const isCompact = ref(false)
+const menuOpen = ref(false)
+const visibleCount = ref(props.links.length)
+
+const hasLogo = computed(() => Boolean(props.logoMiniLight || props.logoMiniDark || props.logoLight || props.logoDark))
+const logoLightSrc = computed(() => props.logoMiniLight || props.logoLight || props.logoMiniDark || props.logoDark)
+const logoDarkSrc = computed(() => props.logoMiniDark || props.logoDark || props.logoMiniLight || props.logoLight)
+const logoContainerStyle = computed(() => ({
   height: props.logoHeight || '1.5rem',
   maxWidth: props.logoWidth,
-}
+}))
+
 const isHomePage = computed(() => [props.homeHref, props.homePageHref]
   .filter((path): path is string => Boolean(path))
   .some((path) => normalizePath(route.path) === normalizePath(path)))
+
+const visibleLinks = computed(() => props.links.slice(0, visibleCount.value))
+const overflowLinks = computed(() => props.links.slice(visibleCount.value))
+const showMore = computed(() => isCompact.value || overflowLinks.value.length > 0)
+const menuLinks = computed(() => (isCompact.value ? props.links : overflowLinks.value))
 
 function normalizePath(path: string): string {
   return path.replace(/\/+$/, '') || '/'
@@ -60,58 +156,195 @@ function normalizePath(path: string): string {
 function isCurrentPage(href: string): boolean {
   return normalizePath(route.path) === normalizePath(href)
 }
+
+/* ---------- Overflow ---------- */
+
+let identityFullWidth = 0
+
+function measure() {
+  const nav = navRef.value
+  if (!nav || window.innerWidth <= MOBILE_BREAKPOINT) {
+    visibleCount.value = props.links.length
+    return
+  }
+
+  if (!isCompact.value && identityRef.value) {
+    identityFullWidth = identityRef.value.getBoundingClientRect().width
+  }
+
+  const parentWidth = nav.parentElement?.clientWidth ?? window.innerWidth
+  const available = parentWidth - 16 - NAV_CHROME - identityFullWidth - DIVIDER_WIDTH
+  const widths = ghostRefs.value.map((el) => el.getBoundingClientRect().width)
+
+  let used = 0
+  let count = 0
+  for (let i = 0; i < widths.length; i++) {
+    const next = used + widths[i] + (count > 0 ? LINK_GAP : 0)
+    const hasRemaining = widths.length - (i + 1) > 0
+    const reserve = hasRemaining ? MORE_WIDTH : 0
+    if (next + reserve > available) break
+    used = next
+    count++
+  }
+  visibleCount.value = count
+}
+
+/* ---------- Scroll (Apple-style compact mode) ---------- */
+
+let lastY = 0
+let ticking = false
+
+function onScroll() {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(() => {
+    ticking = false
+    if (menuOpen.value) return
+    const y = Math.max(window.scrollY, 0)
+    const delta = y - lastY
+    if (y < COMPACT_ENTER_Y) {
+      isCompact.value = false
+    } else if (delta > SCROLL_DELTA) {
+      isCompact.value = true
+    } else if (delta < -SCROLL_DELTA) {
+      isCompact.value = false
+    }
+    lastY = y
+  })
+}
+
+/* ---------- Menu ---------- */
+
+function onPointerDown(event: PointerEvent) {
+  if (menuOpen.value && moreRef.value && !moreRef.value.contains(event.target as Node)) {
+    menuOpen.value = false
+  }
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') menuOpen.value = false
+}
+
+let resizeObserver: ResizeObserver | undefined
+
+onMounted(() => {
+  lastY = window.scrollY
+  measure()
+  document.fonts?.ready.then(measure)
+
+  resizeObserver = new ResizeObserver(measure)
+  if (navRef.value?.parentElement) resizeObserver.observe(navRef.value.parentElement)
+  if (identityRef.value) resizeObserver.observe(identityRef.value)
+
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', measure, { passive: true })
+  document.addEventListener('pointerdown', onPointerDown)
+  document.addEventListener('keydown', onKeydown)
+  onScroll()
+})
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', measure)
+  document.removeEventListener('pointerdown', onPointerDown)
+  document.removeEventListener('keydown', onKeydown)
+})
+
+watch(() => [props.links, props.title], () => nextTick(measure), { deep: true })
+watch(() => route.path, () => { menuOpen.value = false })
+watch(showMore, (value) => { if (!value) menuOpen.value = false })
 </script>
 
 <style>
 .floating-subnav {
+  --fs-bg: rgb(255 255 255 / 72%);
+  --fs-border: rgb(15 23 42 / 8%);
+  --fs-shadow:
+    0 1px 2px rgb(15 23 42 / 6%),
+    0 10px 24px -8px rgb(15 23 42 / 14%);
+  --fs-highlight: inset 0 1px 0 rgb(255 255 255 / 80%);
+  --fs-hover: rgb(15 23 42 / 7%);
+  --fs-active: rgb(15 23 42 / 10%);
+  --fs-divider: rgb(15 23 42 / 14%);
+  --fs-blur: blur(20px) saturate(1.8);
+  --fs-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --fs-duration: 0.45s;
+
   position: sticky;
   z-index: 20;
   top: calc(var(--vp-nav-height, 64px) + 0.75rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
   width: max-content;
   max-width: calc(100% - 1rem);
+  height: 42px;
   min-width: 0;
   margin: 1.25rem auto 2rem;
-  box-sizing: border-box;
-  height: 42px;
   padding: 0.25rem 0.4rem;
-  border: 1px solid rgb(255 255 255 / 34%);
+  box-sizing: border-box;
+  border: 1px solid var(--fs-border);
   border-radius: calc(var(--radius-lg) * 1.2);
   color: var(--vp-c-text-1);
-  background:
-    linear-gradient(145deg, rgb(255 255 255 / 24%), rgb(255 255 255 / 4%) 48%, rgb(255 255 255 / 10%)),
-    color-mix(in srgb, var(--vp-c-bg) 38%, transparent);
-  box-shadow:
-    0 8px 28px rgb(0 0 0 / 30%),
-    inset 0 1px 0 rgb(255 255 255 / 42%),
-    inset 0 -1px 0 rgb(255 255 255 / 10%);
-  -webkit-backdrop-filter: blur(90px) saturate(1.35);
-  backdrop-filter: blur(30px) saturate(1.35);
+  background: var(--fs-bg);
+  box-shadow: var(--fs-shadow), var(--fs-highlight);
+  -webkit-backdrop-filter: var(--fs-blur);
+  backdrop-filter: var(--fs-blur);
 }
 
-:global(:root:not(.dark)) .floating-subnav {
-  border-color: rgb(255 255 255 / 82%);
-  background: linear-gradient(145deg, rgb(255 255 255 / 94%), rgb(241 245 249 / 90%));
-  box-shadow:
-    0 12px 32px rgb(15 23 42 / 24%),
-    inset 0 1px 0 #fff,
-    inset 0 -1px 0 rgb(148 163 184 / 18%);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
-  backdrop-filter: blur(18px) saturate(1.1);
+html.dark .floating-subnav {
+  --fs-bg: rgb(24 24 27 / 60%);
+  --fs-border: rgb(255 255 255 / 10%);
+  --fs-shadow:
+    0 0 0 1px rgb(0 0 0 / 20%),
+    0 14px 32px -10px rgb(0 0 0 / 55%);
+  --fs-highlight: inset 0 1px 0 rgb(255 255 255 / 6%);
+  --fs-hover: rgb(255 255 255 / 7%);
+  --fs-active: rgb(255 255 255 / 11%);
+  --fs-divider: rgb(255 255 255 / 14%);
+  --fs-blur: blur(24px) saturate(1.6);
 }
+
+/* ---------- Collapsible blocks (animate 1fr <-> 0fr) ---------- */
+
+.floating-subnav__collapse {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-width: 0;
+  opacity: 1;
+  transition:
+    grid-template-columns var(--fs-duration) var(--fs-ease),
+    opacity 0.25s ease;
+}
+
+.floating-subnav__collapse-inner {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.floating-subnav.is-compact .floating-subnav__collapse--title,
+.floating-subnav.is-compact .floating-subnav__collapse--links,
+.floating-subnav__collapse--more[data-open='false'] {
+  grid-template-columns: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Identity ---------- */
 
 .floating-subnav__identity {
   display: inline-flex;
   flex: none;
   align-items: center;
-  min-width: 0;
   height: 32px;
-  overflow: hidden;
-  padding: 0 0.75rem 0 0.4rem;
-  border-inline-end: 1px solid color-mix(in srgb, var(--vp-c-text-1) 38%, var(--vp-c-bg));
+  padding-inline: 0.4rem 0.75rem;
+  border-start-start-radius: var(--radius-lg);
+  border-end-start-radius: var(--radius-lg);
+  border-start-end-radius: var(--radius-md);
+  border-end-end-radius: var(--radius-md);
   color: inherit;
   font-size: 0.72rem;
   font-weight: 600;
@@ -119,6 +352,14 @@ function isCurrentPage(href: string): boolean {
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    padding var(--fs-duration) var(--fs-ease);
+}
+
+.floating-subnav.is-compact .floating-subnav__identity {
+  padding-inline-end: 0.4rem;
 }
 
 .floating-subnav__logo {
@@ -126,6 +367,11 @@ function isCurrentPage(href: string): boolean {
   flex: none;
   align-items: center;
   margin-inline-end: 0.35rem;
+  transition: margin var(--fs-duration) var(--fs-ease);
+}
+
+.floating-subnav.is-compact .floating-subnav__logo {
+  margin-inline-end: 0;
 }
 
 .floating-subnav__logo img {
@@ -148,21 +394,23 @@ html.dark .floating-subnav__logo-dark {
   display: block !important;
 }
 
+/* ---------- Divider + links ---------- */
+
+.floating-subnav__divider {
+  flex: none;
+  width: 1px;
+  height: 16px;
+  margin-inline: 0.25rem 0.35rem;
+  background: var(--fs-divider);
+}
+
 .floating-subnav__links {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding: 0;
 }
 
-.floating-subnav__links::-webkit-scrollbar {
-  display: none;
-}
-
-.floating-subnav__links a {
+.floating-subnav__link {
   display: inline-flex;
   flex: none;
   align-items: center;
@@ -176,20 +424,131 @@ html.dark .floating-subnav__logo-dark {
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ---------- Hover / active ---------- */
+
+.floating-subnav__identity:hover,
+.floating-subnav__identity:focus-visible,
+.floating-subnav__links a.floating-subnav__link:hover,
+.floating-subnav__more-button:hover,
+.floating-subnav__menu-link:hover {
+  background: var(--fs-hover);
+}
+
+.floating-subnav__identity[aria-current='page'],
+.floating-subnav__links a[aria-current='page'],
+.floating-subnav__menu-link[aria-current='page'],
+.floating-subnav__more-button[aria-expanded='true'] {
+  background: var(--fs-active);
 }
 
 .floating-subnav__links a:hover,
 .floating-subnav__links a[aria-current='page'],
-.floating-subnav__identity:hover {
+.floating-subnav__menu-link[aria-current='page'] {
   color: var(--vp-c-brand-1);
-  background: rgb(255 255 255 / 16%);
 }
 
-:global(:root:not(.dark)) .floating-subnav__links a:hover,
-:global(:root:not(.dark)) .floating-subnav__links a[aria-current='page'],
-:global(:root:not(.dark)) .floating-subnav__identity:hover {
-  background: rgb(15 23 42 / 6%);
+/* ---------- More button + menu ---------- */
+
+.floating-subnav__more {
+  position: relative;
+  display: flex;
+  flex: none;
 }
+
+.floating-subnav__more .floating-subnav__collapse-inner {
+  padding-inline-start: 0.25rem;
+}
+
+.floating-subnav__more-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--vp-c-text-1);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.floating-subnav__more-button svg {
+  transition: transform 0.3s var(--fs-ease);
+}
+
+.floating-subnav__more-button[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.floating-subnav__menu {
+  position: absolute;
+  inset-block-start: calc(100% + 0.9rem);
+  inset-inline-end: 0;
+  min-width: 11rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border: 1px solid var(--fs-border);
+  border-radius: var(--radius-lg);
+  background: var(--fs-bg);
+  box-shadow: var(--fs-shadow), var(--fs-highlight);
+  -webkit-backdrop-filter: var(--fs-blur);
+  backdrop-filter: var(--fs-blur);
+  transform-origin: top;
+}
+
+html.dark .floating-subnav__menu {
+  background: rgb(24 24 27 / 82%);
+}
+
+:root:not(.dark) .floating-subnav__menu {
+  background: rgb(255 255 255 / 86%);
+}
+
+.floating-subnav__menu-link {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--vp-c-text-1);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.floating-subnav-menu-enter-active,
+.floating-subnav-menu-leave-active {
+  transition: opacity 0.2s ease, transform 0.3s var(--fs-ease);
+}
+
+.floating-subnav-menu-enter-from,
+.floating-subnav-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+}
+
+/* ---------- Measuring layer ---------- */
+
+.floating-subnav__ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: flex;
+  gap: 0.25rem;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
 
 @media (max-width: 680px) {
   .floating-subnav {
@@ -197,28 +556,30 @@ html.dark .floating-subnav__logo-dark {
     max-width: 100%;
     margin-block: 0.75rem 1.5rem;
     padding: 0.25rem 0.35rem;
-    gap: 0.15rem;
   }
 
   .floating-subnav__identity {
     max-width: calc(100vw - 4.5rem);
-    padding: 0 0.55rem 0 0.35rem;
     font-size: 0.78rem;
   }
 
   .floating-subnav__logo img {
     max-width: 110px;
   }
-
-  .floating-subnav__links a {
-    padding: 0 0.45rem;
-    font-size: 0.66rem;
-  }
 }
 
 @media (max-width: 767px) {
-  .floating-subnav__links {
+  .floating-subnav__collapse--links,
+  .floating-subnav__more,
+  .floating-subnav__ghost {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-subnav *,
+  .floating-subnav {
+    transition-duration: 0.01ms !important;
   }
 }
 </style>
