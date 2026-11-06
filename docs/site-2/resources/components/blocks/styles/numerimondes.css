@@ -163,3 +163,102 @@
 
 .nm-policy-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr)); gap:16px; }
 .nm-policy-empty { color:var(--vp-c-text-2); }
+
+/** VPMenu **/
+.menu .VPMenu {
+	border-radius: var(--radius-md) !important;
+}
+.VPMenu *,
+.VPMenu *::before,
+.VPMenu *::after {
+	border-radius: var(--radius-md) !important;
+}
+@media (min-width: 960px) {
+	.menu .VPMenu {
+		min-width: 300px;
+	}
+
+	.VPMenu {
+		padding: 0.35rem !important;
+		background: var(--vp-c-bg);
+		border: 1px solid var(--vp-c-divider);
+		box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+
+	.VPMenu *,
+	.VPMenu *::before,
+	.VPMenu *::after {
+		box-sizing: border-box;
+		border-radius: var(--radius-md) !important;
+	}
+
+	.VPMenu .items {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		max-width: 100%;
+	}
+
+	.VPMenu .VPMenuGroup {
+		padding: 0 !important;
+		margin: 0 !important;
+		border: none !important;
+	}
+
+	.VPMenu .VPMenuGroup:first-child {
+		padding-top: 0 !important;
+	}
+
+	.VPMenu .VPMenuGroup:not(:first-child) {
+		border-top: 1px solid var(--vp-c-divider) !important;
+		margin-top: 0.25rem !important;
+		padding-top: 0.25rem !important;
+	}
+
+	.VPMenu .VPMenuGroup:last-child {
+		padding-bottom: 0 !important;
+	}
+
+	.VPMenu .VPMenuLink {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	.VPMenu .VPLink.link {
+		display: flex !important;
+		align-items: center !important;
+		min-height: 38px !important;
+		height: 100% !important;
+		padding: 0 0.75rem !important;
+		border-radius: var(--radius-md, 6px);
+		color: var(--vp-c-text-1);
+		font-size: 0.875rem;
+		line-height: 1.2;
+		text-decoration: none;
+		width: 100% !important;
+		justify-content: flex-start !important;
+	}
+
+	.VPMenu .VPLink.link > span {
+		display: flex !important;
+		align-items: center !important;
+		width: 100% !important;
+		height: 100% !important;
+		justify-content: flex-start !important;
+	}
+
+	.VPMenu .docs-topbar-item {
+		display: flex !important;
+		align-items: center !important;
+		width: 100% !important;
+		justify-content: flex-start !important;
+		gap: 0.55rem;
+	}
+
+	.VPMenu .VPLink.link:hover {
+		color: var(--vp-c-brand-1);
+		background: var(--vp-c-default-soft);
+	}
+}
