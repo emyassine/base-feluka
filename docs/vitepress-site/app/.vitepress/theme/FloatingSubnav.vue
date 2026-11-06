@@ -27,15 +27,18 @@
       <div class="floating-subnav__collapse-inner floating-subnav__links-inner">
         <span class="floating-subnav__divider" aria-hidden="true" />
         <div class="floating-subnav__links">
-          <a
-            v-for="link in visibleLinks"
-            :key="link.href"
-            class="floating-subnav__link"
-            :href="link.href"
-            :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
-          >
-            {{ link.title }}
-          </a>
+          <template v-for="link in visibleLinks">
+            <div v-if="link.type === 'separator'" :key="link.type" class="floating-subnav__separator" aria-hidden="true" />
+            <a
+              v-else
+              :key="link.href"
+              class="floating-subnav__link"
+              :href="link.href"
+              :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
+            >
+              {{ link.title }}
+            </a>
+          </template>
         </div>
       </div>
     </div>
@@ -62,16 +65,19 @@
 
       <Transition name="floating-subnav-menu">
         <ul v-if="menuOpen && showMore" id="floating-subnav-menu" class="floating-subnav__menu">
-          <li v-for="link in menuLinks" :key="link.href">
-            <a
-              class="floating-subnav__menu-link"
-              :href="link.href"
-              :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
-              @click="menuOpen = false"
-            >
-              {{ link.title }}
-            </a>
-          </li>
+          <template v-for="link in menuLinks">
+            <li v-if="link.type !== 'separator'" :key="link.href">
+              <a
+                class="floating-subnav__menu-link"
+                :href="link.href"
+                :aria-current="isCurrentPage(link.href) ? 'page' : undefined"
+                @click="menuOpen = false"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+            <li v-else :key="link.type" class="floating-subnav__menu-separator" aria-hidden="true" />
+          </template>
         </ul>
       </Transition>
     </div>
@@ -402,6 +408,15 @@ html.dark .floating-subnav__logo-dark {
   height: 16px;
   margin-inline: 0.25rem 0.35rem;
   background: var(--fs-divider);
+}
+
+.floating-subnav__separator {
+  flex: none;
+  width: 1px;
+  height: 16px;
+  margin-inline: 0.25rem 0.35rem;
+  background: var(--fs-divider);
+  align-self: center;
 }
 
 .floating-subnav__links {
