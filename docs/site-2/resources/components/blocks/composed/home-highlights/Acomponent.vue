@@ -60,10 +60,10 @@ const introductionStyle = computed(() => {
       class="nm-about-introduction"
       :style="introductionStyle"
     >
-      <h2 v-if="title" v-html="title"></h2>
+      <h2 v-if="title" class="scroll-reveal" v-html="title"></h2>
       <p
         v-if="introduction"
-        class="nm-about-dropcap"
+        class="nm-about-dropcap scroll-reveal"
         v-html="introduction"
       ></p>
     </div>
@@ -90,10 +90,10 @@ const introductionStyle = computed(() => {
 
     <!-- Content -->
     <div class="nm-about-content">
-      <h3 v-if="sectionTitle" v-html="sectionTitle"></h3>
+      <h3 v-if="sectionTitle" class="scroll-reveal" v-html="sectionTitle"></h3>
 
       <div class="nm-about-paragraphs">
-        <p v-for="(paragraph, index) in paragraphs" :key="index">
+        <p v-for="(paragraph, index) in paragraphs" :key="index" class="scroll-reveal">
           <span v-html="paragraph.before"></span>
 
           <span

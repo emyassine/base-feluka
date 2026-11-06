@@ -139,6 +139,90 @@ const PageActions = {
 
 type ZoomTarget = HTMLElement
 
+let wordRevealFrame = 0
+let wordRevealListenersInstalled = false
+
+function revealTextInGroups(root: HTMLElement): void {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement
+      if (!node.textContent?.trim() || !parent || parent.closest('.scroll-reveal-word, svg, script, style, textarea, code, pre, [aria-hidden="true"]')) {
+        return NodeFilter.FILTER_REJECT
+      }
+      return NodeFilter.FILTER_ACCEPT
+    },
+  })
+  const textNodes: Text[] = []
+  while (walker.nextNode()) textNodes.push(walker.currentNode as Text)
+
+  for (const textNode of textNodes) {
+    const parts = textNode.textContent?.match(/\S+|\s+/g)
+    if (!parts?.some((part) => /\S/.test(part))) continue
+
+    const fragment = document.createDocumentFragment()
+    let group = ''
+    let wordCount = 0
+    const appendGroup = () => {
+      if (!group) return
+      const word = document.createElement('span')
+      word.className = 'scroll-reveal-word'
+      word.textContent = group
+      fragment.append(word)
+      group = ''
+      wordCount = 0
+    }
+
+    for (const part of parts) {
+      if (/^\s+$/.test(part)) {
+        if (wordCount) group += part
+        else fragment.append(document.createTextNode(part))
+        if (wordCount >= 2) appendGroup()
+        continue
+      }
+      group += part
+      wordCount += 1
+    }
+    appendGroup()
+    textNode.replaceWith(fragment)
+  }
+}
+
+function updateWordReveal(): void {
+  wordRevealFrame = 0
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const readingLine = window.innerHeight * 0.76
+  const revealItems = Array.from(document.querySelectorAll<HTMLElement>('.scroll-reveal-word, .scroll-reveal-media'))
+  const updates = revealItems.map((item) => {
+    if (reduceMotion) return [item, '1'] as const
+    const bounds = item.getBoundingClientRect()
+    const isMedia = item.classList.contains('scroll-reveal-media')
+    const revealPoint = isMedia ? bounds.top + Math.min(bounds.height / 2, 40) : bounds.top
+    const distance = readingLine - revealPoint
+    const fadeDistance = isMedia ? 80 : Math.max(24, bounds.height * 1.5)
+    const opacity = Math.max(0.16, Math.min(1, 0.16 + distance / fadeDistance))
+    return [item, String(opacity)] as const
+  })
+  for (const [item, opacity] of updates) item.style.opacity = opacity
+}
+
+function scheduleWordReveal(): void {
+  if (!wordRevealFrame) wordRevealFrame = window.requestAnimationFrame(updateWordReveal)
+}
+
+function installWordReveal(): void {
+  document.querySelectorAll<HTMLElement>('.scroll-reveal').forEach((root) => {
+    revealTextInGroups(root)
+    root.querySelectorAll<HTMLElement>('img, svg').forEach((media) => media.classList.add('scroll-reveal-media'))
+  })
+  if (!wordRevealListenersInstalled) {
+    window.addEventListener('scroll', scheduleWordReveal, { passive: true })
+    window.addEventListener('resize', scheduleWordReveal, { passive: true })
+    document.addEventListener('load', scheduleWordReveal, true)
+    wordRevealListenersInstalled = true
+  }
+  scheduleWordReveal()
+}
+
 function setZoom(target: ZoomTarget, value: number): void {
   const zoom = Math.min(maxZoom, Math.max(minZoom, value))
   target.dataset.zoom = String(zoom)
@@ -616,6 +700,7 @@ const MermaidLayout = {
   const installPageEnhancements = () => {
     installFigures()
     installPagerIcons()
+    installWordReveal()
   }
 
   onMounted(() => {
@@ -645,6 +730,13 @@ const MermaidLayout = {
     observer?.disconnect()
     themeObserver?.disconnect()
     bannerObserver?.disconnect()
+    if (wordRevealListenersInstalled) {
+      window.removeEventListener('scroll', scheduleWordReveal)
+      window.removeEventListener('resize', scheduleWordReveal)
+      document.removeEventListener('load', scheduleWordReveal, true)
+      wordRevealListenersInstalled = false
+    }
+    if (wordRevealFrame) window.cancelAnimationFrame(wordRevealFrame)
     window.removeEventListener('resize', syncLayoutTopHeight)
     window.removeEventListener('scroll', syncLayoutTopHeight)
     document.removeEventListener('click', handleClick)

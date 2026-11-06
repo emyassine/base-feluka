@@ -1,8 +1,16 @@
-.scroll-reveal {
-  animation: scroll-reveal-scale linear both;
-  animation-duration: auto;
-  animation-timeline: view(block);
-  animation-range: cover 0% cover 50%;
+@supports (animation-timeline: view()) {
+  .scroll-reveal-only {
+    animation: scroll-reveal-scale linear both;
+    animation-duration: auto;
+    animation-timeline: view(block);
+    animation-range: cover 0% cover 50%;
+  }
+}
+
+.scroll-reveal-word,
+.scroll-reveal-media {
+  opacity: 0.16;
+  transition: opacity 100ms linear;
 }
 
 @keyframes scroll-reveal-scale {
@@ -11,7 +19,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-reveal {
+  .scroll-reveal-only {
     animation: none;
+    transform: none;
   }
+
+  .scroll-reveal-word,
+  .scroll-reveal-media { opacity: 1 !important; transition: none; }
 }

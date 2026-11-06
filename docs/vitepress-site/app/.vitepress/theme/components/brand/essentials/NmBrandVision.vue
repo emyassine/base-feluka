@@ -1,9 +1,9 @@
 <template>
-  <article class="overview-section overview-section--bordered scroll-reveal">
+  <article class="overview-section overview-section--bordered scroll-reveal-only">
     <div class="overview-column">
-      <p class="overview-label">{{ props.label }}</p>
+      <p class="overview-label scroll-reveal">{{ props.label }}</p>
       <h2 :id="props.titleId">
-        <span class="silky-bbi" style="line-height: 1.15" v-html="formattedText"></span>
+        <span class="silky-bbi scroll-reveal" style="line-height: 1.15" v-html="formattedText"></span>
       </h2>
     </div>
   </article>
