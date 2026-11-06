@@ -31,7 +31,8 @@ import { computed } from 'vue'
 type VisionColor = 'primary' | 'teal' | 'green' | 'amber' | 'violet'
 
 type VisionReplacement = {
-  text: string
+  text?: string
+  texts?: string[]
   color?: VisionColor
   image?: {
     src: string
@@ -68,7 +69,14 @@ const colorClass = (color: VisionColor): string => {
 
 const segments = computed<VisionSegment[]>(() => {
   const replacements = props.replacements
-    .filter((replacement) => replacement.text.length > 0)
+    .flatMap((replacement) => {
+      const texts = [
+        ...(replacement.text ? [replacement.text] : []),
+        ...(replacement.texts ?? []),
+      ].filter((text) => text.length > 0)
+
+      return texts.map((text) => ({ ...replacement, text }))
+    })
     .slice()
     .sort((left, right) => right.text.length - left.text.length)
 
@@ -135,7 +143,7 @@ const segments = computed<VisionSegment[]>(() => {
   display: inline-block;
   width: 1.7em;
   height: 1.15em;
-  margin: 0 0.08em;
+  margin: 0 0.08em 0 0.24em;
   vertical-align: -0.15em;
   border: 1px solid var(--vp-c-divider);
   border-radius: 0.18em;

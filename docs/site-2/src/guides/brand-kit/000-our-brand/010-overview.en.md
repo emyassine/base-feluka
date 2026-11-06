@@ -28,11 +28,9 @@ layout: home
 	  />
 	</div>
 	<BrandKitVision
-	  text="Our ultimate objective is to position Africa as a global center of wealth creation, leveraging technology, capital, workforce, and media to empower anyone across the continent."
+	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation."
 	  :replacements='[
-			{ text: "ultimate", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
-	    { text: "Africa", color: "primary" },
-	    { text: "wealth creation", color: "primary" },
+	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
 	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
 	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Capital: financial performance and investment" } },
 	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Workforce: people building together" } },
