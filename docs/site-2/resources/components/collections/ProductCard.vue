@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, ref, withDefaults } from 'vue'
+import { nextTick, onBeforeUnmount, ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   href: string
