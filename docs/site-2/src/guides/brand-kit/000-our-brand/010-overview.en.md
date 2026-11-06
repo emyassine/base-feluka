@@ -31,6 +31,9 @@ layout: home
 	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation."
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
+	    { text: "empower", color: "teal" },
+	    { text: "anyone", color: "amber", image: { src: "/images/brand-kit/photos/main-photo.jpg", alt: "Portrait of a person against a warm background", caption: "Anyone: people with ideas and ambition" } },
+	    { text: "anywhere", color: "violet" },
 	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
 	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Capital: financial performance and investment" } },
 	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Workforce: people building together" } },
