@@ -46,6 +46,8 @@ These are practical impressions from collaboration, not a psychological assessme
 
 - Before editing, inspect the current repository instructions, relevant files, and `git status`. The user may have valuable uncommitted work. Preserve it; do not reset, stash, or overwrite unrelated changes.
 - Read `AGENTS.md` and relevant project documentation before making architectural or product decisions. Treat explicit user instructions as the highest priority for the requested task, while respecting repository safety, licensing, and product-status rules.
+- When implementing complex features, if the user states "You are unreliable" or "write this down", create a detailed plan file in `.agents/plans/<timestamp>-<title>.md` with the full implementation approach before making changes.
+- When the user states something works ("ca marche", "it works", etc.), record the successful actions and changes in `.agents/actions/<timestamp>-<title>.en.md` in English for future reference.
 - Prefer completing a small, coherent vertical change over broad speculative refactoring. Keep public behavior, implementation status, and documentation accurate.
 - Verify changes in a way proportionate to their impact. Never claim a check, test, build, or visual inspection that was not actually performed. Report existing failures honestly.
 - Do not add unrelated features or change scope just because an adjacent improvement is possible.
