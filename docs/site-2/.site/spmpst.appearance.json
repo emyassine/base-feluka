@@ -1,4 +1,16 @@
 {
+  "fonts": {
+    "body": {
+      "family": "Manrope",
+      "src": "public/media/fonts/manrope-latin.woff2",
+      "weight": "200 800"
+    },
+    "heading": {
+      "family": "Manrope",
+      "src": "public/media/fonts/manrope-latin.woff2",
+      "weight": "200 800"
+    }
+  },
   "logo": {
 	  "light": "@spmpst::media::logo-light-mode.png",
 	  "mini-light": "@spmpst::media::logo-mini-light-mode.png",
