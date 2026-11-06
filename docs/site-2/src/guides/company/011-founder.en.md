@@ -14,11 +14,13 @@ layout: home
 
 <BrandKitHero
   eyebrow="THE FOUNDER · NUMERIMONDES"
-  title="Led by someone who has worked <span class='silky-bbi'>inside operations</span>."
-  tagline="Business operations, consulting and software engineering in one profile."
+  title="Founder"
+  tagline="Business operations, consulting and software engineering."
   cta-label="Meet the founder"
   cta-href="#yassine-el-moumen"
 />
+
+<BrandKitOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
 
 
 # Yassine El Moumen

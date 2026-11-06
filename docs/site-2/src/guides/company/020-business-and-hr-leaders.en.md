@@ -14,11 +14,13 @@ layout: home
 
 <BrandKitHero
   eyebrow="FOR BUSINESS AND HR LEADERS · NUMERIMONDES"
-  title="A <span class='silky-bbi'>direct answer</span><br>For a concrete need."
-  tagline="Whether you are improving how your business works or hiring for a key role, start with the situation in front of you."
+  title="Business"
+  tagline="Consulting, systems work and recruitment for a concrete need."
   cta-label="Tell us what you need"
   cta-href="/company/contact"
 />
+
+<BrandKitOverview :sections="[{ columns: [{ label: 'For business and HR leaders', title: 'A direct answer for a concrete need.' }, { tagline: 'Whether you are improving how your business works or hiring for a key role, start with the situation in front of you.' }] }]" />
 
 <p><a href="/company/contact?topic=project">Discuss a project</a> · <a href="/company/contact?topic=recruitment">Register a hiring need</a></p>
 

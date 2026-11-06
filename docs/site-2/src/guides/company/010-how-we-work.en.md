@@ -14,21 +14,25 @@ layout: home
 
 <BrandKitHero
   eyebrow="HOW WE WORK · NUMERIMONDES"
-  title="A clear lead.<br>A <span class='silky-bbi'>defined scope</span>."
-  tagline="Every assignment is shaped around its objective and agreed in writing before work begins."
+  title="Work"
+  tagline="How we qualify, agree and deliver assignments."
   cta-label="How an assignment runs"
   cta-href="#how-an-assignment-runs"
 />
 
-<Timeline
-  label="How an assignment runs"
-  :start-margin="false"
-  :items="[
-    { title: 'Qualify', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'A first conversation to understand the problem, the stakes and whether we are the right fit.' },
-    { title: 'Agree', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'A written proposal covering objectives, deliverables, responsibilities and commercial terms.' },
-    { title: 'Deliver', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'The founder coordinates the work and remains accountable; specialists join when their expertise is needed.' }
-  ]"
-/>
+<BrandKitOverview :sections="[{ columns: [{ label: 'Our approach', title: 'A clear lead. A defined scope.' }, { tagline: 'Every assignment is shaped around its objective and agreed in writing before work begins.' }] }]" />
+
+<div id="how-an-assignment-runs">
+  <Timeline
+    label="How an assignment runs"
+    :start-margin="false"
+    :items="[
+      { title: 'Qualify', status: [{ icon: '01', markerColor: '#3977c8' }], time: 'A first conversation to understand the problem, the stakes and whether we are the right fit.' },
+      { title: 'Agree', status: [{ icon: '02', markerColor: '#3977c8' }], time: 'A written proposal covering objectives, deliverables, responsibilities and commercial terms.' },
+      { title: 'Deliver', status: [{ icon: '03', markerColor: '#3977c8' }], time: 'The founder coordinates the work and remains accountable; specialists join when their expertise is needed.' }
+    ]"
+  />
+</div>
 
 <NmProse>
 
