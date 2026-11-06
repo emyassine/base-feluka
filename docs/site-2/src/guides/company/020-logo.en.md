@@ -7,15 +7,15 @@ layout: home
 
 <BrandKitWrapper>
 <FloatingTopBar logo="/media/favicon.png" logo-alt="Numerimondes"
-	home-href="/brand-kit/our-brand"
+	home-href="/company"
   title="Overview"
   :show-border="false"
   :links="[
-          { title: 'Logo', href: '/brand-kit/our-brand/logo' },
-    { title: 'Colors', href: '/brand-kit/our-brand/colors' },
-    { title: 'Type', href: '/brand-kit/our-brand/type' },
-    { title: 'Photos', href: '/brand-kit/our-brand/photos' },
-    { title: 'Icons', href: '/brand-kit/our-brand/icons' }
+          { title: 'Logo', href: '/company/logo' },
+    { title: 'Colors', href: '/company/colors' },
+    { title: 'Type', href: '/company/type' },
+    { title: 'Photos', href: '/company/photos' },
+    { title: 'Icons', href: '/company/icons' }
   ]"
 />
   <div style="margin-top: 2rem">

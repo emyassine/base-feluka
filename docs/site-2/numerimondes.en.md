@@ -113,7 +113,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-<FeluqaButton tag="a" href="/company/how-we-work/delivery-model" label="How we work"/>
+<FeluqaButton tag="a" href="/company/about-us/how-we-work" label="How we work"/>
 
 ---
 

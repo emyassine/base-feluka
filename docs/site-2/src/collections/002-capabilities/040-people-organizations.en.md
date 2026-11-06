@@ -28,6 +28,6 @@ Workforce planning can clarify skills, capacity and role requirements as an orga
 
 Possible interventions across these areas include clearer operating guidance, training resources, revised coordination routines or changes to supporting systems. They should fit the organization’s capacity and be reviewed with the people affected.
 
-Related topics include [operations support](/services/marketplace) and the [Numerimondes delivery model](/company/how-we-work/delivery-model).
+Related topics include [operations support](/services/marketplace) and the [Numerimondes delivery model](/company/about-us/how-we-work).
 
 </div>
