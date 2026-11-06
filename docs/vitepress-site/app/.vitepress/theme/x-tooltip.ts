@@ -11,6 +11,7 @@ type Placement = typeof placementNames[number]
 
 let installed = false
 let activeTrigger: TooltipTrigger | undefined
+let pinnedTrigger: TooltipTrigger | undefined
 let hideTimer: ReturnType<typeof setTimeout> | undefined
 let showTimer: ReturnType<typeof setTimeout> | undefined
 let refreshTimer: ReturnType<typeof setInterval> | undefined
@@ -220,6 +221,7 @@ function hideTooltip(): void {
   hideTimer = undefined
   if (activeTrigger) clearDescription(activeTrigger)
   activeTrigger = undefined
+  pinnedTrigger = undefined
   const tooltip = document.getElementById(tooltipId)
   if (tooltip) tooltip.dataset.state = 'hidden'
   if (refreshTimer) clearInterval(refreshTimer)
@@ -255,15 +257,31 @@ export function installXTooltip(): void {
   })
   document.addEventListener('pointerout', (event) => {
     if (isInsideTooltip(event.target)) {
+      if (pinnedTrigger && event.pointerType === 'touch') return
       if (isInsideTooltip(event.relatedTarget) || activeTrigger?.contains(event.relatedTarget as Node | null)) cancelHide()
       else deferHide()
       return
     }
     const trigger = findTrigger(event.target)
     if (trigger && trigger === activeTrigger && !trigger.contains(event.relatedTarget as Node | null)) {
+      if (pinnedTrigger === trigger && event.pointerType === 'touch') return
       if (isInsideTooltip(event.relatedTarget)) cancelHide()
       else deferHide()
     }
+  })
+  document.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'touch') return
+    const trigger = findTrigger(event.target)
+    if (trigger) {
+      if (pinnedTrigger === trigger && activeTrigger === trigger) {
+        hideTooltip()
+      } else {
+        pinnedTrigger = trigger
+        showTooltip(trigger)
+      }
+      return
+    }
+    if (!isInsideTooltip(event.target)) hideTooltip()
   })
   document.addEventListener('pointermove', () => {
     if (activeTrigger && tooltipElement().dataset.state === 'visible') positionTooltip(activeTrigger, tooltipElement())

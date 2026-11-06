@@ -1,0 +1,17 @@
+.scroll-reveal {
+  animation: scroll-reveal-scale linear both;
+  animation-duration: auto;
+  animation-timeline: view(block);
+  animation-range: cover 0% cover 50%;
+}
+
+@keyframes scroll-reveal-scale {
+  from { transform: scale(0.75); }
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    animation: none;
+  }
+}

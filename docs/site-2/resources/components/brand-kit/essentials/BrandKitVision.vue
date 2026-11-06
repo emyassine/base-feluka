@@ -1,8 +1,8 @@
 <template>
-  <article class="brand-kit-vision brand-kit-overview__section brand-kit-overview__section--bordered">
-    <div class="brand-kit-overview__column">
-      <p class="brand-kit-overview__label">{{ props.label }}</p>
-      <h2 :id="props.titleId" class="brand-kit-vision__title">
+  <article class="overview-section overview-section--bordered scroll-reveal">
+    <div class="overview-column">
+      <p class="overview-label">{{ props.label }}</p>
+      <h2 :id="props.titleId">
         <span class="silky-bbi" style="line-height: 1.15">
           <template v-for="(segment, index) in segments" :key="`${segment.text}-${index}`">
             <template v-if="segment.replacement">
@@ -14,6 +14,7 @@
                 :src="segment.replacement.image.src"
                 :alt="segment.replacement.image.alt || segment.replacement.image.caption"
                 :x-tooltip="JSON.stringify({ image: segment.replacement.image.src, text: segment.replacement.image.caption })"
+                tabindex="0"
                 loading="lazy"
               />
             </template>
@@ -104,47 +105,6 @@ const segments = computed<VisionSegment[]>(() => {
 </script>
 
 <style scoped>
-.brand-kit-vision {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-content: center;
-  gap: clamp(2rem, 7cqw, 7rem);
-  box-sizing: border-box;
-  min-height: 100vh;
-  min-height: 100svh;
-  margin: 0;
-  padding: clamp(3.5rem, 9cqw, 8rem) 0;
-  border-bottom: 1px solid var(--brand-kit-line);
-  animation: brand-kit-overview-scroll linear both;
-  animation-duration: auto;
-  animation-timeline: view(block);
-  animation-range: cover 0% cover 50%;
-  border-bottom: 1px solid var(--brand-kit-line);
-}
-
-.brand-kit-overview__column {
-  min-width: 0;
-}
-
-.brand-kit-overview__label {
-  margin: 0;
-  color: var(--brand-kit-muted);
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.brand-kit-vision__title {
-  margin: 0;
-  padding-top: 0.7rem;
-  font-size: clamp(2rem, 5.5cqw, 5rem);
-  font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
-  overflow-wrap: anywhere;
-}
-
 .brand-kit-vision__inline-image {
   display: inline-block;
   width: 1.7em;
@@ -155,17 +115,6 @@ const segments = computed<VisionSegment[]>(() => {
   border-radius: 0.18em;
   object-fit: cover;
   cursor: help;
-}
-
-@keyframes brand-kit-overview-scroll {
-  from { transform: scale(0.75); }
-  to { transform: scale(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brand-kit-vision {
-    animation: none;
-  }
 }
 
 </style>

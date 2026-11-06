@@ -22,12 +22,13 @@ layout: home
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style=""
-	    tagline="<span class='silky-bbi'>Our brand identity system</span>"
+	    tagline="<span class='silky-bbi'>Learn more about our organization</span>"
 	    cta-label="Explore Our Brand Identity System"
 	    cta-href="#brand-kit-index"
 	  />
 	</div>
 	<BrandKitVision
+		showBorder: true,
 	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation."
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
@@ -40,6 +41,32 @@ layout: home
 	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "We will set the audience and business goal, build a website and search content around them, then track inquiries and results to guide improvements." } }
 	  ]'
 	/>
+
+
+
+## What we do
+
+Numerimondes SARL AU is an independent consulting and solutions company based in Casablanca, Morocco. We work in three areas:
+
+- **Business consulting**: investigate an opportunity or a problem and support the decision.
+- **Systems, infrastructure and operations**: design and run the technology a business depends on.
+- **Custom software**: build applications and integrations, including Rust engineering for demanding use cases.
+
+We also operate our own projects and services, including [Numerimondes Cloud](/projects/numerimondes-cloud) for server management, a recruitment firm, an application platform and a standard for building fast websites.
+
+## Who we work with
+
+Business owners, executives and heads of operations, HR or IT who face a specific problem with real consequences. We work best when there is a defined objective and a decision-maker.
+
+## What you can expect
+
+- A direct conversation with the person who will lead the work.
+- A written scope before work starts.
+- Specialists involved only where the work requires them.
+- A straight answer if we are not the right fit.
+
+
+
 	<BrandKitOverview
 	  :sections='[
 	    {

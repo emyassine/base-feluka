@@ -20,6 +20,8 @@ import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
 import './style.css'
 import './x-tooltip.css'
+import './overview.css'
+import './scroll-reveal.css'
 import '@generated/configured-styles'
 
 const zoomStep = 0.25
