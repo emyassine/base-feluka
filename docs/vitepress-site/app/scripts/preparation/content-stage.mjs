@@ -480,48 +480,51 @@ function localizedGuideHome(guide, language) {
 
 const generatedFloatingSubnav = {}
 const siteSubnavRules = config.site?.floatingSubnav ?? {}
-const guideSubheaderConfigs = new Map()
-for (const guide of config.subguides) {
-  const subheaderPath = resolve(sourceRoot, guide.path, 'spmpst.subheader.json')
-  if (existsSync(subheaderPath)) {
-    try {
-      const subheaderConfig = JSON.parse(await readFile(subheaderPath, 'utf8'))
-      guideSubheaderConfigs.set(guide.path, subheaderConfig)
-    } catch (error) {
-      console.warn(`Failed to load subheader config for guide ${guide.path}: ${error.message}`)
-    }
+const generatedSubnavContextGuides = new Map()
+const generatedSubnavContextConfigs = new Map()
+
+async function loadSubheaderContext(contextPath, contextGuide) {
+  const subheaderPath = resolve(sourceRoot, contextPath, 'spmpst.subheader.json')
+  if (!existsSync(subheaderPath)) return null
+  try {
+    const subheaderConfig = JSON.parse(await readFile(subheaderPath, 'utf8'))
+    generatedSubnavContextConfigs.set(contextPath, subheaderConfig)
+    generatedSubnavContextGuides.set(contextPath, contextGuide)
+    return subheaderConfig
+  } catch (error) {
+    console.warn(`Failed to load subheader config for guide ${contextPath}: ${error.message}`)
+    return null
   }
 }
 
-const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
-  const subheaderConfig = guideSubheaderConfigs.get(guidePath)
+const buildSubheaderLinks = (contextPath, language, firstPage, isTopLevel) => {
+  const subheaderConfig = generatedSubnavContextConfigs.get(contextPath)
   const langPrefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
   const langPathPrefix = langPrefix ? `/${langPrefix}` : ''
-  
-  // Get the guide label for this language
-  const guide = config.subguides.find(g => g.path === guidePath)
-  const guideLabel = guide?.labels?.[language] || guide?.label || guidePath
-  const guideEntryRoute = guideEntryPage?.route
-  
-  // Get all pages for this guide (excluding the guide entry page, which is
-  // already represented by the subnav identity)
+
+  const contextGuide = generatedSubnavContextGuides.get(contextPath) ?? config.subguides.find((guide) => guide.path === contextPath)
+  const guideLabel = contextGuide?.labels?.[language] || contextGuide?.label || contextGuide?.labels?.[defaultLanguage] || contextGuide?.path || contextPath
+  const guideEntryRoute = firstPage?.route
+
   let allGuidePages = localizedPages
-    .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language)
+    .filter((candidate) => {
+      const sourceRelative = relative(sourceRoot, candidate.record?.from ?? candidate.from ?? '').split(sep).join('/')
+      const prefix = contextPath.endsWith('/') ? contextPath : `${contextPath}/`
+      return sourceRelative.startsWith(prefix) && candidate.language === language
+    })
     .map(({ title, route, sidebarTitle }) => {
-      // For guide entry page, use guide label; otherwise use sidebarTitle or title
       const isGuideEntryPage = route === guideEntryRoute
       const pageTitleFinal = isGuideEntryPage ? guideLabel : (sidebarTitle || title)
       return { title: pageTitleFinal, href: route }
     })
-    .filter((page) => page.href !== guideEntryRoute)
-  
-  // Apply exclude rules
+    .filter((page) => !(isTopLevel && page.href === guideEntryRoute))
+
   if (subheaderConfig?.exclude) {
     const excludedRoutes = new Set()
-    subheaderConfig.exclude.forEach(pattern => {
+    subheaderConfig.exclude.forEach((pattern) => {
       if (pattern.includes('*')) {
         const prefix = pattern.replace(/\*$/, '')
-        allGuidePages.forEach(page => {
+        allGuidePages.forEach((page) => {
           const pagePath = canonicalPagePath(page.href)
           if (pagePath.startsWith(prefix)) {
             excludedRoutes.add(pagePath)
@@ -531,70 +534,92 @@ const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
         excludedRoutes.add(canonicalPagePath(`${langPathPrefix}${pattern}`))
       }
     })
-    allGuidePages = allGuidePages.filter(page => !excludedRoutes.has(canonicalPagePath(page.href)))
+    allGuidePages = allGuidePages.filter((page) => !excludedRoutes.has(canonicalPagePath(page.href)))
   }
-  
-  // Apply include rules (adds custom links and separators)
+
   if (subheaderConfig?.include) {
-    subheaderConfig.include.forEach(Item => {
-      if (Item === 'separator') {
+    subheaderConfig.include.forEach((item) => {
+      if (item === 'separator') {
         allGuidePages.push({ type: 'separator' })
       } else {
-        const label = Item.label?.[language] ?? Item.label?.en ?? Item.label ?? Item.path
-        let href = Item.path
+        const label = item.label?.[language] ?? item.label?.en ?? item.label ?? item.path
+        let href = item.path
         if (href?.startsWith('/')) {
           href = `${langPathPrefix}${href}`
         } else {
-          href = `${langPathPrefix}/${guidePath}/${Item.path}`
+          href = `${langPathPrefix}/${contextPath}/${item.path}`
         }
         allGuidePages.push({ title: label, href, type: 'custom', custom: true })
       }
     })
   }
-  
+
   return allGuidePages
 }
 
 for (const guide of config.subguides) {
-  for (const language of config.languages) {
-    const guidePages = localizedPages.filter((page) => page.guide?.path === guide.path && page.language === language)
-    if (guidePages.length === 0) continue
-    const firstPage = guidePages[0]
-    const rules = mergedSubnavRules(siteSubnavRules, guide.floatingSubnav ?? {})
-    const homeHref = localizedGuideHome(guide, language)
-    const canonicalHome = canonicalPagePath(homeHref)
-    const included = rules.include.includes(canonicalHome)
-    const excluded = rules.exclude.includes(canonicalHome)
-    if (excluded || (!included && !rules.layouts.includes(firstPage.layout))) continue
-    const links = buildSubheaderLinks(guide.path, language, firstPage)
-    const guideKey = generatedGuideKeys.get(guide.path)
-    const logo = generatedGuideColors[guideKey] ?? generatedGuideColors.root ?? {}
-    for (const page of guidePages) {
-      const routeKey = page.route.replace(/\/+$/, '') || '/'
-      generatedFloatingSubnav[routeKey] = {
-        title: localizedGuideLabel(guide, language),
-        homeHref,
-        homePageHref: firstPage.route,
-        links,
-        logoLight: logo.logoLight,
-        logoDark: logo.logoDark,
-        logoMiniLight: logo.logoMiniLight,
-        logoMiniDark: logo.logoMiniDark,
-        logoAlt: logo.logoAlt,
-        logoWidth: logo.logoWidth,
-        logoHeight: logo.logoHeight,
-        logoExtraStyle: logo.logoExtraStyle,
-        navigationLabel: language.toLowerCase().startsWith('fr') ? 'Navigation de la section' : 'Section navigation',
-        menuLabel: language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation de la section' : 'Open section navigation',
+  const contextPaths = [guide.path]
+  for (const entry of await readdir(resolve(sourceRoot, guide.path), { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.name.startsWith('.')) continue
+    const contextPath = `${guide.path}/${entry.name}`
+    if (!existsSync(resolve(sourceRoot, contextPath, 'spmpst.subheader.json'))) continue
+    contextPaths.push(contextPath)
+  }
+  contextPaths.sort((left, right) => left.split('/').length - right.split('/').length)
+  for (const contextPath of contextPaths) {
+    const contextGuide = contextPath === guide.path
+      ? guide
+      : { ...guide, path: contextPath, labels: JSON.parse(await readFile(resolve(sourceRoot, contextPath, 'spmpst.sidebar.json'), 'utf8')).labels }
+    const contextSubheaderConfig = contextPath === guide.path
+      ? generatedSubnavContextConfigs.get(guide.path) ?? guideSubheaderConfigs.get(guide.path)
+      : await loadSubheaderContext(contextPath, contextGuide)
+    const contextGuideKey = generatedGuideKeys.get(contextPath) ?? generatedGuideKeys.get(guide.path)
+    const contextRulesSource = contextGuide.floatingSubnav ?? guide.floatingSubnav ?? {}
+    for (const language of config.languages) {
+      const contextPages = localizedPages.filter((page) => {
+        const sourceRelative = relative(sourceRoot, page.record?.from ?? page.from ?? '').split(sep).join('/')
+        const prefix = contextPath.endsWith('/') ? contextPath : `${contextPath}/`
+        return sourceRelative.startsWith(prefix) && page.language === language
+      })
+      const firstPage = contextPages[0]
+      if (!firstPage) continue
+      const rules = mergedSubnavRules(siteSubnavRules, contextRulesSource)
+      const contextHomeGuide = contextPath === guide.path
+        ? contextGuide
+        : { ...contextGuide, uri: { ...contextGuide.uri, base: `/${firstPage.route.split('/').slice(0, -1).join('/')}/` } }
+      const homeHref = localizedGuideHome(contextHomeGuide, language)
+      const canonicalHome = canonicalPagePath(homeHref)
+      const included = rules.include.includes(canonicalHome)
+      const excluded = rules.exclude.includes(canonicalHome)
+      if (excluded || (!included && !rules.layouts.includes(firstPage.layout))) continue
+      const links = buildSubheaderLinks(contextPath, language, firstPage, contextPath === guide.path)
+      const contextKey = generatedGuideKeys.get(contextPath) ?? generatedGuideKeys.get(guide.path)
+      const logo = generatedGuideColors[contextKey] ?? generatedGuideColors.root ?? {}
+      for (const page of contextPages) {
+        generatedFloatingSubnav[page.route.replace(/\/+$/, '') || '/'] = {
+          title: contextGuide?.labels?.[language] || contextGuide?.label || contextGuide?.labels?.[defaultLanguage] || contextGuide?.path || contextPath,
+          homeHref,
+          homePageHref: firstPage.route,
+          links,
+          logoLight: logo.logoLight,
+          logoDark: logo.logoDark,
+          logoMiniLight: logo.logoMiniLight,
+          logoMiniDark: logo.logoMiniDark,
+          logoAlt: logo.logoAlt,
+          logoWidth: logo.logoWidth,
+          logoHeight: logo.logoHeight,
+          logoExtraStyle: logo.logoExtraStyle,
+          navigationLabel: language.toLowerCase().startsWith('fr') ? 'Navigation de la section' : 'Section navigation',
+          menuLabel: language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation de la section' : 'Open section navigation',
+        }
+      }
+      const homeRouteKey = homeHref.replace(/\/+$/, '') || '/'
+      const firstPageRouteKey = firstPage.route.replace(/\/+$/, '') || '/'
+      if (homeRouteKey !== firstPageRouteKey) {
+        generatedFloatingSubnav[homeRouteKey] = generatedFloatingSubnav[firstPageRouteKey]
       }
     }
-    const homeRouteKey = homeHref.replace(/\/+$/, '') || '/'
-    const firstPageRouteKey = guidePages[0].route.replace(/\/+$/, '') || '/'
-    if (homeRouteKey !== firstPageRouteKey) {
-      generatedFloatingSubnav[homeRouteKey] = generatedFloatingSubnav[firstPageRouteKey]
-    }
   }
-}
 for (const page of localizedPages.filter((page) => !page.guide)) {
   const rules = mergedSubnavRules(siteSubnavRules, {})
   const included = rules.include.includes(page.canonical)
