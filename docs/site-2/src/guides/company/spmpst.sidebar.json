@@ -1,7 +1,7 @@
 {
   "labels": {
-    "en": "Brand",
-    "fr": "Marque"
+    "en": "Company",
+    "fr": "Entreprise"
   },
-  "icon": "@spmpst::icon::drum"
+  "icon": "@spmpst::icon::building"
 }
