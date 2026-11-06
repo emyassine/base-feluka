@@ -1,14 +1,10 @@
 {
   "exclude": [
-		"/company/brand/*",
+    "/company/brand/*",
     "/company/contact"
   ],
   "include": [
-    {
-      "label": {
-        "en": "Our Brand"
-      },
-      "path": "/company/brand/logo"
-    }
+    "separator",
+    { "label": { "en": "Our Brand" }, "path": "/company/brand/logo" }
   ]
 }

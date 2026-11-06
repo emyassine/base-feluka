@@ -498,10 +498,20 @@ const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
   const langPrefix = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
   const langPathPrefix = langPrefix ? `/${langPrefix}` : ''
   
+  // Get the guide label for this language
+  const guide = config.subguides.find(g => g.path === guidePath)
+  const guideLabel = guide?.labels?.[language] || guide?.label || guidePath
+  const guideEntryRoute = guideEntryPage?.route
+  
   // Get all pages for this guide
   let allGuidePages = localizedPages
     .filter((candidate) => candidate.guide?.path === guidePath && candidate.language === language)
-    .map(({ title, route }) => ({ title, href: route }))
+    .map(({ title, route, sidebarTitle }) => {
+      // For guide entry page, use guide label; otherwise use sidebarTitle or title
+      const isGuideEntryPage = route === guideEntryRoute
+      const pageTitleFinal = isGuideEntryPage ? guideLabel : (sidebarTitle || title)
+      return { title: pageTitleFinal, href: route }
+    })
   
   // Apply exclude rules
   if (subheaderConfig?.exclude) {
@@ -521,17 +531,21 @@ const buildSubheaderLinks = (guidePath, language, guideEntryPage) => {
     allGuidePages = allGuidePages.filter(page => !excludedRoutes.has(page.href))
   }
   
-  // Apply include rules (adds custom links)
+  // Apply include rules (adds custom links and separators)
   if (subheaderConfig?.include) {
     subheaderConfig.include.forEach(Item => {
-      const label = Item.label?.[language] ?? Item.label?.en ?? Item.label ?? Item.path
-      let href = Item.path
-      if (href?.startsWith('/')) {
-        href = `${langPathPrefix}${href}`
+      if (Item === 'separator') {
+        allGuidePages.push({ type: 'separator' })
       } else {
-        href = `${langPathPrefix}/${guidePath}/${Item.path}`
+        const label = Item.label?.[language] ?? Item.label?.en ?? Item.label ?? Item.path
+        let href = Item.path
+        if (href?.startsWith('/')) {
+          href = `${langPathPrefix}${href}`
+        } else {
+          href = `${langPathPrefix}/${guidePath}/${Item.path}`
+        }
+        allGuidePages.push({ title: label, href, type: 'custom', custom: true })
       }
-      allGuidePages.push({ title: label, href, type: 'custom', custom: true })
     })
   }
   
