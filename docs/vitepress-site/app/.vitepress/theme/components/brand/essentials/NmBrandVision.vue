@@ -2,25 +2,8 @@
   <article class="overview-section overview-section--bordered scroll-reveal">
     <div class="overview-column">
       <p class="overview-label">{{ props.label }}</p>
-      <h2 v-html :id="props.titleId">
-        <span class="silky-bbi" style="line-height: 1.15">
-          <template v-for="(segment, index) in segments" :key="`${segment.text}-${index}`">
-            <template v-if="segment.replacement">
-              <span v-if="segment.replacement.color" :class="colorClass(segment.replacement.color)">{{ segment.text }}</span>
-              <template v-else>{{ segment.text }}</template>
-              <img
-                v-if="segment.replacement.image"
-                class="nm-brand-vision__inline-image"
-                :src="segment.replacement.image.src"
-                :alt="segment.replacement.image.alt || segment.replacement.image.caption"
-                :x-tooltip="JSON.stringify({ image: segment.replacement.image.src, text: segment.replacement.image.caption })"
-                tabindex="0"
-                loading="lazy"
-              />
-            </template>
-            <template v-else>{{ segment.text }}</template>
-          </template>
-        </span>
+      <h2 :id="props.titleId">
+        <span class="silky-bbi" style="line-height: 1.15" v-html="formattedText"></span>
       </h2>
     </div>
   </article>
@@ -40,11 +23,6 @@ type VisionReplacement = {
     alt?: string
     caption: string
   }
-}
-
-type VisionSegment = {
-  text: string
-  replacement?: VisionReplacement
 }
 
 const props = withDefaults(defineProps<{
@@ -68,7 +46,7 @@ const colorClass = (color: VisionColor): string => {
   }
 }
 
-const segments = computed<VisionSegment[]>(() => {
+const formattedText = computed(() => {
   const replacements = props.replacements
     .flatMap((replacement) => {
       const texts = [
@@ -81,7 +59,7 @@ const segments = computed<VisionSegment[]>(() => {
     .slice()
     .sort((left, right) => right.text.length - left.text.length)
 
-  if (!replacements.length) return [{ text: props.text }]
+  if (!replacements.length) return props.text
 
   const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const expression = new RegExp(
@@ -89,23 +67,31 @@ const segments = computed<VisionSegment[]>(() => {
     'gu',
   )
   const replacementByText = new Map(replacements.map((replacement) => [replacement.text, replacement]))
-  const result: VisionSegment[] = []
-  let cursor = 0
+  const escapeAttribute = (value: string): string => value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+  const formatText = (text: string): string => text.replace(expression, (matched) => {
+    const replacement = replacementByText.get(matched)
+    const escapedMatch = escapeAttribute(matched)
+    const color = replacement?.color ? `<span class="${colorClass(replacement.color)}">${escapedMatch}</span>` : escapedMatch
+    if (!replacement?.image) return color
 
-  for (const match of props.text.matchAll(expression)) {
-    const index = match.index ?? 0
-    if (index > cursor) result.push({ text: props.text.slice(cursor, index) })
-    result.push({ text: match[0], replacement: replacementByText.get(match[0]) })
-    cursor = index + match[0].length
-  }
+    const image = replacement.image
+    const tooltip = escapeAttribute(JSON.stringify({ image: image.src, text: image.caption }))
+    return `${color}<img class="nm-brand-vision__inline-image" src="${escapeAttribute(image.src)}" alt="${escapeAttribute(image.alt || image.caption)}" x-tooltip="${tooltip}" tabindex="0" loading="lazy">`
+  })
 
-  if (cursor < props.text.length) result.push({ text: props.text.slice(cursor) })
-  return result
+  return props.text
+    .split(/(<[^>]*>)/g)
+    .map((part) => part.startsWith('<') && part.endsWith('>') ? part : formatText(part))
+    .join('')
 })
 </script>
 
 <style scoped>
-.nm-brand-vision__inline-image {
+:deep(.nm-brand-vision__inline-image) {
   display: inline-block;
   width: 1.7em;
   height: 1.15em;

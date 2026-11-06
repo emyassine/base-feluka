@@ -18,7 +18,7 @@ layout: home
 	</div>
 	<NmBrandVision
 		showBorder: true,
-	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation.<br><br>Tell Us What are <a href='' class='silky-bbi primary-text'>your biggest challenges</a> ?"
+	  text="Our ultimate goal is to empower anyone, anywhere to create wealth. We provide access to technology, capital, workforce, and media, while positioning North Africa as a global hub of value creation.<br><br><h2>Tell us about your <a href='' style='color:blue !important;'><img src='@spmpst::icon::link' style='display: inline-block; vertical-align: middle; height: 1em; width: auto; fill: blue;'>biggest challenges</a> !</h2>"
 	  :replacements='[
 	    { texts: ["wealth", "North Africa", "global hub", "value creation"], color: "primary" },
 	    { text: "empower", color: "teal" },
