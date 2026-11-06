@@ -3,19 +3,74 @@
     <div class="brand-kit-overview__column">
       <p class="brand-kit-overview__label">{{ label }}</p>
       <h2 :id="titleId" class="brand-kit-vision__title">
-        <span class="silky-bbi" style="line-height: 1.15"><slot /></span>
+        <span class="silky-bbi" style="line-height: 1.15">
+          <template v-for="(block, index) in blocks" :key="`${block.type}-${index}`">
+            <template v-if="block.type === 'text'">{{ block.value }}</template>
+            <span v-else-if="isTextBlock(block)" :class="textClass(block.type)">{{ block.value }}</span>
+            <template v-else-if="block.type === 'space'">{{ ' ' }}</template>
+            <template v-else-if="block.type === 'nbsp'">{{ '\u00a0' }}</template>
+            <span
+              v-else-if="block.type === 'image-inline'"
+              class="inline-image-preview"
+              :data-preview-caption="block.caption"
+              tabindex="0"
+              :aria-label="`${block.alt}. ${block.caption}`"
+            >
+              <img :src="block.src" :alt="block.alt" loading="lazy" />
+              <span class="inline-image-preview__popover" aria-hidden="true">
+                <img :src="block.src" alt="" loading="lazy" />
+                <span class="inline-image-preview__caption">{{ block.caption }}</span>
+              </span>
+            </span>
+          </template>
+        </span>
       </h2>
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
+type TextBlock = {
+  type: 'text' | 'text-silky' | 'text-silky-primary' | 'text-silky-teal' | 'text-silky-green' | 'text-silky-amber' | 'text-silky-violet'
+  value: string
+}
+
+type VisionBlock = TextBlock | { type: 'space' | 'nbsp' } | {
+  type: 'image-inline'
+  src: string
+  alt: string
+  caption: string
+}
+
+const isTextBlock = (block: VisionBlock): block is TextBlock => block.type.startsWith('text-silky')
+
+const textClass = (type: TextBlock['type']): string => {
+  switch (type) {
+    case 'text-silky':
+      return 'silky-bbi'
+    case 'text-silky-primary':
+      return 'silky-bbi primary-text'
+    case 'text-silky-teal':
+      return 'silky-bbi teal-text is-visible'
+    case 'text-silky-green':
+      return 'silky-bbi green-text is-visible'
+    case 'text-silky-amber':
+      return 'silky-bbi amber-text is-visible'
+    case 'text-silky-violet':
+      return 'silky-bbi violet-text is-visible'
+    case 'text':
+      return ''
+  }
+}
+
 withDefaults(defineProps<{
   label?: string
   titleId?: string
+  blocks?: VisionBlock[]
 }>(), {
   label: 'Our Vision',
   titleId: 'brand-kit-overview-title-0-0',
+  blocks: () => [],
 })
 </script>
 
