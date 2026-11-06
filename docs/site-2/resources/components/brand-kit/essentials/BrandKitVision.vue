@@ -1,27 +1,28 @@
 <template>
   <article class="brand-kit-vision brand-kit-overview__section brand-kit-overview__section--bordered">
     <div class="brand-kit-overview__column">
-      <p class="brand-kit-overview__label">{{ label }}</p>
-      <h2 :id="titleId" class="brand-kit-vision__title">
+      <p class="brand-kit-overview__label">{{ props.label }}</p>
+      <h2 :id="props.titleId" class="brand-kit-vision__title">
         <span class="silky-bbi" style="line-height: 1.15">
-          <template v-for="(block, index) in blocks" :key="`${block.type}-${index}`">
-            <template v-if="block.type === 'text'">{{ block.value }}</template>
-            <span v-else-if="isTextBlock(block)" :class="textClass(block.type)">{{ block.value }}</span>
-            <template v-else-if="block.type === 'space'">{{ ' ' }}</template>
-            <template v-else-if="block.type === 'nbsp'">{{ '\u00a0' }}</template>
-            <span
-              v-else-if="block.type === 'image-inline'"
-              class="inline-image-preview"
-              :data-preview-caption="block.caption"
-              tabindex="0"
-              :aria-label="`${block.alt}. ${block.caption}`"
-            >
-              <img :src="block.src" :alt="block.alt" loading="lazy" />
-              <span class="inline-image-preview__popover" aria-hidden="true">
-                <img :src="block.src" alt="" loading="lazy" />
-                <span class="inline-image-preview__caption">{{ block.caption }}</span>
+          <template v-for="(segment, index) in segments" :key="`${segment.text}-${index}`">
+            <template v-if="segment.replacement">
+              <span v-if="segment.replacement.color" :class="colorClass(segment.replacement.color)">{{ segment.text }}</span>
+              <template v-else>{{ segment.text }}</template>
+              <span
+                v-if="segment.replacement.image"
+                class="inline-image-preview"
+                :data-preview-caption="segment.replacement.image.caption"
+                tabindex="0"
+                :aria-describedby="`brand-kit-vision-tooltip-${index}`"
+              >
+                <img :src="segment.replacement.image.src" :alt="segment.replacement.image.alt || segment.replacement.image.caption" loading="lazy" />
+                <span :id="`brand-kit-vision-tooltip-${index}`" class="inline-image-preview__popover" role="tooltip">
+                  <img :src="segment.replacement.image.src" alt="" loading="lazy" />
+                  <span class="inline-image-preview__caption">{{ segment.replacement.image.caption }}</span>
+                </span>
               </span>
-            </span>
+            </template>
+            <template v-else>{{ segment.text }}</template>
           </template>
         </span>
       </h2>
@@ -30,47 +31,72 @@
 </template>
 
 <script setup lang="ts">
-type TextBlock = {
-  type: 'text' | 'text-silky' | 'text-silky-primary' | 'text-silky-teal' | 'text-silky-green' | 'text-silky-amber' | 'text-silky-violet'
-  value: string
-}
+import { computed } from 'vue'
 
-type VisionBlock = TextBlock | { type: 'space' | 'nbsp' } | {
-  type: 'image-inline'
-  src: string
-  alt: string
-  caption: string
-}
+type VisionColor = 'primary' | 'teal' | 'green' | 'amber' | 'violet'
 
-const isTextBlock = (block: VisionBlock): block is TextBlock => block.type.startsWith('text-silky')
-
-const textClass = (type: TextBlock['type']): string => {
-  switch (type) {
-    case 'text-silky':
-      return 'silky-bbi'
-    case 'text-silky-primary':
-      return 'silky-bbi primary-text'
-    case 'text-silky-teal':
-      return 'silky-bbi teal-text is-visible'
-    case 'text-silky-green':
-      return 'silky-bbi green-text is-visible'
-    case 'text-silky-amber':
-      return 'silky-bbi amber-text is-visible'
-    case 'text-silky-violet':
-      return 'silky-bbi violet-text is-visible'
-    case 'text':
-      return ''
+type VisionReplacement = {
+  text: string
+  color?: VisionColor
+  image?: {
+    src: string
+    alt?: string
+    caption: string
   }
 }
 
-withDefaults(defineProps<{
+type VisionSegment = {
+  text: string
+  replacement?: VisionReplacement
+}
+
+const props = withDefaults(defineProps<{
   label?: string
   titleId?: string
-  blocks?: VisionBlock[]
+  text: string
+  replacements?: VisionReplacement[]
 }>(), {
   label: 'Our Vision',
   titleId: 'brand-kit-overview-title-0-0',
-  blocks: () => [],
+  replacements: () => [],
+})
+
+const colorClass = (color: VisionColor): string => {
+  switch (color) {
+    case 'primary': return 'primary-text'
+    case 'teal': return 'teal-text is-visible'
+    case 'green': return 'green-text is-visible'
+    case 'amber': return 'amber-text is-visible'
+    case 'violet': return 'violet-text is-visible'
+  }
+}
+
+const segments = computed<VisionSegment[]>(() => {
+  const replacements = props.replacements
+    .filter((replacement) => replacement.text.length > 0)
+    .slice()
+    .sort((left, right) => right.text.length - left.text.length)
+
+  if (!replacements.length) return [{ text: props.text }]
+
+  const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const expression = new RegExp(
+    `(?<![\\p{L}\\p{N}_])(?:${replacements.map(({ text }) => escapeRegExp(text)).join('|')})(?![\\p{L}\\p{N}_])`,
+    'gu',
+  )
+  const replacementByText = new Map(replacements.map((replacement) => [replacement.text, replacement]))
+  const result: VisionSegment[] = []
+  let cursor = 0
+
+  for (const match of props.text.matchAll(expression)) {
+    const index = match.index ?? 0
+    if (index > cursor) result.push({ text: props.text.slice(cursor, index) })
+    result.push({ text: match[0], replacement: replacementByText.get(match[0]) })
+    cursor = index + match[0].length
+  }
+
+  if (cursor < props.text.length) result.push({ text: props.text.slice(cursor) })
+  return result
 })
 </script>
 
@@ -136,6 +162,14 @@ withDefaults(defineProps<{
   width: min(18rem, 75vw);
   gap: 0.45rem;
   padding: 0.55rem;
+  font-family: var(--vp-font-family-base);
+  font-size: 0.875rem;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  letter-spacing: normal;
+  color: var(--vp-c-text-1);
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none;
   border: 1px solid var(--brand-kit-line);
   border-radius: 0.65rem;
   background: var(--vp-c-bg);
@@ -155,9 +189,15 @@ withDefaults(defineProps<{
 }
 
 .brand-kit-vision :deep(.inline-image-preview__caption) {
-  color: var(--brand-kit-muted);
+  color: inherit;
+  font-family: inherit;
   font-size: 0.75rem;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  letter-spacing: normal;
   line-height: 1.4;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none;
 }
 
 .brand-kit-vision :deep(.inline-image-preview:hover .inline-image-preview__popover),

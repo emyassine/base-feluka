@@ -28,39 +28,17 @@ layout: home
 	  />
 	</div>
 	<BrandKitVision
-	  :blocks='[
-	    { type: "text", value: "Our ultimate objective is to position" },
-	    { type: "space" },
-	    { type: "text-silky-primary", value: "Africa" },
-	    { type: "space" },
-	    { type: "text", value: "as a global center of" },
-	    { type: "space" },
-	    { type: "text-silky-primary", value: "wealth creation" },
-	    { type: "text", value: ", leveraging" },
-	    { type: "space" },
-	    { type: "text-silky-teal", value: "technology" },
-	    { type: "space" },
-	    { type: "image-inline", src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" },
-	    { type: "text", value: "," },
-	    { type: "space" },
-	    { type: "text-silky-green", value: "capital" },
-	    { type: "space" },
-	    { type: "image-inline", src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Capital: financial performance and investment" },
-	    { type: "text", value: "," },
-	    { type: "space" },
-	    { type: "text-silky-amber", value: "workforce" },
-	    { type: "space" },
-	    { type: "image-inline", src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Workforce: people building together" },
-	    { type: "text", value: ", and" },
-	    { type: "space" },
-	    { type: "text-silky-violet", value: "media" },
-	    { type: "space" },
-	    { type: "image-inline", src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "Media: video editing and production" },
-	    { type: "space" },
-	    { type: "text", value: " to empower anyone across the continent." }
+	  text="Our ultimate objective is to position Africa as a global center of wealth creation, leveraging technology, capital, workforce, and media to empower anyone across the continent."
+	  :replacements='[
+			{ text: "ultimate", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
+	    { text: "Africa", color: "primary" },
+	    { text: "wealth creation", color: "primary" },
+	    { text: "technology", color: "teal", image: { src: "/images/brand-kit/leverage/technology.jpg", alt: "Electronic circuit board components", caption: "Technology: electronic circuitry" } },
+	    { text: "capital", color: "green", image: { src: "/images/brand-kit/leverage/capital.jpg", alt: "Laptop showing financial performance dashboards", caption: "Capital: financial performance and investment" } },
+	    { text: "workforce", color: "amber", image: { src: "/images/brand-kit/leverage/workforce.jpg", alt: "Colleagues working together around laptops", caption: "Workforce: people building together" } },
+	    { text: "media", color: "violet", image: { src: "/images/brand-kit/leverage/media.jpg", alt: "Video editing timeline on a desktop monitor", caption: "Media: video editing and production" } }
 	  ]'
 	/>
-
 	<BrandKitOverview
 	  :sections='[
 	    {
