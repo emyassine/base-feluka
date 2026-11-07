@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
 import './accent-text'
+import './click-particles'
 import './inline-image-preview'
 
 export const menuTemplates = {
