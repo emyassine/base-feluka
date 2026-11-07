@@ -106,6 +106,13 @@
   user-select: text;
 }
 
+.VPNav .VPFlyout,
+.VPNav .VPFlyout *,
+.VPNav .VPNavBarMenuLink,
+.VPNav .VPNavBarMenuLink * {
+  cursor: pointer;
+}
+
 .VPNav img,
 .VPNav svg {
   -webkit-user-drag: none;

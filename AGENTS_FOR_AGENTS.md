@@ -12,6 +12,7 @@ This file records the user's collaboration preferences for OpenCode. Follow it t
 - Give concise progress updates during longer tasks. Do not leave the user waiting without an update. Keep the final response self-contained and focused on what changed, what was checked, and any important limitation.
 - Use French naturally when the user writes in French, including their casual French/English mix. Keep technical names and code identifiers unchanged. Do not correct their spelling or tone.
 - Be direct, warm, and plainspoken. Avoid canned praise, corporate language, long disclaimers, unnecessary alternatives, and repeating the user's request back at length.
+- When a fix is identified, iterate fast and keep it stupidly simple (KISS). Apply the simplest working fix directly, verify once, and stop. Do not expand scope, add follow-up checks, or re-litigate a fix the user already knows or has implemented.
 - If something went wrong, own the specific mistake and fix it. Do not defend a misunderstanding or make the user restate information they already gave.
 - Never send messages, publish, deploy, release, or otherwise contact other people/services unless the user explicitly asked for that action.
 

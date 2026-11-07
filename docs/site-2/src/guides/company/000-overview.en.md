@@ -6,133 +6,59 @@ layout: home
 ---
 
 <style>
-  .oxide-about-section {
-    box-sizing: border-box;
-    padding: 4rem 1.5rem;
-    background-color: #0b0f17;
-    color: #e2e8f0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  }
-  .oxide-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: center;
-  }
   @media (min-width: 768px) {
-    .oxide-container {
-      grid-template-columns: 7fr 5fr;
+    .oxide-grid-container {
+      grid-template-columns: 7fr 5fr !important;
     }
   }
-  @media (min-width: 1024px) {
-    .oxide-container {
-      grid-template-columns: 8fr 4fr;
-      gap: 4rem;
+  @media (min-width: 900px) {
+    .oxide-grid-container {
+      grid-template-columns: 8fr 4fr !important;
     }
-  }
-  .oxide-text-column h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-  }
-  .oxide-text-column p {
-    font-size: 1.125rem;
-    line-height: 1.7;
-    color: #94a3b8;
-    margin-bottom: 1rem;
-  }
-  .oxide-card {
-    background-color: #111827;
-    border: 1px solid #1f2937;
-    border-radius: 0.75rem;
-    overflow: hidden;
-  }
-  .oxide-card-row {
-    padding: 1.5rem;
-    border-bottom: 1px solid #1f2937;
-  }
-  .oxide-card-row:last-child {
-    border-bottom: none;
-  }
-  .oxide-card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #f3f4f6;
-    margin-bottom: 0.375rem;
-  }
-  .oxide-card-subtitle {
-    font-size: 1rem;
-    color: #94a3b8;
-    margin-bottom: 0.75rem;
-  }
-  .oxide-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: #34d399;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
   }
   .oxide-card-link:hover {
-    color: #6ee7b7;
+    color: var(--vp-c-brand-1, #34d399) !important;
   }
-  .oxide-social-icons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-  .oxide-social-icons a {
-    color: #94a3b8;
-    display: inline-flex;
-    padding: 0.25rem;
-    text-decoration: none;
-  }
-  .oxide-social-icons a:hover {
-    color: #34d399;
+  .oxide-social-link:hover {
+    color: var(--vp-c-brand-1, #34d399) !important;
   }
 </style>
 <div style="margin-top:2rem;">
-		<section class="oxide-about-section">
-		  <div class="oxide-container">
-		    <div class="oxide-text-column">
-		      <h2>About Oxide</h2>
-		      <div>
-		        <p>Oxide Computer Company is the creator of the world’s first Cloud Computer, a true rack-scale system with fully unified hardware and software, purpose-built to deliver hyperscale cloud computing to on-premises data centers.</p>
-		        <p>With Oxide, developers build, run, and operate any application with enhanced security, latency, and control, IT teams accelerate strategic initiatives, and enterprises experience the economic and operational benefits of cloud ownership for the very first time.</p>
+		<section style="width: 100%; padding-bottom: 4rem; box-sizing: border-box;">
+		  <div style="margin: 0 auto; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: var(--space-8, 64px); align-items: center;" class="oxide-grid-container">
+		    <div style="display: flex; flex-direction: column; justify-content: center;">
+		      <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; color: var(--foreground); margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">About Oxide</h2>
+		      <div style="display: flex; flex-direction: column; gap: var(--space-3, 24px);">
+		        <p style="margin: 0; font-size: 1.125rem; line-height: 1.7; color: var(--muted);">Oxide Computer Company is the creator of the world’s first Cloud Computer, a true rack-scale system with fully unified hardware and software, purpose-built to deliver hyperscale cloud computing to on-premises data centers.</p>
+		        <p style="margin: 0; font-size: 1.125rem; line-height: 1.7; color: var(--muted);">With Oxide, developers build, run, and operate any application with enhanced security, latency, and control, IT teams accelerate strategic initiatives, and enterprises experience the economic and operational benefits of cloud ownership for the very first time.</p>
 		      </div>
 		    </div>
-		    <div class="oxide-card">
-		      <div class="oxide-card-row">
-		        <div class="oxide-card-title">Media enquiries</div>
-		        <a href="mailto:media@oxide.computer" class="oxide-card-link">
+		    <div style="background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg, 8px); overflow: hidden; box-shadow: var(--shadow);">
+		      <div style="border-bottom: 1px solid var(--border); padding: var(--space-3, 24px);">
+		        <div style="font-size: 1rem; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">Media enquiries</div>
+		        <a href="mailto:media@oxide.computer" class="oxide-card-link" style="color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 0.95rem; transition: color var(--duration-fast) var(--ease-out);">
 		          media@oxide.computer
-		          <svg width="16" height="16"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#email-16"></use></svg>
+		          <svg width="16" height="16" style="color: var(--subtle);"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#email-16"></use></svg>
 		        </a>
 		      </div>
-		      <div class="oxide-card-row">
-		        <div class="oxide-card-title">Assets</div>
-		        <a href="https://drive.google.com/uc?export=download&amp;id=16hWw76qmCS7L9tpr-GFTv0QgOi_VIfzd" download="" target="_blank" rel="noreferrer" class="oxide-card-link">
+		      <div style="border-bottom: 1px solid var(--border); padding: var(--space-3, 24px);">
+		        <div style="font-size: 1rem; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">Assets</div>
+		        <a href="https://drive.google.com/uc?export=download&amp;id=16hWw76qmCS7L9tpr-GFTv0QgOi_VIfzd" download="" target="_blank" rel="noreferrer" class="oxide-card-link" style="color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 0.95rem; transition: color var(--duration-fast) var(--ease-out);">
 		          Download
-		          <svg width="12" height="12"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#next-arrow-12"></use></svg>
+		          <svg width="12" height="12" style="color: var(--subtle);"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#next-arrow-12"></use></svg>
 		        </a>
 		      </div>
-		      <div class="oxide-card-row">
-		        <div class="oxide-card-title">Follow us</div>
-		        <div class="oxide-card-subtitle">Keep up to date</div>
-		        <div class="oxide-social-icons">
-		          <a href="https://github.com/oxidecomputer" aria-label="Oxide Github16" target="_blank" rel="noreferrer">
+		      <div style="padding: var(--space-3, 24px);">
+		        <div style="font-size: 1rem; font-weight: 600; color: var(--foreground); margin-bottom: 2px;">Follow us</div>
+		        <div style="font-size: 0.95rem; color: var(--muted); margin-bottom: 12px;">Keep up to date</div>
+		        <div style="display: flex; align-items: center; gap: 12px;">
+		          <a class="oxide-social-link" style="color: var(--subtle); display: inline-flex; padding: 4px; margin: -4px; text-decoration: none; transition: color var(--duration-fast) var(--ease-out);" href="https://github.com/oxidecomputer" aria-label="Oxide Github16" target="_blank" rel="noreferrer">
 		            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><title>GitHub logo</title><path d="M8 0.333496C3.58 0.333496 0 3.8535 0 8.1948C0 11.6688 2.292 14.6148 5.47 15.6535C5.87 15.7275 6.01666 15.4842 6.01666 15.2755C6.01666 15.0888 6.01 14.5942 6.00666 13.9388C3.78134 14.4128 3.312 12.8842 3.312 12.8842C2.948 11.9768 2.422 11.7342 2.422 11.7342C1.69734 11.2468 2.478 11.2568 2.478 11.2568C3.28134 11.3115 3.70334 12.0668 3.70334 12.0668C4.41666 13.2688 5.576 12.9215 6.03334 12.7208C6.10534 12.2122 6.31134 11.8662 6.54 11.6695C4.76334 11.4728 2.896 10.7968 2.896 7.78483C2.896 6.92683 3.206 6.2255 3.71934 5.6755C3.62934 5.47683 3.35934 4.6775 3.78934 3.59483C3.78934 3.59483 4.45934 3.38416 5.98934 4.40083C6.62934 4.22616 7.30934 4.1395 7.98934 4.1355C8.66936 4.1395 9.34936 4.22616 9.98936 4.40083C11.5094 3.38416 12.1794 3.59483 12.1794 3.59483C12.6094 4.6775 12.3394 5.47683 12.2594 5.6755C12.7694 6.2255 13.0794 6.92683 13.0794 7.78483C13.0794 10.8048 11.2094 11.4695 9.42936 11.6628C9.70936 11.8988 9.96936 12.3808 9.96936 13.1175C9.96936 14.1695 9.95936 15.0148 9.95936 15.2702C9.95936 15.4762 10.0994 15.7222 10.5094 15.6435C13.71 14.6115 16 11.6635 16 8.1948C16 3.8535 12.418 0.333496 8 0.333496Z" fill="currentColor"></path></svg>
 		          </a>
-		          <a href="https://www.linkedin.com/company/oxidecomputer" aria-label="Oxide LinkedIn" target="_blank" rel="noreferrer">
+		          <a class="oxide-social-link" style="color: var(--subtle); display: inline-flex; padding: 4px; margin: -4px; text-decoration: none; transition: color var(--duration-fast) var(--ease-out);" href="https://www.linkedin.com/company/oxidecomputer" aria-label="Oxide LinkedIn" target="_blank" rel="noreferrer">
 		            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Linkedin logo</title><path d="M14.4 0H1.6C0.72 0 0 0.72 0 1.6V14.4C0 15.28 0.72 16 1.6 16H14.4C15.28 16 16 15.28 16 14.4V1.6C16 0.72 15.28 0 14.4 0ZM4.8 13.6H2.4V6.4H4.8V13.6ZM3.6 5.04C2.8 5.04 2.16 4.4 2.16 3.6C2.16 2.8 2.8 2.16 3.6 2.16C4.4 2.16 5.04 2.8 5.04 3.6C5.04 4.4 4.4 5.04 3.6 5.04ZM13.6 13.6H11.2V9.36C11.2 8.72 10.64 8.16 10 8.16C9.36 8.16 8.8 8.72 8.8 9.36V13.6H6.4V6.4H8.8V7.36C9.2 6.72 10.08 6.24 10.8 6.24C12.32 6.24 13.6 7.52 13.6 9.04V13.6Z" fill="currentColor"></path></svg>
 		          </a>
-		          <a href="https://bsky.app/profile/oxide.computer" aria-label="Oxide Bluesky" target="_blank" rel="noreferrer">
+		          <a class="oxide-social-link" style="color: var(--subtle); display: inline-flex; padding: 4px; margin: -4px; text-decoration: none; transition: color var(--duration-fast) var(--ease-out);" href="https://bsky.app/profile/oxide.computer" aria-label="Oxide Bluesky" target="_blank" rel="noreferrer">
 		            <svg width="16" height="16" viewBox="0 -3.268 64 68.414" xmlns="http://www.w3.org/2000/svg"><title>Bluesky logo</title><path fill="currentColor" d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805zm36.254 0C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745z"></path></svg>
 		          </a>
 		        </div>
