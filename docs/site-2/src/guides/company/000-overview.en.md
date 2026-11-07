@@ -5,101 +5,100 @@ icon: "@spmpst::icon::sparkles"
 layout: home
 ---
 
-
+<style>
+  .oxide-about-section {
+    box-sizing: border-box;
+    padding: 4rem 1.5rem;
+    background-color: #0b0f17;
+    color: #e2e8f0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  .oxide-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .oxide-container {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+  @media (min-width: 1024px) {
+    .oxide-container {
+      grid-template-columns: 8fr 4fr;
+      gap: 4rem;
+    }
+  }
+  .oxide-text-column h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  .oxide-text-column p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+  .oxide-card {
+    background-color: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .oxide-card-row {
+    padding: 1.5rem;
+    border-bottom: 1px solid #1f2937;
+  }
+  .oxide-card-row:last-child {
+    border-bottom: none;
+  }
+  .oxide-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f3f4f6;
+    margin-bottom: 0.375rem;
+  }
+  .oxide-card-subtitle {
+    font-size: 1rem;
+    color: #94a3b8;
+    margin-bottom: 0.75rem;
+  }
+  .oxide-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #34d399;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .oxide-card-link:hover {
+    color: #6ee7b7;
+  }
+  .oxide-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .oxide-social-icons a {
+    color: #94a3b8;
+    display: inline-flex;
+    padding: 0.25rem;
+    text-decoration: none;
+  }
+  .oxide-social-icons a:hover {
+    color: #34d399;
+  }
+</style>
 <div style="margin-top:2rem;">
 		<section class="oxide-about-section">
-		  <style>
-		    .oxide-about-section {
-		      box-sizing: border-box;
-		      padding: 4rem 1.5rem;
-		      background-color: #0b0f17;
-		      color: #e2e8f0;
-		      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-		    }
-		    .oxide-container {
-		      max-width: 1200px;
-		      margin: 0 auto;
-		      display: grid;
-		      grid-template-columns: 1fr;
-		      gap: 3rem;
-		      align-items: center;
-		    }
-		    @media (min-width: 768px) {
-		      .oxide-container {
-		        grid-template-columns: 7fr 5fr;
-		      }
-		    }
-		    @media (min-width: 1024px) {
-		      .oxide-container {
-		        grid-template-columns: 8fr 4fr;
-		        gap: 4rem;
-		      }
-		    }
-		    .oxide-text-column h2 {
-		      font-size: 2.5rem;
-		      font-weight: 700;
-		      color: #ffffff;
-		      margin-bottom: 1.5rem;
-		      line-height: 1.2;
-		    }
-		    .oxide-text-column p {
-		      font-size: 1.125rem;
-		      line-height: 1.7;
-		      color: #94a3b8;
-		      margin-bottom: 1rem;
-		    }
-		    .oxide-card {
-		      background-color: #111827;
-		      border: 1px solid #1f2937;
-		      border-radius: 0.75rem;
-		      overflow: hidden;
-		    }
-		    .oxide-card-row {
-		      padding: 1.5rem;
-		      border-bottom: 1px solid #1f2937;
-		    }
-		    .oxide-card-row:last-child {
-		      border-bottom: none;
-		    }
-		    .oxide-card-title {
-		      font-size: 1rem;
-		      font-weight: 600;
-		      color: #f3f4f6;
-		      margin-bottom: 0.375rem;
-		    }
-		    .oxide-card-subtitle {
-		      font-size: 1rem;
-		      color: #94a3b8;
-		      margin-bottom: 0.75rem;
-		    }
-		    .oxide-card-link {
-		      display: inline-flex;
-		      align-items: center;
-		      gap: 0.35rem;
-		      color: #34d399;
-		      text-decoration: none;
-		      font-size: 1rem;
-		      font-weight: 500;
-		    }
-		    .oxide-card-link:hover {
-		      color: #6ee7b7;
-		    }
-		    .oxide-social-icons {
-		      display: flex;
-		      align-items: center;
-		      gap: 1rem;
-		      margin-top: 0.5rem;
-		    }
-		    .oxide-social-icons a {
-		      color: #94a3b8;
-		      display: inline-flex;
-		      padding: 0.25rem;
-		      text-decoration: none;
-		    }
-		    .oxide-social-icons a:hover {
-		      color: #34d399;
-		    }
-		  </style>
 		  <div class="oxide-container">
 		    <div class="oxide-text-column">
 		      <h2>About Oxide</h2>
