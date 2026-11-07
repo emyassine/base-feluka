@@ -374,7 +374,7 @@ function iconMask(iconUrl?: string) {
   min-width: 180px;
   background-color: var(--vp-c-bg-elv);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   box-shadow: var(--vp-shadow-3);
   padding: 6px;
   display: flex;
@@ -386,10 +386,14 @@ function iconMask(iconUrl?: string) {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--vp-font-family-body, inherit);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1;
   color: var(--vp-c-text-1);
   text-decoration: none;
   white-space: nowrap;
@@ -397,7 +401,7 @@ function iconMask(iconUrl?: string) {
 }
 
 .topbar-dropdown-item:hover {
-  background-color: var(--vp-c-default-soft);
+  background-color: var(--vp-c-bg-mute);
   color: var(--vp-c-brand-1);
 }
 
@@ -470,15 +474,25 @@ function iconMask(iconUrl?: string) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
   background: transparent;
   border: 0;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-family: var(--vp-font-family-body, inherit);
+  font-size: 0.78rem;
   font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1;
   color: var(--vp-c-text-1);
   cursor: pointer;
   text-align: left;
 }
+
+.screen-action-trigger:hover { background: var(--vp-c-bg-mute); }
+
+.screen-action-trigger:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: -2px; }
 
 .screen-action-title {
   display: flex;
@@ -509,17 +523,21 @@ function iconMask(iconUrl?: string) {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--vp-font-family-body, inherit);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1;
   color: var(--vp-c-text-1);
   text-decoration: none;
   transition: background-color 0.2s, color 0.2s;
 }
 
 .screen-action-link:hover {
-  background-color: var(--vp-c-default-soft);
+  background-color: var(--vp-c-bg-mute);
   color: var(--vp-c-brand-1);
 }
 
