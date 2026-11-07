@@ -66,8 +66,8 @@ layout: home
 		    </div>
 		  </div>
 		</section>
-		<div style="  --dot-bg: black;
-  --dot-color: white;
+		<div style="  --dot-bg: var(--vp-c-bg);
+	  --dot-color: var(--vp-c-text-1);
   --dot-size: 1px;
   --dot-space: 22px;
 	background:
