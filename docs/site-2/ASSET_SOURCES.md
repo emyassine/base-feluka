@@ -1,5 +1,12 @@
 # Image asset provenance
 
+## Oxide icon sprite
+
+- **Asset:** `public/images/patterns/icon-sprite.svg` (83,037 bytes; original SVG sprite downloaded 2026-11-07).
+- **Source:** `https://oxide.computer/assets/sprite-COlJRoK5.svg`.
+- **Use:** Same-origin references for the email and next-arrow symbols on the company overview page, avoiding cross-origin SVG `<use>` requests in local and deployed browsers.
+- **Rights:** The source site does not publish an asset-specific license alongside the sprite; retain this provenance and verify permission before redistributing outside this site.
+
 ## Legal collection photography
 
 All six legal notice covers use existing photographs downloaded from Unsplash under the [Unsplash License](https://unsplash.com/license), which permits free commercial and non-commercial use. Sources and license status were checked on 2026-11-04. Each image is a local 2000 × 1250 WebP rendition, center-cropped to the collection's 16:10 image ratio and optimized with ImageMagick at quality 88. No generative image tools, composites, retouching or added elements were used. The attribution registry is `docs/site-2/.site/spmpst.images-attributions.json`; the Brand Kit gallery links each photo and its license.

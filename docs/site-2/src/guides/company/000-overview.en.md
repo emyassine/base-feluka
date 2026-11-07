@@ -60,14 +60,14 @@ layout: home
 		        <div style="font-size: 1rem; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">Media enquiries</div>
 		        <a href="mailto:media@oxide.computer" class="oxide-card-link" style="color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 0.95rem; transition: color var(--duration-fast) var(--ease-out);">
 		          media@oxide.computer
-		          <svg width="16" height="16" style="color: var(--subtle);"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#email-16"></use></svg>
+		          <svg width="16" height="16" aria-hidden="true" focusable="false" style="color: var(--subtle);"><use href="/images/patterns/icon-sprite.svg#email-16"></use></svg>
 		        </a>
 		      </div>
 		      <div style="border-bottom: 1px solid var(--border); padding: var(--space-3, 24px);">
 		        <div style="font-size: 1rem; font-weight: 600; color: var(--foreground); margin-bottom: 6px;">Assets</div>
 		        <a href="https://drive.google.com/uc?export=download&amp;id=16hWw76qmCS7L9tpr-GFTv0QgOi_VIfzd" download="" target="_blank" rel="noreferrer" class="oxide-card-link" style="color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 0.95rem; transition: color var(--duration-fast) var(--ease-out);">
 		          Download
-		          <svg width="12" height="12" style="color: var(--subtle);"><use href="https://oxide.computer/assets/sprite-COlJRoK5.svg#next-arrow-12"></use></svg>
+		          <svg width="12" height="12" aria-hidden="true" focusable="false" style="color: var(--subtle);"><use href="/images/patterns/icon-sprite.svg#next-arrow-12"></use></svg>
 		        </a>
 		      </div>
 		      <div style="padding: var(--space-3, 24px);">
