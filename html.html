@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f0efe9">
+  <meta name="description" content="Meet Numerimondes, an independent consulting and solutions company in Casablanca. Explore our vision, approach, capabilities and ventures.">
+  <title>About Us — Numerimondes</title>
+  <style>
+    :root{--paper:#f0efe9;--ink:#182320;--muted:#606b66;--line:#cbd0c8;--forest:#172e29;--sage:#dbe4d9;--acid:#d6f06b;--max:1440px;--side:clamp(22px,5.8vw,100px)}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:80px}
+    body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}a:hover{text-decoration-color:currentColor}button{font:inherit}
+    img{display:block;width:100%;height:100%;object-fit:cover;background:#cbd3cc}
+    ::selection{background:var(--acid);color:var(--forest)}
+    .wrap{max-width:var(--max);padding-inline:var(--side);margin-inline:auto}
+    .meta{font:700 11px/1.4 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+    .muted{color:var(--muted)}
+    .section{padding-block:clamp(92px,12vw,190px);border-top:1px solid var(--line)}
+    .display{font-size:clamp(58px,9.7vw,158px);font-weight:500;letter-spacing:-.085em;line-height:.92;margin:0}
+    .h2{font-size:clamp(43px,6.2vw,94px);font-weight:500;line-height:1.02;letter-spacing:-.07em;margin:0}
+    .h3{font-size:clamp(29px,3.4vw,52px);font-weight:500;line-height:1.1;letter-spacing:-.055em;margin:0}
+    .lead{font-size:clamp(20px,2.6vw,35px);line-height:1.38;letter-spacing:-.035em;margin:0}
+    .bodycopy{font-size:clamp(16px,1.25vw,19px);line-height:1.75;max-width:670px}
+    .bodycopy p{margin:0 0 1.2em}.eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:35px}.eyebrow::before{content:'';height:8px;width:8px;border-radius:50%;background:currentColor}
+    .arrow{display:inline-flex;gap:24px;align-items:center;padding:13px 0;border-bottom:1px solid currentColor;font-size:13px;font-weight:700;letter-spacing:.01em}.arrow::after{content:'↗';font-size:20px;font-weight:400;transition:transform .25s}.arrow:hover::after{transform:translate(3px,-3px)}
+    .site-header{position:absolute;z-index:10;top:0;left:0;right:0;border-bottom:1px solid rgba(255,255,255,.36);color:white}.header-inner{height:86px;display:flex;align-items:center;justify-content:space-between;gap:32px}.brand{font-size:25px;font-weight:800;letter-spacing:-.08em}.nav{display:flex;align-items:center;gap:32px;font-size:12px;font-weight:700}.nav a:hover{text-decoration:underline;text-underline-offset:7px}
+    .hero{position:relative;min-height:min(940px,100svh);min-height:max(740px,100svh);background:var(--forest);color:#fff;overflow:hidden}.hero-image{position:absolute;inset:0;opacity:.74}.hero-image img{object-position:center 52%}.hero::after{content:'';pointer-events:none;position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,26,22,.82) 0%,rgba(8,26,22,.47) 52%,rgba(8,26,22,.1) 100%),linear-gradient(0deg,rgba(8,26,22,.65),transparent 48%)}
+    .hero-content{position:relative;z-index:1;min-height:inherit;display:flex;flex-direction:column;justify-content:flex-end;padding-top:190px;padding-bottom:70px}.hero h1{max-width:1200px}.hero-topline{margin-bottom:36px;display:flex;justify-content:space-between;gap:20px}.hero-bottom{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:end;margin-top:80px}.hero-bottom .lead{max-width:680px}.hero-bottom .arrow{justify-self:end}.hero .accent{color:var(--acid)}
+    .intro-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(50px,10vw,170px)}.intro-grid .bodycopy{margin-top:10px}.facts{margin-top:70px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr)}.fact{padding:22px 28px 0 0}.fact span{display:block;margin-bottom:10px}.fact strong{font-size:clamp(19px,2.1vw,27px);font-weight:500;letter-spacing:-.03em}
+    .image-interlude{height:clamp(370px,65vw,780px);position:relative;overflow:hidden;background:#c2c9c1}.image-interlude img{object-position:center 55%}.image-caption{position:absolute;left:var(--side);bottom:32px;background:var(--paper);padding:12px 17px;max-width:360px;font-size:12px;letter-spacing:.04em}
+    .vision{background:var(--forest);color:#eff3ed}.vision-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(50px,8vw,130px)}.vision .h2{max-width:850px}.vision-text{padding-top:15px}.vision-text p{color:#d0dad2}.vision-highlight{color:var(--acid)}
+    .levers{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #69756f;margin-top:95px}.lever{padding:26px 22px 42px;border-right:1px solid #69756f;min-height:250px;display:flex;flex-direction:column;justify-content:space-between}.lever:first-child{padding-left:0}.lever:last-child{border-right:0}.lever h3{font-weight:500;font-size:clamp(25px,2.8vw,44px);letter-spacing:-.055em;margin:0}
+    .mission{text-align:center}.mission .eyebrow{justify-content:center}.mission .h2{max-width:1100px;margin-inline:auto}.mission .bodycopy{margin:40px auto 0}.mission .symbol{font-family:Georgia,serif;font-style:italic;color:#688671}
+    .gallery{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.gallery-left{aspect-ratio:4/4.2}.gallery-right{display:grid;grid-template-rows:1fr 1fr;gap:16px;min-height:0}.gallery-right figure{margin:0;min-height:0}.gallery figure{margin:0;overflow:hidden;position:relative}.gallery figcaption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;padding:45px 20px 20px;font-size:12px}.gallery img{transition:transform .7s}.gallery figure:hover img{transform:scale(1.025)}
+    .cap-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}.cap-header p{margin:0}.cap-list{border-top:1px solid var(--line)}.cap-item{display:grid;grid-template-columns:65px 1fr 1fr;gap:32px;align-items:center;padding:33px 0;border-bottom:1px solid var(--line)}.cap-item h3{font-size:clamp(25px,3.15vw,46px);font-weight:500;letter-spacing:-.05em;line-height:1.13;margin:0}.cap-item p{max-width:485px;color:var(--muted);margin:0}.cap-context{margin-top:68px;padding:35px 38px;background:#e0e5dc;display:grid;grid-template-columns:1fr 1.5fr;gap:55px}.cap-context p{margin:0}.cap-context h3{font-size:23px;font-weight:500;letter-spacing:-.03em;margin:0 0 18px}.cap-context a{text-decoration:underline;text-underline-offset:3px}
+    .approach{background:#e1e8de}.approach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10vw}.principles{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}.principles li{padding:26px 0;display:grid;grid-template-columns:38px 1fr;gap:16px;border-bottom:1px solid var(--line)}.principles .meta{padding-top:6px}.approach .bodycopy{margin-top:40px}
+    .ventures-head{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:65px}.venture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.venture-card{background:#e4e5df;min-width:0}.venture-image{height:240px;overflow:hidden}.venture-card-content{padding:27px 27px 35px}.venture-card h3{font-size:clamp(25px,2.2vw,36px);font-weight:500;letter-spacing:-.045em;margin:13px 0}.venture-card p{color:var(--muted);font-size:15px;min-height:80px;margin:0 0 24px}.venture-card .arrow{font-size:12px}
+    .opportunity{background:#dce5d9}.opportunity-grid{display:grid;grid-template-columns:1fr 1fr;gap:10vw}.opportunity .bodycopy{margin-top:25px}.opportunity .arrow{margin-top:30px}
+    .closing{background:var(--forest);color:white}.closing .h2{max-width:1100px}.closing .arrow{margin-top:55px;color:var(--acid)}.footer{background:var(--forest);border-top:1px solid #4a5b52;color:#c4d1c9;padding-block:34px}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;font-size:12px}.footer-links{display:flex;gap:25px;flex-wrap:wrap}
+    /* Progressive text reveal: words remain legible even without JS. */
+    .scroll-reveal-word{opacity:1;transition:opacity 100ms linear}
+    .scroll-reveal-media{opacity:1;transition:opacity 100ms linear}
+    .scroll-reveal-decoration-source{text-decoration-line:none!important}
+    @supports (animation-timeline: view()){
+      .scroll-reveal-only{animation:scroll-reveal-scale linear both;animation-timeline:view(block);animation-range:entry 0% cover 48%}
+    }
+    @keyframes scroll-reveal-scale{from{transform:scale(.92)}to{transform:scale(1)}}
+    /* JS-enhanced word scroll illumination uses a softened minimum opacity. */
+    .js-reveal .scroll-reveal-word{opacity:.24}
+    @media(max-width:1000px){.hero-bottom,.intro-grid,.vision-grid,.cap-header,.approach-grid,.ventures-head,.opportunity-grid{grid-template-columns:1fr;gap:40px}.hero-bottom .arrow{justify-self:start}.cap-item{grid-template-columns:38px 1fr;gap:18px}.cap-item p{grid-column:2}.levers{grid-template-columns:repeat(2,1fr)}.lever:nth-child(2){border-right:0}.lever:nth-child(-n+2){border-bottom:1px solid #69756f}.venture-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.header-inner{height:73px}.brand{font-size:21px}.nav a:not(:last-child){display:none}.hero{min-height:750px}.hero-content{padding-top:130px;padding-bottom:40px}.hero-bottom{margin-top:45px}.hero-topline{margin-bottom:25px}.hero .display{font-size:clamp(56px,13.5vw,90px)}.section{padding-block:88px}.facts{grid-template-columns:1fr;gap:14px}.fact{border-bottom:1px solid var(--line);padding-bottom:15px}.levers{grid-template-columns:1fr}.lever{min-height:160px;border-right:0;border-bottom:1px solid #69756f;padding:18px 0}.lever:last-child{border-bottom:0}.gallery{grid-template-columns:1fr}.gallery-left{aspect-ratio:4/3}.gallery-right{grid-template-columns:1fr 1fr;grid-template-rows:200px}.cap-context{grid-template-columns:1fr;padding:25px;gap:15px}.venture-grid{grid-template-columns:1fr}.venture-card p{min-height:0}.footer-inner{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scroll-reveal-only{animation:none!important;transform:none!important}.scroll-reveal-word,.scroll-reveal-media{opacity:1!important;transition:none!important}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+  <main>
+    <!-- 01 — Hero -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-image"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2200&q=85" alt="Architectural perspective of a modern business district" fetchpriority="high"></div>
+      <div class="wrap hero-content">
+        <div class="hero-topline meta"><span>Numerimondes / About us</span><span>Independent company · Casablanca</span></div>
+        <h1 id="page-title" class="display">Ideas.<br>Systems.<br><span class="accent">Lasting value.</span></h1>
+        <div class="hero-bottom"><p class="lead">We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities.</p><a class="arrow" href="#company">Meet Numerimondes</a></div>
+      </div>
+    </section>
+
+    <!-- 02 — Who we are -->
+    <section class="section" id="company"><div class="wrap">
+      <div class="intro-grid">
+        <div><div class="eyebrow meta">01 / The company</div><h2 class="h2">Independent.<br>Inquisitive.<br>Practical.</h2></div>
+        <div class="bodycopy"><p class="lead">Numerimondes SARL AU is an independent consulting and solutions company based in Casablanca, Morocco.</p><p>We investigate commercial and operational challenges, examine opportunities, propose strategies, design technology, and coordinate the work required to make ideas useful in practice.</p><p>Our model is mission-based. The scope and team are shaped by the assignment, with specialist partners involved where their expertise is needed. Engagements are led directly, with clear responsibilities and written terms.</p><p>We also develop our own ventures and technical projects, applying research and engineering to problems we consider worth pursuing.</p></div>
+      </div>
+      <div class="facts"><div class="fact"><span class="meta muted">Based in</span><strong>Casablanca, Morocco</strong></div><div class="fact"><span class="meta muted">Organization</span><strong>Independent · SARL AU</strong></div><div class="fact"><span class="meta muted">Operating model</span><strong>Mission-led collaboration</strong></div></div>
+    </div></section>
+
+    <!-- Photography interlude -->
+    <div class="image-interlude scroll-reveal-only"><img loading="lazy" src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=2000&q=85" alt="Naturally lit working environment, with space for collaboration"><span class="image-caption">Independent thinking. Structured execution.</span></div>
+
+    <!-- 03 — Vision and leverage -->
+    <section class="section vision" id="vision"><div class="wrap">
+      <div class="eyebrow meta">02 / Our vision</div>
+      <div class="vision-grid"><h2 class="h2">A North African hub of <span class="vision-highlight">value creation.</span></h2><div class="vision-text bodycopy"><p class="lead">We want North Africa to become a globally recognized place where ideas, talent, enterprise and technology create enduring economic value.</p><p>Our long-term ambition is to make powerful resources more accessible, so that anyone, anywhere, can develop ideas, solve meaningful problems and build wealth.</p><p>That ambition informs both our client work and the companies, platforms and opportunities we choose to develop.</p></div></div>
+      <div class="levers" aria-label="Four levers of value creation"><div class="lever"><span class="meta">01 / Lever</span><h3>Technology</h3></div><div class="lever"><span class="meta">02 / Lever</span><h3>Capital</h3></div><div class="lever"><span class="meta">03 / Lever</span><h3>Workforce</h3></div><div class="lever"><span class="meta">04 / Lever</span><h3>Media</h3></div></div>
+    </div></section>
+
+    <!-- 04 — Mission with progressive word reveal -->
+    <section class="section mission" id="mission"><div class="wrap">
+      <div class="eyebrow meta">03 / Our mission</div>
+      <h2 class="h2" data-word-reveal>Empowering people and society to go <span class="symbol">beyond</span> what they think possible.</h2>
+      <div class="bodycopy"><p>We combine rigorous research, commercial thinking, practical engineering and coordinated execution to clarify choices and create better conditions for growth.</p></div>
+    </div></section>
+
+    <!-- Photographic editorial grid -->
+    <section class="gallery wrap" aria-label="People, technology and operations">
+      <figure class="gallery-left scroll-reveal-only"><img loading="lazy" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1400&q=85" alt="Professionals collaborating around a shared task"><figcaption>People / Collaboration</figcaption></figure>
+      <div class="gallery-right"><figure class="scroll-reveal-only"><img loading="lazy" src="https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?w=1000&q=85" alt="Contemporary office interior and working environment"><figcaption>Organizations / Environments</figcaption></figure><figure class="scroll-reveal-only"><img loading="lazy" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&q=85" alt="Close-up of electronic circuit board components"><figcaption>Engineering / Technology</figcaption></figure></div>
+    </section>
+
+    <!-- 05 — Capabilities, accurately defined -->
+    <section class="section" id="capabilities"><div class="wrap">
+      <div class="eyebrow meta">04 / Our areas of expertise</div>
+      <div class="cap-header"><h2 class="h2">Capabilities,<br>not a catalogue<br>of promises.</h2><div class="bodycopy"><p>We work with SMEs, owner-managed businesses, professional practices and operating teams seeking practical business or technology improvements.</p><p>Our capabilities describe work we can investigate, design or coordinate: the questions we examine, the methods we use, and the outcomes we may help pursue. They are an editorial guide to our expertise, not guaranteed deliverables or a claim that every specialty is permanently staffed in-house.</p></div></div>
+      <div class="cap-list">
+        <article class="cap-item"><span class="meta">01</span><h3>Business Performance</h3><p>Understand operations, commercial workflows, decision-making, performance measurement and possible improvements.</p></article>
+        <article class="cap-item"><span class="meta">02</span><h3>Software and Automation</h3><p>Explore tailored applications, integrations, business workflows, data handling and opportunities for responsible automation.</p></article>
+        <article class="cap-item"><span class="meta">03</span><h3>Infrastructure and Connected Operations</h3><p>Consider dependable systems for teams, equipment and field environments, including hosting, connectivity, monitoring and operational continuity.</p></article>
+        <article class="cap-item"><span class="meta">04</span><h3>People and Organizations</h3><p>Examine workforce needs, coordination, learning, recruitment processes, organizational practice and capability development.</p></article>
+        <article class="cap-item"><span class="meta">05</span><h3>Research and Ventures</h3><p>Investigate emerging technologies, market opportunities, new business models and early-stage project concepts.</p></article>
+      </div>
+      <div class="cap-context"><div><h3>Where we apply them</h3><p class="muted">Consumer and commerce; financial and professional services; healthcare and learning; industrials and logistics; technology, media and telecom.</p></div><div><h3>How the pieces fit</h3><p class="muted">Capabilities explain our approach. The <a href="/services/marketplace">Services Marketplace</a> is a demonstration catalogue, while published pricing pages define current commercial terms. Company projects have their own status and scope. A capability can be relevant even where no matching service is currently offered; the right mix of Numerimondes and specialist partners depends on the mission.</p></div></div>
+      <p style="margin-top:35px"><a class="arrow" href="/capabilities">Explore the capabilities library</a></p>
+    </div></section>
+
+    <!-- 06 — How we work -->
+    <section class="section approach" id="approach"><div class="wrap approach-grid">
+      <div><div class="eyebrow meta">05 / How we work</div><h2 class="h2">Clarity before commitment.</h2><div class="bodycopy"><p>We work best with business owners, executives, and leaders in operations, HR or IT who have a defined objective and the authority to move work forward.</p><p>Our first concern is understanding the issue, its consequences and the decisions it requires. A suitable engagement then receives a written scope and a delivery structure proportionate to the work.</p></div></div>
+      <div><div class="eyebrow meta">What you can expect</div><ol class="principles"><li><span class="meta">01</span><span>Direct communication with the person leading the engagement.</span></li><li><span class="meta">02</span><span>A written scope, responsibilities and commercial terms before work starts.</span></li><li><span class="meta">03</span><span>Specialists and partners brought in when the assignment calls for them.</span></li><li><span class="meta">04</span><span>A candid assessment of feasibility, constraints and whether we are a suitable fit.</span></li></ol></div>
+    </div></section>
+
+    <!-- 07 — Ventures -->
+    <section class="section" id="ventures"><div class="wrap">
+      <div class="eyebrow meta">06 / Company projects</div><div class="ventures-head"><h2 class="h2">Ideas we develop ourselves.</h2><p class="bodycopy">Beyond client missions, Numerimondes explores and develops platforms and services in infrastructure, recruitment and software engineering. Their maturity, availability and commercial status are described on their individual pages.</p></div>
+      <div class="venture-grid">
+        <article class="venture-card"><div class="venture-image"><img loading="lazy" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1000&q=80" alt="Server infrastructure"></div><div class="venture-card-content"><span class="meta muted">Infrastructure / Services</span><h3>Numerimondes Cloud</h3><p>Server management and infrastructure-related services.</p><a class="arrow" href="/company/our-projects">Explore company projects</a></div></article>
+        <article class="venture-card"><div class="venture-image"><img loading="lazy" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1000&q=80" alt="Software code on a display"></div><div class="venture-card-content"><span class="meta muted">Engineering / Platform</span><h3>Feluqa</h3><p>An exploratory Rust application platform for demanding, cross-platform systems.</p><a class="arrow" href="/company/our-projects">Explore company projects</a></div></article>
+        <article class="venture-card"><div class="venture-image"><img loading="lazy" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1000&q=80" alt="Business team discussing work"></div><div class="venture-card-content"><span class="meta muted">People / Recruitment</span><h3>The Best Recruit</h3><p>A recruitment initiative focused on prequalified candidate profiles and employer access.</p><a class="arrow" href="/company/our-projects">Explore company projects</a></div></article>
+      </div>
+    </div></section>
+
+    <!-- 08 — Opportunities -->
+    <section class="section opportunity" id="opportunities"><div class="wrap opportunity-grid"><div><div class="eyebrow meta">07 / Opportunities</div><h2 class="h2">Growth depends on people who act.</h2></div><div><p class="lead">We explore concrete opportunities with businesses, students, specialists, and prospective collaborators.</p><div class="bodycopy"><p>Possible collaborations range from advisory and business development to specialist missions, student pathways and new ventures. Each opportunity should have an understandable purpose, clear roles and written terms.</p></div><a class="arrow" href="/opportunities">Explore opportunities</a></div></div></section>
+
+    <!-- 09 — Founder / brand philosophy -->
+    <section class="section" id="founder"><div class="wrap intro-grid"><div><div class="eyebrow meta">08 / Our point of view</div><h2 class="h2">Good advice<br>is priceless.</h2></div><div><p class="lead">We believe useful ideas help people make better decisions, mobilize resources and achieve meaningful outcomes.</p><p class="bodycopy muted">A guiding principle for our approach to strategy, engineering and enterprise development.</p><p class="meta" style="margin-top:45px">El Moumen Yassine<br>Founder · Numerimondes</p></div></div></section>
+
+    <!-- 10 — CTA -->
+    <section class="section closing" id="contact"><div class="wrap"><div class="eyebrow meta">Start a conversation</div><h2 class="h2">What is the biggest challenge in front of you?</h2><p class="lead" style="max-width:680px;margin-top:35px;color:#c9d5ce">Tell us what you are trying to achieve, what stands in the way, and what a useful outcome would look like.</p><a class="arrow" href="mailto:contact@numerimondes.com">Contact Numerimondes</a></div></section>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><div>© <span id="year">2026</span> Numerimondes SARL AU · Casablanca, Morocco</div><nav class="footer-links" aria-label="Footer navigation"><a href="#company">Company</a><a href="#capabilities">Capabilities</a><a href="#approach">How we work</a><a href="#ventures">Projects</a><a href="#contact">Contact</a></nav></div></footer>
+  <script>
+    (() => {
+      'use strict';
+      document.getElementById('year').textContent = new Date().getFullYear();
+      const target = document.querySelector('[data-word-reveal]');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!target || reducedMotion || !('IntersectionObserver' in window)) return;
+      // Preserve the italic highlighted expression; split other text into word spans.
+      const walk = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walk.nextNode()) nodes.push(walk.currentNode);
+      nodes.forEach(node => {
+        const frag = document.createDocumentFragment();
+        const tokens = node.textContent.match(/\S+|\s+/g) || [];
+        for (const token of tokens) {
+          if (/^\s+$/.test(token)) frag.appendChild(document.createTextNode(token));
+          else { const span = document.createElement('span'); span.className = 'scroll-reveal-word'; span.textContent = token; frag.appendChild(span); }
+        }
+        node.replaceWith(frag);
+      });
+      const words = [...target.querySelectorAll('.scroll-reveal-word')];
+      target.classList.add('js-reveal');
+      let visible = false, queued = false;
+      const paint = () => {
+        queued = false;
+        if (!visible) return;
+        const bounds = target.getBoundingClientRect();
+        const start = window.innerHeight * .88, end = window.innerHeight * .25;
+        const progress = Math.max(0, Math.min(1, (start - bounds.top) / (start - end)));
+        words.forEach((word, i) => {
+          const position = i / Math.max(1, words.length - 1);
+          word.style.opacity = String(.24 + .76 * Math.max(0, Math.min(1, (progress - position * .75) / .25)));
+        });
+      };
+      const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(paint); } };
+      new IntersectionObserver(entries => { visible = entries[0].isIntersecting; if (visible) schedule(); }, { rootMargin: '20% 0px 20% 0px' }).observe(target);
+      window.addEventListener('scroll', schedule, { passive:true });
+      window.addEventListener('resize', schedule, { passive:true });
+    })();
+  </script>
+</body>
+</html>

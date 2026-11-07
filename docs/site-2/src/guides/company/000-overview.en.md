@@ -66,6 +66,21 @@ layout: home
 		    </div>
 		  </div>
 		</section>
+		<div style="  --dot-bg: black;
+  --dot-color: white;
+  --dot-size: 1px;
+  --dot-space: 22px;
+	background:
+		linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+		var(--dot-color); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; line-height: 22px; font-weight: 400; letter-spacing: 0.336px; font-family: SuisseIntl, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; min-height: 70vh;">
+		  <h1 style="font-size: 3.75rem; max-width: 80%; font-weight: 700; margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">
+		    Secure your mission with modern cloud and on-premises
+		  </h1>
+		  <p style="max-width: 600px; margin: 0;">
+		    NDAA, BAA, and TAA compliant infrastructure with the speed and elasticity of cloud architecture. Designed and assembled in the USA.
+		  </p>
+		</div>
 	  <NmBrandHero
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"

@@ -106,10 +106,9 @@
   user-select: text;
 }
 
-.VPNav .VPFlyout,
-.VPNav .VPFlyout *,
-.VPNav .VPNavBarMenuLink,
-.VPNav .VPNavBarMenuLink * {
+.VPNav a,
+.VPNav button,
+.VPNav [role='button'] {
   cursor: pointer;
 }
 

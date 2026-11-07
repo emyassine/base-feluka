@@ -130,8 +130,6 @@ function iconMask(iconUrl?: string) {
       <div
         v-if="action.items && action.items.length"
         class="topbar-action-dropdown"
-        @mouseenter="activeDropdown = index"
-        @mouseleave="activeDropdown = null"
       >
         <FeluqaButton
           tag="button"
