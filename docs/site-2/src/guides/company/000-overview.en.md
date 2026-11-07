@@ -23,7 +23,29 @@ layout: home
     color: var(--vp-c-brand-1, #34d399) !important;
   }
 </style>
-<div style="margin-top:2rem;">
+<div style="margin-top:0rem;">
+		<div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; line-height: 22px; font-weight: 400; letter-spacing: 0.336px; font-family: SuisseIntl, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; min-height: 60vh;">
+		<div style="max-width:400px;margin-bottom:2rem;">
+			<img data-v-88fe60ef="" class="VPImage dark logo" src="/__docs-assets/9bb60f2a4969c108de6f14e08c1988469ec8ef6332b3c1945a2b6a922a15779b.png" alt="Numerimondes" aria-label="Numerimondes"><img data-v-88fe60ef="" class="VPImage light logo" src="/__docs-assets/7b6866ee6dca8696e98170fb7d0e1e0882fed73c7dd8f04bfa447a37545ea610.png" alt="Numerimondes" aria-label="Numerimondes">
+		</div>
+  <div class="1400:left-0 900:-left-24 800:-left-32" style="position: absolute; top: 50%; left: -50px; transform: translateY(-50%); width: 246px; height: 364px; background: radial-gradient(50% 100% at 0% 50%, var(--color-neutral-300, #ccc) 0%, transparent 250%); -webkit-mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; pointer-events: none; z-index: 0;"></div>
+  <div class="1400:right-0 900:-right-24 800:-right-32" style="position: absolute; top: 50%; right: -50px; transform: translateY(-50%) rotate(180deg); width: 246px; height: 364px; background: radial-gradient(50% 100% at 0% 50%, var(--color-neutral-300, #ccc) 0%, transparent 250%); -webkit-mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; pointer-events: none; z-index: 0;"></div>
+  <h1 style="position: relative; z-index: 1; font-size: 3.75rem; max-width: 80%; font-weight: 700; margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">
+    Secure your mission with modern cloud and on-premises
+  </h1>
+  <p style="position: relative; z-index: 1; max-width: 600px; margin: 0;">
+    NDAA, BAA, and TAA compliant infrastructure with the speed and elasticity of cloud architecture. Designed and assembled in the USA.
+  </p>
+		</div>
+	  <NmBrandHero
+	    eyebrow="By El Moumen Yassine"
+	    title="<span>Numerimondes</span>"
+	    title-style=""
+	    tagline="<span class='silky-bbi'>Learn more about our organization</span>"
+	    cta-label="Or explore our brand identity system"
+	    cta-href="#nm-brand-index"
+	  />
+	</div>
 		<section style="width: 100%; padding-bottom: 4rem; box-sizing: border-box;">
 		  <div style="margin: 0 auto; max-width: 1200px; display: grid; grid-template-columns: 1fr; gap: var(--space-8, 64px); align-items: center;" class="oxide-grid-container">
 		    <div style="display: flex; flex-direction: column; justify-content: center;">
@@ -66,30 +88,6 @@ layout: home
 		    </div>
 		  </div>
 		</section>
-		<div style="  --dot-bg: var(--vp-c-bg);
-	  --dot-color: var(--vp-c-text-1);
-  --dot-size: 1px;
-  --dot-space: 22px;
-	background:
-		linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		var(--dot-color); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; line-height: 22px; font-weight: 400; letter-spacing: 0.336px; font-family: SuisseIntl, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; min-height: 70vh;">
-		  <h1 style="font-size: 3.75rem; max-width: 80%; font-weight: 700; margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">
-		    Secure your mission with modern cloud and on-premises
-		  </h1>
-		  <p style="max-width: 600px; margin: 0;">
-		    NDAA, BAA, and TAA compliant infrastructure with the speed and elasticity of cloud architecture. Designed and assembled in the USA.
-		  </p>
-		</div>
-	  <NmBrandHero
-	    eyebrow="By El Moumen Yassine"
-	    title="<span>Numerimondes</span>"
-	    title-style=""
-	    tagline="<span class='silky-bbi'>Learn more about our organization</span>"
-	    cta-label="Or explore our brand identity system"
-	    cta-href="#nm-brand-index"
-	  />
-	</div>
 	<NmBrandVision
 		showBorder: true,
 	  text="We provide access to technology, capital, workforce, and media to establish North Africa as a global hub of value creation.<br><br>@spmpst::icon::arrow-right:inline Our ultimate goal is to empower anyone, anywhere to create wealth.<h2 style='margin-top:2rem;'><span style='font-style: normal;'>Tell us about your</span> <a href='' class='silky-bi' style='color:#0019ff !important;'> @spmpst::icon::link:inline biggest challenges</a> ! </h2>"
