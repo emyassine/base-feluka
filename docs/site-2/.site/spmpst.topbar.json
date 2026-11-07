@@ -234,7 +234,7 @@
         "en": "Contact & Access",
         "fr": "Contact & Accès"
       },
-      "color": "primary",
+      "color": "gray",
       "size": "sm",
       "icon": "users-round",
       "mobile": {
