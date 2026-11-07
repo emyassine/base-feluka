@@ -74,6 +74,10 @@ await Promise.all(records.map(async (record) => {
     markdownBody = markdownBody.replaceAll(reference, replacement)
   }
   markdown = `${frontmatterText}${markdownBody}`
+  // Vue treats static SVG <use href="/…"> values as build-time asset imports.
+  // Sprite references point into the site's public directory and must remain
+  // browser URLs, so bind them as string values instead.
+  markdown = markdown.replace(/(<use\b[^>]*?)\s+href=(['"])(\/(?:[^'"\s]|&(?!#))*\.svg(?:#[^'"\s]*)?)\2/gi, (_match, before, _quote, href) => `${before} :href='${JSON.stringify(href)}'`)
   // VitePress recognizes `home` as its landing-page layout. Keep the richer
   // author-facing layout name in `pageLayout`, and lower it to `home` for the
   // renderer so the topbar subheader and content width can be composed independently.

@@ -24,7 +24,7 @@ layout: home
   }
 </style>
 <div style="margin-top:0rem;">
-		<div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; line-height: 22px; font-weight: 400; letter-spacing: 0.336px; font-family: SuisseIntl, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; min-height: 60vh;">
+		<div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; line-height: 22px; font-weight: 400; letter-spacing: 0.336px; min-height: 60vh;">
 		<div style="max-width:400px;margin-bottom:2rem;">
 			<img data-v-88fe60ef="" class="VPImage dark logo" src="/__docs-assets/9bb60f2a4969c108de6f14e08c1988469ec8ef6332b3c1945a2b6a922a15779b.png" alt="Numerimondes" aria-label="Numerimondes"><img data-v-88fe60ef="" class="VPImage light logo" src="/__docs-assets/7b6866ee6dca8696e98170fb7d0e1e0882fed73c7dd8f04bfa447a37545ea610.png" alt="Numerimondes" aria-label="Numerimondes">
 		</div>
@@ -33,7 +33,7 @@ layout: home
   <h1 style="position: relative; z-index: 1; font-size: 3.75rem; max-width: 80%; font-weight: 700; margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">
   	Ideas. Systems. Lasting value.
   </h1>
-  <p style="position: relative; z-index: 1; max-width: 600px; margin: 0;">
+  <p style="position: relative; z-index: 1; max-width: 600px; margin:0;font-size:1.125rem;line-height:1.7;color:var(--muted);">
   We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities.
   </p>
 		</div>
