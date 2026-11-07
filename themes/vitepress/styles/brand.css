@@ -1,4 +1,9 @@
 /* Shared design tokens and layout context for globally registered brand components. */
+.lightmode-only { display: revert; }
+.darkmode-only { display: none; }
+html.dark .lightmode-only { display: none; }
+html.dark .darkmode-only { display: revert; }
+
 .vp-doc:has(.nm-brand-hero) {
   --nm-brand-surface: var(--vp-c-bg);
   --nm-brand-surface-soft: var(--vp-c-bg-soft);
