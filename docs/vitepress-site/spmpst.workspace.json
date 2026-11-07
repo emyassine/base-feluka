@@ -16,5 +16,8 @@
     "../../components/blocks/styles/click-particles.css",
     "../../components/blocks/specialized/marketplace/numerimondes-marketplace.css"
   ],
-  "jsPaths": []
+  "jsPaths": [],
+  "aliases": {
+    "@spmpst/browser-storage": "../../components/ui/browser-storage.ts"
+  }
 }

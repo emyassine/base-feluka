@@ -2,7 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useData } from 'vitepress'
 import siteContent from '@generated/site-content.json'
-import { readManagedStorage, writeManagedStorage } from './browser-storage'
+import { readManagedStorage, writeManagedStorage } from './ui/browser-storage'
 
 type CurrencyOption = { code: string; label: string }
 type SiteContent = typeof siteContent & {

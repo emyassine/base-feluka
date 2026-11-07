@@ -20,6 +20,10 @@ the repository-level `components/` tree, organized by responsibility. Site
 declarations point at that same tree; appearance configuration selects the
 shared CSS files it needs from `StylesPaths`, while `jsPaths` lists optional
 workspace JavaScript or TypeScript entry files.
+Optional `aliases` map module specifiers to workspace files so shared
+components can consume injected workspace services without repository-relative
+imports. The development watcher observes configured component roots and
+refreshes the generated component registry when their structure changes.
 Each root `spmpst.json` declares the complete `paths` registry relative to
 itself, including `.site/`, source roots, public files, resources, toolchain,
 and output. The host resolves this once as `SpmpstPaths` and passes the same

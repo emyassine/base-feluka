@@ -481,9 +481,7 @@ if (config.seo?.locales != null) {
 }
 const projectConfig = {}
 const projectDirectories = {
-  components: workspacePaths.componentsPaths?.length
-    ? workspacePaths.componentsPaths
-    : [layout.paths.components, ...(layout.paths.sharedComponents ? [layout.paths.sharedComponents] : [])],
+  components: [...new Set([...(workspacePaths.componentsPaths ?? []), layout.paths.components, ...(layout.paths.sharedComponents ? [layout.paths.sharedComponents] : [])])],
   hooks: layout.paths.hooks,
   iconLibrary: layout.paths.icons,
   jsPaths: workspacePaths.jsPaths ?? [],

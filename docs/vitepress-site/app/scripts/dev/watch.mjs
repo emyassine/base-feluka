@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveLayout } from '../spmpst/layout.mjs'
+import { registryPath } from '../site-registry.mjs'
 
 const siteDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const sitePaths = resolveLayout(siteDirectory).paths
@@ -13,6 +14,9 @@ const siteConfigDirectory = sitePaths.config
 const resourceDirectory = sitePaths.sharedResources
 const siteResourceDirectory = sitePaths.resources
 const sourceResourceDirectory = sitePaths.resources
+const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[],"StylesPaths":[],"jsPaths":[]}')
+const componentDirectories = [...new Set([...(workspacePaths.componentsPaths ?? []), sitePaths.components, ...(sitePaths.sharedComponents ? [sitePaths.sharedComponents] : [])])]
+const workspaceFileDirectories = [...(workspacePaths.StylesPaths ?? []), ...(workspacePaths.jsPaths ?? [])].map((path) => dirname(path))
 const prepareScript = join(siteDirectory, 'scripts/preparation/pipeline.mjs')
 const siteScript = join(siteDirectory, 'scripts/site.mjs')
 const vitepressConfig = join(siteDirectory, '.vitepress/config.ts')
@@ -67,6 +71,20 @@ async function structuralSignature() {
   await visit(sourceDirectory, sourceDirectory, false)
   hash.update('site-config\0')
   await visit(siteConfigDirectory, siteConfigDirectory, true)
+  hash.update('workspace-registry\0')
+  hash.update(await readFile(registryPath))
+  async function visitComponentStructure(directory, root) {
+    for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+      if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue
+      const path = join(directory, entry.name)
+      hash.update(`${entry.isDirectory() ? 'dir' : 'file'}:${relative(root, path).split(sep).join('/')}\0`)
+      if (entry.isDirectory()) await visitComponentStructure(path, root)
+    }
+  }
+  for (const directory of [...new Set(componentDirectories)]) {
+    hash.update(`component-root:${directory}\0`)
+    await visitComponentStructure(directory, directory)
+  }
   return hash.digest('hex')
 }
 
@@ -140,13 +158,22 @@ try {
       schedule(`source-resources/${filename?.toString() || '(unknown source resource path)'}`)
     }))
   }
+  for (const directory of [...new Set([...componentDirectories, ...workspaceFileDirectories])]) {
+    if (!existsSync(directory)) continue
+    watchers.push(await watchFs(directory, { recursive: true }, (_event, filename) => {
+      schedule(`workspace/${relative(directory, join(directory, filename?.toString() ?? '(unknown path)')).split(sep).join('/')}`)
+    }))
+  }
+  watchers.push(await watchFs(dirname(registryPath), (_event, filename) => {
+    if (!filename || filename.toString() === registryPath.split(sep).at(-1)) schedule('spmpst.workspace.json')
+  }))
 } catch (error) {
   for (const watcher of watchers) watcher.close()
   throw new Error(`Unable to watch the documentation sources on this platform: ${error.message}`)
 }
 
 let signature = buildMode ? '' : await structuralSignature()
-log(`Watching ${sourceDirectory}, ${siteConfigDirectory}, ${resourceDirectory}, and ${sourceResourceDirectory}${buildMode ? ' for static rebuilds' : ''}.`)
+log(`Watching ${sourceDirectory}, ${siteConfigDirectory}, ${resourceDirectory}, ${sourceResourceDirectory}, ${componentDirectories.join(', ')}, and ${registryPath}${buildMode ? ' for static rebuilds' : ''}.`)
 
 async function shutdown() {
   if (stopping) return

@@ -57,6 +57,20 @@ export async function loadSites() {
     resolveWorkspacePaths('StylesPaths', 'files'),
     resolveWorkspacePaths('jsPaths', 'files'),
   ])
+  const aliases = {}
+  if (registry.aliases !== undefined) {
+    if (!registry.aliases || typeof registry.aliases !== 'object' || Array.isArray(registry.aliases)) {
+      throw new Error(`${activeRegistryPath}: aliases must map module names to workspace file paths`)
+    }
+    for (const [name, value] of Object.entries(registry.aliases)) {
+      if (!name.trim() || typeof value !== 'string' || !value.trim()) {
+        throw new Error(`${activeRegistryPath}: every aliases entry needs a module name and file path`)
+      }
+      const path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
+      await requireFile(path, activeRegistryPath, `aliases.${name}`)
+      aliases[name] = path
+    }
+  }
   if (!Array.isArray(registry.sitesPaths) || registry.sitesPaths.length === 0) {
     throw new Error(`${activeRegistryPath}: sitesPaths must be a non-empty array of site declaration paths`)
   }
@@ -95,9 +109,6 @@ export async function loadSites() {
     const base = dirname(activeDeclarationPath)
     const resolvePath = (value) => isAbsolute(value) ? resolve(value) : resolve(base, value)
     const paths = Object.fromEntries(Object.entries(declaration.paths).map(([key, value]) => [key, key === 'configFiles' ? Object.fromEntries(Object.entries(value).map(([name, path]) => [name, resolvePath(path)])) : resolvePath(value)]))
-    if (componentsPaths.length && !componentsPaths.includes(paths.components)) {
-      throw new Error(`${activeDeclarationPath}: paths.components must be listed in ${activeRegistryPath} componentsPaths`)
-    }
     const sourceRoot = paths.root
     const inTree = ['config', 'guides', 'collections', 'resources', 'assets', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'mermaidConfig', ...Object.keys(paths.configFiles).map((name) => `configFiles.${name}`)]
     for (const key of inTree) {
@@ -105,6 +116,12 @@ export async function loadSites() {
       const local = relative(sourceRoot, path)
       if (local === '..' || local.startsWith(`..${sep}`) || isAbsolute(local)) {
         throw new Error(`paths.${key} must stay inside paths.root. Change paths.${key} in ${activeDeclarationPath}.`)
+      }
+    }
+    if (!componentsPaths.includes(paths.components)) {
+      const local = relative(sourceRoot, paths.components)
+      if (local === '..' || local.startsWith(`..${sep}`) || isAbsolute(local)) {
+        throw new Error(`paths.components must be inside paths.root or listed in ${activeRegistryPath} componentsPaths. Change paths.components in ${activeDeclarationPath}.`)
       }
     }
     for (const key of ['root', 'config', 'guides', 'collections', 'resources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'sharedResources', 'icons', 'flags', 'toolchain']) {
@@ -119,6 +136,13 @@ export async function loadSites() {
       const actualRelative = relative(realRoot, actualPath)
       if (actualRelative === '..' || actualRelative.startsWith(`..${sep}`) || isAbsolute(actualRelative)) {
         throw new Error(`Resolved paths.${key} escapes paths.root through a symlink: ${actualPath}. Keep it inside ${realRoot}, or update paths.${key} in ${activeDeclarationPath}.`)
+      }
+    }
+    if (!componentsPaths.includes(paths.components)) {
+      const actualComponents = await realpath(paths.components)
+      const actualRelative = relative(realRoot, actualComponents)
+      if (actualRelative === '..' || actualRelative.startsWith(`..${sep}`) || isAbsolute(actualRelative)) {
+        throw new Error(`Resolved paths.components escapes paths.root through a symlink: ${actualComponents}. Keep it inside ${realRoot}, or list it in ${activeRegistryPath} componentsPaths.`)
       }
     }
     const toolchain = declaration.toolchain
@@ -142,7 +166,7 @@ export async function loadSites() {
     if (toolchain.network && !['none', 'install-only', 'full'].includes(toolchain.network)) {
       throw new Error(`${activeDeclarationPath}: toolchain.network must be none, install-only, or full`)
     }
-    return { ...declaration, declarationPath: activeDeclarationPath, paths, sourceRoot, outputRoot: paths.output, toolchainCwd: cwd, workspace: { componentsPaths, StylesPaths, jsPaths } }
+    return { ...declaration, declarationPath: activeDeclarationPath, paths, sourceRoot, outputRoot: paths.output, toolchainCwd: cwd, workspace: { componentsPaths, StylesPaths, jsPaths, aliases } }
   }))
   const ids = new Set()
   for (const declaration of declarations) {

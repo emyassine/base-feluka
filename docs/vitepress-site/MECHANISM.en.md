@@ -66,11 +66,14 @@ The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
   ],
   "componentsPaths": ["../../components"],
   "StylesPaths": [],
-  "jsPaths": []
+  "jsPaths": [],
+  "aliases": {
+    "@spmpst/browser-storage": "../../components/ui/browser-storage.ts"
+  }
 }
 ```
 
-Each `sitesPaths` entry is a path to a site declaration. The other arrays declare shared component roots, stylesheet files, and JavaScript or TypeScript entry files. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
+Each `sitesPaths` entry is a path to a site declaration. The other arrays declare shared component roots, stylesheet files, and JavaScript or TypeScript entry files. Optional `aliases` map module specifiers to workspace files, so shared components and pages consume workspace-provided services through the host resolver. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
 
 The site declaration is `docs/site-1/spmpst.json`. It owns one complete paths registry and the build/dev actions. See the checked-in [root manifest](../site-1/spmpst.json) for the full current shape.
 

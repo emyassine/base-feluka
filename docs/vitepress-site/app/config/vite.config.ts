@@ -18,7 +18,9 @@ const layout = resolveLayout(siteDirectory)
 const paths = layout.paths
 const loadedSite = loadSiteModelSync(layout)
 const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
-const componentDirectories = [paths.components, ...(paths.sharedComponents ? [paths.sharedComponents] : [])]
+const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[],"StylesPaths":[],"jsPaths":[]}') as { componentsPaths?: string[] }
+const workspaceAliases = JSON.parse(process.env.SPMPST_WORKSPACE_ALIASES ?? '{}') as Record<string, string>
+const componentDirectories = [...new Set([...(workspacePaths.componentsPaths ?? []), paths.components, ...(paths.sharedComponents ? [paths.sharedComponents] : [])])]
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -59,7 +61,7 @@ const siteViteConfig = {
       { find: /^vue\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vue')}/$1` },
       { find: /^vitepress$/, replacement: resolve(dependencyDirectory, 'vitepress/dist/client/index.js') },
       { find: /^vitepress\/dist\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vitepress/dist')}/$1` },
-      { find: '@spmpst/browser-storage', replacement: resolve(siteDirectory, '../../../components/ui/browser-storage.ts') },
+      ...Object.entries(workspaceAliases).map(([find, replacement]) => ({ find, replacement })),
       { find: '@docs', replacement: layout.paths.root },
       { find: '@generated', replacement: paths.generatedMetadata },
       { find: '@spmpst/config', replacement: resolve(paths.generatedMetadata, 'spmpst-config.ts') },

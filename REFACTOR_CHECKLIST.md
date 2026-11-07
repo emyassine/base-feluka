@@ -4,7 +4,8 @@
 
 - [x] Extend `docs/vitepress-site/spmpst.workspace.json` with `componentsPaths`, `StylesPaths`, and `jsPaths` registries.
 - [x] Resolve and validate workspace paths relative to the workspace declaration; pass them to VitePress preparation.
-- [x] Move VitePress host, site-1, and site-2 Vue components into the shared top-level `components/` tree, grouped by domain and responsibility rather than site.
+- [x] Move reusable VitePress host and site components into the shared top-level `components/` tree, grouped by domain and responsibility rather than site; keep `StudentOrientationGuide` local to site-2.
+- [x] Keep site-local component roots alongside shared workspace roots, and place the reusable `CurrencySelector.vue` directly at `components/CurrencySelector.vue`.
 - [x] Make workspace `componentsPaths`, `StylesPaths`, and `jsPaths` feed discovery, style inclusion, and script imports.
 - [x] Remove `Nm`, `Feluqa`, and `Mainline` prefixes; replace temporary or vague component names with role-based public identifiers and update Vue, Markdown, and host references.
 - [x] Keep numbered `HeroOne` through `HeroNine` names and place Hero Five effect implementations under `HeroFiveInclude/`.
@@ -15,6 +16,6 @@
 
 ## Verification
 
-- [ ] Run documentation configuration checks for both registered sites.
-- [ ] Build both documentation sites and resolve any broken imports, component registrations, or routes.
+- [x] Run documentation configuration checks for both registered sites.
+- [ ] Build both documentation sites and resolve any broken imports, component registrations, or routes. Site-2 client and SSR builds still hit a `RangeError: Maximum call stack size exceeded` while rendering; investigate before closing this refactor.
 - [ ] Review the final diff for stale component paths, old names, and missing workspace injection.

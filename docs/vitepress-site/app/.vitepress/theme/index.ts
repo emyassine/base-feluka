@@ -850,7 +850,6 @@ export default {
     DefaultTheme.enhanceApp?.(context)
     installXTooltip()
     context.app.component('PageActions', PageActions)
-    registerProjectComponents(context.app)
-    context.app.component('currency', projectComponents.CurrencyAmount)
+    // TEMP DEBUG: isolate whether project component registration causes the nav recursion.
   },
 }

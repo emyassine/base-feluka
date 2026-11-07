@@ -10,7 +10,7 @@
     "resources": "resources",
     "sharedResources": "../vitepress-site/resources",
     "assets": "resources/assets",
-    "components": "../../components",
+    "components": "resources/components",
     "diagrams": ".site/diagrams",
     "hooks": ".site/hooks",
     "media": "public/media",
