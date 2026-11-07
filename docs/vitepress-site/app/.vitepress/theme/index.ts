@@ -9,13 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
-import { installXTooltip } from './x-tooltip'
-import './tailwind.css'
-import './style.css'
-import './x-tooltip.css'
-import './overview.css'
-import './brand.css'
-import './scroll-reveal.css'
+import { installXTooltip } from '@spmpst/vitepress-tooltip'
 import '@generated/configured-styles'
 import '@generated/configured-scripts'
 
@@ -850,6 +844,7 @@ export default {
     DefaultTheme.enhanceApp?.(context)
     installXTooltip()
     context.app.component('PageActions', PageActions)
-    // TEMP DEBUG: isolate whether project component registration causes the nav recursion.
+    registerProjectComponents(context.app)
+    context.app.component('currency', projectComponents.CurrencyAmount)
   },
 }

@@ -7,7 +7,7 @@ This site bundles the following third-party components and libraries.
 - Source: https://vue-bits.dev — https://github.com/DavidHDev/vue-bits
 - Copyright (c) David Haz and Vue Bits contributors
 - License: MIT + Commons Clause
-- Vendored components live in `.vitepress/theme/components/vuebits/`:
+- Vendored components live in `themes/components/`:
   `Aurora`, `BlurText`, `GlareHover`, `ShinyText`, `SpotlightCard`.
 
 The Commons Clause restricts selling the components themselves; it does not

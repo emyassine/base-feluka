@@ -35,4 +35,4 @@ The crawler list includes OpenAI, Anthropic, Google-Extended, Common Crawl and o
 
 Before claiming active enforcement, identify the production host/CDN, apply and verify response headers and bot/rate-limit rules there, then inspect live requests and responses. Keep public pages free of credentials, confidential client information and premium datasets.
 
-The separate site-2 [Automated Access and Content Use policy](/policies/automated-access) is still a draft; it is not yet an operative website term.
+The separate site-2 Automated Access and Content Use policy is still a draft; it is not yet an operative website term.

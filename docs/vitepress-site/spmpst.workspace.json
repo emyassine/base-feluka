@@ -4,20 +4,29 @@
     "../site-2/spmpst.json"
   ],
   "componentsPaths": [
-    "../../components"
+    "../../themes/components"
   ],
   "StylesPaths": [
-    "../../components/home/docs-home.css",
-    "../../components/components.css",
-    "../../components/blocks/styles/numerimondes.css",
-    "../../components/blocks/styles/numerimondes-silky.css",
-    "../../components/blocks/styles/accent-text.css",
-    "../../components/blocks/styles/inline-image-preview.css",
-    "../../components/blocks/styles/click-particles.css",
-    "../../components/blocks/specialized/marketplace/numerimondes-marketplace.css"
+    "../../themes/components/home/docs-home.css",
+    "../../themes/components/components.css",
+    "../../themes/components/blocks/styles/numerimondes.css",
+    "../../themes/components/blocks/styles/numerimondes-silky.css",
+    "../../themes/components/blocks/styles/accent-text.css",
+    "../../themes/components/blocks/styles/inline-image-preview.css",
+    "../../themes/components/blocks/styles/click-particles.css",
+    "../../themes/components/blocks/specialized/marketplace/numerimondes-marketplace.css",
+    "../../themes/vitepress/styles/tailwind.css",
+    "../../themes/vitepress/styles/style.css",
+    "../../themes/vitepress/styles/x-tooltip.css",
+    "../../themes/vitepress/styles/overview.css",
+    "../../themes/vitepress/styles/brand.css",
+    "../../themes/vitepress/styles/scroll-reveal.css"
   ],
-  "jsPaths": [],
+  "jsPaths": [
+    "../../themes/vitepress/scripts/x-tooltip.ts"
+  ],
   "aliases": {
-    "@spmpst/browser-storage": "../../components/ui/browser-storage.ts"
+    "@spmpst/browser-storage": "../../themes/components/ui/browser-storage.ts",
+    "@spmpst/vitepress-tooltip": "../../themes/vitepress/scripts/x-tooltip.ts"
   }
 }

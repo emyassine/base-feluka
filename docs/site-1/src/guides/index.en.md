@@ -10,7 +10,7 @@ layout: home
 	  title="The software your operations run on. Built once, delivered everywhere."
 	  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
 	  primary-label="Describe your operation"
-	  primary-href="/for-organizations#tell-us-about-your-operation"
+	  primary-href="/prologue/for-organizations"
 	  secondary-label="See what is tested today"
 	  secondary-href="/products/"
 	  :targets='[

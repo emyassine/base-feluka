@@ -705,7 +705,21 @@ function findHookFile(name) {
 }
 const hookFile = findHookFile('documentation-hooks')
 const seoFile = findHookFile('documentation-seo')
-const spmpstConfigApi = fileURLToPath(new URL('../../../../../components/layouts/useSpmpstConfig.ts', import.meta.url))
+async function findComponentFile(filename) {
+  const matches = []
+  async function visit(directory) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue
+      const path = join(directory, entry.name)
+      if (entry.isDirectory()) await visit(path)
+      else if (entry.isFile() && entry.name === filename) matches.push(path)
+    }
+  }
+  for (const root of componentRoots) await visit(root)
+  if (matches.length !== 1) throw new Error(`Expected one configured component file named ${filename}; found ${matches.length} across ${componentRoots.join(', ')}`)
+  return matches[0]
+}
+const spmpstConfigApi = await findComponentFile('useSpmpstConfig.ts')
 await writeIfChanged(join(generatedDirectory, 'spmpst-config.ts'), `export { useSpmpstConfig } from '${moduleSpecifier(spmpstConfigApi)}'\n`)
 const hookStyles = projectDirectories.hooks ? join(projectDirectories.hooks, 'documentation-hooks.css') : null
 const themeSource = [

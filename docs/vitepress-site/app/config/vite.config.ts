@@ -1,6 +1,6 @@
 import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs'
 import { createRequire } from 'node:module'
-import { extname, join, relative, resolve, sep } from 'node:path'
+import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import MiniSearch from 'minisearch'
 import { defineConfig, loadConfigFromFile, mergeConfig, searchForWorkspaceRoot } from 'vite'
@@ -18,9 +18,10 @@ const layout = resolveLayout(siteDirectory)
 const paths = layout.paths
 const loadedSite = loadSiteModelSync(layout)
 const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
-const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[],"StylesPaths":[],"jsPaths":[]}') as { componentsPaths?: string[] }
+const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[],"StylesPaths":[],"jsPaths":[]}') as { componentsPaths?: string[]; StylesPaths?: string[]; jsPaths?: string[] }
 const workspaceAliases = JSON.parse(process.env.SPMPST_WORKSPACE_ALIASES ?? '{}') as Record<string, string>
 const componentDirectories = [...new Set([...(workspacePaths.componentsPaths ?? []), paths.components, ...(paths.sharedComponents ? [paths.sharedComponents] : [])])]
+const workspaceAssetDirectories = [...new Set([...(workspacePaths.StylesPaths ?? []), ...(workspacePaths.jsPaths ?? [])].map((path) => dirname(path)))]
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
   const configured = siteConfiguration.project?.viteConfig
@@ -52,7 +53,7 @@ const mimeTypes: Record<string, string> = {
 
 const siteViteConfig = {
   // Component-owned assets live under the configured component root.
-  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.paths.root, paths.sharedResources, paths.resources, ...componentDirectories])] } },
+  server: { fs: { allow: [...new Set([searchForWorkspaceRoot(siteDirectory), layout.paths.root, paths.sharedResources, paths.resources, ...componentDirectories, ...workspaceAssetDirectories])] } },
   cacheDir: paths.vitepressCache,
   css: { postcss: resolve(siteDirectory, 'config/postcss.config.js') },
   resolve: {

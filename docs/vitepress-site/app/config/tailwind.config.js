@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 
 const paths = JSON.parse(process.env.SPMPST_PATHS ?? '{}')
+const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[]}')
 const generatedRoot = process.env.SPMPST_GENERATED_DIR
 if (!paths.root || !paths.guides || !paths.components || !generatedRoot) {
   throw new Error('Tailwind requires a site selected through spmpst.json')
@@ -11,6 +12,7 @@ export default {
   content: [
     resolve(process.cwd(), '.vitepress/**/*.{vue,ts,js}'),
     resolve(generatedRoot, '../generated-guides/**/*.md'),
+    ...(workspacePaths.componentsPaths ?? []).map((directory) => resolve(directory, '**/*.{vue,md}')),
     resolve(paths.components, '**/*.{vue,md}'),
     ...(paths.sharedComponents ? [resolve(paths.sharedComponents, '**/*.{vue,md}')] : []),
     resolve(paths.guides, '**/*.{vue,md}'),

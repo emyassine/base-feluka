@@ -60,7 +60,7 @@ if (banner != null) {
 }
 const configuredStyles = config.styles ?? []
 if (!Array.isArray(configuredStyles)) throw new Error(`styles must be an array of CSS paths in ${configFiles.appearance}`)
-const styleFiles = [...new Set([...configuredStyles.map((stylePath) => {
+const styleFiles = [...new Set([...(workspacePaths.StylesPaths ?? []), ...configuredStyles.map((stylePath) => {
   if (typeof stylePath !== 'string' || !stylePath.trim()) {
     throw new Error('Each styles entry must resolve to a CSS file inside VitePress resources')
   }
@@ -72,7 +72,7 @@ const styleFiles = [...new Set([...configuredStyles.map((stylePath) => {
   }
   if (!existsSync(resolvedPath)) throw new Error(`Configured CSS file does not exist: ${stylePath}`)
   return resolvedPath
-}), ...(workspacePaths.StylesPaths ?? [])])]
+})])]
 for (const styleFile of styleFiles) {
   if (extname(styleFile).toLowerCase() !== '.css' || !existsSync(styleFile)) throw new Error(`Invalid workspace StylesPaths entry: ${styleFile}`)
 }

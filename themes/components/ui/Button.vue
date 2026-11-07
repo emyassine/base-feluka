@@ -120,13 +120,11 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 </script>
 
 <template>
-  <component
-    :is="tag"
-    :href="tag === 'a' && !disabled ? href : undefined"
-    :type="tag === 'button' ? type : undefined"
-    :disabled="tag === 'button' ? disabled : undefined"
+  <a
+    v-if="tag === 'a'"
+    :href="!disabled ? href : undefined"
     :aria-disabled="disabled ? 'true' : undefined"
-    :tabindex="tag === 'a' && disabled ? -1 : undefined"
+    :tabindex="disabled ? -1 : undefined"
     :title="tooltip"
     :style="style"
     :class="[
@@ -146,7 +144,32 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
       <slot name="icon"><span v-if="icon" class="button-icon-image" :style="iconStyle" aria-hidden="true" /></slot>
     </span>
     <span v-if="$slots.badge || badge !== undefined" :class="['button-badge', `badge-${badgeColor}`]"><slot name="badge">{{ badge }}</slot></span>
-  </component>
+  </a>
+  <button
+    v-else
+    :type="type"
+    :disabled="disabled"
+    :aria-disabled="disabled ? 'true' : undefined"
+    :title="tooltip"
+    :style="style"
+    :class="[
+      'feluqa-button', 'no-icon', `size-${size}`, `color-${buttonColor}`,
+      { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor), 'wrap-label': wrap },
+    ]"
+    @pointerenter="startHoverAnimation"
+    @pointermove="followPointer"
+    @pointerleave="leavePointer"
+    @click="preventDisabledLink"
+  >
+    <span v-if="(icon || $slots.icon) && iconPosition === 'before'" class="button-icon">
+      <slot name="icon"><span v-if="icon" class="button-icon-image" :style="iconStyle" aria-hidden="true" /></slot>
+    </span>
+    <span class="button-content"><slot>{{ label || 'Get Started' }}</slot></span>
+    <span v-if="(icon || $slots.icon) && iconPosition === 'after'" class="button-icon">
+      <slot name="icon"><span v-if="icon" class="button-icon-image" :style="iconStyle" aria-hidden="true" /></slot>
+    </span>
+    <span v-if="$slots.badge || badge !== undefined" :class="['button-badge', `badge-${badgeColor}`]"><slot name="badge">{{ badge }}</slot></span>
+  </button>
 </template>
 
 <style scoped>

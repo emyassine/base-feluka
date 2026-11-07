@@ -16,7 +16,7 @@ legal/                    required third-party notices
 
 The registry's `sitesPaths`, `componentsPaths`, `StylesPaths`, and `jsPaths`
 entries are resolved relative to this directory. The shared component source is
-the repository-level `components/` tree, organized by responsibility. Site
+the repository-level `themes/components/` tree, organized by responsibility. Site
 declarations point at that same tree; appearance configuration selects the
 shared CSS files it needs from `StylesPaths`, while `jsPaths` lists optional
 workspace JavaScript or TypeScript entry files.
@@ -30,8 +30,7 @@ and output. The host resolves this once as `SpmpstPaths` and passes the same
 object to preparation, VitePress configuration, and the declared actions.
 `../site-1/` contains Feluqa's `.site/`, `src/`, and `resources/`; its
 hooks and diagrams stay with that site. Components from the host and both
-sites are maintained under the repository-level `components/` tree. Shared
-icons and flags stay in this host's `resources/`. `../site-2/` contains the Numerimondes
+sites are maintained under the repository-level `themes/components/` tree. Generic VitePress theme styles and scripts live in `themes/vitepress/`; only the VitePress adapter entrypoint stays under `app/.vitepress/theme/`. Shared icons and flags stay in this host's `resources/`. `../site-2/` contains the Numerimondes
 English/French starter site. Each build writes outside its site tree under
 `docs-output/<site-id>/`.
 

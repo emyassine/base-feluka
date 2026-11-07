@@ -64,11 +64,12 @@ The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
     "../site-1/spmpst.json",
     "../site-2/spmpst.json"
   ],
-  "componentsPaths": ["../../components"],
+  "componentsPaths": ["../../themes/components"],
   "StylesPaths": [],
   "jsPaths": [],
   "aliases": {
-    "@spmpst/browser-storage": "../../components/ui/browser-storage.ts"
+    "@spmpst/browser-storage": "../../themes/components/ui/browser-storage.ts",
+    "@spmpst/vitepress-tooltip": "../../themes/vitepress/scripts/x-tooltip.ts"
   }
 }
 ```
