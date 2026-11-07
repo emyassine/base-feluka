@@ -10,14 +10,14 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<NmCompanyHero
+<HeroThree
   eyebrow="REMOTE RECRUITMENT · THE BEST RECRUIT"
   title="Remote recruitment built on <span class='silky-bbi'>qualified, relevant information</span>."
   description="A remote recruitment service for employers, wherever they are based."
   height="40vh"
 />
 
-<NmProse>
+<div>
 
 ## What it is
 
@@ -36,6 +36,6 @@ The Best Recruit is available for employer inquiries and scoped remote recruitme
 
 A fee rate of **46% of the candidate’s minimum monthly salary is planned**. Market research to validate the rate is planned soon. The final rate and service terms will be confirmed after the research.
 
-<FeluqaButton tag="a" href="/company/contact?topic=recruitment" label="Discuss a remote hiring need" />
+<Button tag="a" href="/company/contact?topic=recruitment" label="Discuss a remote hiring need" />
 
-</NmProse>
+</div>

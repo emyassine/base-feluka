@@ -21,20 +21,20 @@ description: "What do we have, and what is it costing us? Packaged Audit + confe
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Audit includes</template>
             <template #description>
                 A factual map of your current tools or your full value chain, a three-year TCO figure, break points, and a prioritised roadmap you can hand to a board.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Audit does not include</template>
             <template #description>
                 Deciding what to do about the findings (that's <a href="/services/business-advisory/consulting">Consulting</a>). Building the fix (that's <a href="/services/development">Development</a> or <a href="/services/automation">Automation</a>).
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -56,20 +56,20 @@ You choose the depth. We never force Level 2.
 
 <div class="grid-container grid-cols-2" style="margin: 1.75rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="primary">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="primary">
             <template #heading>Level 1 — Technology audit</template>
             <template #description>
                 Limited to the company's current IT tools. Fastest entry point — lowest commitment for a first engagement.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrows-pointing-out" color="success">
+        <Card compact="true" icon="heroicon-o-arrows-pointing-out" color="success">
             <template #heading>Level 2 — Value-chain diagnostic</template>
             <template #description>
                 Beyond tools: map how the company actually creates value — processes, task split, organisational friction, manual or repetitive work. Optional. You activate it when you want a full diagnosis.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -100,7 +100,7 @@ PDF · **10–15 pages** for Level 1 · extended for Level 2
 
 <div class="grid-container grid-cols-3" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Report"
             value="A"
             description="10–15 pages (L1) + TCO 3y"
@@ -109,7 +109,7 @@ PDF · **10–15 pages** for Level 1 · extended for Level 2
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Conference"
             value="B"
             description="1h30–2h on-site restitution"
@@ -118,7 +118,7 @@ PDF · **10–15 pages** for Level 1 · extended for Level 2
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Roadmap"
             value="C"
             description="1–3 pages · prioritised"
@@ -151,20 +151,20 @@ Two milestones: **50%** at signature, **50%** one week before report delivery an
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 1rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-currency-dollar" color="success">
+        <Card compact="true" icon="heroicon-o-currency-dollar" color="success">
             <template #heading>Closed package, not hourly fog</template>
             <template #description>
                 Price announced early. Level 1 is the door; Level 2 is the differentiator few firms offer as a full value-chain diagnostic.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-funnel" color="primary">
+        <Card compact="true" icon="heroicon-o-funnel" color="primary">
             <template #heading>Funnel, not the finish line</template>
             <template #description>
                 Audit and conference are low-risk entries. They prepare Consulting, Development, or Automation work when relevant.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -185,12 +185,12 @@ Ideal entry through leadership, accountants, and business counsel who see the pa
 
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-book-open" color="success">
+        <Card compact="true" icon="heroicon-o-book-open" color="success">
             <template #heading><a href="/services/audit/methodology" style="text-decoration:none;">Audit methodology — Level 1 vs Level 2, NDA, and TCO model</a></template>
             <template #description>
                 How we scope depth, what triggers an NDA, and how the three-year TCO figure is actually built.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

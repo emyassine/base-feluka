@@ -10,14 +10,14 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<NmCompanyHero
+<HeroThree
   eyebrow="OUR PLATFORM PROJECT · IN DEVELOPMENT"
   title="A Rust platform for <span class='silky-bbi'>efficient, controllable</span> software."
   description="Feluqa is the foundation we are building to deliver applications across environments."
   height="40vh"
 />
 
-<NmProse>
+<div>
 
 ## What it is
 
@@ -40,6 +40,6 @@ In development. Documentation, examples, supported platforms, licensing and rele
 
 Custom software and Rust engineering missions are available independently of Feluqa. Whether to use the framework is decided per project, on technical requirements and maturity.
 
-<FeluqaButton tag="a" href="/company/contact?topic=project" label="Discuss Rust engineering" />
+<Button tag="a" href="/company/contact?topic=project" label="Discuss Rust engineering" />
 
-</NmProse>
+</div>

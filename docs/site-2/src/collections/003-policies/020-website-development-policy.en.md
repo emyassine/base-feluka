@@ -41,4 +41,4 @@ We do not take on a new website project below the **25,000 Dhs HT** minimum, inc
 
 This policy describes the commercial baseline for **website development services**. It does not govern ordinary access to or use of this public website. Those rules are in the [Website Terms of Use](/legal/website-terms-of-use). The [Website Development Terms and Conditions](/legal/website-development-terms-and-conditions) and the signed proposal or agreement govern a specific development project.
 
-For the broader commercial approach, see [Pricing and Engagements](/policies/pricing). To discuss a project, [contact Numerimondes](/company/contact?topic=quote).
+For the broader commercial approach, see [PricingTable and Engagements](/policies/pricing). To discuss a project, [contact Numerimondes](/company/contact?topic=quote).

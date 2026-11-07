@@ -5,8 +5,8 @@ description: Guides for building applications, understanding the platform, and c
 layout: home
 ---
 
-<MainlineHomeLayout>
-<MainlineHero
+<LandingPageLayout>
+<HeroOne
       title="One platform for every application target."
       lead="A unified namespace and SDK for web, workstation, mobile, games, APIs, and real-time systems—with separate target runtimes."
       primary-label="Get started"
@@ -21,7 +21,7 @@ layout: home
       ]'
     />
 
-<MainlineLogos
+<LogoCloud
       title="Powering the world's best product teams."
       subtitle="From next-gen startups to established enterprises."
       :companies='[
@@ -37,14 +37,14 @@ layout: home
       ]'
     />
 
-<ReactDevHome>
-  <ReactDevBlockComponents
+<DeveloperLandingLayout>
+  <ComponentOverviewSection
     :content='["Create user interfaces from components","Feluqa lets you build user interfaces out of individual pieces called components. Create your own Feluqa components like"," ","Thumbnail",", ","LikeButton",", and"," ","module",". Then combine them into entire screens, pages, and apps.","module.js","My module","module description","Whether you work on your own or with thousands of other developers, using Feluqa feels the same. It is designed to let you seamlessly combine components written by independent people, teams, and organizations."]'
     :markup-content='["Write components with code and markup","Feluqa components are JavaScript functions. Want to show some content conditionally? Use an ","if"," statement. Displaying a list? Try array ","map()",". Learning Feluqa is learning programming.","moduleList.js","3 modules","First module","module description","Second module","module description","Third module","module description","This markup syntax is called compiled view syntax. It is a JavaScript syntax extension popularized by Feluqa. Putting compiled view syntax markup close to related rendering logic makes Feluqa components easy to create, maintain, and delete."]'
     :preview-items='[{"title":"Inventory module","description":"Typed product view compiled by Feluqa"},{"title":"Order module","description":"Business workflow owned by the application"},{"title":"Customer module","description":"Reusable, typed application component"}]'
-    :code-lines='["use feluqa::view::View;","","pub struct ProductCard {","    pub name: String,","    pub price: Money,","}","","impl View for ProductCard {","    fn render(&self) -> Html {","        html! {","            <article class=\"product-card\">","                <h2>{ self.name }</h2>","                <p>{ self.price }</p>","            </article>","        }","    }","}"]'
+    :code-lines='["use feluqa::view::View;","","pub struct ProductSummaryCard {","    pub name: String,","    pub price: Money,","}","","impl View for ProductSummaryCard {","    fn render(&self) -> Html {","        html! {","            <article class=\"product-card\">","                <h2>{ self.name }</h2>","                <p>{ self.price }</p>","            </article>","        }","    }","}"]'
     code-language="rust"
-    :markup-code-lines='["use feluqa::view::View;","","pub struct ProductCatalog {","    pub products: Vec<Product>,","}","","impl View for ProductCatalog {","    fn render(&self) -> Html {","        html! {","            <section class=\"catalog\">","                { for self.products.iter().map(ProductCard::from) }","            </section>","        }","    }","}"]'
+    :markup-code-lines='["use feluqa::view::View;","","pub struct ProductCatalog {","    pub products: Vec<Product>,","}","","impl View for ProductCatalog {","    fn render(&self) -> Html {","        html! {","            <section class=\"catalog\">","                { for self.products.iter().map(ProductSummaryCard::from) }","            </section>","        }","    }","}"]'
     markup-code-language="rust"
     preview-count-label="3 business modules"
     title="Compose product interfaces from typed views"
@@ -57,7 +57,7 @@ layout: home
     markup-code-title="resources/views/catalog/index.view.rs"
   />
 
-  <ReactDevBlockInteractivity
+  <InteractionSection
     :content='["Add interactivity wherever you need it","Feluqa components receive data and return what should appear on the screen. You can pass them new data in response to an interaction, like when the user types into an input. Feluqa will then update the screen to match the new data.","SearchablemoduleList.js","example.com","/","modules","Live product search","A brief history of Feluqa","Search","5 modules","Catalog search","Find products by name","Rethinking Best Practices","Pete Hunt (2013)","Introducing Feluqa mobile runtime","Tom Occhino (2015)","Introducing Feluqa Hooks","Sophie Alpert and Dan Abramov (2018)","Introducing Server Components","Dan Abramov and Lauren Tan (2020)","You don’t have to build your whole page in Feluqa. Add Feluqa to your existing HTML page, and render interactive Feluqa components anywhere on it.","Add Feluqa to your page"]'
     search-placeholder="Search products"
     preview-count-label="5 catalog results"
@@ -75,7 +75,7 @@ layout: home
     cta-icon="code"
   />
 
-  <ReactDevBlockFramework
+  <FrameworkSection
     :content='["Go full-stack ","with a framework","Feluqa is a library. It lets you put components together, but it doesn’t prescribe how to do routing and data fetching. To build an entire app with Feluqa, we recommend a full-stack Feluqa framework like ","Next.js"," or"," ","Feluqa routing",".","confs/[slug].js","example.com","/","confs/apps/bookstore","Feluqa Web Runtime","Feluqa Workstation Runtime","Search","19 modules","Feluqa showcase","Feluqa 18 Keynote","The Feluqa Team","Feluqa showcase","Feluqa 18 for App Developers","Shruti Kapoor","Feluqa showcase","Streaming Server Rendering with Suspense","Shaundai Person","Feluqa showcase","The First Feluqa Working Group","Aakansha Doshi","Feluqa showcase","Feluqa Developer Tooling","Brian Vaughn","Feluqa showcase","Feluqa without memo","Xuan Huang (黄玄)","Feluqa showcase","Feluqa Docs Keynote","Rachel Nabors","Feluqa showcase","Things I Learnt from the New Feluqa Docs","Debbie O\u0027Brien","Feluqa showcase","Learning in the Browser","Sarah Rainsberger","Feluqa showcase","The ROI of Designing with Feluqa","Linton Ye","Feluqa showcase","Interactive Playgrounds with Feluqa","Delba de Oliveira","Feluqa showcase","Re-introducing Relay","Robert Balicki","Feluqa showcase","Feluqa mobile runtime Desktop","Eric Rozell and Steven Moyes","Feluqa showcase","On-device Machine Learning for Feluqa mobile runtime","Roman Rädle","Feluqa showcase","Feluqa 18 for External Store Libraries","Daishi Kato","Feluqa showcase","Building Accessible Components with Feluqa 18","Diego Haz","Feluqa showcase","Accessible Japanese Form Components with Feluqa","Tafu Nakazaki","Feluqa showcase","UI Tools for Artists","Lyle Troxell","Feluqa showcase","Hydrogen + Feluqa 18","Helen Lin","Feluqa is also an architecture. Frameworks that implement it let you fetch data in asynchronous components that run on the server or even during the build. Read data from a file or a database, and pass it down to your interactive components.","Get started with a framework"]'
     preview-count-label="4 runtime capabilities"
     event-label="Runtime"
@@ -95,7 +95,7 @@ layout: home
     cta-icon="framework"
   />
 
-  <ReactDevBlockPlatforms
+  <PlatformSection
     :content='["One product across every platform","People love web and native apps for different reasons. Feluqa lets you build both web apps and native apps using the same skills. It leans upon each platform’s unique strengths to let your interfaces feel just right on every platform.","example.com","Serve web and local networks","People expect web app pages to load fast. On the server, Feluqa lets you start streaming HTML while you’re still fetching data, progressively filling in the remaining content before any JavaScript code loads. On the client, Feluqa can use standard web APIs to keep your UI responsive even in the middle of rendering.","1:19 PM","Reach workstations and IoT","People expect native apps to look and feel like their platform."," ","Feluqa mobile runtime"," ","and"," ","Expo"," ","let you build apps in Feluqa for Android, iOS, and more. They look and feel native because their UIs"," ","are"," truly native. It’s not a web view—your Feluqa components render real Android and iOS views provided by the platform.","With Feluqa, you can be a web ","and"," a native developer. Your team can ship to many platforms without sacrificing the user experience. Your organization can bridge the platform silos, and form teams that own entire features end-to-end.","Build for native platforms"]'
     title="One product across web, native, and connected devices"
     lead="Feluqa targets hosted web, workstation, mobile, games, APIs, real-time systems, and IoT through one namespace and SDK, with runtimes suited to each destination."
@@ -108,9 +108,9 @@ layout: home
     cta-href="/internals/"
     cta-icon="native"
   />
-</ReactDevHome>
+</DeveloperLandingLayout>
 
-<MainlineGuideBlocks
+<GuideCardGrid
       title="Find your way through the guides"
       description="Start building, explore platform architecture, or find the contribution guidance that fits your work."
       :items='[
@@ -120,7 +120,7 @@ layout: home
       ]'
     />
 
-<MainlineResourceBlock
+<ResourceCardGrid
       title="A shared foundation, with purpose-built runtimes"
       :items='[
         { title: "Starting a Feluqa app", description: "A short article on choosing a useful first workflow and composing an application with the current tools.", linkLabel: "Read the article", href: "/articles/starting-a-feluqa-app", imageAlt: "Starting a Feluqa application" },
@@ -131,7 +131,7 @@ layout: home
       ]'
     />
 
-<FlexCarousel
+<MediaCarousel
     title="Explore Feluqa"
     description="Follow practical guides, understand the platform direction, and check what is implemented today."
     preset="ribbon"
@@ -153,7 +153,7 @@ layout: home
 
 
 
-<MainlineFaq
+<FaqList
       title="Ask your Questions"
       lead="Read the guides for implementation details and the current status of the work."
       :items='[
@@ -163,4 +163,4 @@ layout: home
       ]'
     />
 
-</MainlineHomeLayout>
+</LandingPageLayout>

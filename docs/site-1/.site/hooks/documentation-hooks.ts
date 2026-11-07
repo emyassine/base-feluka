@@ -10,7 +10,7 @@ export const menuTemplates = {
   'mega.background-icon': { layout: 'background' },
 } as const
 
-export const menuTemplateComponent = 'FeluqaMegaMenu'
+export const menuTemplateComponent = 'MegaMenu'
 
 const strings = {
   en: {

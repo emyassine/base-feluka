@@ -12,7 +12,7 @@ status: "Ready for review"
 Practical guides to using this site and understanding how its features work.
 
 <CollectionSearch collection-id="articles" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
-  <CollectionSearchBar
+  <CollectionFilterBar
     :query="query"
     :categories="categories"
     :selected-category="selectedCategory"
@@ -32,7 +32,7 @@ Practical guides to using this site and understanding how its features work.
     @update:sort="setSort"
   />
   <div v-if="items.length" class="nm-policy-grid">
-    <ProductCard v-for="article in items" :key="article.url" :href="article.url" :image="article.image" :image-alt="article.imageAlt" :video="article.video" :title="article.title" :category="getCategoryLabel(article.category)" :status="article.status" :description="article.summary || article.description" />
+    <ProductSummaryCard v-for="article in items" :key="article.url" :href="article.url" :image="article.image" :image-alt="article.imageAlt" :video="article.video" :title="article.title" :category="getCategoryLabel(article.category)" :status="article.status" :description="article.summary || article.description" />
   </div>
   <p v-else>No articles match this search.</p>
 </CollectionSearch>

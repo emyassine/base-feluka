@@ -39,7 +39,7 @@ At our size, that means the person who scopes an engagement is the person accoun
 
 <div class="grid-container grid-cols-3" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 1"
             value="Sprint"
             description="Fixed-length, fixed-scope — typically 4–8 weeks"
@@ -48,7 +48,7 @@ At our size, that means the person who scopes an engagement is the person accoun
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 2"
             value="Proof"
             description="We show what we've actually done, not theory"
@@ -57,7 +57,7 @@ At our size, that means the person who scopes an engagement is the person accoun
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 3"
             value="Plan"
             description="You leave with a plan, not a request to go faster"

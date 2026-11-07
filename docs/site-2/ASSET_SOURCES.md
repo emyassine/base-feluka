@@ -87,7 +87,7 @@ All assets below are 1586 × 992 original images generated for their named polic
 - **Concepts considered:** Fitted material planes joined by one etched line; folded paper passing from draft to final pleat; a single prism casting a boundary. The fitted planes won because they express shared structure without suggesting identical rules.
 - **First-glance:** A composed field of distinct materials connected by a single line; tactile variation and oblique light make it feel deliberate and memorable.
 
-### Pricing and engagements
+### PricingTable and engagements
 
 - **Asset/page claim:** `public/images/policies/pricing-scoped-value.webp`; price reflects the agreed work, scope, resources and responsibilities rather than a universal package.
 - **Stance and fit:** Transparent commercial clarity. An amber prism and carefully stacked forms balance on a slate beam, evoking considered value and exchange.

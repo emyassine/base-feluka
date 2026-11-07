@@ -40,10 +40,26 @@ async function requireFile(path, declarationPath, field) {
 export async function loadSites() {
   const activeRegistryPath = registryPath
   const registry = await readJson(activeRegistryPath, activeRegistryPath, 'sitesPaths (or set VITEPRESS_SITE_MANIFEST)')
+  const registryDirectory = dirname(activeRegistryPath)
+  const resolveWorkspacePaths = async (field, kind) => {
+    const values = registry[field] ?? []
+    if (!Array.isArray(values)) throw new Error(`${activeRegistryPath}: ${field} must be an array of ${kind} paths`)
+    return Promise.all(values.map(async (value) => {
+      if (typeof value !== 'string' || !value.trim()) throw new Error(`${activeRegistryPath}: every ${field} entry must be a path`)
+      const path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
+      if (kind === 'directories') await requireDirectory(path, activeRegistryPath, field)
+      else await requireFile(path, activeRegistryPath, field)
+      return path
+    }))
+  }
+  const [componentsPaths, StylesPaths, jsPaths] = await Promise.all([
+    resolveWorkspacePaths('componentsPaths', 'directories'),
+    resolveWorkspacePaths('StylesPaths', 'files'),
+    resolveWorkspacePaths('jsPaths', 'files'),
+  ])
   if (!Array.isArray(registry.sitesPaths) || registry.sitesPaths.length === 0) {
     throw new Error(`${activeRegistryPath}: sitesPaths must be a non-empty array of site declaration paths`)
   }
-  const registryDirectory = dirname(activeRegistryPath)
   const declarations = await Promise.all(registry.sitesPaths.map(async (sitePath) => {
     if (typeof sitePath !== 'string' || !sitePath.trim()) throw new Error(`${registryPath}: every sitesPaths entry must be a path`)
     const declarationPath = isAbsolute(sitePath) ? sitePath : resolve(registryDirectory, sitePath)
@@ -79,8 +95,11 @@ export async function loadSites() {
     const base = dirname(activeDeclarationPath)
     const resolvePath = (value) => isAbsolute(value) ? resolve(value) : resolve(base, value)
     const paths = Object.fromEntries(Object.entries(declaration.paths).map(([key, value]) => [key, key === 'configFiles' ? Object.fromEntries(Object.entries(value).map(([name, path]) => [name, resolvePath(path)])) : resolvePath(value)]))
+    if (componentsPaths.length && !componentsPaths.includes(paths.components)) {
+      throw new Error(`${activeDeclarationPath}: paths.components must be listed in ${activeRegistryPath} componentsPaths`)
+    }
     const sourceRoot = paths.root
-    const inTree = ['config', 'guides', 'collections', 'resources', 'assets', 'components', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'mermaidConfig', ...Object.keys(paths.configFiles).map((name) => `configFiles.${name}`)]
+    const inTree = ['config', 'guides', 'collections', 'resources', 'assets', 'diagrams', 'hooks', 'media', 'schemas', 'public', 'mermaidConfig', ...Object.keys(paths.configFiles).map((name) => `configFiles.${name}`)]
     for (const key of inTree) {
       const path = key.startsWith('configFiles.') ? paths.configFiles[key.slice('configFiles.'.length)] : paths[key]
       const local = relative(sourceRoot, path)
@@ -123,7 +142,7 @@ export async function loadSites() {
     if (toolchain.network && !['none', 'install-only', 'full'].includes(toolchain.network)) {
       throw new Error(`${activeDeclarationPath}: toolchain.network must be none, install-only, or full`)
     }
-    return { ...declaration, declarationPath: activeDeclarationPath, paths, sourceRoot, outputRoot: paths.output, toolchainCwd: cwd }
+    return { ...declaration, declarationPath: activeDeclarationPath, paths, sourceRoot, outputRoot: paths.output, toolchainCwd: cwd, workspace: { componentsPaths, StylesPaths, jsPaths } }
   }))
   const ids = new Set()
   for (const declaration of declarations) {

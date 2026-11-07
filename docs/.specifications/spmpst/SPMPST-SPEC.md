@@ -937,7 +937,7 @@ These are stage backlog items, not completed behavior. The present implementatio
 | Shared resources | `docs/vitepress-site/resources/{icons,flags}/` |
 | Styles, search, Markdown and outline options | SPMPST concern files, interpreted by the VitePress adapter |
 | Emitted frontmatter | `layout`, `sidebar`, `aside`, `search`, `prev`, `next`, `lang` |
-| Embedded component tags | Vue syntax, e.g. `<CollectionSpotlightCards />` |
+| Embedded component tags | Vue syntax, e.g. `<SpotlightCardGrid />` |
 | Generated modules | `docs/vitepress-site/.trash/<site>/vitepress-generated/` |
 | CSS classes | Target components and styles |
 

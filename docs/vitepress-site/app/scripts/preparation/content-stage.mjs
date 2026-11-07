@@ -298,7 +298,7 @@ for (const collection of collectionMetadata.values()) {
     const lines = [`---`, `title: ${JSON.stringify(localizedTitle)}`, `sidebarTitle: ${JSON.stringify(localizedTitle)}`, `description: ${JSON.stringify(localizedDescription || title)}`, `layout: home`, `collectionIndex: ${JSON.stringify(collection.id)}`, `sidebar: false`, `aside: false`, `---`, '']
     if (collection.indexLayout === 'spotlight') {
       lines.push(
-        `<CollectionSpotlightIndex collection-id="${collection.id}" />`,
+        `<SpotlightCollectionPage collection-id="${collection.id}" />`,
         '',
       )
     } else {
@@ -345,6 +345,11 @@ const configuredStylesSource = [
   ...styleFiles.map((styleFile) => `import '${moduleSpecifier(styleFile, true)}'`),
 ].join('\n')
 await writeIfChanged(join(generatedDirectory, 'configured-styles.ts'), `${configuredStylesSource}\n`)
+const configuredScriptsSource = [
+  '// Generated from workspace jsPaths. Do not edit.',
+  ...(projectDirectories.jsPaths ?? []).map((scriptFile) => `import '${moduleSpecifier(scriptFile, true)}'`),
+].join('\n')
+await writeIfChanged(join(generatedDirectory, 'configured-scripts.ts'), `${configuredScriptsSource}\n`)
 
 async function collectVueFiles(directory, files = []) {
   for (const entry of (await readdir(directory, { withFileTypes: true })).sort((left, right) => left.name.localeCompare(right.name))) {
@@ -700,7 +705,7 @@ function findHookFile(name) {
 }
 const hookFile = findHookFile('documentation-hooks')
 const seoFile = findHookFile('documentation-seo')
-const spmpstConfigApi = fileURLToPath(new URL('../../.vitepress/theme/useSpmpstConfig.ts', import.meta.url))
+const spmpstConfigApi = fileURLToPath(new URL('../../../../../components/layouts/useSpmpstConfig.ts', import.meta.url))
 await writeIfChanged(join(generatedDirectory, 'spmpst-config.ts'), `export { useSpmpstConfig } from '${moduleSpecifier(spmpstConfigApi)}'\n`)
 const hookStyles = projectDirectories.hooks ? join(projectDirectories.hooks, 'documentation-hooks.css') : null
 const themeSource = [

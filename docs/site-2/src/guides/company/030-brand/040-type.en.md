@@ -7,11 +7,11 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <NmBrandHero eyebrow="Brandkit // Type" title="Type" tagline="Our typography is the structure for our brand voice" cta-label="Explore Type" cta-href="#nm-brand-index" />
+    <HeroEight eyebrow="Brandkit // Type" title="Type" tagline="Our typography is the structure for our brand voice" cta-label="Explore Type" cta-href="#nm-brand-index" />
   </div>
 
-  <NmBrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Typography' }, { tagline: 'Typography is the brand’s voice in written form', description: 'Typography is the brand’s voice in written form—it shapes how confident, modern, and trustworthy we feel before anyone reads the message. Our type system is built for clarity and character: strong hierarchy, generous spacing, and a calm rhythm that works across product UI, marketing, and long-form content. This section defines our fonts, sizing, and usage rules so every headline and paragraph feels unmistakably on-brand.' }] }]" />
-  <NmBrandIndex title="Type Index" :columns="1" :groups="[
+  <BrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Typography' }, { tagline: 'Typography is the brand’s voice in written form', description: 'Typography is the brand’s voice in written form—it shapes how confident, modern, and trustworthy we feel before anyone reads the message. Our type system is built for clarity and character: strong hierarchy, generous spacing, and a calm rhythm that works across product UI, marketing, and long-form content. This section defines our fonts, sizing, and usage rules so every headline and paragraph feels unmistakably on-brand.' }] }]" />
+  <BrandIndex title="Type Index" :columns="1" :groups="[
     { number: '1', title: 'Type', href: '#typeface', items: [
       { number: '1', title: 'Our Typeface', href: '#typeface' },
       { number: '2', title: 'Type Scale', href: '#type-scale' },
@@ -19,11 +19,11 @@ layout: home
     ] }
   ]" />
 
-  <NmBrandTypeSection id="typeface" eyebrow="Type // Typeface" title="Our Typeface" kind="typeface"
+  <BrandTypeSection id="typeface" eyebrow="Type // Typeface" title="Our Typeface" kind="typeface"
     description="Uncut Sans is yet another slightly quirky sans serif, designed with absolutely no investigation or research into any other typefaces from any specific time period."
   />
 
-  <NmBrandTypeSection id="type-scale" eyebrow="Type // Scale" title="Type Scale" kind="scale"
+  <BrandTypeSection id="type-scale" eyebrow="Type // Scale" title="Type Scale" kind="scale"
     description="Our typographic scale creates consistent hierarchy across every surface—product UI, marketing pages, docs, and decks."
     :items="[
       { name: 'Scale 1', size: 15 }, { name: 'Scale 2', size: 12 },
@@ -35,7 +35,7 @@ layout: home
     ]"
   />
 
-  <NmBrandTypeSection id="type-in-use" eyebrow="Type // In Use" title="Type In Use" kind="use"
+  <BrandTypeSection id="type-in-use" eyebrow="Type // In Use" title="Type In Use" kind="use"
     description="Our type lockups are pre-built combinations of headline, subhead, and supporting text for consistent hierarchy."
     :cities="[
       { name: 'Montreal', code: 'A192', time: '11.50.00' }, { name: 'Tokyo', code: 'B432', time: '10.12.00' },
@@ -53,4 +53,4 @@ layout: home
     ]"
   />
 
-  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
+  <BrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

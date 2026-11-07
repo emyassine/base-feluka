@@ -2,5 +2,19 @@
   "sitesPaths": [
     "../site-1/spmpst.json",
     "../site-2/spmpst.json"
-  ]
+  ],
+  "componentsPaths": [
+    "../../components"
+  ],
+  "StylesPaths": [
+    "../../components/home/docs-home.css",
+    "../../components/components.css",
+    "../../components/blocks/styles/numerimondes.css",
+    "../../components/blocks/styles/numerimondes-silky.css",
+    "../../components/blocks/styles/accent-text.css",
+    "../../components/blocks/styles/inline-image-preview.css",
+    "../../components/blocks/styles/click-particles.css",
+    "../../components/blocks/specialized/marketplace/numerimondes-marketplace.css"
+  ],
+  "jsPaths": []
 }

@@ -66,7 +66,7 @@ The remote backup destination, storage region, retention, rotation and deletion 
 
 ## Related notices
 
-<SimpleMiniCard
+<CompactInfoCard
   :columns="2"
   :categories="[
     { title: 'Privacy notices', items: [

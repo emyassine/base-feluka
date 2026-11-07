@@ -18,7 +18,7 @@ For direct assistance, customers and partners should reach out to their contact 
 
 <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
 
-        <NmCard compact="true" collapsible="true" collapsed="true" icon="$faq[&#x27;icon&#x27;]" color="$faq[&#x27;color&#x27;]"
+        <Card compact="true" collapsible="true" collapsed="true" icon="$faq[&#x27;icon&#x27;]" color="$faq[&#x27;color&#x27;]"
             icon-size="md"
         >
             <template #heading>
@@ -26,6 +26,6 @@ For direct assistance, customers and partners should reach out to their contact 
             </template>
 
 
-        </NmCard>
+        </Card>
 
 </div>

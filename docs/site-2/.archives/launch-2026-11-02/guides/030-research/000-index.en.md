@@ -28,4 +28,4 @@ Conventions (self-contained folders, members as authors, public/private attachme
 
 ## Concepts
 
-<NmConceptsIndex />
+<ConceptDirectory />

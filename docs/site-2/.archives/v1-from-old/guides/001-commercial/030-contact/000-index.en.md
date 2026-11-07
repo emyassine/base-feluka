@@ -9,7 +9,7 @@ description: "Contact Numerimondes in Casablanca by WhatsApp, email, or phone."
 
 Tell us a little about what you are working on. The form below prepares a WhatsApp message for you to review and send. Your details are not submitted to or stored by this website.
 
-<NmWhatsAppForm />
+<WhatsAppForm />
 
 ## Other ways to reach us
 

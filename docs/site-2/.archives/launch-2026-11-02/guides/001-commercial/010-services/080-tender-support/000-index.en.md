@@ -26,20 +26,20 @@ Most clients need Deal Structuring; some tenders additionally need Narrative & A
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-briefcase" color="primary">
+        <Card compact="true" icon="heroicon-o-briefcase" color="primary">
             <template #heading><a href="/services/tender-support/deal-structuring" style="text-decoration:none;">Deal Structuring</a></template>
             <template #description>
                 Sourcing the tender if you don't have one yet, assembling the administrative and financial file, submitting it, and following it through to award — on a deposit-plus-commission model tied to whether you win.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-puzzle-piece" color="info">
+        <Card compact="true" icon="heroicon-o-puzzle-piece" color="info">
             <template #heading><a href="/services/tender-support/narrative-assembly" style="text-decoration:none;">Narrative & Assembly</a></template>
             <template #description>
                 Turning material you already have — brochures, specs, financials — into the coherent story a cahier des charges, a bank, or an investor actually needs to see. Production is subcontracted when required; the narrative and assembly are ours.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

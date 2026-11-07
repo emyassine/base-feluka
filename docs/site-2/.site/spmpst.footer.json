@@ -1,6 +1,6 @@
 {
   "$schema": "../public/api/beta/schemas/spmpst-standard/footer.schema.json",
-  "component": "FeluqaDocsFooter",
+  "component": "DocsFooter",
   "content": {
     "title": {
       "en": "It's never too early to get help."

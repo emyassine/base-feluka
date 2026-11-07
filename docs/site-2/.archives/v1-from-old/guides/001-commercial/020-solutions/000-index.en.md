@@ -30,6 +30,6 @@ Explore private AI for knowledge retrieval, document workflows, and internal ass
 The best starting point may be a short assessment, a focused implementation, or a broader modernization plan.
 
 <div class="nm-actions">
-  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20solution." target="_blank" rel="noopener noreferrer" size="md">Discuss a solution</FeluqaButton>
-  <FeluqaButton tag="a" href="/services/" color="gray" outlined size="md">View services</FeluqaButton>
+  <Button tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20a%20solution." target="_blank" rel="noopener noreferrer" size="md">Discuss a solution</Button>
+  <Button tag="a" href="/services/" color="gray" outlined size="md">View services</Button>
 </div>

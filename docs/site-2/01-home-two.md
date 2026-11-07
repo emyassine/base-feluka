@@ -153,5 +153,5 @@ You do not need a finished specification to start a conversation. Tell us what y
 - SPMPST and Feluqa are not market-ready. Webkernel is discontinued.
 - Distinguish referral partners (including accountancy firms), commercial representatives and technical contractors.
 - Do not publicly promise fixed commissions, outcomes, certifications, availability or timelines without agreement.
-- Showcase should use visual filters and accurate status badges for initiatives; show working demos when available.
+- ProductShowcase should use visual filters and accurate status badges for initiatives; show working demos when available.
 -->

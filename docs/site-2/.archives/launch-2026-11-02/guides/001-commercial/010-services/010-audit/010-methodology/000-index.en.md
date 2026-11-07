@@ -25,20 +25,20 @@ So we split the offer honestly instead of folding one into the other:
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="primary">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="primary">
             <template #heading>Level 1 — what we look at</template>
             <template #description>
                 Every tool in active use: what it costs monthly and cumulatively, what it locks you into, what it does not do, and what a self-hosted alternative would change.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrows-pointing-out" color="success">
+        <Card compact="true" icon="heroicon-o-arrows-pointing-out" color="success">
             <template #heading>Level 2 — what we add</template>
             <template #description>
                 The processes around those tools: who touches what, where handoffs break, which tasks are manual because nobody has had time to automate them, and what that manual work costs in hours per month.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

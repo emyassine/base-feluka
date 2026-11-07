@@ -45,31 +45,31 @@ Our work connects consulting, innovation and delivery. Each engagement is define
 
 Opportunity research, commercial strategy, operational diagnosis, project structuring and business development support. We help turn analysis and ideas into decisions, plans and actionable initiatives.
 
-<FeluqaButton tag="a" href="/services/business-advisory/consulting" label="Explore consulting"/>
+<Button tag="a" href="/services/business-advisory/consulting" label="Explore consulting"/>
 
 ### Digital systems & software
 
 Business applications, internal tools, integrations, automation and information systems designed around the people and processes using them. Our engineering work includes custom development and Rust-based initiatives where appropriate.
 
-<FeluqaButton tag="a" href="/services/systems-and-operations/software" label="Explore software & systems"/>
+<Button tag="a" href="/services/systems-and-operations/software" label="Explore software & systems"/>
 
 ### Infrastructure, equipment & security
 
 Infrastructure planning, hosting and deployment, self-hosted environments, equipment integration, operational continuity and scoped security assessments. We help organizations make informed infrastructure decisions and manage their technical environments.
 
-<FeluqaButton tag="a" href="/services/systems-and-operations/infrastructure" label="Explore infrastructure"/>
+<Button tag="a" href="/services/systems-and-operations/infrastructure" label="Explore infrastructure"/>
 
 ### Operations, people & capabilities
 
 Organizational workflows, reporting, service operations, training and people-related solutions. Engagements are offered according to available expertise, project scope and operational readiness.
 
-<FeluqaButton tag="a" href="/services/systems-and-operations/operations" label="Explore operations"/>
+<Button tag="a" href="/services/systems-and-operations/operations" label="Explore operations"/>
 
 ### Innovation & new ventures
 
 Research, validate and shape opportunities that may lead to new services, products, partnerships or specialized systems. We connect the creative and commercial sides of an idea with a practical development path.
 
-<FeluqaButton tag="a" href="/opportunities/" label="Explore innovation"/>
+<Button tag="a" href="/opportunities/" label="Explore innovation"/>
 
 ---
 
@@ -87,9 +87,9 @@ Discover the areas we explore and the kinds of value that can be created. Browse
 | **People and organizations** | • Training · • Coordination · • Emerging talent solutions |
 | **Research and ventures** | • Internal standards · • Experimental platforms · • New business concepts |
 
-<FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
+<Button tag="a" href="/showcase" label="Explore the showcase"/>
 
-<!-- Showcase implementation:
+<!-- ProductShowcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
 Use "Delivered" only for verifiable completed work. Separate client references (with permission)
 from Numerimondes experiments and illustrative solution concepts.
@@ -113,7 +113,7 @@ Our founder acts as the central point of contact for project qualification, solu
 4. **Mobilize** — Bring together the skills and resources the mission requires.
 5. **Deliver** — Execute, review progress, document the work and support the agreed handover.
 
-<FeluqaButton tag="a" href="/company/how-we-work" label="How we work"/>
+<Button tag="a" href="/company/how-we-work" label="How we work"/>
 
 ---
 
@@ -127,7 +127,7 @@ This combination of field experience and technical inquiry shapes an approach gr
 
 Numerimondes SARL AU is an independent Moroccan company headquartered in Casablanca. Its registered activities span management and business development consulting, information systems, technology, digital marketing, security, training, contact-centre operations, recruitment and IT-related products and equipment. Individual offerings are introduced as they become ready for delivery.
 
-<FeluqaButton tag="a" href="/company/overview" label="More about us"/>
+<Button tag="a" href="/company/overview" label="More about us"/>
 
 ---
 
@@ -135,7 +135,7 @@ Numerimondes SARL AU is an independent Moroccan company headquartered in Casabla
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
-<MegaCards
+<ServiceCardGrid
   :items="[
     {
       title: 'Feluqa',
@@ -194,8 +194,8 @@ Identify qualified opportunities, introduce prospective clients and collaborate 
 
 Join project teams when your expertise fits an assignment — across software engineering, including Rust, infrastructure, business consulting and other relevant specialties.
 
-<FeluqaButton tag="a" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" href="/company/prologue/contact?topic=partnership" label="Propose a collaboration"/>
+<Button tag="a" href="/opportunities" label="Explore partnerships"/>
+<Button tag="a" href="/company/prologue/contact?topic=partnership" label="Propose a collaboration"/>
 
 ---
 
@@ -205,9 +205,9 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/policies/pricing" label="Our pricing approach"/>
+<Button tag="a" href="/policies/pricing" label="Our pricing approach"/>
 
-<!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
+<!-- PricingTable page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
 -->
 
@@ -231,7 +231,7 @@ Share a challenge, an idea, a business objective or a project you want to explor
 6. The Best Recruit must not advertise live placements or an active candidate service before launch.
 7. Showcases must distinguish real delivered work from concepts and R&D.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.
-9. Pricing page explains methodology and commercial models, not an unverified price list.
-10. Main navigation suggestion: Services / Solutions & Showcase / Innovation / Partners / About / Contact.
-11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
+9. PricingTable page explains methodology and commercial models, not an unverified price list.
+10. Main navigation suggestion: Services / Solutions & ProductShowcase / Innovation / Partners / About / Contact.
+11. Utility links: PricingTable / Feluqa / The Best Recruit / SPMPST.
 -->

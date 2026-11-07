@@ -33,14 +33,14 @@ description: "Named packages that compose several Numerimondes services into one
 
 <div class="grid-container grid-cols-1" style="margin: 1.5rem 0 2rem; gap: 0.75rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path" color="primary">
+        <Card compact="true" icon="heroicon-o-arrow-path" color="primary">
             <template #heading><a href="/solutions/modernization" style="text-decoration:none;">Modernization</a></template>
             <template #description>
                 From diagnosis to systems you own: Audit → Consulting → Development and/or Automation → Infrastructure / Cloud.
                 Phase detail lives on each service page; this pack is the assembly.
                 <a href="/solutions/modernization">Open Modernization →</a>
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

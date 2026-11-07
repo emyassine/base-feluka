@@ -63,11 +63,14 @@ The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
   "sitesPaths": [
     "../site-1/spmpst.json",
     "../site-2/spmpst.json"
-  ]
+  ],
+  "componentsPaths": ["../../components"],
+  "StylesPaths": [],
+  "jsPaths": []
 }
 ```
 
-Each entry is a path to a site declaration. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
+Each `sitesPaths` entry is a path to a site declaration. The other arrays declare shared component roots, stylesheet files, and JavaScript or TypeScript entry files. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
 
 The site declaration is `docs/site-1/spmpst.json`. It owns one complete paths registry and the build/dev actions. See the checked-in [root manifest](../site-1/spmpst.json) for the full current shape.
 
@@ -302,7 +305,7 @@ Locale list, fallback locale, default-prefix policy, labels, flag visibility, se
 
 The optional `topbar.currency` object configures a shared currency selector with a base code and labeled currency options. The selector appears before the header navigation links and synchronizes the site's necessary currency preference with the globally registered `<currency>` display component and the marketplace currency control. It emits `spmpst-currency-change`; no optional consent is required. The `<currency>` component accepts `base`, optional `non-base-tooltip`, and one amount attribute per ISO currency code, for example `<currency base="mad" non-base-tooltip="Indicative conversion; rates can change." mad="25 000" eur="2 500" usd="2 500" />`. It displays the selected amount and currency code; non-base amounts receive a `~` prefix and the supplied tooltip. If an amount for the selected currency is absent, it displays the base amount and base code.
 
-The shared `ManageCookies` component opens on a first visit and remains available from a fixed control. It shows the current site URL and controls storage for that site only. Its necessary first-party consent cookie records optional-storage choices. Theme selection, currency selection, and marketplace basket and review storage are necessary, always enabled, and not used for tracking. Offline catalogue storage and other optional browser storage can be switched off; the manager then clears related entries it identifies. The compact dialog uses rounded Choices and Browser storage tabs, lists friendly descriptions rather than internal storage keys, and offers removal where supported. It lists cookies readable to the current site, local and session storage, IndexedDB databases, Cache Storage entries, and service-worker registrations. It does not inspect other origins, and browser scripts cannot enumerate `HttpOnly` cookies. Page language follows the URL and is not stored as a language preference. Consent labels and known-storage descriptions are available in English, French, Arabic, Spanish, Chinese, Hindi, and Russian.
+The shared `PrivacySettingsDialog` component opens on a first visit and remains available from a fixed control. It shows the current site URL and controls storage for that site only. Its necessary first-party consent cookie records optional-storage choices. Theme selection, currency selection, and marketplace basket and review storage are necessary, always enabled, and not used for tracking. Offline catalogue storage and other optional browser storage can be switched off; the manager then clears related entries it identifies. The compact dialog uses rounded Choices and Browser storage tabs, lists friendly descriptions rather than internal storage keys, and offers removal where supported. It lists cookies readable to the current site, local and session storage, IndexedDB databases, Cache Storage entries, and service-worker registrations. It does not inspect other origins, and browser scripts cannot enumerate `HttpOnly` cookies. Page language follows the URL and is not stored as a language preference. Consent labels and known-storage descriptions are available in English, French, Arabic, Spanish, Chinese, Hindi, and Russian.
 
 Guide routes come from `spmpst.definitions.json` subguide path and `uri.base`/`uri.entry`/`uri.index`. Collections are rooted under `src/collections`, configured with IDs and layout, and receive generated localized indexes. A collection may set a separate public `route`, so themed collections can live under `src/collections/resources/` and publish under `/resources/...`. The topbar's `source: "collections"` selector discovers those collections by `pathPrefix` and nests their generated article links under each collection automatically. For example, Feluqa's `feluqa.rs` source guide is mapped to the site root while other guides use `/sdui/`, `/internals/`, `/agents/`, and `/learn/`. Filesystem path ownership stays in the site-root `spmpst.json`; route ownership stays in the site concern configs, not in the shared host registry.
 

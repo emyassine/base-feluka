@@ -21,28 +21,28 @@ description: "Every runtime, database engine, and framework supported and manage
 
 <div class="grid-container grid-cols-3" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item">
-        <NmStat label="PHP" value="7.4–8.4" description="Multi-version, per-site" color="primary" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="PHP" value="7.4–8.4" description="Multi-version, per-site" color="primary" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Node.js" value="LTS & current" description="PM2-managed processes" color="success" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Node.js" value="LTS & current" description="PM2-managed processes" color="success" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Python" value="Django · FastAPI · Flask" description="Gunicorn / Uvicorn" color="warning" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Python" value="Django · FastAPI · Flask" description="Gunicorn / Uvicorn" color="warning" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Ruby" value="Rails · Rack" description="Puma / Unicorn" color="info" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Ruby" value="Rails · Rack" description="Puma / Unicorn" color="info" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Go" value="High-performance" description="APIs & services" color="primary" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Go" value="High-performance" description="APIs & services" color="primary" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Java" value="Spring · Tomcat" description="JVM tuning included" color="success" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Java" value="Spring · Tomcat" description="JVM tuning included" color="success" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label=".NET" value="ASP.NET Core" description="Linux-hosted" color="warning" icon="heroicon-o-code-bracket"  />
+        <MetricValue label=".NET" value="ASP.NET Core" description="Linux-hosted" color="warning" icon="heroicon-o-code-bracket"  />
     </div>
     <div class="grid-item">
-        <NmStat label="Rust" value="Systems-level" description="Apps & services" color="info" icon="heroicon-o-code-bracket"  />
+        <MetricValue label="Rust" value="Systems-level" description="Apps & services" color="info" icon="heroicon-o-code-bracket"  />
     </div>
 </div>
 
@@ -54,36 +54,36 @@ Also configured on request: Deno, Bun, Elixir/Phoenix, and legacy Perl applicati
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-circle-stack" color="primary">
+        <Card compact="true" icon="heroicon-o-circle-stack" color="primary">
             <template #heading>Relational</template>
             <template #description>
                 MySQL (5.7 / 8.0 / 8.4), PostgreSQL (14–16), MariaDB (including Galera cluster support), and SQLite for embedded use.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-bolt" color="success">
+        <Card compact="true" icon="heroicon-o-bolt" color="success">
             <template #heading>Cache, queues & search</template>
             <template #description>
                 Redis for cache, sessions, and queues; RabbitMQ and Kafka for messaging and event streaming; Elasticsearch and ClickHouse for search and analytics.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-server-stack" color="warning">
+        <Card compact="true" icon="heroicon-o-server-stack" color="warning">
             <template #heading>Document & wide-column</template>
             <template #description>
                 MongoDB (Community & Enterprise) and Cassandra for distributed, wide-column workloads.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-archive-box" color="info">
+        <Card compact="true" icon="heroicon-o-archive-box" color="info">
             <template #heading>Object storage</template>
             <template #description>
                 MinIO for S3-compatible object storage on infrastructure you control.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

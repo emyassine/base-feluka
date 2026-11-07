@@ -25,20 +25,20 @@ When we scope a Development engagement, Webkernel is one path we can propose —
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>When we suggest it</template>
             <template #description>
                 You need a business application with standard enterprise concerns — auth, admin, data modelling — and want to avoid re-solving those from zero. Self-hosting matters to you, contractually or philosophically.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>When we don't</template>
             <template #description>
                 Your requirements are narrow enough that a lighter, purpose-built stack is faster and cheaper. Fit comes first — Webkernel is a means, not the goal of the engagement.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

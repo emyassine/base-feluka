@@ -1,6 +1,6 @@
 ---
-title: "Value-Based Pricing"
-sidebarTitle: "Pricing Model"
+title: "Value-Based PricingTable"
+sidebarTitle: "PricingTable Model"
 icon: "@spmpst::icon::currency-dollar"
 description: "Why Numerimondes prices automation work against the value it creates, not hours spent building it."
 ---
@@ -27,20 +27,20 @@ So we price against that outcome instead.
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-clock" color="primary">
+        <Card compact="true" icon="heroicon-o-clock" color="primary">
             <template #heading>Time saved</template>
             <template #description>
                 Hours per week or month currently spent on the manual version of the task, valued at a realistic internal cost — not a symbolic number.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-exclamation-triangle" color="warning">
+        <Card compact="true" icon="heroicon-o-exclamation-triangle" color="warning">
             <template #heading>Error cost avoided</template>
             <template #description>
                 Re-keying and manual handoffs generate mistakes — mis-billed invoices, delayed quotes, missed follow-ups. A reliable workflow removes that tail risk too.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

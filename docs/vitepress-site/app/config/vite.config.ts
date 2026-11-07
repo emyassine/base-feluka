@@ -59,7 +59,7 @@ const siteViteConfig = {
       { find: /^vue\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vue')}/$1` },
       { find: /^vitepress$/, replacement: resolve(dependencyDirectory, 'vitepress/dist/client/index.js') },
       { find: /^vitepress\/dist\/(.+)$/, replacement: `${resolve(dependencyDirectory, 'vitepress/dist')}/$1` },
-      { find: '@spmpst/browser-storage', replacement: join(siteDirectory, '.vitepress/theme/browser-storage.ts') },
+      { find: '@spmpst/browser-storage', replacement: resolve(siteDirectory, '../../../components/ui/browser-storage.ts') },
       { find: '@docs', replacement: layout.paths.root },
       { find: '@generated', replacement: paths.generatedMetadata },
       { find: '@spmpst/config', replacement: resolve(paths.generatedMetadata, 'spmpst-config.ts') },

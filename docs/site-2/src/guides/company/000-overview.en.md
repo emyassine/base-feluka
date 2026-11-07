@@ -37,7 +37,7 @@ layout: home
     NDAA, BAA, and TAA compliant infrastructure with the speed and elasticity of cloud architecture. Designed and assembled in the USA.
   </p>
 		</div>
-	  <NmBrandHero
+	  <HeroEight
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style=""
@@ -88,7 +88,7 @@ layout: home
 		    </div>
 		  </div>
 		</section>
-	<NmBrandVision
+	<BrandVision
 		showBorder: true,
 	  text="We provide access to technology, capital, workforce, and media to establish North Africa as a global hub of value creation.<br><br>@spmpst::icon::arrow-right:inline Our ultimate goal is to empower anyone, anywhere to create wealth.<h2 style='margin-top:2rem;'><span style='font-style: normal;'>Tell us about your</span> <a href='' class='silky-bi' style='color:#0019ff !important;'> @spmpst::icon::link:inline biggest challenges</a> ! </h2>"
 	  :replacements='[
@@ -128,7 +128,7 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
 
 
 
-	<NmBrandOverview
+	<BrandOverview
 	  :sections='[
 	    {
 	      showBorder: true,
@@ -197,7 +197,7 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
 	    },
 	  ]'
 	/>
-  <NmBrandIndex
+  <BrandIndex
     title="Index"
     :columns="2"
     :groups="[
@@ -231,4 +231,4 @@ Business owners, executives and heads of operations, HR or IT who face a specifi
       ] }
     ]"
   />
-  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
+  <BrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

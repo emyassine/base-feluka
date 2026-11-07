@@ -21,36 +21,36 @@ description: "The Numerimondes products and platforms that run on Numerimondes C
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-building-office-2" color="primary">
+        <Card compact="true" icon="heroicon-o-building-office-2" color="primary">
             <template #heading>Numerimondes — numerimondes.com</template>
             <template #description>
                 Corporate site — software engineering, products, and strategic consulting.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cube" color="success">
+        <Card compact="true" icon="heroicon-o-cube" color="success">
             <template #heading>Webkernel — webkernelphp.com</template>
             <template #description>
                 Open-source PHP application framework for sovereign enterprise apps. See the <a href="/numerimondes/docs/oss/webkernel">product page</a>.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-user-group" color="warning">
+        <Card compact="true" icon="heroicon-o-user-group" color="warning">
             <template #heading>The Best Recruit — thebestrecruit.com</template>
             <template #description>
                 Self-hosted HR and learning suite — applicant tracking, learning management, and talent management.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-globe-alt" color="info">
+        <Card compact="true" icon="heroicon-o-globe-alt" color="info">
             <template #heading>EAS Bridge — easbridge.com</template>
             <template #description>
                 Cross-border platform bridging enterprise application services between Morocco and Europe.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

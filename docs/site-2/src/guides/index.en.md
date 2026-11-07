@@ -6,7 +6,7 @@ layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable systems."
 ---
 <div></div>
-<NmEffectHero
+<HeroFive
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '90vh' }"
   :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
@@ -18,7 +18,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 >
 	<template #dock>
-  <NmSimpleHeroDock
+  <HeroNine
     default-group="Our Products"
     :panel-height="68"
     :base-item-size="50"
@@ -46,9 +46,9 @@ description: "Numerimondes helps organizations design, build, and operate depend
     ]"
   />
 	</template>
-</NmEffectHero>
+</HeroFive>
 
-<Acomponent
+<CompanyIntroduction
 	title="<h1>Numerimondes <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>is an <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>independent</span> consulting and solutions <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>company</span></span></h1>"
   introduction="We explore <span class='silky-i+115'>opportunities</span>, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
   :gallery="[
@@ -147,7 +147,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 </div>
 
- <NmShowcase
+ <ProductShowcase
 	 title="What we do"
 		variant="stacked"
 	 footnote="Our work connects consulting, innovation and <span class='silky-i'>delivery</span>. Each engagement is defined around the organization's priorities and the capabilities required."
@@ -258,7 +258,7 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   enable-hover
 />
 
-<SimpleMiniCard
+<CompactInfoCard
   :columns="2"
   :categories="[
     {
@@ -307,10 +307,10 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   ]"
 />
 
-<FeluqaButton tag="a" href="/#showcase" label="Explore the showcase"/>
+<Button tag="a" href="/#showcase" label="Explore the showcase"/>
 
 
-<!-- Showcase implementation:
+<!-- ProductShowcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
 Use "Delivered" only for verifiable completed work. Separate client references (with permission)
 from Numerimondes experiments and illustrative solution concepts.
@@ -374,7 +374,7 @@ flowchart TD
 ```
 :::
 ::::
-<FeluqaButton tag="a" href="/company/how-we-work"
+<Button tag="a" href="/company/how-we-work"
 	label="How we work"/>
 
 
@@ -412,8 +412,8 @@ Join project teams when your expertise fits an assignment — across software en
 
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
-<FeluqaButton tag="a" color="dark" href="/opportunities" label="Explore partnerships"/>
-<FeluqaButton tag="a" color="dark" href="/company/overview" label="More about us"/>
+<Button tag="a" color="dark" href="/opportunities" label="Explore partnerships"/>
+<Button tag="a" color="dark" href="/company/overview" label="More about us"/>
 </div>
 
 ::::
@@ -423,7 +423,7 @@ Join project teams when your expertise fits an assignment — across software en
 
 The Best Recruit is our remote recruitment service for employers. Feluqa and SPMPST are product initiatives in development.
 
-<MegaCards
+<ServiceCardGrid
   :items="[
     {
       title: 'Feluqa',
@@ -466,9 +466,9 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/policies/pricing" label="Our pricing approach"/>
+<Button tag="a" href="/policies/pricing" label="Our pricing approach"/>
 
-<!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
+<!-- PricingTable page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
 -->
 
@@ -479,10 +479,10 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
 <div style="display: flex; gap: 15px;">
-	<FeluqaButton tag="a"
+	<Button tag="a"
 		color="gray"
 		href="/company/contact" label="Start a conversation"/>
-	<FeluqaButton tag="a"
+	<Button tag="a"
 		color="gray"
 		href="/opportunities" label="Become a partner"/>
 </div>
@@ -497,9 +497,9 @@ Share a challenge, an idea, a business objective or a project you want to explor
 6. Describe The Best Recruit's scope, candidate access, timing and placement commitments only as confirmed for the specific offer or mandate.
 7. Showcases must distinguish real delivered work from concepts and RandD.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.
-9. Pricing page may show the service catalogue's sample figures only as clearly labelled demo examples; never present them as approved public rates without confirmation.
-10. Main navigation suggestion: Services / Solutions and Showcase / Innovation / Partners / About / Contact.
-11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
+9. PricingTable page may show the service catalogue's sample figures only as clearly labelled demo examples; never present them as approved public rates without confirmation.
+10. Main navigation suggestion: Services / Solutions and ProductShowcase / Innovation / Partners / About / Contact.
+11. Utility links: PricingTable / Feluqa / The Best Recruit / SPMPST.
 -->
 
 </div>

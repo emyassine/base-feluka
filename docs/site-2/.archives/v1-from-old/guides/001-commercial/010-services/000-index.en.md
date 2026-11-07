@@ -35,6 +35,6 @@ Private knowledge systems, AI workflow integration, and evaluation of local or c
 Tell us what is slowing your organization down, what you need to protect, or what you want to improve. We will help define a sensible first step.
 
 <div class="nm-actions">
-  <FeluqaButton tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20your%20services." target="_blank" rel="noopener noreferrer" size="md">Discuss a service</FeluqaButton>
-  <FeluqaButton tag="a" href="/solutions/" color="gray" outlined size="md">View solutions</FeluqaButton>
+  <Button tag="a" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20discuss%20your%20services." target="_blank" rel="noopener noreferrer" size="md">Discuss a service</Button>
+  <Button tag="a" href="/solutions/" color="gray" outlined size="md">View solutions</Button>
 </div>

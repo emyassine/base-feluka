@@ -38,7 +38,7 @@ We make our policies explicit and accessible to:
 <img src="/images/policies/policy-boundaries.webp" alt="Slate, pale ceramic, glass, metal and amber resin planes meet along one etched line.">
 
 <CollectionSearch collection-id="policies" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
-  <CollectionSearchBar
+  <CollectionFilterBar
     :query="query"
     :categories="categories"
     :selected-category="selectedCategory"
@@ -59,7 +59,7 @@ We make our policies explicit and accessible to:
   />
 
   <div v-if="items.length" class="nm-policy-grid">
-    <ProductCard
+    <ProductSummaryCard
       v-for="policy in items"
       :key="policy.url"
       :href="policy.url"

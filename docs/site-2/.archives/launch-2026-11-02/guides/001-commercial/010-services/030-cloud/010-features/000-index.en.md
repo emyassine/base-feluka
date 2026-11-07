@@ -21,20 +21,20 @@ description: "Everything Numerimondes Cloud configures, monitors, and maintains 
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-lock-closed" color="primary">
+        <Card compact="true" icon="heroicon-o-lock-closed" color="primary">
             <template #heading>Access hardening</template>
             <template #description>
                 Minimal OS install, SSH hardening (key-only authentication, custom port, rate limiting), and kernel parameter tuning for performance and security.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-shield-exclamation" color="danger">
+        <Card compact="true" icon="heroicon-o-shield-exclamation" color="danger">
             <template #heading>Threat protection</template>
             <template #description>
                 Automated unattended security upgrades, fail2ban brute-force protection, malware scanning, and rootkit detection, with file integrity monitoring on top.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -53,20 +53,20 @@ Full list of supported runtimes and frameworks is on the [tech stack page →](/
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-circle-stack" color="success">
+        <Card compact="true" icon="heroicon-o-circle-stack" color="success">
             <template #heading>Configuration & tuning</template>
             <template #description>
                 Configuration tuned to your dataset and query patterns, with slow-query logging and proactive performance analysis.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path" color="info">
+        <Card compact="true" icon="heroicon-o-arrow-path" color="info">
             <template #heading>Recovery & replication</template>
             <template #description>
                 Point-in-time restore capability across supported engines, with replication setups available where the workload justifies it.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -87,25 +87,25 @@ We monitor uptime, resource usage, and service health across managed servers, wi
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-archive-box" color="warning">
+        <Card compact="true" icon="heroicon-o-archive-box" color="warning">
             <template #heading>Automated encrypted backups</template>
             <template #description>
                 Regular automated backups of files, databases, and mail, encrypted at rest and stored on infrastructure isolated from the primary server.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-uturn-left" color="primary">
+        <Card compact="true" icon="heroicon-o-arrow-uturn-left" color="primary">
             <template #heading>Restore on request</template>
             <template #description>
                 Point-in-time restore to a prior backup snapshot, plus on-demand manual snapshots before major deployments.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
 
-Retention windows and off-site replication options are agreed per contract and depend on the tier — see [Pricing](/services/cloud/pricing).
+Retention windows and off-site replication options are agreed per contract and depend on the tier — see [PricingTable](/services/cloud/pricing).
 
 ## Management console
 

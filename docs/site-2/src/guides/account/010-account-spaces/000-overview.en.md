@@ -16,7 +16,7 @@ Select your profile to access the right sign-in area.
 
 <br>
 
-<CardsModern
+<FeatureCardGrid
   class="no--account-spaces-cards"
   :cards="[
     {

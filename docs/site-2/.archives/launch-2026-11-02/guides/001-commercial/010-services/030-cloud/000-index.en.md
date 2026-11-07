@@ -22,20 +22,20 @@ description: "Server management, hosting, and infrastructure resale — shared h
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Cloud includes</template>
             <template #description>
                 Server provisioning or resale, OS and stack configuration, security hardening, monitoring, backups, and ongoing management — invoiced directly by Numerimondes, whatever the underlying hardware.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Cloud does not include</template>
             <template #description>
                 Writing application code (that's <a href="/services/development">Development</a>). Strategic decisions about your infrastructure roadmap (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a> consulting). Automating a business process (that's <a href="/services/automation">Automation</a>).
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -47,36 +47,36 @@ This is a direct hosting and management relationship, not a referral to a third-
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-squares-2x2" color="primary">
+        <Card compact="true" icon="heroicon-o-squares-2x2" color="primary">
             <template #heading>Shared hosting</template>
             <template #description>
                 Web hosting on shared infrastructure — the lowest-cost entry tier, suited to standard web projects and smaller sites.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-server" color="success">
+        <Card compact="true" icon="heroicon-o-server" color="success">
             <template #heading>VPS</template>
             <template #description>
                 A virtual private server sized to your workload, fully managed — isolated resources without the cost of dedicated hardware.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="warning">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="warning">
             <template #heading>Bare metal dedicated</template>
             <template #description>
                 A physical server reserved entirely for you — for workloads that need dedicated resources, predictable performance, or specific compliance requirements.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-building-office" color="info">
+        <Card compact="true" icon="heroicon-o-building-office" color="info">
             <template #heading>Bring your own</template>
             <template #description>
                 Hardware you already own or rent — physical server, home machine, or an existing VPS from any provider — with the same management layer applied to it.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -90,20 +90,20 @@ We sit between you and the raw infrastructure, whichever tier you choose. You ke
 
 <div class="grid-container grid-cols-2" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-shield-check" color="primary">
+        <Card compact="true" icon="heroicon-o-shield-check" color="primary">
             <template #heading>Security baseline applied by default</template>
             <template #description>
                 Firewall configuration, SSH hardening, automated security updates, and malware scanning — configured from first boot, not left to a default install.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path" color="success">
+        <Card compact="true" icon="heroicon-o-arrow-path" color="success">
             <template #heading>Stack-agnostic</template>
             <template #description>
                 PHP, Node.js, Python, Ruby, Go, Java, .NET, Rust, and the corresponding database engines — see the <a href="/services/cloud/tech-stack">full technology list</a>.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -121,36 +121,36 @@ Clients who came through an [Audit](/services/audit) or [Infrastructure](/servic
 
 <div class="grid-container grid-cols-2" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-adjustments-horizontal" color="primary">
+        <Card compact="true" icon="heroicon-o-adjustments-horizontal" color="primary">
             <template #heading><a href="/services/cloud/features" style="text-decoration:none;">Features — what we configure and monitor</a></template>
             <template #description>
                 The full breakdown: server hardening, database management, SSL/DNS/email, monitoring, and backups.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-code-bracket" color="success">
+        <Card compact="true" icon="heroicon-o-code-bracket" color="success">
             <template #heading><a href="/services/cloud/tech-stack" style="text-decoration:none;">Tech stack — every runtime, every database</a></template>
             <template #description>
                 Languages, database engines, and frameworks we configure and manage.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-currency-dollar" color="warning">
-            <template #heading><a href="/services/cloud/pricing" style="text-decoration:none;">Pricing — shared, VPS, bare metal, or your own hardware</a></template>
+        <Card compact="true" icon="heroicon-o-currency-dollar" color="warning">
+            <template #heading><a href="/services/cloud/pricing" style="text-decoration:none;">PricingTable — shared, VPS, bare metal, or your own hardware</a></template>
             <template #description>
                 Transparent tiers, published rates for shared hosting, and a quote process for the rest.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-squares-2x2" color="info">
+        <Card compact="true" icon="heroicon-o-squares-2x2" color="info">
             <template #heading><a href="/services/cloud/platforms" style="text-decoration:none;">Platforms — what already runs on this infrastructure</a></template>
             <template #description>
                 The Numerimondes products and client deployments hosted on this same management layer.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

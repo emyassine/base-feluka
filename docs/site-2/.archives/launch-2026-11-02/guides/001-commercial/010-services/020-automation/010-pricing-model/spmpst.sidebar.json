@@ -1,9 +1,9 @@
 {
   "labels": {
-    "en": "Pricing Model",
-    "fr": "Pricing Model",
-    "ar": "Pricing Model",
-    "es": "Pricing Model"
+    "en": "PricingTable Model",
+    "fr": "PricingTable Model",
+    "ar": "PricingTable Model",
+    "es": "PricingTable Model"
   },
   "icon": "@spmpst::icon::book-open"
 }

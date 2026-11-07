@@ -1,7 +1,7 @@
 {
   "$schema": "../public/api/schemas/hooks.schema.json",
   "components": {
-    "sidebarNavigationBefore": "BranchedSidebar"
+    "sidebarNavigationBefore": "HierarchicalSidebar"
   },
   "documentationNotices": {
     "exploringTitle": { "en": "Under exploration", "fr": "En cours d'exploration" },

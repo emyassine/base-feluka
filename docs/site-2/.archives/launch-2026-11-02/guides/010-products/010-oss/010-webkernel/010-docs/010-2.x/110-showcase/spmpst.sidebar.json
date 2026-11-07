@@ -1,9 +1,9 @@
 {
   "labels": {
-    "en": "Showcase",
-    "fr": "Showcase",
-    "ar": "Showcase",
-    "es": "Showcase"
+    "en": "ProductShowcase",
+    "fr": "ProductShowcase",
+    "ar": "ProductShowcase",
+    "es": "ProductShowcase"
   },
   "icon": "@spmpst::icon::book-open"
 }

@@ -9,7 +9,7 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 ---
-<NmCompanyHero
+<HeroThree
   eyebrow="PARTNER FRAMEWORK · MOROCCO"
   title="Independent work. <span class='silky-bbi'>Clear commercial terms</span>."
   description="A practical guide to fees, delivery work and sales commissions for firms and independent specialists."

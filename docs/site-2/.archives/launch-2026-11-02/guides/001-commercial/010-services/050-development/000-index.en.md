@@ -21,27 +21,27 @@ description: "Build it. Custom software you own outright — designed once, ship
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Development includes</template>
             <template #description>
                 Architecture, build, and handover of custom software: business applications, backend systems, integrations, and platform modernisation — as a one-time delivery.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Development does not include</template>
             <template #description>
                 Hosting or running what we build long-term (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>). Automating a specific repetitive process with no-code tools (that's <a href="/services/automation">Automation</a>).
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
 
 
 <div class="my-8">
-    <NmTriptych
+    <ThreeColumnFeature
         left="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80"
         center="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80"
         right="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
@@ -55,41 +55,41 @@ description: "Build it. Custom software you own outright — designed once, ship
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cube" color="primary">
+        <Card compact="true" icon="heroicon-o-cube" color="primary">
             <template #heading>Sovereign software development</template>
             <template #description>
                 Business apps on foundations you own. Source leverage, data locality, and a roadmap you decide — not a SaaS toggle someone else can flip.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-square-3-stack-3d" color="success">
+        <Card compact="true" icon="heroicon-o-square-3-stack-3d" color="success">
             <template #heading>Backend architecture & systems design</template>
             <template #description>
                 Domain models, boundaries, and honest trade-offs. Architecture that survives the first three years of real use.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-link" color="info">
+        <Card compact="true" icon="heroicon-o-link" color="info">
             <template #heading>Integration & delivery</template>
             <template #description>
                 Pipelines and environments your teams can operate. Connect existing tools without rebuilding everything at once.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-trending-up" color="warning">
+        <Card compact="true" icon="heroicon-o-arrow-trending-up" color="warning">
             <template #heading>Platform modernisation</template>
             <template #description>
                 Incremental, not big-bang theatre. Replace lock-in and debt in phases that keep production stable.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
 
-## Pricing method
+## PricingTable method
 
 Development is bespoke by nature, so we do not pretend to fix a price before scoping. What we commit to instead:
 
@@ -108,7 +108,7 @@ Development is bespoke by nature, so we do not pretend to fix a price before sco
 
 <div class="grid-container grid-cols-3" style="margin: 0.5rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Start"
             value="Scope"
             description="Clear in / out · milestones"
@@ -117,7 +117,7 @@ Development is bespoke by nature, so we do not pretend to fix a price before sco
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Build"
             value="Ship"
             description="Working software, documented"
@@ -126,7 +126,7 @@ Development is bespoke by nature, so we do not pretend to fix a price before sco
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Handover"
             value="Own"
             description="You run it after we leave"
@@ -150,12 +150,12 @@ Registered purpose includes information-systems consulting and software developm
 
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cube" color="info">
+        <Card compact="true" icon="heroicon-o-cube" color="info">
             <template #heading><a href="/services/development/webkernel-path" style="text-decoration:none;">The Webkernel path — a sovereign foundation you host yourself</a></template>
             <template #description>
                 For organisations that want a source-available enterprise foundation instead of a build from a blank page.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

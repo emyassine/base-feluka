@@ -9,17 +9,6 @@ import generatedCollections from '@generated/collections.json'
 import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
-import { registerBrandComponents } from './components/brand'
-import CollectionSpotlightIndex from './CollectionSpotlightIndex.vue'
-import CollectionSearch from './CollectionSearch.vue'
-import CollectionArticleSubnav from './CollectionArticleSubnav.vue'
-import ArticlesPageLayout from './ArticlesPageLayout.vue'
-import ManageCookies from './ManageCookies.vue'
-import TopbarActions from './TopbarActions.vue'
-import TopbarCurrency from './TopbarCurrency.vue'
-import Currency from './Currency.vue'
-import DropdownMenu from './DropdownMenu.vue'
-import FloatingSubnav from './FloatingSubnav.vue'
 import { installXTooltip } from './x-tooltip'
 import './tailwind.css'
 import './style.css'
@@ -28,6 +17,7 @@ import './overview.css'
 import './brand.css'
 import './scroll-reveal.css'
 import '@generated/configured-styles'
+import '@generated/configured-scripts'
 
 const zoomStep = 0.25
 const minZoom = 0.75
@@ -812,7 +802,7 @@ const MermaidLayout = {
         navigationLabel: string
         menuLabel: string
       }>)[pagePath]
-      const renderFloatingSubnav = () => floatingSubnav ? h(FloatingSubnav, floatingSubnav) : null
+      const renderFloatingSubnav = () => floatingSubnav ? h(projectComponents.FloatingSubnavigation, floatingSubnav) : null
       const isHomeLayout = pageFrontmatter.value.layout === 'home'
       return h(DefaultTheme.Layout, {
         class: {
@@ -822,19 +812,19 @@ const MermaidLayout = {
       }, {
       ...layoutSlots,
       'layout-top': siteBanner,
-      'layout-bottom': () => h(Fragment, null, [layoutSlots['layout-bottom']?.(), h(ManageCookies)]),
-      'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(TopbarCurrency)]),
+      'layout-bottom': () => h(Fragment, null, [layoutSlots['layout-bottom']?.(), h(projectComponents.PrivacySettingsDialog)]),
+      'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(projectComponents.CurrencySelector)]),
       'nav-bar-content-after': () => h(Fragment, null, [
         floatingSubnav
           ? null
           : (articleLayout() || homeSubheaderLayout())
-          ? h(subnavComponent ?? CollectionArticleSubnav, null, { actions: renderSubheaderActions })
+          ? h(subnavComponent ?? projectComponents.GuideArticleNavigation, null, { actions: renderSubheaderActions })
           : renderedSubnav,
-        h(TopbarActions, { mode: 'navbar' }),
+        h(projectComponents.TopbarActions, { mode: 'navbar' }),
       ]),
       'nav-screen-content-before': () => h(Fragment, null, [
         layoutSlots['nav-screen-content-before']?.(),
-        h(TopbarActions, { mode: 'screen' }),
+        h(projectComponents.TopbarActions, { mode: 'screen' }),
       ]),
       'home-hero-before': () => h(Fragment, null, [
         layoutSlots['home-hero-before']?.(),
@@ -859,14 +849,8 @@ export default {
   enhanceApp(context: Parameters<NonNullable<typeof DefaultTheme.enhanceApp>>[0]) {
     DefaultTheme.enhanceApp?.(context)
     installXTooltip()
-    context.app.component('CollectionSpotlightIndex', CollectionSpotlightIndex)
-    context.app.component('CollectionSearch', CollectionSearch)
-    context.app.component('ArticlesPageLayout', ArticlesPageLayout)
-    context.app.component('DropdownMenu', DropdownMenu)
-    context.app.component('FloatingSubnav', FloatingSubnav)
     context.app.component('PageActions', PageActions)
     registerProjectComponents(context.app)
-    registerBrandComponents(context.app)
-    context.app.component('currency', Currency)
+    context.app.component('currency', projectComponents.CurrencyAmount)
   },
 }

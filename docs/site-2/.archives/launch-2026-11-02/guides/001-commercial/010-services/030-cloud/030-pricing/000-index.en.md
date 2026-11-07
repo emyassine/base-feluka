@@ -1,13 +1,13 @@
 ---
-title: "Cloud Pricing"
-sidebarTitle: "Pricing"
+title: "Cloud PricingTable"
+sidebarTitle: "PricingTable"
 icon: "@spmpst::icon::currency-dollar"
 description: "Numerimondes Cloud pricing — shared hosting from 400 MAD, or a quote for VPS, bare-metal dedicated, and managed hardware you already own."
 ---
 
 <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
     
-    <span class="nm-eyebrow">Cloud · Pricing</span>
+    <span class="nm-eyebrow">Cloud · PricingTable</span>
     <h1 class="nm-headline">Transparent where we can be. <span class="nm-headline-accent">Quoted where it depends.</span></h1>
     <p style="max-width: 38rem; margin: 1rem auto 0; opacity: 0.85;">
         Four tiers, one management standard. Shared hosting has a published rate because it is
@@ -22,36 +22,36 @@ description: "Numerimondes Cloud pricing — shared hosting from 400 MAD, or a q
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-squares-2x2" color="primary">
+        <Card compact="true" icon="heroicon-o-squares-2x2" color="primary">
             <template #heading>Shared hosting</template>
             <template #description>
                 Published rate below. Suited to standard web projects, brochure sites, and smaller applications.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-server" color="success">
+        <Card compact="true" icon="heroicon-o-server" color="success">
             <template #heading>VPS</template>
             <template #description>
                 A virtual private server sized to your workload. Quoted against the resources you need — CPU, RAM, storage.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="warning">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="warning">
             <template #heading>Bare metal dedicated</template>
             <template #description>
                 A physical server reserved entirely for you. Quoted against the specific hardware and location required.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-building-office" color="info">
+        <Card compact="true" icon="heroicon-o-building-office" color="info">
             <template #heading>Bring your own</template>
             <template #description>
                 Your existing server or rented VPS. Quoted as a flat management fee, since the hardware cost is already yours.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -88,7 +88,7 @@ These three tiers are priced individually because the right number depends on re
 
 <div class="grid-container grid-cols-4" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 1"
             value="Share"
             description="Your workload or hardware specs"
@@ -97,7 +97,7 @@ These three tiers are priced individually because the right number depends on re
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 2"
             value="Quote"
             description="Fixed monthly rate, no surprise fees"
@@ -106,7 +106,7 @@ These three tiers are priced individually because the right number depends on re
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 3"
             value="Deploy"
             description="Configured and secured to our standard"
@@ -115,7 +115,7 @@ These three tiers are priced individually because the right number depends on re
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Step 4"
             value="Manage"
             description="Flat fee, no per-incident billing"

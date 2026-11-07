@@ -57,10 +57,10 @@ Privacy, legal notice, terms of service, licences (Webkernel / BadgeWare), and p
 <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
 
     <a href="" class="block no-underline">
-        <NmCard compact="true">
+        <Card compact="true">
             <h3 class="text-sm font-semibold m-0"></h3>
             <p class="text-sm opacity-70 mt-1 mb-0"></p>
-        </NmCard>
+        </Card>
     </a>
 
 </div>

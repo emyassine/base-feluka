@@ -6,7 +6,7 @@ layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable systems."
 ---
 <div></div>
-<NmEffectHero
+<HeroFive
   :effect="['silk', { inject: { color: '#141D2A' } }]"
   :hero-style="{ minHeight: '90vh' }"
   eyebrow="Insight. Innovation. Strategy. Execution."
@@ -22,7 +22,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 />
 
-<Acomponent
+<CompanyIntroduction
   title="Numerimondes is an independent consulting and solutions company."
   introduction="We explore opportunities, develop ideas, design practical solutions and bring together the expertise needed to make projects happen."
   :gallery="[
@@ -139,7 +139,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
 
 </div>
 
- <NmShowcase
+ <ProductShowcase
 	 title="What we do"
 		variant="stacked"
 	 footnote="Our work connects consulting, innovation and delivery. Each engagement is defined around the organization's priorities and the capabilities required."
@@ -250,7 +250,7 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   enable-hover
 />
 
-<SimpleMiniCard
+<CompactInfoCard
   :columns="2"
   :categories="[
     {
@@ -299,10 +299,10 @@ Discover the areas we explore and the kinds of value that can be created. Browse
   ]"
 />
 
-<FeluqaButton tag="a" href="/showcase" label="Explore the showcase"/>
+<Button tag="a" href="/showcase" label="Explore the showcase"/>
 
 
-<!-- Showcase implementation:
+<!-- ProductShowcase implementation:
 Present each item with an accurate status: Concept / Research / In development / Demo / Delivered.
 Use "Delivered" only for verifiable completed work. Separate client references (with permission)
 from Numerimondes experiments and illustrative solution concepts.
@@ -366,7 +366,7 @@ flowchart TD
 ```
 :::
 ::::
-<FeluqaButton tag="a" href="/about#delivery-model"
+<Button tag="a" href="/about#delivery-model"
 	label="How we work"/>
 
 
@@ -404,8 +404,8 @@ Join project teams when your expertise fits an assignment — across software en
 
 
 <div style="display: flex; gap: 15px;margin-bottom:.5rem;">
-<FeluqaButton tag="a" color="dark" href="/partners" label="Explore partnerships"/>
-<FeluqaButton tag="a" color="dark" href="/about" label="More about us"/>
+<Button tag="a" color="dark" href="/partners" label="Explore partnerships"/>
+<Button tag="a" color="dark" href="/about" label="More about us"/>
 </div>
 
 ::::
@@ -415,7 +415,7 @@ Join project teams when your expertise fits an assignment — across software en
 
 Our internal initiatives are part of the way we research, experiment and build future capabilities.
 
-<MegaCards
+<ServiceCardGrid
   :items="[
     {
       title: 'Feluqa',
@@ -458,9 +458,9 @@ Our proposals are structured around the type of work, the complexity of the miss
 
 Explore how we scope engagements and prepare commercial proposals.
 
-<FeluqaButton tag="a" href="/pricing" label="Our pricing approach"/>
+<Button tag="a" href="/pricing" label="Our pricing approach"/>
 
-<!-- Pricing page: explain discovery, fixed-fee vs milestone vs recurring support,
+<!-- PricingTable page: explain discovery, fixed-fee vs milestone vs recurring support,
 what affects a quote, and written agreements. Do not publish invented rates or blanket guarantees.
 -->
 
@@ -471,10 +471,10 @@ what affects a quote, and written agreements. Do not publish invented rates or b
 Share a challenge, an idea, a business objective or a project you want to explore. We can discuss its potential, the decisions involved and a practical next step.
 
 <div style="display: flex; gap: 15px;">
-	<FeluqaButton tag="a"
+	<Button tag="a"
 		color="gray"
 		href="/contact" label="Start a conversation"/>
-	<FeluqaButton tag="a"
+	<Button tag="a"
 		color="gray"
 		href="/partners" label="Become a partner"/>
 </div>
@@ -489,9 +489,9 @@ Share a challenge, an idea, a business objective or a project you want to explor
 6. The Best Recruit must not advertise live placements or an active candidate service before launch.
 7. Showcases must distinguish real delivered work from concepts and RandD.
 8. Partner compensation is subject to specific written terms; avoid generic promised commission percentages.
-9. Pricing page explains methodology and commercial models, not an unverified price list.
-10. Main navigation suggestion: Services / Solutions and Showcase / Innovation / Partners / About / Contact.
-11. Utility links: Pricing / Feluqa / The Best Recruit / SPMPST.
+9. PricingTable page explains methodology and commercial models, not an unverified price list.
+10. Main navigation suggestion: Services / Solutions and ProductShowcase / Innovation / Partners / About / Contact.
+11. Utility links: PricingTable / Feluqa / The Best Recruit / SPMPST.
 -->
 
 </div>

@@ -1,9 +1,9 @@
 {
   "labels": {
-    "en": "Faq",
-    "fr": "Faq",
-    "ar": "Faq",
-    "es": "Faq"
+    "en": "FaqList",
+    "fr": "FaqList",
+    "ar": "FaqList",
+    "es": "FaqList"
   },
   "icon": "@spmpst::icon::book-open"
 }

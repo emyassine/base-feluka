@@ -23,20 +23,20 @@ To keep this clear against our other four services:
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Consulting includes</template>
             <template #description>
                 Deciding whether to build, buy, or leave a system alone. Sizing the ROI of a move. Sequencing a multi-year plan. Advising on go-to-market, IS strategy, security posture, or AI priorities.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Consulting does not include</template>
             <template #description>
                 Mapping your current tools (that's <a href="/services/audit">Audit</a>). Writing the code (that's <a href="/services/development">Development</a>). Running the systems day to day (that's <a href="/services/systems-and-operations/infrastructure">Infrastructure</a>).
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -50,20 +50,20 @@ That framing is not ours alone. It is how Julie Sweet, CEO of Accenture, describ
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-signal" color="primary">
+        <Card compact="true" icon="heroicon-o-signal" color="primary">
             <template #heading>Relevance</template>
             <template #description>
                 Knowing what matters for your business today and where it is heading tomorrow — not a generic industry template.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-badge" color="success">
+        <Card compact="true" icon="heroicon-o-check-badge" color="success">
             <template #heading>Results</template>
             <template #description>
                 Not just a recommendation — the change itself, executed, measured, and handed over working.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -77,41 +77,41 @@ Our registered purpose spans commercial development, information systems, digita
 
 <div class="grid-container grid-cols-2" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-presentation-chart-line" color="primary">
+        <Card compact="true" icon="heroicon-o-presentation-chart-line" color="primary">
             <template #heading>Commercial & digital transformation</template>
             <template #description>
                 Go-to-market, digital marketing strategy, and the operating changes needed to make transformation stick.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="success">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="success">
             <template #heading>Information systems strategy</template>
             <template #description>
                 Where to build, where to buy, where to own — decisions grounded in what we've shipped, not a vendor-neutral template.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-shield-check" color="warning">
+        <Card compact="true" icon="heroicon-o-shield-check" color="warning">
             <template #heading>Security & cybersecurity advisory</template>
             <template #description>
                 Control and audit work aligned with our registered purpose — assessed against real deployments, not checklists alone.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-sparkles" color="info">
+        <Card compact="true" icon="heroicon-o-sparkles" color="info">
             <template #heading>AI & automation strategy</template>
             <template #description>
                 Where AI and automation actually change a P&L — sized, prioritised, and sequenced. Building the workflow is <a href="/services/automation">Automation</a>; building private knowledge and inference systems is <a href="/services/intelligence">Intelligence</a>.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
 
-## Pricing
+## PricingTable
 
 We prefer to name a price. When a sprint is genuinely bespoke, we give an order of magnitude before any contract is signed — never an open-ended day rate with no ceiling.
 
@@ -134,12 +134,12 @@ Leadership teams who have already sat through a strategy deck that told them wha
 
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-book-open" color="primary">
+        <Card compact="true" icon="heroicon-o-book-open" color="primary">
             <template #heading><a href="/services/business-advisory/consulting/how-we-sprint" style="text-decoration:none;">How we sprint — the eight-week story</a></template>
             <template #description>
                 Where our sprint model comes from, why fixed-length engagements beat open retainers, and what "founder in the room" actually means in practice.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

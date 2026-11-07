@@ -1,10 +1,10 @@
 ---
-title: "Showcase"
-sidebarTitle: "Showcase"
+title: "ProductShowcase"
+sidebarTitle: "ProductShowcase"
 icon: "@spmpst::icon::star"
 description: "Who builds with Webkernel."
 ---
 
-# Showcase
+# ProductShowcase
 
 _Coming soon._

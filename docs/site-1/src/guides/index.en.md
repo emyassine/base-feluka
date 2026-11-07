@@ -5,8 +5,8 @@ description: Guides for building applications, understanding the platform, and c
 layout: home
 ---
 
-<MainlineHomeLayout>
-	<MainlineHero
+<LandingPageLayout>
+	<HeroOne
 	  title="The software your operations run on. Built once, delivered everywhere."
 	  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
 	  primary-label="Describe your operation"
@@ -28,7 +28,7 @@ layout: home
 	  ]'
 	/>
 
-<MainlineLogos
+<LogoCloud
       title="Powering the world's best product teams."
       subtitle="From next-gen startups to established enterprises."
       :companies='[
@@ -45,7 +45,7 @@ layout: home
     />
 
 
-<FlexCarousel
+<MediaCarousel
     title="Explore Feluqa"
     description="Follow practical guides, understand the platform direction, and check what is implemented today."
     preset="ribbon"
@@ -65,4 +65,4 @@ layout: home
     ]'
   />
 
-</MainlineHomeLayout>
+</LandingPageLayout>

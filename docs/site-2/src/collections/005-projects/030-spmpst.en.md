@@ -10,14 +10,14 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<NmCompanyHero
+<HeroThree
   eyebrow="OUR STANDARD · IN DEVELOPMENT"
   title="A standard for <span class='silky-bbi'>fast websites</span> built from portable content."
   description="SPMPST defines how a site’s content is structured before it is built, so the site stays fast and the content stays yours."
   height="40vh"
 />
 
-<NmProse>
+<div>
 
 ## What it is
 
@@ -38,6 +38,6 @@ The specification is a draft. A reference preparation workflow and a VitePress a
 
 We welcome technical discussions on content portability, static site generation and documentation tooling, as well as website projects built on this approach.
 
-<FeluqaButton tag="a" href="/company/contact?topic=project" label="Discuss a website project" />
+<Button tag="a" href="/company/contact?topic=project" label="Discuss a website project" />
 
-</NmProse>
+</div>

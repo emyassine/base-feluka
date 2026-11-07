@@ -24,52 +24,52 @@ Read the question, not the label.
 
 <div class="grid-container grid-cols-1" style="margin: 1.5rem 0 2.5rem; gap: 0.75rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-chat-bubble-left-right" color="primary">
+        <Card compact="true" icon="heroicon-o-chat-bubble-left-right" color="primary">
             <template #heading><a href="/services/business-advisory/consulting" style="text-decoration:none;">"Should we do this, and how?" → Consulting</a></template>
             <template #description>
                 A decision needs to be made — go-to-market, IS strategy, security posture, AI priorities — and you want it grounded in things we've actually done, not a generic framework.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-magnifying-glass" color="success">
+        <Card compact="true" icon="heroicon-o-magnifying-glass" color="success">
             <template #heading><a href="/services/audit" style="text-decoration:none;">"What do we have, and what is it costing us?" → Audit</a></template>
             <template #description>
                 You want a factual map of your current tools or your full value chain, a number attached to the waste, and a report you can put in front of a board. No build included.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-code-bracket" color="info">
+        <Card compact="true" icon="heroicon-o-code-bracket" color="info">
             <template #heading><a href="/services/development" style="text-decoration:none;">"Build it." → Development</a></template>
             <template #description>
                 You need custom software — an application, a backend, an integration — designed and shipped once, that you then own outright.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-bolt" color="danger">
+        <Card compact="true" icon="heroicon-o-bolt" color="danger">
             <template #heading><a href="/services/automation" style="text-decoration:none;">"Remove the manual work." → Automation</a></template>
             <template #description>
                 A specific repetitive process — quote generation, invoice reconciliation, HR paperwork — needs to run itself. Priced against the time and money it saves, not the hours it takes to build.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cpu-chip" color="warning">
+        <Card compact="true" icon="heroicon-o-cpu-chip" color="warning">
             <template #heading><a href="/services/intelligence" style="text-decoration:none;">"Make it smart, and keep it private." → Intelligence</a></template>
             <template #description>
                 Local models, private knowledge bases, external signal pipelines, and workforce alignment — from a solo freelancer's second brain to an air-gapped institutional deployment.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-server-stack" color="warning">
+        <Card compact="true" icon="heroicon-o-server-stack" color="warning">
             <template #heading><a href="/services/systems-and-operations/infrastructure" style="text-decoration:none;">"Keep it running." → Infrastructure</a></template>
             <template #description>
                 Software already exists (yours or ours) and needs to stay healthy — hosting ops as a mission, monitoring, migrations, and training your team to operate it without us.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -79,13 +79,13 @@ Read the question, not the label.
 
 <div class="grid-container grid-cols-1" style="margin: 0 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cloud" color="primary">
+        <Card compact="true" icon="heroicon-o-cloud" color="primary">
             <template #heading><a href="/services/cloud" style="text-decoration:none;">Numerimondes Cloud service</a></template>
             <template #description>
                 Managed hosting and server operations — shared hosting, VPS, bare metal, or your own hardware, managed and invoiced directly by Numerimondes.
                 <a href="/services/cloud">See Numerimondes Cloud →</a>
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -95,12 +95,12 @@ Read the question, not the label.
 
 <div class="grid-container grid-cols-1" style="margin: 0 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-document-check" color="primary">
+        <Card compact="true" icon="heroicon-o-document-check" color="primary">
             <template #heading><a href="/services/tender-support" style="text-decoration:none;">"Help us win this tender." → Tender Support</a></template>
             <template #description>
                 Public and private markets in Morocco and Europe — deal structuring and narrative &amp; dossier assembly.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -114,7 +114,7 @@ This is not a romantic story about boutiques. It is a pricing and delivery decis
 
 <div class="grid-container grid-cols-4" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Team"
             value="4"
             description="Founder + 3 trusted operators"
@@ -123,7 +123,7 @@ This is not a romantic story about boutiques. It is a pricing and delivery decis
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Network"
             value="Vetted"
             description="Freelancers & specialists, on demand"
@@ -132,7 +132,7 @@ This is not a romantic story about boutiques. It is a pricing and delivery decis
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Scope"
             value="Closed"
             description="Fixed deliverables, not open-ended hours"
@@ -141,8 +141,8 @@ This is not a romantic story about boutiques. It is a pricing and delivery decis
          />
     </div>
     <div class="grid-item">
-        <NmStat
-            label="Pricing"
+        <MetricValue
+            label="PricingTable"
             value="Upfront"
             description="A price, or at least an order of magnitude"
             color="info"
@@ -159,7 +159,7 @@ They are not six silos. In practice, most engagements move left to right — tho
 
 <div class="grid-container grid-cols-3" style="margin: 0.5rem 0 1rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="1. Diagnose"
             value="Audit"
             description="Map the stack and the value chain"
@@ -168,7 +168,7 @@ They are not six silos. In practice, most engagements move left to right — tho
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="2. Decide"
             value="Consulting"
             description="Prioritise, size the ROI, plan the move"
@@ -177,7 +177,7 @@ They are not six silos. In practice, most engagements move left to right — tho
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="3. Build"
             value="Development"
             description="Ship the systems that were prioritised"
@@ -188,7 +188,7 @@ They are not six silos. In practice, most engagements move left to right — tho
 </div>
 <div class="grid-container grid-cols-3" style="margin: 0 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="4. Sharpen"
             value="Intelligence"
             description="Add local models & private knowledge"
@@ -197,7 +197,7 @@ They are not six silos. In practice, most engagements move left to right — tho
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="5. Automate"
             value="Automation"
             description="Remove the repetitive work inside them"
@@ -206,7 +206,7 @@ They are not six silos. In practice, most engagements move left to right — tho
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="6. Run"
             value="Infrastructure"
             description="Host, monitor, train your operators"

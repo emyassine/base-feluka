@@ -15,4 +15,4 @@ Use this short tool to connect what you study, enjoy and do well with a few poss
 
 The tool is available in English and French. Your answers are processed in your browser. You can copy the generated profile into ChatGPT or Claude if you choose, or request a human follow-up through WhatsApp with explicit consent.
 
-<NmStudentOrientation />
+<StudentOrientationGuide />

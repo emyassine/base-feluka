@@ -1,6 +1,6 @@
 {
   "$schema": "../public/api/schemas/footer.schema.json",
-  "component": "FeluqaDocsFooter",
+  "component": "DocsFooter",
   "content": {
     "title": {
       "en": "It Is Time To Compile",
@@ -34,7 +34,7 @@
       },
       {
         "name": {
-          "en": "Pricing",
+          "en": "PricingTable",
           "fr": "Tarifs"
         },
         "href": "https://numerimondes.com",

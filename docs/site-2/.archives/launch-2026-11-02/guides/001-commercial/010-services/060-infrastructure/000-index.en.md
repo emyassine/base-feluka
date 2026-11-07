@@ -21,27 +21,27 @@ description: "Keep it running. Hosting, monitoring, migrations, and operator tra
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Infrastructure includes</template>
             <template #description>
                 Managed operations, CI/CD pipelines, legacy migrations, and hands-on operator training — as a consulting engagement, on whatever infrastructure you already have.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Infrastructure does not include</template>
             <template #description>
                 Writing new application code (that's <a href="/services/development">Development</a>). Automating a specific business process with no-code/AI workflows (that's <a href="/services/automation">Automation</a>). The actual hosting product itself (that's <a href="/services/cloud">Numerimondes Cloud</a>).
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
 
 
 <div class="my-8">
-    <NmTriptych
+    <ThreeColumnFeature
         left="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80"
         center="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
         right="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
@@ -55,36 +55,36 @@ description: "Keep it running. Hosting, monitoring, migrations, and operator tra
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cog-6-tooth" color="primary">
+        <Card compact="true" icon="heroicon-o-cog-6-tooth" color="primary">
             <template #heading>Maintenance & managed operations</template>
             <template #description>
                 Keep production healthy without surrendering control. Monitoring, updates, and incident discipline on infrastructure you own.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path-rounded-square" color="success">
+        <Card compact="true" icon="heroicon-o-arrow-path-rounded-square" color="success">
             <template #heading>CI/CD & deployment pipelines</template>
             <template #description>
                 Build, test, and release pipelines your team can operate — not a fragile setup only we understand.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path" color="info">
+        <Card compact="true" icon="heroicon-o-arrow-path" color="info">
             <template #heading>Legacy migration & upgrades</template>
             <template #description>
                 Phased transition, minimal disruption. Exit stacked SaaS rents where ownership makes economic sense.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-academic-cap" color="warning">
+        <Card compact="true" icon="heroicon-o-academic-cap" color="warning">
             <template #heading>Operator training</template>
             <template #description>
                 Your people run the stack. Hands-on sessions, runbooks, and escalation paths that survive staff turnover.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -96,7 +96,7 @@ This service is about the work — the migration, the pipeline, the training —
 
 <div class="grid-container grid-cols-3" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Option A"
             value="Your hardware"
             description="On-prem, home server, or your existing VPS"
@@ -105,7 +105,7 @@ This service is about the work — the migration, the pipeline, the training —
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Option B"
             value="A third party"
             description="Any provider you already rent from"
@@ -114,7 +114,7 @@ This service is about the work — the migration, the pipeline, the training —
          />
     </div>
     <div class="grid-item">
-        <NmStat
+        <MetricValue
             label="Option C"
             value="Numerimondes Cloud"
             description="Our own managed server product"
@@ -127,7 +127,7 @@ This service is about the work — the migration, the pipeline, the training —
 
 If you want the hardware itself managed — hardening, monitoring, backups, 24/7 emergency response — that is exactly what [Numerimondes Cloud](/services/cloud) does, and it is sold as its own product with its own console and pricing, independent of a services engagement. An Infrastructure consulting mission and a Numerimondes Cloud subscription can be bought together or entirely separately.
 
-## Pricing method
+## PricingTable method
 
 Infrastructure work is either project-based (a migration, a pipeline build-out) or a recurring managed-operations retainer. Same discipline as everywhere else:
 
@@ -145,20 +145,20 @@ Payment stays milestone-based: never fully upfront, never a single invoice at th
 
 <div class="grid-container grid-cols-2" style="margin: 0.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-magnifying-glass" color="primary">
+        <Card compact="true" icon="heroicon-o-magnifying-glass" color="primary">
             <template #heading>From audit findings</template>
             <template #description>
                 Level 1 and Level 2 audits surface lock-in and migration opportunities. Infrastructure work turns those findings into running systems.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-code-bracket" color="success">
+        <Card compact="true" icon="heroicon-o-code-bracket" color="success">
             <template #heading>Beside development</template>
             <template #description>
                 Custom apps from <a href="/services/development">Development</a> need environments, pipelines, and operators. We close that loop.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -170,12 +170,12 @@ Payment stays milestone-based: never fully upfront, never a single invoice at th
 
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-shield-check" color="warning">
+        <Card compact="true" icon="heroicon-o-shield-check" color="warning">
             <template #heading><a href="/services/systems-and-operations/infrastructure/self-hosting" style="text-decoration:none;">Why self-hosting, and when it doesn't make sense</a></template>
             <template #description>
                 An honest look at the sovereignty argument — including the cases where renting is still the right call.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

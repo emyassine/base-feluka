@@ -15,4 +15,4 @@ Source-available enterprise foundation for builders who host and control their s
 - [Changelog](/numerimondes/docs/oss/webkernel/docs/2.x/changelog/)
 - [Roadmap](/numerimondes/docs/oss/webkernel/docs/2.x/roadmap/)
 - [Demo](/numerimondes/docs/oss/webkernel/docs/2.x/demo/)
-- [Showcase](/numerimondes/docs/oss/webkernel/docs/2.x/showcase/)
+- [ProductShowcase](/numerimondes/docs/oss/webkernel/docs/2.x/showcase/)

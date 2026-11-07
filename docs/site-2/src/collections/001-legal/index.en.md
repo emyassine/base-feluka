@@ -12,7 +12,7 @@ status: "Ready for review"
 Find the notices and terms that explain who publishes this site, how information is handled, and which conditions apply to website use and development work.
 
 <CollectionSearch collection-id="legal" v-slot="{ items, query, setQuery, categories, selectedCategory, setCategory, sort, setSort, getCategoryLabel }">
-  <CollectionSearchBar
+  <CollectionFilterBar
     :query="query"
     :categories="categories"
     :selected-category="selectedCategory"
@@ -33,7 +33,7 @@ Find the notices and terms that explain who publishes this site, how information
   />
 
   <div v-if="items.length" class="nm-policy-grid">
-    <ProductCard
+    <ProductSummaryCard
       v-for="notice in items"
       :key="notice.url"
       :href="notice.url"

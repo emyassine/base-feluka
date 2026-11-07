@@ -6,7 +6,7 @@ layout: home
 description: "Services, platforms and standards developed or operated by Numerimondes."
 ---
 
-<Acomponent
+<CompanyIntroduction
  title="<h1 style=''>Projects connect <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>services, infrastructure and ideas.</span></h1>"
   introduction="Some projects support organizations directly through recruitment and infrastructure services. Others strengthen Numerimondes’ operating methods or explore products and standards for wider business use."
   section-title="<h2>Work in practice.<br><span class='silky-bbi+115' style='color:var(--vp-c-brand-1);'>Systems in development.</span></h2>"
@@ -47,7 +47,7 @@ description: "Services, platforms and standards developed or operated by Numerim
 <div style="width: min(100% - 40px, 544px); margin: 4rem auto;">
 
 
-<SimpleMiniCard
+<CompactInfoCard
   :columns="1"
   :categories="[
     {

@@ -52,11 +52,11 @@
   },
   "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json",
   "styles": [
-    "components/blocks/styles/numerimondes.css",
-    "components/blocks/styles/numerimondes-silky.css",
-    "components/blocks/styles/accent-text.css",
-    "components/blocks/styles/inline-image-preview.css",
-    "components/blocks/styles/click-particles.css",
-    "components/blocks/specialized/marketplace/numerimondes-marketplace.css"
+    "../../../components/blocks/styles/numerimondes.css",
+    "../../../components/blocks/styles/numerimondes-silky.css",
+    "../../../components/blocks/styles/accent-text.css",
+    "../../../components/blocks/styles/inline-image-preview.css",
+    "../../../components/blocks/styles/click-particles.css",
+    "../../../components/blocks/specialized/marketplace/numerimondes-marketplace.css"
   ]
 }

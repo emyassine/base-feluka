@@ -29,20 +29,20 @@ The longer-term shape is a **Numerimondes Group** — a holding structure where 
 
 <div class="grid-container grid-cols-2" style="margin: 1.5rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-user-group" color="primary">
+        <Card compact="true" icon="heroicon-o-user-group" color="primary">
             <template #heading>Associates, not employees</template>
             <template #description>
                 People who want to build and own a piece of a subsidiary — recruitment, call-centre operations, training — rather than freelance for one.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-squares-2x2" color="success">
+        <Card compact="true" icon="heroicon-o-squares-2x2" color="success">
             <template #heading>Focused subsidiaries</template>
             <template #description>
                 Each covering one part of the current legal purpose — recruitment, HR strategy, training and seminars, call-centre operation — run independently under the group.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

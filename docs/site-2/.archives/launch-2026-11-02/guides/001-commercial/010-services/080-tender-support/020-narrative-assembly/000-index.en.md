@@ -23,20 +23,20 @@ description: "We take what you already have — brochures, specs, technical data
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>This service includes</template>
             <template #description>
                 Reading the cahier des charges (or the bank's / investor's actual criteria), auditing what material you already have, structuring the narrative, and assembling the final dossier — technical memorandum, pitch deck, or investment file.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>This service does not include</template>
             <template #description>
                 Producing 2D/3D drawings, CAD work, or physical modelling ourselves. Sourcing the tender or structuring the commission — that's <a href="/services/tender-support/deal-structuring">Deal Structuring</a>.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -48,36 +48,36 @@ Not design work. Not production. The leverage is **commercial, media, and invest
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-magnifying-glass" color="primary">
+        <Card compact="true" icon="heroicon-o-magnifying-glass" color="primary">
             <template #heading>Reading the real criteria</template>
             <template #description>
                 A cahier des charges, a bank's credit committee, and an investor's pitch review all score different things. We start from what actually gets evaluated, not a generic template.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-archive-box" color="success">
+        <Card compact="true" icon="heroicon-o-archive-box" color="success">
             <template #heading>Auditing what you already have</template>
             <template #description>
                 Machine brochures, technical sheets, past submissions, financials — most of the raw material already exists. The gap is rarely content; it's connection.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-link" color="warning">
+        <Card compact="true" icon="heroicon-o-link" color="warning">
             <template #heading>Aligning the dots</template>
             <template #description>
                 Turning scattered material into one coherent argument that answers the specific ask — not a longer document, a sharper one.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-document-check" color="info">
+        <Card compact="true" icon="heroicon-o-document-check" color="info">
             <template #heading>Assembling the final dossier</template>
             <template #description>
                 Technical memorandum, pitch deck, or investment file, delivered in the format the evaluator actually expects to receive.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -94,7 +94,7 @@ Some files need something that doesn't exist yet — a 3D volume study, a CAD dr
 
 ---
 
-## Pricing
+## PricingTable
 
 Scoped and quoted per dossier — a one-page executive brief and a full investment-grade file are not the same job. Any subcontracted production (3D, CAD, or similar) is quoted separately and shown to you as a distinct line, never folded silently into our fee.
 

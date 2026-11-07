@@ -1,13 +1,13 @@
 ---
-title: "Showcase | Numerimondes"
-sidebarTitle: "Showcase"
+title: "ProductShowcase | Numerimondes"
+sidebarTitle: "ProductShowcase"
 description: "A transparent overview of Numerimondes concepts, demonstrations and engineering initiatives."
 lang: en
 status: "ready-for-review"
 icon: "@spmpst::icon::sparkles"
 ---
 
-# Showcase
+# ProductShowcase
 
 ## One space. Many possibilities.
 

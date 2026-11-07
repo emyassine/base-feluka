@@ -12,7 +12,7 @@ layout: home
 
 
 
-<NmBrandHero
+<HeroEight
   eyebrow="CONTACT · NUMERIMONDES"
   title="Contact"
   tagline="Projects, hiring, partnerships and technical discussions."
@@ -20,7 +20,7 @@ layout: home
   cta-href="#what-to-include"
 />
 
-<NmBrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Tell us the problem you need solved.' }, { tagline: 'Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
+<BrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Tell us the problem you need solved.' }, { tagline: 'Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
 
 <div class="nm-home-copy">
 
@@ -35,7 +35,7 @@ layout: home
 
 Your organization, the problem and what is at stake, the result you want, your location and timeframe, and how you prefer to be contacted.
 
-<NmWhatsAppForm />
+<WhatsAppForm />
 
 ## What happens next
 

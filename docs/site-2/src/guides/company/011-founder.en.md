@@ -12,7 +12,7 @@ layout: home
 
 
 
-<NmBrandHero
+<HeroEight
   eyebrow="THE FOUNDER · NUMERIMONDES"
   title="Founder"
   tagline="Business operations, consulting and software engineering."
@@ -20,7 +20,7 @@ layout: home
   cta-href="#yassine-el-moumen"
 />
 
-<NmBrandOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
+<BrandOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
 
 
 # Yassine El Moumen
@@ -39,8 +39,8 @@ Research and continued learning are central to his work. He explores business mo
 
 The person you speak to first is the person accountable for the work. Tell him the problem, the stakes and the timeframe.
 
-<FeluqaButton tag="a" href="https://numerimondes.com/account/connect/" label="Create an account" icon="@spmpst::icon::webhook" />
-<NmProfileBadge
+<Button tag="a" href="https://numerimondes.com/account/connect/" label="Create an account" icon="@spmpst::icon::webhook" />
+<ProfileSummary
   :name="{ label: 'Find Numerimondes’ founder on your preferred platforms. Get in touch for business advice, project discussions, or&nbsp;collaboration opportunities.', type: 'normal' }"
   :width-on-parent="{
     mobile: '100%',
@@ -50,7 +50,7 @@ The person you speak to first is the person accountable for the work. Tell him t
   image="/images/company/founder/yassine-02.jpeg"
   image-alt="Yassine El Moumen"
 >
-  <NmSimpleHeroDock
+  <HeroNine
     bare
     label="Find Yassine El Moumen on social media"
     :items="[
@@ -60,7 +60,7 @@ The person you speak to first is the person accountable for the work. Tell him t
       { id: 'x', label: 'X', href: 'https://x.com/elmoumenyassine', icon: '/images/social-media/x.com.jpg', external: true }
     ]"
   />
-</NmProfileBadge>
+</ProfileSummary>
 
 <div style="width: min(100%, 544px) !important;">
 

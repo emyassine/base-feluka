@@ -21,7 +21,7 @@ We take on client work when the need, expected work and responsibilities can be 
 
 A written proposal or agreement defines the work. Depending on the assignment, it identifies the intended outcome, scope, deliverables, exclusions, price, payment terms, schedule, client inputs, acceptance and any support after delivery. Work begins after the relevant parties accept those terms and any stated start conditions are met.
 
-We do not treat an estimate, discussion or marketplace example as a confirmed price or delivery commitment. The [Pricing policy](/policies/pricing) explains how we price work; each proposal confirms the terms for that engagement.
+We do not treat an estimate, discussion or marketplace example as a confirmed price or delivery commitment. The [PricingTable policy](/policies/pricing) explains how we price work; each proposal confirms the terms for that engagement.
 
 ## Scope changes and decisions
 

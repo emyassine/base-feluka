@@ -63,7 +63,7 @@ A useful business system is more than an interface. Infrastructure keeps it avai
 
 Numerimondes works across these layers, whether the engagement covers one integration or an entire operational system.
 
-*Showcase design note: display the four layers as an interactive, explorable stack. Each layer should reveal practical capabilities, not invented customer achievements.*
+*ProductShowcase design note: display the four layers as an interactive, explorable stack. Each layer should reveal practical capabilities, not invented customer achievements.*
 
 ---
 
@@ -160,7 +160,7 @@ Tell us what your organization does today, what is getting in the way and what y
 
 <!-- IMPLEMENTATION NOTES — not public website content
 - Replace textual CTA labels with functional links or buttons in the site's templates.
-- Showcase cards are illustrative solution categories, not delivered-project claims.
+- ProductShowcase cards are illustrative solution categories, not delivered-project claims.
 - Display verifiable status labels and actual screenshots/demos before calling an item a case study.
 - Do not describe Feluqa or SPMPST as production-ready.
 - Do not market recruitment as live until the offering is operational.

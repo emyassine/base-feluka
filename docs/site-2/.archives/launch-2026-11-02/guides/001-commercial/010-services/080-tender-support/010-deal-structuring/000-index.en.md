@@ -23,20 +23,20 @@ description: "Tender sourcing, file assembly, submission, and success-based comm
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-check-circle" color="success">
+        <Card compact="true" icon="heroicon-o-check-circle" color="success">
             <template #heading>Deal Structuring includes</template>
             <template #description>
                 Sourcing a tender if you don't already have one, file assembly (administrative, financial, technical coordination), submission, and follow-up through award notification.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-x-circle" color="danger">
+        <Card compact="true" icon="heroicon-o-x-circle" color="danger">
             <template #heading>Deal Structuring does not include</template>
             <template #description>
                 Producing the technical narrative or dossier itself — that is <a href="/services/tender-support/narrative-assembly">Narrative & Assembly</a>, scoped and priced separately when a file needs it. Delivering the awarded contract itself.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -59,20 +59,20 @@ flowchart TD
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-document-magnifying-glass" color="primary">
+        <Card compact="true" icon="heroicon-o-document-magnifying-glass" color="primary">
             <template #heading>You already have a tender</template>
             <template #description>
                 Share the tender documents. We assess fit, confirm the deposit, and start work once the mission letter is signed.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-light-bulb" color="info">
+        <Card compact="true" icon="heroicon-o-light-bulb" color="info">
             <template #heading>You don't have one yet</template>
             <template #description>
                 We source relevant opportunities and bring you an executive summary of each one. You decide which, if any, is worth pursuing before any deposit is due.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -86,20 +86,20 @@ The deposit is not a discount lever. It is the fixed cost of assembling a seriou
 
 <div class="grid-container grid-cols-2" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-lock-closed" color="primary">
+        <Card compact="true" icon="heroicon-o-lock-closed" color="primary">
             <template #heading>Fixed at signature</template>
             <template #description>
                 Sized to the scale and complexity of the tender — a small purchase order costs less to assemble than a multi-year infrastructure contract. Confirmed in writing before work starts, never renegotiated mid-file.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cube" color="warning">
+        <Card compact="true" icon="heroicon-o-cube" color="warning">
             <template #heading>Extras priced separately</template>
             <template #description>
                 Anything beyond the standard administrative and financial assembly — 3D representation, CAD drawings, specialist technical drafting — is quoted as an addition, not folded silently into the base deposit.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -111,20 +111,20 @@ Once a tender is won, our commission is calculated one of two ways. Which one ap
 
 <div class="grid-container grid-cols-2" style="margin: 1.25rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-banknotes" color="success">
+        <Card compact="true" icon="heroicon-o-banknotes" color="success">
             <template #heading>Gross — the default</template>
             <template #description>
                 Commission calculated on the full awarded amount, invoiced once the contract is signed. Simple to verify on both sides — this is the standard basis whenever there is no ongoing payment-tracking arrangement in place.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrows-right-left" color="info">
+        <Card compact="true" icon="heroicon-o-arrows-right-left" color="info">
             <template #heading>Net — payment on payment</template>
             <template #description>
                 Commission calculated on the net amount, paid in step with your own payments from the buyer — as you get paid, so do we, tranche by tranche. This basis requires a verification mechanism, typically the contract-management tool described below, so both sides can see the same payment record.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -137,7 +137,7 @@ Once a tender is won, some clients want ongoing visibility into the contract its
 
 
 
-## Pricing
+## PricingTable
 
 The deposit and commission both scale with the size of the opportunity — a small purchase order and a multi-million-dirham infrastructure tender do not cost the same to assemble. Real ranges below, not a placeholder.
 
@@ -190,7 +190,7 @@ The deposit and commission both scale with the size of the opportunity — a sma
 
 Deposits are excluding tax (HT); VAT applies where applicable. The exact deposit and commission rate for your specific file are confirmed in the mission letter once we've reviewed the tender documents — the ranges above are what to expect, not what to negotiate down from.
 
-## Currency & invoicing
+## CurrencyAmount & invoicing
 
 - **Swiss clients** are invoiced in CHF.
 - **European clients** are invoiced in MAD, converted at the Bank Al-Maghrib reference rate from the prior business day.
@@ -203,20 +203,20 @@ If the tender is not awarded despite the file being properly and seriously deliv
 
 <div class="grid-container grid-cols-2" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-arrow-path" color="success">
+        <Card compact="true" icon="heroicon-o-arrow-path" color="success">
             <template #heading>Credit applies when...</template>
             <template #description>
                 The file was assembled and submitted properly, and the outcome was simply not in your favour. A new file still requires a fresh payment of at least 55% of the standard deposit, excluding tax (plus VAT where applicable), since third-party specialists are often engaged per file.
             </template>
-        </NmCard>
+        </Card>
     </div>
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-exclamation-triangle" color="danger">
+        <Card compact="true" icon="heroicon-o-exclamation-triangle" color="danger">
             <template #heading>Credit is forfeited when...</template>
             <template #description>
                 The client overrides a data-backed recommendation without real justification, and the file loses as a result. This protects the model for clients who do follow the process — it is not a penalty for good-faith disagreement.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 
@@ -226,7 +226,7 @@ If the tender is not awarded despite the file being properly and seriously deliv
 - **Aligned incentive** — the largest part of what you pay is tied to actually winning, not to hours spent.
 - **No hidden basis** — net or gross is stated in writing before the mission starts, never decided after the fact.
 - **Administrative peace of mind** — coordination with qualified local accountants and experts in Morocco, cross-border eligibility checks in Europe.
-- **Currency clarity** — CHF for Swiss clients, MAD at the official Bank Al-Maghrib rate for European clients, no ambiguity at invoicing time.
+- **CurrencyAmount clarity** — CHF for Swiss clients, MAD at the official Bank Al-Maghrib rate for European clients, no ambiguity at invoicing time.
 
 ---
 
@@ -235,12 +235,12 @@ If the tender is not awarded despite the file being properly and seriously deliv
 
 <div class="grid-container grid-cols-1" style="margin: 1rem 0 2rem;">
     <div class="grid-item hover:elevate">
-        <NmCard compact="true" icon="heroicon-o-cube-transparent" color="info">
+        <Card compact="true" icon="heroicon-o-cube-transparent" color="info">
             <template #heading><a href="/services/tender-support/narrative-assembly" style="text-decoration:none;">Narrative & Assembly — when the file needs a story built from what you have</a></template>
             <template #description>
                 Turning existing brochures, specs, and data into a coherent dossier for a tender, a bank, or an investor.
             </template>
-        </NmCard>
+        </Card>
     </div>
 </div>
 

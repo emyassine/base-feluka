@@ -22,7 +22,7 @@ description: "Numerimondes — Webkernel, services, Services, Education, Product
         We architect solutions that return technology ownership to business owners—reducing costs, optimizing value creation, and smoothly transitioning away from external dependencies using automation, modular builds, and local <a href="/services/intelligence">Intelligence</a>.
     </p>
 
-    <NmTriptych
+    <ThreeColumnFeature
         style="margin-top:2rem;"
         left="https://images.unsplash.com/photo-1774677783913-28d8e6470c34?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         center="https://images.unsplash.com/photo-1774677784552-3cbc33328de4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D"
@@ -33,4 +33,4 @@ description: "Numerimondes — Webkernel, services, Services, Education, Product
 
 
 
-<NmContents />
+<ContentGrid />

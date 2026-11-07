@@ -1,7 +1,7 @@
 ---
 layout: home-subheader
-title: "Pricing and Engagements | Numerimondes"
-sidebarTitle: "Pricing Archive"
+title: "PricingTable and Engagements | Numerimondes"
+sidebarTitle: "PricingTable Archive"
 menuImage: "/images/services/pricing.jpg"
 icon: "@spmpst::icon::scale"
 description: "How Numerimondes stvructures consulting, development and operational projects."
@@ -10,7 +10,7 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 ---
-<NmEffectHero
+<HeroFive
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
@@ -27,7 +27,7 @@ js-events:
 
 <div style="width: min(100% - 40px, 680px); margin-inline: auto;">
 
-# Pricing and engagements
+# PricingTable and engagements
 
 ## <span class='silky-bbi+115'>The right commercial model for the mission.</span>
 

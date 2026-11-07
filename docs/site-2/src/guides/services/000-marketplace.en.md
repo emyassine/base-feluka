@@ -84,7 +84,7 @@ function submitReview() {
   formSent.value = true
 }
 const pendingFor = (id: string) => localReviews.value.filter(r => r.service === id)
-const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], ['reviews', 'Reviews']]
+const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'PricingTable'], ['reviews', 'Reviews']]
 </script>
 <main class="nm">
   <header class="nm-hero">
@@ -138,7 +138,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
           <p class="nm-note"><strong>For:</strong> {{ s.target }}</p>
           <ul class="nm-meta" aria-label="Service details"><li class="ui-badge">{{ s.type }}</li><li class="ui-badge">{{ s.delivery }}</li><li class="ui-badge">{{ s.duration }}</li></ul>
           <p v-if="s.id === 'digital'" class="nm-price"><span>Website creation</span><strong>From <currency base="mad" non-base-tooltip="Indicative conversion; the amount depends on the exchange rate and payment date." mad="25 000" eur="2 500" usd="2 500" /> HT</strong><span>SEO included · indicative conversion</span></p>
-          <p v-else class="nm-price"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
+          <p v-else class="nm-price"><span>PricingTable</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
           <div class="nm-actions"><button type="button" class="ui-btn ui-btn--primary" @click="openService(s.id)">View details</button><button type="button" class="ui-btn ui-btn--outline" :aria-pressed="inBasket(s.id)" @click="toggleBasket(s.id)">{{ inBasket(s.id) ? 'In your brief ✓' : 'Add to brief' }}</button></div>
         </div>
       </article>
@@ -154,19 +154,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
     </div>
     <div class="ui-card ui-card--pad"><h3>Research and final terms</h3><p>The 46% rate is planned, not yet validated. Market research is planned soon; pricing and the recruitment process will be confirmed with employers before the service is quoted.</p><a class="ui-btn ui-btn--primary" href="/company/contact?topic=recruitment">Discuss a remote hiring need</a></div>
   </section>
-  <section aria-labelledby="nm-partners" class="nm-section">
-    <h2 id="nm-partners" class="nm-title">Vetted <span class="silky-bbi+115">partners</span></h2>
-    <div class="nm-partners">
-      <article v-for="p in db.partners" :key="p.id" class="ui-card ui-card--pad">
-        <p class="nm-by"><span class="nm-avatar" aria-hidden="true">{{ p.name.slice(0, 2).toUpperCase() }}</span><strong>{{ p.name }}</strong></p>
-        <p class="nm-eyebrow">{{ p.role }}</p>
-        <p class="nm-outcome">{{ p.bio }}</p>
-        <p class="nm-rating"><span class="nm-stars">{{ stars(partnerRating(p.id).avg) }}</span> <strong>{{ partnerRating(p.id).count ? partnerRating(p.id).avg.toFixed(1) : 'New' }}</strong> · {{ partnerRating(p.id).count }} verified reviews · since {{ p.since }}</p>
-        <ul class="nm-meta"><li v-for="b in p.badges" :key="b" class="ui-badge">{{ b }}</li></ul>
-      </article>
-    </div>
-    <aside class="ui-alert"><strong>Are you a specialist or an organisation?</strong> Partners bring clients or expertise; Numerimondes handles qualification, contracting, invoicing and accountability. <a href="/opportunities/morocco/partner-commercial-terms">Explore partner opportunities in Morocco</a> or <a href="/company/contact?topic=partner">discuss a partnership</a>.</aside>
-  </section>
+  <section class="nm-section"><h2 class="nm-title">Work with trusted <span class="silky-bbi+115">specialists</span></h2><p class="nm-lead nm-lead--left">Learn about the people and organizations in our partner network.</p><p><a class="ui-btn ui-btn--outline" href="/services/partners-guide">Meet our partners</a></p></section>
   <section aria-labelledby="nm-faq" class="nm-section">
     <h2 id="nm-faq" class="nm-title">Before you <span class="silky-bbi+115">request</span> a proposal</h2>
     <div class="nm-faq"><details v-for="f in db.faq" :key="f.q"><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details></div>
@@ -199,7 +187,7 @@ const tabs: Array<[Tab, string]> = [['scope', 'Scope'], ['pricing', 'Pricing'], 
       </div>
       <div v-else-if="tab === 'pricing'" role="tabpanel" class="ui-panel">
         <p v-if="active.id === 'digital'" class="nm-price nm-price--lg"><span>Website creation</span><strong>From <currency base="mad" non-base-tooltip="Indicative conversion; the amount depends on the exchange rate and payment date." mad="25 000" eur="2 500" usd="2 500" /> HT</strong><span>SEO included · indicative conversion</span></p>
-        <p v-else class="nm-price nm-price--lg"><span>Pricing</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
+        <p v-else class="nm-price nm-price--lg"><span>PricingTable</span><strong>See pricing guide</strong><span>Scope confirmed in proposal</span></p>
         <p><strong>Basis:</strong> {{ active.price.model }}</p>
         <h4>What shapes the quote</h4><ul class="nm-list"><li v-for="d in active.drivers" :key="d">{{ d }}</li></ul>
         <p class="nm-note">Final scope and commercial terms are confirmed in a written proposal, following the published pricing guide.</p>

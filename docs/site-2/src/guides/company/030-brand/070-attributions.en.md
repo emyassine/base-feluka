@@ -7,7 +7,7 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <NmBrandHero
+    <HeroEight
       eyebrow="Brandkit // Attributions"
       title="Attributions"
       tagline="The image credits behind our brand"
@@ -16,9 +16,9 @@ layout: home
     />
   </div>
 
-  <NmBrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Image Credits' }, { tagline: 'Every image has a source and a story', description: 'Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable.' }] }]" />
+  <BrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Image Credits' }, { tagline: 'Every image has a source and a story', description: 'Explore the visual resources used across our brand and website. Each image links to its full-size file and lists its creator and license where applicable.' }] }]" />
 
-  <NmBrandIndex
+  <BrandIndex
     title="Attributions Index"
     :columns="1"
     :groups="[
@@ -28,10 +28,10 @@ layout: home
     ]"
   />
 
-  <NmBrandAttributions
+  <BrandAttributions
     eyebrow="Attributions // Images"
     title="Image Credits"
     description="Images used in our legal and policy pages, with their source and license credits. Select an image to view its full-size file."
   />
 
-  <NmBrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />
+  <BrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

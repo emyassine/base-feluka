@@ -18,7 +18,7 @@ tags: [research, multiplatform, interface, architecture]
 
 ---
 
-## Contents
+## ContentGrid
 
 0. Definitions
 1. Introduction
@@ -444,7 +444,7 @@ xtool is attractive because it builds a Swift Package into an iOS application, s
 
 ## Why Directive 8: headless first
 
-Because the Interface Tree is data, we can print it as text and compare. nsh offers headless commands for the same reason [R6]. Benefits: agents get an instant, deterministic feedback loop; tests do not need a device; previews are cheap. Cost: snapshots must be reviewed by humans, otherwise they become noise. Rule: snapshot changes appear in review like code changes.
+Because the Interface Tree is data, we can print it as text and compare. nsh offers headless commands for the same reason [R6]. BenefitGrid: agents get an instant, deterministic feedback loop; tests do not need a device; previews are cheap. Cost: snapshots must be reviewed by humans, otherwise they become noise. Rule: snapshot changes appear in review like code changes.
 
 ## Why Directive 9: one namespace
 

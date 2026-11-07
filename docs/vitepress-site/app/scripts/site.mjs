@@ -28,6 +28,7 @@ const env = {
   SPMPST_GENERATED_DIR: devProjectRoot,
   SPMPST_MODE: 'dev',
   SPMPST_DECLARATION: site.declarationPath,
+  SPMPST_WORKSPACE_PATHS: JSON.stringify(site.workspace ?? { componentsPaths: [], StylesPaths: [], jsPaths: [] }),
 }
 
 function run(binary, commandArgs, runEnv = env) {

@@ -1,6 +1,6 @@
 ---
-title: "Pricing and Engagements | Numerimondes"
-sidebarTitle: "Pricing"
+title: "PricingTable and Engagements | Numerimondes"
+sidebarTitle: "PricingTable"
 category: "commercial"
 icon: "@spmpst::icon::scale"
 description: "Services and pricing for employers, SMEs, professional practices and operating teams."
@@ -13,7 +13,7 @@ image: "/images/policies/pricing-scoped-value.webp"
 imageAlt: "An amber prism and stacked ceramic pieces balance on a dark slate beam."
 menuImage: "/images/policies/pricing-scoped-value.webp"
 ---
-<NmEffectHero
+<HeroFive
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"
@@ -130,7 +130,7 @@ SEO is included in the website offer. Work to improve visibility in AI-generated
 
 | Website type | A good fit for |
 | :--- | :--- |
-| **Showcase website** | A professional practice, tradesperson or SME that wants to be found and present a credible offer. |
+| **ProductShowcase website** | A professional practice, tradesperson or SME that wants to be found and present a credible offer. |
 | **Catalogue website** | A retailer or manufacturer presenting products and receiving quotation requests. |
 | **Website with appointments** | A training centre, fitness business or local service taking bookings. |
 | **Website connected to a management system** | A business that wants each inquiry routed into its sales or operating workflow. |
@@ -141,7 +141,7 @@ A website is a business asset: the organization owns it, can measure how it perf
 
 We start from what the client needs to improve, then match the work and team to that need. The examples below describe possible sources of value, not promised results.
 
-<SimpleMiniCard
+<CompactInfoCard
   :columns="2"
   :categories="[
     { title: 'Reach and convert customers', items: [
@@ -167,7 +167,7 @@ We start from what the client needs to improve, then match the work and team to 
 
 We begin with the client outcome, current situation and constraints. We choose a pricing model that fits the work and the information available. A fixed scope can suit stable requirements; a formula can suit a small number of agreed inputs; ongoing work can use a periodic review when costs or capacity change. More complex pricing requires reliable data, clear approval rights and an agreed update process.
 
-| Pricing model | Used when | Confirmed in writing |
+| PricingTable model | Used when | Confirmed in writing |
 | :--- | :--- | :--- |
 | **Fixed-scope project** | Deliverables and acceptance conditions can be defined in advance. | Scope, assumptions, exclusions, price, milestones and change process. |
 | **Discovery or feasibility** | The client needs evidence or options before deciding on implementation. | Research question, outputs, limits and any credit toward later work. |
@@ -175,7 +175,7 @@ We begin with the client outcome, current situation and constraints. We choose a
 | **Time-based specialist engagement** | The work needs defined specialist capacity over an agreed period. | Rate basis, capacity limits, reporting and period. |
 | **Recurring operations and support** | Responsibilities continue after an initial project. | Service window, capacity, response commitments, exclusions and review terms. |
 
-Pricing should reflect the client need, relevant market conditions and the value the agreed work is designed to create. We do not guarantee a financial or operational result. The 46% recruitment fee rate remains planned until the upcoming market research is complete and the final terms are confirmed.
+PricingTable should reflect the client need, relevant market conditions and the value the agreed work is designed to create. We do not guarantee a financial or operational result. The 46% recruitment fee rate remains planned until the upcoming market research is complete and the final terms are confirmed.
 
 ## <span class='silky-bbi+115'>Request a proposal</span>
 

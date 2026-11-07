@@ -10,14 +10,14 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<NmCompanyHero
+<HeroThree
   eyebrow="NUMERIMONDES CLOUD · SERVER OPERATIONS"
   title="Infrastructure we <span class='silky-bbi'>operate ourselves</span>."
   description="Numerimondes Cloud brings server setup, management, backups and operational responsibility into one scoped service."
   height="40vh"
 />
 
-<NmProse>
+<div>
 
 ## What it is
 
@@ -45,6 +45,6 @@ The processing agreement for our current EU webserver records the infrastructure
 
 Server management is scoped to the environment and responsibilities agreed with the client. The scope identifies what Numerimondes manages and what remains with the client or another provider. Backup frequency, remote destination, retention, restore expectations, support hours and response times are stated for the particular deployment; this page does not promise a universal service level or recovery time.
 
-<FeluqaButton tag="a" href="/company/contact?topic=cloud" label="Discuss server management" />
+<Button tag="a" href="/company/contact?topic=cloud" label="Discuss server management" />
 
-</NmProse>
+</div>
