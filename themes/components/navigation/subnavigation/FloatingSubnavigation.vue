@@ -279,9 +279,11 @@ watch(showMore, (value) => { if (!value) menuOpen.value = false })
   --fs-ease: cubic-bezier(0.32, 0.72, 0, 1);
   --fs-duration: 0.45s;
 
-  position: sticky;
-  z-index: 20;
+  position: fixed;
+  z-index: 100;
   top: calc(var(--vp-nav-height, 64px) + 0.75rem);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -289,7 +291,7 @@ watch(showMore, (value) => { if (!value) menuOpen.value = false })
   max-width: calc(100% - 1rem);
   height: 42px;
   min-width: 0;
-  margin: 1.25rem auto 2rem;
+  margin: 0;
   padding: 0.25rem 0.4rem;
   box-sizing: border-box;
   border: 1px solid var(--fs-border);
@@ -587,8 +589,7 @@ html.dark .floating-subnav__menu {
 @media (max-width: 680px) {
   .floating-subnav {
     top: calc(var(--vp-nav-height, 64px) + 0.5rem);
-    max-width: 100%;
-    margin-block: 0.75rem 1.5rem;
+    max-width: calc(100vw - 1rem);
     padding: 0.25rem 0.35rem;
   }
 
