@@ -280,7 +280,7 @@ watch(showMore, (value) => { if (!value) menuOpen.value = false })
   --fs-duration: 0.45s;
 
   position: fixed;
-  z-index: 100;
+  z-index: 10;
   top: calc(var(--vp-nav-height, 64px) + 0.75rem);
   left: 50%;
   transform: translateX(-50%);
