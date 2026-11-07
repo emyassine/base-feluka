@@ -27,7 +27,7 @@ export type ModernCard = {
 }
 
 const props = withDefaults(defineProps<{
-  title: LocalizedText
+  title?: LocalizedText
   description?: LocalizedText
   sectionTitle?: LocalizedText
   cards: ModernCard[]
@@ -56,7 +56,7 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
   <section class="cards-modern" :class="`cards-modern--${columns}`">
     <header class="cards-modern__heading">
       <div>
-        <h1 v-html="text(title)" />
+        <h1 v-if="title" v-html="text(title)" />
         <p v-if="description" class="cards-modern__intro" v-html="text(description)" />
       </div>
     </header>
