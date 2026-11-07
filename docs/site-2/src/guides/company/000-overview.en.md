@@ -31,10 +31,10 @@ layout: home
   <div class="1400:left-0 900:-left-24 800:-left-32" style="position: absolute; top: 50%; left: -50px; transform: translateY(-50%); width: 246px; height: 364px; background: radial-gradient(50% 100% at 0% 50%, var(--color-neutral-300, #ccc) 0%, transparent 250%); -webkit-mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; pointer-events: none; z-index: 0;"></div>
   <div class="1400:right-0 900:-right-24 800:-right-32" style="position: absolute; top: 50%; right: -50px; transform: translateY(-50%) rotate(180deg); width: 246px; height: 364px; background: radial-gradient(50% 100% at 0% 50%, var(--color-neutral-300, #ccc) 0%, transparent 250%); -webkit-mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); mask-image: url(https://oxide.computer/img/solutions/vertical-hero-ascii-pattern.svg); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; pointer-events: none; z-index: 0;"></div>
   <h1 style="position: relative; z-index: 1; font-size: 3.75rem; max-width: 80%; font-weight: 700; margin-top: 0; margin-bottom: var(--space-3, 24px); line-height: 1.2;">
-    Secure your mission with modern cloud and on-premises
+  	Ideas. Systems. Lasting value.
   </h1>
   <p style="position: relative; z-index: 1; max-width: 600px; margin: 0;">
-    NDAA, BAA, and TAA compliant infrastructure with the speed and elasticity of cloud architecture. Designed and assembled in the USA.
+  We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities.
   </p>
 		</div>
 	  <HeroEight
