@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: articles
 sidebarTitle: "AI, agents and humans"
 title: "Superintelligence or Just Generative AI? Agents, Training, and the Human Framework | Numerimondes"
 author: "yassine-el-moumen"
@@ -38,8 +38,10 @@ Both are true. This article tries to explain why, and what it means for people a
 
 ### Live market snapshot
 
-The widget below pulls real-time data. If your site blocks third-party scripts, replace it with a static screenshot and a date.
+The widget configuration below pulls real-time market data. If your site blocks third-party scripts, replace it with a static screenshot and a date.
 
+```html
+<!-- TradingView widget embed: paste into a raw HTML block on the published page -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
@@ -61,6 +63,7 @@ The widget below pulls real-time data. If your site blocks third-party scripts, 
   }
   </script>
 </div>
+```
 
 *This is context, not investment advice.*
 
@@ -336,7 +339,7 @@ Waiting means the framework gets written by accident, by whoever shipped first.
 8. **What is our incident plan?** If an agent leaks data or ships a bug, who responds in the first hour?
 9. **What are our red lines?** Tasks we will not automate, content we will not generate, clients we will not serve.
 10. **How do we handle language and culture?** Arabic, Darija, Amazigh and French contexts need testing, not assumptions.
-11. **How do our policies on cookies, privacy and browser storage fit in?** Trust is built through concrete practices. See our guide on [managing cookies and browser storage](/policies/manage-cookies).
+11. **How do our policies on cookies, privacy and browser storage fit in?** Trust is built through concrete practices. See our guide on [managing cookies and browser storage](/articles/manage-cookies).
 
 ---
 
@@ -388,13 +391,13 @@ Replace the placeholders below with real, current posts (open the post on X, cli
   &mdash; Name (@USERNAME)
   <a href="https://twitter.com/USERNAME/status/STATUS_ID">Date</a>
 </blockquote>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 ```
 
 <!-- TWEET 1: an AI researcher on agent reliability -->
 <!-- TWEET 2: a developer on learning to code with AI -->
 <!-- TWEET 3: an analyst on the data-center backlash -->
-
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ---
 
