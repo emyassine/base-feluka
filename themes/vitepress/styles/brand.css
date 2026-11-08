@@ -1,8 +1,7 @@
 /* Shared design tokens and layout context for globally registered brand components. */
-.lightmode-only { display: revert; }
-.darkmode-only { display: none; }
-html.dark .lightmode-only { display: none; }
-html.dark .darkmode-only { display: revert; }
+.darkmode-only { display: none !important; }
+html.dark .lightmode-only { display: none !important; }
+html.dark .darkmode-only { display: revert !important; }
 
 .vp-doc:has(.nm-brand-hero) {
   --nm-brand-surface: var(--vp-c-bg);
