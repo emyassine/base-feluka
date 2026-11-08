@@ -39,8 +39,8 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </script>
 
 <template>
-  <section class="feluqa-slats-hero" :class="isDark ? 'feluqa-slats-hero--dark' : 'feluqa-slats-hero--light'">
-    <div class="feluqa-slats-hero__background" aria-hidden="true">
+  <section class="xbr7mplva" :class="isDark ? 'xbr7mplva--dark' : 'xbr7mplva--light'">
+    <div class="xbr7mplva__background" aria-hidden="true">
       <MicroSlats
         preset="swell"
         color="#A855F7"
@@ -60,10 +60,10 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
         :introDuration="1.5"
       />
     </div>
-    <div class="feluqa-slats-hero__content">
+    <div class="xbr7mplva__content">
       <h1 :style="titleStyles" v-html="props.title" />
       <p :style="descriptionStyles" v-html="props.description" />
-      <div v-if="props.buttons.length" class="feluqa-slats-hero__actions">
+      <div v-if="props.buttons.length" class="xbr7mplva__actions">
           <Button
             v-for="(button, index) in props.buttons"
             :key="`${button.href}-${index}`"
@@ -81,7 +81,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </template>
 
 <style scoped>
-.feluqa-slats-hero {
+.xbr7mplva {
   position: relative;
   z-index: 0;
   display: grid;
@@ -97,12 +97,12 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   z-index: 100;
 }
 
-.feluqa-slats-hero__background {
+.xbr7mplva__background {
   position: absolute;
   inset: 0;
 }
 
-.feluqa-slats-hero__content {
+.xbr7mplva__content {
   position: relative;
   z-index: 1;
   width: min(100% - 2rem, 740px);
@@ -111,10 +111,10 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   text-align: center;
 }
 
-.feluqa-slats-hero--light { color: #fff; }
-.feluqa-slats-hero--dark { color: #fff; }
+.xbr7mplva--light { color: #fff; }
+.xbr7mplva--dark { color: #fff; }
 
-.feluqa-slats-hero h1 {
+.xbr7mplva h1 {
   margin: 0 auto;
   color: inherit;
   font-size: clamp(2.4rem, 6vw, 4.4rem);
@@ -123,7 +123,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.05;
 }
 
-.feluqa-slats-hero p {
+.xbr7mplva p {
   max-width: 650px;
   margin: 1.25rem auto 0;
   color: inherit;
@@ -131,7 +131,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.55;
 }
 
-.feluqa-slats-hero__actions {
+.xbr7mplva__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -140,6 +140,6 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 }
 
 @media (max-width: 640px) {
-  .feluqa-slats-hero { min-height: 34rem; margin-top: -20px; }
+  .xbr7mplva { min-height: 34rem; margin-top: -20px; }
 }
 </style>

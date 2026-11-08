@@ -39,12 +39,12 @@ const { title, introduction, gallery, sectionTitle, paragraphs } = toRefs(props)
 const introductionStyle = computed(() => {
   const style = {}
   if (props.introductionSpacing !== null) {
-    style['--feluqa-about-introduction-spacing'] = typeof props.introductionSpacing === 'number'
+    style['--xoj3m7d2x-introduction-spacing'] = typeof props.introductionSpacing === 'number'
       ? `${props.introductionSpacing}px`
       : props.introductionSpacing
   }
   if (props.introductionTitleSpacing !== null) {
-    style['--feluqa-about-introduction-title-spacing'] = typeof props.introductionTitleSpacing === 'number'
+    style['--xoj3m7d2x-introduction-title-spacing'] = typeof props.introductionTitleSpacing === 'number'
       ? `${props.introductionTitleSpacing}px`
       : props.introductionTitleSpacing
   }
@@ -53,23 +53,23 @@ const introductionStyle = computed(() => {
 </script>
 
 <template>
-  <section class="feluqa-about">
+  <section class="xoj3m7d2x">
     <!-- Introduction -->
     <div
       v-if="title || introduction"
-      class="feluqa-about-introduction"
+      class="xoj3m7d2x-introduction"
       :style="introductionStyle"
     >
       <h2 v-if="title" class="scroll-reveal" v-html="title"></h2>
       <p
         v-if="introduction"
-        class="feluqa-about-dropcap scroll-reveal"
+        class="xoj3m7d2x-dropcap scroll-reveal"
         v-html="introduction"
       ></p>
     </div>
 
     <!-- Gallery -->
-    <div v-if="gallery.length" class="feluqa-about-gallery">
+    <div v-if="gallery.length" class="xoj3m7d2x-gallery">
       <BounceCards
         :images="gallery.map((image) => image.src)"
         :alts="gallery.map((image) => image.alt || '')"
@@ -89,10 +89,10 @@ const introductionStyle = computed(() => {
     </div>
 
     <!-- Content -->
-    <div class="feluqa-about-content">
+    <div class="xoj3m7d2x-content">
       <h3 v-if="sectionTitle" class="scroll-reveal" v-html="sectionTitle"></h3>
 
-      <div class="feluqa-about-paragraphs">
+      <div class="xoj3m7d2x-paragraphs">
         <p v-for="(paragraph, index) in paragraphs" :key="index" class="scroll-reveal">
           <span v-html="paragraph.before"></span>
 
@@ -113,7 +113,7 @@ const introductionStyle = computed(() => {
           <span v-html="paragraph.after"></span>
         </p>
       </div>
-      <div v-if="$slots.actions" class="feluqa-about-actions">
+      <div v-if="$slots.actions" class="xoj3m7d2x-actions">
         <slot name="actions" />
       </div>
     </div>
@@ -121,64 +121,64 @@ const introductionStyle = computed(() => {
 </template>
 
 <style scoped>
-.feluqa-about {
-  color: var(--feluqa-text-primary);
+.xoj3m7d2x {
+  color: var(--text-primary);
   padding: 28px 0 100px;
   line-height: 1.52;
 }
 
 /* Shared editorial layout */
-.feluqa-about-introduction,
-.feluqa-about-content {
+.xoj3m7d2x-introduction,
+.xoj3m7d2x-content {
   width: min(100% - 40px, 544px);
   margin-inline: auto;
 }
 
 /* Introduction */
-.feluqa-about-introduction {
-  margin-bottom: var(--feluqa-about-introduction-spacing, 56px);
+.xoj3m7d2x-introduction {
+  margin-bottom: var(--xoj3m7d2x-introduction-spacing, 56px);
 }
 
-.feluqa-about-introduction :is(h1, h2, h3) {
-  margin: 0 0 var(--feluqa-about-introduction-title-spacing, 28px);
+.xoj3m7d2x-introduction :is(h1, h2, h3) {
+  margin: 0 0 var(--xoj3m7d2x-introduction-title-spacing, 28px);
 }
 
-.feluqa-about-introduction p {
+.xoj3m7d2x-introduction p {
   margin: 0;
 }
 
 /* Gallery */
-.feluqa-about-gallery {
+.xoj3m7d2x-gallery {
   width: 100%;
   margin: 0 !important;
 }
 
 /* Content */
-.feluqa-about-content {
+.xoj3m7d2x-content {
   margin-top: 0;
 }
 
-.feluqa-about-content h2 {
+.xoj3m7d2x-content h2 {
   margin: 0 0 24px;
   font-weight: 500;
 }
 
-.feluqa-about-paragraphs p {
+.xoj3m7d2x-paragraphs p {
   margin: 0 0 20px;
   line-height: 1.55;
 }
 
 /* Responsive */
 @media (max-width: 700px) {
-  .feluqa-about {
+  .xoj3m7d2x {
     padding-top: 28px;
   }
 
-  .feluqa-about-introduction {
+  .xoj3m7d2x-introduction {
     margin-bottom: 0;
   }
 
-  .feluqa-about-gallery {
+  .xoj3m7d2x-gallery {
     margin-bottom: 44px;
   }
 }

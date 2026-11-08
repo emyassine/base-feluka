@@ -96,7 +96,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   padding: 0;
   border: 0;
   border-radius: var(--radius-md);
-  color: var(--feluqa-text-primary);
+  color: var(--text-primary);
   background: transparent;
   cursor: pointer;
 }
@@ -116,9 +116,9 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   min-width: 200px;
   max-width: calc(100vw - 2rem);
   padding: 0.35rem;
-  border: 1px solid var(--feluqa-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--feluqa-surface);
+  background: var(--surface);
   box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
 }
 
@@ -132,14 +132,14 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onDocumentPoin
   min-height: 40px;
   padding: 0 0.75rem;
   border-radius: var(--radius-md);
-  color: var(--feluqa-text-primary);
+  color: var(--text-primary);
   font-size: 0.875rem;
   line-height: 1.2;
   text-decoration: none;
 }
 
 .dropdown-menu__menu a:hover {
-  color: var(--feluqa-brand);
+  color: var(--brand);
   background: var(--vp-c-default-soft);
 }
 

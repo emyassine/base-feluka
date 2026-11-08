@@ -37,8 +37,8 @@ const props = withDefaults(defineProps<{
   className?: string
 }>(), {
   speed: 2.5,
-  rayColor1: 'var(--feluqa-brand)',
-  rayColor2: 'var(--feluqa-brand-secondary)',
+  rayColor1: 'var(--brand)',
+  rayColor2: 'var(--brand-secondary)',
   intensity: 2,
   spread: 2,
   origin: 'top-right',

@@ -57,8 +57,8 @@ function onClick(event: MouseEvent): void {
   <component
     :is="elementTag"
     v-bind="$attrs"
-    class="feluqa-tabs__item"
-    :class="[$attrs.class, `feluqa-tabs__item--${context.preset.value}`, { 'is-active': selected, 'is-disabled': disabled, 'has-icon-after': iconPosition === 'after' }]"
+    class="xmqrre3s1__item"
+    :class="[$attrs.class, `xmqrre3s1__item--${context.preset.value}`, { 'is-active': selected, 'is-disabled': disabled, 'has-icon-after': iconPosition === 'after' }]"
     :href="isLink ? href : undefined"
     :target="target"
     :rel="rel"
@@ -73,19 +73,19 @@ function onClick(event: MouseEvent): void {
     :tabindex="disabled && isLink ? -1 : tabRole ? (selected ? 0 : -1) : undefined"
     @click="onClick"
   >
-    <component :is="icon" v-if="typeof icon !== 'string' && icon && iconPosition === 'before'" class="feluqa-tabs__icon" aria-hidden="true" />
-    <svg v-else-if="iconPath && iconPosition === 'before'" class="feluqa-tabs__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path :d="iconPath" /></svg>
+    <component :is="icon" v-if="typeof icon !== 'string' && icon && iconPosition === 'before'" class="xmqrre3s1__icon" aria-hidden="true" />
+    <svg v-else-if="iconPath && iconPosition === 'before'" class="xmqrre3s1__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path :d="iconPath" /></svg>
     <slot name="icon" v-else-if="iconPosition === 'before'" />
-    <span class="feluqa-tabs__label"><slot /></span>
-    <component :is="icon" v-if="typeof icon !== 'string' && icon && iconPosition === 'after'" class="feluqa-tabs__icon" aria-hidden="true" />
-    <svg v-else-if="iconPath && iconPosition === 'after'" class="feluqa-tabs__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path :d="iconPath" /></svg>
+    <span class="xmqrre3s1__label"><slot /></span>
+    <component :is="icon" v-if="typeof icon !== 'string' && icon && iconPosition === 'after'" class="xmqrre3s1__icon" aria-hidden="true" />
+    <svg v-else-if="iconPath && iconPosition === 'after'" class="xmqrre3s1__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path :d="iconPath" /></svg>
     <slot name="icon" v-else-if="iconPosition === 'after'" />
-    <span v-if="badge !== undefined || $slots.badge" class="feluqa-tabs__badge"><slot name="badge">{{ badge }}</slot></span>
+    <span v-if="badge !== undefined || $slots.badge" class="xmqrre3s1__badge"><slot name="badge">{{ badge }}</slot></span>
   </component>
 </template>
 
 <style scoped>
-.feluqa-tabs__item {
+.xmqrre3s1__item {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -96,7 +96,7 @@ function onClick(event: MouseEvent): void {
   border: 1px solid transparent;
   border-radius: var(--radius-md, .5rem);
   background: transparent;
-  color: var(--feluqa-text-secondary, #475569);
+  color: var(--text-secondary, #475569);
   font: inherit;
   line-height: 1.25;
   text-decoration: none;
@@ -104,28 +104,28 @@ function onClick(event: MouseEvent): void {
   cursor: pointer;
   transition: background-color .16s ease, border-color .16s ease, color .16s ease;
 }
-.feluqa-tabs__item:hover:not(.is-disabled) { background: color-mix(in srgb, currentColor 8%, transparent); color: var(--feluqa-text-primary, #0f172a); }
-.feluqa-tabs__item.is-active { border-color: color-mix(in srgb, var(--feluqa-brand, #3977c8) 28%, transparent); background: var(--feluqa-brand, #3977c8); color: var(--feluqa-on-brand, #fff); }
-.feluqa-tabs__item.is-disabled { opacity: .5; cursor: not-allowed; }
-.feluqa-tabs__icon { width: 1rem; height: 1rem; flex: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.feluqa-tabs__badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.25rem; padding: .1rem .35rem; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, transparent); font-size: .75em; line-height: 1.2; }
-.feluqa-tabs__item:focus-visible { outline: 2px solid var(--feluqa-brand, #3977c8); outline-offset: 2px; }
+.xmqrre3s1__item:hover:not(.is-disabled) { background: color-mix(in srgb, currentColor 8%, transparent); color: var(--text-primary, #0f172a); }
+.xmqrre3s1__item.is-active { border-color: color-mix(in srgb, var(--brand, #3977c8) 28%, transparent); background: var(--brand, #3977c8); color: var(--on-brand, #fff); }
+.xmqrre3s1__item.is-disabled { opacity: .5; cursor: not-allowed; }
+.xmqrre3s1__icon { width: 1rem; height: 1rem; flex: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.xmqrre3s1__badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.25rem; padding: .1rem .35rem; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, transparent); font-size: .75em; line-height: 1.2; }
+.xmqrre3s1__item:focus-visible { outline: 2px solid var(--brand, #3977c8); outline-offset: 2px; }
 
-.feluqa-tabs__item--rounded {
+.xmqrre3s1__item--rounded {
   min-height: 1.75rem;
   padding: .25rem .9rem;
   border: 0;
   border-radius: 999px;
-  color: var(--feluqa-text-primary);
+  color: var(--text-primary);
   font-size: .75rem;
   font-weight: 600;
   line-height: 1.2;
   transition: background-color 160ms ease, color 160ms ease;
   -webkit-tap-highlight-color: transparent;
 }
-.feluqa-tabs__item--rounded.is-active { background: var(--feluqa-brand); color: var(--feluqa-on-brand); }
-.feluqa-tabs__item--rounded:hover:not(.is-active):not(.is-disabled) { background: color-mix(in srgb, var(--feluqa-text-primary) 10%, transparent); }
-.feluqa-tabs__item--headless {
+.xmqrre3s1__item--rounded.is-active { background: var(--brand); color: var(--on-brand); }
+.xmqrre3s1__item--rounded:hover:not(.is-active):not(.is-disabled) { background: color-mix(in srgb, var(--text-primary) 10%, transparent); }
+.xmqrre3s1__item--headless {
   min-height: 0;
   padding: 0;
   border: 0;
@@ -137,9 +137,9 @@ function onClick(event: MouseEvent): void {
   text-decoration: none;
   transition: none;
 }
-.feluqa-tabs__item--headless.is-active,
-.feluqa-tabs__item--headless:hover:not(.is-disabled) { border: 0; background: transparent; color: inherit; }
+.xmqrre3s1__item--headless.is-active,
+.xmqrre3s1__item--headless:hover:not(.is-disabled) { border: 0; background: transparent; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
-  .feluqa-tabs__item { transition: none; }
+  .xmqrre3s1__item { transition: none; }
 }
 </style>

@@ -178,7 +178,7 @@ function resolveInitialIndex(): number {
 const activeIndex = ref(resolveInitialIndex())
 const activeGroup = computed(() => groupList.value[Math.min(activeIndex.value, groupList.value.length - 1)])
 const showTabs = computed(() => groupList.value.length > 1)
-const tabsId = `feluqa-dock-tabs-${useId()}`
+const tabsId = `x1wkm5mil-tabs-${useId()}`
 
 watch(() => groupList.value.length, (length) => {
   if (activeIndex.value > length - 1) activeIndex.value = Math.max(0, length - 1)
@@ -216,7 +216,7 @@ function measure() {
     centers = []
     return
   }
-  const slots = dock.querySelectorAll<HTMLElement>('.feluqa-dock__slot')
+  const slots = dock.querySelectorAll<HTMLElement>('.x1wkm5mil__slot')
   centers = Array.from(slots, slot => slot.offsetLeft + slot.offsetWidth / 2)
   slotSize = slots[0]?.offsetWidth || props.baseItemSize
 }
@@ -283,7 +283,7 @@ function onItemFocus(event: FocusEvent, index: number) {
 }
 
 function onItemKeydown(event: KeyboardEvent, index: number) {
-  const elements = dockEl.value?.querySelectorAll<HTMLElement>('.feluqa-dock__item')
+  const elements = dockEl.value?.querySelectorAll<HTMLElement>('.x1wkm5mil__item')
   if (!elements?.length) return
   let next = index
   if (event.key === 'ArrowRight') next = (index + 1) % elements.length
@@ -400,18 +400,18 @@ function activate(event: MouseEvent, item: DockItem, index: number) {
 const toCss = (value: string | number) => (typeof value === 'number' ? `${value}px` : value)
 
 const rootStyle = computed(() => ({
-  '--feluqa-base': `${props.baseItemSize}px`,
-  '--feluqa-mobile': `${props.mobileItemSize}px`,
-  '--feluqa-pad-x': `${Math.max(12, (props.magnification - props.baseItemSize) * 0.6)}px`,
-  '--feluqa-pad-x-hover': `${Math.max(24, (props.magnification - props.baseItemSize) * 0.6 + 12)}px`,
-  '--feluqa-panel-min': `${props.panelHeight}px`,
-  '--feluqa-radius': toCss(props.radius),
-  '--feluqa-panel-radius': toCss(props.panelRadius),
+  '--x4ga0z4w0-base': `${props.baseItemSize}px`,
+  '--x4ga0z4w0-mobile': `${props.mobileItemSize}px`,
+  '--x4ga0z4w0-pad-x': `${Math.max(12, (props.magnification - props.baseItemSize) * 0.6)}px`,
+  '--x4ga0z4w0-pad-x-hover': `${Math.max(24, (props.magnification - props.baseItemSize) * 0.6 + 12)}px`,
+  '--x4ga0z4w0-panel-min': `${props.panelHeight}px`,
+  '--x4ga0z4w0-radius': toCss(props.radius),
+  '--x4ga0z4w0-panel-radius': toCss(props.panelRadius),
 }))
 </script>
 
 <template>
-  <div class="feluqa-dock feluqa-simple-hero-dock" :class="[props.className, { 'feluqa-dock--bare': props.bare }]" :style="rootStyle">
+  <div class="x1wkm5mil x65bnkf1c" :class="[props.className, { 'x1wkm5mil--bare': props.bare }]" :style="rootStyle">
     <Tabs
       v-if="showTabs"
       :id="tabsId"
@@ -429,17 +429,17 @@ const rootStyle = computed(() => ({
     </Tabs>
 
     <div
-      class="feluqa-dock__stage"
+      class="x1wkm5mil__stage"
       :role="showTabs ? 'tabpanel' : undefined"
       :id="showTabs ? `${tabsId}-panel-${tabsKey(activeGroup.id)}` : undefined"
       :aria-labelledby="showTabs ? `${tabsId}-tab-${tabsKey(activeGroup.id)}` : undefined"
       :aria-label="showTabs ? activeGroup.label : undefined"
     >
-      <Transition name="feluqa-dock-swap" mode="out-in">
-        <div :key="activeGroup.id" class="feluqa-dock__scroller">
+      <Transition name="x1wkm5mil-swap" mode="out-in">
+        <div :key="activeGroup.id" class="x1wkm5mil__scroller">
           <div
             ref="dockEl"
-            class="feluqa-dock__panel"
+            class="x1wkm5mil__panel"
             :class="{ 'is-magnifying': scales.length > 0 }"
             role="toolbar"
             :aria-label="activeGroup.label"
@@ -448,10 +448,10 @@ const rootStyle = computed(() => ({
             @pointerleave="onPointerLeave"
           >
             <template v-for="(item, index) in activeGroup.items" :key="itemKey(item, index)">
-              <div class="feluqa-dock__slot" :style="slotStyle(index)">
+              <div class="x1wkm5mil__slot" :style="slotStyle(index)">
                 <component
                   :is="item.href ? 'a' : 'button'"
-                  class="feluqa-dock__item"
+                  class="x1wkm5mil__item"
                   :class="itemClasses(item)"
                   :href="item.href"
                   :type="item.href ? undefined : 'button'"
@@ -466,7 +466,7 @@ const rootStyle = computed(() => ({
                   @keydown="onItemKeydown($event, index)"
                 >
                   <span
-                    class="feluqa-dock__tile"
+                    class="x1wkm5mil__tile"
                     :class="{
                       'is-bouncing': bouncing === index,
                       'is-image-background': iconMode(item) === 'image',
@@ -478,20 +478,20 @@ const rootStyle = computed(() => ({
                     <slot :name="`icon-${itemKey(item, index)}`" :item="item">
                       <span
                         v-if="iconMode(item) === 'image' && typeof item.icon === 'string'"
-                        class="feluqa-dock__image-wrap"
+                        class="x1wkm5mil__image-wrap"
                         aria-hidden="true"
                       >
-                        <img class="feluqa-dock__image" :src="item.icon" alt="" draggable="false" decoding="async" />
+                        <img class="x1wkm5mil__image" :src="item.icon" alt="" draggable="false" decoding="async" />
                       </span>
                       <component
                         :is="item.icon"
                         v-if="iconMode(item) === 'component'"
-                        class="feluqa-dock__custom-icon"
+                        class="x1wkm5mil__custom-icon"
                         aria-hidden="true"
                       />
                       <svg
                         v-else-if="iconMode(item) === 'builtin'"
-                        class="feluqa-dock__icon"
+                        class="x1wkm5mil__icon"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -504,7 +504,7 @@ const rootStyle = computed(() => ({
                       </svg>
                       <img
                         v-else-if="iconMode(item) === 'symbol'"
-                        class="feluqa-dock__symbol"
+                        class="x1wkm5mil__symbol"
                         :src="item.icon as string"
                         alt=""
                         draggable="false"
@@ -512,16 +512,16 @@ const rootStyle = computed(() => ({
                       />
                     </slot>
                   </span>
-                  <span v-if="item.badge" class="feluqa-dock__badge">{{ item.badge }}</span>
+                  <span v-if="item.badge" class="x1wkm5mil__badge">{{ item.badge }}</span>
                 </component>
 
-                <span class="feluqa-dock__tooltip" aria-hidden="true">{{ item.label }}</span>
-                <span class="feluqa-dock__label" aria-hidden="true">{{ item.mobileLabel ?? item.label }}</span>
-                <span v-if="isActive(activeGroup, item, index)" class="feluqa-dock__indicator" aria-hidden="true"></span>
+                <span class="x1wkm5mil__tooltip" aria-hidden="true">{{ item.label }}</span>
+                <span class="x1wkm5mil__label" aria-hidden="true">{{ item.mobileLabel ?? item.label }}</span>
+                <span v-if="isActive(activeGroup, item, index)" class="x1wkm5mil__indicator" aria-hidden="true"></span>
               </div>
               <span
                 v-if="activeGroup.separators.includes(index)"
-                class="feluqa-dock__divider"
+                class="x1wkm5mil__divider"
                 :style="dividerStyle(index)"
                 aria-hidden="true"
               ></span>
@@ -534,11 +534,11 @@ const rootStyle = computed(() => ({
 </template>
 
 <style scoped>
-.feluqa-dock {
-  --feluqa-size: var(--feluqa-base, 50px);
-  --feluqa-icon-size: clamp(1.35rem, calc(var(--feluqa-size) * 0.54), 1.9rem);
-  --feluqa-label-h: 0px;
-  --feluqa-gap: 8px;
+.x1wkm5mil {
+  --x4ga0z4w0-size: var(--x4ga0z4w0-base, 50px);
+  --x4ga0z4w0-icon-size: clamp(1.35rem, calc(var(--x4ga0z4w0-size) * 0.54), 1.9rem);
+  --x4ga0z4w0-label-h: 0px;
+  --x4ga0z4w0-gap: 8px;
   display: flex;
   width: 100%;
   min-width: 0;
@@ -551,7 +551,7 @@ const rootStyle = computed(() => ({
 /* ---------------------------------------------------------------- */
 /* Stage and panel                                                   */
 /* ---------------------------------------------------------------- */
-.feluqa-dock__stage {
+.x1wkm5mil__stage {
   display: flex;
   width: 100%;
   min-width: 0;
@@ -559,7 +559,7 @@ const rootStyle = computed(() => ({
   overflow: visible;
 }
 
-.feluqa-dock__scroller {
+.x1wkm5mil__scroller {
   display: flex;
   width: 100%;
   min-width: 0;
@@ -567,21 +567,21 @@ const rootStyle = computed(() => ({
   padding: 0 0.25rem 0.5rem;
 }
 
-.feluqa-dock__panel {
+.x1wkm5mil__panel {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex: 0 0 auto;
   align-items: flex-end;
-  gap: var(--feluqa-gap);
+  gap: var(--x4ga0z4w0-gap);
   margin-inline: auto;
-  min-height: max(var(--feluqa-panel-min, 68px), calc(var(--feluqa-size) + var(--feluqa-label-h) + 28px + 2px));
-  padding: 0.75rem var(--feluqa-pad-x, 0.75rem) 1rem;
+  min-height: max(var(--x4ga0z4w0-panel-min, 68px), calc(var(--x4ga0z4w0-size) + var(--x4ga0z4w0-label-h) + 28px + 2px));
+  padding: 0.75rem var(--x4ga0z4w0-pad-x, 0.75rem) 1rem;
   border: 1px solid rgb(255 255 255 / 0.34);
-  border-radius: var(--feluqa-panel-radius, 19px);
+  border-radius: var(--x4ga0z4w0-panel-radius, 19px);
   background:
     linear-gradient(145deg, rgb(255 255 255 / 0.24), rgb(255 255 255 / 0.04) 48%, rgb(255 255 255 / 0.1)),
-    color-mix(in srgb, var(--feluqa-surface) 38%, transparent);
+    color-mix(in srgb, var(--surface) 38%, transparent);
   box-shadow:
     0 8px 28px rgb(0 0 0 / 0.3),
     inset 0 1px 0 rgb(255 255 255 / 0.42),
@@ -589,22 +589,22 @@ const rootStyle = computed(() => ({
   -webkit-backdrop-filter: blur(30px) saturate(1.35);
   backdrop-filter: blur(30px) saturate(1.35);
 }
-:global(.feluqa-effect-hero--light) .feluqa-dock__panel {
+:global(.x6u7xzhs0--light) .x1wkm5mil__panel {
   border-color: rgb(255 255 255 / 0.82);
   background: linear-gradient(145deg, rgb(255 255 255 / 0.94), rgb(241 245 249 / 0.9));
   box-shadow: 0 12px 32px rgb(15 23 42 / 0.24), inset 0 1px 0 #fff, inset 0 -1px 0 rgb(148 163 184 / 0.18);
   -webkit-backdrop-filter: blur(18px) saturate(1.1);
   backdrop-filter: blur(18px) saturate(1.1);
 }
-.feluqa-dock__panel.is-magnifying {
-  --feluqa-pad-x: var(--feluqa-pad-x-hover, 24px);
+.x1wkm5mil__panel.is-magnifying {
+  --x4ga0z4w0-pad-x: var(--x4ga0z4w0-pad-x-hover, 24px);
 }
 
 /* Keep the dock items and interactions while omitting the surrounding panel. */
-.feluqa-dock--bare .feluqa-dock__scroller {
+.x1wkm5mil--bare .x1wkm5mil__scroller {
   padding: 0;
 }
-.feluqa-dock--bare .feluqa-dock__panel {
+.x1wkm5mil--bare .x1wkm5mil__panel {
   min-height: 0;
   padding: 0.25rem;
   border: 0;
@@ -618,28 +618,28 @@ const rootStyle = computed(() => ({
 /* ---------------------------------------------------------------- */
 /* Slot: fixed size, so the layout never reflows                     */
 /* ---------------------------------------------------------------- */
-.feluqa-dock__slot {
+.x1wkm5mil__slot {
   position: relative;
   display: flex;
   flex: 0 0 auto;
-  width: var(--feluqa-size);
+  width: var(--x4ga0z4w0-size);
   flex-direction: column;
   align-items: center;
   transform: translate3d(var(--tx, 0px), 0, 0);
   transition: transform 90ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.feluqa-dock__item {
+.x1wkm5mil__item {
   position: relative;
   display: block;
   box-sizing: border-box;
-  width: var(--feluqa-size);
-  height: var(--feluqa-size);
+  width: var(--x4ga0z4w0-size);
+  height: var(--x4ga0z4w0-size);
   flex: 0 0 auto;
   padding: 0;
   border: 0;
   background: none;
-  color: var(--feluqa-on-brand);
+  color: var(--on-brand);
   cursor: pointer;
   outline: none;
   text-decoration: none;
@@ -651,11 +651,11 @@ const rootStyle = computed(() => ({
   transition: transform 90ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }
-.feluqa-dock__item,
-.feluqa-dock__item:hover,
-.feluqa-dock__item:focus-visible { color: var(--feluqa-on-brand) !important; }
+.x1wkm5mil__item,
+.x1wkm5mil__item:hover,
+.x1wkm5mil__item:focus-visible { color: var(--on-brand) !important; }
 
-.feluqa-dock__tile {
+.x1wkm5mil__tile {
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -666,16 +666,16 @@ const rootStyle = computed(() => ({
   justify-content: center;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 0.24);
-  border-radius: var(--feluqa-radius, calc(var(--radius-lg) * 1.2));
-  background-color: var(--feluqa-brand);
+  border-radius: var(--x4ga0z4w0-radius, calc(var(--radius-lg) * 1.2));
+  background-color: var(--brand);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: linear-gradient(145deg, color-mix(in srgb, var(--feluqa-brand) 58%, white), var(--feluqa-brand));
+  background-image: linear-gradient(145deg, color-mix(in srgb, var(--brand) 58%, white), var(--brand));
   box-shadow: 0 4px 9px rgb(0 0 0 / 0.2), inset 0 1px 0 rgb(255 255 255 / 0.3);
   transition: filter 80ms ease;
 }
-.feluqa-dock__tile.is-image-background {
+.x1wkm5mil__tile.is-image-background {
   --r: 50%;
   --_r: clamp(0%, var(--r) / 2, 25%);
   --_v: calc(var(--_r) * (1 - sqrt(2) / 4));
@@ -703,14 +703,14 @@ const rootStyle = computed(() => ({
     curve to var(--_v) var(--_p) with calc(2 * var(--_p)) calc(2 * var(--_p))
   );
 }
-.feluqa-dock__image-wrap {
+.x1wkm5mil__image-wrap {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
-.feluqa-dock__image {
+.x1wkm5mil__image {
   position: absolute;
   inset: 0;
   display: block;
@@ -719,61 +719,61 @@ const rootStyle = computed(() => ({
   margin: 0;
   object-fit: contain;
 }
-.feluqa-dock__item.tone--server .feluqa-dock__tile { background-image: linear-gradient(145deg, var(--feluqa-brand), var(--feluqa-brand-secondary)); }
-.feluqa-dock__item.tone--sparkles .feluqa-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--feluqa-brand) 38%, white), color-mix(in srgb, var(--feluqa-brand) 76%, white)); }
-.feluqa-dock__item.tone--building .feluqa-dock__tile { background-image: linear-gradient(145deg, var(--feluqa-brand-secondary), var(--feluqa-brand-tertiary)); }
-.feluqa-dock__item.has-color .feluqa-dock__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--tile) 62%, white), var(--tile)); }
+.x1wkm5mil__item.tone--server .x1wkm5mil__tile { background-image: linear-gradient(145deg, var(--brand), var(--brand-secondary)); }
+.x1wkm5mil__item.tone--sparkles .x1wkm5mil__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--brand) 38%, white), color-mix(in srgb, var(--brand) 76%, white)); }
+.x1wkm5mil__item.tone--building .x1wkm5mil__tile { background-image: linear-gradient(145deg, var(--brand-secondary), var(--brand-tertiary)); }
+.x1wkm5mil__item.has-color .x1wkm5mil__tile { background-image: linear-gradient(145deg, color-mix(in srgb, var(--tile) 62%, white), var(--tile)); }
 
-.feluqa-dock__item:focus-visible .feluqa-dock__tile {
-  outline: 2px solid var(--feluqa-brand);
+.x1wkm5mil__item:focus-visible .x1wkm5mil__tile {
+  outline: 2px solid var(--brand);
   outline-offset: 3px;
 }
 
 /* Keep artwork colors stable; hover only scales/fades the icon below. */
-.feluqa-dock__item:active .feluqa-dock__tile { filter: brightness(0.78); }
+.x1wkm5mil__item:active .x1wkm5mil__tile { filter: brightness(0.78); }
 
-.feluqa-dock__icon,
-.feluqa-dock__custom-icon {
-  width: var(--feluqa-icon-size);
-  height: var(--feluqa-icon-size);
+.x1wkm5mil__icon,
+.x1wkm5mil__custom-icon {
+  width: var(--x4ga0z4w0-icon-size);
+  height: var(--x4ga0z4w0-icon-size);
   flex: 0 0 auto;
 }
-.feluqa-dock__icon { stroke: var(--feluqa-on-brand); }
-.feluqa-dock :deep(.feluqa-dock__custom-icon) {
-  color: var(--feluqa-on-brand) !important;
+.x1wkm5mil__icon { stroke: var(--on-brand); }
+.x1wkm5mil :deep(.x1wkm5mil__custom-icon) {
+  color: var(--on-brand) !important;
 }
-.feluqa-dock__symbol {
+.x1wkm5mil__symbol {
   display: block;
-  width: var(--feluqa-icon-size);
-  height: var(--feluqa-icon-size);
+  width: var(--x4ga0z4w0-icon-size);
+  height: var(--x4ga0z4w0-icon-size);
   filter: brightness(0) invert(1);
   pointer-events: none;
   -webkit-user-drag: none;
 }
 
 @media (hover: hover) {
-  .feluqa-dock__slot:hover .feluqa-dock__icon,
-  .feluqa-dock__slot:hover .feluqa-dock__custom-icon,
-  .feluqa-dock__slot:hover .feluqa-dock__symbol {
+  .x1wkm5mil__slot:hover .x1wkm5mil__icon,
+  .x1wkm5mil__slot:hover .x1wkm5mil__custom-icon,
+  .x1wkm5mil__slot:hover .x1wkm5mil__symbol {
     transform: scale(0.9);
     opacity: 0.75;
   }
-  .feluqa-dock__slot:hover .feluqa-dock__icon,
-  .feluqa-dock__slot:hover .feluqa-dock__custom-icon { transform: scale(0.9); }
+  .x1wkm5mil__slot:hover .x1wkm5mil__icon,
+  .x1wkm5mil__slot:hover .x1wkm5mil__custom-icon { transform: scale(0.9); }
 }
 
 /* ---- bounce when launched ---- */
-.feluqa-dock__tile.is-bouncing { animation: feluqa-dock-bounce 640ms cubic-bezier(0.28, 0.84, 0.42, 1) 1; }
-@keyframes feluqa-dock-bounce {
+.x1wkm5mil__tile.is-bouncing { animation: x1wkm5mil-bounce 640ms cubic-bezier(0.28, 0.84, 0.42, 1) 1; }
+@keyframes x1wkm5mil-bounce {
   0%, 100% { transform: translateY(0); }
-  30% { transform: translateY(calc(var(--feluqa-size) * -0.42)); }
+  30% { transform: translateY(calc(var(--x4ga0z4w0-size) * -0.42)); }
   55% { transform: translateY(0); }
-  75% { transform: translateY(calc(var(--feluqa-size) * -0.14)); }
+  75% { transform: translateY(calc(var(--x4ga0z4w0-size) * -0.14)); }
   90% { transform: translateY(0); }
 }
 
 /* ---- badge ---- */
-.feluqa-dock__badge {
+.x1wkm5mil__badge {
   position: absolute;
   top: -4px;
   right: -6px;
@@ -794,7 +794,7 @@ const rootStyle = computed(() => ({
 /* ---------------------------------------------------------------- */
 /* Tooltip with arrow (desktop)                                      */
 /* ---------------------------------------------------------------- */
-.feluqa-dock__tooltip {
+.x1wkm5mil__tooltip {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -815,10 +815,10 @@ const rootStyle = computed(() => ({
   line-height: 1.25;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, calc(4px - (var(--s, 1) - 1) * var(--feluqa-size)));
+  transform: translate(-50%, calc(4px - (var(--s, 1) - 1) * var(--x4ga0z4w0-size)));
   transition: opacity 120ms ease, transform 120ms ease;
 }
-.feluqa-dock__tooltip::after {
+.x1wkm5mil__tooltip::after {
   content: '';
   position: absolute;
   top: 100%;
@@ -830,22 +830,22 @@ const rootStyle = computed(() => ({
 }
 
 @media (hover: hover) {
-  .feluqa-dock__slot:hover .feluqa-dock__tooltip {
+  .x1wkm5mil__slot:hover .x1wkm5mil__tooltip {
     opacity: 1;
-    transform: translate(-50%, calc(0px - (var(--s, 1) - 1) * var(--feluqa-size)));
+    transform: translate(-50%, calc(0px - (var(--s, 1) - 1) * var(--x4ga0z4w0-size)));
   }
 }
-.feluqa-dock__slot:has(.feluqa-dock__item:focus-visible) .feluqa-dock__tooltip {
+.x1wkm5mil__slot:has(.x1wkm5mil__item:focus-visible) .x1wkm5mil__tooltip {
   opacity: 1;
-  transform: translate(-50%, calc(0px - (var(--s, 1) - 1) * var(--feluqa-size)));
+  transform: translate(-50%, calc(0px - (var(--s, 1) - 1) * var(--x4ga0z4w0-size)));
 }
 
 /* ---------------------------------------------------------------- */
 /* Mobile label, highlight dot, divider                              */
 /* ---------------------------------------------------------------- */
-.feluqa-dock__label { display: none; }
+.x1wkm5mil__label { display: none; }
 
-.feluqa-dock__indicator {
+.x1wkm5mil__indicator {
   position: absolute;
   bottom: -0.7rem;
   left: 50%;
@@ -853,19 +853,19 @@ const rootStyle = computed(() => ({
   height: 0.3rem;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: var(--feluqa-brand);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--feluqa-brand) 55%, transparent);
+  background: var(--brand);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--brand) 55%, transparent);
   pointer-events: none;
 }
 
-.feluqa-dock__divider {
+.x1wkm5mil__divider {
   width: 1px;
-  height: calc(var(--feluqa-size) * 0.9);
+  height: calc(var(--x4ga0z4w0-size) * 0.9);
   flex: 0 0 1px;
   align-self: flex-end;
   margin-inline: 0.15rem;
-  margin-bottom: calc(var(--feluqa-size) * 0.05 + var(--feluqa-label-h));
-  background: var(--feluqa-text-primary);
+  margin-bottom: calc(var(--x4ga0z4w0-size) * 0.05 + var(--x4ga0z4w0-label-h));
+  background: var(--text-primary);
   opacity: 0.2;
   transform: translate3d(var(--tx, 0px), 0, 0);
   transition: transform 90ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -874,22 +874,22 @@ const rootStyle = computed(() => ({
 /* ---------------------------------------------------------------- */
 /* Group swap                                                        */
 /* ---------------------------------------------------------------- */
-.feluqa-dock-swap-enter-active,
-.feluqa-dock-swap-leave-active { transition: opacity 140ms ease, transform 140ms ease; }
-.feluqa-dock-swap-enter-from,
-.feluqa-dock-swap-leave-to { opacity: 0; transform: translateY(6px); }
+.x1wkm5mil-swap-enter-active,
+.x1wkm5mil-swap-leave-active { transition: opacity 140ms ease, transform 140ms ease; }
+.x1wkm5mil-swap-enter-from,
+.x1wkm5mil-swap-leave-to { opacity: 0; transform: translateY(6px); }
 
 /* ---------------------------------------------------------------- */
 /* Mobile: sizes are driven by CSS variables only                    */
 /* ---------------------------------------------------------------- */
 @media (max-width: 640px) {
-  .feluqa-dock {
-    --feluqa-size: var(--feluqa-mobile, 60px);
-    --feluqa-label-h: 1rem;
-    --feluqa-gap: 0.55rem;
+  .x1wkm5mil {
+    --x4ga0z4w0-size: var(--x4ga0z4w0-mobile, 60px);
+    --x4ga0z4w0-label-h: 1rem;
+    --x4ga0z4w0-gap: 0.55rem;
   }
 
-  .feluqa-dock__scroller {
+  .x1wkm5mil__scroller {
     padding: 0.25rem 0.25rem 1rem;
     overflow-x: auto;
     overflow-y: hidden;
@@ -897,19 +897,19 @@ const rootStyle = computed(() => ({
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
   }
-  .feluqa-dock__scroller::-webkit-scrollbar { display: none; }
+  .x1wkm5mil__scroller::-webkit-scrollbar { display: none; }
 
-  .feluqa-dock__panel { padding: 0.75rem 0.75rem 1rem; }
+  .x1wkm5mil__panel { padding: 0.75rem 0.75rem 1rem; }
 
-  .feluqa-dock__tooltip { display: none; }
+  .x1wkm5mil__tooltip { display: none; }
 
-  .feluqa-dock__label {
+  .x1wkm5mil__label {
     display: block;
-    width: calc(var(--feluqa-size) + 0.5rem);
+    width: calc(var(--x4ga0z4w0-size) + 0.5rem);
     height: 0.75rem;
     margin-top: 0.3rem;
     overflow: hidden;
-    color: var(--feluqa-text-primary);
+    color: var(--text-primary);
     font-size: 0.625rem;
     font-weight: 600;
     line-height: 0.75rem;
@@ -919,17 +919,17 @@ const rootStyle = computed(() => ({
     white-space: nowrap;
   }
 
-  .feluqa-dock__indicator { bottom: -0.8rem; }
+  .x1wkm5mil__indicator { bottom: -0.8rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .feluqa-dock__slot,
-  .feluqa-dock__item,
-  .feluqa-dock__tile,
-  .feluqa-dock__divider,
-  .feluqa-dock__tooltip,
-  .feluqa-dock-swap-enter-active,
-  .feluqa-dock-swap-leave-active { transition: none; }
-  .feluqa-dock__tile.is-bouncing { animation: none; }
+  .x1wkm5mil__slot,
+  .x1wkm5mil__item,
+  .x1wkm5mil__tile,
+  .x1wkm5mil__divider,
+  .x1wkm5mil__tooltip,
+  .x1wkm5mil-swap-enter-active,
+  .x1wkm5mil-swap-leave-active { transition: none; }
+  .x1wkm5mil__tile.is-bouncing { animation: none; }
 }
 </style>

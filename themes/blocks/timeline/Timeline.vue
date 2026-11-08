@@ -110,7 +110,7 @@ withDefaults(defineProps<{
   height: 36px;
   place-items: center;
   border-radius: 50%;
-  background: var(--feluqa-brand, #64748b);
+  background: var(--brand, #64748b);
   color: white;
 }
 

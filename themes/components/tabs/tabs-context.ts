@@ -15,7 +15,7 @@ export interface TabsContext {
   panelId: (value: string) => string
 }
 
-export const tabsContextKey: InjectionKey<TabsContext> = Symbol('FeluqaTabs')
+export const tabsContextKey: InjectionKey<TabsContext> = Symbol('x4r9m2c7')
 
 export function tabsKey(value: string): string {
   return encodeURIComponent(value).replace(/%/g, '_')

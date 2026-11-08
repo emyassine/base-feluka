@@ -39,8 +39,8 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </script>
 
 <template>
-  <section class="feluqa-acid-hero" :class="isDark ? 'feluqa-acid-hero--dark' : 'feluqa-acid-hero--light'">
-    <div class="feluqa-acid-hero__background" aria-hidden="true">
+  <section class="xn2a6jguo" :class="isDark ? 'xn2a6jguo--dark' : 'xn2a6jguo--light'">
+    <div class="xn2a6jguo__background" aria-hidden="true">
       <AcidSquares
         color1="#5227FF"
         color2="#A855F7"
@@ -66,10 +66,10 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
         :grain-intensity="0.05"
       />
     </div>
-    <div class="feluqa-acid-hero__content">
+    <div class="xn2a6jguo__content">
       <h1 :style="titleStyles" v-html="props.title" />
       <p :style="descriptionStyles" v-html="props.description" />
-      <div v-if="props.buttons.length" class="feluqa-acid-hero__actions">
+      <div v-if="props.buttons.length" class="xn2a6jguo__actions">
           <Button
             v-for="(button, index) in props.buttons"
             :key="`${button.href}-${index}`"
@@ -87,7 +87,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </template>
 
 <style scoped>
-.feluqa-acid-hero {
+.xn2a6jguo {
   position: relative;
   z-index: 0;
   display: grid;
@@ -103,12 +103,12 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   z-index: 100;
 }
 
-.feluqa-acid-hero__background {
+.xn2a6jguo__background {
   position: absolute;
   inset: 0;
 }
 
-.feluqa-acid-hero__content {
+.xn2a6jguo__content {
   position: relative;
   z-index: 1;
   width: min(100% - 2rem, 740px);
@@ -117,10 +117,10 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   text-align: center;
 }
 
-.feluqa-acid-hero--light { color: #fff; }
-.feluqa-acid-hero--dark { color: #fff; }
+.xn2a6jguo--light { color: #fff; }
+.xn2a6jguo--dark { color: #fff; }
 
-.feluqa-acid-hero h1 {
+.xn2a6jguo h1 {
   margin: 0 auto;
   color: inherit;
   font-size: clamp(2.4rem, 6vw, 4.4rem);
@@ -129,7 +129,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.05;
 }
 
-.feluqa-acid-hero p {
+.xn2a6jguo p {
   max-width: 650px;
   margin: 1.25rem auto 0;
   color: inherit;
@@ -137,7 +137,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.55;
 }
 
-.feluqa-acid-hero__actions {
+.xn2a6jguo__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -146,6 +146,6 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 }
 
 @media (max-width: 640px) {
-  .feluqa-acid-hero { min-height: 34rem; margin-top: -20px; }
+  .xn2a6jguo { min-height: 34rem; margin-top: -20px; }
 }
 </style>

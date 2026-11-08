@@ -134,11 +134,11 @@ function cardStyle(index: number): CSSProperties {
   height: var(--bounce-card-height, auto);
   aspect-ratio: var(--bounce-aspect-ratio, 1 / 1);
   overflow: hidden;
-  border: 6px solid var(--feluqa-surface, #fff);
-  outline: 1px solid var(--feluqa-page-gutter);
+  border: 6px solid var(--surface, #fff);
+  outline: 1px solid var(--page-gutter);
   outline-offset: 1px;
   border-radius: var(--radius-md);
-  background: var(--feluqa-surface-soft, #f6f6f7);
+  background: var(--surface-soft, #f6f6f7);
   box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
   translate: -50% -50%;
   transform: var(--bounce-transform, none);
@@ -173,7 +173,7 @@ function cardStyle(index: number): CSSProperties {
 }
 
 .bounce-cards__card:has(> .bounce-cards__toggle:focus-visible) {
-  outline: 3px solid var(--feluqa-brand);
+  outline: 3px solid var(--brand);
   outline-offset: 4px;
 }
 

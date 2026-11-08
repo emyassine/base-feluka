@@ -1,12 +1,12 @@
 <template>
-  <article class="feluqa-card">
-    <div v-if="icon" class="feluqa-card__icon" aria-hidden="true">{{ iconGlyph }}</div>
-    <div class="feluqa-card__body">
-      <h3 v-if="$slots.heading || title" class="feluqa-card__title">
+  <article class="xrqx9ssyk">
+    <div v-if="icon" class="xrqx9ssyk__icon" aria-hidden="true">{{ iconGlyph }}</div>
+    <div class="xrqx9ssyk__body">
+      <h3 v-if="$slots.heading || title" class="xrqx9ssyk__title">
         <slot v-if="$slots.heading" name="heading" />
         <span v-else v-html="title" />
       </h3>
-      <p v-if="$slots.description || description" class="feluqa-card__description">
+      <p v-if="$slots.description || description" class="xrqx9ssyk__description">
         <slot v-if="$slots.description" name="description" />
         <span v-else v-html="description" />
       </p>
@@ -21,21 +21,21 @@ const iconGlyph = computed(() => props.icon?.replace(/^heroicon-[os]-/, '').repl
 </script>
 
 <style scoped>
-.feluqa-card {
+.xrqx9ssyk {
   display: flex;
   gap: 0.9rem;
   margin: 0.75rem 0;
   padding: 1rem 1.15rem;
-  border: 1px solid var(--feluqa-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--feluqa-surface-soft);
+  background: var(--surface-soft);
 }
-.feluqa-card__icon {
-  color: var(--feluqa-brand);
+.xrqx9ssyk__icon {
+  color: var(--brand);
   font-size: 0.8rem;
   text-transform: capitalize;
 }
-.feluqa-card__body { min-width: 0; }
-.feluqa-card__title { margin: 0 0 0.45rem; font-size: 1.05rem; }
-.feluqa-card__description { margin: 0; color: var(--feluqa-text-secondary); }
+.xrqx9ssyk__body { min-width: 0; }
+.xrqx9ssyk__title { margin: 0 0 0.45rem; font-size: 1.05rem; }
+.xrqx9ssyk__description { margin: 0; color: var(--text-secondary); }
 </style>

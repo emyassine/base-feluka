@@ -12,9 +12,9 @@
     }
   },
   "logo": {
-    "light": "@spmpst::media::logo-light-mode.png",
+    "light": "@spmpst::media::numerimondes-logo-lightmode.png",
     "mini-light": "@spmpst::media::logo-mini-light-mode.png",
-    "dark": "@spmpst::media::logo-dark-mode.png",
+    "dark": "@spmpst::media::numerimondes-logo-darkmode.png",
     "mini-dark": "@spmpst::media::logo-mini-dark-mode.png",
     "alt": "Numerimondes",
     "height": "2rem"

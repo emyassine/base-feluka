@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useId } from 'vue'
+
+const heroId = `q7m4x9-${useId()}`
+
 withDefaults(defineProps<{
   title: string
   description: string
@@ -11,36 +15,36 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <section class="bleed-hero" :style="{ '--bleed-hero-min-height': minHeight }">
-    <div v-if="pattern" class="bleed-hero__pattern bleed-hero__pattern--left" aria-hidden="true"></div>
-    <div v-if="pattern" class="bleed-hero__pattern bleed-hero__pattern--right" aria-hidden="true"></div>
-    <div class="bleed-hero__content">
-      <div v-if="$slots.badge" class="bleed-hero__badge"><slot name="badge" /></div>
-      <div v-if="$slots.media" class="bleed-hero__media"><slot name="media" /></div>
-      <h1 class="bleed-hero__title">{{ title }}</h1>
-      <p class="bleed-hero__description">{{ description }}</p>
-      <div v-if="$slots.actions" class="bleed-hero__actions"><slot name="actions" /></div>
-      <div v-if="$slots.default" class="bleed-hero__extra"><slot /></div>
+  <section :id="heroId" class="q7m4x9" :style="{ '--q7m4x9-min-height': minHeight }">
+    <div v-if="pattern" class="q7m4x9__pattern q7m4x9__pattern--left" aria-hidden="true"></div>
+    <div v-if="pattern" class="q7m4x9__pattern q7m4x9__pattern--right" aria-hidden="true"></div>
+    <div class="q7m4x9__content">
+      <div v-if="$slots.badge" class="q7m4x9__badge"><slot name="badge" /></div>
+      <div v-if="$slots.media" class="q7m4x9__media"><slot name="media" /></div>
+      <h1 class="q7m4x9__title">{{ title }}</h1>
+      <p class="q7m4x9__description">{{ description }}</p>
+      <div v-if="$slots.actions" class="q7m4x9__actions"><slot name="actions" /></div>
+      <div v-if="$slots.default" class="q7m4x9__extra"><slot /></div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.bleed-hero {
+.q7m4x9 {
   position: relative;
   isolation: isolate;
   display: grid;
   place-items: center;
   width: 100vw;
-  min-height: var(--bleed-hero-min-height);
+  min-height: var(--q7m4x9-min-height);
   margin-inline: calc(50% - 50vw);
   padding: clamp(4rem, 9vw, 7rem) max(1.25rem, calc((100vw - 1200px) / 2));
   box-sizing: border-box;
   overflow: hidden;
-  color: var(--feluqa-text-primary, #172033);
+  color: var(--text-primary, #172033);
 }
 
-.bleed-hero__content {
+.q7m4x9__content {
   position: relative;
   z-index: 1;
   display: flex;
@@ -51,10 +55,10 @@ withDefaults(defineProps<{
   text-align: center;
 }
 
-.bleed-hero__media { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
-.bleed-hero__media :deep(img) { display: block; width: min(100%, 400px); height: auto; margin-inline: auto; }
-.bleed-hero__badge { margin-bottom: 1rem; }
-.bleed-hero__title {
+.q7m4x9__media { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.q7m4x9__media :deep(img) { display: block; width: min(100%, 400px); height: auto; margin-inline: auto; }
+.q7m4x9__badge { margin-bottom: 1rem; }
+.q7m4x9__title {
   max-width: 18ch;
   margin: 0 0 1.5rem;
   font-size: clamp(2.25rem, 7vw, 3.75rem);
@@ -63,17 +67,17 @@ withDefaults(defineProps<{
   letter-spacing: -.035em;
   text-wrap: balance;
 }
-.bleed-hero__description {
+.q7m4x9__description {
   max-width: 600px;
   margin: 0;
-  color: var(--feluqa-text-secondary, #526078);
+  color: var(--text-secondary, #526078);
   font-size: clamp(1rem, 2vw, 1.125rem);
   line-height: 1.7;
   text-wrap: pretty;
 }
-.bleed-hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 2rem; }
-.bleed-hero__extra { margin-top: 1.5rem; }
-.bleed-hero__pattern {
+.q7m4x9__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 2rem; }
+.q7m4x9__extra { margin-top: 1.5rem; }
+.q7m4x9__pattern {
   position: absolute;
   z-index: 0;
   top: 50%;
@@ -84,17 +88,17 @@ withDefaults(defineProps<{
   mask: radial-gradient(ellipse at center, #000 10%, transparent 72%);
   pointer-events: none;
 }
-.bleed-hero__pattern--left {
+.q7m4x9__pattern--left {
   left: max(-3.125rem, calc((100vw - 1200px) / 2 - 296px));
   transform: translateY(-50%);
 }
-.bleed-hero__pattern--right {
+.q7m4x9__pattern--right {
   right: max(-3.125rem, calc((100vw - 1200px) / 2 - 296px));
   transform: translateY(-50%) rotate(180deg);
 }
 @media (max-width: 700px) {
-  .bleed-hero__pattern { opacity: .55; }
-  .bleed-hero__pattern--left { left: -130px; }
-  .bleed-hero__pattern--right { right: -130px; }
+  .q7m4x9__pattern { opacity: .55; }
+  .q7m4x9__pattern--left { left: -130px; }
+  .q7m4x9__pattern--right { right: -130px; }
 }
 </style>

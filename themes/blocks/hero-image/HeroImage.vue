@@ -45,15 +45,15 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 
 <template>
   <section
-    class="feluqa-hero"
-    :class="isDark ? 'feluqa-hero--dark' : 'feluqa-hero--light'"
-    :style="{ '--feluqa-hero-image': `url('${activeBackgroundImage}')` }"
+    class="x4wuqs690"
+    :class="isDark ? 'x4wuqs690--dark' : 'x4wuqs690--light'"
+    :style="{ '--x4wuqs690-image': `url('${activeBackgroundImage}')` }"
   >
-    <div class="feluqa-hero__panel">
-      <div class="feluqa-hero__content">
+    <div class="x4wuqs690__panel">
+      <div class="x4wuqs690__content">
         <h1 :style="titleStyles" v-html="props.title" />
         <p :style="descriptionStyles" v-html="props.description" />
-        <div v-if="props.buttons.length" class="feluqa-hero__actions">
+        <div v-if="props.buttons.length" class="x4wuqs690__actions">
           <Button
             v-for="(button, index) in props.buttons"
             :key="`${button.href}-${index}`"
@@ -72,7 +72,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 </template>
 
 <style scoped>
-.feluqa-hero {
+.x4wuqs690 {
   position: relative;
   z-index: 0;
   display: grid;
@@ -81,12 +81,12 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   place-items: center;
   margin: 0 calc(50% - 50vw) 3rem;
   padding: clamp(1.25rem, 4vw, 3rem) 0;
-  background-image: var(--feluqa-hero-image);
+  background-image: var(--x4wuqs690-image);
   background-position: center;
   background-size: cover;
 }
 
-.feluqa-hero__panel {
+.x4wuqs690__panel {
   position: relative;
   display: grid;
   width: 100%;
@@ -98,15 +98,15 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   background: transparent;
 }
 
-.feluqa-hero__content {
+.x4wuqs690__content {
   width: min(100% - 2rem, 740px);
   text-align: center;
 }
 
-.feluqa-hero--light { color: #111827; }
-.feluqa-hero--dark { color: #fff; }
+.x4wuqs690--light { color: #111827; }
+.x4wuqs690--dark { color: #fff; }
 
-.feluqa-hero h1 {
+.x4wuqs690 h1 {
   margin: 0 auto;
   color: inherit;
   font-size: clamp(2.4rem, 6vw, 4.4rem);
@@ -115,7 +115,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.05;
 }
 
-.feluqa-hero p {
+.x4wuqs690 p {
   max-width: 650px;
   margin: 1.25rem auto 0;
   color: inherit;
@@ -123,7 +123,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
   line-height: 1.55;
 }
 
-.feluqa-hero__actions {
+.x4wuqs690__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -132,7 +132,7 @@ const isSecondaryButton = (button: HeroButton, index: number) =>
 }
 
 @media (max-width: 640px) {
-  .feluqa-hero { min-height: 34rem; margin-top: -20px; }
-  .feluqa-hero__panel { min-height: 30rem; }
+  .x4wuqs690 { min-height: 34rem; margin-top: -20px; }
+  .x4wuqs690__panel { min-height: 30rem; }
 }
 </style>

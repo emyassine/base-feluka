@@ -67,7 +67,7 @@ const style = computed(() => ({
   '--button-tint-opacity': `${Math.min(1, Math.max(0, props.tintOpacity)) * 100}%`,
   '--button-blur': `${Math.max(0, props.blur)}px`,
   ...(props.textColor ? { '--button-text': props.textColor } : {}),
-  '--button-line': props.lineColor ?? (buttonColor.value === 'gray' || buttonOutlined.value ? 'var(--feluqa-brand)' : 'var(--feluqa-on-brand)'),
+  '--button-line': props.lineColor ?? (buttonColor.value === 'gray' || buttonOutlined.value ? 'var(--brand)' : 'var(--on-brand)'),
   ...(props.baseColor ? { '--button-base': props.baseColor } : {}),
   '--button-intensity': String(Math.max(0, props.intensity)),
   '--button-shine-size': `${Math.min(180, Math.max(0, props.shineSize))}deg`,
@@ -128,7 +128,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     :title="tooltip"
     :style="style"
     :class="[
-      'feluqa-button', 'no-icon', `size-${size}`, `color-${buttonColor}`,
+      'x3dunhby5', 'no-icon', `size-${size}`, `color-${buttonColor}`,
       { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor), 'wrap-label': wrap },
     ]"
     @pointerenter="startHoverAnimation"
@@ -153,7 +153,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
     :title="tooltip"
     :style="style"
     :class="[
-      'feluqa-button', 'no-icon', `size-${size}`, `color-${buttonColor}`,
+      'x3dunhby5', 'no-icon', `size-${size}`, `color-${buttonColor}`,
       { outlined: buttonOutlined, 'is-disabled': disabled, 'is-hovered': isHovered, 'is-auto-animated': autoAnimate, 'has-text-color': Boolean(textColor), 'wrap-label': wrap },
     ]"
     @pointerenter="startHoverAnimation"
@@ -173,7 +173,7 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
 </template>
 
 <style scoped>
-.feluqa-button {
+.x3dunhby5 {
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -190,23 +190,23 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   cursor: pointer;
   transition: background-color .18s, color .18s, border-color .18s, opacity .18s, box-shadow .2s ease;
 }
-.feluqa-button:focus-visible { outline: 2px solid var(--feluqa-brand); outline-offset: 2px; }
-.feluqa-button.has-text-color { color: var(--button-text)!important; }
-.feluqa-button::before,
-.feluqa-button::after {
+.x3dunhby5:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.x3dunhby5.has-text-color { color: var(--button-text)!important; }
+.x3dunhby5::before,
+.x3dunhby5::after {
   position: absolute;
   z-index: 0;
   pointer-events: none;
   content: '';
 }
-.feluqa-button::before {
+.x3dunhby5::before {
   inset: 0;
   border: 1px solid color-mix(in srgb, var(--button-base, currentColor), transparent 78%);
   border-radius: inherit;
   background: radial-gradient(140% 180% at 50% 0%, var(--button-tint), transparent 54%);
   opacity: var(--button-tint-opacity);
 }
-.feluqa-button::after {
+.x3dunhby5::after {
   z-index: 2;
   inset: 0;
   padding: var(--button-thickness);
@@ -226,37 +226,37 @@ onUnmounted(() => cancelAnimationFrame(animationFrame))
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
 }
-.feluqa-button > span { position: relative; z-index: 1; }
+.x3dunhby5 > span { position: relative; z-index: 1; }
 .button-content { white-space: nowrap; }
 .wrap-label .button-content { white-space: normal; }
-.feluqa-button:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 3px 10px rgb(0 0 0 / .14); }
-.feluqa-button.is-hovered::after { filter: drop-shadow(0 0 3px var(--button-line)); }
-.feluqa-button.is-hovered.is-auto-animated::after { opacity: var(--button-intensity); }
+.x3dunhby5:hover:not(:disabled):not(.is-disabled) { box-shadow: 0 3px 10px rgb(0 0 0 / .14); }
+.x3dunhby5.is-hovered::after { filter: drop-shadow(0 0 3px var(--button-line)); }
+.x3dunhby5.is-hovered.is-auto-animated::after { opacity: var(--button-intensity); }
 .size-xs { min-height: 1.75rem; padding: .35rem .55rem; font-size: .75rem; }
 .size-sm { min-height: 2rem; padding: .45rem .75rem; font-size: .8125rem; }
 .size-md { min-height: 2.25rem; padding: .5rem 1rem; font-size: .875rem; }
 .size-lg { min-height: 2.75rem; padding: .7rem 1.25rem; font-size: 1rem; }
 .size-xl { min-height: 3.25rem; padding: .85rem 1.5rem; font-size: 1.125rem; }
-.color-primary { background: var(--feluqa-brand); color: var(--feluqa-on-brand)!important; }
+.color-primary { background: var(--brand); color: var(--on-brand)!important; }
 .color-primary:hover { opacity: .88; }
-.color-gray { background: var(--feluqa-surface-soft); color: var(--feluqa-text-primary)!important; border-color: var(--feluqa-border); }
+.color-gray { background: var(--surface-soft); color: var(--text-primary)!important; border-color: var(--border); }
 .color-gray:hover {
-  background: color-mix(in srgb, var(--feluqa-surface-soft) 93%, var(--feluqa-text-primary));
-  border-color: color-mix(in srgb, var(--feluqa-border) 55%, var(--feluqa-text-primary));
+  background: color-mix(in srgb, var(--surface-soft) 93%, var(--text-primary));
+  border-color: color-mix(in srgb, var(--border) 55%, var(--text-primary));
 }
-.color-info,.color-success,.color-warning,.color-danger { background: var(--feluqa-brand); color: var(--feluqa-on-brand)!important; }
+.color-info,.color-success,.color-warning,.color-danger { background: var(--brand); color: var(--on-brand)!important; }
 .color-dark { background: #18181b; color: #fff!important; border-color: rgb(255 255 255 / .28); }
 .color-dark:hover { background: #27272a; }
-.outlined { background: transparent; color: var(--feluqa-text-primary)!important; border-color: currentColor; }
-.color-primary.outlined { color: var(--feluqa-brand)!important; }
-.color-gray.outlined { border-color: var(--feluqa-border); }
+.outlined { background: transparent; color: var(--text-primary)!important; border-color: currentColor; }
+.color-primary.outlined { color: var(--brand)!important; }
+.color-gray.outlined { border-color: var(--border); }
 .button-icon { display: inline-flex; width: 1em; height: 1em; align-items: center; justify-content: center; }
 .button-icon-image { display: inline-block; width: 100%; height: 100%; background-color: var(--button-icon-color-light, currentColor); -webkit-mask: var(--button-icon-src) center / contain no-repeat; mask: var(--button-icon-src) center / contain no-repeat; }
 .dark .button-icon-image { background-color: var(--button-icon-color-dark, var(--button-icon-color-light, currentColor)); }
 .button-badge { border-radius: 999px; padding: .2rem .4rem; font-size: .7em; background: rgb(255 255 255 / .2); }
 .is-disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
-  .feluqa-button { transition: none; }
-  .feluqa-button.is-hovered.is-auto-animated::after { opacity: 0; filter: none; }
+  .x3dunhby5 { transition: none; }
+  .x3dunhby5.is-hovered.is-auto-animated::after { opacity: 0; filter: none; }
 }
 </style>

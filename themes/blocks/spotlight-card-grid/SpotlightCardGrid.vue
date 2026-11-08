@@ -94,18 +94,18 @@ const items = computed(() => {
 
 <style scoped>
 .collection-spotlight-filters { display:flex; flex-wrap:wrap; align-items:end; gap:10px; margin-top:24px; }
-.collection-spotlight-filters label { display:grid; gap:4px; color:var(--feluqa-text-secondary); font-size:12px; }
-.collection-spotlight-filters input,.collection-spotlight-filters select { min-height:40px; border:1px solid var(--feluqa-border); border-radius:8px; background:var(--feluqa-surface-soft); color:var(--feluqa-text-primary); padding:0 12px; font:inherit; }
+.collection-spotlight-filters label { display:grid; gap:4px; color:var(--text-secondary); font-size:12px; }
+.collection-spotlight-filters input,.collection-spotlight-filters select { min-height:40px; border:1px solid var(--border); border-radius:8px; background:var(--surface-soft); color:var(--text-primary); padding:0 12px; font:inherit; }
 .collection-spotlight-filters input { flex:1 1 240px; }
-.collection-spotlight-filters input:focus,.collection-spotlight-filters select:focus { outline:2px solid var(--feluqa-brand); outline-offset:1px; }
+.collection-spotlight-filters input:focus,.collection-spotlight-filters select:focus { outline:2px solid var(--brand); outline-offset:1px; }
 .collection-spotlight-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr)); gap:18px; margin-top:28px; }
 .collection-spotlight-card { min-height:220px; }
 :deep(.collection-spotlight-card::before),:deep(.collection-spotlight-card .spotlight-card__glow) { display:none !important; }
-:deep(.collection-spotlight-card:hover),:deep(.collection-spotlight-card:focus-within) { border-color:color-mix(in srgb, var(--feluqa-brand) 55%, var(--feluqa-border)); background:transparent; box-shadow:0 14px 42px color-mix(in srgb, var(--feluqa-brand) 7%, transparent); transform:translateY(-2px); }
+:deep(.collection-spotlight-card:hover),:deep(.collection-spotlight-card:focus-within) { border-color:color-mix(in srgb, var(--brand) 55%, var(--border)); background:transparent; box-shadow:0 14px 42px color-mix(in srgb, var(--brand) 7%, transparent); transform:translateY(-2px); }
 .collection-spotlight-card__body { display:flex; height:100%; min-height:220px; flex-direction:column; align-items:flex-start; gap:12px; padding:24px; }
-.collection-spotlight-card__meta { display:flex; flex-wrap:wrap; gap:10px; color:var(--feluqa-text-secondary); font-size:12px; }
+.collection-spotlight-card__meta { display:flex; flex-wrap:wrap; gap:10px; color:var(--text-secondary); font-size:12px; }
 .collection-spotlight-card__body h2 { margin:0; font-size:20px; }
-.collection-spotlight-card__body h2 a { color:var(--feluqa-text-primary); text-decoration:none; }
-.collection-spotlight-card__body p { margin:0 auto 8px 0; color:var(--feluqa-text-secondary); font-size:14px; line-height:1.6; }
-.collection-spotlight-empty { margin-top:24px; color:var(--feluqa-text-secondary); }
+.collection-spotlight-card__body h2 a { color:var(--text-primary); text-decoration:none; }
+.collection-spotlight-card__body p { margin:0 auto 8px 0; color:var(--text-secondary); font-size:14px; line-height:1.6; }
+.collection-spotlight-empty { margin-top:24px; color:var(--text-secondary); }
 </style>

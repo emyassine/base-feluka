@@ -10,7 +10,7 @@ if (!context) throw new Error('TabsPanel must be rendered inside Tabs.')
 <template>
   <section
     v-show="context.isActive(value)"
-    class="feluqa-tabs__panel"
+    class="xmqrre3s1__panel"
     role="tabpanel"
     tabindex="0"
     :id="context.panelId(value)"
@@ -21,5 +21,5 @@ if (!context) throw new Error('TabsPanel must be rendered inside Tabs.')
 </template>
 
 <style scoped>
-.feluqa-tabs__panel:focus-visible { outline: 2px solid var(--feluqa-brand, #3977c8); outline-offset: 3px; }
+.xmqrre3s1__panel:focus-visible { outline: 2px solid var(--brand, #3977c8); outline-offset: 3px; }
 </style>

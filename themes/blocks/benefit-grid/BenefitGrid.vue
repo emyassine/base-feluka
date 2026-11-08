@@ -68,7 +68,7 @@ const rows = computed(() => props.rows?.length
 .benefits__copy { padding-top: 16px; }
 .benefits__copy h3 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px; font-size: 1.15rem; font-weight: 500; line-height: 1.35; }
 .benefits__number { flex: none; color: #3977c8; font-variant-numeric: tabular-nums; }
-.benefits__copy p { margin: 0; color: var(--feluqa-text-secondary, #555); font-size: .92rem; line-height: 1.65; }
+.benefits__copy p { margin: 0; color: var(--text-secondary, #555); font-size: .92rem; line-height: 1.65; }
 @media (max-width: 640px) {
   .benefits__row { grid-template-columns: minmax(0, 1fr); }
   .benefits__visual { height: min(var(--benefit-image-height), 68vw); min-height: 220px; }
