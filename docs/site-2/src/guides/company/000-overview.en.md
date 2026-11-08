@@ -26,12 +26,11 @@ layout: home
 <div style="margin-top:0rem;">
     <HeroCentered
       title="Ideas. Systems. Lasting value."
-      description="We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities."
-    >
+      description="We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities.">
       <template #media>
         <picture>
-          <img class="lightmode-only" src="/media/numerimondes-logo-lightmode.png" alt="Numerimondes">
-          <img class="darkmode-only" src="/media/numerimondes-logo-darkmode.png" alt="Numerimondes">
+          <img class="lightmode-only" :src="'/media/numerimondes-logo-lightmode.png'" alt="Numerimondes">
+          <img class="darkmode-only" :src="'/media/numerimondes-logo-darkmode.png'" alt="Numerimondes">
         </picture>
       </template>
     </HeroCentered>
