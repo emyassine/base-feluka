@@ -10,7 +10,7 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<HeroThree
+<HeroAcidSquares
   eyebrow="REMOTE RECRUITMENT · THE BEST RECRUIT"
   title="Remote recruitment built on <span class='silky-bbi'>qualified, relevant information</span>."
   description="A remote recruitment service for employers, wherever they are based."

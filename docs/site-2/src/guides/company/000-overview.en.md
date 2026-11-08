@@ -24,7 +24,7 @@ layout: home
   }
 </style>
 <div style="margin-top:0rem;">
-    <HeroTen
+    <HeroCentered
       title="Ideas. Systems. Lasting value."
       description="We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities."
     >
@@ -34,8 +34,8 @@ layout: home
           <img class="darkmode-only" src="/__docs-assets/9bb60f2a4969c108de6f14e08c1988469ec8ef6332b3c1945a2b6a922a15779b.png" alt="Numerimondes">
         </picture>
       </template>
-    </HeroTen>
-	  <HeroEight
+    </HeroCentered>
+	  <HeroBrandIntro
 	    eyebrow="By El Moumen Yassine"
 	    title="<span>Numerimondes</span>"
 	    title-style=""

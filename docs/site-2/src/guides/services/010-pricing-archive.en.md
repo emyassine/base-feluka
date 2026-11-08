@@ -10,7 +10,7 @@ status: "ready-for-review"
 js-events:
   - uncollapse-sidebar
 ---
-<HeroFive
+<HeroEffect
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"

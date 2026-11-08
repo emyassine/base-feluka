@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import attributionRegistry from '../../../../resources/components/brand-attributions.json'
+</script>
+
 ---
 title: "Attributions"
 sidebarTitle: "Attributions"
@@ -7,7 +11,7 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <HeroEight
+    <HeroBrandIntro
       eyebrow="Brandkit // Attributions"
       title="Attributions"
       tagline="The image credits behind our brand"
@@ -32,6 +36,7 @@ layout: home
     eyebrow="Attributions // Images"
     title="Image Credits"
     description="Images used in our legal and policy pages, with their source and license credits. Select an image to view its full-size file."
+    :images="attributionRegistry.images"
   />
 
   <BrandFooter brand="Numerimondes ®" note="Brand identity system" :show-border="false" />

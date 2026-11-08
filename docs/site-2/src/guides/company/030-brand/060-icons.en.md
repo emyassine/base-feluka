@@ -7,7 +7,7 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <HeroEight eyebrow="Brandkit // Icons" title="Icons" tagline="Our brand icons are the brand’s visual shorthand" cta-label="Explore Icons" cta-href="#nm-brand-index" />
+    <HeroBrandIntro eyebrow="Brandkit // Icons" title="Icons" tagline="Our brand icons are the brand’s visual shorthand" cta-label="Explore Icons" cta-href="#nm-brand-index" />
   </div>
   <BrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Iconography' }, { tagline: 'Iconography is the brand’s visual shorthand', description: 'Iconography is the brand’s visual shorthand—small symbols that add clarity, speed, and personality without needing explanation. Our icons are designed to feel precise and consistent: simple shapes, confident geometry, and just enough character to be recognizable at a glance. This section defines how icons are drawn and used so they stay cohesive across the product, website, and marketing.' }] }]" />
   <BrandIndex title="Icon Index" :columns="1" :groups="[

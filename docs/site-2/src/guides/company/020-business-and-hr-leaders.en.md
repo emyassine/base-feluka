@@ -12,7 +12,7 @@ layout: home
 
 
 
-<HeroEight
+<HeroBrandIntro
   eyebrow="FOR BUSINESS AND HR LEADERS · NUMERIMONDES"
   title="Business"
   tagline="Consulting, systems work and recruitment for a concrete need."

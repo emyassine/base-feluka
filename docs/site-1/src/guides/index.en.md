@@ -6,7 +6,7 @@ layout: home
 ---
 
 <LandingPageLayout>
-	<HeroOne
+	<HeroProductOverview
 	  title="The software your operations run on. Built once, delivered everywhere."
 	  lead="From the factory floor to the field unit to the back office: one application, built around how your organization works, on every device you operate."
 	  primary-label="Describe your operation"

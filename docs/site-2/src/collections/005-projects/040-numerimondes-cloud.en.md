@@ -10,7 +10,7 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<HeroThree
+<HeroAcidSquares
   eyebrow="NUMERIMONDES CLOUD · SERVER OPERATIONS"
   title="Infrastructure we <span class='silky-bbi'>operate ourselves</span>."
   description="Numerimondes Cloud brings server setup, management, backups and operational responsibility into one scoped service."

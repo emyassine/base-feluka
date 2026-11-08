@@ -7,7 +7,7 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <HeroEight eyebrow="Brandkit // Type" title="Type" tagline="Our typography is the structure for our brand voice" cta-label="Explore Type" cta-href="#nm-brand-index" />
+    <HeroBrandIntro eyebrow="Brandkit // Type" title="Type" tagline="Our typography is the structure for our brand voice" cta-label="Explore Type" cta-href="#nm-brand-index" />
   </div>
 
   <BrandOverview :sections="[{ columns: [{ label: 'BrandKit®', title: 'Typography' }, { tagline: 'Typography is the brand’s voice in written form', description: 'Typography is the brand’s voice in written form—it shapes how confident, modern, and trustworthy we feel before anyone reads the message. Our type system is built for clarity and character: strong hierarchy, generous spacing, and a calm rhythm that works across product UI, marketing, and long-form content. This section defines our fonts, sizing, and usage rules so every headline and paragraph feels unmistakably on-brand.' }] }]" />

@@ -10,7 +10,7 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<HeroThree
+<HeroAcidSquares
   eyebrow="OUR STANDARD · IN DEVELOPMENT"
   title="A standard for <span class='silky-bbi'>fast websites</span> built from portable content."
   description="SPMPST defines how a site’s content is structured before it is built, so the site stays fast and the content stays yours."

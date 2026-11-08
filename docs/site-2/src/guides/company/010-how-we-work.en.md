@@ -12,7 +12,7 @@ layout: home
 
 
 
-<HeroEight
+<HeroBrandIntro
   eyebrow="HOW WE WORK · NUMERIMONDES"
   title="Work"
   tagline="How we qualify, agree and deliver assignments."

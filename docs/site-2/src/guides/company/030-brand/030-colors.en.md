@@ -7,7 +7,7 @@ layout: home
 
 
 <div style="margin-top: 2rem">
-    <HeroEight
+    <HeroBrandIntro
       eyebrow="Brandkit // Color"
       title="Color"
       tagline="Our brand colors showcase our voice"

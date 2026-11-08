@@ -12,7 +12,7 @@ layout: home
 
 
 
-<HeroEight
+<HeroBrandIntro
   eyebrow="CONTACT · NUMERIMONDES"
   title="Contact"
   tagline="Projects, hiring, partnerships and technical discussions."

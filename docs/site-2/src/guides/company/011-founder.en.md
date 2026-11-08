@@ -12,7 +12,7 @@ layout: home
 
 
 
-<HeroEight
+<HeroBrandIntro
   eyebrow="THE FOUNDER · NUMERIMONDES"
   title="Founder"
   tagline="Business operations, consulting and software engineering."
@@ -50,7 +50,7 @@ The person you speak to first is the person accountable for the work. Tell him t
   image="/images/company/founder/yassine-02.jpeg"
   image-alt="Yassine El Moumen"
 >
-  <HeroNine
+  <ExploreDock
     bare
     label="Find Yassine El Moumen on social media"
     :items="[

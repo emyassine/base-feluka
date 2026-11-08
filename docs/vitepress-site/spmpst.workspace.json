@@ -4,29 +4,27 @@
     "../site-2/spmpst.json"
   ],
   "componentsPaths": [
-    "../../themes/components"
+    "../../themes/src",
+    "../../themes/adapters/vitepress"
   ],
   "StylesPaths": [
-    "../../themes/components/home/docs-home.css",
-    "../../themes/components/components.css",
-    "../../themes/components/blocks/styles/numerimondes.css",
-    "../../themes/components/blocks/styles/numerimondes-silky.css",
-    "../../themes/components/blocks/styles/accent-text.css",
-    "../../themes/components/blocks/styles/inline-image-preview.css",
-    "../../themes/components/blocks/styles/click-particles.css",
-    "../../themes/components/blocks/specialized/marketplace/numerimondes-marketplace.css",
-    "../../themes/vitepress/styles/tailwind.css",
-    "../../themes/vitepress/styles/style.css",
-    "../../themes/vitepress/styles/x-tooltip.css",
-    "../../themes/vitepress/styles/overview.css",
-    "../../themes/vitepress/styles/brand.css",
-    "../../themes/vitepress/styles/scroll-reveal.css"
+    "../../themes/src/styles/landing.css",
+    "../../themes/src/styles/components.css",
+    "../../themes/src/styles/accent-text.css",
+    "../../themes/src/styles/inline-image-preview.css",
+    "../../themes/src/styles/click-particles.css",
+    "../../themes/adapters/vitepress/styles/tailwind.css",
+    "../../themes/adapters/vitepress/styles/style.css",
+    "../../themes/adapters/vitepress/styles/x-tooltip.css",
+    "../../themes/adapters/vitepress/styles/overview.css",
+    "../../themes/adapters/vitepress/styles/brand.css",
+    "../../themes/adapters/vitepress/styles/scroll-reveal.css"
   ],
   "jsPaths": [
-    "../../themes/vitepress/scripts/x-tooltip.ts"
+    "../../themes/adapters/vitepress/scripts/x-tooltip.ts"
   ],
   "aliases": {
-    "@spmpst/browser-storage": "../../themes/components/ui/browser-storage.ts",
-    "@spmpst/vitepress-tooltip": "../../themes/vitepress/scripts/x-tooltip.ts"
+    "@spmpst/browser-storage": "../../themes/src/composables/browser-storage.ts",
+    "@spmpst/vitepress-tooltip": "../../themes/adapters/vitepress/scripts/x-tooltip.ts"
   }
 }

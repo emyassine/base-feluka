@@ -13,7 +13,7 @@ image: "/images/policies/pricing-scoped-value.webp"
 imageAlt: "An amber prism and stacked ceramic pieces balance on a dark slate beam."
 menuImage: "/images/policies/pricing-scoped-value.webp"
 ---
-<HeroFive
+<HeroEffect
   :full-bleed="false"
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '56vh' }"

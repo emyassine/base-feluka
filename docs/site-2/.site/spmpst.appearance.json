@@ -12,10 +12,10 @@
     }
   },
   "logo": {
-	  "light": "@spmpst::media::logo-light-mode.png",
-	  "mini-light": "@spmpst::media::logo-mini-light-mode.png",
-	  "dark": "@spmpst::media::logo-dark-mode.png",
-	  "mini-dark": "@spmpst::media::logo-mini-dark-mode.png",
+    "light": "@spmpst::media::logo-light-mode.png",
+    "mini-light": "@spmpst::media::logo-mini-light-mode.png",
+    "dark": "@spmpst::media::logo-dark-mode.png",
+    "mini-dark": "@spmpst::media::logo-mini-dark-mode.png",
     "alt": "Numerimondes",
     "height": "2rem"
   },
@@ -52,11 +52,8 @@
   },
   "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json",
   "styles": [
-    "../../../themes/components/blocks/styles/numerimondes.css",
-    "../../../themes/components/blocks/styles/numerimondes-silky.css",
-    "../../../themes/components/blocks/styles/accent-text.css",
-    "../../../themes/components/blocks/styles/inline-image-preview.css",
-    "../../../themes/components/blocks/styles/click-particles.css",
-    "../../../themes/components/blocks/specialized/marketplace/numerimondes-marketplace.css"
+    "../resources/components/numerimondes.css",
+    "../resources/components/numerimondes-silky.css",
+    "../resources/components/numerimondes-marketplace.css"
   ]
 }

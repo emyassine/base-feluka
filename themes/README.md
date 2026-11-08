@@ -1,5 +1,7 @@
-# Shared web themes and components
+# Feluqa UI
 
-`themes/components/` contains reusable Vue components, their implementation helpers, and component-owned CSS. `themes/vitepress/` contains generic VitePress adapter styles and scripts. Site-specific page content stays with its site; each site can contribute local components through its own `paths.components` root.
+A Vue component library organized by role under `src/`. Reusable components are framework-agnostic at the API boundary; host-specific integration lives in the optional `adapters/vitepress/` entrypoint. Site-owned Numerimondes components live in `docs/site-2/resources/components/`.
 
-The VitePress host discovers shared roots and assets from `docs/vitepress-site/spmpst.workspace.json`. Keep paths, stylesheet files, script entrypoints, and service aliases declared there so another host can provide its own implementations without importing repository locations directly.
+The React.dev homepage snapshot is retained under `src/third-party/react-home/` with its source assets and required notices. It is an isolated compatibility/demo artifact, not part of the default library entrypoint.
+
+Import public APIs through `@feluqa/ui` or its `package.json` subpath exports. CSS is available under `@feluqa/ui/styles/*`. Third-party asset and font terms are recorded in `THIRD_PARTY_NOTICES.txt` and adjacent font license files.

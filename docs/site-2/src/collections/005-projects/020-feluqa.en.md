@@ -10,7 +10,7 @@ js-events:
   - uncollapse-sidebar
 ---
 
-<HeroThree
+<HeroAcidSquares
   eyebrow="OUR PLATFORM PROJECT · IN DEVELOPMENT"
   title="A Rust platform for <span class='silky-bbi'>efficient, controllable</span> software."
   description="Feluqa is the foundation we are building to deliver applications across environments."

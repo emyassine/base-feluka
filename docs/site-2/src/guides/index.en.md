@@ -6,7 +6,7 @@ layout: home
 description: "Numerimondes helps organizations design, build, and operate dependable systems."
 ---
 <div></div>
-<HeroFive
+<HeroEffect
   :effect="['silk', { inject: { lightColor: '#0043e0', darkColor: '#141D2A', lightNoise: 1.5, noiseIntensity: 0.3, speed: 12 } }]"
   :hero-style="{ minHeight: '90vh' }"
   :eyebrow="{ text: 'Insight. Innovation. Strategy. Execution.', color: { light: '#e2e8f0', dark: '#e2e8f0' } }"
@@ -18,7 +18,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
   ]"
 >
 	<template #dock>
-  <HeroNine
+  <ExploreDock
     default-group="Our Products"
     :panel-height="68"
     :base-item-size="50"
@@ -46,7 +46,7 @@ description: "Numerimondes helps organizations design, build, and operate depend
     ]"
   />
 	</template>
-</HeroFive>
+</HeroEffect>
 
 <CompanyIntroduction
 	title="<h1>Numerimondes <span class='silky-bbi' style='color:var(--vp-c-brand-1);'>is an <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>independent</span> consulting and solutions <span style='text-decoration: underline !important; text-decoration-color: var(--vp-c-text-1) !important;'>company</span></span></h1>"

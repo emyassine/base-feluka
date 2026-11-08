@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light dark;
+  --feluqa-surface: #ffffff;
+  --feluqa-surface-alt: #f8fafc;
+  --feluqa-surface-raised: #ffffff;
+  --feluqa-surface-muted: #f1f5f9;
+  --feluqa-surface-soft: #f8fafc;
+  --feluqa-border: #dbe2ea;
+  --feluqa-text-primary: #172033;
+  --feluqa-text-secondary: #526078;
+  --feluqa-text-muted: #778399;
+  --feluqa-brand: #3977c8;
+  --feluqa-brand-secondary: #6c55d8;
+  --feluqa-brand-tertiary: #a855f7;
+  --feluqa-brand-soft: #e9efff;
+  --feluqa-on-brand: #ffffff;
+  --feluqa-font-base: Inter, ui-sans-serif, system-ui, sans-serif;
+  --feluqa-font-heading: var(--feluqa-font-base);
+  --feluqa-font-size: 16px;
+  --feluqa-content-width: 1200px;
+  --feluqa-page-gutter: 1.5rem;
+  --feluqa-sidebar-width: 17rem;
+  --feluqa-nav-offset: 0px;
+  --feluqa-layout-top-offset: 0px;
+  --feluqa-doc-top-offset: 0px;
+  --feluqa-z-nav: 20;
+  --feluqa-shadow-1: 0 1px 2px rgb(15 23 42 / 8%);
+  --feluqa-shadow-2: 0 8px 24px rgb(15 23 42 / 12%);
+  --feluqa-shadow-3: 0 18px 48px rgb(15 23 42 / 18%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --feluqa-surface: #111827;
+    --feluqa-surface-alt: #172033;
+    --feluqa-surface-raised: #1e293b;
+    --feluqa-surface-muted: #263449;
+    --feluqa-surface-soft: #1a2638;
+    --feluqa-border: #334155;
+    --feluqa-text-primary: #f1f5f9;
+    --feluqa-text-secondary: #cbd5e1;
+    --feluqa-text-muted: #94a3b8;
+    --feluqa-brand-soft: #23365b;
+  }
+}
