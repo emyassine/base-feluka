@@ -15,6 +15,7 @@ onMounted(() => {
 
 watch(currency, (value) => {
   writeManagedStorage('spmpst-currency', value)
+  window.dispatchEvent(new CustomEvent('currency-change', { detail: value }))
   window.dispatchEvent(new CustomEvent('spmpst-currency-change', { detail: value }))
 })
 
