@@ -20,6 +20,6 @@ export function plainCode(source: string, requestedLanguage: string): string {
 /** Highlight injected source with the same Shiki themes VitePress uses for Markdown fences. */
 export async function highlightCode(source: string, requestedLanguage: string): Promise<string> {
   const language = supportedLanguages.has(requestedLanguage) ? requestedLanguage : 'text'
-  const { highlightCodeWithShiki } = await import('./shiki-highlighter')
+  const { highlightCodeWithShiki } = await import('./react-home-shiki-highlighter')
   return wrapCode(await highlightCodeWithShiki(source, language), source, language)
 }

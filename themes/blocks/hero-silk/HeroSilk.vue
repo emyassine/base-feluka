@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HeroEffect from './HeroEffect.vue'
+import HeroEffect from '../hero-effect/HeroEffect.vue'
 
 const props = withDefaults(defineProps<{
   eyebrow: string

@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useData } from 'vitepress';
-import { useCollection } from './useCollections';
-
-const { frontmatter, lang, page } = useData();
-const collection = computed(() => useCollection(String(frontmatter.value.collection || '')));
-const isArticle = computed(() => collection.value?.layout === 'article');
-const locale = computed(() => String(frontmatter.value.requestedLanguage || lang.value).toLowerCase().split('-')[0]);
-const label = computed(() => collection.value?.titles[locale.value] ?? collection.value?.titles.en ?? 'Back');
-const href = computed(() => collection.value?.links[locale.value] ?? collection.value?.links.en ?? '/');
-const headings = computed(() => (page.value.headers ?? []).filter((heading) => heading.level === 2));
-const readingLabel = computed(() => locale.value === 'fr' ? 'min de lecture' : 'min read');
-const wordLabel = computed(() => locale.value === 'fr' ? 'mots' : 'words');
+withDefaults(defineProps<{
+  isArticle?: boolean
+  locale?: string
+  label?: string
+  href?: string
+  headings?: Array<{ slug: string; title: string; level?: number }>
+  wordCount?: number
+  readingTime?: number
+}>(), {
+  isArticle: false,
+  locale: 'en',
+  label: 'Back',
+  href: '/',
+  headings: () => [],
+})
 </script>
 
 <template>
@@ -25,8 +27,8 @@ const wordLabel = computed(() => locale.value === 'fr' ? 'mots' : 'words');
         <a v-for="heading in headings" :key="heading.slug" :href="`#${heading.slug}`">{{ heading.title }}</a>
       </div>
       <div class="collection-article-subnav__meta">
-        <span v-if="frontmatter.wordCount">{{ frontmatter.wordCount }} {{ wordLabel }}</span>
-        <span v-if="frontmatter.readingTime">{{ frontmatter.readingTime }} {{ readingLabel }}</span>
+        <span v-if="wordCount">{{ wordCount }} {{ locale.toLowerCase().startsWith('fr') ? 'mots' : 'words' }}</span>
+        <span v-if="readingTime">{{ readingTime }} {{ locale.toLowerCase().startsWith('fr') ? 'min de lecture' : 'min read' }}</span>
       </div>
       <div class="collection-article-actions"><slot name="actions" /></div>
     </div>

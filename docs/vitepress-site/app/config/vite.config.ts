@@ -21,6 +21,10 @@ const siteConfiguration = toVitepressRuntime(loadedSite.model, layout)
 const workspacePaths = JSON.parse(process.env.SPMPST_WORKSPACE_PATHS ?? '{"componentsPaths":[],"StylesPaths":[],"jsPaths":[]}') as { componentsPaths?: string[]; StylesPaths?: string[]; jsPaths?: string[] }
 const workspaceAliases = JSON.parse(process.env.SPMPST_WORKSPACE_ALIASES ?? '{}') as Record<string, string>
 const componentDirectories = [...new Set([...(workspacePaths.componentsPaths ?? []), paths.components, ...(paths.sharedComponents ? [paths.sharedComponents] : [])])]
+const workspaceDependencyDirectories = [...new Set([
+  ...componentDirectories,
+  ...Object.values(workspaceAliases).filter((path) => existsSync(path) && statSync(path).isDirectory()),
+])]
 const workspaceAssetDirectories = [...new Set([...(workspacePaths.StylesPaths ?? []), ...(workspacePaths.jsPaths ?? [])].map((path) => dirname(path)))]
 
 async function loadProjectViteConfig(): Promise<Record<string, unknown>> {
@@ -76,7 +80,7 @@ const siteViteConfig = {
       if (!importer || source.startsWith('.') || source.startsWith('/') || source.startsWith('node:')) return null
       if (source === 'vue' || source.startsWith('vue/') || source === 'vitepress') return null
       const importerPath = importer.split(/[?#]/, 1)[0]
-      const isProjectComponent = componentDirectories.some((directory) => {
+      const isProjectComponent = workspaceDependencyDirectories.some((directory) => {
         const componentRelativePath = relative(directory, importerPath)
         return componentRelativePath !== '..' && !componentRelativePath.startsWith(`..${sep}`) && !componentRelativePath.startsWith(sep)
       })
