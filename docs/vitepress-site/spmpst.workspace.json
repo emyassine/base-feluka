@@ -10,7 +10,7 @@
     "../../themes/shared/styles/**/*.css"
   ],
   "jsPaths": [
-    "../../themes/shared/scripts/vitepress/**/*.ts"
+    "../../themes/shared/scripts/{click-particles.ts,vitepress/**/*.ts}"
   ],
   "aliases": {
     "@themes": "../../themes"
