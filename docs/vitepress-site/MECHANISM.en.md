@@ -64,17 +64,16 @@ The host-level registry is [spmpst.workspace.json](spmpst.workspace.json):
     "../site-1/spmpst.json",
     "../site-2/spmpst.json"
   ],
-  "componentsPaths": ["../../themes/src"],
-  "StylesPaths": [],
-  "jsPaths": [],
+  "componentsPaths": ["../../themes/{components,blocks,shared/vitepress}"],
+  "StylesPaths": ["../../themes/shared/styles/**/*.css"],
+  "jsPaths": ["../../themes/shared/scripts/vitepress/**/*.ts"],
   "aliases": {
-    "@spmpst/browser-storage": "../../themes/src/primitives/ui/browser-storage.ts",
-    "@spmpst/vitepress-tooltip": "../../themes/adapters/vitepress/scripts/x-tooltip.ts"
+    "@themes": "../../themes"
   }
 }
 ```
 
-Each `sitesPaths` entry is a path to a site declaration. The other arrays declare shared component roots, stylesheet files, and JavaScript or TypeScript entry files. Optional `aliases` map module specifiers to workspace files, so shared components and pages consume workspace-provided services through the host resolver. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
+Each `sitesPaths` entry is a path to a site declaration. `componentsPaths`, `StylesPaths`, and `jsPaths` accept glob patterns; matches are expanded, checked, and resolved to absolute paths. Optional `aliases` map module specifiers to workspace files or directories, so shared components and pages consume workspace services without hard-coded relative imports. Relative registry entries are resolved from the directory containing the registry. `VITEPRESS_SITE_MANIFEST` can point both the shell wrapper and Node site registry at another registry file.
 
 The site declaration is `docs/site-1/spmpst.json`. It owns one complete paths registry and the build/dev actions. See the checked-in [root manifest](../site-1/spmpst.json) for the full current shape.
 

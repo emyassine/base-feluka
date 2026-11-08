@@ -3,6 +3,7 @@ import { dirname, isAbsolute, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
+import fastGlob from 'fast-glob'
 
 export const appDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const workspacePath = resolve(appDirectory, '../spmpst.workspace.json')
@@ -44,13 +45,27 @@ export async function loadSites() {
   const resolveWorkspacePaths = async (field, kind) => {
     const values = registry[field] ?? []
     if (!Array.isArray(values)) throw new Error(`${activeRegistryPath}: ${field} must be an array of ${kind} paths`)
-    return Promise.all(values.map(async (value) => {
+    const resolved = await Promise.all(values.map(async (value) => {
       if (typeof value !== 'string' || !value.trim()) throw new Error(`${activeRegistryPath}: every ${field} entry must be a path`)
-      const path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
-      if (kind === 'directories') await requireDirectory(path, activeRegistryPath, field)
-      else await requireFile(path, activeRegistryPath, field)
-      return path
+      if (!fastGlob.isDynamicPattern(value)) {
+        const path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
+        if (kind === 'directories') await requireDirectory(path, activeRegistryPath, field)
+        else await requireFile(path, activeRegistryPath, field)
+        return [path]
+      }
+
+      const matches = await fastGlob(value, {
+        cwd: registryDirectory,
+        absolute: true,
+        onlyFiles: kind === 'files',
+        onlyDirectories: kind === 'directories',
+        followSymbolicLinks: false,
+        unique: true,
+      })
+      if (matches.length === 0) throw new Error(`${activeRegistryPath}: ${field} pattern matched no ${kind}: ${value}`)
+      return matches.sort()
     }))
+    return [...new Set(resolved.flat())]
   }
   const [componentsPaths, StylesPaths, jsPaths] = await Promise.all([
     resolveWorkspacePaths('componentsPaths', 'directories'),
@@ -66,8 +81,18 @@ export async function loadSites() {
       if (!name.trim() || typeof value !== 'string' || !value.trim()) {
         throw new Error(`${activeRegistryPath}: every aliases entry needs a module name and file path`)
       }
-      const path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
-      await requireFile(path, activeRegistryPath, `aliases.${name}`)
+      let path
+      if (fastGlob.isDynamicPattern(value)) {
+        const matches = await fastGlob(value, { cwd: registryDirectory, absolute: true, onlyFiles: true, followSymbolicLinks: false, unique: true })
+        if (matches.length !== 1) throw new Error(`${activeRegistryPath}: aliases.${name} must match exactly one file; found ${matches.length} for ${value}`)
+        path = matches[0]
+      } else {
+        path = isAbsolute(value) ? resolve(value) : resolve(registryDirectory, value)
+        const target = await stat(path).catch(() => null)
+        if (!target || (!target.isFile() && !target.isDirectory())) {
+          throw new Error(`Path was not found by the conforming tool: ${path}. Restore it, or update "aliases.${name}" in ${activeRegistryPath}.`)
+        }
+      }
       aliases[name] = path
     }
   }

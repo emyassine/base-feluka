@@ -1,13 +1,13 @@
-<script setup lang="ts">
-import attributionRegistry from '../../../../resources/components/brand-attributions.json'
-</script>
-
 ---
 title: "Attributions"
 sidebarTitle: "Attributions"
 icon: "@spmpst::icon::images"
 layout: home
 ---
+
+<script setup lang="ts">
+import attributionRegistry from '@docs/resources/shared/data/brand-attributions.json'
+</script>
 
 
 <div style="margin-top: 2rem">

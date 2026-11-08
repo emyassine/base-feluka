@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useData } from 'vitepress'
-import { clearOptionalStorage, getBrowserStorageInventory, getStorageConsent, removeBrowserStorageEntry, saveStorageConsent, type BrowserStorageEntry } from '../../../src/composables/browser-storage'
+import { clearOptionalStorage, getBrowserStorageInventory, getStorageConsent, removeBrowserStorageEntry, saveStorageConsent, type BrowserStorageEntry } from '../scripts/browser-storage'
 
 type Locale = 'en' | 'fr' | 'ar' | 'es' | 'zh' | 'hi' | 'ru'
 const { lang } = useData()

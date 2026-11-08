@@ -1,5 +1,5 @@
 export { default as CallToAction } from './CallToAction.vue'
-export { default as CurrencySelector } from './CurrencySelector.vue'
+export { default as VitePressCurrencySelector } from '../VitePressCurrencySelector.vue'
 export { default as DocsFooter } from './DocsFooter.vue'
 export { default as FeatureCardGrid } from './FeatureCardGrid.vue'
 export { default as FloatingSubnavigation } from './FloatingSubnavigation.vue'

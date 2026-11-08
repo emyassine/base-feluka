@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Content, useData } from 'vitepress'
-import { useSpmpstConfig } from '../useSpmpstConfig'
+import { useSpmpstConfig } from './useSpmpstConfig'
 import generatedCollections from '@generated/collections.json'
 
 interface AuthorLink {

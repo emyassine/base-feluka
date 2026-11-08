@@ -9,7 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
-import { installXTooltip } from '@spmpst/vitepress-tooltip'
+import { installXTooltip } from '@themes/shared/scripts/vitepress/x-tooltip.ts'
 import '@generated/configured-styles'
 import '@generated/configured-scripts'
 

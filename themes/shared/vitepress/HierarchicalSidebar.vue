@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter, useData } from 'vitepress'
-import type { BranchedMenuChild, BranchedMenuItem } from '../../../src/navigation/menus/HierarchicalMenu.vue'
+import type { BranchedMenuChild, BranchedMenuItem } from '../../components/hierarchical-menu/HierarchicalMenu.vue'
 
 interface SidebarEntry {
   text?: string

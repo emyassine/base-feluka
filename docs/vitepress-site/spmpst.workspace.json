@@ -4,28 +4,15 @@
     "../site-2/spmpst.json"
   ],
   "componentsPaths": [
-    "../../themes/components",
-    "../../themes/blocks",
-    "../../themes/shared/vitepress"
+    "../../themes/{components,blocks,shared/vitepress}"
   ],
   "StylesPaths": [
-    "../../themes/shared/styles/landing.css",
-    "../../themes/shared/styles/vitepress/components.css",
-    "../../themes/shared/styles/accent-text.css",
-    "../../themes/shared/styles/inline-image-preview.css",
-    "../../themes/shared/styles/click-particles.css",
-    "../../themes/shared/styles/vitepress/tailwind.css",
-    "../../themes/shared/styles/vitepress/style.css",
-    "../../themes/shared/styles/vitepress/x-tooltip.css",
-    "../../themes/shared/styles/vitepress/overview.css",
-    "../../themes/shared/styles/vitepress/brand.css",
-    "../../themes/shared/styles/vitepress/scroll-reveal.css"
+    "../../themes/shared/styles/**/*.css"
   ],
   "jsPaths": [
-    "../../themes/shared/scripts/vitepress/x-tooltip.ts"
+    "../../themes/shared/scripts/vitepress/**/*.ts"
   ],
   "aliases": {
-    "@spmpst/browser-storage": "../../themes/shared/scripts/browser-storage.ts",
-    "@spmpst/vitepress-tooltip": "../../themes/shared/scripts/vitepress/x-tooltip.ts"
+    "@themes": "../../themes"
   }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { readManagedStorage, writeManagedStorage } from '@spmpst/browser-storage'
+import { readManagedStorage, writeManagedStorage } from '@themes/shared/scripts/browser-storage.ts'
 
 const supportedCurrencies = ['MAD', 'EUR', 'USD'] as const
 type CurrencyCode = (typeof supportedCurrencies)[number]

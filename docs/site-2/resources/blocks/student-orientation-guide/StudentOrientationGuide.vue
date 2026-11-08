@@ -14,7 +14,7 @@
 -->
 <script lang="ts">
 /* ═══════════════════════════ ENGINE ═══════════════════════════ */
-import { allowsOptionalStorage } from '@spmpst/browser-storage'
+import { allowsOptionalStorage } from '@themes/shared/scripts/browser-storage.ts'
 
 export type Language = 'en' | 'fr'
 export type PathwayId = 'technology' | 'business' | 'health' | 'education' | 'creative' | 'community'

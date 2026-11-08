@@ -10,7 +10,7 @@ layout: home-subheader
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
-import { readManagedStorage, writeManagedStorage } from '@spmpst/browser-storage'
+import { readManagedStorage, writeManagedStorage } from '@themes/shared/scripts/browser-storage.ts'
 import db from '@docs/src/guides/services/marketplace.json'
 type Tab = 'scope' | 'pricing' | 'reviews'
 const partners = Object.fromEntries(db.partners.map((p: any) => [p.id, p]))

@@ -15,22 +15,25 @@ legal/                    required third-party notices
 ```
 
 The registry's `sitesPaths`, `componentsPaths`, `StylesPaths`, and `jsPaths`
-entries are resolved relative to this directory. The shared component source is
-the repository-level `themes/src/` tree, organized by responsibility. Site
-declarations point at that same tree; appearance configuration selects the
-shared CSS files it needs from `StylesPaths`, while `jsPaths` lists optional
-workspace JavaScript or TypeScript entry files.
-Optional `aliases` map module specifiers to workspace files so shared
-components can consume injected workspace services without repository-relative
-imports. The development watcher observes configured component roots and
-refreshes the generated component registry when their structure changes.
+entries are resolved relative to this directory. The latter three accept
+`fast-glob` patterns, so shared components, styles, and scripts can be declared
+by folder or file pattern instead of listing each path. The shared Vue
+components live under `themes/components/`, `themes/blocks/`, and the optional
+VitePress adapter in `themes/shared/vitepress/`; global styles and scripts live
+under `themes/shared/`.
+Optional `aliases` map module specifiers to workspace paths. A root alias such
+as `@themes` points at the shared library so site components can import its
+services without hard-coded repository-relative paths. The development watcher
+observes the expanded component roots and refreshes the generated component
+registry when their structure changes.
 Each root `spmpst.json` declares the complete `paths` registry relative to
 itself, including `.site/`, source roots, public files, resources, toolchain,
 and output. The host resolves this once as `SpmpstPaths` and passes the same
 object to preparation, VitePress configuration, and the declared actions.
 `../site-1/` contains Feluqa's `.site/`, `src/`, and `resources/`; its
 hooks and diagrams stay with that site. Components from the host and both
-sites are maintained under the repository-level `themes/src/` tree. Generic VitePress theme styles and scripts live in `themes/adapters/vitepress/`; only the VitePress adapter entrypoint stays under `app/.vitepress/theme/`. Shared icons and flags stay in this host's `resources/`. `../site-2/` contains the Numerimondes
+sites are maintained under the repository-level `themes/` library. VitePress
+integration lives in `themes/shared/vitepress/`. Shared icons and flags stay in this host's `resources/`. `../site-2/` contains the Numerimondes
 English/French starter site. Each build writes outside its site tree under
 `docs-output/<site-id>/`.
 

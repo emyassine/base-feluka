@@ -52,8 +52,8 @@
   },
   "$schema": "../public/api/beta/schemas/spmpst-standard/appearance.schema.json",
   "styles": [
-    "../resources/components/numerimondes.css",
-    "../resources/components/numerimondes-silky.css",
-    "../resources/components/numerimondes-marketplace.css"
+    "../resources/shared/styles/numerimondes.css",
+    "../resources/shared/styles/numerimondes-silky.css",
+    "../resources/shared/styles/numerimondes-marketplace.css"
   ]
 }

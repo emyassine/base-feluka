@@ -8,7 +8,7 @@
     <p v-if="!Object.keys(groups).length" role="status">No concepts match this search.</p>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 const props = defineProps<{ concepts: Array<{ family: string; title: string; summary: string; url: string }> }>()
 const query = ref('')

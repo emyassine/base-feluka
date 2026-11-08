@@ -9,7 +9,7 @@
     "collections": "src/collections",
     "resources": "resources",
     "sharedResources": "../vitepress-site/resources",
-    "assets": "resources/assets",
+    "assets": "resources/shared/assets",
     "components": "resources/components",
     "diagrams": ".site/diagrams",
     "hooks": ".site/hooks",
