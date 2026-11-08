@@ -13,7 +13,7 @@ function burst(x: number, y: number): void {
   const svg = document.createElementNS(SVG_NS, 'svg')
   const center = EFFECT_SIZE / 2
   const color = getComputedStyle(document.documentElement)
-    .getPropertyValue('--feluqa-text-primary')
+    .getPropertyValue('--text-primary')
     .trim() || 'rgb(0, 0, 0)'
 
   svg.style.cssText = `

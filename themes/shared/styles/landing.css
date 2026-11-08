@@ -1,17 +1,17 @@
 .docs-home {
-  color: var(--feluqa-text-primary);
-  font-family: var(--feluqa-font-base);
+  color: var(--text-primary);
+  font-family: var(--font-base);
   width: 100%;
 }
 
 .docs-home h1,
 .docs-home h2,
 .docs-home .font-display {
-  font-family: var(--feluqa-font-heading, var(--feluqa-font-base));
+  font-family: var(--font-heading, var(--font-base));
 }
 
 .docs-home .docs-home__hero-title {
-  font-family: var(--feluqa-font-heading, var(--feluqa-font-base));
+  font-family: var(--font-heading, var(--font-base));
 }
 
 @media (min-width: 768px) {
@@ -66,12 +66,12 @@
 
 .docs-home__top {
   border-radius: 32px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--feluqa-brand) 14%, var(--feluqa-surface)) 0%, var(--feluqa-surface) 18%, var(--feluqa-surface) 60%, color-mix(in srgb, var(--feluqa-brand-secondary) 8%, var(--feluqa-surface)) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 14%, var(--surface)) 0%, var(--surface) 18%, var(--surface) 60%, color-mix(in srgb, var(--brand-secondary) 8%, var(--surface)) 100%);
 }
 
 .docs-home__bottom {
   border-radius: 24px 24px 32px 32px;
-  background: linear-gradient(180deg, var(--feluqa-surface) 0%, var(--feluqa-surface) 72%, color-mix(in srgb, var(--feluqa-brand) 12%, var(--feluqa-surface)) 100%);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface) 72%, color-mix(in srgb, var(--brand) 12%, var(--surface)) 100%);
 }
 
 .docs-home__rays {
@@ -99,16 +99,16 @@ body:has(.docs-home) #VPContent .VPHome .vp-doc.container {
 @media (min-width: 960px) {
   body:has(.VPContent.is-home.has-sidebar) .footer-deluqa-docs {
     box-sizing: border-box;
-    width: calc(min(100vw, var(--feluqa-content-width)) - var(--feluqa-sidebar-width));
+    width: calc(min(100vw, var(--content-width)) - var(--sidebar-width));
     max-width: none;
-    margin-left: calc(max(0px, (100vw - var(--feluqa-content-width)) / 2) + var(--feluqa-sidebar-width));
+    margin-left: calc(max(0px, (100vw - var(--content-width)) / 2) + var(--sidebar-width));
     margin-right: 0;
   }
 }
 
 @media (min-width: 1440px) {
   body:has(.VPContent.is-home.has-sidebar) .footer-deluqa-docs {
-    width: calc(var(--feluqa-content-width) - var(--feluqa-sidebar-width));
+    width: calc(var(--content-width) - var(--sidebar-width));
   }
 }
 
@@ -117,7 +117,7 @@ body:has(.docs-home) #VPContent .VPHome .vp-doc.container {
 }
 
 .docs-home .border {
-  border-color: var(--feluqa-border);
+  border-color: var(--border);
 }
 
 .docs-home #resource-allocation > div > h2 {

@@ -178,7 +178,7 @@ body {
 }
 
 .spotlight-card {
-  --feluqa-brand: var(--vp-brand-c-1, var(--vp-c-brand-1));
+  --brand: var(--vp-brand-c-1, var(--vp-c-brand-1));
   position: relative;
   min-width: 0;
   overflow: hidden;
@@ -194,9 +194,9 @@ body {
   z-index: 0;
   inset: 0;
   background: linear-gradient(125deg,
-    color-mix(in srgb, var(--feluqa-brand) 12%, transparent),
-    color-mix(in srgb, var(--feluqa-brand) 4%, transparent) 52%,
-    color-mix(in srgb, var(--feluqa-brand) 10%, transparent));
+    color-mix(in srgb, var(--brand) 12%, transparent),
+    color-mix(in srgb, var(--brand) 4%, transparent) 52%,
+    color-mix(in srgb, var(--brand) 10%, transparent));
   content: '';
   background-size: 220% 220%;
   background-position: 0% 50%;
@@ -206,9 +206,9 @@ body {
 
 .spotlight-card:hover,
 .spotlight-card:focus-within {
-  border-color: color-mix(in srgb, var(--feluqa-brand) 55%, var(--vp-c-divider));
+  border-color: color-mix(in srgb, var(--brand) 55%, var(--vp-c-divider));
   background: transparent;
-  box-shadow: 0 14px 42px color-mix(in srgb, var(--feluqa-brand) 7%, transparent);
+  box-shadow: 0 14px 42px color-mix(in srgb, var(--brand) 7%, transparent);
   transform: translateY(-2px);
 }
 

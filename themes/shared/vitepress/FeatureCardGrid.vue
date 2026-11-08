@@ -123,7 +123,7 @@ const icon = (name?: string) => iconMarkup[name?.replace(/^@spmpst::icon::/, '')
 .cards-modern__icon { flex: none; width: 1.5rem; height: 1.5rem; }
 .cards-modern__description { margin: .75rem 0 0; color: #e4e4e7; font-size: .875rem; line-height: 1.75; }
 .cards-modern__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-top: 1.25rem; }
-.cards-modern__actions :deep(.feluqa-button) { min-height: 2.25rem; font-size: .75rem; }
+.cards-modern__actions :deep(.x3dunhby5) { min-height: 2.25rem; font-size: .75rem; }
 .cards-modern__actions :deep(.cards-modern__action--icon-only) { width: 2.25rem; min-width: 2.25rem; padding-inline: 0; }
 .cards-modern__actions :deep(.cards-modern__action--icon-only .button-content) { display: none; }
 .cards-modern__action-icon { width: 1rem; height: 1rem; }

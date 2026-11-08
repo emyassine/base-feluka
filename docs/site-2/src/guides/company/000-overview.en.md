@@ -30,8 +30,8 @@ layout: home
     >
       <template #media>
         <picture>
-          <img class="lightmode-only" src="/__docs-assets/7b6866ee6dca8696e98170fb7d0e1e0882fed73c7dd8f04bfa447a37545ea610.png" alt="Numerimondes">
-          <img class="darkmode-only" src="/__docs-assets/9bb60f2a4969c108de6f14e08c1988469ec8ef6332b3c1945a2b6a922a15779b.png" alt="Numerimondes">
+          <img class="lightmode-only" src="/media/numerimondes-logo-lightmode.png" alt="Numerimondes">
+          <img class="darkmode-only" src="/media/numerimondes-logo-darkmode.png" alt="Numerimondes">
         </picture>
       </template>
     </HeroCentered>
