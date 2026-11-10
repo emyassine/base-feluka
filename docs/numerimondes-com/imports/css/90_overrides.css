@@ -1,0 +1,57 @@
+/* ============================================================
+   UNSET VP-DOC DEFAULTS
+   ============================================================ */
+.vp-doc h2 {
+  border-top: unset !important;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4,
+.vp-doc h5,
+.vp-doc h6,
+.title,
+.outline-title ol,
+ul,
+li,
+p {
+  font-weight: unset !important;
+  color: unset !important;
+}
+
+ul,
+li,
+p {
+  font-weight: 400 !important;
+}
+
+/* ============================================================
+   HACKS
+   ============================================================ */
+.aside-curtain {
+  background: transparent !important;
+}
+
+#app > div > header > div > div.wrapper > div > div.title > div > a {
+  border: 0px !important;
+}
+
+/* Custom Container Styles */
+.vp-doc .custom-block {
+  border-radius: var(--dp-radius-md);
+}
+
+/* Enhanced Code Blocks */
+.vp-doc div[class*='language-'] {
+  border-radius: var(--dp-radius-lg);
+}
+
+footer,
+gen-badge {
+  z-index: 25 !important;
+}
+
+.VPFooter {
+  display: none;
+}

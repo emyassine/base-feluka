@@ -1,0 +1,192 @@
+/* ===================================================== */
+/* BASE OPACITY */
+/* ===================================================== */
+
+.opacity-100,
+.opacity-100 * {
+  opacity: 1 !important;
+}
+.opacity-90,
+.opacity-90 * {
+  opacity: 0.9 !important;
+}
+.opacity-80,
+.opacity-80 * {
+  opacity: 0.8 !important;
+}
+.opacity-70,
+.opacity-70 * {
+  opacity: 0.7 !important;
+}
+.opacity-60,
+.opacity-60 * {
+  opacity: 0.6 !important;
+}
+.opacity-50,
+.opacity-50 * {
+  opacity: 0.5 !important;
+}
+.opacity-40,
+.opacity-40 * {
+  opacity: 0.4 !important;
+}
+.opacity-30,
+.opacity-30 * {
+  opacity: 0.3 !important;
+}
+.opacity-20,
+.opacity-20 * {
+  opacity: 0.2 !important;
+}
+.opacity-10,
+.opacity-10 * {
+  opacity: 0.1 !important;
+}
+.opacity-05,
+.opacity-05 * {
+  opacity: 0.05 !important;
+}
+
+/* ===================================================== */
+/* HOVER STATES */
+/* ===================================================== */
+
+.opacity-hover-100:hover,
+.opacity-hover-100:hover * {
+  opacity: 1 !important;
+}
+
+.opacity-hover-90:hover,
+.opacity-hover-90:hover * {
+  opacity: 0.9 !important;
+}
+
+.opacity-hover-80:hover,
+.opacity-hover-80:hover * {
+  opacity: 0.8 !important;
+}
+
+.opacity-hover-70:hover,
+.opacity-hover-70:hover * {
+  opacity: 0.7 !important;
+}
+
+.opacity-hover-60:hover,
+.opacity-hover-60:hover * {
+  opacity: 0.6 !important;
+}
+
+.opacity-hover-50:hover,
+.opacity-hover-50:hover * {
+  opacity: 0.5 !important;
+}
+
+/* ===================================================== */
+/* FOCUS STATES */
+/* ===================================================== */
+
+.opacity-focus-100:focus,
+.opacity-focus-100:focus * {
+  opacity: 1 !important;
+}
+
+.opacity-focus-80:focus,
+.opacity-focus-80:focus * {
+  opacity: 0.8 !important;
+}
+
+.opacity-focus-60:focus,
+.opacity-focus-60:focus * {
+  opacity: 0.6 !important;
+}
+
+/* ===================================================== */
+/* GROUP / PARENT HOVER */
+/* applique opacity quand le parent est hover */
+/* ===================================================== */
+
+.group:hover .opacity-group-hover-100,
+.group:hover .opacity-group-hover-100 * {
+  opacity: 1 !important;
+}
+
+.group:hover .opacity-group-hover-80,
+.group:hover .opacity-group-hover-80 * {
+  opacity: 0.8 !important;
+}
+
+.group:hover .opacity-group-hover-60,
+.group:hover .opacity-group-hover-60 * {
+  opacity: 0.6 !important;
+}
+
+/* ===================================================== */
+/* TRANSITIONS */
+/* ===================================================== */
+
+.opacity-transition {
+  transition: opacity 0.2s ease !important;
+}
+
+.opacity-transition-slow {
+  transition: opacity 0.4s ease !important;
+}
+
+.opacity-transition-fast {
+  transition: opacity 0.1s ease !important;
+}
+
+/* ===================================================== */
+/* COMBOS READY-TO-USE */
+/* ===================================================== */
+
+/* ex: opacity-80-on-hover-100 */
+.opacity-80-on-hover-100,
+.opacity-80-on-hover-100 * {
+  opacity: 0.8 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.opacity-80-on-hover-100:hover,
+.opacity-80-on-hover-100:hover * {
+  opacity: 1 !important;
+}
+
+/* ex: opacity-50-on-hover-100 */
+.opacity-50-on-hover-100,
+.opacity-50-on-hover-100 * {
+  opacity: 0.5 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.opacity-50-on-hover-100:hover,
+.opacity-50-on-hover-100:hover * {
+  opacity: 1 !important;
+}
+
+/* ex: opacity-100-on-hover-60 */
+.opacity-100-on-hover-60,
+.opacity-100-on-hover-60 * {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.opacity-100-on-hover-60:hover,
+.opacity-100-on-hover-60:hover * {
+  opacity: 0.6 !important;
+}
+
+/* ===================================================== */
+/* DISABLED / MUTED STATES */
+/* ===================================================== */
+
+.opacity-disabled,
+.opacity-disabled * {
+  opacity: 0.4 !important;
+  pointer-events: none !important;
+}
+
+.opacity-muted,
+.opacity-muted * {
+  opacity: 0.65 !important;
+}

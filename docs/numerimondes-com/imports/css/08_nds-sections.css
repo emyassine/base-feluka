@@ -1,0 +1,31 @@
+/* ============================================================
+   NDS SCHEMAS — Sections
+   ============================================================ */
+:root {
+  --nds-section-radius: 9px;
+  --nds-section-inner-radius: 6px;
+  --nds-section-pad: 20px;
+  --nds-section-gap: 16px;
+  --nds-section-head-w: 280px;
+  --nds-section-shadow: var(--vp-shadow-1);
+  --nds-section-muted: var(--vp-c-text-2);
+  --nds-section-title: var(--vp-c-text-1);
+  --nds-section-border: color-mix(in srgb, var(--vp-c-border) 80%, transparent);
+  --nds-section-bg: var(--vp-c-bg-soft);
+  --nds-section-bg-secondary: color-mix(in srgb, var(--vp-c-bg-soft) 85%, transparent);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --nds-section-pad: 16px;
+    --nds-section-gap: 12px;
+    --nds-section-head-w: 100%;
+    --nds-section-radius: 6px;
+    --nds-section-inner-radius: 4px;
+  }
+}
+
+.dark {
+  --nds-section-border: color-mix(in srgb, var(--vp-c-border) 50%, transparent);
+  --nds-section-bg: color-mix(in srgb, var(--vp-c-bg-soft) 70%, transparent);
+}

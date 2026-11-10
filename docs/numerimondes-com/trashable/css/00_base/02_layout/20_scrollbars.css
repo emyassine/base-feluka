@@ -1,0 +1,32 @@
+/* Ultra-thin scrollbar styling */
+:root {
+  --sb-size: 1px;
+  --sb-thumb-color: rgba(136, 136, 136, 0.3); /* Subtle transparency */
+  --sb-thumb-hover: rgba(85, 85, 85, 0.8);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb-color) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  /* No border-radius needed for 1px, but keeps it clean */
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+}

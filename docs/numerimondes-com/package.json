@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "esbuild": "^0.25.1",
+    "vitepress": "^2.0.0-alpha.16",
+    "@tailwindcss/vite": "^4.1.18",
+    "autoprefixer": "^10.4.24",
+    "chokidar": "^3.6.0",
+    "lucide-vue-next": "^0.563.0",
+    "plyr": "^3.7.8",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "vue": "^3.4.0"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "rm -rf .vitepress/dist && rm -rf .vitepress/cache && vitepress build",
+    "docs:preview": "vitepress preview",
+    "dead-links": "node scripts/dead-links/cli.mjs"
+  },
+  "keywords": [
+    "documentation",
+    "vitepress",
+    "filesystem-api"
+  ],
+  "author": "Numerimondes",
+  "license": "EPL-2.0"
+}

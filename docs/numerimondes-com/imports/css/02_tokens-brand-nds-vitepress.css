@@ -1,0 +1,131 @@
+/**
+ * Docspress Brand Variables
+ * + Numerimondes Design System (NDS) tokens
+ * + VitePress variable overrides
+ */
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+:root {
+  --vp-c-white: #ffffff;
+  --vp-c-black: #000000;
+  --vp-c-neutral: var(--vp-c-black);
+  --vp-c-neutral-inverse: var(--vp-c-white);
+
+  /* Brand Colors */
+  --dp-color-primary: #3451b2;
+  --dp-color-primary-light: #5a73d8;
+  --dp-color-primary-dark: #1e3a8a;
+  --dp-color-accent: #10b981;
+  --dp-color-accent-light: #34d399;
+
+  /* Neutral Colors */
+  --dp-color-bg: #ffffff;
+  --dp-color-bg-soft: #f9fafb;
+  --dp-color-bg-mute: #f3f4f6;
+  --dp-color-border: #e5e7eb;
+  --dp-color-text: #1f2937;
+  --dp-color-text-light: #6b7280;
+
+  /* Typography */
+  --dp-font-family-base: 'PP Neue Montreal', 'PP Neue Montreal Fallback', sans-serif;
+  --dp-font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+  /* Spacing */
+  --dp-space-xs: 0.25rem;
+  --dp-space-sm: 0.5rem;
+  --dp-space-md: 1rem;
+  --dp-space-lg: 1.5rem;
+  --dp-space-xl: 2rem;
+
+  /* Border Radius */
+  --dp-radius-sm: 0.25rem;
+  --dp-radius-md: 0.375rem;
+  --dp-radius-lg: 0.5rem;
+
+  /* Shadows */
+  --dp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --dp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --dp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  --vp-c-neutral: var(--vp-c-white);
+  --vp-c-neutral-inverse: var(--vp-c-black);
+  --dp-color-bg: #0f172a;
+  --dp-color-bg-soft: #1e293b;
+  --dp-color-bg-mute: #334155;
+  --dp-color-border: #475569;
+  --dp-color-text: #f1f5f9;
+  --dp-color-text-light: #cbd5e1;
+}
+
+/* ============================================================
+   NDS — Numerimondes Design System (legacy tokens)
+   ============================================================ */
+:root {
+  --nds-border-color: rgba(0, 0, 0, 0.1);
+  --nds-border-color-hover: rgba(0, 0, 0, 0.2);
+  --nds-bg: #ffffff;
+  --nds-bg-soft: #f6f8fa;
+  --nds-text: #0d1117;
+  --nds-accent: #0969da;
+}
+
+.dark {
+  --nds-border-color: rgba(255, 255, 255, 0.1);
+  --nds-border-color-hover: rgba(255, 255, 255, 0.2);
+  --nds-bg: #0d1117;
+  --nds-bg-soft: #161b22;
+  --nds-text: #e6edf3;
+  --nds-accent: #58a6ff;
+}
+
+/* ============================================================
+   VITEPRESS variable overrides
+   ============================================================ */
+
+:root {
+  --vp-c-default-1: var(--vp-c-gray-1);
+  --vp-c-default-2: var(--vp-c-gray-2);
+  --vp-c-default-3: var(--vp-c-gray-3);
+  --vp-c-default-soft: var(--vp-c-gray-soft);
+
+  --vp-c-brand-1: var(--dp-color-primary);
+  --vp-c-brand-2: var(--dp-color-primary-light);
+  --vp-c-brand-3: var(--dp-color-primary-dark);
+  --vp-c-brand-soft: var(--dp-color-accent-light);
+
+  --vp-c-tip-1: var(--vp-c-brand-1);
+  --vp-c-tip-2: var(--vp-c-brand-2);
+  --vp-c-tip-3: var(--vp-c-brand-3);
+  --vp-c-tip-soft: var(--vp-c-brand-soft);
+
+  --vp-c-warning-1: var(--vp-c-yellow-1);
+  --vp-c-warning-2: var(--vp-c-yellow-2);
+  --vp-c-warning-3: var(--vp-c-yellow-3);
+  --vp-c-warning-soft: var(--vp-c-yellow-soft);
+
+  --vp-c-danger-1: var(--vp-c-red-1);
+  --vp-c-danger-2: var(--vp-c-red-2);
+  --vp-c-danger-3: var(--vp-c-red-3);
+  --vp-c-danger-soft: var(--vp-c-red-soft);
+
+  /* Component: Button */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: var(--vp-c-white);
+  --vp-button-brand-bg: var(--vp-c-brand-3);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: var(--vp-c-white);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: var(--vp-c-white);
+  --vp-button-brand-active-bg: var(--vp-c-brand-1);
+
+  /* Component: Custom Block */
+  --vp-custom-block-tip-border: transparent;
+  --vp-custom-block-tip-text: var(--vp-c-text-1);
+  --vp-custom-block-tip-bg: var(--vp-c-brand-soft);
+  --vp-custom-block-tip-code-bg: var(--vp-c-brand-soft);
+}

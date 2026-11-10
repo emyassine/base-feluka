@@ -1,0 +1,17 @@
+.aside-curtain {
+  background: transparent !important;
+}
+
+#app > div > header > div > div.wrapper > div > div.title > div > a {
+  border: 0px !important;
+}
+
+/* Custom Container Styles */
+.vp-doc .custom-block {
+  border-radius: var(--dp-radius-md);
+}
+
+/* Enhanced Code Blocks */
+.vp-doc div[class*='language-'] {
+  border-radius: var(--dp-radius-lg);
+}

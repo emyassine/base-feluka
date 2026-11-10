@@ -1,0 +1,114 @@
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+.VPContent .container,
+.VPDoc .container {
+  width: 100% !important;
+  max-width: 1280px !important;
+  margin: auto !important;
+  padding: 1.2rem !important;
+}
+
+@media (min-width: 640px) {
+  .VPContent .container,
+  .VPDoc .container {
+    padding: 0 48px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPContent .container,
+  .VPDoc .container {
+    padding: 0 64px !important;
+  }
+}
+
+/* Global escape from any container */
+.no-container {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.no-container.container {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.no-container .container {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============================================================
+   SHELL / BACKGROUND
+   ============================================================ */
+:root {
+  --doc-bg-gradient:
+    radial-gradient(800px at 70% 20%, rgba(255, 120, 50, 0.02), transparent),
+    radial-gradient(600px at 40% 80%, rgba(80, 120, 255, 0.02), transparent), var(--vp-nav-bg-color);
+}
+
+body {
+  background: var(--doc-bg-gradient);
+  position: sticky;
+}
+
+.dark .VPHome {
+  background: var(--nds-bg-dark-color);
+  backdrop-filter: blur(16px) saturate(180%);
+  background-blend-mode: overlay;
+}
+/*
+backdrop-filter: blur(16px) saturate(180%);
+
+*/
+@media (min-width: 768px) {
+  .VPHome {
+    margin-bottom: 0 !important;
+  }
+}
+
+header {
+  position: relative;
+  background-color: var(--vp-nav-bg-color);
+}
+
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+:root {
+  --sb-size: 1px;
+  --sb-thumb-color: rgba(136, 136, 136, 0.3);
+  --sb-thumb-hover: rgba(85, 85, 85, 0.8);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb-color) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+}
