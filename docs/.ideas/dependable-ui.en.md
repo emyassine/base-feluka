@@ -1,58 +1,130 @@
-## A portable UI library: `dependable-ui`
+# A dependable UI and design system
 
-Another compatibility question is whether Feluqa's UI components can be
-reusable across plain HTML, Vue, Feluqa, and PHP/Laravel applications. The
-working goal is **define the design and component contract once, then provide
-small host-specific integrations**.
+This is a general design question for exploration, not a settled technical
+proposal:
 
-One possible package family:
+> How can we design a dependable system of components, styles, and templates
+> once, then use and brand it across plain HTML, Vue, Feluqa, PHP applications,
+> demos, websites, website builders, and other products?
 
-```text
-dependable-ui/
-├── tokens/       # colors, spacing, typography, themes
-├── styles/       # shared CSS and component classes
-├── assets/       # icons, fonts, and static files
-├── schemas/      # versioned, framework-neutral component descriptions
-├── behaviors/    # interaction and accessibility rules
-└── packages/
-    ├── html/     # markup patterns and optional JavaScript
-    ├── vue/      # Vue components
-    ├── rust/     # Feluqa integration
-    └── laravel/  # PHP/Laravel rendering helpers
-```
+The goal is broader than sharing a set of buttons. Ideally, a developer or an
+end user working through a visual editor could assemble a complete experience
+from trusted components and larger blocks, adapt its appearance to a brand,
+and rely on the result to behave consistently in each supported environment.
 
-Component families could include actions, forms, infolists, notifications,
-query builders, tables, and widgets. These names describe reusable UI
-capabilities; they need not map one-to-one to directories in the final package.
+## What should be reusable?
 
-The portable source can include design tokens, CSS, icons, schemas, and
-framework-neutral behavioral requirements. Host packages translate those
-definitions into the native model of each environment: HTML markup, Vue props
-and events, Laravel rendering helpers, or Feluqa's UI component system. A
-shared form-field definition, for example, could specify its label, help text,
-input kind, validation state, disabled state, and accessibility relationships.
+The system might cover several levels of composition:
 
-The integrations can share appearance and behavior without having identical
-APIs or sharing one implementation. Vue, PHP, and Feluqa have different
-rendering models and lifecycles. Calling the library "100% portable" would
-hide those differences; the more practical goal is one canonical design system
-and component contract with small, predictable adapters.
+- **Design foundations:** color, typography, spacing, sizing, shape, elevation,
+  motion, focus, and responsive rules.
+- **Components:** buttons, fields, toggles, dialogs, menus, tables,
+  notifications, infolists, query builders, and other interactive controls.
+- **Blocks:** composed sections such as a sign-in panel, pricing grid, record
+  summary, dashboard card group, or navigation header.
+- **Templates:** page and application layouts for websites, demos, dashboards,
+  and other common experiences.
+- **Assets and behavior:** icons, images, interaction patterns, accessibility
+  requirements, and responsive behavior.
 
-Two possible sources of truth deserve exploration:
+These levels raise an important question: what is the canonical definition at
+each level, and what is translated or rendered by each host? Plain HTML, Vue,
+Feluqa, and PHP may share design rules, structure, properties, and behavior
+without having identical component APIs or using the same implementation
+code.
 
-1. **Schemas as the canonical source.** Define component structure, properties,
-   states, and accessibility requirements in versioned schemas; render or
-   generate host-specific adapters from them.
-2. **Web assets as the canonical source.** Treat HTML/CSS/JavaScript as the
-   reference implementation; let Vue, Laravel, and Feluqa wrap or invoke it.
+## What should “dependable” mean?
 
-Feluqa's existing UI-schema direction may make the first option a natural fit,
-but it should be tested against real components. A useful small experiment is
-to define a button or form field once and show how the same definition is
-rendered in plain HTML, Vue, Laravel, and Feluqa. Compare how much code must be
-duplicated, how native each integration feels, and how accessibility and
-versioning are kept consistent.
+Dependability should be a property of the delivered system, not just its name.
+Possible expectations include:
 
-This is an idea, not a settled package architecture. The desired promise is
-reuse of design, assets, contracts, and behavior—not the claim that one source
-file can directly implement every framework's components.
+- components have defined properties, states, keyboard behavior, and
+  accessibility requirements;
+- the same design inputs produce recognizable results across supported hosts;
+- components work together predictably in blocks and templates;
+- changes to shared definitions are versioned and checked for regressions;
+- assets and styles can be hosted locally and do not require an external
+  service;
+- projects can adopt the system incrementally and keep working when they need
+  custom UI;
+- documentation and examples show both the standard use and supported
+  customization points.
+
+The supported environments and the level of parity expected in each need to be
+chosen explicitly. A shared design system can promise a consistent visual and
+behavioral contract even when its host integrations use different rendering
+mechanisms.
+
+## Branding and overrides
+
+Branding should be easy for both developers and end users using a product's
+settings or visual editor. It should be possible to apply a brand broadly, then
+make a deliberate exception where a particular component instance needs a
+different treatment.
+
+For example, a brand may define the default look for all toggles. One specific
+toggle used to switch the site's theme might need a distinct appearance, while
+other toggles keep the standard style. A useful system needs to express both
+the shared default and the local exception without forcing users to copy or
+rewrite the component.
+
+Possible customization levels to explore:
+
+1. **Brand or theme tokens:** set colors, type, spacing, and other design
+   values across an application.
+2. **Component-family defaults:** adjust all toggles, buttons, fields, or other
+   components of a type.
+3. **Named variants:** select a reusable variation such as `quiet`, `danger`,
+   or `theme-switch`.
+4. **Instance-level overrides:** customize one identified use without changing
+   sibling instances.
+5. **Composition and custom content:** let users arrange blocks and provide
+   content while preserving component behavior and accessibility.
+
+The system should make precedence understandable: if brand settings,
+component defaults, variants, and instance overrides all apply, developers
+and visual editors need a clear way to see which value wins. Customization
+should avoid fragile selectors and copied markup where possible, and should
+not silently bypass accessibility or interaction requirements.
+
+## One source, multiple environments
+
+“Do it once” could mean a single source of truth for design tokens, component
+contracts, assets, and examples, with a small integration for each environment.
+It need not mean that every environment executes the same component code.
+
+Potential integrations might include plain HTML/CSS/JavaScript, Vue components,
+Feluqa components, and PHP or Laravel rendering helpers. Blocks and templates
+could be represented in a portable form if that representation can preserve
+customization, content, accessibility, and host-specific behavior. Alternatively,
+some layers might be shared while others remain native to the host.
+
+Questions to investigate include:
+
+- Should component definitions, design tokens, or web markup be the source of
+  truth?
+- Can blocks and templates use a portable schema that is expressive enough for
+  both a developer and a visual website builder?
+- How should custom logic and data binding work in hosts with different
+  programming models?
+- Which styles and behavior can be genuinely shared, and which require a host
+  adapter?
+- How are user-created themes and templates versioned and migrated?
+- Can a project override one instance without forking the component or leaking
+  styles into other instances?
+- What conformance examples or tests demonstrate that integrations honor the
+  same contract?
+
+## A small way to explore it
+
+Choose one component with meaningful states, such as a form field or toggle.
+Describe its appearance, behavior, accessibility, brand customization, family
+defaults, and instance-level override. Then represent it in plain HTML, Vue,
+Feluqa, and PHP. Next compose it into one block and one page template, and ask
+whether a visual editor could expose the same safe customization points.
+
+This exercise can reveal what is truly shared, what requires adapters, and
+whether the proposed source of truth is expressive enough before committing to
+a complete library structure. The desired outcome is a dependable design and
+composition system that people can brand and reuse broadly; its implementation
+and package boundaries remain open questions.
