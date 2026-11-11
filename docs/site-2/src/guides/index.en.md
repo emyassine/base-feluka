@@ -442,7 +442,7 @@ The Best Recruit is our remote recruitment service for employers. Feluqa and SPM
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/projects/spmpst',
+      href: '/articles/spmpst',
       image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }

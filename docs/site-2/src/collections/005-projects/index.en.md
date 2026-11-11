@@ -61,7 +61,7 @@ description: "Services, platforms and standards developed or operated by Numerim
       title: 'Platforms and standards · in development',
       items: [
         { icon: '@spmpst::icon::rust', title: 'Application platform', href: '/projects/feluqa' },
-        { icon: '@spmpst::icon::folder-tree', title: 'Portable content standard', href: '/projects/spmpst' }
+        { icon: '@spmpst::icon::folder-tree', title: 'Portable content standard', href: '/articles/spmpst' }
       ]
     }
   ]"

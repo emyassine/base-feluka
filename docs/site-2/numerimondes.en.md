@@ -154,7 +154,7 @@ Our internal initiatives are part of the way we research, experiment and build f
     {
       title: 'SPMPST',
       description: 'Specification in development. A proposed standard for portable, structured Markdown content and site-building workflows.',
-      href: '/projects/spmpst',
+      href: '/articles/spmpst',
       image: 'https://images.unsplash.com/photo-1455390582262-044c3d27791c?auto=format&fit=crop&w=900&q=80',
       icon: '/images/home/initiatives/spmpst.svg'
     }
