@@ -245,23 +245,21 @@ onBeforeUnmount(() => {
 
     <article class="external-check__card">
       <img v-if="preview?.image" :src="preview.image" alt="" referrerpolicy="no-referrer" loading="lazy">
-      <div class="external-check__body">
-        <h3>{{ target?.host }}</h3>
-        <code>{{ shownUrl }}</code>
-        <p v-if="preview?.title" class="external-check__title">{{ preview.title }}</p>
-        <p v-if="preview?.description" class="external-check__muted">{{ preview.description }}</p>
+      <h3>{{ target?.host }}</h3>
+      <code>{{ shownUrl }}</code>
+      <p v-if="preview?.title" class="external-check__title">{{ preview.title }}</p>
+      <p v-if="preview?.description" class="external-check__muted">{{ preview.description }}</p>
 
-        <dl>
-          <div>
-            <dt>{{ t.protocol }}</dt>
-            <dd><span :class="['external-check__badge', isHttps ? 'is-secure' : 'is-insecure']">{{ isHttps ? t.https : t.http }}</span></dd>
-          </div>
-          <div v-for="[label, value] in rows" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
-        </dl>
+      <dl>
+        <div>
+          <dt>{{ t.protocol }}</dt>
+          <dd><span :class="['external-check__badge', isHttps ? 'is-secure' : 'is-insecure']">{{ isHttps ? t.https : t.http }}</span></dd>
+        </div>
+        <div v-for="[label, value] in rows" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
+      </dl>
 
-        <p class="external-check__muted">{{ isHttps ? t.browserTls : t.browserTlsHttp }}</p>
-        <p class="external-check__muted">{{ t.privacy }}</p>
-      </div>
+      <p class="external-check__muted">{{ isHttps ? t.browserTls : t.browserTlsHttp }}</p>
+      <p class="external-check__muted">{{ t.privacy }}</p>
     </article>
 
     <template #footer>
@@ -281,20 +279,19 @@ onBeforeUnmount(() => {
 .external-check__heading h2 { margin: 0; font-size: 1.15rem; line-height: 1.35; }
 .external-check__heading p { margin: .3rem 0 0; font-size: .82rem; line-height: 1.45; }
 
-.external-check__card { overflow: hidden; border: 1px solid var(--vp-c-divider); border-radius: .8rem; background: var(--vp-c-bg-soft); }
-.external-check__card > img { display: block; width: 100%; max-height: 10rem; object-fit: cover; background: var(--vp-c-bg-alt); }
-.external-check__body { display: grid; gap: .5rem; min-width: 0; padding: .85rem; }
-.external-check__body > * { margin: 0; }
-.external-check__body h3 { font-size: .95rem; font-weight: 750; }
-.external-check__body code { overflow-wrap: anywhere; font-size: .74rem; }
+.external-check__card { display: grid; gap: .5rem; min-width: 0; }
+.external-check__card > img { display: block; width: calc(100% + 1.7rem); max-height: 10rem; margin: -.85rem -.85rem 0; object-fit: cover; background: var(--vp-c-bg-alt); }
+.external-check__card > *:not(img) { margin: 0; }
+.external-check__card h3 { font-size: .95rem; font-weight: 750; }
+.external-check__card code { overflow-wrap: anywhere; font-size: .74rem; }
 .external-check__title { font-size: .85rem; font-weight: 650; line-height: 1.35; }
 .external-check__muted { font-size: .74rem; line-height: 1.45; }
-.external-check__heading p, .external-check__muted, .external-check__body code, .external-check__body dt { color: var(--vp-c-text-2); }
+.external-check__heading p, .external-check__muted, .external-check__card code, .external-check__card dt { color: var(--vp-c-text-2); }
 
-.external-check__body dl { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; padding-block: .6rem; border-block: 1px solid var(--vp-c-divider); }
-.external-check__body dl > div { display: grid; gap: .15rem; min-width: 0; font-size: .78rem; }
-.external-check__body dt { font-size: .67rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-.external-check__body dd { margin: 0; overflow-wrap: anywhere; }
+.external-check__card dl { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; padding-block: .6rem; border-block: 1px solid var(--vp-c-divider); }
+.external-check__card dl > div { display: grid; gap: .15rem; min-width: 0; font-size: .78rem; }
+.external-check__card dt { font-size: .67rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.external-check__card dd { margin: 0; overflow-wrap: anywhere; }
 .external-check__badge { display: inline-flex; border-radius: 999px; padding: .2rem .55rem; font-size: .75rem; font-weight: 700; }
 .external-check__badge.is-secure { background: color-mix(in srgb, #16815d 14%, var(--vp-c-bg)); color: #16815d; }
 .external-check__badge.is-insecure { background: color-mix(in srgb, #c13b32 14%, var(--vp-c-bg)); color: #b42318; }
