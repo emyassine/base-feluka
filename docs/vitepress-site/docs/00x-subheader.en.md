@@ -26,6 +26,8 @@ An optional `spmpst.subheader.json` can add or exclude entries for a guide conte
 
 The component is rendered for a route when the normalized `route.path` matches a key in the generated map. `theme/index.ts` places it in the document area for ordinary pages. For article and home-subheader layouts, it suppresses the competing navigation in the top bar. Home layouts place their floating bar before the hero. When no generated route key exists, the floating subheader is absent and the normal configured subnav remains in effect.
 
+Collection pages with a generated floating subheader receive the `collection-floating-subnav` layout class. Their subheader stays in normal document flow and sticks below the fixed navigation bar while scrolling. The shared VitePress style removes the default desktop `.VPDoc` padding for these pages; do not add compensating padding to the global `#VPContent`. Keep the layout override scoped to collection pages so ordinary documentation keeps the standard VitePress reading margins.
+
 ## Logo behavior and root pages
 
 The appearance configuration supports `light`, `dark`, `mini-light`, and `mini-dark` logo paths. Guide logo configuration can override the site's logo. Preparation resolves local paths relative to the owning configuration, copies assets into the generated public asset area, and records public URLs in the generated route props.

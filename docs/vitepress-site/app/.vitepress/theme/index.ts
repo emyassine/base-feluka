@@ -801,6 +801,7 @@ const MermaidLayout = {
       return h(DefaultTheme.Layout, {
         class: {
           'home-subheader-content': frontmatter.value.pageLayout === 'home-subheader-content',
+          'collection-floating-subnav': Boolean((collectionForPage() || frontmatter.value.collectionIndex) && floatingSubnav),
           'articles-page': pageFrontmatter.value.pageLayout === 'articles',
         },
       }, {

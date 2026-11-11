@@ -284,31 +284,43 @@ body:has(#VPNavScreen) { overflow: hidden; overscroll-behavior: none; }
   .collection-spotlight-page { padding: 3rem 1rem; }
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent :is(.VPDoc, .VPHome) .container {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content, .Layout.collection-floating-subnav) #VPContent :is(.VPDoc, .VPHome) .container {
   max-width: 100%;
   justify-content: center;
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPDoc .content {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content, .Layout.collection-floating-subnav) #VPContent .VPDoc .content {
   width: 100%;
   max-width: 980px;
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPDoc .content-container {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content, .Layout.collection-floating-subnav) #VPContent .VPDoc .content-container {
   max-width: 700px;
   margin-inline: auto;
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPHome .vp-doc {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content, .Layout.collection-floating-subnav) #VPContent .VPHome .vp-doc {
   max-width: 900px;
   margin-inline: auto;
 }
 
-:is(body:has(.collection-article-subnav), .Layout.home-subheader-content) #VPContent .VPDoc .aside {
+:is(body:has(.collection-article-subnav), .Layout.home-subheader-content, .Layout.collection-floating-subnav) #VPContent .VPDoc .aside {
   display: none;
 }
 
 body:has(.collection-article-subnav) #VPContent { padding-top: calc(var(--vp-nav-height) + 40px); }
+
+.Layout.collection-floating-subnav .floating-subnav {
+  position: sticky;
+  top: var(--vp-nav-height, 64px);
+  left: auto;
+  margin: 0 auto 1rem;
+  transform: none;
+}
+
+@media (min-width: 960px) {
+  .Layout.collection-floating-subnav #VPContent .VPDoc { padding: 0 0 96px; }
+}
 
 .collection-article-footer {
   width: min(100% - 48px, 700px);
