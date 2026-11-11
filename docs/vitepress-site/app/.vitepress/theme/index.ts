@@ -807,7 +807,13 @@ const MermaidLayout = {
       }, {
       ...layoutSlots,
       'layout-top': siteBanner,
-      'layout-bottom': () => h(Fragment, null, [layoutSlots['layout-bottom']?.(), h(projectComponents.PrivacySettingsDialog)]),
+      'layout-bottom': () => h(Fragment, null, [
+        layoutSlots['layout-bottom']?.(),
+        h(projectComponents.PrivacySettingsDialog),
+        (projectComponents as Record<string, Component>).ExternalLinkGuard
+          ? h((projectComponents as Record<string, Component>).ExternalLinkGuard)
+          : null,
+      ]),
       'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(projectComponents.VitePressCurrencySelector)]),
       'nav-bar-content-after': () => h(Fragment, null, [
         floatingSubnav

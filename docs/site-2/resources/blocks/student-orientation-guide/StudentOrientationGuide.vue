@@ -1263,7 +1263,14 @@ async function copyPrompt() {
 
 function sendOrientationRequest() {
   if (!contactName.value.trim() || !contact.value.trim() || !contactConsent.value) return
-  window.open(whatsappUrl.value, '_blank', 'noopener,noreferrer')
+  const link = document.createElement('a')
+  link.href = whatsappUrl.value
+  link.target = '_blank'
+  link.rel = 'noopener noreferrer'
+  link.hidden = true
+  document.body.append(link)
+  link.click()
+  link.remove()
 }
 
 function reset() {
