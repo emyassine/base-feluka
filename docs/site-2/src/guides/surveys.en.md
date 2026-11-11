@@ -8,6 +8,7 @@ status: "ready-for-review"
 layout: home
 ---
 
+<div style="margin-top: 2rem">
 <HeroBrandIntro
   eyebrow="SURVEYS · NUMERIMONDES"
   title="Surveys"
@@ -15,6 +16,7 @@ layout: home
   cta-label="Contact us about a survey"
   cta-href="/company/contact"
 />
+</div>
 
 <div class="nm-home-copy">
 

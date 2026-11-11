@@ -12,6 +12,7 @@ layout: home
 
 
 
+<div style="margin-top: 2rem">
 <HeroBrandIntro
   eyebrow="THE FOUNDER · NUMERIMONDES"
   title="Founder"
@@ -19,6 +20,7 @@ layout: home
   cta-label="Meet the founder"
   cta-href="#yassine-el-moumen"
 />
+</div>
 
 <BrandOverview :sections="[{ columns: [{ label: 'Numerimondes', title: 'Led by someone who has worked inside operations.' }, { tagline: 'Business operations, consulting and software engineering in one profile.' }] }]" />
 

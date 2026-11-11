@@ -23,7 +23,7 @@ layout: home
     color: var(--vp-c-brand-1, #34d399) !important;
   }
 </style>
-<div style="margin-top:0rem;">
+<div style="margin-top: 2rem">
     <HeroCentered
       title="Ideas. Systems. Lasting value."
       description="We help people and organizations explore opportunities, improve operations, and turn ambitious ideas into working realities.">

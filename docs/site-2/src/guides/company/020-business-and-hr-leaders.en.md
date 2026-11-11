@@ -12,6 +12,7 @@ layout: home
 
 
 
+<div style="margin-top: 2rem">
 <HeroBrandIntro
   eyebrow="FOR BUSINESS AND HR LEADERS · NUMERIMONDES"
   title="Business"
@@ -19,6 +20,7 @@ layout: home
   cta-label="Tell us what you need"
   cta-href="/company/contact"
 />
+</div>
 
 <BrandOverview :sections="[{ columns: [{ label: 'For business and HR leaders', title: 'A direct answer for a concrete need.' }, { tagline: 'Whether you are improving how your business works or hiring for a key role, start with the situation in front of you.' }] }]" />
 

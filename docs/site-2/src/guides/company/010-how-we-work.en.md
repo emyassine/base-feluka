@@ -12,6 +12,7 @@ layout: home
 
 
 
+<div style="margin-top: 2rem">
 <HeroBrandIntro
   eyebrow="HOW WE WORK · NUMERIMONDES"
   title="Work"
@@ -19,6 +20,7 @@ layout: home
   cta-label="How an assignment runs"
   cta-href="#how-an-assignment-runs"
 />
+</div>
 
 <BrandOverview :sections="[{ columns: [{ label: 'Our approach', title: 'A clear lead. A defined scope.' }, { tagline: 'Every assignment is shaped around its objective and agreed in writing before work begins.' }] }]" />
 

@@ -12,6 +12,7 @@ layout: home
 
 
 
+<div style="margin-top: 2rem">
 <HeroBrandIntro
   eyebrow="CONTACT · NUMERIMONDES"
   title="Contact"
@@ -19,6 +20,7 @@ layout: home
   cta-label="Continue on WhatsApp"
   cta-href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20get%20in%20touch."
 />
+</div>
 
 <BrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Message us on WhatsApp.' }, { tagline: 'Send a short message about what you need. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
 
