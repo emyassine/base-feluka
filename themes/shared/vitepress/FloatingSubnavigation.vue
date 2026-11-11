@@ -141,6 +141,7 @@ const visibleCount = ref(props.links.length)
 const hasLogo = computed(() => Boolean(props.logoMiniLight || props.logoMiniDark || props.logoLight || props.logoDark))
 const logoLightSrc = computed(() => props.logoMiniLight || props.logoLight || props.logoMiniDark || props.logoDark)
 const logoDarkSrc = computed(() => props.logoMiniDark || props.logoDark || props.logoMiniLight || props.logoLight)
+const hasCollapsibleLinks = computed(() => props.links.some((link) => link.type !== 'separator'))
 const logoContainerStyle = computed(() => ({
   height: props.logoHeight || '1.5rem',
   maxWidth: props.logoWidth,
@@ -209,6 +210,11 @@ function onScroll() {
     ticking = false
     if (menuOpen.value) return
     const y = Math.max(window.scrollY, 0)
+    if (!hasCollapsibleLinks.value) {
+      isCompact.value = false
+      lastY = y
+      return
+    }
     const delta = y - lastY
     if (y < COMPACT_ENTER_Y) {
       isCompact.value = false
@@ -260,6 +266,7 @@ onBeforeUnmount(() => {
 })
 
 watch(() => [props.links, props.title], () => nextTick(measure), { deep: true })
+watch(hasCollapsibleLinks, (value) => { if (!value) isCompact.value = false })
 watch(() => route.path, () => { menuOpen.value = false })
 watch(showMore, (value) => { if (!value) menuOpen.value = false })
 </script>

@@ -5,6 +5,7 @@ icon: "@spmpst::icon::users"
 description: "The Best Recruit is Numerimondes’ remote recruitment service for employers, built around candidate qualification and relevant information."
 lang: en
 status: "ready-for-review"
+layout: home
 category: services
 js-events:
   - uncollapse-sidebar

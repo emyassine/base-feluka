@@ -128,6 +128,23 @@ const generatedOgImages = {}
 const generatedGuideKeys = new Map()
 const generatedGuideThemeSlots = new Map()
 const siteLogo = config.logo ?? {}
+const siteLogoAsset = async (key) => {
+  const standardKey = key === 'mini-light' ? 'light' : key === 'mini-dark' ? 'dark' : key
+  const value = siteLogo[key] ?? siteLogo[standardKey]
+  if (!value) return undefined
+  if (/^(?:https?:|data:)/i.test(value)) return value
+  return `/${await copyAsset(resolve(configDirectory, value))}`
+}
+const generatedSiteLogo = {
+  logoLight: await siteLogoAsset('light'),
+  logoDark: await siteLogoAsset('dark'),
+  logoMiniLight: await siteLogoAsset('mini-light'),
+  logoMiniDark: await siteLogoAsset('mini-dark'),
+  logoAlt: siteLogo.alt ?? config.site?.name ?? '',
+  ...(siteLogo.width ? { logoWidth: siteLogo.width.trim() } : {}),
+  ...(siteLogo.height ? { logoHeight: siteLogo.height.trim() } : {}),
+  ...(siteLogo.extraStyle ? { logoExtraStyle: siteLogo.extraStyle.trim() } : {}),
+}
 const siteOgImages = await prepareOgImages(config.ogImages ?? [], join(configDirectory, 'site-model.config.json'))
 generatedOgImages.root = siteOgImages
 for (const guide of config.subguides) {
@@ -655,7 +672,7 @@ for (const page of localizedPages.filter((page) => !page.guide)) {
   const enabled = !excluded && (included || rules.layouts.includes(page.layout))
   if (!enabled) continue
   const routeKey = page.route.replace(/\/+$/, '') || '/'
-  const logo = generatedGuideColors.root ?? {}
+  const logo = generatedGuideColors.root ?? generatedSiteLogo
   generatedFloatingSubnav[routeKey] = {
     title: config.site?.name ?? '',
     homeHref: localizedGuideHome(page.guide, page.language),
@@ -671,6 +688,68 @@ for (const page of localizedPages.filter((page) => !page.guide)) {
     logoExtraStyle: logo.logoExtraStyle,
     navigationLabel: page.language.toLowerCase().startsWith('fr') ? 'Navigation de la section' : 'Section navigation',
     menuLabel: page.language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation de la section' : 'Open section navigation',
+  }
+}
+for (const collection of collections) {
+  const subheaderPath = join(collection.sourceDirectory, 'spmpst.subheader.json')
+  if (!existsSync(subheaderPath)) continue
+  const subheaderConfig = JSON.parse(await readFile(subheaderPath, 'utf8'))
+  for (const language of config.languages) {
+    const collectionPages = localizedPages.filter((page) => {
+      const sourcePath = page.record?.from ?? page.from ?? ''
+      return sourcePath.startsWith(`${collection.sourceDirectory}${sep}`) && page.language === language
+    })
+    const indexPage = collectionPages.find((page) => {
+      const sourcePath = page.record?.from ?? page.from ?? ''
+      return /^index(?:\.[a-z]{2,3}(?:-[A-Z]{2})?)?\.md$/i.test(relative(collection.sourceDirectory, sourcePath).split(sep).join('/'))
+    })
+    const collectionHomePages = collectionPages.filter((page) => page !== indexPage)
+    let links = collectionHomePages.map(({ title, route }) => ({ title, href: route }))
+    for (const pattern of subheaderConfig.exclude ?? []) {
+      const canonicalPattern = canonicalPagePath(pattern)
+      if (pattern.includes('*')) {
+        const prefix = canonicalPattern.replace(/\*$/, '')
+        links = links.filter((link) => !canonicalPagePath(link.href).startsWith(prefix))
+      } else {
+        links = links.filter((link) => canonicalPagePath(link.href) !== canonicalPattern)
+      }
+    }
+    for (const item of subheaderConfig.include ?? []) {
+      if (item === 'separator') {
+        links.push({ type: 'separator' })
+      } else {
+        const label = item.label?.[language] ?? item.label?.en ?? item.label ?? item.path
+        const href = item.path?.startsWith('/')
+          ? `${localePrefix(language, defaultLanguage, prefixDefaultLanguage).length ? `/${localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')}` : ''}${item.path}`
+          : `/${localePrefix(language, defaultLanguage, prefixDefaultLanguage).concat(collection.route).join('/')}/${item.path}`
+        links.push({ title: label, href, type: 'custom', custom: true })
+      }
+    }
+    const localePath = localePrefix(language, defaultLanguage, prefixDefaultLanguage).join('/')
+    const homeHref = `/${localePath ? `${localePath}/` : ''}${collection.route}/`
+    const homePageHref = indexPage?.route ?? homeHref
+    const collectionTitle = localizedValue(collection.title, language, humanize(collection.id))
+    const logo = generatedGuideColors.root ?? generatedSiteLogo
+    const subnav = {
+      title: collectionTitle,
+      homeHref,
+      homePageHref,
+      links,
+      logoLight: logo.logoLight,
+      logoDark: logo.logoDark,
+      logoMiniLight: logo.logoMiniLight,
+      logoMiniDark: logo.logoMiniDark,
+      logoAlt: logo.logoAlt,
+      logoWidth: logo.logoWidth,
+      logoHeight: logo.logoHeight,
+      logoExtraStyle: logo.logoExtraStyle,
+      navigationLabel: language.toLowerCase().startsWith('fr') ? 'Navigation des projets' : 'Projects navigation',
+      menuLabel: language.toLowerCase().startsWith('fr') ? 'Ouvrir la navigation des projets' : 'Open projects navigation',
+    }
+    for (const page of collectionPages) {
+      generatedFloatingSubnav[page.route.replace(/\/+$/, '') || '/'] = subnav
+    }
+    generatedFloatingSubnav[homeHref.replace(/\/+$/, '') || '/'] = subnav
   }
 }
 await writeIfChanged(join(generatedDirectory, 'floating-subnav.json'), JSON.stringify(generatedFloatingSubnav, null, 2))
