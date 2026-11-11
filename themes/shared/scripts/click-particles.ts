@@ -2,7 +2,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg'
 const EFFECT_SIZE = 60
 const STROKE_WIDTH = 2
 const DURATION = 0.4
-const DOUBLE_CLICK_GUARD_MS = 450
+const DOUBLE_CLICK_GUARD_MS = 120
 const ANGLES = [45, 80, 115, 150]
 const INTERACTIVE_TARGETS = [
   'a[href]',
@@ -25,10 +25,9 @@ const INTERACTIVE_TARGETS = [
 ].join(', ')
 
 type ClickParticlesWindow = Window & {
-  __feluqaClickParticlesPointerDown?: (event: PointerEvent) => void
-  __feluqaClickParticlesClick?: (event: MouseEvent) => void
-  __feluqaClickParticlesDoubleClick?: (event: MouseEvent) => void
-  __feluqaClickParticlesTimer?: number
+  __siteClickParticlesClick?: (event: MouseEvent) => void
+  __siteClickParticlesDoubleClick?: (event: MouseEvent) => void
+  __siteClickParticlesTimer?: number
 }
 
 function burst(x: number, y: number): void {
@@ -103,25 +102,21 @@ function burst(x: number, y: number): void {
 
 if (typeof document !== 'undefined' && typeof window !== 'undefined') {
   const host = window as ClickParticlesWindow
-  if (host.__feluqaClickParticlesPointerDown) {
-    document.removeEventListener('pointerdown', host.__feluqaClickParticlesPointerDown)
-    delete host.__feluqaClickParticlesPointerDown
+  if (host.__siteClickParticlesClick) {
+    document.removeEventListener('click', host.__siteClickParticlesClick)
   }
-  if (host.__feluqaClickParticlesClick) {
-    document.removeEventListener('click', host.__feluqaClickParticlesClick)
+  if (host.__siteClickParticlesDoubleClick) {
+    document.removeEventListener('dblclick', host.__siteClickParticlesDoubleClick)
   }
-  if (host.__feluqaClickParticlesDoubleClick) {
-    document.removeEventListener('dblclick', host.__feluqaClickParticlesDoubleClick)
-  }
-  if (host.__feluqaClickParticlesTimer !== undefined) {
-    window.clearTimeout(host.__feluqaClickParticlesTimer)
-    delete host.__feluqaClickParticlesTimer
+  if (host.__siteClickParticlesTimer !== undefined) {
+    window.clearTimeout(host.__siteClickParticlesTimer)
+    delete host.__siteClickParticlesTimer
   }
 
   const cancelPendingBurst = () => {
-    if (host.__feluqaClickParticlesTimer === undefined) return
-    window.clearTimeout(host.__feluqaClickParticlesTimer)
-    delete host.__feluqaClickParticlesTimer
+    if (host.__siteClickParticlesTimer === undefined) return
+    window.clearTimeout(host.__siteClickParticlesTimer)
+    delete host.__siteClickParticlesTimer
   }
 
   const onClick = (event: MouseEvent) => {
@@ -139,8 +134,8 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 
     const x = event.clientX
     const y = event.clientY
-    host.__feluqaClickParticlesTimer = window.setTimeout(() => {
-      delete host.__feluqaClickParticlesTimer
+    host.__siteClickParticlesTimer = window.setTimeout(() => {
+      delete host.__siteClickParticlesTimer
       const currentSelection = window.getSelection()
       if (!currentSelection || currentSelection.isCollapsed || !currentSelection.toString()) burst(x, y)
     }, DOUBLE_CLICK_GUARD_MS)
@@ -148,8 +143,8 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 
   const onDoubleClick = () => cancelPendingBurst()
 
-  host.__feluqaClickParticlesClick = onClick
-  host.__feluqaClickParticlesDoubleClick = onDoubleClick
+  host.__siteClickParticlesClick = onClick
+  host.__siteClickParticlesDoubleClick = onDoubleClick
   document.addEventListener('click', onClick)
   document.addEventListener('dblclick', onDoubleClick)
 }
