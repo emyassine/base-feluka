@@ -16,11 +16,11 @@ layout: home
   eyebrow="CONTACT · NUMERIMONDES"
   title="Contact"
   tagline="Projects, hiring, partnerships and technical discussions."
-  cta-label="What to include"
-  cta-href="#what-to-include"
+  cta-label="Continue on WhatsApp"
+  cta-href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20get%20in%20touch."
 />
 
-<BrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Tell us the problem you need solved.' }, { tagline: 'Describe the situation in a few lines. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
+<BrandOverview :sections="[{ columns: [{ label: 'Start a conversation', title: 'Message us on WhatsApp.' }, { tagline: 'Send a short message about what you need. We will reply with a useful next step, or tell you honestly if we are not the right fit.' }] }]" />
 
 <div class="nm-home-copy">
 
@@ -31,11 +31,11 @@ layout: home
 - A partnership or specialist collaboration
 - A technical discussion on Feluqa or SPMPST
 
-## What to include
+## Contact us on WhatsApp
 
-Your organization, the problem and what is at stake, the result you want, your location and timeframe, and how you prefer to be contacted.
+Send a short message to **+212 620 990 692**. WhatsApp will open with a draft message for you to review and send.
 
-<WhatsAppForm />
+<p><a class="ui-btn ui-btn--primary" href="https://wa.me/212620990692?text=Hello%20Numerimondes%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer">Continue to WhatsApp</a></p>
 
 ## What happens next
 

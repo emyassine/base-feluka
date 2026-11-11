@@ -224,6 +224,22 @@
               "icon": "newspaper"
             }
           ]
+        },
+        {
+          "label": {
+            "en": "Surveys"
+          },
+          "showLabel": false,
+          "entries": [
+            {
+              "type": "link",
+              "label": {
+                "en": "Surveys"
+              },
+              "href": "/surveys/",
+              "icon": "clipboard-list"
+            }
+          ]
         }
       ]
     }
@@ -245,19 +261,38 @@
       "items": [
         {
           "label": {
-            "en": "Account access",
-            "fr": "Accès compte"
+            "en": "Contact on WhatsApp",
+            "fr": "Contacter sur WhatsApp"
           },
-          "link": "/account/",
-          "icon": "users-round"
+          "link": "/company/contact",
+          "icon": "message-circle"
         },
         {
           "label": {
-            "en": "Contact",
-            "fr": "Contact"
+            "en": "Client sign in",
+            "fr": "Connexion client"
           },
-          "link": "/company/contact",
-          "icon": "mail"
+          "link": "https://numerimondes.com/account/connect/authentication/login",
+          "icon": "circle-user-round",
+          "external": true
+        },
+        {
+          "label": {
+            "en": "Create client account",
+            "fr": "Créer un compte client"
+          },
+          "link": "https://numerimondes.com/account/connect/authentication/register",
+          "icon": "user-plus",
+          "external": true
+        },
+        {
+          "label": {
+            "en": "Staff & partner sign in",
+            "fr": "Connexion équipe et partenaires"
+          },
+          "link": "https://numerimondes.com/account/connect/admin/authentication",
+          "icon": "shield-check",
+          "external": true
         }
       ]
     }
