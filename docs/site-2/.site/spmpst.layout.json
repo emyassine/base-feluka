@@ -1,9 +1,0 @@
-{
-  "$schema": "../public/api/beta/schemas/spmpst-standard/layout.schema.json",
-  "layouts": {
-    "article": { "features": { "toc": true, "pager": true } }
-  },
-  "rules": [
-    { "match": "src/collections/articles/**", "layout": "article" }
-  ]
-}

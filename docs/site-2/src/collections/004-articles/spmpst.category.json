@@ -1,9 +1,0 @@
-{
-  "title": { "en": "Articles" },
-  "description": { "en": "Practical guides and explanations for using Numerimondes sites and services." },
-  "categories": [
-    { "id": "website-guides", "label": { "en": "Website guides" } },
-    { "id": "privacy", "label": { "en": "Privacy and storage" } },
-    { "id": "technology-and-standards", "label": { "en": "Technology and standards" } }
-  ]
-}
