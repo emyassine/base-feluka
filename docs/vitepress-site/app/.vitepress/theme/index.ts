@@ -9,6 +9,7 @@ import generatedCollections from '@generated/collections.json'
 import generatedFloatingSubnav from '@generated/floating-subnav.json'
 import { DocumentationLastModified, DocumentationNotice } from '@generated/theme'
 import { projectComponents, registerProjectComponents } from '@generated/components'
+import ExternalLinkGuard from './ExternalLinkGuard.vue'
 import { installXTooltip } from '@themes/shared/scripts/vitepress/x-tooltip.ts'
 import '@generated/configured-styles'
 import '@generated/configured-scripts'
@@ -810,9 +811,7 @@ const MermaidLayout = {
       'layout-bottom': () => h(Fragment, null, [
         layoutSlots['layout-bottom']?.(),
         h(projectComponents.PrivacySettingsDialog),
-        (projectComponents as Record<string, Component>).ExternalLinkGuard
-          ? h((projectComponents as Record<string, Component>).ExternalLinkGuard)
-          : null,
+        h(ExternalLinkGuard),
       ]),
       'nav-bar-content-before': () => h(Fragment, null, [layoutSlots['nav-bar-content-before']?.(), h(projectComponents.VitePressCurrencySelector)]),
       'nav-bar-content-after': () => h(Fragment, null, [

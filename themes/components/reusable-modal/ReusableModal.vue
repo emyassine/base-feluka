@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import Button from '../button/Button.vue'
 
 const props = withDefaults(defineProps<{
   modelValue: boolean
   title: string
   closeLabel?: string
+  language?: string
+  direction?: 'ltr' | 'rtl' | 'auto'
   fixedHeader?: boolean
   fixedFooter?: boolean
 }>(), {
   closeLabel: 'Close dialog',
+  language: 'en',
+  direction: 'ltr',
   fixedHeader: false,
   fixedFooter: false,
 })
@@ -57,6 +62,8 @@ onBeforeUnmount(() => {
       'reusable-modal--fixed-footer': fixedFooter,
     }"
     :aria-label="title"
+    :lang="language"
+    :dir="direction"
     @click="onBackdropClick"
     @close="onClose"
   >
@@ -65,7 +72,7 @@ onBeforeUnmount(() => {
         <slot name="header">
           <h2 class="reusable-modal__title">{{ title }}</h2>
         </slot>
-        <button class="reusable-modal__close" type="button" :aria-label="closeLabel" @click="close">×</button>
+        <Button class="reusable-modal__close" color="gray" outlined size="xs" :aria-label="closeLabel" @click="close">×</Button>
       </header>
       <section class="reusable-modal__body">
         <slot />
@@ -97,7 +104,7 @@ onBeforeUnmount(() => {
 .reusable-modal--fixed-header .reusable-modal__header { position: sticky; top: 0; border-bottom: 1px solid var(--vp-c-divider); }
 .reusable-modal--fixed-footer .reusable-modal__footer { position: sticky; bottom: 0; border-top: 1px solid var(--vp-c-divider); }
 .reusable-modal__title { margin: 0; color: inherit; font-size: 1.15rem; line-height: 1.35; }
-.reusable-modal__close { display: grid; width: 2.25rem; height: 2.25rem; flex: 0 0 auto; place-items: center; margin-left: auto; border: 1px solid var(--vp-c-divider); border-radius: 999px; background: transparent; color: inherit; font: inherit; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.reusable-modal__close { width: 2.25rem; height: 2.25rem; flex: 0 0 auto; margin-left: auto; padding: 0; border-radius: 999px; font-size: 1.4rem; line-height: 1; }
 .reusable-modal__body { padding: 1.25rem; }
 .reusable-modal__footer { justify-content: flex-end; flex-wrap: wrap; }
 
