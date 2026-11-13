@@ -8,7 +8,7 @@
     "guides": "src/guides",
     "collections": "src/collections",
     "resources": "resources",
-    "sharedResources": "../vitepress-site/resources",
+    "sharedResources": "/home/yassine/Docs/vitepress-site/resources",
     "assets": "resources/assets",
     "components": "resources/components",
     "diagrams": ".site",
@@ -33,10 +33,10 @@
       "seo": ".site/spmpst.seo.json",
       "topbar": ".site/spmpst.topbar.json"
     },
-    "icons": "../vitepress-site/resources/icons",
-    "flags": "../vitepress-site/resources/flags",
+    "icons": "/home/yassine/Docs/vitepress-site/resources/icons",
+    "flags": "/home/yassine/Docs/vitepress-site/resources/flags",
     "mermaidConfig": ".site/spmpst.mermaid.json",
-    "toolchain": "../vitepress-site",
+    "toolchain": "/home/yassine/Docs/vitepress-site",
     "output": "../../docs-output/site-1"
   },
   "extensions": {},
